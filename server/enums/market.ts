@@ -1,0 +1,3 @@
+export const TYPES = {
+  DAILY_ADJUSTED: 'TIME_SERIES_DAILY_ADJUSTED'
+}
