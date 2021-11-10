@@ -1,3 +1,4 @@
 export const NAMES = {
-  TICKETS: 'tickets'
+  TICKETS: 'tickets',
+  TICKET_DAILY: 'ticket_daily'
 }

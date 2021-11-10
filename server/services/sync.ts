@@ -1,7 +1,8 @@
 import { NAMES } from '../enums/tables'
 import { HTTP_ERRORS } from '../enums/errors'
-import { findOne } from '../adapters/database'
+import { findOne, upsertOne } from '../adapters/database'
 import { getTicketDailyAdjusted } from '../adapters/market'
+import { getInitialDate, getCurrentDate, getDaysInRange } from '../tools/datetime'
 
 export const syncTicket = async (
   region: string,
@@ -14,12 +15,42 @@ export const syncTicket = async (
       symbol: symbol.toUpperCase()
     }
   })
-  console.log(ticket)
   if (!ticket) throw HTTP_ERRORS.NOT_FOUND
 
   const ticketData = await getTicketDailyAdjusted(symbol)
-  const lastRefreshed = ticketData['Meta Data']['3. Last Refreshed']
-  console.log(lastRefreshed)
 
-  return ticketData
+  const metaData = ticketData['Meta Data']
+  const lastRefreshed = metaData['3. Last Refreshed']
+
+  if (lastRefreshed === ticket.last_refreshed) {
+    return { lastRefreshed }
+  }
+
+  const allDaysData = ticketData['Time Series (Daily)']
+
+  const initialDate = getInitialDate()
+  const currentDate = getCurrentDate()
+  const allDates = getDaysInRange(initialDate, currentDate)
+
+  for (const date of allDates) {
+    const dailyData = allDaysData[date]
+    if (!dailyData) continue
+
+    const closePrice = dailyData['4. close']
+    const volume = dailyData['6. volume']
+    const dividendAmount = dailyData['7. dividend amount']
+    const splitCoefficient = dailyData['8. split coefficient']
+
+    const record = await findOne({
+      tableName: NAMES.TICKET_DAILY,
+      filters: {
+        ticket_id: ticket.id,
+        date
+      }
+    })
+  }
+
+  return {
+
+  }
 }
