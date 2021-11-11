@@ -11,8 +11,20 @@ export const getCurrentDate = (): string => {
   return moment().format(DATE_FORMAT)
 }
 
-export const getNextDate = (date: string): string => {
-  return moment(date).add(1, 'day').format(DATE_FORMAT)
+export const getPreviousDate = (
+  date: string,
+  differ: number = 1
+): string => {
+  const type = differ === 1 ? 'day' : 'days'
+  return moment(date).subtract(differ, type).format(DATE_FORMAT)
+}
+
+export const getNextDate = (
+  date: string,
+  differ: number = 1
+): string => {
+  const type = differ === 1 ? 'day' : 'days'
+  return moment(date).add(differ, type).format(DATE_FORMAT)
 }
 
 export const getDaysInRange = (
@@ -23,4 +35,8 @@ export const getDaysInRange = (
     days.push(date)
   }
   return days
+}
+
+export const getDayNumber = (date: string): number => {
+  return moment(date).isoWeekday()
 }

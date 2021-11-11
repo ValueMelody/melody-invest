@@ -1,15 +1,25 @@
 import knex, { Knex } from 'knex'
 
+interface OrderBy {
+  key: string;
+  type: 'asc' | 'desc';
+}
+
+interface Condition {
+  key: string;
+  value: string | number;
+  type?: string;
+}
+
 interface Find {
   tableName: string;
-  filters?: object;
+  conditions?: Condition[];
+  orderBy?: OrderBy;
 }
 
 interface Edit {
   tableName: string;
   values: object;
-  filters?: object;
-  id?: number;
 }
 
 let _db: Knex | null = null
@@ -34,24 +44,30 @@ const getConnection = (): Knex => {
 
 export const findOne = async ({
   tableName,
-  filters
+  conditions,
+  orderBy
 }: Find): Promise<any | null> => {
   const db = getConnection()
-  const query = db
-    .select('*')
-    .from(tableName)
-  if (filters) query.where(filters)
+  const query = db.select('*').from(tableName)
+
+  if (conditions) {
+    conditions.forEach((condition, index) => {
+      const { key, type = '=', value } = condition
+      if (index === 0) {
+        query.where(key, type, value)
+      } else {
+        query.andWhere(key, type, value)
+      }
+    })
+  }
+
+  if (orderBy) {
+    const { key, type } = orderBy
+    query.orderBy(key, type)
+  }
 
   const records = await query
-  return records?.length === 1 ? records[0] : null
-}
-
-export const findAll = async ({
-  tableName
-}: Find) => {
-  const db = getConnection()
-  const records = await db.select('*').from(tableName)
-  return records
+  return records?.length ? records[0] : null
 }
 
 export const createOne = async ({
@@ -64,37 +80,4 @@ export const createOne = async ({
     .insert(values)
     .returning('*')
   return record
-}
-
-export const updateById = async ({
-  tableName,
-  id,
-  values
-}: Edit) => {
-  const db = getConnection()
-  const records = await db
-    .table(tableName)
-    .update(values)
-    .where({ id })
-    .returning('*')
-  return records[0]
-}
-
-export const upsertOne = async ({
-  tableName,
-  filters,
-  values
-}: Edit) => {
-  const record = await findOne({ tableName, filters })
-  const newRecord = record
-    ? await updateById({
-      tableName,
-      values,
-      id: record.id
-    })
-    : await createOne({
-      tableName,
-      values: { ...filters, ...values }
-    })
-  return newRecord
 }
