@@ -1,7 +1,7 @@
 import moment from 'moment'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
-const INITIAL_DATE = '2000-01-01'
+const INITIAL_DATE = '2001-01-01'
 
 export const getInitialDate = (): string => {
   return INITIAL_DATE

@@ -1,6 +1,6 @@
 import { NAMES } from '../enums/tables'
 import { HTTP_ERRORS } from '../enums/errors'
-import { findOne, createOne } from '../adapters/database'
+import { findOne, create, update } from '../adapters/database'
 import { getTicketDailyAdjusted } from '../adapters/market'
 import {
   getInitialDate,
@@ -17,11 +17,14 @@ export const syncTicket = async (
   region: string,
   symbol: string
 ) => {
+  const ticketRegion = region.toUpperCase()
+  const ticketSymbol = symbol.toUpperCase()
+
   const ticket = await findOne({
     tableName: NAMES.TICKETS,
     conditions: [
-      { key: 'region', value: region.toUpperCase() },
-      { key: 'symbol', value: symbol.toUpperCase() }
+      { key: 'region', value: ticketRegion },
+      { key: 'symbol', value: ticketSymbol }
     ]
   })
   if (!ticket) throw HTTP_ERRORS.NOT_FOUND
@@ -88,7 +91,7 @@ export const syncTicket = async (
       )
       : '0.00'
 
-    const newRecord = await createOne({
+    const newRecord = await create({
       tableName: NAMES.TICKET_DAILY,
       values: {
         ticket_id: ticket.id,
@@ -102,6 +105,15 @@ export const syncTicket = async (
     })
     newRecords.push(newRecord)
   }
+
+  await update({
+    tableName: NAMES.TICKETS,
+    values: { last_refreshed: lastRefreshed },
+    conditions: [
+      { key: 'symbol', value: ticketSymbol },
+      { key: 'region', value: ticketRegion }
+    ]
+  })
 
   return {
     refreshedAt: lastRefreshed,

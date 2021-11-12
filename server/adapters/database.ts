@@ -17,9 +17,15 @@ interface Find {
   orderBy?: OrderBy;
 }
 
-interface Edit {
+interface Create {
   tableName: string;
   values: object;
+}
+
+interface Update {
+  tableName: string;
+  values: object;
+  conditions: Condition[];
 }
 
 let _db: Knex | null = null
@@ -70,14 +76,38 @@ export const findOne = async ({
   return records?.length ? records[0] : null
 }
 
-export const createOne = async ({
+export const create = async ({
   tableName,
   values
-}: Edit) => {
+}: Create) => {
   const db = getConnection()
   const record = await db
     .table(tableName)
     .insert(values)
     .returning('*')
   return record
+}
+
+export const update = async ({
+  tableName,
+  values,
+  conditions
+}: Update) => {
+  const db = getConnection()
+  const query = db
+    .table(tableName)
+    .update(values)
+    .select('*')
+
+  conditions.forEach((condition, index) => {
+    const { key, type = '=', value } = condition
+    if (index === 0) {
+      query.where(key, type, value)
+    } else {
+      query.andWhere(key, type, value)
+    }
+  })
+
+  const records = await query
+  return records
 }
