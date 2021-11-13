@@ -1,122 +1,94 @@
-import { NAMES } from '../enums/tables'
-import { HTTP_ERRORS } from '../enums/errors'
-import { findOne, create, update } from '../adapters/database'
-import { getTicketDailyAdjusted } from '../adapters/market'
-import {
-  getInitialDate,
-  getCurrentDate,
-  getDaysInRange,
-  getNextDate
-} from '../tools/datetime'
-import {
-  getAdjustedClosePrice,
-  getDividendPercent
-} from '../tools/market'
+import * as errorEnum from '../enums/error'
+import * as marketAdapter from '../adapters/market'
+import * as dateTool from '../tools/date'
+import * as marketTool from '../tools/market'
+import * as ticketModel from '../models/ticket'
+import * as ticketDailyModel from '../models/ticketDaily'
 
-export const syncTicket = async (
+export const syncTicketPrices = async (
   region: string,
   symbol: string
-) => {
-  const ticketRegion = region.toUpperCase()
-  const ticketSymbol = symbol.toUpperCase()
+): Promise<{
+  ticket: ticketModel.Ticket,
+  newDaily: ticketDailyModel.TicketDaily[]
+}> => {
+  const ticket = await ticketModel.getTicket(region, symbol)
+  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const ticket = await findOne({
-    tableName: NAMES.TICKETS,
-    conditions: [
-      { key: 'region', value: ticketRegion },
-      { key: 'symbol', value: ticketSymbol }
-    ]
-  })
-  if (!ticket) throw HTTP_ERRORS.NOT_FOUND
-
-  const ticketData = await getTicketDailyAdjusted(symbol)
+  const ticketData = await marketAdapter.getTicketDailyAdjusted(symbol)
 
   const metaData = ticketData['Meta Data']
   const lastRefreshed = metaData['3. Last Refreshed']
 
-  if (lastRefreshed === ticket.last_refreshed) {
-    return { refreshedAt: lastRefreshed }
+  if (lastRefreshed === ticket.refreshedDate) {
+    return { ticket, newDaily: [] }
   }
 
   const allDaysData = ticketData['Time Series (Daily)']
 
-  const startDate = ticket.last_refreshed
-    ? getNextDate(ticket.last_refreshed)
-    : getInitialDate()
+  const startDate = ticket.refreshedDate
+    ? dateTool.getNextDate(ticket.refreshedDate)
+    : dateTool.getInitialDate()
 
-  const endDate = getCurrentDate()
-  const allDates = getDaysInRange(startDate, endDate)
+  const endDate = dateTool.getCurrentDate()
+  const allDates = dateTool.getDaysInRange(startDate, endDate)
 
   const newRecords = []
   for (const date of allDates) {
     const dailyData = allDaysData[date]
     if (!dailyData) continue
 
-    const record = await findOne({
-      tableName: NAMES.TICKET_DAILY,
-      conditions: [
-        { key: 'ticket_id', value: ticket.id },
-        { key: 'date', value: date }
-      ]
-    })
+    const record = await ticketDailyModel.getTicketDaily(ticket.id, date)
     if (record) continue
-
-    const previousRecord = await findOne({
-      tableName: NAMES.TICKET_DAILY,
-      conditions: [
-        { key: 'ticket_id', value: ticket.id },
-        { key: 'date', type: '<', value: date }
-      ],
-      orderBy: { key: 'id', type: 'desc' }
-    })
 
     const closePrice = dailyData['4. close']
     const volume = dailyData['6. volume']
     const dividendAmount = dailyData['7. dividend amount']
     const splitCoefficient = dailyData['8. split coefficient']
 
+    const previousRecord = await ticketDailyModel.getPreviousTicketDaily(ticket.id, date)
+
     const adjustedClose = previousRecord
-      ? getAdjustedClosePrice(
+      ? marketTool.getAdjustedClosePrice(
         closePrice,
         splitCoefficient,
-        previousRecord.close_price,
-        previousRecord.adjusted_close_price
+        previousRecord.closePrice,
+        previousRecord.adjustedClosePrice
       )
       : closePrice
 
     const dividendPercent = previousRecord
-      ? getDividendPercent(
+      ? marketTool.getDividendPercent(
         dividendAmount,
-        previousRecord.close_price
+        previousRecord.closePrice
       )
       : '0.00'
 
-    const newRecord = await create({
-      tableName: NAMES.TICKET_DAILY,
-      values: {
-        ticket_id: ticket.id,
-        date,
-        volume: parseInt(volume),
-        close_price: closePrice,
-        split_coefficient: splitCoefficient.substr(0, 10),
-        dividend_percent: dividendPercent,
-        adjusted_close_price: adjustedClose
-      }
+    const newRecord = await ticketDailyModel.createTicketDaily({
+      ticketId: ticket.id,
+      date,
+      volume: parseInt(volume),
+      closePrice: closePrice,
+      splitCoefficient: splitCoefficient.substr(0, 10),
+      dividendPercent: dividendPercent,
+      adjustedClosePrice: adjustedClose
     })
     newRecords.push(newRecord)
   }
 
-  await update({
-    tableName: NAMES.TICKETS,
-    values: { last_refreshed: lastRefreshed },
-    conditions: [
-      { key: 'symbol', value: ticketSymbol },
-      { key: 'region', value: ticketRegion }
-    ]
+  const newTicket = await ticketModel.updateTicket(ticket.id, {
+    refreshedDate: lastRefreshed
   })
 
   return {
-    refreshedAt: lastRefreshed,
-    newRecords
+    ticket: newTicket,
+    newDaily: newRecords
   }
+}
+
+export const syncTicketEarnings = (
+  region: string,
+  symbol: string
+) => {
+
 }
