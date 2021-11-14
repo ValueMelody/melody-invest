@@ -18,9 +18,18 @@ export const getTicketDailyAdjusted = async (
   return result.data
 }
 
+interface AnnualEarning {
+  fiscalDateEnding: string;
+  reportedEPS: string;
+}
+
+interface TicketEarnings {
+  annualEarnings: AnnualEarning[]
+}
+
 export const getTicketEarnings = async (
   symbol: string
-) => {
+): Promise<TicketEarnings> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.EARNINGS,
     symbol: symbol.toUpperCase(),

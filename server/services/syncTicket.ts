@@ -4,6 +4,7 @@ import * as dateTool from '../tools/date'
 import * as marketTool from '../tools/market'
 import * as ticketModel from '../models/ticket'
 import * as ticketDailyModel from '../models/ticketDaily'
+import * as ticketYearlyModel from '../models/ticketYearly'
 
 export const syncTicketPrices = async (
   region: string,
@@ -29,8 +30,8 @@ export const syncTicketPrices = async (
   const startDate = ticket.refreshedDate
     ? dateTool.getNextDate(ticket.refreshedDate)
     : dateTool.getInitialDate()
-
   const endDate = dateTool.getCurrentDate()
+
   const allDates = dateTool.getDaysInRange(startDate, endDate)
 
   const newRecords = []
@@ -69,7 +70,7 @@ export const syncTicketPrices = async (
       date,
       volume: parseInt(volume),
       closePrice: closePrice,
-      splitCoefficient: splitCoefficient.substr(0, 10),
+      splitCoefficient: splitCoefficient.substring(0, 10),
       dividendPercent: dividendPercent,
       adjustedClosePrice: adjustedClose
     })
@@ -86,9 +87,29 @@ export const syncTicketPrices = async (
   }
 }
 
-export const syncTicketEarnings = (
+export const syncTicketEarnings = async (
   region: string,
   symbol: string
 ) => {
+  const ticket = await ticketModel.getTicket(region, symbol)
+  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
+  const ticketData = await marketAdapter.getTicketEarnings(symbol)
+
+  const annualEarnings = ticketData.annualEarnings
+  const lastYearlyRecord = await ticketYearlyModel.getLatestTicketYearly(ticket.id)
+
+  const startYear = lastYearlyRecord
+    ? dateTool.getNextYear(lastYearlyRecord.year)
+    : dateTool.getInitialYear()
+  const endYear = dateTool.getCurrentYear()
+  const allYears = dateTool.getYearsInRange(startYear, endYear)
+
+  for (const year of allYears) {
+    const matchedEarning = annualEarnings.find(earning => {
+      return year === earning.fiscalDateEnding.substring(0, 4)
+    })
+    if (!matchedEarning) continue
+    
+  }
 }
