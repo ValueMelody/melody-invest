@@ -21,14 +21,14 @@ export const syncTicketPrices = async (
   const metaData = ticketData['Meta Data']
   const lastRefreshed = metaData['3. Last Refreshed']
 
-  if (lastRefreshed === ticket.refreshedDate) {
+  if (lastRefreshed === ticket.lastPriceDate) {
     return { ticket, newDaily: [] }
   }
 
   const allDaysData = ticketData['Time Series (Daily)']
 
-  const startDate = ticket.refreshedDate
-    ? dateTool.getNextDate(ticket.refreshedDate)
+  const startDate = ticket.lastPriceDate
+    ? dateTool.getNextDate(ticket.lastPriceDate)
     : dateTool.getInitialDate()
   const endDate = dateTool.getCurrentDate()
 
@@ -77,12 +77,16 @@ export const syncTicketPrices = async (
     newRecords.push(newRecord)
   }
 
-  const newTicket = await ticketModel.updateTicket(ticket.id, {
-    refreshedDate: lastRefreshed
-  })
+  const newTicketInfo: ticketModel.TicketEdit = {}
+  newTicketInfo.lastPriceDate = lastRefreshed
+  if (!newTicketInfo.firstPriceDate) {
+    newTicketInfo.firstPriceDate = newRecords[0].date
+  }
+
+  const updatedTicket = await ticketModel.updateTicket(ticket.id, newTicketInfo)
 
   return {
-    ticket: newTicket,
+    ticket: updatedTicket,
     newDaily: newRecords
   }
 }
@@ -90,7 +94,10 @@ export const syncTicketPrices = async (
 export const syncTicketEarnings = async (
   region: string,
   symbol: string
-) => {
+): Promise<{
+  ticket: ticketModel.Ticket,
+  newYearly: ticketYearlyModel.TicketYearly[]
+}> => {
   const ticket = await ticketModel.getTicket(region, symbol)
   if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
@@ -105,11 +112,30 @@ export const syncTicketEarnings = async (
   const endYear = dateTool.getCurrentYear()
   const allYears = dateTool.getYearsInRange(startYear, endYear)
 
+  const newYearly = []
   for (const year of allYears) {
     const matchedEarning = annualEarnings.find(earning => {
       return year === earning.fiscalDateEnding.substring(0, 4)
     })
     if (!matchedEarning) continue
-    
+    const newRecord = await ticketYearlyModel.createTicketYearly({
+      ticketId: ticket.id,
+      year,
+      earningDate: matchedEarning.fiscalDateEnding,
+      eps: matchedEarning.reportedEPS.substring(0, 10)
+    })
+    newYearly.push(newRecord)
   }
+
+  const newTicketInfo: ticketModel.TicketEdit = {}
+  if (newYearly.length) {
+    newTicketInfo.lastEpsYear = newYearly[newYearly.length - 1].year
+    if (!ticket.firstEpsYear) newTicketInfo.firstEpsYear = newYearly[0].year
+  }
+
+  const updateTicket = Object.keys(newTicketInfo).length
+    ? await ticketModel.updateTicket(ticket.id, newTicketInfo)
+    : ticket
+
+  return { ticket: updateTicket, newYearly }
 }

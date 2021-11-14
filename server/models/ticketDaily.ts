@@ -46,7 +46,7 @@ export const getPreviousTicketDaily = async (
       { key: 'ticketId', value: ticketId },
       { key: 'date', type: '<', value: date }
     ],
-    orderBy: { key: 'id', type: 'desc' }
+    orderBy: { key: 'date', type: 'desc' }
   })
   return ticketDaily
 }

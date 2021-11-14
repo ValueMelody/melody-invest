@@ -97,7 +97,7 @@ export const update = async ({
   const query = db
     .table(tableName)
     .update(values)
-    .select('*')
+    .returning('*')
 
   conditions.forEach((condition, index) => {
     const { key, type = '=', value } = condition
