@@ -5,16 +5,20 @@ export interface Ticket {
   id: number;
   symbol: string;
   region: string;
-  refreshedDate: string;
+  lastPriceDate: string;
   firstPriceDate: string;
+  lastEpsYear: string;
+  firstEpsYear: string;
   name: string;
 }
 
-interface TicketEdit {
+export interface TicketEdit {
   symbol?: string;
   region?: string;
-  refreshedDate?: string;
+  lastPriceDate?: string;
   firstPriceDate?: string;
+  lastEpsYear?: string;
+  firstEpsYear?: string;
   name?: string;
 }
 
