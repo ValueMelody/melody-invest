@@ -1,5 +1,5 @@
 {
-  "name": "dioxider-cloud",
+  "name": "dioxider-server",
   "version": "0.0.1",
   "description": "",
   "author": "Baozier",
@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/byn9826/dioxider-cloud.git"
+    "url": "git+https://github.com/byn9826/dioxider-server"
   },
   "scripts": {
-    "server:dev": "ts-node-dev --project ./tsconfig.json ./server/app.ts",
-    "lint": "eslint ./server --ext .ts",
-    "lint:fix": "eslint --fix ./server --ext .ts"
+    "start": "ts-node-dev --project ./tsconfig.json ./src/app.ts",
+    "lint": "eslint ./src --ext .ts",
+    "lint:fix": "eslint --fix ./src --ext .ts"
   },
   "dependencies": {
     "axios": "^0.24.0",
