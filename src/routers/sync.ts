@@ -73,3 +73,19 @@ syncRouter.get('/ticket/earnings', async (req, res) => {
     throw e
   }
 })
+
+syncRouter.get('/ticket/incomes', async (req, res) => {
+  try {
+    const year = String(req.query.year)
+    const quarter = String(req.query.quarter)
+
+    const result = await syncTicketService.syncAllIncomes(year, quarter)
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
