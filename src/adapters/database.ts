@@ -51,7 +51,7 @@ const getConnection = (): Knex => {
 const find = async ({
   tableName,
   conditions,
-  orderBy
+  orderBy = { key: 'id', type: 'asc' }
 }: Find): Promise<any[] | null> => {
   const db = getConnection()
   const query = db.select('*').from(tableName)

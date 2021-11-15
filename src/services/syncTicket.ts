@@ -358,3 +358,24 @@ export const syncIncomes = async (
 
   return { ticket: updateTicket, relatedYearly, relatedQuarterly }
 }
+
+export const syncAllIncomes = async (
+  year: string, quarter: string
+): Promise<{
+  tickets: ticketModel.Ticket[]
+}> => {
+  const allTickets = await ticketModel.getAll()
+
+  const updatedTickets = []
+  for (const ticket of allTickets) {
+    const isYearSynced = ticket.lastIncomeYear === year
+    const isQuarterSynced = ticket.lastIncomeQuarter === quarter
+    if (isYearSynced && isQuarterSynced) continue
+    const result = await syncIncomes(ticket.region, ticket.symbol)
+    updatedTickets.push(result.ticket)
+    // note: key rate limit
+    await runTool.sleep(15)
+  }
+
+  return { tickets: updatedTickets }
+}
