@@ -23,8 +23,18 @@ interface AnnualEarning {
   reportedEPS: string;
 }
 
+interface quarterlyEarning {
+  fiscalDateEnding: string;
+  reportedDate: string;
+  reportedEPS: string;
+  estimatedEPS: string;
+  surprise: string;
+  surprisePercentage: string;
+}
+
 interface TicketEarnings {
   annualEarnings: AnnualEarning[]
+  quarterlyEarnings: quarterlyEarning[]
 }
 
 export const getTicketEarnings = async (

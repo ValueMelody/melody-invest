@@ -5,21 +5,25 @@ export interface Ticket {
   id: number;
   symbol: string;
   region: string;
-  lastPriceDate: string;
-  firstPriceDate: string;
-  lastEpsYear: string;
-  firstEpsYear: string;
   name: string;
+  firstPriceDate: string;
+  lastPriceDate: string;
+  firstEpsYear: string;
+  lastEpsYear: string;
+  firstEpsQuarter: string;
+  lastEpsQuarter: string;
 }
 
 export interface TicketEdit {
   symbol?: string;
   region?: string;
-  lastPriceDate?: string;
-  firstPriceDate?: string;
-  lastEpsYear?: string;
-  firstEpsYear?: string;
   name?: string;
+  firstPriceDate?: string;
+  lastPriceDate?: string;
+  firstEpsYear?: string;
+  lastEpsYear?: string;
+  firstEpsQuarter?: string;
+  lastEpsQuarter?: string;
 }
 
 export const getTicket = async (
