@@ -5,9 +5,9 @@ interface OrderBy {
   type: 'asc' | 'desc';
 }
 
-interface Condition {
+export interface Condition {
   key: string;
-  value: string | number;
+  value: string | number | null;
   type?: string;
 }
 

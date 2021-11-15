@@ -22,11 +22,11 @@ syncRouter.get('/ticket/:region/:symbol/earnings', async (req, res) => {
   try {
     const region = req.params.region
     const symbol = req.params.symbol
-    const forceCheckQuarterly = req.query.forceQuarterly === 'true'
+    const forceRecheck = req.query.forceRecheck === 'true'
     const result = await syncTicketService.syncEarnings(
       region,
       symbol,
-      forceCheckQuarterly
+      forceRecheck
     )
 
     return res.status(200).send({
