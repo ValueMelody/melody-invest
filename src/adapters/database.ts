@@ -48,11 +48,11 @@ const getConnection = (): Knex => {
   return _db!
 }
 
-export const findOne = async ({
+const find = async ({
   tableName,
   conditions,
   orderBy
-}: Find): Promise<any | null> => {
+}: Find): Promise<any[] | null> => {
   const db = getConnection()
   const query = db.select('*').from(tableName)
 
@@ -73,7 +73,21 @@ export const findOne = async ({
   }
 
   const records = await query
+  return records
+}
+
+export const findOne = async (
+  params: Find
+): Promise<any | null> => {
+  const records = await find(params)
   return records?.length ? records[0] : null
+}
+
+export const findAll = async (
+  params: Find
+): Promise<any[]> => {
+  const records = await find(params)
+  return records?.length ? records : []
 }
 
 export const create = async ({

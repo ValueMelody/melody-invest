@@ -1,5 +1,5 @@
 import * as tableEnum from '../enums/table'
-import { findOne, create } from '../adapters/database'
+import * as databaseAdapter from '../adapters/database'
 
 export interface TicketDaily {
   id: number;
@@ -22,11 +22,11 @@ interface TicketDailyEdit {
   adjustedClosePrice?: string;
 }
 
-export const getTicketDaily = async (
+export const getByUK = async (
   ticketId: number,
   date: string
-): Promise<TicketDaily> => {
-  const ticketDaily = await findOne({
+): Promise<TicketDaily | null> => {
+  const ticketDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKET_DAILY,
     conditions: [
       { key: 'ticketId', value: ticketId },
@@ -36,11 +36,11 @@ export const getTicketDaily = async (
   return ticketDaily
 }
 
-export const getPreviousTicketDaily = async (
+export const getPrevious = async (
   ticketId: number,
   date: string
-): Promise<TicketDaily> => {
-  const ticketDaily = await findOne({
+): Promise<TicketDaily | null> => {
+  const ticketDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKET_DAILY,
     conditions: [
       { key: 'ticketId', value: ticketId },
@@ -51,10 +51,10 @@ export const getPreviousTicketDaily = async (
   return ticketDaily
 }
 
-export const createTicketDaily = async (
+export const create = async (
   values: TicketDailyEdit
 ): Promise<TicketDaily> => {
-  const newRecords = await create({
+  const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKET_DAILY,
     values
   })

@@ -1,5 +1,5 @@
 import * as tableEnum from '../enums/table'
-import { findOne, create } from '../adapters/database'
+import * as databaseAdapter from '../adapters/database'
 
 export interface TicketYearly {
   id: number;
@@ -16,10 +16,10 @@ interface TicketYearlyEdit {
   eps?: string;
 }
 
-export const getLatestTicketYearly = async (
+export const getLatest = async (
   ticketId: number
-): Promise<TicketYearly> => {
-  const ticketYearly = await findOne({
+): Promise<TicketYearly | null> => {
+  const ticketYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKET_YEARLY,
     conditions: [
       { key: 'ticketId', value: ticketId }
@@ -29,11 +29,11 @@ export const getLatestTicketYearly = async (
   return ticketYearly
 }
 
-export const getTicketYearly = async (
+export const getByUK = async (
   ticketId: number,
   year: string
-): Promise<TicketYearly> => {
-  const ticketYearly = await findOne({
+): Promise<TicketYearly | null> => {
+  const ticketYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKET_YEARLY,
     conditions: [
       { key: 'ticketId', value: ticketId },
@@ -43,10 +43,10 @@ export const getTicketYearly = async (
   return ticketYearly
 }
 
-export const createTicketYearly = async (
+export const create = async (
   values: TicketYearlyEdit
 ): Promise<TicketYearly> => {
-  const newRecords = await create({
+  const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKET_YEARLY,
     values
   })
