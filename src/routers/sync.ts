@@ -38,6 +38,26 @@ syncRouter.get('/ticket/:region/:symbol/earnings', async (req, res) => {
   }
 })
 
+syncRouter.get('/ticket/:region/:symbol/incomes', async (req, res) => {
+  try {
+    const region = req.params.region
+    const symbol = req.params.symbol
+    const forceRecheck = req.query.forceRecheck === 'true'
+    const result = await syncTicketService.syncIncomes(
+      region,
+      symbol,
+      forceRecheck
+    )
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
+
 syncRouter.get('/ticket/earnings', async (req, res) => {
   try {
     const year = String(req.query.year)

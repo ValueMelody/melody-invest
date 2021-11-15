@@ -10,6 +10,11 @@ export interface TicketQuarterly {
   estimatedEps: string | null;
   epsSurprisePercent: string | null;
   earningReportDate: string | null;
+  ebitda?: string;
+  netIncome?: string;
+  grossProfit?: string;
+  totalRevenue?: string;
+  costOfRevenue?: string;
 }
 
 export interface TicketQuarterlyEdit {
@@ -20,6 +25,11 @@ export interface TicketQuarterlyEdit {
   estimatedEps?: string;
   epsSurprisePercent?: string;
   earningReportDate?: string;
+  ebitda?: string;
+  netIncome?: string;
+  grossProfit?: string;
+  totalRevenue?: string;
+  costOfRevenue?: string;
 }
 
 export const getByUK = async (
@@ -63,14 +73,14 @@ export const create = async (
 }
 
 export const update = async (
-  ticketId: number,
+  ticketQuarterlyId: number,
   values: TicketQuarterlyEdit
 ): Promise<TicketQuarterly> => {
   const updatedQuarterly = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKET_QUARTERLY,
     values,
     conditions: [
-      { key: 'id', value: ticketId }
+      { key: 'id', value: ticketQuarterlyId }
     ]
   })
   return updatedQuarterly?.length ? updatedQuarterly[0] : null

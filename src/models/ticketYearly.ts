@@ -7,6 +7,11 @@ export interface TicketYearly {
   year: string;
   earningDate: string | null;
   eps: string | null;
+  ebitda: string | null;
+  netIncome: string | null;
+  grossProfit: string | null;
+  totalRevenue: string | null;
+  costOfRevenue: string | null;
 }
 
 interface TicketYearlyEdit {
@@ -14,6 +19,11 @@ interface TicketYearlyEdit {
   year?: string;
   earningDate?: string;
   eps?: string;
+  ebitda?: string;
+  netIncome?: string;
+  grossProfit?: string;
+  totalRevenue?: string;
+  costOfRevenue?: string;
 }
 
 export const getLatest = async (
@@ -57,14 +67,14 @@ export const create = async (
 }
 
 export const update = async (
-  ticketId: number,
+  ticketYearlyId: number,
   values: TicketYearlyEdit
 ): Promise<TicketYearly> => {
   const updatedYearly = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKET_YEARLY,
     values,
     conditions: [
-      { key: 'id', value: ticketId }
+      { key: 'id', value: ticketYearlyId }
     ]
   })
   return updatedYearly?.length ? updatedYearly[0] : null
