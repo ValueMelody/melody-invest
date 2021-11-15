@@ -13,6 +13,10 @@ export interface Ticket {
   firstEpsQuarter: string;
   lastEpsQuarter: string;
   quarterlyEpsMonthDiffer: string;
+  firstIncomeYear: string;
+  lastIncomeYear: string;
+  firstIncomeQuarter: string;
+  lastIncomeQuarter: string;
 }
 
 export interface TicketEdit {
@@ -25,6 +29,10 @@ export interface TicketEdit {
   lastEpsYear?: string;
   firstEpsQuarter?: string;
   lastEpsQuarter?: string;
+  firstIncomeYear?: string;
+  lastIncomeYear?: string;
+  firstIncomeQuarter?: string;
+  lastIncomeQuarter?: string;
 }
 
 export const getByUK = async (

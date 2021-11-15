@@ -18,7 +18,7 @@ export const syncPrices = async (
   const ticket = await ticketModel.getByUK(region, symbol)
   if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const ticketData = await marketAdapter.getTicketDailyAdjusted(symbol)
+  const ticketData = await marketAdapter.getTicketPrices(symbol)
 
   const metaData = ticketData['Meta Data']
   const lastRefreshed = metaData['3. Last Refreshed']
@@ -123,7 +123,7 @@ export const syncEarnings = async (
 
   const relatedYearly = []
   for (const year of allYears) {
-    const matchedEarning = annualEarnings?.find(earning => {
+    const matchedEarning = annualEarnings.find(earning => {
       return year === earning.fiscalDateEnding.substring(0, 4)
     })
     if (!matchedEarning) continue
@@ -136,17 +136,17 @@ export const syncEarnings = async (
 
     const currentRecord = await ticketYearlyModel.getByUK(ticket.id, year)
 
-    if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketYearlyModel.update(ticket.id, yearlyEps)
-      relatedYearly.push(updatedRecord)
-    }
-
     if (!currentRecord) {
       const createdRecord = await ticketYearlyModel.create({
         ticketId: ticket.id,
         ...yearlyEps
       })
       relatedYearly.push(createdRecord)
+    } else if (currentRecord && !currentRecord.eps) {
+      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyEps)
+      relatedYearly.push(updatedRecord)
+    } else if (forceRecheck) {
+      relatedYearly.push(currentRecord)
     }
   }
 
@@ -167,7 +167,7 @@ export const syncEarnings = async (
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
     const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEpsMonthDiffer)
-    const matchedEarning = quarterlyEarnings?.find(earning => {
+    const matchedEarning = quarterlyEarnings.find(earning => {
       return adjustedQuarter === earning.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedEarning) continue
@@ -183,17 +183,17 @@ export const syncEarnings = async (
 
     const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, adjustedQuarter)
 
-    if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketQuarterlyModel.update(ticket.id, quarterlyEps)
-      relatedQuarterly.push(updatedRecord)
-    }
-
     if (!currentRecord) {
       const createdRecord = await ticketQuarterlyModel.create({
         ticketId: ticket.id,
         ...quarterlyEps
       })
       relatedQuarterly.push(createdRecord)
+    } else if (currentRecord && !currentRecord.eps) {
+      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEps)
+      relatedQuarterly.push(updatedRecord)
+    } else if (forceRecheck) {
+      relatedQuarterly.push(currentRecord)
     }
   }
 
@@ -233,4 +233,128 @@ export const syncAllEarnings = async (
   }
 
   return { tickets: updatedTickets }
+}
+
+export const syncIncomes = async (
+  region: string,
+  symbol: string,
+  forceRecheck: boolean = false
+): Promise<{
+  ticket: ticketModel.Ticket,
+  relatedYearly: ticketYearlyModel.TicketYearly[],
+  relatedQuarterly: ticketQuarterlyModel.TicketQuarterly[]
+}> => {
+  const ticket = await ticketModel.getByUK(region, symbol)
+  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+
+  const ticketData = await marketAdapter.getTicketIncomes(symbol)
+
+  const annualIncomes = ticketData.annualReports
+  if (!annualIncomes) console.info(`Annual Incomes not exist for ${ticket.symbol}`)
+
+  const lastYearlyRecord = !forceRecheck && await ticketYearlyModel.getLatest(
+    ticket.id,
+    [{ key: 'netIncome', type: 'IS NOT', value: null }]
+  )
+
+  const startYear = lastYearlyRecord
+    ? dateTool.getNextYear(lastYearlyRecord.year)
+    : dateTool.getInitialYear()
+  const endYear = dateTool.getCurrentYear()
+  const allYears = dateTool.getYearsInRange(startYear, endYear)
+
+  const relatedYearly = []
+  for (const year of allYears) {
+    const matchedIncome = annualIncomes.find(income => {
+      return year === income.fiscalDateEnding.substring(0, 4)
+    })
+    if (!matchedIncome) continue
+
+    const yearlyIncome = {
+      year,
+      ebitda: matchedIncome.ebitda,
+      netIncome: matchedIncome.netIncome,
+      grossProfit: matchedIncome.grossProfit,
+      totalRevenue: matchedIncome.totalRevenue,
+      costOfRevenue: matchedIncome.costOfRevenue
+    }
+
+    const currentRecord = await ticketYearlyModel.getByUK(ticket.id, year)
+
+    if (!currentRecord) {
+      const createdRecord = await ticketYearlyModel.create({
+        ticketId: ticket.id,
+        ...yearlyIncome
+      })
+      relatedYearly.push(createdRecord)
+    } else if (currentRecord && !currentRecord.netIncome) {
+      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyIncome)
+      relatedYearly.push(updatedRecord)
+    } else if (forceRecheck) {
+      relatedYearly.push(currentRecord)
+    }
+  }
+
+  const quarterlyIncomes = ticketData.quarterlyReports
+  if (!quarterlyIncomes) console.info(`Quarterly Incomes not exist for ${ticket.symbol}`)
+
+  const lastQuarterlyRecord = !forceRecheck && await ticketQuarterlyModel.getLatest(
+    ticket.id,
+    [{ key: 'netIncome', type: 'IS NOT', value: null }]
+  )
+
+  const startQuarter = lastQuarterlyRecord
+    ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
+    : dateTool.getInitialQuarter()
+  const endQuarter = dateTool.getCurrentQuater()
+  const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
+
+  const relatedQuarterly = []
+  for (const quarter of allQuarters) {
+    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEpsMonthDiffer)
+    const matchedIncome = quarterlyIncomes.find(income => {
+      return adjustedQuarter === income.fiscalDateEnding.substring(0, 7)
+    })
+    if (!matchedIncome) continue
+
+    const quarterlyEps = {
+      quarter: adjustedQuarter,
+      ebitda: matchedIncome.ebitda,
+      netIncome: matchedIncome.netIncome,
+      grossProfit: matchedIncome.grossProfit,
+      totalRevenue: matchedIncome.totalRevenue,
+      costOfRevenue: matchedIncome.costOfRevenue
+    }
+
+    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, adjustedQuarter)
+
+    if (!currentRecord) {
+      const createdRecord = await ticketQuarterlyModel.create({
+        ticketId: ticket.id,
+        ...quarterlyEps
+      })
+      relatedQuarterly.push(createdRecord)
+    } else if (currentRecord && !currentRecord.netIncome) {
+      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEps)
+      relatedQuarterly.push(updatedRecord)
+    } else if (forceRecheck) {
+      relatedQuarterly.push(currentRecord)
+    }
+  }
+
+  const newTicketInfo: ticketModel.TicketEdit = {}
+  if (relatedYearly.length) {
+    newTicketInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
+    if (!ticket.firstIncomeYear) newTicketInfo.firstIncomeYear = relatedYearly[0].year
+  }
+  if (relatedQuarterly.length) {
+    newTicketInfo.lastIncomeQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
+    if (!ticket.firstIncomeQuarter) newTicketInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
+  }
+
+  const updateTicket = Object.keys(newTicketInfo).length
+    ? await ticketModel.update(ticket.id, newTicketInfo)
+    : ticket
+
+  return { ticket: updateTicket, relatedYearly, relatedQuarterly }
 }
