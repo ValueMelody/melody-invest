@@ -5,6 +5,7 @@ import * as marketTool from '../tools/market'
 import * as ticketModel from '../models/ticket'
 import * as ticketDailyModel from '../models/ticketDaily'
 import * as ticketYearlyModel from '../models/ticketYearly'
+import * as ticketQuarterlyModel from '../models/ticketQuarterly'
 
 export const syncTicketPrices = async (
   region: string,
@@ -96,7 +97,8 @@ export const syncTicketEarnings = async (
   symbol: string
 ): Promise<{
   ticket: ticketModel.Ticket,
-  newYearly: ticketYearlyModel.TicketYearly[]
+  newYearly: ticketYearlyModel.TicketYearly[],
+  newQuarterly: ticketQuarterlyModel.TicketQuarterly[]
 }> => {
   const ticket = await ticketModel.getTicket(region, symbol)
   if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
@@ -127,15 +129,46 @@ export const syncTicketEarnings = async (
     newYearly.push(newRecord)
   }
 
+  const quarterlyEarnings = ticketData.quarterlyEarnings
+  const lastQuarterlyRecord = await ticketQuarterlyModel.getLatestTicketQuarterly(ticket.id)
+
+  const startQuarter = lastQuarterlyRecord
+    ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
+    : dateTool.getInitialQuarter()
+  const endQuarter = dateTool.getCurrentQuater()
+  const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
+
+  const newQuarterly = []
+  for (const quarter of allQuarters) {
+    const matchedEarning = quarterlyEarnings.find(earning => {
+      return quarter === earning.fiscalDateEnding.substring(0, 7)
+    })
+    if (!matchedEarning) continue
+    const newRecord = await ticketQuarterlyModel.createTicketQuarterly({
+      ticketId: ticket.id,
+      quarter,
+      earningDate: matchedEarning.fiscalDateEnding,
+      eps: matchedEarning.reportedEPS.substring(0, 10),
+      estimatedEps: matchedEarning.estimatedEPS.substring(0, 10),
+      epsSurprisePercent: matchedEarning.surprisePercentage.substring(0, 5),
+      earningReportDate: matchedEarning.reportedDate
+    })
+    newQuarterly.push(newRecord)
+  }
+
   const newTicketInfo: ticketModel.TicketEdit = {}
   if (newYearly.length) {
     newTicketInfo.lastEpsYear = newYearly[newYearly.length - 1].year
     if (!ticket.firstEpsYear) newTicketInfo.firstEpsYear = newYearly[0].year
+  }
+  if (newQuarterly.length) {
+    newTicketInfo.lastEpsQuarter = newQuarterly[newQuarterly.length - 1].quarter
+    if (!ticket.firstEpsQuarter) newTicketInfo.firstEpsQuarter = newQuarterly[0].quarter
   }
 
   const updateTicket = Object.keys(newTicketInfo).length
     ? await ticketModel.updateTicket(ticket.id, newTicketInfo)
     : ticket
 
-  return { ticket: updateTicket, newYearly }
+  return { ticket: updateTicket, newYearly, newQuarterly }
 }

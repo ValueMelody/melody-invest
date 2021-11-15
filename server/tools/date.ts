@@ -6,6 +6,9 @@ const INITIAL_DATE = '2001-01-01'
 const YEAR_FORMAT = 'yyyy'
 const INITIAL_YEAR = '2000'
 
+const QUARTER_FORMAT = 'yyyy-MM'
+const INITIAL_QUARTER = '2000-03'
+
 export const getInitialDate = (): string => {
   return INITIAL_DATE
 }
@@ -14,12 +17,35 @@ export const getInitialYear = (): string => {
   return INITIAL_YEAR
 }
 
+export const getInitialQuarter = (): string => {
+  return INITIAL_QUARTER
+}
+
 export const getCurrentDate = (): string => {
   return moment().format(DATE_FORMAT)
 }
 
 export const getCurrentYear = (): string => {
   return moment().format(YEAR_FORMAT)
+}
+
+export const getCurrentQuater = (): string => {
+  const currentDate = moment().format(QUARTER_FORMAT)
+  const [currentYear, currentMonth] = currentDate.split('-')
+  const month = parseInt(currentMonth)
+  let year = parseInt(currentYear)
+  let quarter = ''
+  if (month <= 3) {
+    quarter = '12'
+    year -= 1
+  } else if (month <= 6) {
+    quarter = '03'
+  } else if (month <= 9) {
+    quarter = '06'
+  } else if (month <= 12) {
+    quarter = '09'
+  }
+  return `${year}-${quarter}`
 }
 
 export const getPreviousDate = (
@@ -34,16 +60,27 @@ export const getNextDate = (
   date: string,
   differ: number = 1
 ): string => {
-  const type = differ === 1 ? 'day' : 'days'
-  return moment(date).add(differ, type).format(DATE_FORMAT)
+  return moment(date)
+    .add(differ, 'days')
+    .format(DATE_FORMAT)
 }
 
 export const getNextYear = (
   year: string,
   differ: number = 1
 ): string => {
-  const type = differ === 1 ? 'year': 'years'
-  return moment(year).add(differ, type).format(YEAR_FORMAT)
+  return moment(year)
+    .add(differ, 'years')
+    .format(YEAR_FORMAT)
+}
+
+export const getNextQuarter = (
+  quarter: string,
+  differ: number = 1
+): string => {
+  return moment(quarter)
+    .add(differ, 'quarters')
+    .format(QUARTER_FORMAT)
 }
 
 export const getDaysInRange = (
@@ -64,6 +101,16 @@ export const getYearsInRange = (
     years.push(year)
   }
   return years
+}
+
+export const getQuartersInRange = (
+  startQuarter: string, endQuarter: string
+): string[] => {
+  const quarters = []
+  for (let quarter = startQuarter; quarter <= endQuarter; quarter = getNextQuarter(quarter)) {
+    quarters.push(quarter)
+  }
+  return quarters
 }
 
 export const getDayNumber = (date: string): number => {
