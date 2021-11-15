@@ -116,3 +116,19 @@ export const getQuartersInRange = (
 export const getDayNumber = (date: string): number => {
   return moment(date).isoWeekday()
 }
+
+export const getAdjustedQuarter = (
+  quarter: string, differ: string | null
+) => {
+  if (!differ) return quarter
+  const [year, month] = quarter.split('-')
+  const yearNum = parseInt(year)
+  const monthNum = parseInt(month)
+  const differNum = parseInt(differ)
+
+  const isNextYear = monthNum === 12 && differNum > 0
+  const adjustedMonth = isNextYear ? differNum : monthNum + differNum
+  const adjustedYear = isNextYear ? yearNum + 1 : yearNum
+  const paddingLeft = adjustedMonth < 10 ? '0' : ''
+  return `${adjustedYear}-${paddingLeft}${adjustedMonth}`
+}
