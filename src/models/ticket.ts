@@ -12,6 +12,11 @@ export interface Ticket {
   lastEpsYear: string;
   firstEpsQuarter: string;
   lastEpsQuarter: string;
+  quarterlyEpsMonthDiffer: string;
+  firstIncomeYear: string;
+  lastIncomeYear: string;
+  firstIncomeQuarter: string;
+  lastIncomeQuarter: string;
 }
 
 export interface TicketEdit {
@@ -24,12 +29,16 @@ export interface TicketEdit {
   lastEpsYear?: string;
   firstEpsQuarter?: string;
   lastEpsQuarter?: string;
+  firstIncomeYear?: string;
+  lastIncomeYear?: string;
+  firstIncomeQuarter?: string;
+  lastIncomeQuarter?: string;
 }
 
-export const getTicket = async (
+export const getByUK = async (
   region: string,
   symbol: string
-): Promise<Ticket> => {
+): Promise<Ticket | null> => {
   const ticketRegion = region.toUpperCase()
   const ticketSymbol = symbol.toUpperCase()
 
@@ -43,7 +52,14 @@ export const getTicket = async (
   return ticket
 }
 
-export const updateTicket = async (
+export const getAll = async (): Promise<Ticket[]> => {
+  const tickets = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKETS
+  })
+  return tickets
+}
+
+export const update = async (
   ticketId: number,
   values: TicketEdit
 ): Promise<Ticket> => {

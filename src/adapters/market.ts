@@ -4,11 +4,11 @@ import * as marketEnum from '../enums/market'
 
 const BASE_URL = 'https://www.alphavantage.co/query'
 
-export const getTicketDailyAdjusted = async (
+export const getTicketPrices = async (
   symbol: string
 ) => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.DAILY_ADJUSTED,
+    function: marketEnum.TYPES.PRICES,
     symbol: symbol.toUpperCase(),
     outputsize: 'full',
     apikey: process.env.MARKET_KEY
@@ -47,5 +47,36 @@ export const getTicketEarnings = async (
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
+
+  if (result.data.Note) throw result.data
+  return result.data
+}
+
+interface Income {
+  fiscalDateEnding: string;
+  grossProfit: string;
+  totalRevenue: string;
+  costOfRevenue: string;
+  ebitda: string;
+  netIncome: string;
+}
+
+interface TicketIncomes {
+  annualReports: Income[]
+  quarterlyReports: Income[]
+}
+
+export const getTicketIncomes = async (
+  symbol: string
+): Promise<TicketIncomes> => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.INCOMES,
+    symbol: symbol.toUpperCase(),
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+
+  if (result.data.Note) throw result.data
   return result.data
 }
