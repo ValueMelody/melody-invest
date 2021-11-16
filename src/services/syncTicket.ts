@@ -99,6 +99,7 @@ export const syncAllPrices = async (
   tickets: ticketModel.Ticket[]
 }> => {
   const allTickets = await ticketModel.getAll()
+  const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickets = []
   for (const ticket of allTickets) {
@@ -106,8 +107,7 @@ export const syncAllPrices = async (
     if (isDateSynced) continue
     const result = await syncPrices(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
-    // note: key rate limit
-    await runTool.sleep(15)
+    await runTool.sleep(cooldown)
   }
 
   return { tickets: updatedTickets }
@@ -240,6 +240,7 @@ export const syncAllEarnings = async (
   tickets: ticketModel.Ticket[]
 }> => {
   const allTickets = await ticketModel.getAll()
+  const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickets = []
   for (const ticket of allTickets) {
@@ -248,8 +249,7 @@ export const syncAllEarnings = async (
     if (isYearSynced && isQuarterSynced) continue
     const result = await syncEarnings(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
-    // note: key rate limit
-    await runTool.sleep(15)
+    await runTool.sleep(cooldown)
   }
 
   return { tickets: updatedTickets }
@@ -385,6 +385,7 @@ export const syncAllIncomes = async (
   tickets: ticketModel.Ticket[]
 }> => {
   const allTickets = await ticketModel.getAll()
+  const cooldown = await marketAdapter.getCooldownPerMin()
 
   const updatedTickets = []
   for (const ticket of allTickets) {
@@ -393,8 +394,7 @@ export const syncAllIncomes = async (
     if (isYearSynced && isQuarterSynced) continue
     const result = await syncIncomes(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
-    // note: key rate limit
-    await runTool.sleep(15)
+    await runTool.sleep(cooldown)
   }
 
   return { tickets: updatedTickets }

@@ -4,6 +4,10 @@ import * as marketEnum from '../enums/market'
 
 const BASE_URL = 'https://www.alphavantage.co/query'
 
+export const getCooldownPerMin = (): number => {
+  return parseInt(process.env.MARKET_KEY_COOLDOWN!)
+}
+
 export const getTicketPrices = async (
   symbol: string
 ) => {
