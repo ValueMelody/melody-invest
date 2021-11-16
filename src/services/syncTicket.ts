@@ -81,7 +81,7 @@ export const syncPrices = async (
 
   const newTicketInfo: ticketModel.TicketEdit = {}
   newTicketInfo.lastPriceDate = lastRefreshed
-  if (!newTicketInfo.firstPriceDate) {
+  if (!ticket.firstPriceDate) {
     newTicketInfo.firstPriceDate = newRecords[0].date
   }
 
@@ -91,6 +91,26 @@ export const syncPrices = async (
     ticket: updatedTicket,
     newDaily: newRecords
   }
+}
+
+export const syncAllPrices = async (
+  date: string
+): Promise<{
+  tickets: ticketModel.Ticket[]
+}> => {
+  const allTickets = await ticketModel.getAll()
+
+  const updatedTickets = []
+  for (const ticket of allTickets) {
+    const isDateSynced = ticket.lastPriceDate >= date
+    if (isDateSynced) continue
+    const result = await syncPrices(ticket.region, ticket.symbol)
+    updatedTickets.push(result.ticket)
+    // note: key rate limit
+    await runTool.sleep(15)
+  }
+
+  return { tickets: updatedTickets }
 }
 
 export const syncEarnings = async (
@@ -223,8 +243,8 @@ export const syncAllEarnings = async (
 
   const updatedTickets = []
   for (const ticket of allTickets) {
-    const isYearSynced = ticket.lastEpsYear === year
-    const isQuarterSynced = ticket.lastEpsQuarter === quarter
+    const isYearSynced = ticket.lastEpsYear >= year
+    const isQuarterSynced = ticket.lastEpsQuarter >= quarter
     if (isYearSynced && isQuarterSynced) continue
     const result = await syncEarnings(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
@@ -368,8 +388,8 @@ export const syncAllIncomes = async (
 
   const updatedTickets = []
   for (const ticket of allTickets) {
-    const isYearSynced = ticket.lastIncomeYear === year
-    const isQuarterSynced = ticket.lastIncomeQuarter === quarter
+    const isYearSynced = ticket.lastIncomeYear >= year
+    const isQuarterSynced = ticket.lastIncomeQuarter >= quarter
     if (isYearSynced && isQuarterSynced) continue
     const result = await syncIncomes(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)

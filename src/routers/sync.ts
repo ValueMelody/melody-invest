@@ -89,3 +89,18 @@ syncRouter.get('/ticket/incomes', async (req, res) => {
     throw e
   }
 })
+
+syncRouter.get('/ticket/prices', async (req, res) => {
+  try {
+    const date = String(req.query.date)
+
+    const result = await syncTicketService.syncAllPrices(date)
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
