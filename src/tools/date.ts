@@ -1,13 +1,13 @@
 import moment from 'moment'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
-const INITIAL_DATE = '2001-01-01'
-
-const YEAR_FORMAT = 'yyyy'
-const INITIAL_YEAR = '2000'
-
 const QUARTER_FORMAT = 'yyyy-MM'
-const INITIAL_QUARTER = '2000-03'
+const YEAR_FORMAT = 'yyyy'
+
+const INITIAL_DATE = '2001-01-01'
+const INITIAL_MONTH = '2000-01'
+const INITIAL_QUARTER = '2000-02'
+const INITIAL_YEAR = '2000'
 
 export const getInitialDate = (): string => {
   return INITIAL_DATE
@@ -19,6 +19,10 @@ export const getInitialYear = (): string => {
 
 export const getInitialQuarter = (): string => {
   return INITIAL_QUARTER
+}
+
+export const getInitialMonth = (): string => {
+  return INITIAL_MONTH
 }
 
 export const getCurrentDate = (): string => {

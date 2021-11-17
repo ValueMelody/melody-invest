@@ -2,10 +2,11 @@ export const TYPES = {
   PRICES: 'TIME_SERIES_DAILY_ADJUSTED',
   EARNINGS: 'EARNINGS',
   INCOMES: 'INCOME_STATEMENT',
-  GDP: 'REAL_GDP'
+  GDP: 'REAL_GDP',
+  FUNDS_RATE: 'FEDERAL_FUNDS_RATE'
 }
 
-export const INTERVAL = {
+export const GDP_INTERVAL = {
   YEARLY: 'annual',
   QUARTERLY: 'quarterly'
 }
