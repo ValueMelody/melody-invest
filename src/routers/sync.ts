@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import * as syncTicketService from '../services/syncTicket'
+import * as syncIndicatorService from '../services/syncIndicator'
 
 const syncRouter = Router()
 export default syncRouter
@@ -62,7 +63,6 @@ syncRouter.get('/ticket/earnings', async (req, res) => {
   try {
     const year = String(req.query.year)
     const quarter = String(req.query.quarter)
-
     const result = await syncTicketService.syncAllEarnings(year, quarter)
 
     return res.status(200).send({
@@ -78,7 +78,6 @@ syncRouter.get('/ticket/incomes', async (req, res) => {
   try {
     const year = String(req.query.year)
     const quarter = String(req.query.quarter)
-
     const result = await syncTicketService.syncAllIncomes(year, quarter)
 
     return res.status(200).send({
@@ -93,8 +92,20 @@ syncRouter.get('/ticket/incomes', async (req, res) => {
 syncRouter.get('/ticket/prices', async (req, res) => {
   try {
     const date = String(req.query.date)
-
     const result = await syncTicketService.syncAllPrices(date)
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
+
+syncRouter.get('/indicator/gdp/yearly', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncGdpYearly()
 
     return res.status(200).send({
       result
