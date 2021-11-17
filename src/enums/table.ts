@@ -4,5 +4,6 @@ export const NAMES = {
   TICKET_YEARLY: 'ticket_yearly',
   TICKET_QUARTERLY: 'ticket_quarterly',
   INDICATOR_YEARLY: 'indicator_yearly',
-  INDICATOR_QUARTERLY: 'indicator_quarterly'
+  INDICATOR_QUARTERLY: 'indicator_quarterly',
+  INDICATOR_MONTHLY: 'indicator_monthly'
 }

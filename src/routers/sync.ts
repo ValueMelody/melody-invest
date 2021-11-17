@@ -108,9 +108,22 @@ syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
   try {
     const interval = req.params.interval
 
-    const result = interval === marketEnum.INTERVAL.QUARTERLY
+    const result = interval === marketEnum.GDP_INTERVAL.QUARTERLY
       ? await syncIndicatorService.syncGdpQuarterly()
       : await syncIndicatorService.syncGdpYearly()
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
+
+syncRouter.get('/indicator/funds_rate', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncFundsRate()
 
     return res.status(200).send({
       result

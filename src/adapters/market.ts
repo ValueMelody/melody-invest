@@ -98,3 +98,15 @@ export const getRealGdp = async (
   if (result.data.Note) throw result.data
   return result.data
 }
+
+export const getFundsRate = async () => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.FUNDS_RATE,
+    interval: 'monthly',
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+  if (result.data.Note) throw result.data
+  return result.data
+}
