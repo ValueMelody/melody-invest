@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as syncTicketService from '../services/syncTicket'
 import * as syncIndicatorService from '../services/syncIndicator'
+import * as marketEnum from '../enums/market'
 
 const syncRouter = Router()
 export default syncRouter
@@ -103,9 +104,13 @@ syncRouter.get('/ticket/prices', async (req, res) => {
   }
 })
 
-syncRouter.get('/indicator/gdp/yearly', async (req, res) => {
+syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncGdpYearly()
+    const interval = req.params.interval
+
+    const result = interval === marketEnum.INTERVAL.QUARTERLY
+      ? await syncIndicatorService.syncGdpQuarterly()
+      : await syncIndicatorService.syncGdpYearly()
 
     return res.status(200).send({
       result
