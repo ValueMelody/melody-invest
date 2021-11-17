@@ -85,7 +85,7 @@ export const getTicketIncomes = async (
   return result.data
 }
 
-const getRealGdp = async (
+export const getRealGdp = async (
   interval: string
 ) => {
   const queryParams = qs.stringify({
@@ -97,12 +97,4 @@ const getRealGdp = async (
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
-}
-
-export const getRealGdpYearly = async () => {
-  return getRealGdp(marketEnum.INTERVAL.YEARLY)
-}
-
-export const getRealGdpQuarterly = async () => {
-  return getRealGdp(marketEnum.INTERVAL.QUARTERLY)
 }
