@@ -148,7 +148,7 @@ export const syncEarnings = async (
     })
     if (!matchedEarning) continue
 
-    const yearlyEps = {
+    const yearlyEPS = {
       year,
       earningDate: matchedEarning.fiscalDateEnding,
       eps: matchedEarning.reportedEPS.substring(0, 10)
@@ -159,11 +159,11 @@ export const syncEarnings = async (
     if (!currentRecord) {
       const createdRecord = await ticketYearlyModel.create({
         ticketId: ticket.id,
-        ...yearlyEps
+        ...yearlyEPS
       })
       relatedYearly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyEps)
+      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyEPS)
       relatedYearly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedYearly.push(currentRecord)
@@ -186,17 +186,17 @@ export const syncEarnings = async (
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEpsMonthDiffer)
+    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEPSMonthDiffer)
     const matchedEarning = quarterlyEarnings.find(earning => {
       return adjustedQuarter === earning.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedEarning) continue
 
-    const quarterlyEps = {
+    const quarterlyEPS = {
       quarter: adjustedQuarter,
       earningDate: matchedEarning.fiscalDateEnding,
       eps: matchedEarning.reportedEPS.substring(0, 10),
-      estimatedEps: matchedEarning.estimatedEPS.substring(0, 10),
+      estimatedEPS: matchedEarning.estimatedEPS.substring(0, 10),
       epsSurprisePercent: matchedEarning.surprisePercentage.substring(0, 5),
       earningReportDate: matchedEarning.reportedDate
     }
@@ -206,11 +206,11 @@ export const syncEarnings = async (
     if (!currentRecord) {
       const createdRecord = await ticketQuarterlyModel.create({
         ticketId: ticket.id,
-        ...quarterlyEps
+        ...quarterlyEPS
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEps)
+      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEPS)
       relatedQuarterly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedQuarterly.push(currentRecord)
@@ -219,12 +219,12 @@ export const syncEarnings = async (
 
   const newTicketInfo: ticketModel.TicketEdit = {}
   if (relatedYearly.length) {
-    newTicketInfo.lastEpsYear = relatedYearly[relatedYearly.length - 1].year
-    if (!ticket.firstEpsYear) newTicketInfo.firstEpsYear = relatedYearly[0].year
+    newTicketInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
+    if (!ticket.firstEPSYear) newTicketInfo.firstEPSYear = relatedYearly[0].year
   }
   if (relatedQuarterly.length) {
-    newTicketInfo.lastEpsQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-    if (!ticket.firstEpsQuarter) newTicketInfo.firstEpsQuarter = relatedQuarterly[0].quarter
+    newTicketInfo.lastEPSQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
+    if (!ticket.firstEPSQuarter) newTicketInfo.firstEPSQuarter = relatedQuarterly[0].quarter
   }
 
   const updateTicket = Object.keys(newTicketInfo).length
@@ -244,8 +244,8 @@ export const syncAllEarnings = async (
 
   const updatedTickets = []
   for (const ticket of allTickets) {
-    const isYearSynced = ticket.lastEpsYear >= year
-    const isQuarterSynced = ticket.lastEpsQuarter >= quarter
+    const isYearSynced = ticket.lastEPSYear >= year
+    const isQuarterSynced = ticket.lastEPSQuarter >= quarter
     if (isYearSynced && isQuarterSynced) continue
     const result = await syncEarnings(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
@@ -331,13 +331,13 @@ export const syncIncomes = async (
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEpsMonthDiffer)
+    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEPSMonthDiffer)
     const matchedIncome = quarterlyIncomes.find(income => {
       return adjustedQuarter === income.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedIncome) continue
 
-    const quarterlyEps = {
+    const quarterlyEPS = {
       quarter: adjustedQuarter,
       ebitda: matchedIncome.ebitda,
       netIncome: matchedIncome.netIncome,
@@ -351,11 +351,11 @@ export const syncIncomes = async (
     if (!currentRecord) {
       const createdRecord = await ticketQuarterlyModel.create({
         ticketId: ticket.id,
-        ...quarterlyEps
+        ...quarterlyEPS
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.netIncome) {
-      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEps)
+      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEPS)
       relatedQuarterly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedQuarterly.push(currentRecord)

@@ -90,7 +90,7 @@ interface IndicatorDateValue {
   value: string;
 }
 
-export const getRealGdp = async (
+export const getRealGDP = async (
   interval: string
 ): Promise<{
   data: IndicatorDateValue[]

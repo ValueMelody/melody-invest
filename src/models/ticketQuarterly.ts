@@ -7,7 +7,7 @@ export interface TicketQuarterly {
   quarter: string;
   earningDate: string | null;
   eps: string | null;
-  estimatedEps: string | null;
+  estimatedEPS: string | null;
   epsSurprisePercent: string | null;
   earningReportDate: string | null;
   ebitda?: string;
@@ -22,7 +22,7 @@ export interface TicketQuarterlyEdit {
   quarter?: string;
   earningDate?: string;
   eps?: string;
-  estimatedEps?: string;
+  estimatedEPS?: string;
   epsSurprisePercent?: string;
   earningReportDate?: string;
   ebitda?: string;
