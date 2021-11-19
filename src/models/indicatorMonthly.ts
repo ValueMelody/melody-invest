@@ -6,12 +6,16 @@ export interface IndicatorMonthly {
   region: string;
   month: string;
   fundsRate: string;
+  '10YearsTreasury': string;
+  '30YearsTreasury': string;
 }
 
 interface IndicatorMonthlyEdit {
   region?: string;
   month?: string;
   fundsRate?: string;
+  '10YearsTreasury'?: string;
+  '30YearsTreasury'?: string;
 }
 
 export const getByUK = async (

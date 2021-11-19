@@ -2,6 +2,7 @@ import { Router } from 'express'
 import * as syncTicketService from '../services/syncTicket'
 import * as syncIndicatorService from '../services/syncIndicator'
 import * as marketEnum from '../enums/market'
+import * as errorEnum from '../enums/error'
 
 const syncRouter = Router()
 export default syncRouter
@@ -108,9 +109,10 @@ syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
   try {
     const interval = req.params.interval
 
-    const result = interval === marketEnum.GDP_INTERVAL.QUARTERLY
-      ? await syncIndicatorService.syncGdpQuarterly()
-      : await syncIndicatorService.syncGdpYearly()
+    const isAllowedInterval = Object.values(marketEnum.GDP_INTERVAL).includes(interval)
+    if (!isAllowedInterval) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+
+    const result = await syncIndicatorService.syncRealGdp(interval)
 
     return res.status(200).send({
       result
@@ -124,6 +126,24 @@ syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
 syncRouter.get('/indicator/funds_rate', async (req, res) => {
   try {
     const result = await syncIndicatorService.syncFundsRate()
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
+
+syncRouter.get('/indicator/treasury_yield/:type', async (req, res) => {
+  try {
+    const type = req.params.type
+
+    const isAllowedType = Object.values(marketEnum.TREASURY_TYPE).includes(type)
+    if (!isAllowedType) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+
+    const result = await syncIndicatorService.syncTreasuryYeild(type)
 
     return res.status(200).send({
       result

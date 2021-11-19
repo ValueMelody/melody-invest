@@ -3,10 +3,16 @@ export const TYPES = {
   EARNINGS: 'EARNINGS',
   INCOMES: 'INCOME_STATEMENT',
   GDP: 'REAL_GDP',
-  FUNDS_RATE: 'FEDERAL_FUNDS_RATE'
+  FUNDS_RATE: 'FEDERAL_FUNDS_RATE',
+  TREASURY_YIELD: 'TREASURY_YIELD'
 }
 
 export const GDP_INTERVAL = {
   YEARLY: 'annual',
   QUARTERLY: 'quarterly'
+}
+
+export const TREASURY_TYPE = {
+  '10_YEARS': '10year',
+  '30_YEARS': '30year'
 }

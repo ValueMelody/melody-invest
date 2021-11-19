@@ -37,8 +37,8 @@ interface quarterlyEarning {
 }
 
 interface TicketEarnings {
-  annualEarnings: AnnualEarning[]
-  quarterlyEarnings: quarterlyEarning[]
+  annualEarnings: AnnualEarning[];
+  quarterlyEarnings: quarterlyEarning[];
 }
 
 export const getTicketEarnings = async (
@@ -66,8 +66,8 @@ interface Income {
 }
 
 interface TicketIncomes {
-  annualReports: Income[]
-  quarterlyReports: Income[]
+  annualReports: Income[];
+  quarterlyReports: Income[];
 }
 
 export const getTicketIncomes = async (
@@ -85,9 +85,16 @@ export const getTicketIncomes = async (
   return result.data
 }
 
+interface IndicatorDateValue {
+  date: string;
+  value: string;
+}
+
 export const getRealGdp = async (
   interval: string
-) => {
+): Promise<{
+  data: IndicatorDateValue[]
+}> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.GDP,
     interval: interval,
@@ -99,10 +106,29 @@ export const getRealGdp = async (
   return result.data
 }
 
-export const getFundsRate = async () => {
+export const getFundsRate = async (): Promise<{
+  data: IndicatorDateValue[]
+}> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.FUNDS_RATE,
     interval: 'monthly',
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+  if (result.data.Note) throw result.data
+  return result.data
+}
+
+export const getTreasuryYield = async (
+  type: string
+): Promise<{
+  data: IndicatorDateValue[]
+}> => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.TREASURY_YIELD,
+    interval: 'monthly',
+    maturity: type,
     apikey: process.env.MARKET_KEY
   })
   const url = `${BASE_URL}?${queryParams}`
