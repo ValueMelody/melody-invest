@@ -5,7 +5,7 @@ import * as marketEnum from '../enums/market'
 const BASE_URL = 'https://www.alphavantage.co/query'
 
 export const getCooldownPerMin = (): number => {
-  return parseInt(process.env.MARKET_KEY_COOLDOWN!)
+  return parseInt(process.env.MARKET_KEY_COOLDOWN!) || 15
 }
 
 export const getTicketPrices = async (
@@ -143,6 +143,19 @@ export const getTreasuryYield = async (
     function: marketEnum.TYPES.TREASURY_YIELD,
     interval: 'monthly',
     maturity: type,
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+  if (result.data.Note) throw result.data
+  return result.data
+}
+
+export const getInflation = async (): Promise<{
+  data: IndicatorDateValue[]
+}> => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.INFLATION,
     apikey: process.env.MARKET_KEY
   })
   const url = `${BASE_URL}?${queryParams}`
