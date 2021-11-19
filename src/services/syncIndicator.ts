@@ -132,7 +132,6 @@ export const syncCPI = async (): Promise<{
 }> => {
   const region = 'US'
   const cpi = await marketAdapter.getCPI()
-  console.log(cpi)
   const initMonth = dateTool.getInitialMonth()
 
   const relatedIndicators = []
@@ -157,5 +156,39 @@ export const syncCPI = async (): Promise<{
   }
   return {
     relatedMonthly: relatedIndicators
+  }
+}
+
+export const syncInflation = async (): Promise<{
+  relatedYearly: indicatorYearlyModel.IndicatorYearly[]
+}> => {
+  const region = 'US'
+  const inflation = await marketAdapter.getInflation()
+  const initYear = dateTool.getInitialYear()
+
+  const relatedIndicators = []
+  for (const inflationData of inflation.data) {
+    const year = inflationData.date.substring(0, 4)
+    if (year < initYear) continue
+
+    const inflationValue = inflationData.value.substring(0, 5)
+
+    const currentRecord = await indicatorYearlyModel.getByUK(region, year)
+    if (!currentRecord) {
+      const created = await indicatorYearlyModel.create({
+        year,
+        region,
+        inflation: inflationValue
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord.inflation) {
+      const updated = await indicatorYearlyModel.update(currentRecord.id, {
+        inflation: inflationValue
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedYearly: relatedIndicators
   }
 }

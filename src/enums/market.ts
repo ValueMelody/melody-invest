@@ -5,7 +5,8 @@ export const TYPES = {
   GDP: 'REAL_GDP',
   FUNDS_RATE: 'FEDERAL_FUNDS_RATE',
   TREASURY_YIELD: 'TREASURY_YIELD',
-  CPI: 'CPI'
+  CPI: 'CPI',
+  INFLATION: 'INFLATION'
 }
 
 export const GDP_INTERVAL = {

@@ -3,15 +3,17 @@ import * as databaseAdapter from '../adapters/database'
 
 export interface IndicatorYearly {
   id: number;
+  year: string;
   region: string;
   realGDP: string;
-  year: string;
+  inflation: string;
 }
 
 interface IndicatorYearlyEdit {
+  year?: string;
   region?: string;
   realGDP?: string;
-  year?: string;
+  inflation?: string;
 }
 
 export const getByUK = async (
