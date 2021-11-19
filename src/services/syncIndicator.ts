@@ -5,7 +5,7 @@ import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as marketEnum from '../enums/market'
 
-export const syncRealGdp = async (
+export const syncRealGDP = async (
   interval: string
 ): Promise<{
   relatedIndicators: (
@@ -16,7 +16,7 @@ export const syncRealGdp = async (
   const region = 'US'
   const isYearly = interval === marketEnum.GDP_INTERVAL.YEARLY
 
-  const gdps = await marketAdapter.getRealGdp(interval)
+  const gdps = await marketAdapter.getRealGDP(interval)
   const initDate = isYearly
     ? dateTool.getInitialYear()
     : dateTool.getInitialQuarter()
@@ -38,21 +38,21 @@ export const syncRealGdp = async (
         ? await indicatorYearlyModel.create({
           year: recordDate,
           region,
-          realGdp: gdpData.value
+          realGDP: gdpData.value
         })
         : await indicatorQuarterlyModel.create({
           quarter: recordDate,
           region,
-          realGdp: gdpData.value
+          realGDP: gdpData.value
         })
       relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.realGdp) {
+    } else if (currentRecord && !currentRecord.realGDP) {
       const updated = isYearly
         ? await indicatorYearlyModel.update(currentRecord.id, {
-          realGdp: gdpData.value
+          realGDP: gdpData.value
         })
         : await indicatorQuarterlyModel.update(currentRecord.id, {
-          realGdp: gdpData.value
+          realGDP: gdpData.value
         })
       relatedIndicators.push(updated)
     }

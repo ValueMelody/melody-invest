@@ -112,7 +112,7 @@ syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
     const isAllowedInterval = Object.values(marketEnum.GDP_INTERVAL).includes(interval)
     if (!isAllowedInterval) throw errorEnum.HTTP_ERRORS.FORBIDDEN
 
-    const result = await syncIndicatorService.syncRealGdp(interval)
+    const result = await syncIndicatorService.syncRealGDP(interval)
 
     return res.status(200).send({
       result

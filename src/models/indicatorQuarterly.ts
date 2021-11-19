@@ -4,13 +4,13 @@ import * as databaseAdapter from '../adapters/database'
 export interface IndicatorQuarterly {
   id: number;
   region: string;
-  realGdp: string;
+  realGDP: string;
   quarter: string;
 }
 
 interface IndicatorQuarterlyEdit {
   region?: string;
-  realGdp?: string;
+  realGDP?: string;
   quarter?: string;
 }
 
