@@ -126,3 +126,36 @@ export const syncTreasuryYeild = async (
     relatedMonthly: relatedIndicators
   }
 }
+
+export const syncCPI = async (): Promise<{
+  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
+}> => {
+  const region = 'US'
+  const cpi = await marketAdapter.getCPI()
+  console.log(cpi)
+  const initMonth = dateTool.getInitialMonth()
+
+  const relatedIndicators = []
+  for (const cpiData of cpi.data) {
+    const month = cpiData.date.substring(0, 7)
+    if (month < initMonth) continue
+
+    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+    if (!currentRecord) {
+      const created = await indicatorMonthlyModel.create({
+        month,
+        region,
+        cpi: cpiData.value
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord.cpi) {
+      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
+        cpi: cpiData.value
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedMonthly: relatedIndicators
+  }
+}

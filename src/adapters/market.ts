@@ -120,6 +120,20 @@ export const getFundsRate = async (): Promise<{
   return result.data
 }
 
+export const getCPI = async (): Promise<{
+  data: IndicatorDateValue[]
+}> => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.CPI,
+    interval: 'monthly',
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+  if (result.data.Note) throw result.data
+  return result.data
+}
+
 export const getTreasuryYield = async (
   type: string
 ): Promise<{
