@@ -192,3 +192,37 @@ export const syncInflation = async (): Promise<{
     relatedYearly: relatedIndicators
   }
 }
+
+export const syncInflationExpectation = async (): Promise<{
+  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
+}> => {
+  const region = 'US'
+  const inflation = await marketAdapter.getInflationExpectation()
+  const initMonth = dateTool.getInitialMonth()
+
+  const relatedIndicators = []
+  for (const inflationData of inflation.data) {
+    const month = inflationData.date.substring(0, 7)
+    if (month < initMonth) continue
+
+    const inflationValue = inflationData.value.substring(0, 5)
+
+    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+    if (!currentRecord) {
+      const created = await indicatorMonthlyModel.create({
+        month,
+        region,
+        inflationExpectation: inflationValue
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord.inflationExpectation) {
+      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
+        inflationExpectation: inflationValue
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedMonthly: relatedIndicators
+  }
+}

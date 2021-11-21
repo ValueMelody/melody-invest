@@ -179,3 +179,16 @@ syncRouter.get('/indicator/inflation', async (req, res) => {
     throw e
   }
 })
+
+syncRouter.get('/indicator/inflation_expectation', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncInflationExpectation()
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
