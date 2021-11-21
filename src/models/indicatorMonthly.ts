@@ -9,6 +9,7 @@ export interface IndicatorMonthly {
   cpi: string;
   '10YearsTreasury': string;
   '30YearsTreasury': string;
+  inflationExpectation: string;
 }
 
 interface IndicatorMonthlyEdit {
@@ -18,6 +19,7 @@ interface IndicatorMonthlyEdit {
   cpi?: string;
   '10YearsTreasury'?: string;
   '30YearsTreasury'?: string;
+  inflationExpectation?: string;
 }
 
 export const getByUK = async (
