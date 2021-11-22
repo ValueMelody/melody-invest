@@ -176,3 +176,16 @@ export const getInflationExpectation = async (): Promise<{
   if (result.data.Note) throw result.data
   return result.data
 }
+
+export const getConsumerSentiment = async (): Promise<{
+  data: IndicatorDateValue[]
+}> => {
+  const queryParams = qs.stringify({
+    function: marketEnum.TYPES.CONSUMER_SENTIMENT,
+    apikey: process.env.MARKET_KEY
+  })
+  const url = `${BASE_URL}?${queryParams}`
+  const result = await axios.get(url)
+  if (result.data.Note) throw result.data
+  return result.data
+}

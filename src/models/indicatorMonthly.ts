@@ -10,6 +10,7 @@ export interface IndicatorMonthly {
   '10YearsTreasury': string;
   '30YearsTreasury': string;
   inflationExpectation: string;
+  consumerSentiment: string;
 }
 
 interface IndicatorMonthlyEdit {
@@ -20,6 +21,7 @@ interface IndicatorMonthlyEdit {
   '10YearsTreasury'?: string;
   '30YearsTreasury'?: string;
   inflationExpectation?: string;
+  consumerSentiment?: string;
 }
 
 export const getByUK = async (
