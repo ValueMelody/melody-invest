@@ -192,3 +192,16 @@ syncRouter.get('/indicator/inflation_expectation', async (req, res) => {
     throw e
   }
 })
+
+syncRouter.get('/indicator/consumer_sentiment', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncConsumerSentiment()
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
