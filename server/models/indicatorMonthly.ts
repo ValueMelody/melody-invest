@@ -1,31 +1,41 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type IndicatorMonthlyKeys =
+  typeof tableEnum.KEYS.FUNDS_RATE |
+  typeof tableEnum.KEYS.TEN_YEARS_TREASURY |
+  typeof tableEnum.KEYS.THIRTY_YEARS_TREASURY |
+  typeof tableEnum.KEYS.CPI |
+  typeof tableEnum.KEYS.INFLATION_EXPECTATION |
+  typeof tableEnum.KEYS.CONSUMER_SENTIMENT |
+  typeof tableEnum.KEYS.RETAIL_SALES |
+  typeof tableEnum.KEYS.DURABLE_GOODS
+
 export interface IndicatorMonthly {
   id: number;
   region: string;
   month: string;
-  fundsRate: string;
-  cpi: string;
-  '10YearsTreasury': string;
-  '30YearsTreasury': string;
-  inflationExpectation: string;
-  consumerSentiment: string;
-  retailSales: string;
-  durableGoods: string;
+  [tableEnum.KEYS.FUNDS_RATE]: string;
+  [tableEnum.KEYS.CPI]: string;
+  [tableEnum.KEYS.TEN_YEARS_TREASURY]: string;
+  [tableEnum.KEYS.THIRTY_YEARS_TREASURY]: string;
+  [tableEnum.KEYS.INFLATION_EXPECTATION]: string;
+  [tableEnum.KEYS.CONSUMER_SENTIMENT]: string;
+  [tableEnum.KEYS.RETAIL_SALES]: string;
+  [tableEnum.KEYS.DURABLE_GOODS]: string;
 }
 
 interface IndicatorMonthlyEdit {
   region?: string;
   month?: string;
-  fundsRate?: string;
-  cpi?: string;
-  '10YearsTreasury'?: string;
-  '30YearsTreasury'?: string;
-  inflationExpectation?: string;
-  consumerSentiment?: string;
-  retailSales?: string;
-  durableGoods?: string;
+  [tableEnum.KEYS.FUNDS_RATE]?: string;
+  [tableEnum.KEYS.CPI]?: string;
+  [tableEnum.KEYS.TEN_YEARS_TREASURY]?: string;
+  [tableEnum.KEYS.THIRTY_YEARS_TREASURY]?: string;
+  [tableEnum.KEYS.INFLATION_EXPECTATION]?: string;
+  [tableEnum.KEYS.CONSUMER_SENTIMENT]?: string;
+  [tableEnum.KEYS.RETAIL_SALES]?: string;
+  [tableEnum.KEYS.DURABLE_GOODS]?: string;
 }
 
 export const getByUK = async (
