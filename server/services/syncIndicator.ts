@@ -4,6 +4,7 @@ import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as marketEnum from '../enums/market'
+import * as tableEnum from '../enums/table'
 
 export const syncRealGDP = async (
   interval: string
@@ -280,6 +281,52 @@ export const syncRetailSales = async (): Promise<{
     } else if (currentRecord && !currentRecord.retailSales) {
       const updated = await indicatorMonthlyModel.update(currentRecord.id, {
         retailSales: retailData.value
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedMonthly: relatedIndicators
+  }
+}
+
+type MonthlyIndicatorType = typeof marketEnum.TYPES.DURABLE_GOODS
+
+export const syncMonthlyIndicators = async (
+  type: MonthlyIndicatorType
+): Promise<{
+  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
+}> => {
+  const region = 'US'
+
+  let indicatorResult
+  let indicatorKey: typeof tableEnum.KEYS.DURABLE_GOODS
+  switch (type) {
+    case marketEnum.TYPES.DURABLE_GOODS:
+    default:
+      indicatorResult = await marketAdapter.getDurableGoods()
+      indicatorKey = tableEnum.KEYS.DURABLE_GOODS
+      break
+  }
+
+  const initMonth = dateTool.getInitialMonth()
+
+  const relatedIndicators = []
+  for (const result of indicatorResult.data) {
+    const month = result.date.substring(0, 7)
+    if (month < initMonth) continue
+
+    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+    if (!currentRecord) {
+      const created = await indicatorMonthlyModel.create({
+        month,
+        region,
+        [indicatorKey]: result.value
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord[indicatorKey]) {
+      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
+        [indicatorKey]: result.value
       })
       relatedIndicators.push(updated)
     }
