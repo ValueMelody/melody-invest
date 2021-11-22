@@ -202,22 +202,20 @@ export const syncInflationExpectation = async (): Promise<{
 
   const relatedIndicators = []
   for (const inflationData of inflation.data) {
-    const month = inflationData.date
+    const month = inflationData.date.substring(0, 7)
     if (month < initMonth) continue
-
-    const inflationValue = inflationData.value.substring(0, 5)
 
     const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
     if (!currentRecord) {
       const created = await indicatorMonthlyModel.create({
         month,
         region,
-        inflationExpectation: inflationValue
+        inflationExpectation: inflationData.value
       })
       relatedIndicators.push(created)
     } else if (currentRecord && !currentRecord.inflationExpectation) {
       const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        inflationExpectation: inflationValue
+        inflationExpectation: inflationData.value
       })
       relatedIndicators.push(updated)
     }
@@ -239,19 +237,49 @@ export const syncConsumerSentiment = async (): Promise<{
     const month = sentimentData.date.substring(0, 7)
     if (month < initMonth) continue
 
-    const inflationValue = sentimentData.value
+    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+    if (!currentRecord) {
+      const created = await indicatorMonthlyModel.create({
+        month,
+        region,
+        consumerSentiment: sentimentData.value
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord.consumerSentiment) {
+      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
+        consumerSentiment: sentimentData.value
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedMonthly: relatedIndicators
+  }
+}
+
+export const syncRetailSales = async (): Promise<{
+  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
+}> => {
+  const region = 'US'
+  const retailSales = await marketAdapter.getRetailSales()
+  const initMonth = dateTool.getInitialMonth()
+
+  const relatedIndicators = []
+  for (const retailData of retailSales.data) {
+    const month = retailData.date.substring(0, 7)
+    if (month < initMonth) continue
 
     const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
     if (!currentRecord) {
       const created = await indicatorMonthlyModel.create({
         month,
         region,
-        consumerSentiment: inflationValue
+        retailSales: retailData.value
       })
       relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.consumerSentiment) {
+    } else if (currentRecord && !currentRecord.retailSales) {
       const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        consumerSentiment: inflationValue
+        retailSales: retailData.value
       })
       relatedIndicators.push(updated)
     }
