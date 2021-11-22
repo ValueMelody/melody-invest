@@ -125,7 +125,7 @@ syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
 
 syncRouter.get('/indicator/funds_rate', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncFundsRate()
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.FUNDS_RATE)
 
     return res.status(200).send({
       result
@@ -136,14 +136,28 @@ syncRouter.get('/indicator/funds_rate', async (req, res) => {
   }
 })
 
-syncRouter.get('/indicator/treasury_yield/:type', async (req, res) => {
+syncRouter.get('/indicator/treasury_yield/thirty_years', async (req, res) => {
   try {
-    const type = req.params.type
+    const result = await syncIndicatorService.syncMonthlyIndicators(
+      marketEnum.TYPES.TREASURY_YIELD,
+      { isThirtyYearsTreasury: true }
+    )
 
-    const isAllowedType = Object.values(marketEnum.TREASURY_TYPE).includes(type)
-    if (!isAllowedType) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
 
-    const result = await syncIndicatorService.syncTreasuryYeild(type)
+syncRouter.get('/indicator/treasury_yield/ten_years', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncMonthlyIndicators(
+      marketEnum.TYPES.TREASURY_YIELD,
+      { isTenYearsTreasury: true }
+    )
 
     return res.status(200).send({
       result
@@ -156,7 +170,7 @@ syncRouter.get('/indicator/treasury_yield/:type', async (req, res) => {
 
 syncRouter.get('/indicator/cpi', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncCPI()
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CPI)
 
     return res.status(200).send({
       result
@@ -182,7 +196,7 @@ syncRouter.get('/indicator/inflation', async (req, res) => {
 
 syncRouter.get('/indicator/inflation_expectation', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncInflationExpectation()
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.INFLATION_EXPECTATION)
 
     return res.status(200).send({
       result
@@ -195,7 +209,7 @@ syncRouter.get('/indicator/inflation_expectation', async (req, res) => {
 
 syncRouter.get('/indicator/consumer_sentiment', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncConsumerSentiment()
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CONSUMER_SENTIMENT)
 
     return res.status(200).send({
       result
@@ -208,7 +222,7 @@ syncRouter.get('/indicator/consumer_sentiment', async (req, res) => {
 
 syncRouter.get('/indicator/retail_sales', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncRetailSales()
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.RETAIL_SALES)
 
     return res.status(200).send({
       result

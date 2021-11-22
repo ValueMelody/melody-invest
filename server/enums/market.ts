@@ -32,6 +32,6 @@ export const GDP_INTERVAL = {
 }
 
 export const TREASURY_TYPE = {
-  '10_YEARS': '10year',
-  '30_YEARS': '30year'
+  TEN_YEARS: '10year',
+  THIRTY_YEARS: '30year'
 }

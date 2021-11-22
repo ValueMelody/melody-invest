@@ -8,8 +8,22 @@ export const NAMES = {
   INDICATOR_MONTHLY: 'indicator_monthly'
 }
 
+const FUNDS_RATE: 'fundsRate' = 'fundsRate'
+const TEN_YEARS_TREASURY: 'tenYearsTreasury' = 'tenYearsTreasury'
+const THIRTY_YEARS_TREASURY: 'thirtyYearsTreasury' = 'thirtyYearsTreasury'
+const CPI: 'cpi' = 'cpi'
+const INFLATION_EXPECTATION: 'inflationExpectation' = 'inflationExpectation'
+const CONSUMER_SENTIMENT: 'consumerSentiment' = 'consumerSentiment'
+const RETAIL_SALES: 'retailSales' = 'retailSales'
 const DURABLE_GOODS: 'durableGoods' = 'durableGoods'
 
 export const KEYS = {
-  DURABLE_GOODS
+  FUNDS_RATE,
+  TEN_YEARS_TREASURY,
+  THIRTY_YEARS_TREASURY,
+  CPI,
+  INFLATION_EXPECTATION,
+  CONSUMER_SENTIMENT,
+  DURABLE_GOODS,
+  RETAIL_SALES
 }

@@ -61,105 +61,6 @@ export const syncRealGDP = async (
   return { relatedIndicators }
 }
 
-export const syncFundsRate = async (): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
-}> => {
-  const region = 'US'
-  const fundsRate = await marketAdapter.getFundsRate()
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const rateData of fundsRate.data) {
-    const month = rateData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        fundsRate: rateData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.fundsRate) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        fundsRate: rateData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
-}
-
-export const syncTreasuryYeild = async (
-  type: string
-) => {
-  const region = 'US'
-  const yields = await marketAdapter.getTreasuryYield(type)
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const yieldData of yields.data) {
-    const month = yieldData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    const key = type === marketEnum.TREASURY_TYPE['10_YEARS']
-      ? '10YearsTreasury'
-      : '30YearsTreasury'
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        [key]: yieldData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord[key]) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        [key]: yieldData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
-}
-
-export const syncCPI = async (): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
-}> => {
-  const region = 'US'
-  const cpi = await marketAdapter.getCPI()
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const cpiData of cpi.data) {
-    const month = cpiData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        cpi: cpiData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.cpi) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        cpi: cpiData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
-}
-
 export const syncInflation = async (): Promise<{
   relatedYearly: indicatorYearlyModel.IndicatorYearly[]
 }> => {
@@ -194,114 +95,63 @@ export const syncInflation = async (): Promise<{
   }
 }
 
-export const syncInflationExpectation = async (): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
-}> => {
-  const region = 'US'
-  const inflation = await marketAdapter.getInflationExpectation()
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const inflationData of inflation.data) {
-    const month = inflationData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        inflationExpectation: inflationData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.inflationExpectation) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        inflationExpectation: inflationData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
+type MonthlyIndicatorType =
+  typeof marketEnum.TYPES.FUNDS_RATE |
+  typeof marketEnum.TYPES.TREASURY_YIELD |
+  typeof marketEnum.TYPES.CPI |
+  typeof marketEnum.TYPES.INFLATION_EXPECTATION |
+  typeof marketEnum.TYPES.CONSUMER_SENTIMENT |
+  typeof marketEnum.TYPES.RETAIL_SALES |
+  typeof marketEnum.TYPES.DURABLE_GOODS
+interface MonthlyIndicatorOptions {
+  isTenYearsTreasury?: boolean;
+  isThirtyYearsTreasury?: boolean;
 }
-
-export const syncConsumerSentiment = async (): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
-}> => {
-  const region = 'US'
-  const sentiments = await marketAdapter.getConsumerSentiment()
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const sentimentData of sentiments.data) {
-    const month = sentimentData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        consumerSentiment: sentimentData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.consumerSentiment) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        consumerSentiment: sentimentData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
-}
-
-export const syncRetailSales = async (): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
-}> => {
-  const region = 'US'
-  const retailSales = await marketAdapter.getRetailSales()
-  const initMonth = dateTool.getInitialMonth()
-
-  const relatedIndicators = []
-  for (const retailData of retailSales.data) {
-    const month = retailData.date.substring(0, 7)
-    if (month < initMonth) continue
-
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        retailSales: retailData.value
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.retailSales) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        retailSales: retailData.value
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators
-  }
-}
-
-type MonthlyIndicatorType = typeof marketEnum.TYPES.DURABLE_GOODS
 
 export const syncMonthlyIndicators = async (
-  type: MonthlyIndicatorType
+  type: MonthlyIndicatorType,
+  options?: MonthlyIndicatorOptions
 ): Promise<{
   relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
 }> => {
   const region = 'US'
 
   let indicatorResult
-  let indicatorKey: typeof tableEnum.KEYS.DURABLE_GOODS
+  let indicatorKey: indicatorMonthlyModel.IndicatorMonthlyKeys
+
   switch (type) {
+    case marketEnum.TYPES.FUNDS_RATE:
+      indicatorResult = await marketAdapter.getFundsRate()
+      indicatorKey = tableEnum.KEYS.FUNDS_RATE
+      break
+    case marketEnum.TYPES.TREASURY_YIELD: {
+      const isTenYears = options?.isTenYearsTreasury
+      const isThirtyYears = options?.isThirtyYearsTreasury || !isTenYears
+      const queryKey = isThirtyYears
+        ? marketEnum.TREASURY_TYPE.THIRTY_YEARS
+        : marketEnum.TREASURY_TYPE.TEN_YEARS
+      indicatorResult = await marketAdapter.getTreasuryYield(queryKey)
+      indicatorKey = isThirtyYears
+        ? tableEnum.KEYS.THIRTY_YEARS_TREASURY
+        : tableEnum.KEYS.TEN_YEARS_TREASURY
+      break
+    }
+    case marketEnum.TYPES.CPI:
+      indicatorResult = await marketAdapter.getCPI()
+      indicatorKey = tableEnum.KEYS.CPI
+      break
+    case marketEnum.TYPES.INFLATION_EXPECTATION:
+      indicatorResult = await marketAdapter.getInflationExpectation()
+      indicatorKey = tableEnum.KEYS.INFLATION_EXPECTATION
+      break
+    case marketEnum.TYPES.CONSUMER_SENTIMENT:
+      indicatorResult = await marketAdapter.getConsumerSentiment()
+      indicatorKey = tableEnum.KEYS.CONSUMER_SENTIMENT
+      break
+    case marketEnum.TYPES.RETAIL_SALES:
+      indicatorResult = await marketAdapter.getRetailSales()
+      indicatorKey = tableEnum.KEYS.RETAIL_SALES
+      break
     case marketEnum.TYPES.DURABLE_GOODS:
     default:
       indicatorResult = await marketAdapter.getDurableGoods()
