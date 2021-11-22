@@ -219,3 +219,15 @@ syncRouter.get('/indicator/retail_sales', async (req, res) => {
   }
 })
 
+syncRouter.get('/indicator/durable_goods', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.DURABLE_GOODS)
+
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})

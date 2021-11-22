@@ -7,3 +7,9 @@ export const NAMES = {
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly'
 }
+
+const DURABLE_GOODS: 'durableGoods' = 'durableGoods'
+
+export const KEYS = {
+  DURABLE_GOODS
+}
