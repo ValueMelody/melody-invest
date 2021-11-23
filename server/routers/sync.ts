@@ -1,144 +1,94 @@
 import { Router } from 'express'
-import * as syncTicketService from '../services/syncTicket'
-import * as syncIndicatorService from '../services/syncIndicator'
+import * as syncTickets from '../services/syncTickets'
+import * as syncIndicators from '../services/syncIndicators'
 import * as marketEnum from '../enums/market'
 import * as errorEnum from '../enums/error'
 
 const syncRouter = Router()
 export default syncRouter
 
-syncRouter.get('/ticket/:region/:symbol/prices', async (req, res) => {
-  try {
-    const region = req.params.region
-    const symbol = req.params.symbol
-    const result = await syncTicketService.syncPrices(region, symbol)
+syncRouter.get('/tickets/:type/:region/:symbol', async (req, res) => {
+  const region = req.params.region
+  const symbol = req.params.symbol
+  const type = req.params.type
+  const forceRecheck = req.query.forceRecheck === 'true'
 
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.log(e)
+  let result
+  switch (type) {
+    case 'prices':
+      result = await syncTickets.syncPrices(region, symbol)
+      break
+    case 'earnings':
+      result = await syncTickets.syncEarnings(region, symbol, forceRecheck)
+      break
+    case 'incomes':
+      result = await syncTickets.syncIncomes(region, symbol, forceRecheck)
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }
+
+  return res.status(200).send({ result })
 })
 
-syncRouter.get('/ticket/:region/:symbol/earnings', async (req, res) => {
-  try {
-    const region = req.params.region
-    const symbol = req.params.symbol
-    const forceRecheck = req.query.forceRecheck === 'true'
-    const result = await syncTicketService.syncEarnings(
-      region,
-      symbol,
-      forceRecheck
-    )
+syncRouter.get('/batch_tickets/:type', async (req, res) => {
+  const type = req.params.type
+  const date = String(req.query.date)
+  const quarter = String(req.query.quarter)
+  const year = String(req.query.year)
 
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
+  let result
+  switch (type) {
+    case 'prices':
+      result = await syncTickets.syncAllPrices(date)
+      break
+    case 'earnings':
+      result = await syncTickets.syncAllEarnings(year, quarter)
+      break
+    case 'incomes':
+      result = await syncTickets.syncAllIncomes(year, quarter)
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }
+
+  return res.status(200).send({ result })
 })
 
-syncRouter.get('/ticket/:region/:symbol/incomes', async (req, res) => {
-  try {
-    const region = req.params.region
-    const symbol = req.params.symbol
-    const forceRecheck = req.query.forceRecheck === 'true'
-    const result = await syncTicketService.syncIncomes(
-      region,
-      symbol,
-      forceRecheck
-    )
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/ticket/earnings', async (req, res) => {
-  try {
-    const year = String(req.query.year)
-    const quarter = String(req.query.quarter)
-    const result = await syncTicketService.syncAllEarnings(year, quarter)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/ticket/incomes', async (req, res) => {
-  try {
-    const year = String(req.query.year)
-    const quarter = String(req.query.quarter)
-    const result = await syncTicketService.syncAllIncomes(year, quarter)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/ticket/prices', async (req, res) => {
-  try {
-    const date = String(req.query.date)
-    const result = await syncTicketService.syncAllPrices(date)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/monthly/:type', async (req, res) => {
+syncRouter.get('/indicators/monthly/:type', async (req, res) => {
   const type = req.params.type
 
   let result
   switch (type) {
     case 'funds_rate':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.FUNDS_RATE)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.FUNDS_RATE)
       break
     case 'thirty_years_treasury':
-      result = await syncIndicatorService.syncMonthlyIndicators(
+      result = await syncIndicators.syncMonthly(
         marketEnum.TYPES.TREASURY_YIELD,
         { isThirtyYearsTreasury: true }
       )
       break
     case 'ten_years_treasury':
-      result = await syncIndicatorService.syncMonthlyIndicators(
+      result = await syncIndicators.syncMonthly(
         marketEnum.TYPES.TREASURY_YIELD,
         { isTenYearsTreasury: true }
       )
       break
     case 'cpi':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CPI)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.CPI)
       break
     case 'inflation_expectation':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.INFLATION_EXPECTATION)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.INFLATION_EXPECTATION)
       break
     case 'consumer_sentiment':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CONSUMER_SENTIMENT)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.CONSUMER_SENTIMENT)
       break
     case 'durable_goods':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.DURABLE_GOODS)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.DURABLE_GOODS)
       break
     case 'retail_sales':
-      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.RETAIL_SALES)
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.RETAIL_SALES)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN
@@ -149,13 +99,13 @@ syncRouter.get('/indicator/monthly/:type', async (req, res) => {
   })
 })
 
-syncRouter.get('/indicator/quarterly/:type', async (req, res) => {
+syncRouter.get('/indicators/quarterly/:type', async (req, res) => {
   const type = req.params.type
 
   let result
   switch (type) {
     case 'gdp':
-      result = await syncIndicatorService.syncQuarterlyIndicators(marketEnum.TYPES.GDP)
+      result = await syncIndicators.syncQuarterly(marketEnum.TYPES.GDP)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN
@@ -166,19 +116,19 @@ syncRouter.get('/indicator/quarterly/:type', async (req, res) => {
   })
 })
 
-syncRouter.get('/indicator/yearly/:type', async (req, res) => {
+syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   const type = req.params.type
 
   let result
   switch (type) {
     case 'inflation':
-      result = await syncIndicatorService.syncYearlyIndicators(
+      result = await syncIndicators.syncYearly(
         marketEnum.TYPES.INFLATION,
         { valueLength: 5 }
       )
       break
     case 'gdp':
-      result = await syncIndicatorService.syncYearlyIndicators(marketEnum.TYPES.GDP)
+      result = await syncIndicators.syncYearly(marketEnum.TYPES.GDP)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN
