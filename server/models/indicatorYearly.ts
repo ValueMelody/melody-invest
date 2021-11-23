@@ -1,19 +1,23 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type IndicatorYearlyKeys =
+  typeof tableEnum.KEYS.INFLATION |
+  typeof tableEnum.KEYS.GDP
+
 export interface IndicatorYearly {
   id: number;
   year: string;
   region: string;
-  realGDP: string;
-  inflation: string;
+  [tableEnum.KEYS.GDP]: string;
+  [tableEnum.KEYS.INFLATION]: string;
 }
 
 interface IndicatorYearlyEdit {
   year?: string;
   region?: string;
-  realGDP?: string;
-  inflation?: string;
+  [tableEnum.KEYS.GDP]?: string;
+  [tableEnum.KEYS.INFLATION]?: string;
 }
 
 export const getByUK = async (

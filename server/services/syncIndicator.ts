@@ -6,95 +6,6 @@ import * as dateTool from '../tools/date'
 import * as marketEnum from '../enums/market'
 import * as tableEnum from '../enums/table'
 
-export const syncRealGDP = async (
-  interval: string
-): Promise<{
-  relatedIndicators: (
-    indicatorYearlyModel.IndicatorYearly |
-    indicatorQuarterlyModel.IndicatorQuarterly
-  )[]
-}> => {
-  const region = 'US'
-  const isYearly = interval === marketEnum.GDP_INTERVAL.YEARLY
-
-  const gdps = await marketAdapter.getRealGDP(interval)
-  const initDate = isYearly
-    ? dateTool.getInitialYear()
-    : dateTool.getInitialQuarter()
-
-  const relatedIndicators = []
-  for (const gdpData of gdps.data) {
-    const recordDate = isYearly
-      ? gdpData.date.substring(0, 4)
-      : gdpData.date.substring(0, 7)
-
-    if (recordDate < initDate) continue
-
-    const currentRecord = isYearly
-      ? await indicatorYearlyModel.getByUK(region, recordDate)
-      : await indicatorQuarterlyModel.getByUK(region, recordDate)
-
-    if (!currentRecord) {
-      const created = isYearly
-        ? await indicatorYearlyModel.create({
-          year: recordDate,
-          region,
-          realGDP: gdpData.value
-        })
-        : await indicatorQuarterlyModel.create({
-          quarter: recordDate,
-          region,
-          realGDP: gdpData.value
-        })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.realGDP) {
-      const updated = isYearly
-        ? await indicatorYearlyModel.update(currentRecord.id, {
-          realGDP: gdpData.value
-        })
-        : await indicatorQuarterlyModel.update(currentRecord.id, {
-          realGDP: gdpData.value
-        })
-      relatedIndicators.push(updated)
-    }
-  }
-  return { relatedIndicators }
-}
-
-export const syncInflation = async (): Promise<{
-  relatedYearly: indicatorYearlyModel.IndicatorYearly[]
-}> => {
-  const region = 'US'
-  const inflation = await marketAdapter.getInflation()
-  const initYear = dateTool.getInitialYear()
-
-  const relatedIndicators = []
-  for (const inflationData of inflation.data) {
-    const year = inflationData.date.substring(0, 4)
-    if (year < initYear) continue
-
-    const inflationValue = inflationData.value.substring(0, 5)
-
-    const currentRecord = await indicatorYearlyModel.getByUK(region, year)
-    if (!currentRecord) {
-      const created = await indicatorYearlyModel.create({
-        year,
-        region,
-        inflation: inflationValue
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord.inflation) {
-      const updated = await indicatorYearlyModel.update(currentRecord.id, {
-        inflation: inflationValue
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedYearly: relatedIndicators
-  }
-}
-
 type MonthlyIndicatorType =
   typeof marketEnum.TYPES.FUNDS_RATE |
   typeof marketEnum.TYPES.TREASURY_YIELD |
@@ -115,6 +26,7 @@ export const syncMonthlyIndicators = async (
   relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
 }> => {
   const region = 'US'
+  const initMonth = dateTool.getInitialMonth()
 
   let indicatorResult
   let indicatorKey: indicatorMonthlyModel.IndicatorMonthlyKeys
@@ -159,8 +71,6 @@ export const syncMonthlyIndicators = async (
       break
   }
 
-  const initMonth = dateTool.getInitialMonth()
-
   const relatedIndicators = []
   for (const result of indicatorResult.data) {
     const month = result.date.substring(0, 7)
@@ -183,5 +93,112 @@ export const syncMonthlyIndicators = async (
   }
   return {
     relatedMonthly: relatedIndicators
+  }
+}
+
+type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
+
+export const syncQuarterlyIndicators = async (
+  type: QuarterlyIndicatorType
+): Promise<{
+  relatedQuarterly: indicatorQuarterlyModel.IndicatorQuarterly[]
+}> => {
+  const region = 'US'
+  const initQuarter = dateTool.getInitialQuarter()
+
+  let indicatorResult
+  let indicatorKey: indicatorQuarterlyModel.IndicatorQuarterlyKeys
+
+  switch (type) {
+    case marketEnum.TYPES.GDP:
+    default:
+      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.QUARTERLY)
+      indicatorKey = tableEnum.KEYS.GDP
+      break
+      break
+  }
+
+  const relatedIndicators = []
+  for (const result of indicatorResult.data) {
+    const quarter = result.date.substring(0, 7)
+    if (quarter < initQuarter) continue
+
+    const currentRecord = await indicatorQuarterlyModel.getByUK(region, quarter)
+    if (!currentRecord) {
+      const created = await indicatorQuarterlyModel.create({
+        quarter,
+        region,
+        [indicatorKey]: result.value
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord[indicatorKey]) {
+      const updated = await indicatorQuarterlyModel.update(currentRecord.id, {
+        [indicatorKey]: result.value
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedQuarterly: relatedIndicators
+  }
+}
+
+type YearlyIndicatorType =
+  typeof marketEnum.TYPES.INFLATION |
+  typeof marketEnum.TYPES.GDP
+interface YearlyIndicatorOptions {
+  valueLength?: number;
+}
+
+export const syncYearlyIndicators = async (
+  type: YearlyIndicatorType,
+  options?: YearlyIndicatorOptions
+): Promise<{
+  relatedYearly: indicatorYearlyModel.IndicatorYearly[]
+}> => {
+  const region = 'US'
+  const initYear = dateTool.getInitialYear()
+
+  let indicatorResult
+  let indicatorKey: indicatorYearlyModel.IndicatorYearlyKeys
+
+  switch (type) {
+    case marketEnum.TYPES.GDP:
+      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.YEARLY)
+      indicatorKey = tableEnum.KEYS.GDP
+      break
+    case marketEnum.TYPES.INFLATION:
+    default:
+      indicatorResult = await marketAdapter.getInflation()
+      indicatorKey = tableEnum.KEYS.INFLATION
+      break
+  }
+
+  const relatedIndicators = []
+  for (const result of indicatorResult.data) {
+    const year = result.date.substring(0, 4)
+    if (year < initYear) continue
+
+    const value = options?.valueLength
+      ? result.value.substring(0, options.valueLength)
+      : result.value
+
+    const currentRecord = await indicatorYearlyModel.getByUK(region, year)
+    if (!currentRecord) {
+      const created = await indicatorYearlyModel.create({
+        year,
+        region,
+        [indicatorKey]: value
+      })
+      relatedIndicators.push(created)
+    } else if (currentRecord && !currentRecord[indicatorKey]) {
+      const updated = await indicatorYearlyModel.update(currentRecord.id, {
+        [indicatorKey]: value
+      })
+      relatedIndicators.push(updated)
+    }
+  }
+  return {
+    relatedYearly: relatedIndicators
   }
 }

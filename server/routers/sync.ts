@@ -105,14 +105,22 @@ syncRouter.get('/ticket/prices', async (req, res) => {
   }
 })
 
-syncRouter.get('/indicator/gdp/:interval', async (req, res) => {
+syncRouter.get('/indicator/gdp/yearly', async (req, res) => {
   try {
-    const interval = req.params.interval
+    const result = await syncIndicatorService.syncYearlyIndicators(marketEnum.TYPES.GDP)
 
-    const isAllowedInterval = Object.values(marketEnum.GDP_INTERVAL).includes(interval)
-    if (!isAllowedInterval) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+    return res.status(200).send({
+      result
+    })
+  } catch (e) {
+    console.error(e)
+    throw e
+  }
+})
 
-    const result = await syncIndicatorService.syncRealGDP(interval)
+syncRouter.get('/indicator/gdp/quarterly', async (req, res) => {
+  try {
+    const result = await syncIndicatorService.syncQuarterlyIndicators(marketEnum.TYPES.GDP)
 
     return res.status(200).send({
       result
@@ -183,7 +191,10 @@ syncRouter.get('/indicator/cpi', async (req, res) => {
 
 syncRouter.get('/indicator/inflation', async (req, res) => {
   try {
-    const result = await syncIndicatorService.syncInflation()
+    const result = await syncIndicatorService.syncYearlyIndicators(
+      marketEnum.TYPES.INFLATION,
+      { valueLength: 5 }
+    )
 
     return res.status(200).send({
       result

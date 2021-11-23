@@ -16,6 +16,8 @@ const INFLATION_EXPECTATION: 'inflationExpectation' = 'inflationExpectation'
 const CONSUMER_SENTIMENT: 'consumerSentiment' = 'consumerSentiment'
 const RETAIL_SALES: 'retailSales' = 'retailSales'
 const DURABLE_GOODS: 'durableGoods' = 'durableGoods'
+const INFLATION: 'inflation' = 'inflation'
+const GDP: 'realGDP' = 'realGDP'
 
 export const KEYS = {
   FUNDS_RATE,
@@ -25,5 +27,7 @@ export const KEYS = {
   INFLATION_EXPECTATION,
   CONSUMER_SENTIMENT,
   DURABLE_GOODS,
-  RETAIL_SALES
+  RETAIL_SALES,
+  INFLATION,
+  GDP
 }
