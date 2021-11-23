@@ -19,7 +19,7 @@ interface MonthlyIndicatorOptions {
   isThirtyYearsTreasury?: boolean;
 }
 
-export const syncMonthlyIndicators = async (
+export const syncMonthly = async (
   type: MonthlyIndicatorType,
   options?: MonthlyIndicatorOptions
 ): Promise<{
@@ -98,7 +98,7 @@ export const syncMonthlyIndicators = async (
 
 type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
 
-export const syncQuarterlyIndicators = async (
+export const syncQuarterly = async (
   type: QuarterlyIndicatorType
 ): Promise<{
   relatedQuarterly: indicatorQuarterlyModel.IndicatorQuarterly[]
@@ -149,7 +149,7 @@ interface YearlyIndicatorOptions {
   valueLength?: number;
 }
 
-export const syncYearlyIndicators = async (
+export const syncYearly = async (
   type: YearlyIndicatorType,
   options?: YearlyIndicatorOptions
 ): Promise<{
