@@ -105,154 +105,86 @@ syncRouter.get('/ticket/prices', async (req, res) => {
   }
 })
 
-syncRouter.get('/indicator/gdp/yearly', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncYearlyIndicators(marketEnum.TYPES.GDP)
+syncRouter.get('/indicator/monthly/:type', async (req, res) => {
+  const type = req.params.type
 
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
+  let result
+  switch (type) {
+    case 'funds_rate':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.FUNDS_RATE)
+      break
+    case 'thirty_years_treasury':
+      result = await syncIndicatorService.syncMonthlyIndicators(
+        marketEnum.TYPES.TREASURY_YIELD,
+        { isThirtyYearsTreasury: true }
+      )
+      break
+    case 'ten_years_treasury':
+      result = await syncIndicatorService.syncMonthlyIndicators(
+        marketEnum.TYPES.TREASURY_YIELD,
+        { isTenYearsTreasury: true }
+      )
+      break
+    case 'cpi':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CPI)
+      break
+    case 'inflation_expectation':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.INFLATION_EXPECTATION)
+      break
+    case 'consumer_sentiment':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CONSUMER_SENTIMENT)
+      break
+    case 'durable_goods':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.DURABLE_GOODS)
+      break
+    case 'retail_sales':
+      result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.RETAIL_SALES)
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }
+
+  return res.status(200).send({
+    result
+  })
 })
 
-syncRouter.get('/indicator/gdp/quarterly', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncQuarterlyIndicators(marketEnum.TYPES.GDP)
+syncRouter.get('/indicator/quarterly/:type', async (req, res) => {
+  const type = req.params.type
 
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
+  let result
+  switch (type) {
+    case 'gdp':
+      result = await syncIndicatorService.syncQuarterlyIndicators(marketEnum.TYPES.GDP)
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }
+
+  return res.status(200).send({
+    result
+  })
 })
 
-syncRouter.get('/indicator/funds_rate', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.FUNDS_RATE)
+syncRouter.get('/indicator/yearly/:type', async (req, res) => {
+  const type = req.params.type
 
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
+  let result
+  switch (type) {
+    case 'inflation':
+      result = await syncIndicatorService.syncYearlyIndicators(
+        marketEnum.TYPES.INFLATION,
+        { valueLength: 5 }
+      )
+      break
+    case 'gdp':
+      result = await syncIndicatorService.syncYearlyIndicators(marketEnum.TYPES.GDP)
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }
-})
 
-syncRouter.get('/indicator/treasury_yield/thirty_years', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(
-      marketEnum.TYPES.TREASURY_YIELD,
-      { isThirtyYearsTreasury: true }
-    )
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/treasury_yield/ten_years', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(
-      marketEnum.TYPES.TREASURY_YIELD,
-      { isTenYearsTreasury: true }
-    )
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/cpi', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CPI)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/inflation', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncYearlyIndicators(
-      marketEnum.TYPES.INFLATION,
-      { valueLength: 5 }
-    )
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/inflation_expectation', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.INFLATION_EXPECTATION)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/consumer_sentiment', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.CONSUMER_SENTIMENT)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/retail_sales', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.RETAIL_SALES)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
-})
-
-syncRouter.get('/indicator/durable_goods', async (req, res) => {
-  try {
-    const result = await syncIndicatorService.syncMonthlyIndicators(marketEnum.TYPES.DURABLE_GOODS)
-
-    return res.status(200).send({
-      result
-    })
-  } catch (e) {
-    console.error(e)
-    throw e
-  }
+  return res.status(200).send({
+    result
+  })
 })

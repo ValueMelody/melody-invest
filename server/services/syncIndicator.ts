@@ -115,7 +115,6 @@ export const syncQuarterlyIndicators = async (
       indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.QUARTERLY)
       indicatorKey = tableEnum.KEYS.GDP
       break
-      break
   }
 
   const relatedIndicators = []

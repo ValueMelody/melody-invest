@@ -6,5 +6,9 @@ export const HTTP_ERRORS = {
   NOT_FOUND: {
     code: 404,
     message: 'Not Found'
+  },
+  INTERNAL_SERVER_ERROR: {
+    code: 500,
+    message: 'Internal Server Error'
   }
 }
