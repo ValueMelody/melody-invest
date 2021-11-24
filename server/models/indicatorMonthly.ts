@@ -9,7 +9,8 @@ export type IndicatorMonthlyKeys =
   typeof tableEnum.KEYS.INFLATION_EXPECTATION |
   typeof tableEnum.KEYS.CONSUMER_SENTIMENT |
   typeof tableEnum.KEYS.RETAIL_SALES |
-  typeof tableEnum.KEYS.DURABLE_GOODS
+  typeof tableEnum.KEYS.DURABLE_GOODS |
+  typeof tableEnum.KEYS.UNEMPLOYMENT_RATE
 
 export interface IndicatorMonthly {
   id: number;
@@ -23,6 +24,7 @@ export interface IndicatorMonthly {
   [tableEnum.KEYS.CONSUMER_SENTIMENT]: string;
   [tableEnum.KEYS.RETAIL_SALES]: string;
   [tableEnum.KEYS.DURABLE_GOODS]: string;
+  [tableEnum.KEYS.UNEMPLOYMENT_RATE]: string;
 }
 
 interface IndicatorMonthlyEdit {
@@ -36,6 +38,7 @@ interface IndicatorMonthlyEdit {
   [tableEnum.KEYS.CONSUMER_SENTIMENT]?: string;
   [tableEnum.KEYS.RETAIL_SALES]?: string;
   [tableEnum.KEYS.DURABLE_GOODS]?: string;
+  [tableEnum.KEYS.UNEMPLOYMENT_RATE]?: string;
 }
 
 export const getByUK = async (
