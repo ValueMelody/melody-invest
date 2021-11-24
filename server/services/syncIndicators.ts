@@ -13,7 +13,8 @@ type MonthlyIndicatorType =
   typeof marketEnum.TYPES.INFLATION_EXPECTATION |
   typeof marketEnum.TYPES.CONSUMER_SENTIMENT |
   typeof marketEnum.TYPES.RETAIL_SALES |
-  typeof marketEnum.TYPES.DURABLE_GOODS
+  typeof marketEnum.TYPES.DURABLE_GOODS |
+  typeof marketEnum.TYPES.UNEMPLOYMENT_RATE
 interface MonthlyIndicatorOptions {
   isTenYearsTreasury?: boolean;
   isThirtyYearsTreasury?: boolean;
@@ -32,6 +33,10 @@ export const syncMonthly = async (
   let indicatorKey: indicatorMonthlyModel.IndicatorMonthlyKeys
 
   switch (type) {
+    case marketEnum.TYPES.UNEMPLOYMENT_RATE:
+      indicatorResult = await marketAdapter.getUnemploymentRate()
+      indicatorKey = tableEnum.KEYS.UNEMPLOYMENT_RATE
+      break
     case marketEnum.TYPES.FUNDS_RATE:
       indicatorResult = await marketAdapter.getFundsRate()
       indicatorKey = tableEnum.KEYS.FUNDS_RATE

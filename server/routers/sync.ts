@@ -90,6 +90,9 @@ syncRouter.get('/indicators/monthly/:type', async (req, res) => {
     case 'retail_sales':
       result = await syncIndicators.syncMonthly(marketEnum.TYPES.RETAIL_SALES)
       break
+    case 'unemployment_rate':
+      result = await syncIndicators.syncMonthly(marketEnum.TYPES.UNEMPLOYMENT_RATE)
+      break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN
   }

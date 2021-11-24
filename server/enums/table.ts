@@ -18,6 +18,7 @@ const RETAIL_SALES: 'retailSales' = 'retailSales'
 const DURABLE_GOODS: 'durableGoods' = 'durableGoods'
 const INFLATION: 'inflation' = 'inflation'
 const GDP: 'realGDP' = 'realGDP'
+const UNEMPLOYMENT_RATE: 'unemploymentRate' = 'unemploymentRate'
 
 export const KEYS = {
   FUNDS_RATE,
@@ -29,5 +30,6 @@ export const KEYS = {
   DURABLE_GOODS,
   RETAIL_SALES,
   INFLATION,
-  GDP
+  GDP,
+  UNEMPLOYMENT_RATE
 }
