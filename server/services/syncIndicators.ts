@@ -14,7 +14,8 @@ type MonthlyIndicatorType =
   typeof marketEnum.TYPES.CONSUMER_SENTIMENT |
   typeof marketEnum.TYPES.RETAIL_SALES |
   typeof marketEnum.TYPES.DURABLE_GOODS |
-  typeof marketEnum.TYPES.UNEMPLOYMENT_RATE
+  typeof marketEnum.TYPES.UNEMPLOYMENT_RATE |
+  typeof marketEnum.TYPES.NONFARM_PAYROLL
 interface MonthlyIndicatorOptions {
   isTenYearsTreasury?: boolean;
   isThirtyYearsTreasury?: boolean;
@@ -70,9 +71,13 @@ export const syncMonthly = async (
       indicatorKey = tableEnum.KEYS.RETAIL_SALES
       break
     case marketEnum.TYPES.DURABLE_GOODS:
-    default:
       indicatorResult = await marketAdapter.getDurableGoods()
       indicatorKey = tableEnum.KEYS.DURABLE_GOODS
+      break
+    case marketEnum.TYPES.NONFARM_PAYROLL:
+    default:
+      indicatorResult = await marketAdapter.getNonfarmPayroll()
+      indicatorKey = tableEnum.KEYS.NONFARM_PAYROLL
       break
   }
 
