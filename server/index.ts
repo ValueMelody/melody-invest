@@ -21,6 +21,7 @@ app.use('/sync', syncRouter)
 
 // @ts-ignore
 app.use((err: any, req, res: Response, next) => {
+  console.error(err)
   const internalError = errorEnum.HTTP_ERRORS.INTERNAL_SERVER_ERROR
   res.status(err?.code || internalError.code).send({
     message: err?.message || internalError.message

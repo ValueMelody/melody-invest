@@ -6,7 +6,7 @@ const YEAR_FORMAT = 'yyyy'
 
 const INITIAL_DATE = '2001-01-01'
 const INITIAL_MONTH = '2000-01'
-const INITIAL_QUARTER = '2000-02'
+const INITIAL_QUARTER = '2000-03'
 const INITIAL_YEAR = '2000'
 
 export const getInitialDate = (): string => {

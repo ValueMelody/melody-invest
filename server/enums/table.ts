@@ -19,6 +19,7 @@ const DURABLE_GOODS: 'durableGoods' = 'durableGoods'
 const INFLATION: 'inflation' = 'inflation'
 const GDP: 'realGDP' = 'realGDP'
 const UNEMPLOYMENT_RATE: 'unemploymentRate' = 'unemploymentRate'
+const NONFARM_PAYROLL: 'nonfarmPayroll' = 'nonfarmPayroll'
 
 export const KEYS = {
   FUNDS_RATE,
@@ -31,5 +32,6 @@ export const KEYS = {
   RETAIL_SALES,
   INFLATION,
   GDP,
-  UNEMPLOYMENT_RATE
+  UNEMPLOYMENT_RATE,
+  NONFARM_PAYROLL
 }
