@@ -36,6 +36,7 @@ syncRouter.get('/batch_tickets/:type', async (req, res) => {
   const date = String(req.query.date)
   const quarter = String(req.query.quarter)
   const year = String(req.query.year)
+  const forceRecheck = req.query.forceRecheck === 'true'
 
   let result
   switch (type) {
@@ -43,10 +44,10 @@ syncRouter.get('/batch_tickets/:type', async (req, res) => {
       result = await syncTickets.syncAllPrices(date)
       break
     case 'earnings':
-      result = await syncTickets.syncAllEarnings(year, quarter)
+      result = await syncTickets.syncAllEarnings(year, quarter, forceRecheck)
       break
     case 'incomes':
-      result = await syncTickets.syncAllIncomes(year, quarter)
+      result = await syncTickets.syncAllIncomes(year, quarter, forceRecheck)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN

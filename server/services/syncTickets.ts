@@ -234,7 +234,9 @@ export const syncEarnings = async (
 }
 
 export const syncAllEarnings = async (
-  year: string, quarter: string
+  year: string,
+  quarter: string,
+  forceRecheck: boolean = false
 ): Promise<{
   tickets: ticketModel.Ticket[]
 }> => {
@@ -245,8 +247,8 @@ export const syncAllEarnings = async (
   for (const ticket of allTickets) {
     const isYearSynced = ticket.lastEPSYear >= year
     const isQuarterSynced = ticket.lastEPSQuarter >= quarter
-    if (isYearSynced && isQuarterSynced) continue
-    const result = await syncEarnings(ticket.region, ticket.symbol)
+    if (isYearSynced && isQuarterSynced && !forceRecheck) continue
+    const result = await syncEarnings(ticket.region, ticket.symbol, forceRecheck)
     updatedTickets.push(result.ticket)
     await runTool.sleep(cooldown)
   }
@@ -378,7 +380,9 @@ export const syncIncomes = async (
 }
 
 export const syncAllIncomes = async (
-  year: string, quarter: string
+  year: string,
+  quarter: string,
+  forceRecheck: boolean = false
 ): Promise<{
   tickets: ticketModel.Ticket[]
 }> => {
@@ -389,10 +393,8 @@ export const syncAllIncomes = async (
   for (const ticket of allTickets) {
     const isYearSynced = ticket.lastIncomeYear >= year
     const isQuarterSynced = ticket.lastIncomeQuarter >= quarter
-    console.log(`checking ${ticket.symbol}`)
-    if (isYearSynced && isQuarterSynced) continue
-    console.log(`syncing ${ticket.symbol}`)
-    const result = await syncIncomes(ticket.region, ticket.symbol)
+    if (isYearSynced && isQuarterSynced && !forceRecheck) continue
+    const result = await syncIncomes(ticket.region, ticket.symbol, forceRecheck)
     updatedTickets.push(result.ticket)
     await runTool.sleep(cooldown)
   }
