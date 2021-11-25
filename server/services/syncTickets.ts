@@ -383,13 +383,15 @@ export const syncAllIncomes = async (
   tickets: ticketModel.Ticket[]
 }> => {
   const allTickets = await ticketModel.getAll()
-  const cooldown = await marketAdapter.getCooldownPerMin()
+  const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickets = []
   for (const ticket of allTickets) {
     const isYearSynced = ticket.lastIncomeYear >= year
     const isQuarterSynced = ticket.lastIncomeQuarter >= quarter
+    console.log(`checking ${ticket.symbol}`)
     if (isYearSynced && isQuarterSynced) continue
+    console.log(`syncing ${ticket.symbol}`)
     const result = await syncIncomes(ticket.region, ticket.symbol)
     updatedTickets.push(result.ticket)
     await runTool.sleep(cooldown)
