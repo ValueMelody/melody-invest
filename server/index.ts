@@ -31,7 +31,7 @@ app.use((err: any, req, res: Response, next) => {
 
 try {
   app.listen(port, (): void => {
-    console.log(`Connected successfully on port ${port}`)
+    console.info(`Connected successfully on port ${port}`)
   })
 } catch (error) {
   console.error(`Error occured: ${error}`)
