@@ -180,20 +180,19 @@ export const syncEarnings = async (
 
   const startQuarter = lastQuarterlyRecord
     ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-    : dateTool.getInitialQuarter()
+    : dateTool.getInitialQuarter(ticket.quarterlyEPSMonthDiffer)
   const endQuarter = dateTool.getCurrentQuater()
   const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEPSMonthDiffer)
     const matchedEarning = quarterlyEarnings.find(earning => {
-      return adjustedQuarter === earning.fiscalDateEnding.substring(0, 7)
+      return quarter === earning.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedEarning) continue
 
     const quarterlyEPS = {
-      quarter: adjustedQuarter,
+      quarter,
       earningDate: matchedEarning.fiscalDateEnding,
       eps: matchedEarning.reportedEPS.substring(0, 10),
       estimatedEPS: matchedEarning.estimatedEPS.substring(0, 10),
@@ -201,7 +200,7 @@ export const syncEarnings = async (
       earningReportDate: matchedEarning.reportedDate
     }
 
-    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, adjustedQuarter)
+    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, quarter)
 
     if (!currentRecord) {
       const createdRecord = await ticketQuarterlyModel.create({
@@ -220,11 +219,11 @@ export const syncEarnings = async (
   const newTicketInfo: ticketModel.TicketEdit = {}
   if (relatedYearly.length) {
     newTicketInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
-    if (!ticket.firstEPSYear) newTicketInfo.firstEPSYear = relatedYearly[0].year
+    if (!ticket.firstEPSYear || forceRecheck) newTicketInfo.firstEPSYear = relatedYearly[0].year
   }
   if (relatedQuarterly.length) {
     newTicketInfo.lastEPSQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-    if (!ticket.firstEPSQuarter) newTicketInfo.firstEPSQuarter = relatedQuarterly[0].quarter
+    if (!ticket.firstEPSQuarter || forceRecheck) newTicketInfo.firstEPSQuarter = relatedQuarterly[0].quarter
   }
 
   const updateTicket = Object.keys(newTicketInfo).length
@@ -325,20 +324,19 @@ export const syncIncomes = async (
 
   const startQuarter = lastQuarterlyRecord
     ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-    : dateTool.getInitialQuarter()
+    : dateTool.getInitialQuarter(ticket.quarterlyEPSMonthDiffer)
   const endQuarter = dateTool.getCurrentQuater()
   const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const adjustedQuarter = dateTool.getAdjustedQuarter(quarter, ticket.quarterlyEPSMonthDiffer)
     const matchedIncome = quarterlyIncomes.find(income => {
-      return adjustedQuarter === income.fiscalDateEnding.substring(0, 7)
+      return quarter === income.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedIncome) continue
 
     const quarterlyEPS = {
-      quarter: adjustedQuarter,
+      quarter,
       ebitda: matchedIncome.ebitda,
       netIncome: matchedIncome.netIncome,
       grossProfit: matchedIncome.grossProfit,
@@ -346,7 +344,7 @@ export const syncIncomes = async (
       costOfRevenue: matchedIncome.costOfRevenue
     }
 
-    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, adjustedQuarter)
+    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, quarter)
 
     if (!currentRecord) {
       const createdRecord = await ticketQuarterlyModel.create({
@@ -365,11 +363,11 @@ export const syncIncomes = async (
   const newTicketInfo: ticketModel.TicketEdit = {}
   if (relatedYearly.length) {
     newTicketInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
-    if (!ticket.firstIncomeYear) newTicketInfo.firstIncomeYear = relatedYearly[0].year
+    if (!ticket.firstIncomeYear || forceRecheck) newTicketInfo.firstIncomeYear = relatedYearly[0].year
   }
   if (relatedQuarterly.length) {
     newTicketInfo.lastIncomeQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-    if (!ticket.firstIncomeQuarter) newTicketInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
+    if (!ticket.firstIncomeQuarter || forceRecheck) newTicketInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
   }
 
   const updateTicket = Object.keys(newTicketInfo).length

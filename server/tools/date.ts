@@ -17,8 +17,10 @@ export const getInitialYear = (): string => {
   return INITIAL_YEAR
 }
 
-export const getInitialQuarter = (): string => {
-  return INITIAL_QUARTER
+export const getInitialQuarter = (differ?: string | null): string => {
+  return differ
+    ? getAdjustedQuarter(INITIAL_QUARTER, differ)
+    : INITIAL_QUARTER
 }
 
 export const getInitialMonth = (): string => {
@@ -37,17 +39,16 @@ export const getCurrentQuater = (): string => {
   const currentDate = moment().format(QUARTER_FORMAT)
   const [currentYear, currentMonth] = currentDate.split('-')
   const month = parseInt(currentMonth)
-  let year = parseInt(currentYear)
+  const year = parseInt(currentYear)
   let quarter = ''
   if (month <= 3) {
-    quarter = '12'
-    year -= 1
-  } else if (month <= 6) {
     quarter = '03'
-  } else if (month <= 9) {
+  } else if (month <= 6) {
     quarter = '06'
-  } else if (month <= 12) {
+  } else if (month <= 9) {
     quarter = '09'
+  } else if (month <= 12) {
+    quarter = '12'
   }
   return `${year}-${quarter}`
 }
@@ -124,15 +125,25 @@ export const getDayNumber = (date: string): number => {
 export const getAdjustedQuarter = (
   quarter: string, differ: string | null
 ) => {
-  if (!differ) return quarter
+  if (!differ || !quarter) return quarter
   const [year, month] = quarter.split('-')
   const yearNum = parseInt(year)
   const monthNum = parseInt(month)
   const differNum = parseInt(differ)
 
-  const isNextYear = monthNum === 12 && differNum > 0
-  const adjustedMonth = isNextYear ? differNum : monthNum + differNum
-  const adjustedYear = isNextYear ? yearNum + 1 : yearNum
+  let adjustedYear = yearNum
+  let adjustedMonth = monthNum + differNum
+
+  if (monthNum + differNum > 12) {
+    adjustedMonth = monthNum + differNum - 12
+    adjustedYear = yearNum + 1
+  }
+
+  if (monthNum + differNum < 1) {
+    adjustedMonth = monthNum + differNum + 12
+    adjustedYear = yearNum - 1
+  }
+
   const paddingLeft = adjustedMonth < 10 ? '0' : ''
   return `${adjustedYear}-${paddingLeft}${adjustedMonth}`
 }
