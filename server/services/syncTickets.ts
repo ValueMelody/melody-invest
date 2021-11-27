@@ -191,13 +191,22 @@ export const syncEarnings = async (
     })
     if (!matchedEarning) continue
 
+    const eps = matchedEarning.reportedEPS === 'None'
+      ? null
+      : matchedEarning.reportedEPS.substring(0, 10)
+    const estimatedEPS = matchedEarning.estimatedEPS === 'None'
+      ? null
+      : matchedEarning.estimatedEPS.substring(0, 10)
+    const epsSurprisePercent = matchedEarning.surprisePercentage === 'None'
+      ? null
+      : matchedEarning.surprisePercentage.substring(0, 5)
     const quarterlyEPS = {
       quarter,
       earningDate: matchedEarning.fiscalDateEnding,
-      eps: matchedEarning.reportedEPS.substring(0, 10),
-      estimatedEPS: matchedEarning.estimatedEPS.substring(0, 10),
-      epsSurprisePercent: matchedEarning.surprisePercentage.substring(0, 5),
-      earningReportDate: matchedEarning.reportedDate
+      earningReportDate: matchedEarning.reportedDate,
+      eps,
+      estimatedEPS,
+      epsSurprisePercent
     }
 
     const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, quarter)
