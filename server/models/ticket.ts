@@ -43,7 +43,7 @@ export const getByUK = async (
   const ticketSymbol = symbol.toUpperCase()
 
   const ticket = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKETS,
+    tableName: tableEnum.NAMES.TICKET,
     conditions: [
       { key: 'region', value: ticketRegion },
       { key: 'symbol', value: ticketSymbol }
@@ -54,7 +54,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<Ticket[]> => {
   const tickets = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKETS
+    tableName: tableEnum.NAMES.TICKET
   })
   return tickets
 }
@@ -64,7 +64,7 @@ export const update = async (
   values: TicketEdit
 ): Promise<Ticket> => {
   const updatedTicket = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKETS,
+    tableName: tableEnum.NAMES.TICKET,
     values,
     conditions: [
       { key: 'id', value: ticketId }

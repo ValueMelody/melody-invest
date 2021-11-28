@@ -1,5 +1,5 @@
 export const NAMES = {
-  TICKETS: 'tickets',
+  TICKET: 'ticket',
   TICKET_DAILY: 'ticket_daily',
   TICKET_YEARLY: 'ticket_yearly',
   TICKET_QUARTERLY: 'ticket_quarterly',
@@ -21,7 +21,7 @@ const GDP: 'realGDP' = 'realGDP'
 const UNEMPLOYMENT_RATE: 'unemploymentRate' = 'unemploymentRate'
 const NONFARM_PAYROLL: 'nonfarmPayroll' = 'nonfarmPayroll'
 
-export const KEYS = {
+export const INDICATOR_KEYS = {
   FUNDS_RATE,
   TEN_YEARS_TREASURY,
   THIRTY_YEARS_TREASURY,
@@ -34,4 +34,62 @@ export const KEYS = {
   GDP,
   UNEMPLOYMENT_RATE,
   NONFARM_PAYROLL
+}
+
+const PRICE_DAILY_INCREASE_BUY: 'priceDailyIncreaseBuy' = 'priceDailyIncreaseBuy'
+const PRICE_DAILY_INCREASE_SELL: 'priceDailyIncreaseSell' = 'priceDailyIncreaseSell'
+const PRICE_DAILY_DECREASE_BUY: 'priceDailyDecreaseBuy' = 'priceDailyDecreaseBuy'
+const PRICE_DAILY_DECREASE_SELL: 'priceDailyDecreaseSell' = 'priceDailyDecreaseSell'
+const PRICE_WEEKLY_INCREASE_BUY: 'priceWeeklyIncreaseBuy' = 'priceWeeklyIncreaseBuy'
+const PRICE_WEEKLY_INCREASE_SELL: 'priceWeeklyIncreaseSell' = 'priceWeeklyIncreaseSell'
+const PRICE_WEEKLY_DECREASE_BUY: 'priceWeeklyDecreaseBuy' = 'priceWeeklyDecreaseBuy'
+const PRICE_WEEKLY_DECREASE_SELL: 'priceWeeklyDecreaseSell' = 'priceWeeklyDecreaseSell'
+const PRICE_MONTHLY_INCREASE_BUY: 'priceMonthlyIncreaseBuy' = 'priceMonthlyIncreaseBuy'
+const PRICE_MONTHLY_INCREASE_SELL: 'priceMonthlyIncreaseSell' = 'priceMonthlyIncreaseSell'
+const PRICE_MONTHLY_DECREASE_BUY: 'priceMonthlyDecreaseBuy' = 'priceMonthlyDecreaseBuy'
+const PRICE_MONTHLY_DECREASE_SELL: 'priceMonthlyDecreaseSell' = 'priceMonthlyDecreaseSell'
+const PRICE_QUARTERLY_INCREASE_BUY: 'priceQuarterlyIncreaseBuy' = 'priceQuarterlyIncreaseBuy'
+const PRICE_QUARTERLY_INCREASE_SELL: 'priceQuarterlyIncreaseSell' = 'priceQuarterlyIncreaseSell'
+const PRICE_QUARTERLY_DECREASE_BUY: 'priceQuarterlyDecreaseBuy' = 'priceQuarterlyDecreaseBuy'
+const PRICE_QUARTERLY_DECREASE_SELL: 'priceQuarterlyDecreaseSell' = 'priceQuarterlyDecreaseSell'
+const PRICE_YEARLY_INCREASE_BUY: 'priceYearlyIncreaseBuy' = 'priceYearlyIncreaseBuy'
+const PRICE_YEARLY_INCREASE_SELL: 'priceYearlyIncreaseSell' = 'priceYearlyIncreaseSell'
+const PRICE_YEARLY_DECREASE_BUY: 'priceYearlyDecreaseBuy' = 'priceYearlyDecreaseBuy'
+const PRICE_YEARLY_DECREASE_SELL: 'priceYearlyDecreaseSell' = 'priceYearlyDecreaseSell'
+const CASH_MAX_PERCENT: 'cashMaxPercent' = 'cashMaxPercent'
+const TICKET_MIN_PERCENT: 'ticketMinPercent' = 'ticketMinPercent'
+const TICKET_MAX_PERCENT: 'ticketMaxPercent' = 'ticketMaxPercent'
+const HOLDING_BUY_PERCENT: 'holdingBuyPercent' = 'holdingBuyPercent'
+const HOLDING_SELL_PERCENT: 'holdingSellPercent' = 'holdingSellPercent'
+const TRADE_FREQUENCY: 'tradeFrequency' = 'tradeFrequency'
+const REBALANCE_FREQUENCY: 'rebalanceFrequency' = 'rebalanceFrequency'
+
+export const RNA_KEYS = {
+  PRICE_DAILY_INCREASE_BUY,
+  PRICE_DAILY_INCREASE_SELL,
+  PRICE_DAILY_DECREASE_BUY,
+  PRICE_DAILY_DECREASE_SELL,
+  PRICE_WEEKLY_INCREASE_BUY,
+  PRICE_WEEKLY_INCREASE_SELL,
+  PRICE_WEEKLY_DECREASE_BUY,
+  PRICE_WEEKLY_DECREASE_SELL,
+  PRICE_MONTHLY_INCREASE_BUY,
+  PRICE_MONTHLY_INCREASE_SELL,
+  PRICE_MONTHLY_DECREASE_BUY,
+  PRICE_MONTHLY_DECREASE_SELL,
+  PRICE_QUARTERLY_INCREASE_BUY,
+  PRICE_QUARTERLY_INCREASE_SELL,
+  PRICE_QUARTERLY_DECREASE_BUY,
+  PRICE_QUARTERLY_DECREASE_SELL,
+  PRICE_YEARLY_INCREASE_BUY,
+  PRICE_YEARLY_INCREASE_SELL,
+  PRICE_YEARLY_DECREASE_BUY,
+  PRICE_YEARLY_DECREASE_SELL,
+  CASH_MAX_PERCENT,
+  TICKET_MIN_PERCENT,
+  TICKET_MAX_PERCENT,
+  HOLDING_BUY_PERCENT,
+  HOLDING_SELL_PERCENT,
+  TRADE_FREQUENCY,
+  REBALANCE_FREQUENCY
 }

@@ -36,11 +36,11 @@ export const syncMonthly = async (
   switch (type) {
     case marketEnum.TYPES.UNEMPLOYMENT_RATE:
       indicatorResult = await marketAdapter.getUnemploymentRate()
-      indicatorKey = tableEnum.KEYS.UNEMPLOYMENT_RATE
+      indicatorKey = tableEnum.INDICATOR_KEYS.UNEMPLOYMENT_RATE
       break
     case marketEnum.TYPES.FUNDS_RATE:
       indicatorResult = await marketAdapter.getFundsRate()
-      indicatorKey = tableEnum.KEYS.FUNDS_RATE
+      indicatorKey = tableEnum.INDICATOR_KEYS.FUNDS_RATE
       break
     case marketEnum.TYPES.TREASURY_YIELD: {
       const isTenYears = options?.isTenYearsTreasury
@@ -50,34 +50,34 @@ export const syncMonthly = async (
         : marketEnum.TREASURY_TYPE.TEN_YEARS
       indicatorResult = await marketAdapter.getTreasuryYield(queryKey)
       indicatorKey = isThirtyYears
-        ? tableEnum.KEYS.THIRTY_YEARS_TREASURY
-        : tableEnum.KEYS.TEN_YEARS_TREASURY
+        ? tableEnum.INDICATOR_KEYS.THIRTY_YEARS_TREASURY
+        : tableEnum.INDICATOR_KEYS.TEN_YEARS_TREASURY
       break
     }
     case marketEnum.TYPES.CPI:
       indicatorResult = await marketAdapter.getCPI()
-      indicatorKey = tableEnum.KEYS.CPI
+      indicatorKey = tableEnum.INDICATOR_KEYS.CPI
       break
     case marketEnum.TYPES.INFLATION_EXPECTATION:
       indicatorResult = await marketAdapter.getInflationExpectation()
-      indicatorKey = tableEnum.KEYS.INFLATION_EXPECTATION
+      indicatorKey = tableEnum.INDICATOR_KEYS.INFLATION_EXPECTATION
       break
     case marketEnum.TYPES.CONSUMER_SENTIMENT:
       indicatorResult = await marketAdapter.getConsumerSentiment()
-      indicatorKey = tableEnum.KEYS.CONSUMER_SENTIMENT
+      indicatorKey = tableEnum.INDICATOR_KEYS.CONSUMER_SENTIMENT
       break
     case marketEnum.TYPES.RETAIL_SALES:
       indicatorResult = await marketAdapter.getRetailSales()
-      indicatorKey = tableEnum.KEYS.RETAIL_SALES
+      indicatorKey = tableEnum.INDICATOR_KEYS.RETAIL_SALES
       break
     case marketEnum.TYPES.DURABLE_GOODS:
       indicatorResult = await marketAdapter.getDurableGoods()
-      indicatorKey = tableEnum.KEYS.DURABLE_GOODS
+      indicatorKey = tableEnum.INDICATOR_KEYS.DURABLE_GOODS
       break
     case marketEnum.TYPES.NONFARM_PAYROLL:
     default:
       indicatorResult = await marketAdapter.getNonfarmPayroll()
-      indicatorKey = tableEnum.KEYS.NONFARM_PAYROLL
+      indicatorKey = tableEnum.INDICATOR_KEYS.NONFARM_PAYROLL
       break
   }
 
@@ -123,7 +123,7 @@ export const syncQuarterly = async (
     case marketEnum.TYPES.GDP:
     default:
       indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.QUARTERLY)
-      indicatorKey = tableEnum.KEYS.GDP
+      indicatorKey = tableEnum.INDICATOR_KEYS.GDP
       break
   }
 
@@ -174,12 +174,12 @@ export const syncYearly = async (
   switch (type) {
     case marketEnum.TYPES.GDP:
       indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.YEARLY)
-      indicatorKey = tableEnum.KEYS.GDP
+      indicatorKey = tableEnum.INDICATOR_KEYS.GDP
       break
     case marketEnum.TYPES.INFLATION:
     default:
       indicatorResult = await marketAdapter.getInflation()
-      indicatorKey = tableEnum.KEYS.INFLATION
+      indicatorKey = tableEnum.INDICATOR_KEYS.INFLATION
       break
   }
 
