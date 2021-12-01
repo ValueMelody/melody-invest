@@ -64,7 +64,7 @@ const HOLDING_SELL_PERCENT: 'holdingSellPercent' = 'holdingSellPercent'
 const TRADE_FREQUENCY: 'tradeFrequency' = 'tradeFrequency'
 const REBALANCE_FREQUENCY: 'rebalanceFrequency' = 'rebalanceFrequency'
 
-export const RNA_KEYS = {
+export const DNA_KEYS = {
   PRICE_DAILY_INCREASE_BUY,
   PRICE_DAILY_INCREASE_SELL,
   PRICE_DAILY_DECREASE_BUY,
