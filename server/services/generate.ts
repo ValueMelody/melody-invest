@@ -1,6 +1,6 @@
-import * as rnaTool from '../tools/rna'
+import * as dnaTool from '../tools/dna'
 
-export const generateBaseRNAs = async () => {
-  const rnaGroups = rnaTool.getBaseRNAs()
-  return rnaGroups
+export const generateBaseDNAs = async () => {
+  const dnaGroups = dnaTool.getBaseDNAs()
+  return dnaGroups
 }
