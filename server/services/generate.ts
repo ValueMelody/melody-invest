@@ -1,6 +1,6 @@
-import * as rnaTool from '../tools/rna'
+import * as dnaTool from '../tools/dna'
 
-export const generateAllRNAs = async () => {
-  const rnas = rnaTool.getGeneCombinations()
-  return rnas
+export const generateAllDNAs = async () => {
+  const dnas = dnaTool.getGeneCombinations()
+  return dnas
 }
