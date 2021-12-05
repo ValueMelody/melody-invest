@@ -118,34 +118,32 @@ interface Gene {
   value: number;
 }
 
-const getGenesByGroup = (
-  group: GeneType[]
-): Gene[] => {
-  return group.reduce((allValues: Gene[], type) => {
-    const geneValues: number[] = GENE_VALUES[type]
-    const genes = geneValues.map((value: number) => ({
-      type, value
-    }))
-    return [...allValues, ...genes]
-  }, [])
-}
-
-export const getBaseDNAs = () => {
-  const genesInGroups = GENE_GROUPS.map((group) => {
-    return getGenesByGroup(group)
-  })
-  const DNAs = genesInGroups.reduce((allDNAs: Gene[][], genesInGroup) => {
-    console.log(allDNAs.length)
-    if (allDNAs.length === 0) {
-      return genesInGroup.map((gene) => [gene])
-    }
-    return genesInGroup.reduce((newDNAS: Gene[][], gene) => {
-      const combos = allDNAs.map((combo) => [...combo, gene])
-      return [
-        ...newDNAS,
-        ...combos
-      ]
+export const getGeneGroups = () => (
+  GENE_GROUPS.map((group: GeneType[]): Gene[] => (
+    group.reduce((allValues: Gene[], type) => {
+      const geneValues: number[] = GENE_VALUES[type]
+      const genes = geneValues.map((value: number) => ({
+        type, value
+      }))
+      return [...allValues, ...genes]
     }, [])
-  }, [])
-  return DNAs
-}
+  ))
+)
+
+// export const getBaseDNAs = () => {
+//   const genesInGroups = getGeneGroups()
+//   const DNAs = genesInGroups.reduce((allDNAs: Gene[][], genesInGroup) => {
+//     console.log(allDNAs.length)
+//     if (allDNAs.length === 0) {
+//       return genesInGroup.map((gene) => [gene])
+//     }
+//     return genesInGroup.reduce((newDNAS: Gene[][], gene) => {
+//       const combos = allDNAs.map((combo) => [...combo, gene])
+//       return [
+//         ...newDNAS,
+//         ...combos
+//       ]
+//     }, [])
+//   }, [])
+//   return DNAs
+// }

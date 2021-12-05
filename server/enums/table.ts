@@ -5,7 +5,8 @@ export const NAMES = {
   TICKET_QUARTERLY: 'ticket_quarterly',
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
-  INDICATOR_MONTHLY: 'indicator_monthly'
+  INDICATOR_MONTHLY: 'indicator_monthly',
+  TRADE_DNA: 'trade_dna'
 }
 
 const FUNDS_RATE: 'fundsRate' = 'fundsRate'

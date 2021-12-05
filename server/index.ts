@@ -3,7 +3,7 @@ import 'express-async-errors'
 import dotenv from 'dotenv'
 import { initConnection } from './adapters/database'
 import syncRouter from './routers/sync'
-import generateRouter from './routers/generate'
+import evolveRouter from './routers/evolve'
 import * as errorEnum from './enums/error'
 
 dotenv.config()
@@ -19,7 +19,7 @@ app.use(express.urlencoded({ extended: true }))
 initConnection()
 
 app.use('/sync', syncRouter)
-app.use('/generate', generateRouter)
+app.use('/evolve', evolveRouter)
 
 // @ts-ignore
 app.use((err: any, req, res: Response, next) => {
