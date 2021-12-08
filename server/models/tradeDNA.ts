@@ -25,8 +25,8 @@ export interface TradeDNA {
   [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: number | null;
   [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]: number | null;
   [tableEnum.DNA_KEYS.CASH_MAX_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.TICKET_MIN_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.TICKET_MAX_PERCENT]: number | null;
+  [tableEnum.DNA_KEYS.TICKER_MIN_PERCENT]: number | null;
+  [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.TRADE_FREQUENCY]: number | null;
@@ -56,8 +56,8 @@ export interface TradeDNACreate {
   [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]?: number | null;
   [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]?: number | null;
   [tableEnum.DNA_KEYS.CASH_MAX_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.TICKET_MIN_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.TICKET_MAX_PERCENT]?: number | null;
+  [tableEnum.DNA_KEYS.TICKER_MIN_PERCENT]?: number | null;
+  [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]?: number | null;
   [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]?: number | null;
   [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]?: number | null;
   [tableEnum.DNA_KEYS.TRADE_FREQUENCY]?: number | null;

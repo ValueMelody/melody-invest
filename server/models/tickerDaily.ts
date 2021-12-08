@@ -1,9 +1,9 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface TicketDaily {
+export interface TickerDaily {
   id: number;
-  ticketId: number;
+  tickerId: number;
   date: string;
   volume: number;
   closePrice: string;
@@ -12,8 +12,8 @@ export interface TicketDaily {
   adjustedClosePrice: string;
 }
 
-interface TicketDailyEdit {
-  ticketId?: number;
+interface TickerDailyEdit {
+  tickerId?: number;
   date?: string;
   volume?: number;
   closePrice?: string;
@@ -23,39 +23,39 @@ interface TicketDailyEdit {
 }
 
 export const getByUK = async (
-  ticketId: number,
+  tickerId: number,
   date: string
-): Promise<TicketDaily | null> => {
-  const ticketDaily = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_DAILY,
+): Promise<TickerDaily | null> => {
+  const tickerDaily = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
-      { key: 'ticketId', value: ticketId },
+      { key: 'tickerId', value: tickerId },
       { key: 'date', value: date }
     ]
   })
-  return ticketDaily
+  return tickerDaily
 }
 
 export const getPrevious = async (
-  ticketId: number,
+  tickerId: number,
   date: string
-): Promise<TicketDaily | null> => {
-  const ticketDaily = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_DAILY,
+): Promise<TickerDaily | null> => {
+  const tickerDaily = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
-      { key: 'ticketId', value: ticketId },
+      { key: 'tickerId', value: tickerId },
       { key: 'date', type: '<', value: date }
     ],
     orderBy: { key: 'date', type: 'desc' }
   })
-  return ticketDaily
+  return tickerDaily
 }
 
 export const create = async (
-  values: TicketDailyEdit
-): Promise<TicketDaily> => {
+  values: TickerDailyEdit
+): Promise<TickerDaily> => {
   const newRecords = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TICKET_DAILY,
+    tableName: tableEnum.NAMES.TICKER_DAILY,
     values
   })
   return newRecords?.length ? newRecords[0] : null

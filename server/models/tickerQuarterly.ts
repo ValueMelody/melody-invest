@@ -1,9 +1,9 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface TicketQuarterly {
+export interface TickerQuarterly {
   id: number;
-  ticketId: number;
+  tickerId: number;
   quarter: string;
   earningDate: string | null;
   eps: string | null;
@@ -17,8 +17,8 @@ export interface TicketQuarterly {
   costOfRevenue?: string;
 }
 
-export interface TicketQuarterlyEdit {
-  ticketId?: number;
+export interface TickerQuarterlyEdit {
+  tickerId?: number;
   quarter?: string;
   earningDate?: string;
   eps?: string | null;
@@ -33,54 +33,54 @@ export interface TicketQuarterlyEdit {
 }
 
 export const getByUK = async (
-  ticketId: number,
+  tickerId: number,
   quarter: string
-): Promise<TicketQuarterly | null> => {
-  const ticketQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_QUARTERLY,
+): Promise<TickerQuarterly | null> => {
+  const tickerQuarterly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     conditions: [
-      { key: 'ticketId', value: ticketId },
+      { key: 'tickerId', value: tickerId },
       { key: 'quarter', value: quarter }
     ]
   })
-  return ticketQuarterly
+  return tickerQuarterly
 }
 
 export const getLatest = async (
-  ticketId: number,
+  tickerId: number,
   conditions?: databaseAdapter.Condition[]
-): Promise<TicketQuarterly | null> => {
-  const pkCondition = [{ key: 'ticketId', value: ticketId }]
+): Promise<TickerQuarterly | null> => {
+  const pkCondition = [{ key: 'tickerId', value: tickerId }]
   const whereConditions = conditions
     ? [...pkCondition, ...conditions]
     : pkCondition
-  const ticketQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_QUARTERLY,
+  const tickerQuarterly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     conditions: whereConditions,
     orderBy: { key: 'quarter', type: 'desc' }
   })
-  return ticketQuarterly
+  return tickerQuarterly
 }
 
 export const create = async (
-  values: TicketQuarterlyEdit
-): Promise<TicketQuarterly> => {
+  values: TickerQuarterlyEdit
+): Promise<TickerQuarterly> => {
   const newRecords = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TICKET_QUARTERLY,
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     values
   })
   return newRecords?.length ? newRecords[0] : null
 }
 
 export const update = async (
-  ticketQuarterlyId: number,
-  values: TicketQuarterlyEdit
-): Promise<TicketQuarterly> => {
+  tickerQuarterlyId: number,
+  values: TickerQuarterlyEdit
+): Promise<TickerQuarterly> => {
   const updatedQuarterly = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKET_QUARTERLY,
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     values,
     conditions: [
-      { key: 'id', value: ticketQuarterlyId }
+      { key: 'id', value: tickerQuarterlyId }
     ]
   })
   return updatedQuarterly?.length ? updatedQuarterly[0] : null

@@ -3,34 +3,34 @@ import * as marketAdapter from '../adapters/market'
 import * as dateTool from '../tools/date'
 import * as marketTool from '../tools/market'
 import * as runTool from '../tools/run'
-import * as ticketModel from '../models/ticket'
-import * as ticketDailyModel from '../models/ticketDaily'
-import * as ticketYearlyModel from '../models/ticketYearly'
-import * as ticketQuarterlyModel from '../models/ticketQuarterly'
+import * as tickerModel from '../models/ticker'
+import * as tickerDailyModel from '../models/tickerDaily'
+import * as tickerYearlyModel from '../models/tickerYearly'
+import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 
 export const syncPrices = async (
   region: string,
   symbol: string
 ): Promise<{
-  ticket: ticketModel.Ticket,
-  newDaily: ticketDailyModel.TicketDaily[]
+  ticker: tickerModel.Ticker,
+  newDaily: tickerDailyModel.TickerDaily[]
 }> => {
-  const ticket = await ticketModel.getByUK(region, symbol)
-  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  const ticker = await tickerModel.getByUK(region, symbol)
+  if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const ticketData = await marketAdapter.getTicketPrices(symbol)
+  const tickerData = await marketAdapter.getTickerPrices(symbol)
 
-  const metaData = ticketData['Meta Data']
+  const metaData = tickerData['Meta Data']
   const lastRefreshed = metaData['3. Last Refreshed']
 
-  if (lastRefreshed === ticket.lastPriceDate) {
-    return { ticket, newDaily: [] }
+  if (lastRefreshed === ticker.lastPriceDate) {
+    return { ticker, newDaily: [] }
   }
 
-  const allDaysData = ticketData['Time Series (Daily)']
+  const allDaysData = tickerData['Time Series (Daily)']
 
-  const startDate = ticket.lastPriceDate
-    ? dateTool.getNextDate(ticket.lastPriceDate)
+  const startDate = ticker.lastPriceDate
+    ? dateTool.getNextDate(ticker.lastPriceDate)
     : dateTool.getInitialDate()
   const endDate = dateTool.getCurrentDate()
 
@@ -41,7 +41,7 @@ export const syncPrices = async (
     const dailyData = allDaysData[date]
     if (!dailyData) continue
 
-    const record = await ticketDailyModel.getByUK(ticket.id, date)
+    const record = await tickerDailyModel.getByUK(ticker.id, date)
     if (record) continue
 
     const closePrice = dailyData['4. close']
@@ -49,7 +49,7 @@ export const syncPrices = async (
     const dividendAmount = dailyData['7. dividend amount']
     const splitCoefficient = dailyData['8. split coefficient']
 
-    const previousRecord = await ticketDailyModel.getPrevious(ticket.id, date)
+    const previousRecord = await tickerDailyModel.getPrevious(ticker.id, date)
 
     const adjustedClose = previousRecord
       ? marketTool.getAdjustedClosePrice(
@@ -67,8 +67,8 @@ export const syncPrices = async (
       )
       : '0.00'
 
-    const newRecord = await ticketDailyModel.create({
-      ticketId: ticket.id,
+    const newRecord = await tickerDailyModel.create({
+      tickerId: ticker.id,
       date,
       volume: parseInt(volume),
       closePrice: closePrice,
@@ -79,16 +79,16 @@ export const syncPrices = async (
     newRecords.push(newRecord)
   }
 
-  const newTicketInfo: ticketModel.TicketEdit = {}
-  newTicketInfo.lastPriceDate = lastRefreshed
-  if (!ticket.firstPriceDate) {
-    newTicketInfo.firstPriceDate = newRecords[0].date
+  const newTickerInfo: tickerModel.TickerEdit = {}
+  newTickerInfo.lastPriceDate = lastRefreshed
+  if (!ticker.firstPriceDate) {
+    newTickerInfo.firstPriceDate = newRecords[0].date
   }
 
-  const updatedTicket = await ticketModel.update(ticket.id, newTicketInfo)
+  const updatedTicker = await tickerModel.update(ticker.id, newTickerInfo)
 
   return {
-    ticket: updatedTicket,
+    ticker: updatedTicker,
     newDaily: newRecords
   }
 }
@@ -96,21 +96,21 @@ export const syncPrices = async (
 export const syncAllPrices = async (
   date: string
 ): Promise<{
-  tickets: ticketModel.Ticket[]
+  tickers: tickerModel.Ticker[]
 }> => {
-  const allTickets = await ticketModel.getAll()
+  const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  const updatedTickets = []
-  for (const ticket of allTickets) {
-    const isDateSynced = ticket.lastPriceDate >= date
+  const updatedTickers = []
+  for (const ticker of allTickers) {
+    const isDateSynced = ticker.lastPriceDate >= date
     if (isDateSynced) continue
-    const result = await syncPrices(ticket.region, ticket.symbol)
-    updatedTickets.push(result.ticket)
+    const result = await syncPrices(ticker.region, ticker.symbol)
+    updatedTickers.push(result.ticker)
     await runTool.sleep(cooldown)
   }
 
-  return { tickets: updatedTickets }
+  return { tickers: updatedTickers }
 }
 
 export const syncEarnings = async (
@@ -118,20 +118,20 @@ export const syncEarnings = async (
   symbol: string,
   forceRecheck: boolean = false
 ): Promise<{
-  ticket: ticketModel.Ticket,
-  relatedYearly: ticketYearlyModel.TicketYearly[],
-  relatedQuarterly: ticketQuarterlyModel.TicketQuarterly[]
+  ticker: tickerModel.Ticker,
+  relatedYearly: tickerYearlyModel.TickerYearly[],
+  relatedQuarterly: tickerQuarterlyModel.TickerQuarterly[]
 }> => {
-  const ticket = await ticketModel.getByUK(region, symbol)
-  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  const ticker = await tickerModel.getByUK(region, symbol)
+  if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const ticketData = await marketAdapter.getTicketEarnings(symbol)
+  const tickerData = await marketAdapter.getTickerEarnings(symbol)
 
-  const annualEarnings = ticketData.annualEarnings
-  if (!annualEarnings) console.info(`Annual Earning not exist for ${ticket.symbol}`)
+  const annualEarnings = tickerData.annualEarnings
+  if (!annualEarnings) console.info(`Annual Earning not exist for ${ticker.symbol}`)
 
-  const lastYearlyRecord = !forceRecheck && await ticketYearlyModel.getLatest(
-    ticket.id,
+  const lastYearlyRecord = !forceRecheck && await tickerYearlyModel.getLatest(
+    ticker.id,
     [{ key: 'eps', type: 'IS NOT', value: null }]
   )
 
@@ -154,33 +154,33 @@ export const syncEarnings = async (
       eps: matchedEarning.reportedEPS.substring(0, 10)
     }
 
-    const currentRecord = await ticketYearlyModel.getByUK(ticket.id, year)
+    const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
 
     if (!currentRecord) {
-      const createdRecord = await ticketYearlyModel.create({
-        ticketId: ticket.id,
+      const createdRecord = await tickerYearlyModel.create({
+        tickerId: ticker.id,
         ...yearlyEPS
       })
       relatedYearly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyEPS)
+      const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyEPS)
       relatedYearly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedYearly.push(currentRecord)
     }
   }
 
-  const quarterlyEarnings = ticketData.quarterlyEarnings
-  if (!quarterlyEarnings) console.info(`Quarterly Earning not exist for ${ticket.symbol}`)
+  const quarterlyEarnings = tickerData.quarterlyEarnings
+  if (!quarterlyEarnings) console.info(`Quarterly Earning not exist for ${ticker.symbol}`)
 
-  const lastQuarterlyRecord = !forceRecheck && await ticketQuarterlyModel.getLatest(
-    ticket.id,
+  const lastQuarterlyRecord = !forceRecheck && await tickerQuarterlyModel.getLatest(
+    ticker.id,
     [{ key: 'eps', type: 'IS NOT', value: null }]
   )
 
   const startQuarter = lastQuarterlyRecord
     ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-    : dateTool.getInitialQuarter(ticket.quarterlyEPSMonthDiffer)
+    : dateTool.getInitialQuarter(ticker.quarterlyEPSMonthDiffer)
   const endQuarter = dateTool.getCurrentQuater()
   const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
@@ -209,37 +209,37 @@ export const syncEarnings = async (
       epsSurprisePercent
     }
 
-    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, quarter)
+    const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
 
     if (!currentRecord) {
-      const createdRecord = await ticketQuarterlyModel.create({
-        ticketId: ticket.id,
+      const createdRecord = await tickerQuarterlyModel.create({
+        tickerId: ticker.id,
         ...quarterlyEPS
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
-      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEPS)
+      const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS)
       relatedQuarterly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedQuarterly.push(currentRecord)
     }
   }
 
-  const newTicketInfo: ticketModel.TicketEdit = {}
+  const newTickerInfo: tickerModel.TickerEdit = {}
   if (relatedYearly.length) {
-    newTicketInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
-    if (!ticket.firstEPSYear || forceRecheck) newTicketInfo.firstEPSYear = relatedYearly[0].year
+    newTickerInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
+    if (!ticker.firstEPSYear || forceRecheck) newTickerInfo.firstEPSYear = relatedYearly[0].year
   }
   if (relatedQuarterly.length) {
-    newTicketInfo.lastEPSQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-    if (!ticket.firstEPSQuarter || forceRecheck) newTicketInfo.firstEPSQuarter = relatedQuarterly[0].quarter
+    newTickerInfo.lastEPSQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
+    if (!ticker.firstEPSQuarter || forceRecheck) newTickerInfo.firstEPSQuarter = relatedQuarterly[0].quarter
   }
 
-  const updateTicket = Object.keys(newTicketInfo).length
-    ? await ticketModel.update(ticket.id, newTicketInfo)
-    : ticket
+  const updateTicker = Object.keys(newTickerInfo).length
+    ? await tickerModel.update(ticker.id, newTickerInfo)
+    : ticker
 
-  return { ticket: updateTicket, relatedYearly, relatedQuarterly }
+  return { ticker: updateTicker, relatedYearly, relatedQuarterly }
 }
 
 export const syncAllEarnings = async (
@@ -247,22 +247,22 @@ export const syncAllEarnings = async (
   quarter: string,
   forceRecheck: boolean = false
 ): Promise<{
-  tickets: ticketModel.Ticket[]
+  tickers: tickerModel.Ticker[]
 }> => {
-  const allTickets = await ticketModel.getAll()
+  const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  const updatedTickets = []
-  for (const ticket of allTickets) {
-    const isYearSynced = ticket.lastEPSYear >= year
-    const isQuarterSynced = ticket.lastEPSQuarter >= quarter
+  const updatedTickers = []
+  for (const ticker of allTickers) {
+    const isYearSynced = ticker.lastEPSYear >= year
+    const isQuarterSynced = ticker.lastEPSQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) continue
-    const result = await syncEarnings(ticket.region, ticket.symbol, forceRecheck)
-    updatedTickets.push(result.ticket)
+    const result = await syncEarnings(ticker.region, ticker.symbol, forceRecheck)
+    updatedTickers.push(result.ticker)
     await runTool.sleep(cooldown)
   }
 
-  return { tickets: updatedTickets }
+  return { tickers: updatedTickers }
 }
 
 export const syncIncomes = async (
@@ -270,20 +270,20 @@ export const syncIncomes = async (
   symbol: string,
   forceRecheck: boolean = false
 ): Promise<{
-  ticket: ticketModel.Ticket,
-  relatedYearly: ticketYearlyModel.TicketYearly[],
-  relatedQuarterly: ticketQuarterlyModel.TicketQuarterly[]
+  ticker: tickerModel.Ticker,
+  relatedYearly: tickerYearlyModel.TickerYearly[],
+  relatedQuarterly: tickerQuarterlyModel.TickerQuarterly[]
 }> => {
-  const ticket = await ticketModel.getByUK(region, symbol)
-  if (!ticket) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  const ticker = await tickerModel.getByUK(region, symbol)
+  if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const ticketData = await marketAdapter.getTicketIncomes(symbol)
+  const tickerData = await marketAdapter.getTickerIncomes(symbol)
 
-  const annualIncomes = ticketData.annualReports
-  if (!annualIncomes) console.info(`Annual Incomes not exist for ${ticket.symbol}`)
+  const annualIncomes = tickerData.annualReports
+  if (!annualIncomes) console.info(`Annual Incomes not exist for ${ticker.symbol}`)
 
-  const lastYearlyRecord = !forceRecheck && await ticketYearlyModel.getLatest(
-    ticket.id,
+  const lastYearlyRecord = !forceRecheck && await tickerYearlyModel.getLatest(
+    ticker.id,
     [{ key: 'netIncome', type: 'IS NOT', value: null }]
   )
 
@@ -309,33 +309,33 @@ export const syncIncomes = async (
       costOfRevenue: matchedIncome.costOfRevenue
     }
 
-    const currentRecord = await ticketYearlyModel.getByUK(ticket.id, year)
+    const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
 
     if (!currentRecord) {
-      const createdRecord = await ticketYearlyModel.create({
-        ticketId: ticket.id,
+      const createdRecord = await tickerYearlyModel.create({
+        tickerId: ticker.id,
         ...yearlyIncome
       })
       relatedYearly.push(createdRecord)
     } else if (currentRecord && !currentRecord.netIncome) {
-      const updatedRecord = await ticketYearlyModel.update(currentRecord.id, yearlyIncome)
+      const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyIncome)
       relatedYearly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedYearly.push(currentRecord)
     }
   }
 
-  const quarterlyIncomes = ticketData.quarterlyReports
-  if (!quarterlyIncomes) console.info(`Quarterly Incomes not exist for ${ticket.symbol}`)
+  const quarterlyIncomes = tickerData.quarterlyReports
+  if (!quarterlyIncomes) console.info(`Quarterly Incomes not exist for ${ticker.symbol}`)
 
-  const lastQuarterlyRecord = !forceRecheck && await ticketQuarterlyModel.getLatest(
-    ticket.id,
+  const lastQuarterlyRecord = !forceRecheck && await tickerQuarterlyModel.getLatest(
+    ticker.id,
     [{ key: 'netIncome', type: 'IS NOT', value: null }]
   )
 
   const startQuarter = lastQuarterlyRecord
     ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-    : dateTool.getInitialQuarter(ticket.quarterlyEPSMonthDiffer)
+    : dateTool.getInitialQuarter(ticker.quarterlyEPSMonthDiffer)
   const endQuarter = dateTool.getCurrentQuater()
   const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
@@ -355,37 +355,37 @@ export const syncIncomes = async (
       costOfRevenue: matchedIncome.costOfRevenue
     }
 
-    const currentRecord = await ticketQuarterlyModel.getByUK(ticket.id, quarter)
+    const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
 
     if (!currentRecord) {
-      const createdRecord = await ticketQuarterlyModel.create({
-        ticketId: ticket.id,
+      const createdRecord = await tickerQuarterlyModel.create({
+        tickerId: ticker.id,
         ...quarterlyEPS
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.netIncome) {
-      const updatedRecord = await ticketQuarterlyModel.update(currentRecord.id, quarterlyEPS)
+      const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS)
       relatedQuarterly.push(updatedRecord)
     } else if (forceRecheck) {
       relatedQuarterly.push(currentRecord)
     }
   }
 
-  const newTicketInfo: ticketModel.TicketEdit = {}
+  const newTickerInfo: tickerModel.TickerEdit = {}
   if (relatedYearly.length) {
-    newTicketInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
-    if (!ticket.firstIncomeYear || forceRecheck) newTicketInfo.firstIncomeYear = relatedYearly[0].year
+    newTickerInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
+    if (!ticker.firstIncomeYear || forceRecheck) newTickerInfo.firstIncomeYear = relatedYearly[0].year
   }
   if (relatedQuarterly.length) {
-    newTicketInfo.lastIncomeQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-    if (!ticket.firstIncomeQuarter || forceRecheck) newTicketInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
+    newTickerInfo.lastIncomeQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
+    if (!ticker.firstIncomeQuarter || forceRecheck) newTickerInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
   }
 
-  const updateTicket = Object.keys(newTicketInfo).length
-    ? await ticketModel.update(ticket.id, newTicketInfo)
-    : ticket
+  const updateTicker = Object.keys(newTickerInfo).length
+    ? await tickerModel.update(ticker.id, newTickerInfo)
+    : ticker
 
-  return { ticket: updateTicket, relatedYearly, relatedQuarterly }
+  return { ticker: updateTicker, relatedYearly, relatedQuarterly }
 }
 
 export const syncAllIncomes = async (
@@ -393,20 +393,20 @@ export const syncAllIncomes = async (
   quarter: string,
   forceRecheck: boolean = false
 ): Promise<{
-  tickets: ticketModel.Ticket[]
+  tickers: tickerModel.Ticker[]
 }> => {
-  const allTickets = await ticketModel.getAll()
+  const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  const updatedTickets = []
-  for (const ticket of allTickets) {
-    const isYearSynced = ticket.lastIncomeYear >= year
-    const isQuarterSynced = ticket.lastIncomeQuarter >= quarter
+  const updatedTickers = []
+  for (const ticker of allTickers) {
+    const isYearSynced = ticker.lastIncomeYear >= year
+    const isQuarterSynced = ticker.lastIncomeQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) continue
-    const result = await syncIncomes(ticket.region, ticket.symbol, forceRecheck)
-    updatedTickets.push(result.ticket)
+    const result = await syncIncomes(ticker.region, ticker.symbol, forceRecheck)
+    updatedTickers.push(result.ticker)
     await runTool.sleep(cooldown)
   }
 
-  return { tickets: updatedTickets }
+  return { tickers: updatedTickers }
 }

@@ -1,9 +1,9 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface TicketYearly {
+export interface TickerYearly {
   id: number;
-  ticketId: number;
+  tickerId: number;
   year: string;
   earningDate: string | null;
   eps: string | null;
@@ -14,8 +14,8 @@ export interface TicketYearly {
   costOfRevenue: string | null;
 }
 
-interface TicketYearlyEdit {
-  ticketId?: number;
+interface TickerYearlyEdit {
+  tickerId?: number;
   year?: string;
   earningDate?: string;
   eps?: string;
@@ -27,54 +27,54 @@ interface TicketYearlyEdit {
 }
 
 export const getLatest = async (
-  ticketId: number,
+  tickerId: number,
   conditions?: databaseAdapter.Condition[]
-): Promise<TicketYearly | null> => {
-  const pkCondition = [{ key: 'ticketId', value: ticketId }]
+): Promise<TickerYearly | null> => {
+  const pkCondition = [{ key: 'tickerId', value: tickerId }]
   const whereConditions = conditions
     ? [...pkCondition, ...conditions]
     : pkCondition
-  const ticketYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_YEARLY,
+  const tickerYearly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
     conditions: whereConditions,
     orderBy: { key: 'year', type: 'desc' }
   })
-  return ticketYearly
+  return tickerYearly
 }
 
 export const getByUK = async (
-  ticketId: number,
+  tickerId: number,
   year: string
-): Promise<TicketYearly | null> => {
-  const ticketYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET_YEARLY,
+): Promise<TickerYearly | null> => {
+  const tickerYearly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
     conditions: [
-      { key: 'ticketId', value: ticketId },
+      { key: 'tickerId', value: tickerId },
       { key: 'year', value: year }
     ]
   })
-  return ticketYearly
+  return tickerYearly
 }
 
 export const create = async (
-  values: TicketYearlyEdit
-): Promise<TicketYearly> => {
+  values: TickerYearlyEdit
+): Promise<TickerYearly> => {
   const newRecords = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TICKET_YEARLY,
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
     values
   })
   return newRecords?.length ? newRecords[0] : null
 }
 
 export const update = async (
-  ticketYearlyId: number,
-  values: TicketYearlyEdit
-): Promise<TicketYearly> => {
+  tickerYearlyId: number,
+  values: TickerYearlyEdit
+): Promise<TickerYearly> => {
   const updatedYearly = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKET_YEARLY,
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
     values,
     conditions: [
-      { key: 'id', value: ticketYearlyId }
+      { key: 'id', value: tickerYearlyId }
     ]
   })
   return updatedYearly?.length ? updatedYearly[0] : null
