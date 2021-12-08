@@ -1,7 +1,7 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface Ticket {
+export interface Ticker {
   id: number;
   symbol: string;
   region: string;
@@ -19,7 +19,7 @@ export interface Ticket {
   lastIncomeQuarter: string;
 }
 
-export interface TicketEdit {
+export interface TickerEdit {
   symbol?: string;
   region?: string;
   name?: string;
@@ -38,37 +38,37 @@ export interface TicketEdit {
 export const getByUK = async (
   region: string,
   symbol: string
-): Promise<Ticket | null> => {
-  const ticketRegion = region.toUpperCase()
-  const ticketSymbol = symbol.toUpperCase()
+): Promise<Ticker | null> => {
+  const tickerRegion = region.toUpperCase()
+  const tickerSymbol = symbol.toUpperCase()
 
-  const ticket = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKET,
+  const ticker = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER,
     conditions: [
-      { key: 'region', value: ticketRegion },
-      { key: 'symbol', value: ticketSymbol }
+      { key: 'region', value: tickerRegion },
+      { key: 'symbol', value: tickerSymbol }
     ]
   })
-  return ticket
+  return ticker
 }
 
-export const getAll = async (): Promise<Ticket[]> => {
-  const tickets = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKET
+export const getAll = async (): Promise<Ticker[]> => {
+  const tickers = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER
   })
-  return tickets
+  return tickers
 }
 
 export const update = async (
-  ticketId: number,
-  values: TicketEdit
-): Promise<Ticket> => {
-  const updatedTicket = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKET,
+  tickerId: number,
+  values: TickerEdit
+): Promise<Ticker> => {
+  const updatedTicker = await databaseAdapter.update({
+    tableName: tableEnum.NAMES.TICKER,
     values,
     conditions: [
-      { key: 'id', value: ticketId }
+      { key: 'id', value: tickerId }
     ]
   })
-  return updatedTicket?.length ? updatedTicket[0] : null
+  return updatedTicker?.length ? updatedTicker[0] : null
 }

@@ -27,9 +27,9 @@ type SellGene =
 
 type CashGene = typeof tableEnums.DNA_KEYS.CASH_MAX_PERCENT
 
-type PositionMinGene = typeof tableEnums.DNA_KEYS.TICKET_MIN_PERCENT
+type PositionMinGene = typeof tableEnums.DNA_KEYS.TICKER_MIN_PERCENT
 
-type PositionMaxGene = typeof tableEnums.DNA_KEYS.TICKET_MAX_PERCENT
+type PositionMaxGene = typeof tableEnums.DNA_KEYS.TICKER_MAX_PERCENT
 
 type BuyAmountGene = typeof tableEnums.DNA_KEYS.HOLDING_BUY_PERCENT
 
@@ -71,8 +71,8 @@ const GENE_VALUES = {
   [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   [tableEnums.DNA_KEYS.CASH_MAX_PERCENT]: [...geneEnums.VALUES.CASH_MAX_PERCENT],
-  [tableEnums.DNA_KEYS.TICKET_MIN_PERCENT]: [...geneEnums.VALUES.TICKET_PERCENT],
-  [tableEnums.DNA_KEYS.TICKET_MAX_PERCENT]: [...geneEnums.VALUES.TICKET_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MIN_PERCENT]: [...geneEnums.VALUES.TICKER_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MAX_PERCENT]: [...geneEnums.VALUES.TICKER_PERCENT],
   [tableEnums.DNA_KEYS.HOLDING_BUY_PERCENT]: [...geneEnums.VALUES.HOLDING_PERCENT],
   [tableEnums.DNA_KEYS.HOLDING_SELL_PERCENT]: [...geneEnums.VALUES.HOLDING_PERCENT],
   [tableEnums.DNA_KEYS.TRADE_FREQUENCY]: [...geneEnums.VALUES.TRADE_FREQUENCY],
@@ -105,8 +105,8 @@ const GENE_GROUPS = [
     tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL
   ],
   [tableEnums.DNA_KEYS.CASH_MAX_PERCENT],
-  [tableEnums.DNA_KEYS.TICKET_MIN_PERCENT],
-  [tableEnums.DNA_KEYS.TICKET_MAX_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MIN_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MAX_PERCENT],
   [tableEnums.DNA_KEYS.HOLDING_BUY_PERCENT],
   [tableEnums.DNA_KEYS.HOLDING_SELL_PERCENT],
   [tableEnums.DNA_KEYS.TRADE_FREQUENCY],

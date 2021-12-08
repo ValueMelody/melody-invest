@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import * as syncTickets from '../services/syncTickets'
+import * as syncTickers from '../services/syncTickers'
 import * as syncIndicators from '../services/syncIndicators'
 import * as marketEnum from '../enums/market'
 import * as errorEnum from '../enums/error'
@@ -7,7 +7,7 @@ import * as errorEnum from '../enums/error'
 const syncRouter = Router()
 export default syncRouter
 
-syncRouter.get('/tickets/:type/:region/:symbol', async (req, res) => {
+syncRouter.get('/tickers/:type/:region/:symbol', async (req, res) => {
   const region = req.params.region
   const symbol = req.params.symbol
   const type = req.params.type
@@ -16,13 +16,13 @@ syncRouter.get('/tickets/:type/:region/:symbol', async (req, res) => {
   let result
   switch (type) {
     case 'prices':
-      result = await syncTickets.syncPrices(region, symbol)
+      result = await syncTickers.syncPrices(region, symbol)
       break
     case 'earnings':
-      result = await syncTickets.syncEarnings(region, symbol, forceRecheck)
+      result = await syncTickers.syncEarnings(region, symbol, forceRecheck)
       break
     case 'incomes':
-      result = await syncTickets.syncIncomes(region, symbol, forceRecheck)
+      result = await syncTickers.syncIncomes(region, symbol, forceRecheck)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN
@@ -31,7 +31,7 @@ syncRouter.get('/tickets/:type/:region/:symbol', async (req, res) => {
   return res.status(200).send({ result })
 })
 
-syncRouter.get('/batch_tickets/:type', async (req, res) => {
+syncRouter.get('/batch_tickers/:type', async (req, res) => {
   const type = req.params.type
   const date = String(req.query.date)
   const quarter = String(req.query.quarter)
@@ -41,13 +41,13 @@ syncRouter.get('/batch_tickets/:type', async (req, res) => {
   let result
   switch (type) {
     case 'prices':
-      result = await syncTickets.syncAllPrices(date)
+      result = await syncTickers.syncAllPrices(date)
       break
     case 'earnings':
-      result = await syncTickets.syncAllEarnings(year, quarter, forceRecheck)
+      result = await syncTickers.syncAllEarnings(year, quarter, forceRecheck)
       break
     case 'incomes':
-      result = await syncTickets.syncAllIncomes(year, quarter, forceRecheck)
+      result = await syncTickers.syncAllIncomes(year, quarter, forceRecheck)
       break
     default:
       throw errorEnum.HTTP_ERRORS.FORBIDDEN

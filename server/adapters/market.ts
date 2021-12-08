@@ -8,7 +8,7 @@ export const getCooldownPerMin = (): number => {
   return parseInt(process.env.MARKET_KEY_COOLDOWN!) || 15
 }
 
-export const getTicketPrices = async (
+export const getTickerPrices = async (
   symbol: string
 ) => {
   const queryParams = qs.stringify({
@@ -36,14 +36,14 @@ interface quarterlyEarning {
   surprisePercentage: string;
 }
 
-interface TicketEarnings {
+interface TickerEarnings {
   annualEarnings: AnnualEarning[];
   quarterlyEarnings: quarterlyEarning[];
 }
 
-export const getTicketEarnings = async (
+export const getTickerEarnings = async (
   symbol: string
-): Promise<TicketEarnings> => {
+): Promise<TickerEarnings> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.EARNINGS,
     symbol: symbol.toUpperCase(),
@@ -65,14 +65,14 @@ interface Income {
   netIncome: string;
 }
 
-interface TicketIncomes {
+interface TickerIncomes {
   annualReports: Income[];
   quarterlyReports: Income[];
 }
 
-export const getTicketIncomes = async (
+export const getTickerIncomes = async (
   symbol: string
-): Promise<TicketIncomes> => {
+): Promise<TickerIncomes> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.INCOMES,
     symbol: symbol.toUpperCase(),

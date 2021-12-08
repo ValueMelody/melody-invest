@@ -1,8 +1,8 @@
 export const NAMES = {
-  TICKET: 'ticket',
-  TICKET_DAILY: 'ticket_daily',
-  TICKET_YEARLY: 'ticket_yearly',
-  TICKET_QUARTERLY: 'ticket_quarterly',
+  TICKER: 'ticker',
+  TICKER_DAILY: 'ticker_daily',
+  TICKER_YEARLY: 'ticker_yearly',
+  TICKER_QUARTERLY: 'ticker_quarterly',
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly',
@@ -58,8 +58,8 @@ const PRICE_YEARLY_INCREASE_SELL: 'priceYearlyIncreaseSell' = 'priceYearlyIncrea
 const PRICE_YEARLY_DECREASE_BUY: 'priceYearlyDecreaseBuy' = 'priceYearlyDecreaseBuy'
 const PRICE_YEARLY_DECREASE_SELL: 'priceYearlyDecreaseSell' = 'priceYearlyDecreaseSell'
 const CASH_MAX_PERCENT: 'cashMaxPercent' = 'cashMaxPercent'
-const TICKET_MIN_PERCENT: 'ticketMinPercent' = 'ticketMinPercent'
-const TICKET_MAX_PERCENT: 'ticketMaxPercent' = 'ticketMaxPercent'
+const TICKER_MIN_PERCENT: 'tickerMinPercent' = 'tickerMinPercent'
+const TICKER_MAX_PERCENT: 'tickerMaxPercent' = 'tickerMaxPercent'
 const HOLDING_BUY_PERCENT: 'holdingBuyPercent' = 'holdingBuyPercent'
 const HOLDING_SELL_PERCENT: 'holdingSellPercent' = 'holdingSellPercent'
 const TRADE_FREQUENCY: 'tradeFrequency' = 'tradeFrequency'
@@ -87,8 +87,8 @@ export const DNA_KEYS = {
   PRICE_YEARLY_DECREASE_BUY,
   PRICE_YEARLY_DECREASE_SELL,
   CASH_MAX_PERCENT,
-  TICKET_MIN_PERCENT,
-  TICKET_MAX_PERCENT,
+  TICKER_MIN_PERCENT,
+  TICKER_MAX_PERCENT,
   HOLDING_BUY_PERCENT,
   HOLDING_SELL_PERCENT,
   TRADE_FREQUENCY,
