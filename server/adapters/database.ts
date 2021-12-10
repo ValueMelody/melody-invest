@@ -7,7 +7,7 @@ interface OrderBy {
 
 export interface Condition {
   key: string;
-  value: string | number | null;
+  value: string | number | boolean | null;
   type?: string;
 }
 

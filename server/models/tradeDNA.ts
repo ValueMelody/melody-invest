@@ -64,6 +64,18 @@ export interface TradeDNACreate {
   [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]?: number | null;
 }
 
+export const getByPK = async (
+  id: number
+): Promise<TradeDNA | null> => {
+  const dna = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TRADE_DNA,
+    conditions: [
+      { key: 'id', value: id }
+    ]
+  })
+  return dna
+}
+
 export const getByUK = async (
   hashCode: string
 ): Promise<TradeDNA | null> => {
