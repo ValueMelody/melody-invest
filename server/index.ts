@@ -1,7 +1,8 @@
 import express, { Response } from 'express'
 import 'express-async-errors'
 import dotenv from 'dotenv'
-import { initConnection } from './adapters/database'
+import { initConnection as initDatabase } from './adapters/database'
+import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import evolveRouter from './routers/evolve'
 import * as errorEnum from './enums/error'
@@ -16,7 +17,8 @@ const port = process.env.SERVER_PORT || 3000
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-initConnection()
+initDatabase()
+initCache()
 
 app.use('/sync', syncRouter)
 app.use('/evolve', evolveRouter)
