@@ -18,7 +18,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 initDatabase()
-initCache()
+// initCache()
 
 app.use('/sync', syncRouter)
 app.use('/evolve', evolveRouter)

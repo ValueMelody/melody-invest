@@ -10,6 +10,8 @@ export interface TickerDaily {
   splitCoefficient: string;
   dividendPercent: string;
   adjustedClosePrice: string;
+  priceDailyIncrease: number;
+  priceDailyDecrease: number;
 }
 
 interface TickerDailyEdit {
@@ -20,6 +22,8 @@ interface TickerDailyEdit {
   splitCoefficient?: string;
   dividendPercent?: string;
   adjustedClosePrice?: string;
+  priceDailyIncrease?: number;
+  priceDailyDecrease?: number;
 }
 
 export const getByUK = async (
@@ -36,7 +40,7 @@ export const getByUK = async (
   return tickerDaily
 }
 
-export const getPrevious = async (
+export const getPreviousOne = async (
   tickerId: number,
   date: string
 ): Promise<TickerDaily | null> => {
@@ -51,6 +55,21 @@ export const getPrevious = async (
   return tickerDaily
 }
 
+export const getNextAll = async (
+  tickerId: number,
+  date: string
+): Promise<TickerDaily[]> => {
+  const tickerDaily = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+      { key: 'date', type: '>', value: date }
+    ],
+    orderBy: { key: 'date', type: 'asc' }
+  })
+  return tickerDaily
+}
+
 export const create = async (
   values: TickerDailyEdit
 ): Promise<TickerDaily> => {
@@ -59,4 +78,18 @@ export const create = async (
     values
   })
   return newRecords?.length ? newRecords[0] : null
+}
+
+export const update = async (
+  tickerDailyId: number,
+  values: TickerDailyEdit
+): Promise<TickerDaily> => {
+  const updatedDaily = await databaseAdapter.update({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
+    values,
+    conditions: [
+      { key: 'id', value: tickerDailyId }
+    ]
+  })
+  return updatedDaily?.length ? updatedDaily[0] : null
 }
