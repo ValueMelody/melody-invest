@@ -21,8 +21,8 @@ export const calculateDaily = async (): Promise<tickerModel.Ticker[]> => {
       let dailyDecrease = 0
       if (previousDaily) {
         const priceDiffer = parseFloat(tickerDaily.adjustedClosePrice) - parseFloat(previousDaily.adjustedClosePrice)
-        dailyIncrease = priceDiffer > 0 ? previousDaily.priceDailyIncrease + 1 : previousDaily.priceDailyIncrease
-        dailyDecrease = priceDiffer < 0 ? previousDaily.priceDailyDecrease + 1 : previousDaily.priceDailyDecrease
+        dailyIncrease = priceDiffer > 0 ? previousDaily.priceDailyIncrease + 1 : 0
+        dailyDecrease = priceDiffer < 0 ? previousDaily.priceDailyDecrease + 1 : 0
       }
 
       const updatedDaily = await tickerDailyModel.update(tickerDaily.id, {
