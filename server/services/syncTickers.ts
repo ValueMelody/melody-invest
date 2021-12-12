@@ -49,7 +49,7 @@ export const syncPrices = async (
     const dividendAmount = dailyData['7. dividend amount']
     const splitCoefficient = dailyData['8. split coefficient']
 
-    const previousRecord = await tickerDailyModel.getPrevious(ticker.id, date)
+    const previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, date)
 
     const adjustedClose = previousRecord
       ? marketTool.getAdjustedClosePrice(

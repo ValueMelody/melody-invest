@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as syncTickers from '../services/syncTickers'
 import * as syncIndicators from '../services/syncIndicators'
+import * as syncPerformance from '../services/syncPerformance'
 import * as marketEnum from '../enums/market'
 import * as errorEnum from '../enums/error'
 
@@ -144,4 +145,19 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   return res.status(200).send({
     result
   })
+})
+
+syncRouter.get('/performance/:type', async (req, res) => {
+  const type = req.params.type
+
+  let result
+  switch (type) {
+    case 'daily':
+      result = await syncPerformance.calculateDaily()
+      break
+    default:
+      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+  }
+
+  return res.status(200).send({ result })
 })
