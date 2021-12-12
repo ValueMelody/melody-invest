@@ -12,6 +12,9 @@ export interface TickerDaily {
   adjustedClosePrice: string;
   priceDailyIncrease: number;
   priceDailyDecrease: number;
+  priceWeeklyIncrease: number;
+  priceWeeklyDecrease: number;
+  weeklyAveragePrice: string;
 }
 
 interface TickerDailyEdit {
@@ -24,6 +27,9 @@ interface TickerDailyEdit {
   adjustedClosePrice?: string;
   priceDailyIncrease?: number;
   priceDailyDecrease?: number;
+  priceWeeklyIncrease?: number;
+  priceWeeklyDecrease?: number;
+  weeklyAveragePrice?: string;
 }
 
 export const getByUK = async (
@@ -55,15 +61,13 @@ export const getPreviousOne = async (
   return tickerDaily
 }
 
-export const getNextAll = async (
-  tickerId: number,
-  date: string
+export const getAll = async (
+  tickerId: number
 ): Promise<TickerDaily[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
-      { key: 'tickerId', value: tickerId },
-      { key: 'date', type: '>', value: date }
+      { key: 'tickerId', value: tickerId }
     ],
     orderBy: { key: 'date', type: 'asc' }
   })

@@ -161,3 +161,9 @@ syncRouter.get('/performance/:type', async (req, res) => {
 
   return res.status(200).send({ result })
 })
+
+syncRouter.get('/performance/average_price', async (req, res) => {
+  const result = await syncPerformance.calcAveragePrice()
+
+  return res.status(200).send({ result })
+})
