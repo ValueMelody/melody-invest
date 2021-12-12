@@ -15,6 +15,9 @@ export interface TickerDaily {
   priceWeeklyIncrease: number;
   priceWeeklyDecrease: number;
   weeklyAveragePrice: string;
+  monthlyAveragePrice: string;
+  quarterlyAveragePrice: string;
+  yearlyAveragePrice: string;
 }
 
 interface TickerDailyEdit {
@@ -30,6 +33,9 @@ interface TickerDailyEdit {
   priceWeeklyIncrease?: number;
   priceWeeklyDecrease?: number;
   weeklyAveragePrice?: string;
+  monthlyAveragePrice?: string;
+  quarterlyAveragePrice?: string;
+  yearlyAveragePrice?: string;
 }
 
 export const getByUK = async (
