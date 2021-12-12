@@ -1,14 +1,37 @@
 import * as tickerModel from '../models/ticker'
 import * as tickerDailyModel from '../models/tickerDaily'
-import * as dateTool from '../tools/date'
+
+export const calcAveragePrice = async (): Promise<tickerModel.Ticker[]> => {
+  const tickers = await tickerModel.getAll()
+
+  for (const ticker of tickers) {
+    const tickerDailyRecords = await tickerDailyModel.getAll(ticker.id)
+    if (!tickerDailyRecords.length) continue
+
+    let index = -1
+    for (const tickerDaily of tickerDailyRecords) {
+      index++
+      if (tickerDaily.weeklyAveragePrice !== null && index < 5) continue
+
+      const relatedDaily = tickerDailyRecords.slice(index - 5, index)
+      const relatedTotal = relatedDaily.reduce((total, daily) => {
+        const price = parseFloat(daily.adjustedClosePrice)
+        return total + price
+      }, 0)
+      const avgTotal = relatedTotal / 5
+      await tickerDailyModel.update(tickerDaily.id, {
+        weeklyAveragePrice: avgTotal.toFixed(2)
+      })
+    }
+  }
+  return tickers
+}
 
 export const calculateDaily = async (): Promise<tickerModel.Ticker[]> => {
   const tickers = await tickerModel.getAll()
 
   for (const ticker of tickers) {
-    const lastCheckedDate = ticker.lastDailyChecked ?? dateTool.getInitialDate()
-
-    const tickerDailyRecords = await tickerDailyModel.getNextAll(ticker.id, lastCheckedDate)
+    const tickerDailyRecords = await tickerDailyModel.getAll(ticker.id)
     if (!tickerDailyRecords.length) continue
 
     const checkedDaily = []
@@ -31,10 +54,6 @@ export const calculateDaily = async (): Promise<tickerModel.Ticker[]> => {
       })
       checkedDaily.push(updatedDaily)
     }
-    const newestRecord = checkedDaily[checkedDaily.length - 1]
-    await tickerModel.update(ticker.id, {
-      lastDailyChecked: newestRecord.date
-    })
   }
   return tickers
 }

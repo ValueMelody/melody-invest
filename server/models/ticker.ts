@@ -17,7 +17,6 @@ export interface Ticker {
   lastIncomeYear: string;
   firstIncomeQuarter: string;
   lastIncomeQuarter: string;
-  lastDailyChecked: string;
 }
 
 export interface TickerEdit {
@@ -34,7 +33,6 @@ export interface TickerEdit {
   lastIncomeYear?: string;
   firstIncomeQuarter?: string;
   lastIncomeQuarter?: string;
-  lastDailyChecked?: string;
 }
 
 export const getByUK = async (

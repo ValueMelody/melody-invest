@@ -147,17 +147,14 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   })
 })
 
-syncRouter.get('/performance/:type', async (req, res) => {
-  const type = req.params.type
+syncRouter.get('/performance/daily', async (req, res) => {
+  const result = await syncPerformance.calculateDaily()
 
-  let result
-  switch (type) {
-    case 'daily':
-      result = await syncPerformance.calculateDaily()
-      break
-    default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
-  }
+  return res.status(200).send({ result })
+})
+
+syncRouter.get('/performance/average_price', async (req, res) => {
+  const result = await syncPerformance.calcAveragePrice()
 
   return res.status(200).send({ result })
 })
