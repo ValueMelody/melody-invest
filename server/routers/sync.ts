@@ -147,17 +147,8 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   })
 })
 
-syncRouter.get('/performance/:type', async (req, res) => {
-  const type = req.params.type
-
-  let result
-  switch (type) {
-    case 'daily':
-      result = await syncPerformance.calculateDaily()
-      break
-    default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
-  }
+syncRouter.get('/performance/daily', async (req, res) => {
+  const result = await syncPerformance.calculateDaily()
 
   return res.status(200).send({ result })
 })

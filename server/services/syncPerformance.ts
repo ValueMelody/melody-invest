@@ -19,7 +19,7 @@ export const calcAveragePrice = async (): Promise<tickerModel.Ticker[]> => {
         return total + price
       }, 0)
       const avgTotal = relatedTotal / 5
-      await tickerDailyModel.update(relatedDaily.id, {
+      await tickerDailyModel.update(tickerDaily.id, {
         weeklyAveragePrice: avgTotal.toFixed(2)
       })
     }
