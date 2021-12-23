@@ -74,23 +74,25 @@ export const calcPriceMovement = async (): Promise<tickerModel.Ticker[]> => {
 
     const checkedDaily = []
     for (const tickerDaily of tickerDailyRecords) {
-      const previousDaily = checkedDaily.length === 0
-        ? await tickerDailyModel.getPreviousOne(ticker.id, tickerDaily.date)
-        : checkedDaily[checkedDaily.length - 1]
-
       let dailyIncrease = 0
       let dailyDecrease = 0
+      const previousDaily = checkedDaily.length && checkedDaily[checkedDaily.length - 1]
       if (previousDaily) {
         const priceDiffer = parseFloat(tickerDaily.adjustedClosePrice) - parseFloat(previousDaily.adjustedClosePrice)
         dailyIncrease = priceDiffer > 0 ? previousDaily.priceDailyIncrease + 1 : 0
         dailyDecrease = priceDiffer < 0 ? previousDaily.priceDailyDecrease + 1 : 0
       }
 
-      const updatedDaily = await tickerDailyModel.update(tickerDaily.id, {
-        priceDailyIncrease: dailyIncrease,
-        priceDailyDecrease: dailyDecrease
-      })
-      checkedDaily.push(updatedDaily)
+      const hasUpdate = tickerDaily.priceDailyIncrease === null ||
+        tickerDaily.priceDailyDecrease === null
+
+      const daily = hasUpdate
+        ? await tickerDailyModel.update(tickerDaily.id, {
+          priceDailyIncrease: dailyIncrease,
+          priceDailyDecrease: dailyDecrease
+        })
+        : tickerDaily
+      checkedDaily.push(daily)
     }
   }
   return tickers

@@ -16,10 +16,10 @@
     "url": "git+https://github.com/byn9826/dioxider-app"
   },
   "scripts": {
-    "start:server": "npm run start --workspace=server",
-    "create:database": "createdb -h 127.0.0.1 -U admin dioxider",
-    "drop:database": "sudo -u postgres psql -c 'DROP DATABASE dioxider'",
-    "dump:database": "pg_dump -h 127.0.0.1 -Fc dioxider -U admin > ~/Dropbox/Temp/dioxider.bak",
-    "restore:database": "pg_restore -d dioxider -U admin ~/Dropbox/Temp/dioxider.bak"
+    "server:start": "npm run start --workspace=server",
+    "database:create": "createdb -h 127.0.0.1 -U admin dioxider",
+    "database:drop": "sudo -u postgres psql -c 'DROP DATABASE dioxider'",
+    "database:dump": "pg_dump -h 127.0.0.1 -Fc dioxider -U admin > ~/Dropbox/Temp/dioxider.bak",
+    "database:restore": "pg_restore -d dioxider -U admin ~/Dropbox/Temp/dioxider.bak"
   }
 }
