@@ -65,7 +65,7 @@ export const calcAveragePrice = async (): Promise<tickerModel.Ticker[]> => {
   return tickers
 }
 
-export const calculateDaily = async (): Promise<tickerModel.Ticker[]> => {
+export const calcPriceMovement = async (): Promise<tickerModel.Ticker[]> => {
   const tickers = await tickerModel.getAll()
 
   for (const ticker of tickers) {

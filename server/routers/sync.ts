@@ -147,14 +147,14 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   })
 })
 
-syncRouter.get('/performance/daily', async (req, res) => {
-  const result = await syncPerformance.calculateDaily()
+syncRouter.get('/performance/average_price', async (req, res) => {
+  const result = await syncPerformance.calcAveragePrice()
 
   return res.status(200).send({ result })
 })
 
-syncRouter.get('/performance/average_price', async (req, res) => {
-  const result = await syncPerformance.calcAveragePrice()
+syncRouter.get('/performance/price_movement', async (req, res) => {
+  const result = await syncPerformance.calcPriceMovement()
 
   return res.status(200).send({ result })
 })
