@@ -22,8 +22,8 @@ export const calcAveragePrice = async (): Promise<tickerModel.Ticker[]> => {
     let index = -1
     for (const tickerDaily of tickerDailyRecords) {
       index++
-
       let hasUpdate = false
+
       let weeklyAverage = tickerDaily.weeklyAveragePrice
       if (index >= 5 && tickerDaily.weeklyAveragePrice === null) {
         const relatedDaily = tickerDailyRecords.slice(index - 5, index)
@@ -74,22 +74,35 @@ export const calcPriceMovement = async (): Promise<tickerModel.Ticker[]> => {
 
     const checkedDaily = []
     for (const tickerDaily of tickerDailyRecords) {
-      let dailyIncrease = 0
-      let dailyDecrease = 0
-      const previousDaily = checkedDaily.length && checkedDaily[checkedDaily.length - 1]
-      if (previousDaily) {
+      let dailyIncrease = tickerDaily.priceDailyIncrease
+      let dailyDecrease = tickerDaily.priceDailyDecrease
+      if (checkedDaily.length > 0) {
+        const previousDaily = checkedDaily[checkedDaily.length - 1]
         const priceDiffer = parseFloat(tickerDaily.adjustedClosePrice) - parseFloat(previousDaily.adjustedClosePrice)
         dailyIncrease = priceDiffer > 0 ? previousDaily.priceDailyIncrease + 1 : 0
         dailyDecrease = priceDiffer < 0 ? previousDaily.priceDailyDecrease + 1 : 0
       }
 
-      const hasUpdate = tickerDaily.priceDailyIncrease === null ||
-        tickerDaily.priceDailyDecrease === null
+      let weeklyIncrease = tickerDaily.priceWeeklyIncrease
+      let weeklyDecrease = tickerDaily.priceWeeklyDecrease
+      if (checkedDaily.length > 5) {
+        const previousDaily = checkedDaily[checkedDaily.length - 5]
+        const priceDiffer = parseFloat(tickerDaily.weeklyAveragePrice) - parseFloat(previousDaily.weeklyAveragePrice)
+        weeklyIncrease = priceDiffer > 0 ? previousDaily.priceWeeklyIncrease + 1 : 0
+        weeklyDecrease = priceDiffer < 0 ? previousDaily.priceWeeklyDecrease + 1 : 0
+      }
+
+      const hasUpdate = tickerDaily.priceDailyIncrease !== dailyIncrease ||
+        tickerDaily.priceDailyDecrease !== dailyDecrease ||
+        tickerDaily.priceWeeklyIncrease !== weeklyIncrease ||
+        tickerDaily.priceWeeklyDecrease !== weeklyDecrease
 
       const daily = hasUpdate
         ? await tickerDailyModel.update(tickerDaily.id, {
           priceDailyIncrease: dailyIncrease,
-          priceDailyDecrease: dailyDecrease
+          priceDailyDecrease: dailyDecrease,
+          priceWeeklyIncrease: weeklyIncrease,
+          priceWeeklyDecrease: weeklyDecrease
         })
         : tickerDaily
       checkedDaily.push(daily)
