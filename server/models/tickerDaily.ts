@@ -14,6 +14,12 @@ export interface TickerDaily {
   priceDailyDecrease: number;
   priceWeeklyIncrease: number;
   priceWeeklyDecrease: number;
+  priceMonthlyIncrease: number;
+  priceMonthlyDecrease: number;
+  priceQuarterlyIncrease: number;
+  priceQuarterlyDecrease: number;
+  priceYearlyIncrease: number;
+  priceYearlyDecrease: number;
   weeklyAveragePrice: string;
   monthlyAveragePrice: string;
   quarterlyAveragePrice: string;
@@ -32,6 +38,12 @@ interface TickerDailyEdit {
   priceDailyDecrease?: number;
   priceWeeklyIncrease?: number;
   priceWeeklyDecrease?: number;
+  priceMonthlyIncrease?: number;
+  priceMonthlyDecrease?: number;
+  priceQuarterlyIncrease?: number;
+  priceQuarterlyDecrease?: number;
+  priceYearlyIncrease?: number;
+  priceYearlyDecrease?: number;
   weeklyAveragePrice?: string;
   monthlyAveragePrice?: string;
   quarterlyAveragePrice?: string;
