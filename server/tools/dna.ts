@@ -1,5 +1,7 @@
 import * as tableEnums from '../enums/table'
 import * as geneEnums from '../enums/gene'
+import * as tradeDNAModel from '../models/tradeDNA'
+import * as tickerDailyModel from '../models/tickerDaily'
 
 type BuyGene =
   typeof tableEnums.DNA_KEYS.PRICE_DAILY_INCREASE_BUY |
@@ -129,6 +131,36 @@ export const getGeneGroups = () => (
     }, [])
   ))
 )
+
+export const isTickerMetBuyGene = (
+  tickerDaily: tickerDailyModel.TickerDaily,
+  dna: tradeDNAModel.TradeDNA
+): boolean => {
+  const priceMovementKeyMappings = {
+    [tableEnums.DNA_KEYS.PRICE_DAILY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_DAILY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_DAILY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_DAILY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_WEEKLY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_WEEKLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_WEEKLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_WEEKLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_MONTHLY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_MONTHLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_MONTHLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_MONTHLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_QUARTERLY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_QUARTERLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_QUARTERLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_QUARTERLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_YEARLY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_YEARLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_YEARLY_DECREASE
+  }
+
+  // @ts-ignore
+  const metPriceMovementBuyGene = Object.keys(priceMovementKeyMappings).some((
+    dnaKey: keyof typeof priceMovementKeyMappings
+  ) => {
+    const tickerKey = priceMovementKeyMappings[dnaKey]
+    const tickerValue = tickerDaily[tickerKey]
+    const dnaValue = dna[dnaKey]
+    return dnaValue !== null && tickerValue >= dnaValue
+  })
+
+  return metPriceMovementBuyGene
+}
 
 // export const getBaseDNAs = () => {
 //   const genesInGroups = getGeneGroups()

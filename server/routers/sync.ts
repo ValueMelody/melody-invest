@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import * as syncTickers from '../services/syncTickers'
 import * as syncIndicators from '../services/syncIndicators'
-import * as syncPerformance from '../services/syncPerformance'
 import * as marketEnum from '../enums/market'
 import * as errorEnum from '../enums/error'
 
@@ -145,16 +144,4 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   return res.status(200).send({
     result
   })
-})
-
-syncRouter.get('/performance/average_price', async (req, res) => {
-  const result = await syncPerformance.calcAveragePrice()
-
-  return res.status(200).send({ result })
-})
-
-syncRouter.get('/performance/price_movement', async (req, res) => {
-  const result = await syncPerformance.calcPriceMovement()
-
-  return res.status(200).send({ result })
 })

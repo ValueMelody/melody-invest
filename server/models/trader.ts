@@ -39,13 +39,10 @@ export const getByUK = async (
   return trader
 }
 
-export const getActiveByEnv = async (
-  envId: number
-): Promise<Trader[]> => {
+export const getActives = async (): Promise<Trader[]> => {
   const traders = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
-      { key: 'tradeEnvId', value: envId },
       { key: 'isActive', value: true }
     ]
   })

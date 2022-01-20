@@ -2,9 +2,9 @@ import express, { Response } from 'express'
 import 'express-async-errors'
 import dotenv from 'dotenv'
 import { initConnection as initDatabase } from './adapters/database'
-import { initConnection as initCache } from './adapters/cache'
+// import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
-import evolveRouter from './routers/evolve'
+import calcRouter from './routers/calc'
 import * as errorEnum from './enums/error'
 
 dotenv.config()
@@ -21,7 +21,7 @@ initDatabase()
 // initCache()
 
 app.use('/sync', syncRouter)
-app.use('/evolve', evolveRouter)
+app.use('/calc', calcRouter)
 
 // @ts-ignore
 app.use((err: any, req, res: Response, next) => {

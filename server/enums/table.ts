@@ -10,6 +10,30 @@ export const NAMES = {
   TRADER: 'trader'
 }
 
+const PRICE_DAILY_INCREASE: 'priceDailyIncrease' = 'priceDailyIncrease'
+const PRICE_DAILY_DECREASE: 'priceDailyDecrease' = 'priceDailyDecrease'
+const PRICE_WEEKLY_INCREASE: 'priceWeeklyIncrease' = 'priceWeeklyIncrease'
+const PRICE_WEEKLY_DECREASE: 'priceWeeklyDecrease' = 'priceWeeklyDecrease'
+const PRICE_MONTHLY_INCREASE: 'priceMonthlyIncrease' = 'priceMonthlyIncrease'
+const PRICE_MONTHLY_DECREASE: 'priceMonthlyDecrease' = 'priceMonthlyDecrease'
+const PRICE_QUARTERLY_INCREASE: 'priceQuarterlyIncrease' = 'priceQuarterlyIncrease'
+const PRICE_QUARTERLY_DECREASE: 'priceQuarterlyDecrease' = 'priceQuarterlyDecrease'
+const PRICE_YEARLY_INCREASE: 'priceYearlyIncrease' = 'priceYearlyIncrease'
+const PRICE_YEARLY_DECREASE: 'priceYearlyDecrease' = 'priceYearlyDecrease'
+
+export const TICKER_KEYS = {
+  PRICE_DAILY_INCREASE,
+  PRICE_DAILY_DECREASE,
+  PRICE_WEEKLY_INCREASE,
+  PRICE_WEEKLY_DECREASE,
+  PRICE_MONTHLY_INCREASE,
+  PRICE_MONTHLY_DECREASE,
+  PRICE_QUARTERLY_INCREASE,
+  PRICE_QUARTERLY_DECREASE,
+  PRICE_YEARLY_INCREASE,
+  PRICE_YEARLY_DECREASE
+}
+
 const FUNDS_RATE: 'fundsRate' = 'fundsRate'
 const TEN_YEARS_TREASURY: 'tenYearsTreasury' = 'tenYearsTreasury'
 const THIRTY_YEARS_TREASURY: 'thirtyYearsTreasury' = 'thirtyYearsTreasury'

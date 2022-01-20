@@ -29,8 +29,8 @@ export interface TradeDNA {
   [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.TRADE_FREQUENCY]: number | null;
-  [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]: number | null;
+  [tableEnum.DNA_KEYS.TRADE_FREQUENCY]: number;
+  [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]: number;
 }
 
 export interface TradeDNACreate {
