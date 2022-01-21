@@ -1,7 +1,7 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface TradeDNA {
+export interface traderDNA {
   id: number;
   hashCode: string;
   [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_BUY]: number | null;
@@ -27,13 +27,13 @@ export interface TradeDNA {
   [tableEnum.DNA_KEYS.CASH_MAX_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.TICKER_MIN_PERCENT]: number | null;
   [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]: number | null;
+  [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]: number;
+  [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]: number;
   [tableEnum.DNA_KEYS.TRADE_FREQUENCY]: number;
   [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]: number;
 }
 
-export interface TradeDNACreate {
+export interface traderDNACreate {
   hashCode: string;
   [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_BUY]?: number | null;
   [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_SELL]?: number | null;
@@ -66,9 +66,9 @@ export interface TradeDNACreate {
 
 export const getByPK = async (
   id: number
-): Promise<TradeDNA | null> => {
+): Promise<traderDNA | null> => {
   const dna = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADE_DNA,
+    tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
       { key: 'id', value: id }
     ]
@@ -78,9 +78,9 @@ export const getByPK = async (
 
 export const getByUK = async (
   hashCode: string
-): Promise<TradeDNA | null> => {
+): Promise<traderDNA | null> => {
   const dna = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADE_DNA,
+    tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
       { key: 'hashCode', value: hashCode }
     ]
@@ -89,10 +89,10 @@ export const getByUK = async (
 }
 
 export const create = async (
-  values: TradeDNACreate
-): Promise<TradeDNA> => {
+  values: traderDNACreate
+): Promise<traderDNA> => {
   const newRecords = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADE_DNA,
+    tableName: tableEnum.NAMES.TRADER_DNA,
     values
   })
   return newRecords?.length ? newRecords[0] : null

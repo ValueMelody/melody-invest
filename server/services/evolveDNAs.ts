@@ -1,7 +1,7 @@
 import * as dnaTool from '../tools/dna'
 import * as numberTool from '../tools/number'
 import * as cryptoTool from '../tools/crypto'
-import * as tradeDNAModel from '../models/tradeDNA'
+import * as traderDNAModel from '../models/traderDNA'
 
 export const generateRandomDNAs = async () => {
   const dnaGroups = dnaTool.getGeneGroups()
@@ -15,7 +15,7 @@ export const generateRandomDNAs = async () => {
   for (const genes of dnaGenes) {
     const dnaString = JSON.stringify(genes)
     const hashCode = cryptoTool.toSHA256(dnaString)
-    const currentDNA = await tradeDNAModel.getByUK(hashCode)
+    const currentDNA = await traderDNAModel.getByUK(hashCode)
     if (currentDNA) return
     const geneValues = genes.reduce((values, gene) => {
       return {
@@ -23,7 +23,7 @@ export const generateRandomDNAs = async () => {
         [gene.type]: gene.value
       }
     }, {})
-    const newDNA = await tradeDNAModel.create({
+    const newDNA = await traderDNAModel.create({
       ...geneValues,
       hashCode
     })

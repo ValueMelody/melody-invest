@@ -1,28 +1,17 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-interface TradeRecord {
-  lastTradeDate: string;
-  history: [];
-}
-
 export interface Trader {
   id: number;
-  tradeEnvId: number;
-  tradeDNAId: number;
-  currentValue: number;
-  tradeRecord: TradeRecord;
+  traderEnvId: number;
+  traderDNAId: number;
   isActive: boolean;
-  lastTradeDate: string;
 }
 
 export interface TraderEdit {
-  tradeEnvId?: number;
-  tradeDNAId?: number;
-  currentValue?: number;
-  tradeRecord?: string;
+  traderEnvId?: number;
+  traderDNAId?: number;
   isActive?: boolean;
-  lastTradeDate?: string;
 }
 
 export const getByUK = async (
@@ -32,8 +21,8 @@ export const getByUK = async (
   const trader = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
-      { key: 'tradeEnvId', value: envId },
-      { key: 'tradeDNAId', value: dnaId }
+      { key: 'traderEnvId', value: envId },
+      { key: 'traderDNAId', value: dnaId }
     ]
   })
   return trader

@@ -6,8 +6,9 @@ export const NAMES = {
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly',
-  TRADE_DNA: 'trade_dna',
-  TRADER: 'trader'
+  TRADER_DNA: 'trader_dna',
+  TRADER: 'trader',
+  TRADER_HOLDING: 'trader_holding'
 }
 
 const PRICE_DAILY_INCREASE: 'priceDailyIncrease' = 'priceDailyIncrease'
