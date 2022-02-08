@@ -19,6 +19,12 @@ export interface TraderHolding {
   details: HoldingDetails;
 }
 
+interface TraderHoldingEdit {
+  traderId?: number;
+  date?: string;
+  details?: HoldingDetails;
+}
+
 export const getLatest = async (
   traderId: number
 ): Promise<TraderHolding | null> => {
@@ -30,4 +36,14 @@ export const getLatest = async (
     orderBy: { key: 'date', type: 'desc' }
   })
   return trader
+}
+
+export const create = async (
+  values: TraderHoldingEdit
+): Promise<TraderHolding> => {
+  const newRecords = await databaseAdapter.create({
+    tableName: tableEnum.NAMES.TRADER_HOLDING,
+    values
+  })
+  return newRecords?.length ? newRecords[0] : null
 }
