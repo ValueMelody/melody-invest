@@ -32,18 +32,27 @@ export const calcPerformance = async () => {
           return firstWeight >= secondWeight ? -1 : 1
         })
 
-      const total = holding ? holding.detail.total : traderTool.getInitialCash()
-      const cash = holding ? holding.detail.cash : traderTool.getInitialCash()
-      const singleTransactionMax = total * dna.holdingBuyPercent
+      const total = holding ? holding.details.total : traderTool.getInitialCash()
+      const cash = holding ? holding.details.cash : traderTool.getInitialCash()
+      const singleTransactionMax = total * dna.holdingBuyPercent / 100
 
-      let freeCash = cash
-      const targetsBuyAmount = buyTargets.map((target) => {
-        const buyAmount = freeCash < singleTransactionMax ? freeCash : singleTransactionMax
-        freeCash -= buyAmount
-        return buyAmount
-      })
+      const buyDetails = buyTargets.reduce((
+        results: traderHoldingModel.HoldingDetails, target
+      ): traderHoldingModel.HoldingDetails => {
+        const { cash, tickerShares } = results
+        const maxAmount = cash < singleTransactionMax ? cash : singleTransactionMax
+        const sharePrice = parseInt(target.adjustedClosePrice)
+        const shares = Math.floor(maxAmount / sharePrice)
+        const totalAmount = sharePrice * shares
+        const freeCash = cash - totalAmount
+        const newShares = [...tickerShares, { tickerId: target.tickerId, shares }]
+        const result = {
+          total, cash: freeCash, tickerShares: newShares
+        }
+        return result
+      }, { total, cash, tickerShares: [] })
 
-      console.log(buyTargets)
+      console.log(buyDetails)
     }
   }
 }

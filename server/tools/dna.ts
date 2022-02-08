@@ -149,17 +149,21 @@ export const getPriceMovementBuyWeights = (
     [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_YEARLY_DECREASE
   }
 
-  // @ts-ignore
-  return Object.keys(GENE_TRIGGERS)
-    // @ts-ignore
-    .reduce((weights, gene: BuyGene): number => {
-      const tickerKey = GENE_TRIGGERS[gene]
-      const tickerValue = tickerDaily[tickerKey]
-      const dnaValue = dna[gene]
-      return dnaValue !== null && tickerValue >= dnaValue
-        ? weights * (tickerValue - dnaValue + 2)
-        : weights
-    }, 0)
+  const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
+
+  const weights = geneTriggerKeys.reduce((
+    weights: number, gene
+  ): number => {
+    const tickerKey = GENE_TRIGGERS[gene]
+    const tickerValue = tickerDaily[tickerKey]
+    const dnaValue = dna[gene]
+    const combinedWeights = dnaValue !== null && tickerValue >= dnaValue
+      ? (weights || 1) * (tickerValue - dnaValue + 2)
+      : weights
+    return combinedWeights
+  }, 0)
+
+  return weights
 }
 
 // export const getBaseDNAs = () => {

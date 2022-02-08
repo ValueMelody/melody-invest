@@ -1,28 +1,29 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-interface TickerShares {
-  [key: string]: number
+export interface TickerShare {
+  tickerId: number;
+  shares: number;
 }
 
-interface HoldingDetail {
-  total: number,
-  cash: number,
-  tickerShares: TickerShares
+export interface HoldingDetails {
+  total: number;
+  cash: number;
+  tickerShares: TickerShare[];
 }
 
 export interface TraderHolding {
   id: number;
   traderId: number;
   date: string;
-  detail: HoldingDetail;
+  details: HoldingDetails;
 }
 
 export const getLatest = async (
   traderId: number
 ): Promise<TraderHolding | null> => {
   const trader = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAMES.TRADER_HOLDING,
     conditions: [
       { key: 'traderId', value: traderId }
     ],

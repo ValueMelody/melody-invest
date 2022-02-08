@@ -1,4 +1,4 @@
-import express, { Response } from 'express'
+import express, { Response, Request, NextFunction } from 'express'
 import 'express-async-errors'
 import dotenv from 'dotenv'
 import { initConnection as initDatabase } from './adapters/database'
@@ -23,8 +23,7 @@ initDatabase()
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
 
-// @ts-ignore
-app.use((err: any, req, res: Response, next) => {
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err)
   const internalError = errorEnum.HTTP_ERRORS.INTERNAL_SERVER_ERROR
   res.status(err?.code || internalError.code).send({
