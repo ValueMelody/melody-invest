@@ -6,8 +6,33 @@ export const NAMES = {
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly',
-  TRADE_DNA: 'trade_dna',
-  TRADER: 'trader'
+  TRADER_DNA: 'trader_dna',
+  TRADER: 'trader',
+  TRADER_HOLDING: 'trader_holding'
+}
+
+const PRICE_DAILY_INCREASE: 'priceDailyIncrease' = 'priceDailyIncrease'
+const PRICE_DAILY_DECREASE: 'priceDailyDecrease' = 'priceDailyDecrease'
+const PRICE_WEEKLY_INCREASE: 'priceWeeklyIncrease' = 'priceWeeklyIncrease'
+const PRICE_WEEKLY_DECREASE: 'priceWeeklyDecrease' = 'priceWeeklyDecrease'
+const PRICE_MONTHLY_INCREASE: 'priceMonthlyIncrease' = 'priceMonthlyIncrease'
+const PRICE_MONTHLY_DECREASE: 'priceMonthlyDecrease' = 'priceMonthlyDecrease'
+const PRICE_QUARTERLY_INCREASE: 'priceQuarterlyIncrease' = 'priceQuarterlyIncrease'
+const PRICE_QUARTERLY_DECREASE: 'priceQuarterlyDecrease' = 'priceQuarterlyDecrease'
+const PRICE_YEARLY_INCREASE: 'priceYearlyIncrease' = 'priceYearlyIncrease'
+const PRICE_YEARLY_DECREASE: 'priceYearlyDecrease' = 'priceYearlyDecrease'
+
+export const TICKER_KEYS = {
+  PRICE_DAILY_INCREASE,
+  PRICE_DAILY_DECREASE,
+  PRICE_WEEKLY_INCREASE,
+  PRICE_WEEKLY_DECREASE,
+  PRICE_MONTHLY_INCREASE,
+  PRICE_MONTHLY_DECREASE,
+  PRICE_QUARTERLY_INCREASE,
+  PRICE_QUARTERLY_DECREASE,
+  PRICE_YEARLY_INCREASE,
+  PRICE_YEARLY_DECREASE
 }
 
 const FUNDS_RATE: 'fundsRate' = 'fundsRate'

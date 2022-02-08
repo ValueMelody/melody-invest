@@ -10,16 +10,16 @@ export interface TickerDaily {
   splitCoefficient: string;
   dividendPercent: string;
   adjustedClosePrice: string;
-  priceDailyIncrease: number;
-  priceDailyDecrease: number;
-  priceWeeklyIncrease: number;
-  priceWeeklyDecrease: number;
-  priceMonthlyIncrease: number;
-  priceMonthlyDecrease: number;
-  priceQuarterlyIncrease: number;
-  priceQuarterlyDecrease: number;
-  priceYearlyIncrease: number;
-  priceYearlyDecrease: number;
+  [tableEnum.TICKER_KEYS.PRICE_DAILY_INCREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_DAILY_DECREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_INCREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_DECREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_INCREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_DECREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_INCREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_DECREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_YEARLY_INCREASE]: number;
+  [tableEnum.TICKER_KEYS.PRICE_YEARLY_DECREASE]: number;
   weeklyAveragePrice: string;
   monthlyAveragePrice: string;
   quarterlyAveragePrice: string;
@@ -34,16 +34,16 @@ interface TickerDailyEdit {
   splitCoefficient?: string;
   dividendPercent?: string;
   adjustedClosePrice?: string;
-  priceDailyIncrease?: number;
-  priceDailyDecrease?: number;
-  priceWeeklyIncrease?: number;
-  priceWeeklyDecrease?: number;
-  priceMonthlyIncrease?: number;
-  priceMonthlyDecrease?: number;
-  priceQuarterlyIncrease?: number;
-  priceQuarterlyDecrease?: number;
-  priceYearlyIncrease?: number;
-  priceYearlyDecrease?: number;
+  [tableEnum.TICKER_KEYS.PRICE_DAILY_INCREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_DAILY_DECREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_INCREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_DECREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_INCREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_DECREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_INCREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_DECREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_YEARLY_INCREASE]?: number;
+  [tableEnum.TICKER_KEYS.PRICE_YEARLY_DECREASE]?: number;
   weeklyAveragePrice?: string;
   monthlyAveragePrice?: string;
   quarterlyAveragePrice?: string;
@@ -88,6 +88,18 @@ export const getAll = async (
       { key: 'tickerId', value: tickerId }
     ],
     orderBy: { key: 'date', type: 'asc' }
+  })
+  return tickerDaily
+}
+
+export const getByDate = async (
+  date: string
+): Promise<TickerDaily[]> => {
+  const tickerDaily = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
+    conditions: [
+      { key: 'date', value: date }
+    ]
   })
   return tickerDaily
 }

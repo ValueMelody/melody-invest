@@ -73,7 +73,7 @@ export const calcPriceMovement = async (): Promise<tickerModel.Ticker[]> => {
     const tickerDailyRecords = await tickerDailyModel.getAll(ticker.id)
     if (!tickerDailyRecords.length) continue
 
-    const checkedDaily = []
+    const checkedDaily: tickerDailyModel.TickerDaily[] = []
     for (const tickerDaily of tickerDailyRecords) {
       let dailyIncrease = tickerDaily.priceDailyIncrease
       let dailyDecrease = tickerDaily.priceDailyDecrease
