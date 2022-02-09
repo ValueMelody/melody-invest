@@ -73,10 +73,10 @@ const GENE_VALUES = {
   [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   [tableEnums.DNA_KEYS.CASH_MAX_PERCENT]: [...geneEnums.VALUES.CASH_MAX_PERCENT],
-  [tableEnums.DNA_KEYS.TICKER_MIN_PERCENT]: [...geneEnums.VALUES.TRANSACTION_PERCENT],
-  [tableEnums.DNA_KEYS.TICKER_MAX_PERCENT]: [...geneEnums.VALUES.TRANSACTION_PERCENT],
-  [tableEnums.DNA_KEYS.HOLDING_BUY_PERCENT]: [...geneEnums.VALUES.TRANSACTION_PERCENT],
-  [tableEnums.DNA_KEYS.HOLDING_SELL_PERCENT]: [...geneEnums.VALUES.TRANSACTION_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MIN_PERCENT]: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
+  [tableEnums.DNA_KEYS.TICKER_MAX_PERCENT]: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
+  [tableEnums.DNA_KEYS.HOLDING_BUY_PERCENT]: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
+  [tableEnums.DNA_KEYS.HOLDING_SELL_PERCENT]: [...geneEnums.VALUES.HOLDING_PERCENT],
   [tableEnums.DNA_KEYS.TRADE_FREQUENCY]: [...geneEnums.VALUES.TRADE_FREQUENCY],
   [tableEnums.DNA_KEYS.REBALANCE_FREQUENCY]: [...geneEnums.VALUES.REBALANCE_FREQUENCY]
 }
@@ -147,6 +147,40 @@ export const getPriceMovementBuyWeights = (
     [tableEnums.DNA_KEYS.PRICE_QUARTERLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_QUARTERLY_DECREASE,
     [tableEnums.DNA_KEYS.PRICE_YEARLY_INCREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_YEARLY_INCREASE,
     [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: tableEnums.TICKER_KEYS.PRICE_YEARLY_DECREASE
+  }
+
+  const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
+
+  const weights = geneTriggerKeys.reduce((
+    weights: number, gene
+  ): number => {
+    const tickerKey = GENE_TRIGGERS[gene]
+    const tickerValue = tickerDaily[tickerKey]
+    const dnaValue = dna[gene]
+    const combinedWeights = dnaValue !== null && tickerValue >= dnaValue
+      ? (weights || 1) * (tickerValue - dnaValue + 2)
+      : weights
+    return combinedWeights
+  }, 0)
+
+  return weights
+}
+
+export const getPriceMovementSellWeights = (
+  dna: traderDNAModel.traderDNA,
+  tickerDaily: tickerDailyModel.TickerDaily
+): number => {
+  const GENE_TRIGGERS = {
+    [tableEnums.DNA_KEYS.PRICE_DAILY_INCREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_DAILY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_DAILY_DECREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_DAILY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_WEEKLY_INCREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_WEEKLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_WEEKLY_DECREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_WEEKLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_MONTHLY_INCREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_MONTHLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_MONTHLY_DECREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_MONTHLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_QUARTERLY_INCREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_QUARTERLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_QUARTERLY_DECREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_QUARTERLY_DECREASE,
+    [tableEnums.DNA_KEYS.PRICE_YEARLY_INCREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_YEARLY_INCREASE,
+    [tableEnums.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]: tableEnums.TICKER_KEYS.PRICE_YEARLY_DECREASE
   }
 
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>

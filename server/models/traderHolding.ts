@@ -1,22 +1,19 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface TickerShare {
+export interface Holding {
   tickerId: number;
-  shares: number;
-}
-
-export interface HoldingDetails {
-  total: number;
-  cash: number;
-  tickerShares: TickerShare[];
+  totalShares: number;
+  totalValue: number;
 }
 
 export interface TraderHolding {
   id: number;
   traderId: number;
   date: string;
-  details: HoldingDetails;
+  totalValue: string;
+  totalCash: string;
+  holdings: Holding[];
 }
 
 interface TraderHoldingEdit {
