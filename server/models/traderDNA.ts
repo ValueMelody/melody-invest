@@ -1,67 +1,85 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type BuyGene =
+  'priceDailyIncreaseBuy' | 'priceDailyDecreaseBuy' |
+  'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
+  'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
+  'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
+  'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy'
+
+export type SellGene =
+  'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
+  'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
+  'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
+  'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
+  'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell'
+
+export type GeneType =
+  BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
+  'holdingBuyPercent' | 'holdingSellPercent' | 'tradeFrequency' | 'rebalanceFrequency'
+
 export interface traderDNA {
   id: number;
   hashCode: string;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_DECREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_DECREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_INCREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_INCREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_DECREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_DECREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_INCREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_INCREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_DECREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_DECREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_INCREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_INCREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_DECREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_DECREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_INCREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_INCREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]: number | null;
-  [tableEnum.DNA_KEYS.CASH_MAX_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.TICKER_MIN_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]: number | null;
-  [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]: number;
-  [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]: number;
-  [tableEnum.DNA_KEYS.TRADE_FREQUENCY]: number;
-  [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]: number;
+  priceDailyIncreaseBuy: number | null;
+  priceDailyIncreaseSell: number | null;
+  priceDailyDecreaseBuy: number | null;
+  priceDailyDecreaseSell: number | null;
+  priceWeeklyIncreaseBuy: number | null;
+  priceWeeklyIncreaseSell: number | null;
+  priceWeeklyDecreaseBuy: number | null;
+  priceWeeklyDecreaseSell: number | null;
+  priceMonthlyIncreaseBuy: number | null;
+  priceMonthlyIncreaseSell: number | null;
+  priceMonthlyDecreaseBuy: number | null;
+  priceMonthlyDecreaseSell: number | null;
+  priceQuarterlyIncreaseBuy: number | null;
+  priceQuarterlyIncreaseSell: number | null;
+  priceQuarterlyDecreaseBuy: number | null;
+  priceQuarterlyDecreaseSell: number | null;
+  priceYearlyIncreaseBuy: number | null;
+  priceYearlyIncreaseSell: number | null;
+  priceYearlyDecreaseBuy: number | null;
+  priceYearlyDecreaseSell: number | null;
+  cashMaxPercent: number | null;
+  tickerMinPercent: number | null;
+  tickerMaxPercent: number | null;
+  holdingBuyPercent: number;
+  holdingSellPercent: number;
+  tradeFrequency: number;
+  rebalanceFrequency: number;
 }
 
 export interface traderDNACreate {
   hashCode: string;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_INCREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_DECREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_DAILY_DECREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_INCREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_INCREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_DECREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_WEEKLY_DECREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_INCREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_INCREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_DECREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_MONTHLY_DECREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_INCREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_INCREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_DECREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_QUARTERLY_DECREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_INCREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_INCREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_BUY]?: number | null;
-  [tableEnum.DNA_KEYS.PRICE_YEARLY_DECREASE_SELL]?: number | null;
-  [tableEnum.DNA_KEYS.CASH_MAX_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.TICKER_MIN_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.TICKER_MAX_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.HOLDING_BUY_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.HOLDING_SELL_PERCENT]?: number | null;
-  [tableEnum.DNA_KEYS.TRADE_FREQUENCY]?: number | null;
-  [tableEnum.DNA_KEYS.REBALANCE_FREQUENCY]?: number | null;
+  priceDailyIncreaseBuy: number | null;
+  priceDailyIncreaseSell: number | null;
+  priceDailyDecreaseBuy: number | null;
+  priceDailyDecreaseSell: number | null;
+  priceWeeklyIncreaseBuy: number | null;
+  priceWeeklyIncreaseSell: number | null;
+  priceWeeklyDecreaseBuy: number | null;
+  priceWeeklyDecreaseSell: number | null;
+  priceMonthlyIncreaseBuy: number | null;
+  priceMonthlyIncreaseSell: number | null;
+  priceMonthlyDecreaseBuy: number | null;
+  priceMonthlyDecreaseSell: number | null;
+  priceQuarterlyIncreaseBuy: number | null;
+  priceQuarterlyIncreaseSell: number | null;
+  priceQuarterlyDecreaseBuy: number | null;
+  priceQuarterlyDecreaseSell: number | null;
+  priceYearlyIncreaseBuy: number | null;
+  priceYearlyIncreaseSell: number | null;
+  priceYearlyDecreaseBuy: number | null;
+  priceYearlyDecreaseSell: number | null;
+  cashMaxPercent: number | null;
+  tickerMinPercent: number | null;
+  tickerMaxPercent: number | null;
+  holdingBuyPercent: number;
+  holdingSellPercent: number;
+  tradeFrequency: number;
+  rebalanceFrequency: number;
 }
 
 export const getByPK = async (
