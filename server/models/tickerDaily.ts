@@ -1,6 +1,13 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type TrendType =
+  'priceDailyIncrease' | 'priceDailyDecrease' |
+  'priceWeeklyIncrease' | 'priceWeeklyDecrease' |
+  'priceMonthlyIncrease' | 'priceMonthlyDecrease' |
+  'priceQuarterlyIncrease' | 'priceQuarterlyDecrease' |
+  'priceYearlyIncrease' | 'priceYearlyDecrease'
+
 export interface TickerDaily {
   id: number;
   tickerId: number;
@@ -10,16 +17,16 @@ export interface TickerDaily {
   splitCoefficient: string;
   dividendPercent: string;
   adjustedClosePrice: string;
-  [tableEnum.TICKER_KEYS.PRICE_DAILY_INCREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_DAILY_DECREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_INCREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_DECREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_INCREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_DECREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_INCREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_DECREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_YEARLY_INCREASE]: number;
-  [tableEnum.TICKER_KEYS.PRICE_YEARLY_DECREASE]: number;
+  priceDailyIncrease: number;
+  priceDailyDecrease: number;
+  priceWeeklyIncrease: number;
+  priceWeeklyDecrease: number;
+  priceMonthlyIncrease: number;
+  priceMonthlyDecrease: number;
+  priceQuarterlyIncrease: number;
+  priceQuarterlyDecrease: number;
+  priceYearlyIncrease: number;
+  priceYearlyDecrease: number;
   weeklyAveragePrice: string;
   monthlyAveragePrice: string;
   quarterlyAveragePrice: string;
@@ -34,16 +41,16 @@ interface TickerDailyEdit {
   splitCoefficient?: string;
   dividendPercent?: string;
   adjustedClosePrice?: string;
-  [tableEnum.TICKER_KEYS.PRICE_DAILY_INCREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_DAILY_DECREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_INCREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_WEEKLY_DECREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_INCREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_MONTHLY_DECREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_INCREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_QUARTERLY_DECREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_YEARLY_INCREASE]?: number;
-  [tableEnum.TICKER_KEYS.PRICE_YEARLY_DECREASE]?: number;
+  priceDailyIncrease?: number;
+  priceDailyDecrease?: number;
+  priceWeeklyIncrease?: number;
+  priceWeeklyDecrease?: number;
+  priceMonthlyIncrease?: number;
+  priceMonthlyDecrease?: number;
+  priceQuarterlyIncrease?: number;
+  priceQuarterlyDecrease?: number;
+  priceYearlyIncrease?: number;
+  priceYearlyDecrease?: number;
   weeklyAveragePrice?: string;
   monthlyAveragePrice?: string;
   quarterlyAveragePrice?: string;

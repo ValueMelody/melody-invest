@@ -2,46 +2,39 @@ import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
 export type IndicatorMonthlyKeys =
-  typeof tableEnum.INDICATOR_KEYS.FUNDS_RATE |
-  typeof tableEnum.INDICATOR_KEYS.TEN_YEARS_TREASURY |
-  typeof tableEnum.INDICATOR_KEYS.THIRTY_YEARS_TREASURY |
-  typeof tableEnum.INDICATOR_KEYS.CPI |
-  typeof tableEnum.INDICATOR_KEYS.INFLATION_EXPECTATION |
-  typeof tableEnum.INDICATOR_KEYS.CONSUMER_SENTIMENT |
-  typeof tableEnum.INDICATOR_KEYS.RETAIL_SALES |
-  typeof tableEnum.INDICATOR_KEYS.DURABLE_GOODS |
-  typeof tableEnum.INDICATOR_KEYS.UNEMPLOYMENT_RATE |
-  typeof tableEnum.INDICATOR_KEYS.NONFARM_PAYROLL
+  'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
+  'inflationExpectation' | 'consumerSentiment' | 'retailSales' |
+  'durableGoods' | 'unemploymentRate' | 'nonfarmPayroll'
 
 export interface IndicatorMonthly {
   id: number;
   region: string;
   month: string;
-  [tableEnum.INDICATOR_KEYS.FUNDS_RATE]: string;
-  [tableEnum.INDICATOR_KEYS.CPI]: string;
-  [tableEnum.INDICATOR_KEYS.TEN_YEARS_TREASURY]: string;
-  [tableEnum.INDICATOR_KEYS.THIRTY_YEARS_TREASURY]: string;
-  [tableEnum.INDICATOR_KEYS.INFLATION_EXPECTATION]: string;
-  [tableEnum.INDICATOR_KEYS.CONSUMER_SENTIMENT]: string;
-  [tableEnum.INDICATOR_KEYS.RETAIL_SALES]: string;
-  [tableEnum.INDICATOR_KEYS.DURABLE_GOODS]: string;
-  [tableEnum.INDICATOR_KEYS.UNEMPLOYMENT_RATE]: string;
-  [tableEnum.INDICATOR_KEYS.NONFARM_PAYROLL]: string;
+  fundsRate: string;
+  cpi: string;
+  tenYearsTreasury: string;
+  thirtyYearsTreasury: string;
+  inflationExpectation: string;
+  consumerSentiment: string;
+  retailSales: string;
+  durableGoods: string;
+  unemploymentRate: string;
+  nonfarmPayroll: string;
 }
 
 interface IndicatorMonthlyEdit {
   region?: string;
   month?: string;
-  [tableEnum.INDICATOR_KEYS.FUNDS_RATE]?: string;
-  [tableEnum.INDICATOR_KEYS.CPI]?: string;
-  [tableEnum.INDICATOR_KEYS.TEN_YEARS_TREASURY]?: string;
-  [tableEnum.INDICATOR_KEYS.THIRTY_YEARS_TREASURY]?: string;
-  [tableEnum.INDICATOR_KEYS.INFLATION_EXPECTATION]?: string;
-  [tableEnum.INDICATOR_KEYS.CONSUMER_SENTIMENT]?: string;
-  [tableEnum.INDICATOR_KEYS.RETAIL_SALES]?: string;
-  [tableEnum.INDICATOR_KEYS.DURABLE_GOODS]?: string;
-  [tableEnum.INDICATOR_KEYS.UNEMPLOYMENT_RATE]?: string;
-  [tableEnum.INDICATOR_KEYS.NONFARM_PAYROLL]?: string;
+  fundsRate?: string;
+  cpi?: string;
+  tenYearsTreasury?: string;
+  thirtyYearsTreasury?: string;
+  inflationExpectation?: string;
+  consumerSentiment?: string;
+  retailSales?: string;
+  durableGoods?: string;
+  unemploymentRate?: string;
+  nonfarmPayroll?: string;
 }
 
 export const getByUK = async (

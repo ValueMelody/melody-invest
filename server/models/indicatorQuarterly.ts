@@ -1,20 +1,19 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorQuarterlyKeys =
-  typeof tableEnum.INDICATOR_KEYS.GDP
+export type IndicatorQuarterlyKeys = 'realGDP'
 
 export interface IndicatorQuarterly {
   id: number;
   region: string;
   quarter: string;
-  [tableEnum.INDICATOR_KEYS.GDP]: string;
+  realGDP: string;
 }
 
 interface IndicatorQuarterlyEdit {
   region?: string;
   quarter?: string;
-  [tableEnum.INDICATOR_KEYS.GDP]?: string;
+  realGDP?: string;
 }
 
 export const getByUK = async (
