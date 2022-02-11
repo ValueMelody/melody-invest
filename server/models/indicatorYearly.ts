@@ -1,27 +1,48 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorYearlyKeys = 'inflation' | 'realGDP'
+export type IndicatorKeys = 'inflation' | 'realGDP'
 
-export interface IndicatorYearly {
+export interface Record {
   id: number;
   year: string;
   region: string;
-  realGDP: string;
-  inflation: string;
+  realGDP: number | null;
+  inflation: number | null;
 }
 
-interface IndicatorYearlyEdit {
-  year?: string;
-  region?: string;
+interface Raw {
+  id: number;
+  year: string;
+  region: string;
+  realGDP: string | null;
+  inflation: string | null;
+}
+
+interface Create {
+  year: string;
+  region: string;
   realGDP?: string;
   inflation?: string;
 }
 
+interface Update {
+  realGDP?: string;
+  inflation?: string;
+}
+
+const convertToRecord = (raw: Raw): Record => ({
+  id: raw.id,
+  year: raw.year,
+  region: raw.region,
+  realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
+  inflation: raw.inflation ? parseFloat(raw.inflation) : null
+})
+
 export const getByUK = async (
   region: string,
   year: string
-): Promise<IndicatorYearly | null> => {
+): Promise<Record | null> => {
   const yearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     conditions: [
@@ -29,23 +50,23 @@ export const getByUK = async (
       { key: 'year', value: year }
     ]
   })
-  return yearly
+  return yearly ? convertToRecord(yearly) : null
 }
 
 export const create = async (
-  values: IndicatorYearlyEdit
-): Promise<IndicatorYearly> => {
+  values: Create
+): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     values
   })
-  return newRecords?.length ? newRecords[0] : null
+  return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   indicatorYearlyId: number,
-  values: IndicatorYearlyEdit
-): Promise<IndicatorYearly> => {
+  values: Update
+): Promise<Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     values,
@@ -53,5 +74,5 @@ export const update = async (
       { key: 'id', value: indicatorYearlyId }
     ]
   })
-  return updated?.length ? updated[0] : null
+  return convertToRecord(updated[0])
 }

@@ -1,22 +1,20 @@
 export const getAdjustedClosePrice = (
   closePrice: string,
   splitCoefficient: string,
-  previousClosePrice: string,
-  previousAdjustedClosePrice: string
+  previousClosePrice: number,
+  previousAdjustedClosePrice: number
 ): string => {
-  const previousClose = parseFloat(previousClosePrice)
   const combinedClose = parseFloat(closePrice) * parseFloat(splitCoefficient)
-  const differRatio = (combinedClose - previousClose) / previousClose
-  const adjustedClose = parseFloat(previousAdjustedClosePrice) * (1 + differRatio)
+  const differRatio = (combinedClose - previousClosePrice) / previousClosePrice
+  const adjustedClose = previousAdjustedClosePrice * (1 + differRatio)
   return adjustedClose.toFixed(2)
 }
 
 export const getDividendPercent = (
   dividendAmount: string,
-  previousClosePrice: string
+  previousClosePrice: number
 ): string => {
   const dividend = parseFloat(dividendAmount)
-  const previousClose = parseFloat(previousClosePrice)
-  const ratio = dividend / previousClose
+  const ratio = dividend / previousClosePrice
   return (ratio * 100).toFixed(2)
 }

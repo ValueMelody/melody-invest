@@ -12,8 +12,8 @@ export const syncPrices = async (
   region: string,
   symbol: string
 ): Promise<{
-  ticker: tickerModel.Ticker,
-  newDaily: tickerDailyModel.TickerDaily[]
+  ticker: tickerModel.Record,
+  newDaily: tickerDailyModel.Record[]
 }> => {
   const ticker = await tickerModel.getByUK(region, symbol)
   if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
@@ -79,7 +79,7 @@ export const syncPrices = async (
     newRecords.push(newRecord)
   }
 
-  const newTickerInfo: tickerModel.TickerEdit = {}
+  const newTickerInfo: tickerModel.Update = {}
   newTickerInfo.lastPriceDate = lastRefreshed
   if (!ticker.firstPriceDate) {
     newTickerInfo.firstPriceDate = newRecords[0].date
@@ -96,14 +96,14 @@ export const syncPrices = async (
 export const syncAllPrices = async (
   date: string
 ): Promise<{
-  tickers: tickerModel.Ticker[]
+  tickers: tickerModel.Record[]
 }> => {
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickers = []
   for (const ticker of allTickers) {
-    const isDateSynced = ticker.lastPriceDate >= date
+    const isDateSynced = ticker.lastPriceDate && ticker.lastPriceDate >= date
     if (isDateSynced) continue
     const result = await syncPrices(ticker.region, ticker.symbol)
     updatedTickers.push(result.ticker)
@@ -118,9 +118,9 @@ export const syncEarnings = async (
   symbol: string,
   forceRecheck: boolean = false
 ): Promise<{
-  ticker: tickerModel.Ticker,
-  relatedYearly: tickerYearlyModel.TickerYearly[],
-  relatedQuarterly: tickerQuarterlyModel.TickerQuarterly[]
+  ticker: tickerModel.Record,
+  relatedYearly: tickerYearlyModel.Record[],
+  relatedQuarterly: tickerQuarterlyModel.Record[]
 }> => {
   const ticker = await tickerModel.getByUK(region, symbol)
   if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
@@ -225,7 +225,7 @@ export const syncEarnings = async (
     }
   }
 
-  const newTickerInfo: tickerModel.TickerEdit = {}
+  const newTickerInfo: tickerModel.Update = {}
   if (relatedYearly.length) {
     newTickerInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
     if (!ticker.firstEPSYear || forceRecheck) newTickerInfo.firstEPSYear = relatedYearly[0].year
@@ -247,15 +247,15 @@ export const syncAllEarnings = async (
   quarter: string,
   forceRecheck: boolean = false
 ): Promise<{
-  tickers: tickerModel.Ticker[]
+  tickers: tickerModel.Record[]
 }> => {
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickers = []
   for (const ticker of allTickers) {
-    const isYearSynced = ticker.lastEPSYear >= year
-    const isQuarterSynced = ticker.lastEPSQuarter >= quarter
+    const isYearSynced = ticker.lastEPSYear && ticker.lastEPSYear >= year
+    const isQuarterSynced = ticker.lastEPSQuarter && ticker.lastEPSQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) continue
     const result = await syncEarnings(ticker.region, ticker.symbol, forceRecheck)
     updatedTickers.push(result.ticker)
@@ -270,9 +270,9 @@ export const syncIncomes = async (
   symbol: string,
   forceRecheck: boolean = false
 ): Promise<{
-  ticker: tickerModel.Ticker,
-  relatedYearly: tickerYearlyModel.TickerYearly[],
-  relatedQuarterly: tickerQuarterlyModel.TickerQuarterly[]
+  ticker: tickerModel.Record,
+  relatedYearly: tickerYearlyModel.Record[],
+  relatedQuarterly: tickerQuarterlyModel.Record[]
 }> => {
   const ticker = await tickerModel.getByUK(region, symbol)
   if (!ticker) throw errorEnum.HTTP_ERRORS.NOT_FOUND
@@ -371,7 +371,7 @@ export const syncIncomes = async (
     }
   }
 
-  const newTickerInfo: tickerModel.TickerEdit = {}
+  const newTickerInfo: tickerModel.Update = {}
   if (relatedYearly.length) {
     newTickerInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
     if (!ticker.firstIncomeYear || forceRecheck) newTickerInfo.firstIncomeYear = relatedYearly[0].year
@@ -393,15 +393,15 @@ export const syncAllIncomes = async (
   quarter: string,
   forceRecheck: boolean = false
 ): Promise<{
-  tickers: tickerModel.Ticker[]
+  tickers: tickerModel.Record[]
 }> => {
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
   const updatedTickers = []
   for (const ticker of allTickers) {
-    const isYearSynced = ticker.lastIncomeYear >= year
-    const isQuarterSynced = ticker.lastIncomeQuarter >= quarter
+    const isYearSynced = ticker.lastIncomeYear && ticker.lastIncomeYear >= year
+    const isQuarterSynced = ticker.lastIncomeQuarter && ticker.lastIncomeQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) continue
     const result = await syncIncomes(ticker.region, ticker.symbol, forceRecheck)
     updatedTickers.push(result.ticker)
