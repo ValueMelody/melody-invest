@@ -1,28 +1,25 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface Ticker {
+export interface Record {
   id: number;
   symbol: string;
   region: string;
   name: string;
-  firstPriceDate: string;
-  lastPriceDate: string;
-  firstEPSYear: string;
-  lastEPSYear: string;
-  firstEPSQuarter: string;
-  lastEPSQuarter: string;
-  quarterlyEPSMonthDiffer: string;
-  firstIncomeYear: string;
-  lastIncomeYear: string;
-  firstIncomeQuarter: string;
-  lastIncomeQuarter: string;
+  firstPriceDate: string | null;
+  lastPriceDate: string | null;
+  firstEPSYear: string | null;
+  lastEPSYear: string | null;
+  firstEPSQuarter: string | null;
+  lastEPSQuarter: string | null;
+  firstIncomeYear: string | null;
+  lastIncomeYear: string | null;
+  firstIncomeQuarter: string | null;
+  lastIncomeQuarter: string | null;
+  quarterlyEPSMonthDiffer: number | null;
 }
 
-export interface TickerEdit {
-  symbol?: string;
-  region?: string;
-  name?: string;
+export interface Update {
   firstPriceDate?: string;
   lastPriceDate?: string;
   firstEPSYear?: string;
@@ -33,12 +30,13 @@ export interface TickerEdit {
   lastIncomeYear?: string;
   firstIncomeQuarter?: string;
   lastIncomeQuarter?: string;
+  quarterlyEPSMonthDiffer?: number | null;
 }
 
 export const getByUK = async (
   region: string,
   symbol: string
-): Promise<Ticker | null> => {
+): Promise<Record | null> => {
   const tickerRegion = region.toUpperCase()
   const tickerSymbol = symbol.toUpperCase()
 
@@ -52,7 +50,7 @@ export const getByUK = async (
   return ticker
 }
 
-export const getAll = async (): Promise<Ticker[]> => {
+export const getAll = async (): Promise<Record[]> => {
   const tickers = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER
   })
@@ -61,8 +59,8 @@ export const getAll = async (): Promise<Ticker[]> => {
 
 export const update = async (
   tickerId: number,
-  values: TickerEdit
-): Promise<Ticker> => {
+  values: Update
+): Promise<Record> => {
   const updatedTicker = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER,
     values,

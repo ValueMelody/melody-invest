@@ -1,23 +1,17 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface Trader {
+export interface Record {
   id: number;
   traderEnvId: number;
   traderDNAId: number;
   isActive: boolean;
 }
 
-export interface TraderEdit {
-  traderEnvId?: number;
-  traderDNAId?: number;
-  isActive?: boolean;
-}
-
 export const getByUK = async (
   envId: number,
   dnaId: number
-): Promise<Trader | null> => {
+): Promise<Record | null> => {
   const trader = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
@@ -28,7 +22,7 @@ export const getByUK = async (
   return trader
 }
 
-export const getActives = async (): Promise<Trader[]> => {
+export const getActives = async (): Promise<Record[]> => {
   const traders = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [

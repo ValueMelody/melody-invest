@@ -7,7 +7,7 @@ import * as dnaTool from '../tools/dna'
 import * as traderTool from '../tools/trader'
 import * as errorEnum from '../enums/error'
 
-export const calcPerformance = async (): Promise<traderHoldingModel.TraderHolding[]> => {
+export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> => {
   const traders = await traderModel.getActives()
 
   const lastestHoldings = []
@@ -52,7 +52,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.TraderHoldin
 
         if (shouldSell && sharesSold) {
           hasTransaction = true
-          const tickerPrice = parseFloat(matchedDaily.adjustedClosePrice)
+          const tickerPrice = matchedDaily.adjustedClosePrice
           const cashEarned = sharesSold * tickerPrice
           const shares = holding.shares - sharesSold
           const value = shares * tickerPrice
@@ -66,7 +66,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.TraderHoldin
         }
 
         const value = matchedDaily
-          ? holding.shares * parseFloat(matchedDaily.adjustedClosePrice)
+          ? holding.shares * matchedDaily.adjustedClosePrice
           : holding.value
         const holdingDetail = { ...holding, value }
         return {
@@ -88,7 +88,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.TraderHoldin
 
       const detailsAfterBuy = buyTargets.reduce((details, target) => {
         const maxCash = details.totalCash < maxBuyAmount ? details.totalCash : maxBuyAmount
-        const sharePrice = parseInt(target.adjustedClosePrice)
+        const sharePrice = target.adjustedClosePrice
         const sharesBought = Math.floor(maxCash / sharePrice)
 
         if (!sharesBought) return details

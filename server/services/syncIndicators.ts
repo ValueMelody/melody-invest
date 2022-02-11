@@ -4,7 +4,6 @@ import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as marketEnum from '../enums/market'
-import * as tableEnum from '../enums/table'
 
 type MonthlyIndicatorType =
   typeof marketEnum.TYPES.FUNDS_RATE |
@@ -25,13 +24,13 @@ export const syncMonthly = async (
   type: MonthlyIndicatorType,
   options?: MonthlyIndicatorOptions
 ): Promise<{
-  relatedMonthly: indicatorMonthlyModel.IndicatorMonthly[]
+  relatedMonthly: indicatorMonthlyModel.Record[]
 }> => {
   const region = 'US'
   const initMonth = dateTool.getInitialMonth()
 
   let indicatorResult
-  let indicatorKey: indicatorMonthlyModel.IndicatorMonthlyKeys
+  let indicatorKey: indicatorMonthlyModel.IndicatorKeys
 
   switch (type) {
     case marketEnum.TYPES.UNEMPLOYMENT_RATE:
@@ -109,13 +108,13 @@ type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
 export const syncQuarterly = async (
   type: QuarterlyIndicatorType
 ): Promise<{
-  relatedQuarterly: indicatorQuarterlyModel.IndicatorQuarterly[]
+  relatedQuarterly: indicatorQuarterlyModel.Record[]
 }> => {
   const region = 'US'
   const initQuarter = dateTool.getInitialQuarter()
 
   let indicatorResult
-  let indicatorKey: indicatorQuarterlyModel.IndicatorQuarterlyKeys
+  let indicatorKey: indicatorQuarterlyModel.IndicatorKeys
 
   switch (type) {
     case marketEnum.TYPES.GDP:
@@ -161,13 +160,13 @@ export const syncYearly = async (
   type: YearlyIndicatorType,
   options?: YearlyIndicatorOptions
 ): Promise<{
-  relatedYearly: indicatorYearlyModel.IndicatorYearly[]
+  relatedYearly: indicatorYearlyModel.Record[]
 }> => {
   const region = 'US'
   const initYear = dateTool.getInitialYear()
 
   let indicatorResult
-  let indicatorKey: indicatorYearlyModel.IndicatorYearlyKeys
+  let indicatorKey: indicatorYearlyModel.IndicatorKeys
 
   switch (type) {
     case marketEnum.TYPES.GDP:

@@ -17,7 +17,7 @@ export const getInitialYear = (): string => {
   return INITIAL_YEAR
 }
 
-export const getInitialQuarter = (differ?: string | null): string => {
+export const getInitialQuarter = (differ?: number | null): string => {
   return differ
     ? getAdjustedQuarter(INITIAL_QUARTER, differ)
     : INITIAL_QUARTER
@@ -123,24 +123,23 @@ export const getDayNumber = (date: string): number => {
 }
 
 export const getAdjustedQuarter = (
-  quarter: string, differ: string | null
+  quarter: string, differ: number | null
 ) => {
-  if (!differ || !quarter) return quarter
+  if (differ === null || !quarter) return quarter
   const [year, month] = quarter.split('-')
   const yearNum = parseInt(year)
   const monthNum = parseInt(month)
-  const differNum = parseInt(differ)
 
   let adjustedYear = yearNum
-  let adjustedMonth = monthNum + differNum
+  let adjustedMonth = monthNum + differ
 
-  if (monthNum + differNum > 12) {
-    adjustedMonth = monthNum + differNum - 12
+  if (monthNum + differ > 12) {
+    adjustedMonth = monthNum + differ - 12
     adjustedYear = yearNum + 1
   }
 
-  if (monthNum + differNum < 1) {
-    adjustedMonth = monthNum + differNum + 12
+  if (monthNum + differ < 1) {
+    adjustedMonth = monthNum + differ + 12
     adjustedYear = yearNum - 1
   }
 

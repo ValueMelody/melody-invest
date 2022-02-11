@@ -1,25 +1,43 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorQuarterlyKeys = 'realGDP'
+export type IndicatorKeys = 'realGDP'
 
-export interface IndicatorQuarterly {
+export interface Record {
   id: number;
   region: string;
   quarter: string;
-  realGDP: string;
+  realGDP: number | null;
 }
 
-interface IndicatorQuarterlyEdit {
-  region?: string;
-  quarter?: string;
+interface Raw {
+  id: number;
+  region: string;
+  quarter: string;
+  realGDP: string | null;
+}
+
+interface Create {
+  region: string;
+  quarter: string;
   realGDP?: string;
 }
+
+interface Update {
+  realGDP?: string;
+}
+
+const convertToRecord = (raw: Raw): Record => ({
+  id: raw.id,
+  region: raw.region,
+  quarter: raw.quarter,
+  realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null
+})
 
 export const getByUK = async (
   region: string,
   quarter: string
-): Promise<IndicatorQuarterly | null> => {
+): Promise<Record | null> => {
   const quarterly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     conditions: [
@@ -27,23 +45,23 @@ export const getByUK = async (
       { key: 'quarter', value: quarter }
     ]
   })
-  return quarterly
+  return quarterly ? convertToRecord(quarterly) : null
 }
 
 export const create = async (
-  values: IndicatorQuarterlyEdit
-): Promise<IndicatorQuarterly> => {
+  values: Create
+): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     values
   })
-  return newRecords?.length ? newRecords[0] : null
+  return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   indicatorQuarterlyId: number,
-  values: IndicatorQuarterlyEdit
-): Promise<IndicatorQuarterly> => {
+  values: Update
+): Promise<Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     values,
@@ -51,5 +69,5 @@ export const update = async (
       { key: 'id', value: indicatorQuarterlyId }
     ]
   })
-  return updated?.length ? updated[0] : null
+  return convertToRecord(updated[0])
 }

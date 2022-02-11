@@ -84,11 +84,11 @@ export const getGeneGroups = () => (
 )
 
 export const getPriceMovementBuyWeights = (
-  dna: traderDNAModel.traderDNA,
-  tickerDaily: tickerDailyModel.TickerDaily
+  dna: traderDNAModel.Record,
+  tickerDaily: tickerDailyModel.Record
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.BuyGene]: tickerDailyModel.TrendType
+    [key in traderDNAModel.BuyGene]: tickerDailyModel.MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -110,7 +110,8 @@ export const getPriceMovementBuyWeights = (
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerDaily[tickerKey]
     const dnaValue = dna[gene]
-    const combinedWeights = dnaValue !== null && tickerValue >= dnaValue
+    const hasValidInfo = dnaValue !== null && tickerValue !== null
+    const combinedWeights = hasValidInfo && tickerValue >= dnaValue
       ? (weights || 1) * (tickerValue - dnaValue + 2)
       : weights
     return combinedWeights
@@ -120,11 +121,11 @@ export const getPriceMovementBuyWeights = (
 }
 
 export const getPriceMovementSellWeights = (
-  dna: traderDNAModel.traderDNA,
-  tickerDaily: tickerDailyModel.TickerDaily
+  dna: traderDNAModel.Record,
+  tickerDaily: tickerDailyModel.Record
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.SellGene]: tickerDailyModel.TrendType
+    [key in traderDNAModel.SellGene]: tickerDailyModel.MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -146,7 +147,8 @@ export const getPriceMovementSellWeights = (
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerDaily[tickerKey]
     const dnaValue = dna[gene]
-    const combinedWeights = dnaValue !== null && tickerValue >= dnaValue
+    const hasValidInfo = dnaValue !== null && tickerValue !== null
+    const combinedWeights = hasValidInfo && tickerValue >= dnaValue
       ? (weights || 1) * (tickerValue - dnaValue + 2)
       : weights
     return combinedWeights

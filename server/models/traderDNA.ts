@@ -19,7 +19,7 @@ export type GeneType =
   BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
   'holdingBuyPercent' | 'holdingSellPercent' | 'tradeFrequency' | 'rebalanceFrequency'
 
-export interface traderDNA {
+export interface Record {
   id: number;
   hashCode: string;
   priceDailyIncreaseBuy: number | null;
@@ -51,7 +51,7 @@ export interface traderDNA {
   rebalanceFrequency: number;
 }
 
-export interface traderDNACreate {
+export interface Create {
   hashCode: string;
   priceDailyIncreaseBuy: number | null;
   priceDailyIncreaseSell: number | null;
@@ -84,7 +84,7 @@ export interface traderDNACreate {
 
 export const getByPK = async (
   id: number
-): Promise<traderDNA | null> => {
+): Promise<Record | null> => {
   const dna = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
@@ -96,7 +96,7 @@ export const getByPK = async (
 
 export const getByUK = async (
   hashCode: string
-): Promise<traderDNA | null> => {
+): Promise<Record | null> => {
   const dna = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
@@ -107,11 +107,11 @@ export const getByUK = async (
 }
 
 export const create = async (
-  values: traderDNACreate
-): Promise<traderDNA> => {
+  values: Create
+): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_DNA,
     values
   })
-  return newRecords?.length ? newRecords[0] : null
+  return newRecords[0]
 }

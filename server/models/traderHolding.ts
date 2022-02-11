@@ -7,7 +7,7 @@ export interface Holding {
   value: number;
 }
 
-export interface TraderHolding {
+export interface Record {
   id: number;
   traderId: number;
   date: string;
@@ -16,7 +16,7 @@ export interface TraderHolding {
   holdings: Holding[];
 }
 
-interface TraderHoldingRaw {
+interface Raw {
   id: number;
   traderId: number;
   date: string;
@@ -25,7 +25,7 @@ interface TraderHoldingRaw {
   holdings: Holding[];
 }
 
-interface TraderHoldingCreate {
+interface Create {
   traderId: number;
   date: string;
   totalValue: number;
@@ -33,30 +33,20 @@ interface TraderHoldingCreate {
   holdings: Holding[];
 }
 
-const convertToOutput = (record: TraderHoldingRaw): TraderHolding => {
+const convertToRecord = (raw: Raw): Record => {
   return {
-    id: record.id,
-    traderId: record.traderId,
-    date: record.date,
-    holdings: record.holdings,
-    totalValue: parseFloat(record.totalValue),
-    totalCash: parseFloat(record.totalCash)
-  }
-}
-
-const convertToInput = (values: TraderHoldingCreate) => {
-  return {
-    traderId: values.traderId,
-    date: values.date,
-    totalValue: String(values.totalValue),
-    totalCash: String(values.totalCash),
-    holdings: JSON.stringify(values.holdings)
+    id: raw.id,
+    traderId: raw.traderId,
+    date: raw.date,
+    holdings: raw.holdings,
+    totalValue: parseInt(raw.totalValue),
+    totalCash: parseInt(raw.totalCash)
   }
 }
 
 export const getLatest = async (
   traderId: number
-): Promise<TraderHolding | null> => {
+): Promise<Record | null> => {
   const record = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
     conditions: [
@@ -64,15 +54,21 @@ export const getLatest = async (
     ],
     orderBy: { key: 'date', type: 'desc' }
   })
-  return record ? convertToOutput(record) : null
+  return record ? convertToRecord(record) : null
 }
 
 export const create = async (
-  values: TraderHoldingCreate
-): Promise<TraderHolding | null> => {
+  values: Create
+): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
-    values: convertToInput(values)
+    values: {
+      traderId: values.traderId,
+      date: values.date,
+      totalValue: String(values.totalValue),
+      totalCash: String(values.totalCash),
+      holdings: JSON.stringify(values.holdings)
+    }
   })
-  return newRecords?.length ? convertToOutput(newRecords[0]) : null
+  return convertToRecord(newRecords[0])
 }
