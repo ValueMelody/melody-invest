@@ -1,20 +1,27 @@
+export const convertToIntPrice = (price: string | number): number => {
+  const floatPrice = typeof price === 'number' ? price : parseFloat(price)
+  return Math.floor(floatPrice * 10000)
+}
+
 export const getAdjustedClosePrice = (
   closePrice: string,
   splitCoefficient: string,
-  previousClosePrice: number,
+  previousClosePrice: string,
   previousAdjustedClosePrice: number
-): string => {
+): number => {
   const combinedClose = parseFloat(closePrice) * parseFloat(splitCoefficient)
-  const differRatio = (combinedClose - previousClosePrice) / previousClosePrice
+  const previousClose = parseFloat(previousClosePrice)
+  const differRatio = (combinedClose - previousClose) / previousClose
   const adjustedClose = previousAdjustedClosePrice * (1 + differRatio)
-  return adjustedClose.toFixed(2)
+  return Math.floor(adjustedClose)
 }
 
 export const getDividendPercent = (
   dividendAmount: string,
-  previousClosePrice: number
+  previousClosePrice: string
 ): string => {
   const dividend = parseFloat(dividendAmount)
-  const ratio = dividend / previousClosePrice
+  const previousClose = parseFloat(previousClosePrice)
+  const ratio = dividend / previousClose
   return (ratio * 100).toFixed(2)
 }

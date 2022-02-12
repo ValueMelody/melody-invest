@@ -1,3 +1,3 @@
 export const getInitialCash = (): number => {
-  return 100000
+  return 1000000000
 }
