@@ -58,7 +58,7 @@ export const syncPrices = async (
         previousRecord.closePrice,
         previousRecord.adjustedClosePrice
       )
-      : closePrice
+      : marketTool.convertToIntPrice(closePrice)
 
     const dividendPercent = previousRecord
       ? marketTool.getDividendPercent(

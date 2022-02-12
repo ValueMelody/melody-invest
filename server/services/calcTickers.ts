@@ -51,10 +51,10 @@ export const calcAveragePrice = async (): Promise<tickerModel.Record[]> => {
 
       if (hasUpdate) {
         await tickerDailyModel.update(tickerDaily.id, {
-          weeklyAveragePrice: weeklyAverage,
-          monthlyAveragePrice: monthlyAverage,
-          quarterlyAveragePrice: quarterlyAverage,
-          yearlyAveragePrice: yearlyAverage
+          weeklyAveragePrice: weeklyAverage ? Math.floor(weeklyAverage) : weeklyAverage,
+          monthlyAveragePrice: monthlyAverage ? Math.floor(monthlyAverage) : null,
+          quarterlyAveragePrice: quarterlyAverage ? Math.floor(quarterlyAverage) : null,
+          yearlyAveragePrice: yearlyAverage ? Math.floor(yearlyAverage) : null
         })
       }
     }
