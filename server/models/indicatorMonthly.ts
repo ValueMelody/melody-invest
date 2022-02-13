@@ -79,43 +79,43 @@ const convertToRecord = (raw: Raw): Record => ({
   retailSales: raw.retailSales ? parseInt(raw.retailSales) : null,
   durableGoods: raw.durableGoods ? parseInt(raw.durableGoods) : null,
   unemploymentRate: raw.unemploymentRate ? parseFloat(raw.unemploymentRate) : null,
-  nonfarmPayroll: raw.nonfarmPayroll ? parseInt(raw.nonfarmPayroll) : null
+  nonfarmPayroll: raw.nonfarmPayroll ? parseInt(raw.nonfarmPayroll) : null,
 })
 
 export const getByUK = async (
   region: string,
-  month: string
+  month: string,
 ): Promise<Record | null> => {
   const monthly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
     conditions: [
       { key: 'region', value: region },
-      { key: 'month', value: month }
-    ]
+      { key: 'month', value: month },
+    ],
   })
   return monthly ? convertToRecord(monthly) : null
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
-    values
+    values,
   })
   return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   indicatorMonthlyId: number,
-  values: Update
+  values: Update,
 ): Promise<Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
     values,
     conditions: [
-      { key: 'id', value: indicatorMonthlyId }
-    ]
+      { key: 'id', value: indicatorMonthlyId },
+    ],
   })
   return convertToRecord(updated[0])
 }

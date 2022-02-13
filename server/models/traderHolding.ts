@@ -40,25 +40,25 @@ const convertToRecord = (raw: Raw): Record => {
     date: raw.date,
     holdings: raw.holdings,
     totalValue: parseInt(raw.totalValue),
-    totalCash: parseInt(raw.totalCash)
+    totalCash: parseInt(raw.totalCash),
   }
 }
 
 export const getLatest = async (
-  traderId: number
+  traderId: number,
 ): Promise<Record | null> => {
   const record = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
     conditions: [
-      { key: 'traderId', value: traderId }
+      { key: 'traderId', value: traderId },
     ],
-    orderBy: { key: 'date', type: 'desc' }
+    orderBy: { key: 'date', type: 'desc' },
   })
   return record ? convertToRecord(record) : null
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
@@ -67,8 +67,8 @@ export const create = async (
       date: values.date,
       totalValue: String(values.totalValue),
       totalCash: String(values.totalCash),
-      holdings: JSON.stringify(values.holdings)
-    }
+      holdings: JSON.stringify(values.holdings),
+    },
   })
   return convertToRecord(newRecords[0])
 }

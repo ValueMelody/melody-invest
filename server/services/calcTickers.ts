@@ -3,7 +3,7 @@ import * as tickerDailyModel from '../models/tickerDaily'
 import * as geneEnums from '../enums/gene'
 
 const calcAverage = (
-  dailyRecords: tickerDailyModel.Record[]
+  dailyRecords: tickerDailyModel.Record[],
 ): number => {
   const total = dailyRecords.reduce((total, daily) => total + daily.adjustedClosePrice, 0)
   return total / dailyRecords.length
@@ -54,7 +54,7 @@ export const calcAveragePrice = async (): Promise<tickerModel.Record[]> => {
           weeklyAveragePrice: weeklyAverage ? Math.floor(weeklyAverage) : weeklyAverage,
           monthlyAveragePrice: monthlyAverage ? Math.floor(monthlyAverage) : null,
           quarterlyAveragePrice: quarterlyAverage ? Math.floor(quarterlyAverage) : null,
-          yearlyAveragePrice: yearlyAverage ? Math.floor(yearlyAverage) : null
+          yearlyAveragePrice: yearlyAverage ? Math.floor(yearlyAverage) : null,
         })
       }
     }
@@ -148,7 +148,7 @@ export const calcPriceMovement = async (): Promise<tickerModel.Record[]> => {
           priceQuarterlyIncrease: quarterlyIncrease,
           priceQuarterlyDecrease: quarterlyDecrease,
           priceYearlyIncrease: yearlyIncrease,
-          priceYearlyDecrease: yearlyDecrease
+          priceYearlyDecrease: yearlyDecrease,
         })
         : tickerDaily
       checkedDaily.push(daily)

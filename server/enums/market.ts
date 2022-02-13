@@ -27,15 +27,15 @@ export const TYPES = {
   RETAIL_SALES,
   DURABLE_GOODS,
   UNEMPLOYMENT_RATE,
-  NONFARM_PAYROLL
+  NONFARM_PAYROLL,
 }
 
 export const GDP_INTERVAL = {
   YEARLY: 'annual',
-  QUARTERLY: 'quarterly'
+  QUARTERLY: 'quarterly',
 }
 
 export const TREASURY_TYPE = {
   TEN_YEARS: '10year',
-  THIRTY_YEARS: '30year'
+  THIRTY_YEARS: '30year',
 }

@@ -67,13 +67,13 @@ syncRouter.get('/indicators/monthly/:type', async (req, res) => {
     case 'thirty_years_treasury':
       result = await syncIndicators.syncMonthly(
         marketEnum.TYPES.TREASURY_YIELD,
-        { isThirtyYearsTreasury: true }
+        { isThirtyYearsTreasury: true },
       )
       break
     case 'ten_years_treasury':
       result = await syncIndicators.syncMonthly(
         marketEnum.TYPES.TREASURY_YIELD,
-        { isTenYearsTreasury: true }
+        { isTenYearsTreasury: true },
       )
       break
     case 'cpi':
@@ -102,7 +102,7 @@ syncRouter.get('/indicators/monthly/:type', async (req, res) => {
   }
 
   return res.status(200).send({
-    result
+    result,
   })
 })
 
@@ -119,7 +119,7 @@ syncRouter.get('/indicators/quarterly/:type', async (req, res) => {
   }
 
   return res.status(200).send({
-    result
+    result,
   })
 })
 
@@ -131,7 +131,7 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
     case 'inflation':
       result = await syncIndicators.syncYearly(
         marketEnum.TYPES.INFLATION,
-        { valueLength: 5 }
+        { valueLength: 5 },
       )
       break
     case 'gdp':
@@ -142,6 +142,6 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
   }
 
   return res.status(200).send({
-    result
+    result,
   })
 })

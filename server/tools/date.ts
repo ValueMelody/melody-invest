@@ -55,7 +55,7 @@ export const getCurrentQuater = (): string => {
 
 export const getPreviousDate = (
   date: string,
-  differ: number = 1
+  differ: number = 1,
 ): string => {
   const type = differ === 1 ? 'day' : 'days'
   return moment(date).subtract(differ, type).format(DATE_FORMAT)
@@ -63,7 +63,7 @@ export const getPreviousDate = (
 
 export const getNextDate = (
   date: string,
-  differ: number = 1
+  differ: number = 1,
 ): string => {
   return moment(date)
     .add(differ, 'days')
@@ -72,7 +72,7 @@ export const getNextDate = (
 
 export const getNextYear = (
   year: string,
-  differ: number = 1
+  differ: number = 1,
 ): string => {
   return moment(year)
     .add(differ, 'years')
@@ -81,7 +81,7 @@ export const getNextYear = (
 
 export const getNextQuarter = (
   quarter: string,
-  differ: number = 1
+  differ: number = 1,
 ): string => {
   return moment(quarter)
     .add(differ, 'quarters')
@@ -89,7 +89,7 @@ export const getNextQuarter = (
 }
 
 export const getDaysInRange = (
-  startDate: string, endDate: string
+  startDate: string, endDate: string,
 ): string[] => {
   const days = []
   for (let date = startDate; date <= endDate; date = getNextDate(date)) {
@@ -99,7 +99,7 @@ export const getDaysInRange = (
 }
 
 export const getYearsInRange = (
-  startYear: string, endYear: string
+  startYear: string, endYear: string,
 ): string[] => {
   const years = []
   for (let year = startYear; year <= endYear; year = getNextYear(year)) {
@@ -109,7 +109,7 @@ export const getYearsInRange = (
 }
 
 export const getQuartersInRange = (
-  startQuarter: string, endQuarter: string
+  startQuarter: string, endQuarter: string,
 ): string[] => {
   const quarters = []
   for (let quarter = startQuarter; quarter <= endQuarter; quarter = getNextQuarter(quarter)) {
@@ -123,7 +123,7 @@ export const getDayNumber = (date: string): number => {
 }
 
 export const getAdjustedQuarter = (
-  quarter: string, differ: number | null
+  quarter: string, differ: number | null,
 ) => {
   if (differ === null || !quarter) return quarter
   const [year, month] = quarter.split('-')

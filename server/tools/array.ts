@@ -1,6 +1,6 @@
 export const getNumberRange = (
   startNumber: number,
-  endNumber: number
+  endNumber: number,
 ): number[] => {
   const numbers = []
   for (let i = startNumber; i <= endNumber; i++) {

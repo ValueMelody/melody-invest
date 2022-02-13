@@ -59,12 +59,12 @@ const convertToRecord = (raw: Raw): Record => ({
   netIncome: raw.netIncome ? parseInt(raw.netIncome) : null,
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
-  costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
+  costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
 })
 
 export const getLatest = async (
   tickerId: number,
-  conditions?: databaseAdapter.Condition[]
+  conditions?: databaseAdapter.Condition[],
 ): Promise<Record | null> => {
   const pkCondition = [{ key: 'tickerId', value: tickerId }]
   const whereConditions = conditions
@@ -73,45 +73,45 @@ export const getLatest = async (
   const tickerYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
     conditions: whereConditions,
-    orderBy: { key: 'year', type: 'desc' }
+    orderBy: { key: 'year', type: 'desc' },
   })
   return tickerYearly ? convertToRecord(tickerYearly) : null
 }
 
 export const getByUK = async (
   tickerId: number,
-  year: string
+  year: string,
 ): Promise<Record | null> => {
   const tickerYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
-      { key: 'year', value: year }
-    ]
+      { key: 'year', value: year },
+    ],
   })
   return tickerYearly ? convertToRecord(tickerYearly) : null
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
-    values
+    values,
   })
   return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   tickerYearlyId: number,
-  values: Update
+  values: Update,
 ): Promise<Record> => {
   const updatedYearly = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
     values,
     conditions: [
-      { key: 'id', value: tickerYearlyId }
-    ]
+      { key: 'id', value: tickerYearlyId },
+    ],
   })
   return convertToRecord(updatedYearly[0])
 }

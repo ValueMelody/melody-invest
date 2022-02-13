@@ -35,7 +35,7 @@ export interface Update {
 
 export const getByUK = async (
   region: string,
-  symbol: string
+  symbol: string,
 ): Promise<Record | null> => {
   const tickerRegion = region.toUpperCase()
   const tickerSymbol = symbol.toUpperCase()
@@ -44,29 +44,29 @@ export const getByUK = async (
     tableName: tableEnum.NAMES.TICKER,
     conditions: [
       { key: 'region', value: tickerRegion },
-      { key: 'symbol', value: tickerSymbol }
-    ]
+      { key: 'symbol', value: tickerSymbol },
+    ],
   })
   return ticker
 }
 
 export const getAll = async (): Promise<Record[]> => {
   const tickers = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER
+    tableName: tableEnum.NAMES.TICKER,
   })
   return tickers
 }
 
 export const update = async (
   tickerId: number,
-  values: Update
+  values: Update,
 ): Promise<Record> => {
   const updatedTicker = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER,
     values,
     conditions: [
-      { key: 'id', value: tickerId }
-    ]
+      { key: 'id', value: tickerId },
+    ],
   })
   return updatedTicker?.length ? updatedTicker[0] : null
 }

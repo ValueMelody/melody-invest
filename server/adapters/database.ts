@@ -38,8 +38,8 @@ export const initConnection = () => {
       port: parseInt(process.env.DB_PORT!),
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
-      database: process.env.DB_NAME
-    }
+      database: process.env.DB_NAME,
+    },
   })
 }
 
@@ -51,7 +51,7 @@ const getConnection = (): Knex => {
 const find = async ({
   tableName,
   conditions,
-  orderBy = { key: 'id', type: 'asc' }
+  orderBy = { key: 'id', type: 'asc' },
 }: Find): Promise<any[] | null> => {
   const db = getConnection()
   const query = db.select('*').from(tableName)
@@ -77,14 +77,14 @@ const find = async ({
 }
 
 export const findOne = async (
-  params: Find
+  params: Find,
 ): Promise<any | null> => {
   const records = await find(params)
   return records?.length ? records[0] : null
 }
 
 export const findAll = async (
-  params: Find
+  params: Find,
 ): Promise<any[]> => {
   const records = await find(params)
   return records?.length ? records : []
@@ -92,7 +92,7 @@ export const findAll = async (
 
 export const create = async ({
   tableName,
-  values
+  values,
 }: Create) => {
   const db = getConnection()
   const record = await db
@@ -105,7 +105,7 @@ export const create = async ({
 export const update = async ({
   tableName,
   values,
-  conditions
+  conditions,
 }: Update) => {
   const db = getConnection()
   const query = db
