@@ -42,7 +42,7 @@ export interface Record {
   priceYearlyIncreaseSell: number | null;
   priceYearlyDecreaseBuy: number | null;
   priceYearlyDecreaseSell: number | null;
-  cashMaxPercent: number | null;
+  cashMaxPercent: number;
   tickerMinPercent: number | null;
   tickerMaxPercent: number | null;
   holdingBuyPercent: number;
@@ -73,7 +73,7 @@ export interface Create {
   priceYearlyIncreaseSell: number | null;
   priceYearlyDecreaseBuy: number | null;
   priceYearlyDecreaseSell: number | null;
-  cashMaxPercent: number | null;
+  cashMaxPercent: number;
   tickerMinPercent: number | null;
   tickerMaxPercent: number | null;
   holdingBuyPercent: number;
