@@ -42,41 +42,47 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         })
         .map((target) => target.tickerId)
 
-      let hasTransaction = false
-
-      const initialHolding: traderHoldingModel.Holding[] = []
-      const detailsAfterSell = holdings.reduce((details, holding) => {
-        const shouldSell = sellTickerIds.includes(holding.tickerId)
+      const totalValue = holdings.reduce((values, holding) => {
         const matchedDaily = targets.find((daily) => daily.tickerId === holding.tickerId)
-        const sharesSold = matchedDaily && Math.floor(holding.shares * dna.holdingSellPercent / 100)
+        const value = matchedDaily
+          ? holding.shares * matchedDaily.adjustedClosePrice
+          : holding.value
+        return values + value
+      }, totalCash)
 
-        if (shouldSell && sharesSold) {
+      const maxCashPosition = totalValue * dna.cashMaxPercent / 100
+      let hasTransaction = false
+      const initialHolding: traderHoldingModel.Holding[] = []
+
+      const detailsAfterSell = holdings.reduce((details, holding) => {
+        const isSellTarget = sellTickerIds.includes(holding.tickerId)
+        const matchedDaily = targets.find((daily) => daily.tickerId === holding.tickerId)
+        const sharesSold = matchedDaily ? Math.floor(holding.shares * dna.holdingSellPercent / 100) : 0
+        const tickerPrice = matchedDaily ? matchedDaily.adjustedClosePrice : 0
+        const cashEarned = sharesSold * tickerPrice
+        const isLessThanMaxCash = details.totalCash + cashEarned < maxCashPosition
+
+        if (isSellTarget && sharesSold && isLessThanMaxCash) {
           hasTransaction = true
-          const tickerPrice = matchedDaily.adjustedClosePrice
-          const cashEarned = sharesSold * tickerPrice
           const shares = holding.shares - sharesSold
           const value = shares * tickerPrice
           const holdingDetail = { ...holding, shares, value }
           const holdings = shares ? [...details.holdings, holdingDetail] : details.holdings
           return {
             totalCash: details.totalCash + cashEarned,
-            totalValue: details.totalValue + cashEarned + value,
             holdings
           }
         }
 
-        const value = matchedDaily
-          ? holding.shares * matchedDaily.adjustedClosePrice
-          : holding.value
+        const value = matchedDaily ? holding.shares * tickerPrice : holding.value
         const holdingDetail = { ...holding, value }
         return {
           totalCash: details.totalCash,
-          totalValue: details.totalValue + value,
           holdings: [...details.holdings, holdingDetail]
         }
-      }, { totalValue: totalCash, totalCash, holdings: initialHolding })
+      }, { totalCash, holdings: initialHolding })
 
-      const maxBuyAmount = detailsAfterSell.totalValue * dna.holdingBuyPercent / 100
+      const maxBuyAmount = totalValue * dna.holdingBuyPercent / 100
 
       const buyTargets = targets
         .filter((daily) => !!dnaTool.getPriceMovementBuyWeights(dna, daily))
@@ -114,7 +120,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         holding = await traderHoldingModel.create({
           traderId: trader.id,
           date: tradeDate,
-          totalValue: detailsAfterSell.totalValue,
+          totalValue: totalValue,
           totalCash: detailsAfterBuy.totalCash,
           holdings: detailsAfterBuy.holdings
         })
