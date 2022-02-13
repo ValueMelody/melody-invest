@@ -51,6 +51,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       }, totalCash)
 
       const maxCashPosition = totalValue * dna.cashMaxPercent / 100
+
       let hasTransaction = false
       const initialHolding: traderHoldingModel.Holding[] = []
 
@@ -58,11 +59,19 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         const isSellTarget = sellTickerIds.includes(holding.tickerId)
         const matchedDaily = targets.find((daily) => daily.tickerId === holding.tickerId)
         const sharesSold = matchedDaily ? Math.floor(holding.shares * dna.holdingSellPercent / 100) : 0
+
         const tickerPrice = matchedDaily ? matchedDaily.adjustedClosePrice : 0
         const cashEarned = sharesSold * tickerPrice
+        const tickerValueBeforeSell = matchedDaily ? holding.shares * tickerPrice : holding.value
+
+        const percentAfterSell = tickerValueBeforeSell - cashEarned / totalValue
+        const isMoreThanMinPercent = percentAfterSell * 100 > dna.tickerMinPercent
+
         const isLessThanMaxCash = details.totalCash + cashEarned < maxCashPosition
 
-        if (isSellTarget && sharesSold && isLessThanMaxCash) {
+        const allowSell = isSellTarget && sharesSold && isLessThanMaxCash && isMoreThanMinPercent
+
+        if (allowSell) {
           hasTransaction = true
           const shares = holding.shares - sharesSold
           const value = shares * tickerPrice
@@ -74,8 +83,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
           }
         }
 
-        const value = matchedDaily ? holding.shares * tickerPrice : holding.value
-        const holdingDetail = { ...holding, value }
+        const holdingDetail = { ...holding, value: tickerValueBeforeSell }
         return {
           totalCash: details.totalCash,
           holdings: [...details.holdings, holdingDetail]
@@ -96,17 +104,21 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         const maxCash = details.totalCash < maxBuyAmount ? details.totalCash : maxBuyAmount
         const sharePrice = target.adjustedClosePrice
         const sharesBought = Math.floor(maxCash / sharePrice)
-
         if (!sharesBought) return details
+
+        const holdingIndex = details.holdings.findIndex((holding) => holding.tickerId === target.tickerId)
+        const isNewHolding = holdingIndex === -1
+        const sharesAfterBuy = isNewHolding ? sharesBought : sharesBought + details.holdings[holdingIndex].shares
+        const valueAfterBuy = sharesAfterBuy * sharePrice
+        const percentAfterBuy = valueAfterBuy / totalValue
+        const isLessThanMaxPercent = percentAfterBuy * 100 < dna.tickerMaxPercent
+        if (!isLessThanMaxPercent) return details
+
         hasTransaction = true
 
         const cashSpent = sharePrice * sharesBought
         const totalCash = details.totalCash - cashSpent
-        const holdingIndex = details.holdings.findIndex((holding) => holding.tickerId === target.tickerId)
-        const isNewHolding = holdingIndex === -1
-        const shares = isNewHolding ? sharesBought : sharesBought + details.holdings[holdingIndex].shares
-        const value = sharePrice * shares
-        const holdingDetail = { tickerId: target.tickerId, shares, value }
+        const holdingDetail = { tickerId: target.tickerId, shares: sharesAfterBuy, value: valueAfterBuy }
         const holdings = isNewHolding
           ? [...details.holdings, holdingDetail]
           : details.holdings.map((holding, index) => index === holdingIndex ? holdingDetail : holding)
