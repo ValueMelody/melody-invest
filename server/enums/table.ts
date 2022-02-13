@@ -8,5 +8,5 @@ export const NAMES = {
   INDICATOR_MONTHLY: 'indicator_monthly',
   TRADER_DNA: 'trader_dna',
   TRADER: 'trader',
-  TRADER_HOLDING: 'trader_holding'
+  TRADER_HOLDING: 'trader_holding',
 }

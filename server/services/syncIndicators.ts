@@ -22,7 +22,7 @@ interface MonthlyIndicatorOptions {
 
 export const syncMonthly = async (
   type: MonthlyIndicatorType,
-  options?: MonthlyIndicatorOptions
+  options?: MonthlyIndicatorOptions,
 ): Promise<{
   relatedMonthly: indicatorMonthlyModel.Record[]
 }> => {
@@ -88,25 +88,25 @@ export const syncMonthly = async (
       const created = await indicatorMonthlyModel.create({
         month,
         region,
-        [indicatorKey]: result.value
+        [indicatorKey]: result.value,
       })
       relatedIndicators.push(created)
     } else if (currentRecord && !currentRecord[indicatorKey]) {
       const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        [indicatorKey]: result.value
+        [indicatorKey]: result.value,
       })
       relatedIndicators.push(updated)
     }
   }
   return {
-    relatedMonthly: relatedIndicators
+    relatedMonthly: relatedIndicators,
   }
 }
 
 type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
 
 export const syncQuarterly = async (
-  type: QuarterlyIndicatorType
+  type: QuarterlyIndicatorType,
 ): Promise<{
   relatedQuarterly: indicatorQuarterlyModel.Record[]
 }> => {
@@ -134,18 +134,18 @@ export const syncQuarterly = async (
       const created = await indicatorQuarterlyModel.create({
         quarter,
         region,
-        [indicatorKey]: result.value
+        [indicatorKey]: result.value,
       })
       relatedIndicators.push(created)
     } else if (currentRecord && !currentRecord[indicatorKey]) {
       const updated = await indicatorQuarterlyModel.update(currentRecord.id, {
-        [indicatorKey]: result.value
+        [indicatorKey]: result.value,
       })
       relatedIndicators.push(updated)
     }
   }
   return {
-    relatedQuarterly: relatedIndicators
+    relatedQuarterly: relatedIndicators,
   }
 }
 
@@ -158,7 +158,7 @@ interface YearlyIndicatorOptions {
 
 export const syncYearly = async (
   type: YearlyIndicatorType,
-  options?: YearlyIndicatorOptions
+  options?: YearlyIndicatorOptions,
 ): Promise<{
   relatedYearly: indicatorYearlyModel.Record[]
 }> => {
@@ -194,17 +194,17 @@ export const syncYearly = async (
       const created = await indicatorYearlyModel.create({
         year,
         region,
-        [indicatorKey]: value
+        [indicatorKey]: value,
       })
       relatedIndicators.push(created)
     } else if (currentRecord && !currentRecord[indicatorKey]) {
       const updated = await indicatorYearlyModel.update(currentRecord.id, {
-        [indicatorKey]: value
+        [indicatorKey]: value,
       })
       relatedIndicators.push(updated)
     }
   }
   return {
-    relatedYearly: relatedIndicators
+    relatedYearly: relatedIndicators,
   }
 }

@@ -107,83 +107,83 @@ const convertToRecord = (raw: Raw): Record => ({
   priceQuarterlyIncrease: raw.priceQuarterlyIncrease,
   priceQuarterlyDecrease: raw.priceQuarterlyDecrease,
   priceYearlyIncrease: raw.priceYearlyIncrease,
-  priceYearlyDecrease: raw.priceYearlyDecrease
+  priceYearlyDecrease: raw.priceYearlyDecrease,
 })
 
 export const getByUK = async (
   tickerId: number,
-  date: string
+  date: string,
 ): Promise<Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
       { key: 'tickerId', value: tickerId },
-      { key: 'date', value: date }
-    ]
+      { key: 'date', value: date },
+    ],
   })
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
 export const getPreviousOne = async (
   tickerId: number,
-  date: string
+  date: string,
 ): Promise<Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
       { key: 'tickerId', value: tickerId },
-      { key: 'date', type: '<', value: date }
+      { key: 'date', type: '<', value: date },
     ],
-    orderBy: { key: 'date', type: 'desc' }
+    orderBy: { key: 'date', type: 'desc' },
   })
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
 export const getAll = async (
-  tickerId: number
+  tickerId: number,
 ): Promise<Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
-      { key: 'tickerId', value: tickerId }
+      { key: 'tickerId', value: tickerId },
     ],
-    orderBy: { key: 'date', type: 'asc' }
+    orderBy: { key: 'date', type: 'asc' },
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
 export const getByDate = async (
-  date: string
+  date: string,
 ): Promise<Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     conditions: [
-      { key: 'date', value: date }
-    ]
+      { key: 'date', value: date },
+    ],
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKER_DAILY,
-    values
+    values,
   })
   return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   tickerDailyId: number,
-  values: Update
+  values: Update,
 ): Promise<Record> => {
   const updatedDaily = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     values,
     conditions: [
-      { key: 'id', value: tickerDailyId }
-    ]
+      { key: 'id', value: tickerDailyId },
+    ],
   })
   return convertToRecord(updatedDaily[0])
 }

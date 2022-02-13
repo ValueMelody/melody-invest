@@ -17,6 +17,7 @@
   },
   "scripts": {
     "server:start": "npm run start --workspace=server",
+    "server:lint": "npm run lint --workspace=server",
     "database:create": "createdb -h 127.0.0.1 -U admin dioxider",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE dioxider'",
     "database:dump": "pg_dump -h 127.0.0.1 -Fc dioxider -U admin > ~/Dropbox/Temp/dioxider.bak",

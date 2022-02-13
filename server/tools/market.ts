@@ -7,7 +7,7 @@ export const getAdjustedClosePrice = (
   closePrice: string,
   splitCoefficient: string,
   previousClosePrice: string,
-  previousAdjustedClosePrice: number
+  previousAdjustedClosePrice: number,
 ): number => {
   const combinedClose = parseFloat(closePrice) * parseFloat(splitCoefficient)
   const previousClose = parseFloat(previousClosePrice)
@@ -18,7 +18,7 @@ export const getAdjustedClosePrice = (
 
 export const getDividendPercent = (
   dividendAmount: string,
-  previousClosePrice: string
+  previousClosePrice: string,
 ): string => {
   const dividend = parseFloat(dividendAmount)
   const previousClose = parseFloat(previousClosePrice)

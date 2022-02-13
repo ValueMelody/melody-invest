@@ -20,12 +20,12 @@ export const generateRandomDNAs = async () => {
     const geneValues = genes.reduce((values, gene) => {
       return {
         ...values,
-        [gene.type]: gene.value
+        [gene.type]: gene.value,
       }
     }, {})
     const newDNA = await traderDNAModel.create({
       ...geneValues,
-      hashCode
+      hashCode,
     })
     newDNAs.push(newDNA)
   }

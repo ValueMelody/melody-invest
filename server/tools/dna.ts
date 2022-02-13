@@ -29,7 +29,7 @@ const GENE_VALUES = {
   holdingBuyPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   holdingSellPercent: [...geneEnums.VALUES.HOLDING_PERCENT],
   tradeFrequency: [...geneEnums.VALUES.TRADE_FREQUENCY],
-  rebalanceFrequency: [...geneEnums.VALUES.REBALANCE_FREQUENCY]
+  rebalanceFrequency: [...geneEnums.VALUES.REBALANCE_FREQUENCY],
 }
 
 const GENE_GROUPS: traderDNAModel.GeneType[][] = [
@@ -43,7 +43,7 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'priceQuarterlyIncreaseBuy',
     'priceQuarterlyDecreaseBuy',
     'priceYearlyIncreaseBuy',
-    'priceYearlyDecreaseBuy'
+    'priceYearlyDecreaseBuy',
   ],
   [
     'priceDailyIncreaseSell',
@@ -55,7 +55,7 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'priceQuarterlyIncreaseSell',
     'priceQuarterlyDecreaseSell',
     'priceYearlyIncreaseSell',
-    'priceYearlyDecreaseSell'
+    'priceYearlyDecreaseSell',
   ],
   ['cashMaxPercent'],
   ['tickerMinPercent'],
@@ -63,7 +63,7 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
   ['holdingBuyPercent'],
   ['holdingSellPercent'],
   ['tradeFrequency'],
-  ['rebalanceFrequency']
+  ['rebalanceFrequency'],
 ]
 
 interface Gene {
@@ -76,7 +76,7 @@ export const getGeneGroups = () => (
     group.reduce((allValues: Gene[], type) => {
       const geneValues: number[] = GENE_VALUES[type]
       const genes = geneValues.map((value: number) => ({
-        type, value
+        type, value,
       }))
       return [...allValues, ...genes]
     }, [])
@@ -85,7 +85,7 @@ export const getGeneGroups = () => (
 
 export const getPriceMovementBuyWeights = (
   dna: traderDNAModel.Record,
-  tickerDaily: tickerDailyModel.Record
+  tickerDaily: tickerDailyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
     [key in traderDNAModel.BuyGene]: tickerDailyModel.MovementKey
@@ -99,13 +99,13 @@ export const getPriceMovementBuyWeights = (
     priceQuarterlyIncreaseBuy: 'priceQuarterlyIncrease',
     priceQuarterlyDecreaseBuy: 'priceQuarterlyDecrease',
     priceYearlyIncreaseBuy: 'priceYearlyIncrease',
-    priceYearlyDecreaseBuy: 'priceYearlyDecrease'
+    priceYearlyDecreaseBuy: 'priceYearlyDecrease',
   }
 
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
-    weights: number, gene
+    weights: number, gene,
   ): number => {
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerDaily[tickerKey]
@@ -122,7 +122,7 @@ export const getPriceMovementBuyWeights = (
 
 export const getPriceMovementSellWeights = (
   dna: traderDNAModel.Record,
-  tickerDaily: tickerDailyModel.Record
+  tickerDaily: tickerDailyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
     [key in traderDNAModel.SellGene]: tickerDailyModel.MovementKey
@@ -136,13 +136,13 @@ export const getPriceMovementSellWeights = (
     priceQuarterlyIncreaseSell: 'priceQuarterlyIncrease',
     priceQuarterlyDecreaseSell: 'priceQuarterlyDecrease',
     priceYearlyIncreaseSell: 'priceYearlyIncrease',
-    priceYearlyDecreaseSell: 'priceYearlyDecrease'
+    priceYearlyDecreaseSell: 'priceYearlyDecrease',
   }
 
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
-    weights: number, gene
+    weights: number, gene,
   ): number => {
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerDaily[tickerKey]

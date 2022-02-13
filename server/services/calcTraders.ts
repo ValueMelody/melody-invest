@@ -45,7 +45,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       const holdings = holding ? holding.holdings : []
 
       const detailsBeforeUpdate: HoldingDetails = {
-        totalValue: totalCash, totalCash, holdings: []
+        totalValue: totalCash, totalCash, holdings: [],
       }
       const detailsAfterUpdate = holdings.reduce((details, holding) => {
         const matchedDaily = targets.find((daily) => daily.tickerId === holding.tickerId)
@@ -54,7 +54,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         return {
           totalValue: details.totalValue + holdingValue,
           totalCash: details.totalCash,
-          holdings: [...details.holdings, updatedHolding]
+          holdings: [...details.holdings, updatedHolding],
         }
       }, detailsBeforeUpdate)
 
@@ -66,7 +66,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       const detailsBeforeRebalance: HoldingDetails = {
         totalValue: detailsAfterUpdate.totalValue,
         totalCash: detailsAfterUpdate.totalCash,
-        holdings: []
+        holdings: [],
       }
       const detailsAfterRebalance = detailsAfterUpdate.holdings.reduce((details, holding) => {
         const matchedDaily = targets.find((daily) => daily.tickerId === holding.tickerId)
@@ -81,7 +81,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
             return {
               totalValue: details.totalValue,
               totalCash: cashAfterSell,
-              holdings: details.holdings.filter((hold) => hold.tickerId !== holding.tickerId)
+              holdings: details.holdings.filter((hold) => hold.tickerId !== holding.tickerId),
             }
           }
         }
@@ -97,12 +97,12 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
             const holdingAfterSell = {
               tickerId: holding.tickerId,
               shares: sharesLeft,
-              value: sharesLeft * matchedDaily.adjustedClosePrice
+              value: sharesLeft * matchedDaily.adjustedClosePrice,
             }
             return {
               totalValue: details.totalValue,
               totalCash: cashAfterSell,
-              holdings: [...details.holdings, holdingAfterSell]
+              holdings: [...details.holdings, holdingAfterSell],
             }
           }
         }
@@ -110,7 +110,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         return {
           totalValue: details.totalValue,
           totalCash: details.totalCash,
-          holdings: [...details.holdings, holding]
+          holdings: [...details.holdings, holding],
         }
       }, detailsBeforeRebalance)
 
@@ -130,7 +130,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       const detailsBeforeSell: HoldingDetails = {
         totalValue: detailsAfterRebalance.totalValue,
         totalCash: detailsAfterRebalance.totalCash,
-        holdings: []
+        holdings: [],
       }
       const detailsAfterSell = detailsAfterRebalance.holdings.reduce((details, holding) => {
         const isSellTarget = sellTickerIds.includes(holding.tickerId)
@@ -154,14 +154,14 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
           return {
             totalValue: details.totalValue,
             totalCash: cashAfterSell,
-            holdings
+            holdings,
           }
         }
 
         return {
           totalValue: details.totalValue,
           totalCash: details.totalCash,
-          holdings: [...details.holdings, holding]
+          holdings: [...details.holdings, holding],
         }
       }, detailsBeforeSell)
 
@@ -198,7 +198,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         return {
           totalValue: details.totalValue,
           totalCash: details.totalCash - sharePrice * sharesBought,
-          holdings
+          holdings,
         }
       }, detailsAfterSell)
 
@@ -213,7 +213,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
           date: tradeDate,
           totalValue: detailsAfterBuy.totalValue,
           totalCash: detailsAfterBuy.totalCash,
-          holdings: detailsAfterBuy.holdings
+          holdings: detailsAfterBuy.holdings,
         })
       }
     }

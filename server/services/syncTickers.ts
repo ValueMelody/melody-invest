@@ -10,7 +10,7 @@ import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 
 export const syncPrices = async (
   region: string,
-  symbol: string
+  symbol: string,
 ): Promise<{
   ticker: tickerModel.Record,
   newDaily: tickerDailyModel.Record[]
@@ -56,14 +56,14 @@ export const syncPrices = async (
         closePrice,
         splitCoefficient,
         previousRecord.closePrice,
-        previousRecord.adjustedClosePrice
+        previousRecord.adjustedClosePrice,
       )
       : marketTool.convertToIntPrice(closePrice)
 
     const dividendPercent = previousRecord
       ? marketTool.getDividendPercent(
         dividendAmount,
-        previousRecord.closePrice
+        previousRecord.closePrice,
       )
       : '0.00'
 
@@ -74,7 +74,7 @@ export const syncPrices = async (
       closePrice: closePrice,
       splitCoefficient: splitCoefficient.substring(0, 10),
       dividendPercent: dividendPercent,
-      adjustedClosePrice: adjustedClose
+      adjustedClosePrice: adjustedClose,
     })
     newRecords.push(newRecord)
   }
@@ -89,12 +89,12 @@ export const syncPrices = async (
 
   return {
     ticker: updatedTicker,
-    newDaily: newRecords
+    newDaily: newRecords,
   }
 }
 
 export const syncAllPrices = async (
-  date: string
+  date: string,
 ): Promise<{
   tickers: tickerModel.Record[]
 }> => {
@@ -116,7 +116,7 @@ export const syncAllPrices = async (
 export const syncEarnings = async (
   region: string,
   symbol: string,
-  forceRecheck: boolean = false
+  forceRecheck: boolean = false,
 ): Promise<{
   ticker: tickerModel.Record,
   relatedYearly: tickerYearlyModel.Record[],
@@ -132,7 +132,7 @@ export const syncEarnings = async (
 
   const lastYearlyRecord = !forceRecheck && await tickerYearlyModel.getLatest(
     ticker.id,
-    [{ key: 'eps', type: 'IS NOT', value: null }]
+    [{ key: 'eps', type: 'IS NOT', value: null }],
   )
 
   const startYear = lastYearlyRecord
@@ -143,7 +143,7 @@ export const syncEarnings = async (
 
   const relatedYearly = []
   for (const year of allYears) {
-    const matchedEarning = annualEarnings.find(earning => {
+    const matchedEarning = annualEarnings.find((earning) => {
       return year === earning.fiscalDateEnding.substring(0, 4)
     })
     if (!matchedEarning) continue
@@ -151,7 +151,7 @@ export const syncEarnings = async (
     const yearlyEPS = {
       year,
       earningDate: matchedEarning.fiscalDateEnding,
-      eps: matchedEarning.reportedEPS.substring(0, 10)
+      eps: matchedEarning.reportedEPS.substring(0, 10),
     }
 
     const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
@@ -159,7 +159,7 @@ export const syncEarnings = async (
     if (!currentRecord) {
       const createdRecord = await tickerYearlyModel.create({
         tickerId: ticker.id,
-        ...yearlyEPS
+        ...yearlyEPS,
       })
       relatedYearly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
@@ -175,7 +175,7 @@ export const syncEarnings = async (
 
   const lastQuarterlyRecord = !forceRecheck && await tickerQuarterlyModel.getLatest(
     ticker.id,
-    [{ key: 'eps', type: 'IS NOT', value: null }]
+    [{ key: 'eps', type: 'IS NOT', value: null }],
   )
 
   const startQuarter = lastQuarterlyRecord
@@ -186,7 +186,7 @@ export const syncEarnings = async (
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const matchedEarning = quarterlyEarnings.find(earning => {
+    const matchedEarning = quarterlyEarnings.find((earning) => {
       return quarter === earning.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedEarning) continue
@@ -206,7 +206,7 @@ export const syncEarnings = async (
       earningReportDate: matchedEarning.reportedDate,
       eps,
       estimatedEPS,
-      epsSurprisePercent
+      epsSurprisePercent,
     }
 
     const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
@@ -214,7 +214,7 @@ export const syncEarnings = async (
     if (!currentRecord) {
       const createdRecord = await tickerQuarterlyModel.create({
         tickerId: ticker.id,
-        ...quarterlyEPS
+        ...quarterlyEPS,
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.eps) {
@@ -245,7 +245,7 @@ export const syncEarnings = async (
 export const syncAllEarnings = async (
   year: string,
   quarter: string,
-  forceRecheck: boolean = false
+  forceRecheck: boolean = false,
 ): Promise<{
   tickers: tickerModel.Record[]
 }> => {
@@ -268,7 +268,7 @@ export const syncAllEarnings = async (
 export const syncIncomes = async (
   region: string,
   symbol: string,
-  forceRecheck: boolean = false
+  forceRecheck: boolean = false,
 ): Promise<{
   ticker: tickerModel.Record,
   relatedYearly: tickerYearlyModel.Record[],
@@ -284,7 +284,7 @@ export const syncIncomes = async (
 
   const lastYearlyRecord = !forceRecheck && await tickerYearlyModel.getLatest(
     ticker.id,
-    [{ key: 'netIncome', type: 'IS NOT', value: null }]
+    [{ key: 'netIncome', type: 'IS NOT', value: null }],
   )
 
   const startYear = lastYearlyRecord
@@ -295,7 +295,7 @@ export const syncIncomes = async (
 
   const relatedYearly = []
   for (const year of allYears) {
-    const matchedIncome = annualIncomes.find(income => {
+    const matchedIncome = annualIncomes.find((income) => {
       return year === income.fiscalDateEnding.substring(0, 4)
     })
     if (!matchedIncome) continue
@@ -306,7 +306,7 @@ export const syncIncomes = async (
       netIncome: matchedIncome.netIncome,
       grossProfit: matchedIncome.grossProfit,
       totalRevenue: matchedIncome.totalRevenue,
-      costOfRevenue: matchedIncome.costOfRevenue
+      costOfRevenue: matchedIncome.costOfRevenue,
     }
 
     const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
@@ -314,7 +314,7 @@ export const syncIncomes = async (
     if (!currentRecord) {
       const createdRecord = await tickerYearlyModel.create({
         tickerId: ticker.id,
-        ...yearlyIncome
+        ...yearlyIncome,
       })
       relatedYearly.push(createdRecord)
     } else if (currentRecord && !currentRecord.netIncome) {
@@ -330,7 +330,7 @@ export const syncIncomes = async (
 
   const lastQuarterlyRecord = !forceRecheck && await tickerQuarterlyModel.getLatest(
     ticker.id,
-    [{ key: 'netIncome', type: 'IS NOT', value: null }]
+    [{ key: 'netIncome', type: 'IS NOT', value: null }],
   )
 
   const startQuarter = lastQuarterlyRecord
@@ -341,7 +341,7 @@ export const syncIncomes = async (
 
   const relatedQuarterly = []
   for (const quarter of allQuarters) {
-    const matchedIncome = quarterlyIncomes.find(income => {
+    const matchedIncome = quarterlyIncomes.find((income) => {
       return quarter === income.fiscalDateEnding.substring(0, 7)
     })
     if (!matchedIncome) continue
@@ -352,7 +352,7 @@ export const syncIncomes = async (
       netIncome: matchedIncome.netIncome,
       grossProfit: matchedIncome.grossProfit,
       totalRevenue: matchedIncome.totalRevenue,
-      costOfRevenue: matchedIncome.costOfRevenue
+      costOfRevenue: matchedIncome.costOfRevenue,
     }
 
     const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
@@ -360,7 +360,7 @@ export const syncIncomes = async (
     if (!currentRecord) {
       const createdRecord = await tickerQuarterlyModel.create({
         tickerId: ticker.id,
-        ...quarterlyEPS
+        ...quarterlyEPS,
       })
       relatedQuarterly.push(createdRecord)
     } else if (currentRecord && !currentRecord.netIncome) {
@@ -391,7 +391,7 @@ export const syncIncomes = async (
 export const syncAllIncomes = async (
   year: string,
   quarter: string,
-  forceRecheck: boolean = false
+  forceRecheck: boolean = false,
 ): Promise<{
   tickers: tickerModel.Record[]
 }> => {

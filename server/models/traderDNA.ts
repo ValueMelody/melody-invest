@@ -83,35 +83,35 @@ export interface Create {
 }
 
 export const getByPK = async (
-  id: number
+  id: number,
 ): Promise<Record | null> => {
   const dna = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
-      { key: 'id', value: id }
-    ]
+      { key: 'id', value: id },
+    ],
   })
   return dna
 }
 
 export const getByUK = async (
-  hashCode: string
+  hashCode: string,
 ): Promise<Record | null> => {
   const dna = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_DNA,
     conditions: [
-      { key: 'hashCode', value: hashCode }
-    ]
+      { key: 'hashCode', value: hashCode },
+    ],
   })
   return dna
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_DNA,
-    values
+    values,
   })
   return newRecords[0]
 }

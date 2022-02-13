@@ -36,43 +36,43 @@ const convertToRecord = (raw: Raw): Record => ({
   year: raw.year,
   region: raw.region,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
-  inflation: raw.inflation ? parseFloat(raw.inflation) : null
+  inflation: raw.inflation ? parseFloat(raw.inflation) : null,
 })
 
 export const getByUK = async (
   region: string,
-  year: string
+  year: string,
 ): Promise<Record | null> => {
   const yearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     conditions: [
       { key: 'region', value: region },
-      { key: 'year', value: year }
-    ]
+      { key: 'year', value: year },
+    ],
   })
   return yearly ? convertToRecord(yearly) : null
 }
 
 export const create = async (
-  values: Create
+  values: Create,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
-    values
+    values,
   })
   return convertToRecord(newRecords[0])
 }
 
 export const update = async (
   indicatorYearlyId: number,
-  values: Update
+  values: Update,
 ): Promise<Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     values,
     conditions: [
-      { key: 'id', value: indicatorYearlyId }
-    ]
+      { key: 'id', value: indicatorYearlyId },
+    ],
   })
   return convertToRecord(updated[0])
 }

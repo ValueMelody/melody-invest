@@ -9,13 +9,13 @@ export const getCooldownPerMin = (): number => {
 }
 
 export const getTickerPrices = async (
-  symbol: string
+  symbol: string,
 ) => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.PRICES,
     symbol: symbol.toUpperCase(),
     outputsize: 'full',
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -42,12 +42,12 @@ interface TickerEarnings {
 }
 
 export const getTickerEarnings = async (
-  symbol: string
+  symbol: string,
 ): Promise<TickerEarnings> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.EARNINGS,
     symbol: symbol.toUpperCase(),
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -71,12 +71,12 @@ interface TickerIncomes {
 }
 
 export const getTickerIncomes = async (
-  symbol: string
+  symbol: string,
 ): Promise<TickerIncomes> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.INCOMES,
     symbol: symbol.toUpperCase(),
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -91,14 +91,14 @@ interface IndicatorDateValue {
 }
 
 export const getRealGDP = async (
-  interval: string
+  interval: string,
 ): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.GDP,
     interval: interval,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -112,7 +112,7 @@ export const getFundsRate = async (): Promise<{
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.FUNDS_RATE,
     interval: 'monthly',
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -126,7 +126,7 @@ export const getCPI = async (): Promise<{
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.CPI,
     interval: 'monthly',
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -135,7 +135,7 @@ export const getCPI = async (): Promise<{
 }
 
 export const getTreasuryYield = async (
-  type: string
+  type: string,
 ): Promise<{
   data: IndicatorDateValue[]
 }> => {
@@ -143,7 +143,7 @@ export const getTreasuryYield = async (
     function: marketEnum.TYPES.TREASURY_YIELD,
     interval: 'monthly',
     maturity: type,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -156,7 +156,7 @@ export const getInflation = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.INFLATION,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -169,7 +169,7 @@ export const getInflationExpectation = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.INFLATION_EXPECTATION,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -182,7 +182,7 @@ export const getConsumerSentiment = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.CONSUMER_SENTIMENT,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -195,7 +195,7 @@ export const getRetailSales = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.RETAIL_SALES,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -208,7 +208,7 @@ export const getDurableGoods = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.DURABLE_GOODS,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -221,7 +221,7 @@ export const getUnemploymentRate = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.UNEMPLOYMENT_RATE,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)
@@ -234,7 +234,7 @@ export const getNonfarmPayroll = async (): Promise<{
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.TYPES.NONFARM_PAYROLL,
-    apikey: process.env.MARKET_KEY
+    apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
   const result = await axios.get(url)

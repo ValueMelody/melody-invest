@@ -5,7 +5,7 @@ let _cache: Redis.Redis | null = null
 export const initConnection = () => {
   _cache = new Redis({
     host: process.env.CACHE_HOST,
-    port: parseInt(process.env.CACHE_PORT!)
+    port: parseInt(process.env.CACHE_PORT!),
   })
 }
 
@@ -20,7 +20,7 @@ export const get = async (key: string) => {
 }
 
 export const set = async (
-  key: string, value: string
+  key: string, value: string,
 ) => {
   const cache = getConnection()
   return cache.set(key, value)
