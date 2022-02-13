@@ -6,6 +6,12 @@ export interface Record {
   traderEnvId: number;
   traderDNAId: number;
   isActive: boolean;
+  rebalancedAt: string;
+}
+
+interface Update {
+  isActive?: boolean;
+  rebalancedAt?: string;
 }
 
 export const getByUK = async (
@@ -30,4 +36,18 @@ export const getActives = async (): Promise<Record[]> => {
     ]
   })
   return traders
+}
+
+export const update = async (
+  traderId: number,
+  values: Update
+): Promise<Record> => {
+  const updatedTrader = await databaseAdapter.update({
+    tableName: tableEnum.NAMES.TRADER,
+    values,
+    conditions: [
+      { key: 'id', value: traderId }
+    ]
+  })
+  return updatedTrader[0]
 }
