@@ -120,7 +120,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         holding = await traderHoldingModel.create({
           traderId: trader.id,
           date: tradeDate,
-          totalValue: totalValue,
+          totalValue,
           totalCash: detailsAfterBuy.totalCash,
           holdings: detailsAfterBuy.holdings
         })
