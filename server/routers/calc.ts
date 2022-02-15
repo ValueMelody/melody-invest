@@ -23,6 +23,12 @@ calcRouter.get('/tickers/quarterly_financial', async (req, res) => {
   return res.status(200).send({ result })
 })
 
+calcRouter.get('/tickers/yearly_financial', async (req, res) => {
+  const result = await calcTickers.calcYearlyFinancial()
+
+  return res.status(200).send({ result })
+})
+
 calcRouter.get('/traders/performance', async (req, res) => {
   const result = await calcTraders.calcPerformance()
 
