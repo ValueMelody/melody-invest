@@ -15,6 +15,14 @@ export interface Record {
   grossProfit: number | null;
   totalRevenue: number | null;
   costOfRevenue: number | null;
+  epsContinuousBeats: number | null;
+  epsContinuousMiss: number | null;
+  profitContinuousIncrease: number | null;
+  profitContinuousDecrease: number | null;
+  revenueContinuousIncrease: number | null;
+  revenueContinuousDecrease: number | null;
+  incomeContinuousIncrease: number | null;
+  incomeContinuousDecrease: number | null;
 }
 
 interface Raw {
@@ -31,6 +39,14 @@ interface Raw {
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
+  epsContinuousBeats: number | null;
+  epsContinuousMiss: number | null;
+  profitContinuousIncrease: number | null;
+  profitContinuousDecrease: number | null;
+  revenueContinuousIncrease: number | null;
+  revenueContinuousDecrease: number | null;
+  incomeContinuousIncrease: number | null;
+  incomeContinuousDecrease: number | null;
 }
 
 interface Create {
@@ -59,6 +75,14 @@ interface Update {
   grossProfit?: string;
   totalRevenue?: string;
   costOfRevenue?: string;
+  epsContinuousBeats?: number | null;
+  epsContinuousMiss?: number | null;
+  profitContinuousIncrease?: number | null;
+  profitContinuousDecrease?: number | null;
+  revenueContinuousIncrease?: number | null;
+  revenueContinuousDecrease?: number | null;
+  incomeContinuousIncrease?: number | null;
+  incomeContinuousDecrease?: number | null;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -75,6 +99,14 @@ const convertToRecord = (raw: Raw): Record => ({
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
+  epsContinuousBeats: raw.epsContinuousBeats,
+  epsContinuousMiss: raw.epsContinuousMiss,
+  profitContinuousIncrease: raw.profitContinuousIncrease,
+  profitContinuousDecrease: raw.profitContinuousDecrease,
+  revenueContinuousIncrease: raw.revenueContinuousIncrease,
+  revenueContinuousDecrease: raw.revenueContinuousDecrease,
+  incomeContinuousIncrease: raw.incomeContinuousIncrease,
+  incomeContinuousDecrease: raw.incomeContinuousDecrease,
 })
 
 export const getByUK = async (
@@ -105,6 +137,17 @@ export const getLatest = async (
     orderBy: { key: 'quarter', type: 'desc' },
   })
   return tickerQuarterly ? convertToRecord(tickerQuarterly) : null
+}
+
+export const getAll = async (tickerId: number): Promise<Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+    ],
+    orderBy: { key: 'quarter', type: 'asc' },
+  })
+  return records
 }
 
 export const create = async (
