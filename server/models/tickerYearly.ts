@@ -12,6 +12,12 @@ export interface Record {
   grossProfit: number | null;
   totalRevenue: number | null;
   costOfRevenue: number | null;
+  profitContinuousIncrease: number | null;
+  profitContinuousDecrease: number | null;
+  revenueContinuousIncrease: number | null;
+  revenueContinuousDecrease: number | null;
+  incomeContinuousIncrease: number | null;
+  incomeContinuousDecrease: number | null;
 }
 
 interface Raw {
@@ -25,6 +31,12 @@ interface Raw {
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
+  profitContinuousIncrease: number | null;
+  profitContinuousDecrease: number | null;
+  revenueContinuousIncrease: number | null;
+  revenueContinuousDecrease: number | null;
+  incomeContinuousIncrease: number | null;
+  incomeContinuousDecrease: number | null;
 }
 
 interface Create {
@@ -47,6 +59,12 @@ interface Update {
   grossProfit?: string;
   totalRevenue?: string;
   costOfRevenue?: string;
+  profitContinuousIncrease?: number | null;
+  profitContinuousDecrease?: number | null;
+  revenueContinuousIncrease?: number | null;
+  revenueContinuousDecrease?: number | null;
+  incomeContinuousIncrease?: number | null;
+  incomeContinuousDecrease?: number | null;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -60,6 +78,12 @@ const convertToRecord = (raw: Raw): Record => ({
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
+  profitContinuousIncrease: raw.profitContinuousIncrease,
+  profitContinuousDecrease: raw.profitContinuousDecrease,
+  revenueContinuousIncrease: raw.revenueContinuousIncrease,
+  revenueContinuousDecrease: raw.revenueContinuousDecrease,
+  incomeContinuousIncrease: raw.incomeContinuousIncrease,
+  incomeContinuousDecrease: raw.incomeContinuousDecrease,
 })
 
 export const getLatest = async (
@@ -90,6 +114,17 @@ export const getByUK = async (
     ],
   })
   return tickerYearly ? convertToRecord(tickerYearly) : null
+}
+
+export const getAll = async (tickerId: number): Promise<Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+    ],
+    orderBy: { key: 'year', type: 'asc' },
+  })
+  return records
 }
 
 export const create = async (
