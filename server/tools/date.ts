@@ -1,5 +1,4 @@
 import moment from 'moment'
-import * as errorEnum from '../enums/error'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
 const QUARTER_FORMAT = 'yyyy-MM'
@@ -41,6 +40,10 @@ export const getCurrentQuater = (): string => {
   return getQuarterByDate(currentDate)
 }
 
+export const getYearByDate = (date: string): string => {
+  return date.substring(0, 4)
+}
+
 export const getQuarterByDate = (date: string): string => {
   const currentDate = date.substring(0, 7)
   const [currentYear, currentMonth] = currentDate.split('-')
@@ -55,31 +58,6 @@ export const getQuarterByDate = (date: string): string => {
     quarter = '09'
   } else if (month <= 12) {
     quarter = '12'
-  }
-  return `${year}-${quarter}`
-}
-
-export const getPreviousQuarter = (date: string): string => {
-  const [currentYear, currentMonth] = date.split('-')
-  const month = parseInt(currentMonth)
-  let year = parseInt(currentYear)
-  let quarter = ''
-  switch (month) {
-    case 3:
-      year -= 1
-      quarter = '12'
-      break
-    case 6:
-      quarter = '03'
-      break
-    case 9:
-      quarter = '06'
-      break
-    case 12:
-      quarter = '09'
-      break
-    default:
-      throw errorEnum.FUNCTION_ERRORS.INVALID_INPUT
   }
   return `${year}-${quarter}`
 }
@@ -101,6 +79,15 @@ export const getNextDate = (
     .format(DATE_FORMAT)
 }
 
+export const getPreviousYear = (
+  year: string,
+  differ: number = 1,
+): string => {
+  return moment(year)
+    .subtract(differ, 'years')
+    .format(YEAR_FORMAT)
+}
+
 export const getNextYear = (
   year: string,
   differ: number = 1,
@@ -108,6 +95,15 @@ export const getNextYear = (
   return moment(year)
     .add(differ, 'years')
     .format(YEAR_FORMAT)
+}
+
+export const getPreviousQuarter = (
+  quarter: string,
+  differ: number = 1,
+): string => {
+  return moment(quarter)
+    .subtract(differ, 'quarters')
+    .format(QUARTER_FORMAT)
 }
 
 export const getNextQuarter = (

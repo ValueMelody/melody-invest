@@ -2,6 +2,7 @@ import * as geneEnums from '../enums/gene'
 import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
+import * as tickerYearlyModel from '../models/tickerYearly'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.PRICE_DAILY_VALUES],
@@ -40,6 +41,18 @@ const GENE_VALUES = {
   revenueQuarterlyIncreaseSell: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
   revenueQuarterlyDecreaseBuy: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
   revenueQuarterlyDecreaseSell: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
+  profitYearlyIncreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  profitYearlyIncreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  profitYearlyDecreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  profitYearlyDecreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  incomeYearlyIncreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  incomeYearlyIncreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  incomeYearlyDecreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  incomeYearlyDecreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  revenueYearlyIncreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  revenueYearlyIncreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  revenueYearlyDecreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  revenueYearlyDecreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
   tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
@@ -69,6 +82,12 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'profitQuarterlyDecreaseBuy',
     'incomeQuarterlyDecreaseBuy',
     'revenueQuarterlyDecreaseBuy',
+    'profitYearlyIncreaseBuy',
+    'incomeYearlyIncreaseBuy',
+    'revenueYearlyIncreaseBuy',
+    'profitYearlyDecreaseBuy',
+    'incomeYearlyDecreaseBuy',
+    'revenueYearlyDecreaseBuy',
   ],
   [
     'priceDailyIncreaseSell',
@@ -89,6 +108,12 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'profitQuarterlyDecreaseSell',
     'incomeQuarterlyDecreaseSell',
     'revenueQuarterlyDecreaseSell',
+    'profitYearlyIncreaseSell',
+    'incomeYearlyIncreaseSell',
+    'revenueYearlyIncreaseSell',
+    'profitYearlyDecreaseSell',
+    'incomeYearlyDecreaseSell',
+    'revenueYearlyDecreaseSell',
   ],
   ['cashMaxPercent'],
   ['tickerMinPercent'],
@@ -103,6 +128,9 @@ interface Gene {
   type: traderDNAModel.GeneType;
   value: number;
 }
+
+type MovementKey =
+  tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey | tickerYearlyModel.MovementKey
 
 export const getGeneGroups = () => (
   GENE_GROUPS.map((group) => (
@@ -120,9 +148,10 @@ export const getPriceMovementBuyWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly?: tickerQuarterlyModel.Record,
+  tickerYearly?: tickerYearlyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.BuyGene]: tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey
+    [key in traderDNAModel.BuyGene]: MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -142,6 +171,12 @@ export const getPriceMovementBuyWeights = (
     incomeQuarterlyDecreaseBuy: 'incomeQuarterlyDecrease',
     revenueQuarterlyIncreaseBuy: 'revenueQuarterlyIncrease',
     revenueQuarterlyDecreaseBuy: 'revenueQuarterlyDecrease',
+    profitYearlyIncreaseBuy: 'profitYearlyIncrease',
+    profitYearlyDecreaseBuy: 'profitYearlyDecrease',
+    incomeYearlyIncreaseBuy: 'incomeYearlyIncrease',
+    incomeYearlyDecreaseBuy: 'incomeYearlyDecrease',
+    revenueYearlyIncreaseBuy: 'revenueYearlyIncrease',
+    revenueYearlyDecreaseBuy: 'revenueYearlyDecrease',
   }
 
   const tickerInfo = {
@@ -154,6 +189,12 @@ export const getPriceMovementBuyWeights = (
     incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
     revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
     revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
+    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
+    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
+    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
+    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
+    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
+    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
   }
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
@@ -177,9 +218,10 @@ export const getPriceMovementSellWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly?: tickerQuarterlyModel.Record,
+  tickerYearly?: tickerYearlyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.SellGene]: tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey
+    [key in traderDNAModel.SellGene]: MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -199,6 +241,12 @@ export const getPriceMovementSellWeights = (
     incomeQuarterlyDecreaseSell: 'incomeQuarterlyDecrease',
     revenueQuarterlyIncreaseSell: 'revenueQuarterlyIncrease',
     revenueQuarterlyDecreaseSell: 'revenueQuarterlyDecrease',
+    profitYearlyIncreaseSell: 'profitYearlyIncrease',
+    profitYearlyDecreaseSell: 'profitYearlyDecrease',
+    incomeYearlyIncreaseSell: 'incomeYearlyIncrease',
+    incomeYearlyDecreaseSell: 'incomeYearlyDecrease',
+    revenueYearlyIncreaseSell: 'revenueYearlyIncrease',
+    revenueYearlyDecreaseSell: 'revenueYearlyDecrease',
   }
 
   const tickerInfo = {
@@ -211,6 +259,12 @@ export const getPriceMovementSellWeights = (
     incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
     revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
     revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
+    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
+    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
+    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
+    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
+    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
+    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
   }
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
