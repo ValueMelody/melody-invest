@@ -3,6 +3,7 @@ import * as traderDNAModel from '../models/traderDNA'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
+import * as tickerYearlyModel from '../models/tickerYearly'
 import * as dateTool from '../tools/date'
 import * as dnaTool from '../tools/dna'
 import * as traderTool from '../tools/trader'
@@ -40,17 +41,14 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
 
     while (tradeDate <= today) {
       tradeDate = dateTool.getNextDate(tradeDate, dna.tradeFrequency)
-      const currentQuarter = dateTool.getQuarterByDate(tradeDate)
-      const targetQuarter = dateTool.getPreviousQuarter(currentQuarter)
-      const previousQuarter = dateTool.getPreviousQuarter(targetQuarter)
-
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
-      const quarterlyTargets = await tickerQuarterlyModel.getByRange(previousQuarter, targetQuarter)
-      quarterlyTargets.reverse()
+      const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
+      const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
 
       const targets = dailyTargets.map((daily) => {
-        const lastMatch = quarterlyTargets.find((quarterly) => quarterly.tickerId === daily.tickerId)
-        return { daily, quarterly: lastMatch }
+        const quarterly = quarterlyTargets.find((quarterly) => quarterly.tickerId === daily.tickerId)
+        const yearly = yearlyTargets.find((yearly) => yearly.tickerId === daily.tickerId)
+        return { daily, quarterly, yearly }
       })
 
       const totalCash = holding ? holding.totalCash : traderTool.getInitialCash()
@@ -130,13 +128,13 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = targets
-        .filter(({ daily, quarterly }) => {
+        .filter(({ daily, quarterly, yearly }) => {
           return holdingTickerIds.includes(daily.tickerId) &&
-            dnaTool.getPriceMovementSellWeights(dna, daily, quarterly)
+            dnaTool.getPriceMovementSellWeights(dna, daily, quarterly, yearly)
         })
         .sort((first, second) => {
-          const firstWeight = dnaTool.getPriceMovementSellWeights(dna, first.daily, first.quarterly)
-          const secondWeight = dnaTool.getPriceMovementSellWeights(dna, second.daily, second.quarterly)
+          const firstWeight = dnaTool.getPriceMovementSellWeights(dna, first.daily, first.quarterly, first.yearly)
+          const secondWeight = dnaTool.getPriceMovementSellWeights(dna, second.daily, second.quarterly, second.yearly)
           return firstWeight >= secondWeight ? -1 : 1
         })
         .map(({ daily }) => daily.tickerId)
@@ -183,10 +181,10 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
       const buyTargets = targets
-        .filter(({ daily, quarterly }) => !!dnaTool.getPriceMovementBuyWeights(dna, daily, quarterly))
+        .filter(({ daily, quarterly, yearly }) => !!dnaTool.getPriceMovementBuyWeights(dna, daily, quarterly, yearly))
         .sort((first, second) => {
-          const firstWeight = dnaTool.getPriceMovementBuyWeights(dna, first.daily, first.quarterly)
-          const secondWeight = dnaTool.getPriceMovementBuyWeights(dna, second.daily, second.quarterly)
+          const firstWeight = dnaTool.getPriceMovementBuyWeights(dna, first.daily, first.quarterly, first.yearly)
+          const secondWeight = dnaTool.getPriceMovementBuyWeights(dna, second.daily, second.quarterly, second.yearly)
           return firstWeight >= secondWeight ? -1 : 1
         })
 

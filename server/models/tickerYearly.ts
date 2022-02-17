@@ -1,5 +1,11 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
+
+export type MovementKey =
+  'incomeYearlyIncrease' | 'incomeYearlyDecrease' |
+  'profitYearlyIncrease' | 'profitYearlyDecrease' |
+  'revenueYearlyIncrease' | 'revenueYearlyDecrease'
 
 export interface Record {
   id: number;
@@ -123,6 +129,25 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
       { key: 'tickerId', value: tickerId },
     ],
     orderBy: { key: 'year', type: 'asc' },
+  })
+  return records
+}
+
+export const getPublishedByDate = async (date: string): Promise<Record[]> => {
+  const currentYear = dateTool.getYearByDate(date)
+  const previousYear = dateTool.getPreviousYear(currentYear)
+  const currentQuarter = dateTool.getQuarterByDate(date)
+  const previousQuarter = dateTool.getPreviousQuarter(currentQuarter)
+  const estimatedReportDate = `${previousQuarter}-30`
+
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    conditions: [
+      { key: 'earningDate', value: estimatedReportDate, type: '<' },
+      { key: 'year', value: previousYear, type: '>=' },
+      { key: 'year', value: currentYear, type: '<=' },
+    ],
+    orderBy: { key: 'year', type: 'desc' },
   })
   return records
 }

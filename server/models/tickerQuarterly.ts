@@ -1,5 +1,6 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
 
 export type MovementKey =
   'epsQuarterlyBeats' | 'epsQuarterlyMiss' |
@@ -156,14 +157,18 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
   return records
 }
 
-export const getByRange = async (firstQuarter: string, lastQuarter: string): Promise<Record[]> => {
+export const getPublishedByDate = async (date: string): Promise<Record[]> => {
+  const currentQuarter = dateTool.getQuarterByDate(date)
+  const previousQuarter = dateTool.getPreviousQuarter(currentQuarter)
+
   const records = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     conditions: [
-      { key: 'quarter', value: firstQuarter, type: '>=' },
-      { key: 'quarter', value: lastQuarter, type: '<=' },
+      { key: 'earningReportDate', value: date, type: '<' },
+      { key: 'quarter', value: previousQuarter, type: '>=' },
+      { key: 'quarter', value: currentQuarter, type: '<=' },
     ],
-    orderBy: { key: 'quarter', type: 'asc' },
+    orderBy: { key: 'quarter', type: 'desc' },
   })
   return records
 }
