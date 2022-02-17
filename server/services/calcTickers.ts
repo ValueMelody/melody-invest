@@ -170,69 +170,69 @@ export const calcQuarterlyFinancial = async (): Promise<tickerModel.Record[]> =>
     for (const tickerQuarterly of tickerQuarterlyRecords) {
       const lastRecord = checkedQuarterly.length ? checkedQuarterly[checkedQuarterly.length - 1] : null
 
-      let epsContinuousBeats = tickerQuarterly.epsContinuousBeats
-      let epsContinuousMiss = tickerQuarterly.epsContinuousMiss
+      let epsQuarterlyBeats = tickerQuarterly.epsQuarterlyBeats
+      let epsQuarterlyMiss = tickerQuarterly.epsQuarterlyMiss
       if (tickerQuarterly.eps !== null && tickerQuarterly.estimatedEPS !== null) {
         const isBeats = tickerQuarterly.eps >= tickerQuarterly.estimatedEPS
-        const previousBeats = lastRecord?.epsContinuousBeats || 0
-        const previousMiss = lastRecord?.epsContinuousBeats || 0
-        epsContinuousBeats = isBeats ? previousBeats + 1 : 1
-        epsContinuousMiss = !isBeats ? previousMiss + 1 : 1
+        const previousBeats = lastRecord?.epsQuarterlyBeats || 0
+        const previousMiss = lastRecord?.epsQuarterlyBeats || 0
+        epsQuarterlyBeats = isBeats ? previousBeats + 1 : 1
+        epsQuarterlyMiss = !isBeats ? previousMiss + 1 : 1
       }
 
-      let revenueContinuousIncrease = tickerQuarterly.revenueContinuousIncrease
-      let revenueContinuousDecrease = tickerQuarterly.revenueContinuousDecrease
+      let revenueQuarterlyIncrease = tickerQuarterly.revenueQuarterlyIncrease
+      let revenueQuarterlyDecrease = tickerQuarterly.revenueQuarterlyDecrease
       if (tickerQuarterly.totalRevenue !== null && lastRecord && lastRecord?.totalRevenue !== null) {
         const isIncrease = tickerQuarterly.totalRevenue > lastRecord.totalRevenue
         const isDecrease = tickerQuarterly.totalRevenue < lastRecord.totalRevenue
-        const lastIncrease = lastRecord.revenueContinuousIncrease || 0
-        const lastDecrease = lastRecord.revenueContinuousDecrease || 0
-        revenueContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        revenueContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.revenueQuarterlyIncrease || 0
+        const lastDecrease = lastRecord.revenueQuarterlyDecrease || 0
+        revenueQuarterlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        revenueQuarterlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
-      let profitContinuousIncrease = tickerQuarterly.profitContinuousIncrease
-      let profitContinuousDecrease = tickerQuarterly.profitContinuousDecrease
+      let profitQuarterlyIncrease = tickerQuarterly.profitQuarterlyIncrease
+      let profitQuarterlyDecrease = tickerQuarterly.profitQuarterlyDecrease
       if (tickerQuarterly.grossProfit !== null && lastRecord && lastRecord?.grossProfit !== null) {
         const isIncrease = tickerQuarterly.grossProfit > lastRecord.grossProfit
         const isDecrease = tickerQuarterly.grossProfit < lastRecord.grossProfit
-        const lastIncrease = lastRecord.profitContinuousIncrease || 0
-        const lastDecrease = lastRecord.profitContinuousDecrease || 0
-        profitContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        profitContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.profitQuarterlyIncrease || 0
+        const lastDecrease = lastRecord.profitQuarterlyDecrease || 0
+        profitQuarterlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        profitQuarterlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
-      let incomeContinuousIncrease = tickerQuarterly.incomeContinuousIncrease
-      let incomeContinuousDecrease = tickerQuarterly.incomeContinuousDecrease
+      let incomeQuarterlyIncrease = tickerQuarterly.incomeQuarterlyIncrease
+      let incomeQuarterlyDecrease = tickerQuarterly.incomeQuarterlyDecrease
       if (tickerQuarterly.netIncome !== null && lastRecord && lastRecord?.netIncome !== null) {
         const isIncrease = tickerQuarterly.netIncome > lastRecord.netIncome
         const isDecrease = tickerQuarterly.netIncome < lastRecord.netIncome
-        const lastIncrease = lastRecord.incomeContinuousIncrease || 0
-        const lastDecrease = lastRecord.incomeContinuousDecrease || 0
-        incomeContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        incomeContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.incomeQuarterlyIncrease || 0
+        const lastDecrease = lastRecord.incomeQuarterlyDecrease || 0
+        incomeQuarterlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        incomeQuarterlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
       const hasUpdate =
-        tickerQuarterly.epsContinuousBeats !== epsContinuousBeats ||
-        tickerQuarterly.epsContinuousMiss !== epsContinuousMiss ||
-        tickerQuarterly.revenueContinuousIncrease !== revenueContinuousIncrease ||
-        tickerQuarterly.revenueContinuousDecrease !== revenueContinuousDecrease ||
-        tickerQuarterly.profitContinuousIncrease !== profitContinuousIncrease ||
-        tickerQuarterly.profitContinuousDecrease !== profitContinuousDecrease ||
-        tickerQuarterly.incomeContinuousIncrease !== incomeContinuousIncrease ||
-        tickerQuarterly.incomeContinuousDecrease !== incomeContinuousDecrease
+        tickerQuarterly.epsQuarterlyBeats !== epsQuarterlyBeats ||
+        tickerQuarterly.epsQuarterlyMiss !== epsQuarterlyMiss ||
+        tickerQuarterly.revenueQuarterlyIncrease !== revenueQuarterlyIncrease ||
+        tickerQuarterly.revenueQuarterlyDecrease !== revenueQuarterlyDecrease ||
+        tickerQuarterly.profitQuarterlyIncrease !== profitQuarterlyIncrease ||
+        tickerQuarterly.profitQuarterlyDecrease !== profitQuarterlyDecrease ||
+        tickerQuarterly.incomeQuarterlyIncrease !== incomeQuarterlyIncrease ||
+        tickerQuarterly.incomeQuarterlyDecrease !== incomeQuarterlyDecrease
 
       const quarterly = hasUpdate
         ? await tickerQuarterlyModel.update(tickerQuarterly.id, {
-          epsContinuousBeats,
-          epsContinuousMiss,
-          revenueContinuousIncrease,
-          revenueContinuousDecrease,
-          profitContinuousIncrease,
-          profitContinuousDecrease,
-          incomeContinuousIncrease,
-          incomeContinuousDecrease,
+          epsQuarterlyBeats,
+          epsQuarterlyMiss,
+          revenueQuarterlyIncrease,
+          revenueQuarterlyDecrease,
+          profitQuarterlyIncrease,
+          profitQuarterlyDecrease,
+          incomeQuarterlyIncrease,
+          incomeQuarterlyDecrease,
         })
         : tickerQuarterly
 
@@ -253,55 +253,55 @@ export const calcYearlyFinancial = async (): Promise<tickerModel.Record[]> => {
     for (const tickerYearly of tickerYearlyRecords) {
       const lastRecord = checkedYearly.length ? checkedYearly[checkedYearly.length - 1] : null
 
-      let revenueContinuousIncrease = tickerYearly.revenueContinuousIncrease
-      let revenueContinuousDecrease = tickerYearly.revenueContinuousDecrease
+      let revenueYearlyIncrease = tickerYearly.revenueYearlyIncrease
+      let revenueYearlyDecrease = tickerYearly.revenueYearlyDecrease
       if (tickerYearly.totalRevenue !== null && lastRecord && lastRecord?.totalRevenue !== null) {
         const isIncrease = tickerYearly.totalRevenue > lastRecord.totalRevenue
         const isDecrease = tickerYearly.totalRevenue < lastRecord.totalRevenue
-        const lastIncrease = lastRecord.revenueContinuousIncrease || 0
-        const lastDecrease = lastRecord.revenueContinuousDecrease || 0
-        revenueContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        revenueContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.revenueYearlyIncrease || 0
+        const lastDecrease = lastRecord.revenueYearlyDecrease || 0
+        revenueYearlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        revenueYearlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
-      let profitContinuousIncrease = tickerYearly.profitContinuousIncrease
-      let profitContinuousDecrease = tickerYearly.profitContinuousDecrease
+      let profitYearlyIncrease = tickerYearly.profitYearlyIncrease
+      let profitYearlyDecrease = tickerYearly.profitYearlyDecrease
       if (tickerYearly.grossProfit !== null && lastRecord && lastRecord?.grossProfit !== null) {
         const isIncrease = tickerYearly.grossProfit > lastRecord.grossProfit
         const isDecrease = tickerYearly.grossProfit < lastRecord.grossProfit
-        const lastIncrease = lastRecord.profitContinuousIncrease || 0
-        const lastDecrease = lastRecord.profitContinuousDecrease || 0
-        profitContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        profitContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.profitYearlyIncrease || 0
+        const lastDecrease = lastRecord.profitYearlyDecrease || 0
+        profitYearlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        profitYearlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
-      let incomeContinuousIncrease = tickerYearly.incomeContinuousIncrease
-      let incomeContinuousDecrease = tickerYearly.incomeContinuousDecrease
+      let incomeYearlyIncrease = tickerYearly.incomeYearlyIncrease
+      let incomeYearlyDecrease = tickerYearly.incomeYearlyDecrease
       if (tickerYearly.netIncome !== null && lastRecord && lastRecord?.netIncome !== null) {
         const isIncrease = tickerYearly.netIncome > lastRecord.netIncome
         const isDecrease = tickerYearly.netIncome < lastRecord.netIncome
-        const lastIncrease = lastRecord.incomeContinuousIncrease || 0
-        const lastDecrease = lastRecord.incomeContinuousDecrease || 0
-        incomeContinuousIncrease = isIncrease ? lastIncrease + 1 : 0
-        incomeContinuousDecrease = isDecrease ? lastDecrease + 1 : 0
+        const lastIncrease = lastRecord.incomeYearlyIncrease || 0
+        const lastDecrease = lastRecord.incomeYearlyDecrease || 0
+        incomeYearlyIncrease = isIncrease ? lastIncrease + 1 : 0
+        incomeYearlyDecrease = isDecrease ? lastDecrease + 1 : 0
       }
 
       const hasUpdate =
-        tickerYearly.revenueContinuousIncrease !== revenueContinuousIncrease ||
-        tickerYearly.revenueContinuousDecrease !== revenueContinuousDecrease ||
-        tickerYearly.profitContinuousIncrease !== profitContinuousIncrease ||
-        tickerYearly.profitContinuousDecrease !== profitContinuousDecrease ||
-        tickerYearly.incomeContinuousIncrease !== incomeContinuousIncrease ||
-        tickerYearly.incomeContinuousDecrease !== incomeContinuousDecrease
+        tickerYearly.revenueYearlyIncrease !== revenueYearlyIncrease ||
+        tickerYearly.revenueYearlyDecrease !== revenueYearlyDecrease ||
+        tickerYearly.profitYearlyIncrease !== profitYearlyIncrease ||
+        tickerYearly.profitYearlyDecrease !== profitYearlyDecrease ||
+        tickerYearly.incomeYearlyIncrease !== incomeYearlyIncrease ||
+        tickerYearly.incomeYearlyDecrease !== incomeYearlyDecrease
 
       const yearly = hasUpdate
         ? await tickerYearlyModel.update(tickerYearly.id, {
-          revenueContinuousIncrease,
-          revenueContinuousDecrease,
-          profitContinuousIncrease,
-          profitContinuousDecrease,
-          incomeContinuousIncrease,
-          incomeContinuousDecrease,
+          revenueYearlyIncrease,
+          revenueYearlyDecrease,
+          profitYearlyIncrease,
+          profitYearlyDecrease,
+          incomeYearlyIncrease,
+          incomeYearlyDecrease,
         })
         : tickerYearly
 

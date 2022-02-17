@@ -1,4 +1,5 @@
 import moment from 'moment'
+import * as errorEnum from '../enums/error'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
 const QUARTER_FORMAT = 'yyyy-MM'
@@ -37,6 +38,11 @@ export const getCurrentYear = (): string => {
 
 export const getCurrentQuater = (): string => {
   const currentDate = moment().format(QUARTER_FORMAT)
+  return getQuarterByDate(currentDate)
+}
+
+export const getQuarterByDate = (date: string): string => {
+  const currentDate = date.substring(0, 7)
   const [currentYear, currentMonth] = currentDate.split('-')
   const month = parseInt(currentMonth)
   const year = parseInt(currentYear)
@@ -49,6 +55,31 @@ export const getCurrentQuater = (): string => {
     quarter = '09'
   } else if (month <= 12) {
     quarter = '12'
+  }
+  return `${year}-${quarter}`
+}
+
+export const getPreviousQuarter = (date: string): string => {
+  const [currentYear, currentMonth] = date.split('-')
+  const month = parseInt(currentMonth)
+  let year = parseInt(currentYear)
+  let quarter = ''
+  switch (month) {
+    case 3:
+      year -= 1
+      quarter = '12'
+      break
+    case 6:
+      quarter = '03'
+      break
+    case 9:
+      quarter = '06'
+      break
+    case 12:
+      quarter = '09'
+      break
+    default:
+      throw errorEnum.FUNCTION_ERRORS.INVALID_INPUT
   }
   return `${year}-${quarter}`
 }

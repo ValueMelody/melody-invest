@@ -6,14 +6,16 @@ export type BuyGene =
   'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
   'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
-  'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy'
+  'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy' |
+  'epsQuarterlyBeatsBuy' | 'epsQuarterlyMissBuy'
 
 export type SellGene =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
   'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
   'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
-  'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell'
+  'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell' |
+  'epsQuarterlyBeatsSell' | 'epsQuarterlyMissSell'
 
 export type GeneType =
   BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
@@ -49,6 +51,10 @@ export interface Record {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
+  epsQuarterlyBeatsBuy: number;
+  epsQuarterlyMissBuy: number;
+  epsQuarterlyBeatsSell: number;
+  epsQuarterlyMissSell: number;
 }
 
 export interface Create {
@@ -80,6 +86,10 @@ export interface Create {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
+  epsQuarterlyBeatsBuy: number | null;
+  epsQuarterlyMissBuy: number | null;
+  epsQuarterlyBeatsSell: number | null;
+  epsQuarterlyMissSell: number | null;
 }
 
 export const getByPK = async (
