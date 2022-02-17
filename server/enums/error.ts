@@ -12,3 +12,9 @@ export const HTTP_ERRORS = {
     message: 'Internal Server Error',
   },
 }
+
+export const FUNCTION_ERRORS = {
+  INVALID_INPUT: {
+    message: 'Unexpected Input',
+  },
+}

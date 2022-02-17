@@ -1,6 +1,7 @@
 import * as geneEnums from '../enums/gene'
 import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
+import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.PRICE_DAILY_VALUES],
@@ -23,6 +24,10 @@ const GENE_VALUES = {
   priceYearlyIncreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   priceYearlyDecreaseBuy: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
   priceYearlyDecreaseSell: [...geneEnums.VALUES.PRICE_YEARLY_VALUES],
+  epsQuarterlyBeatsBuy: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
+  epsQuarterlyMissBuy: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
+  epsQuarterlyBeatsSell: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
+  epsQuarterlyMissSell: [...geneEnums.VALUES.PRICE_QUARTERLY_VALUES],
   cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
   tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
@@ -44,6 +49,8 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'priceQuarterlyDecreaseBuy',
     'priceYearlyIncreaseBuy',
     'priceYearlyDecreaseBuy',
+    'epsQuarterlyBeatsBuy',
+    'epsQuarterlyMissBuy',
   ],
   [
     'priceDailyIncreaseSell',
@@ -56,6 +63,8 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'priceQuarterlyDecreaseSell',
     'priceYearlyIncreaseSell',
     'priceYearlyDecreaseSell',
+    'epsQuarterlyBeatsSell',
+    'epsQuarterlyMissSell',
   ],
   ['cashMaxPercent'],
   ['tickerMinPercent'],
@@ -86,9 +95,10 @@ export const getGeneGroups = () => (
 export const getPriceMovementBuyWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
+  tickerQuarterly?: tickerQuarterlyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.BuyGene]: tickerDailyModel.MovementKey
+    [key in traderDNAModel.BuyGene]: tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -100,17 +110,24 @@ export const getPriceMovementBuyWeights = (
     priceQuarterlyDecreaseBuy: 'priceQuarterlyDecrease',
     priceYearlyIncreaseBuy: 'priceYearlyIncrease',
     priceYearlyDecreaseBuy: 'priceYearlyDecrease',
+    epsQuarterlyBeatsBuy: 'epsQuarterlyBeats',
+    epsQuarterlyMissBuy: 'epsQuarterlyMiss',
   }
 
+  const tickerInfo = {
+    ...tickerDaily,
+    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
+    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
+  }
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
     weights: number, gene,
   ): number => {
     const tickerKey = GENE_TRIGGERS[gene]
-    const tickerValue = tickerDaily[tickerKey]
+    const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
-    const hasValidInfo = dnaValue !== null && tickerValue !== null
+    const hasValidInfo = dnaValue !== null && tickerValue !== null && tickerValue !== undefined
     const combinedWeights = hasValidInfo && tickerValue >= dnaValue
       ? (weights || 1) * (tickerValue - dnaValue + 2)
       : weights
@@ -123,9 +140,10 @@ export const getPriceMovementBuyWeights = (
 export const getPriceMovementSellWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
+  tickerQuarterly?: tickerQuarterlyModel.Record,
 ): number => {
   const GENE_TRIGGERS: {
-    [key in traderDNAModel.SellGene]: tickerDailyModel.MovementKey
+    [key in traderDNAModel.SellGene]: tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -137,15 +155,22 @@ export const getPriceMovementSellWeights = (
     priceQuarterlyDecreaseSell: 'priceQuarterlyDecrease',
     priceYearlyIncreaseSell: 'priceYearlyIncrease',
     priceYearlyDecreaseSell: 'priceYearlyDecrease',
+    epsQuarterlyBeatsSell: 'epsQuarterlyBeats',
+    epsQuarterlyMissSell: 'epsQuarterlyMiss',
   }
 
+  const tickerInfo = {
+    ...tickerDaily,
+    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
+    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
+  }
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
     weights: number, gene,
   ): number => {
     const tickerKey = GENE_TRIGGERS[gene]
-    const tickerValue = tickerDaily[tickerKey]
+    const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
     const hasValidInfo = dnaValue !== null && tickerValue !== null
     const combinedWeights = hasValidInfo && tickerValue >= dnaValue

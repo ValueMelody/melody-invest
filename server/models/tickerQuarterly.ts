@@ -1,6 +1,9 @@
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type MovementKey =
+  'epsQuarterlyBeats' | 'epsQuarterlyMiss'
+
 export interface Record {
   id: number;
   tickerId: number;
@@ -15,14 +18,14 @@ export interface Record {
   grossProfit: number | null;
   totalRevenue: number | null;
   costOfRevenue: number | null;
-  epsContinuousBeats: number | null;
-  epsContinuousMiss: number | null;
-  profitContinuousIncrease: number | null;
-  profitContinuousDecrease: number | null;
-  revenueContinuousIncrease: number | null;
-  revenueContinuousDecrease: number | null;
-  incomeContinuousIncrease: number | null;
-  incomeContinuousDecrease: number | null;
+  epsQuarterlyBeats: number | null;
+  epsQuarterlyMiss: number | null;
+  profitQuarterlyIncrease: number | null;
+  profitQuarterlyDecrease: number | null;
+  revenueQuarterlyIncrease: number | null;
+  revenueQuarterlyDecrease: number | null;
+  incomeQuarterlyIncrease: number | null;
+  incomeQuarterlyDecrease: number | null;
 }
 
 interface Raw {
@@ -39,14 +42,14 @@ interface Raw {
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
-  epsContinuousBeats: number | null;
-  epsContinuousMiss: number | null;
-  profitContinuousIncrease: number | null;
-  profitContinuousDecrease: number | null;
-  revenueContinuousIncrease: number | null;
-  revenueContinuousDecrease: number | null;
-  incomeContinuousIncrease: number | null;
-  incomeContinuousDecrease: number | null;
+  epsQuarterlyBeats: number | null;
+  epsQuarterlyMiss: number | null;
+  profitQuarterlyIncrease: number | null;
+  profitQuarterlyDecrease: number | null;
+  revenueQuarterlyIncrease: number | null;
+  revenueQuarterlyDecrease: number | null;
+  incomeQuarterlyIncrease: number | null;
+  incomeQuarterlyDecrease: number | null;
 }
 
 interface Create {
@@ -75,14 +78,14 @@ interface Update {
   grossProfit?: string;
   totalRevenue?: string;
   costOfRevenue?: string;
-  epsContinuousBeats?: number | null;
-  epsContinuousMiss?: number | null;
-  profitContinuousIncrease?: number | null;
-  profitContinuousDecrease?: number | null;
-  revenueContinuousIncrease?: number | null;
-  revenueContinuousDecrease?: number | null;
-  incomeContinuousIncrease?: number | null;
-  incomeContinuousDecrease?: number | null;
+  epsQuarterlyBeats?: number | null;
+  epsQuarterlyMiss?: number | null;
+  profitQuarterlyIncrease?: number | null;
+  profitQuarterlyDecrease?: number | null;
+  revenueQuarterlyIncrease?: number | null;
+  revenueQuarterlyDecrease?: number | null;
+  incomeQuarterlyIncrease?: number | null;
+  incomeQuarterlyDecrease?: number | null;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -99,14 +102,14 @@ const convertToRecord = (raw: Raw): Record => ({
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
-  epsContinuousBeats: raw.epsContinuousBeats,
-  epsContinuousMiss: raw.epsContinuousMiss,
-  profitContinuousIncrease: raw.profitContinuousIncrease,
-  profitContinuousDecrease: raw.profitContinuousDecrease,
-  revenueContinuousIncrease: raw.revenueContinuousIncrease,
-  revenueContinuousDecrease: raw.revenueContinuousDecrease,
-  incomeContinuousIncrease: raw.incomeContinuousIncrease,
-  incomeContinuousDecrease: raw.incomeContinuousDecrease,
+  epsQuarterlyBeats: raw.epsQuarterlyBeats,
+  epsQuarterlyMiss: raw.epsQuarterlyMiss,
+  profitQuarterlyIncrease: raw.profitQuarterlyIncrease,
+  profitQuarterlyDecrease: raw.profitQuarterlyDecrease,
+  revenueQuarterlyIncrease: raw.revenueQuarterlyIncrease,
+  revenueQuarterlyDecrease: raw.revenueQuarterlyDecrease,
+  incomeQuarterlyIncrease: raw.incomeQuarterlyIncrease,
+  incomeQuarterlyDecrease: raw.incomeQuarterlyDecrease,
 })
 
 export const getByUK = async (
@@ -144,6 +147,18 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
     tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
+    ],
+    orderBy: { key: 'quarter', type: 'asc' },
+  })
+  return records
+}
+
+export const getByRange = async (firstQuarter: string, lastQuarter: string): Promise<Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    conditions: [
+      { key: 'quarter', value: firstQuarter, type: '>=' },
+      { key: 'quarter', value: lastQuarter, type: '<=' },
     ],
     orderBy: { key: 'quarter', type: 'asc' },
   })
