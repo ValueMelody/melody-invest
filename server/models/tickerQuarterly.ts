@@ -2,7 +2,10 @@ import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
 export type MovementKey =
-  'epsQuarterlyBeats' | 'epsQuarterlyMiss'
+  'epsQuarterlyBeats' | 'epsQuarterlyMiss' |
+  'incomeQuarterlyIncrease' | 'incomeQuarterlyDecrease' |
+  'profitQuarterlyIncrease' | 'profitQuarterlyDecrease' |
+  'revenueQuarterlyIncrease' | 'revenueQuarterlyDecrease'
 
 export interface Record {
   id: number;
