@@ -7,7 +7,10 @@ export type BuyGene =
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
   'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
   'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy' |
-  'epsQuarterlyBeatsBuy' | 'epsQuarterlyMissBuy'
+  'epsQuarterlyBeatsBuy' | 'epsQuarterlyMissBuy' |
+  'profitQuarterlyIncreaseBuy' | 'profitQuarterlyDecreaseBuy' |
+  'incomeQuarterlyIncreaseBuy' | 'incomeQuarterlyDecreaseBuy' |
+  'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy'
 
 export type SellGene =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
@@ -15,7 +18,10 @@ export type SellGene =
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
   'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
   'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell' |
-  'epsQuarterlyBeatsSell' | 'epsQuarterlyMissSell'
+  'epsQuarterlyBeatsSell' | 'epsQuarterlyMissSell' |
+  'profitQuarterlyIncreaseSell' | 'profitQuarterlyDecreaseSell' |
+  'incomeQuarterlyIncreaseSell' | 'incomeQuarterlyDecreaseSell' |
+  'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell'
 
 export type GeneType =
   BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
@@ -55,6 +61,18 @@ export interface Record {
   epsQuarterlyMissBuy: number;
   epsQuarterlyBeatsSell: number;
   epsQuarterlyMissSell: number;
+  profitQuarterlyIncreaseBuy: number;
+  profitQuarterlyDecreaseBuy: number;
+  incomeQuarterlyIncreaseBuy: number;
+  incomeQuarterlyDecreaseBuy: number;
+  revenueQuarterlyIncreaseBuy: number;
+  revenueQuarterlyDecreaseBuy: number;
+  profitQuarterlyIncreaseSell: number;
+  profitQuarterlyDecreaseSell: number;
+  incomeQuarterlyIncreaseSell: number;
+  incomeQuarterlyDecreaseSell: number;
+  revenueQuarterlyIncreaseSell: number;
+  revenueQuarterlyDecreaseSell: number;
 }
 
 export interface Create {
@@ -90,6 +108,18 @@ export interface Create {
   epsQuarterlyMissBuy: number | null;
   epsQuarterlyBeatsSell: number | null;
   epsQuarterlyMissSell: number | null;
+  profitQuarterlyIncreaseBuy: number | null;
+  profitQuarterlyDecreaseBuy: number | null;
+  incomeQuarterlyIncreaseBuy: number | null;
+  incomeQuarterlyDecreaseBuy: number | null;
+  revenueQuarterlyIncreaseBuy: number | null;
+  revenueQuarterlyDecreaseBuy: number | null;
+  profitQuarterlyIncreaseSell: number | null;
+  profitQuarterlyDecreaseSell: number | null;
+  incomeQuarterlyIncreaseSell: number | null;
+  incomeQuarterlyDecreaseSell: number | null;
+  revenueQuarterlyIncreaseSell: number | null;
+  revenueQuarterlyDecreaseSell: number | null;
 }
 
 export const getByPK = async (
