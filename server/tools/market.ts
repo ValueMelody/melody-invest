@@ -1,6 +1,12 @@
+const PRICE_PADDING = 10000
+
 export const convertToIntPrice = (price: string | number): number => {
   const floatPrice = typeof price === 'number' ? price : parseFloat(price)
-  return Math.floor(floatPrice * 10000)
+  return Math.floor(floatPrice * PRICE_PADDING)
+}
+
+export const getInitialCash = (): number => {
+  return 100000 * PRICE_PADDING
 }
 
 export const getAdjustedClosePrice = (

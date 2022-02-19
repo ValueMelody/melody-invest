@@ -204,12 +204,11 @@ export const getPriceMovementBuyWeights = (
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
-    const hasValidInfo = dnaValue !== null && tickerValue !== null && tickerValue !== undefined
-    const combinedWeights = hasValidInfo && tickerValue >= dnaValue
-      ? (weights || 1) * (tickerValue - dnaValue + 2)
-      : weights
-    return combinedWeights
-  }, 0)
+
+    if (!dnaValue) return weights
+    if (!tickerValue || tickerValue < dnaValue) return 0
+    return weights * (tickerValue - dnaValue + 2)
+  }, 1)
 
   return weights
 }
@@ -274,12 +273,11 @@ export const getPriceMovementSellWeights = (
     const tickerKey = GENE_TRIGGERS[gene]
     const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
-    const hasValidInfo = dnaValue !== null && tickerValue !== null
-    const combinedWeights = hasValidInfo && tickerValue >= dnaValue
-      ? (weights || 1) * (tickerValue - dnaValue + 2)
-      : weights
-    return combinedWeights
-  }, 0)
+
+    if (!dnaValue) return weights
+    if (!tickerValue || tickerValue < dnaValue) return 0
+    return weights * (tickerValue - dnaValue + 2)
+  }, 1)
 
   return weights
 }
