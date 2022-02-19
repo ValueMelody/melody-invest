@@ -7,6 +7,7 @@ import * as tickerYearlyModel from '../models/tickerYearly'
 import * as dateTool from '../tools/date'
 import * as dnaTool from '../tools/dna'
 import * as marketTool from '../tools/market'
+import * as arrayTool from '../tools/array'
 import * as errorEnum from '../enums/error'
 
 interface HoldingDetails {
@@ -15,11 +16,10 @@ interface HoldingDetails {
   holdings: traderHoldingModel.Holding[]
 }
 
-export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> => {
+export const calcPerformance = async (): Promise<traderModel.Record[]> => {
   const traders = await traderModel.getActives()
 
-  const lastestHoldings = []
-  for (const trader of traders) {
+  await arrayTool.asyncMap(traders, async (trader: traderModel.Record) => {
     const dna = await traderDNAModel.getByPK(trader.traderDNAId)
     if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
@@ -36,6 +36,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       : dateTool.getInitialDate()
 
     let rebalancedAt = trader.rebalancedAt || tradeDate
+    let hasRebalanced = false
 
     const today = dateTool.getCurrentDate()
 
@@ -217,7 +218,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
 
       if (shouldRebalance) {
         rebalancedAt = tradeDate
-        await traderModel.update(trader.id, { rebalancedAt })
+        hasRebalanced = true
       }
 
       if (hasTransaction) {
@@ -231,7 +232,25 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
       }
     }
 
-    if (holding) lastestHoldings.push(holding)
-  }
-  return lastestHoldings
+    if (!holding) return trader
+
+    const latestDaily = await tickerDailyModel.getLatestAll()
+    const latestDate = latestDaily.reduce((date, daily) => {
+      if (!date) return daily.date
+      return date < daily.date ? daily.date : date
+    }, '')
+    const totalValue = holding.holdings.reduce((total, holding) => {
+      const matchedDaily = latestDaily.find((daily) => daily.tickerId === holding.tickerId)
+      if (!matchedDaily) return total
+      return total + matchedDaily.adjustedClosePrice * holding.shares
+    }, holding.totalCash)
+    const updatedTrader = await traderModel.update(trader.id, {
+      totalValue,
+      estimatedAt: latestDate,
+      rebalancedAt: hasRebalanced ? rebalancedAt : undefined,
+    })
+    return updatedTrader
+  })
+
+  return traders
 }
