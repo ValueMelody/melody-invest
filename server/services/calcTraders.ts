@@ -6,7 +6,7 @@ import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
 import * as dateTool from '../tools/date'
 import * as dnaTool from '../tools/dna'
-import * as traderTool from '../tools/trader'
+import * as marketTool from '../tools/market'
 import * as errorEnum from '../enums/error'
 
 interface HoldingDetails {
@@ -51,7 +51,7 @@ export const calcPerformance = async (): Promise<traderHoldingModel.Record[]> =>
         return { daily, quarterly, yearly }
       })
 
-      const totalCash = holding ? holding.totalCash : traderTool.getInitialCash()
+      const totalCash = holding ? holding.totalCash : marketTool.getInitialCash()
       const holdings = holding ? holding.holdings : []
 
       const detailsBeforeUpdate: HoldingDetails = {
