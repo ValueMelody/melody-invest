@@ -7,12 +7,36 @@ export interface Record {
   traderDNAId: number;
   isActive: boolean;
   rebalancedAt: string;
+  totalValue: number | null;
+  estimatedAt: string | null;
+}
+
+export interface Raw {
+  id: number;
+  traderEnvId: number;
+  traderDNAId: number;
+  isActive: boolean;
+  rebalancedAt: string;
+  totalValue: string | null;
+  estimatedAt: string | null;
 }
 
 interface Update {
   isActive?: boolean;
   rebalancedAt?: string;
+  totalValue?: number;
+  estimatedAt?: string;
 }
+
+const convertToRecord = (raw: Raw): Record => ({
+  id: raw.id,
+  traderEnvId: raw.traderEnvId,
+  traderDNAId: raw.traderDNAId,
+  isActive: raw.isActive,
+  rebalancedAt: raw.rebalancedAt,
+  totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
+  estimatedAt: raw.estimatedAt,
+})
 
 export const getByUK = async (
   envId: number,
@@ -25,7 +49,7 @@ export const getByUK = async (
       { key: 'traderDNAId', value: dnaId },
     ],
   })
-  return trader
+  return trader ? convertToRecord(trader) : null
 }
 
 export const getActives = async (): Promise<Record[]> => {
@@ -35,7 +59,7 @@ export const getActives = async (): Promise<Record[]> => {
       { key: 'isActive', value: true },
     ],
   })
-  return traders
+  return traders.map((trader) => convertToRecord(trader))
 }
 
 export const update = async (
@@ -49,5 +73,5 @@ export const update = async (
       { key: 'id', value: traderId },
     ],
   })
-  return updatedTrader[0]
+  return convertToRecord(updatedTrader[0])
 }

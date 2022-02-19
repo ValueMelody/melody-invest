@@ -68,5 +68,5 @@ export const update = async (
       { key: 'id', value: tickerId },
     ],
   })
-  return updatedTicker?.length ? updatedTicker[0] : null
+  return updatedTicker[0]
 }

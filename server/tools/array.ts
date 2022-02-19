@@ -8,3 +8,12 @@ export const getNumberRange = (
   }
   return numbers
 }
+
+export const asyncMap = async (items: any[], mapFunc: Function) => {
+  const results = []
+  for (const item of items) {
+    const result = await mapFunc(item)
+    results.push(result)
+  }
+  return results
+}
