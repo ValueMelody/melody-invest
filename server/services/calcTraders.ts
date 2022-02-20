@@ -254,3 +254,9 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
 
   return traders
 }
+
+export const calcDescendant = async (): Promise<traderModel.Record[]> => {
+  const traders = await traderModel.getActives()
+
+  return traders
+}
