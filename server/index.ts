@@ -1,13 +1,10 @@
 import express, { Response, Request, NextFunction } from 'express'
 import 'express-async-errors'
-import dotenv from 'dotenv'
 import { initConnection as initDatabase } from './adapters/database'
 // import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
 import * as errorEnum from './enums/error'
-
-dotenv.config()
 
 const app = express()
 export default app

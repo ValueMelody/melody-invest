@@ -1,4 +1,5 @@
 import knex, { Knex } from 'knex'
+import * as connectionEnums from '../enums/connect'
 
 interface OrderBy {
   key: string;
@@ -32,14 +33,8 @@ let _db: Knex | null = null
 
 export const initConnection = () => {
   _db = knex({
-    client: 'pg',
-    connection: {
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT!),
-      user: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
-    },
+    client: connectionEnums.databaseClient,
+    connection: connectionEnums.databaseConfig,
   })
 }
 

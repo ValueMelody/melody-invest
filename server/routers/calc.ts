@@ -34,3 +34,9 @@ calcRouter.get('/traders/performance', async (req, res) => {
 
   return res.status(200).send({ result })
 })
+
+calcRouter.get('/trader/descendant', async (req, res) => {
+  const result = await calcTraders.calcDescendant()
+
+  return res.status(200).send({ result })
+})

@@ -2,8 +2,8 @@
   "name": "dioxider-server",
   "scripts": {
     "start": "ts-node-dev --project ../tsconfig.json ./index.ts",
-    "lint": "eslint ./ --ext .ts",
-    "lint:fix": "eslint --fix ./ --ext .ts"
+    "seed": "knex seed:run",
+    "lint": "eslint ./ --ext .ts"
   },
   "dependencies": {
     "axios": "^0.24.0",
