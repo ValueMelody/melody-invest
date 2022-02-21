@@ -1,5 +1,5 @@
-import sha256 from 'crypto-js/sha256'
+import sha512 from 'crypto-js/sha512'
 
-export const toSHA256 = (content: string): string => {
-  return sha256(content).toString()
+export const toSHA512 = (content: string): string => {
+  return sha512(content).toString()
 }

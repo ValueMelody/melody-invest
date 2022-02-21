@@ -152,6 +152,10 @@ export interface Create {
   revenueYearlyDecreaseSell: number | null;
 }
 
+export interface Update {
+  hashCode: string;
+}
+
 export const getByPK = async (
   id: number,
 ): Promise<Record | null> => {
@@ -176,6 +180,13 @@ export const getByUK = async (
   return dna
 }
 
+export const getAll = async (): Promise<Record[]> => {
+  const dnas = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER_DNA,
+  })
+  return dnas
+}
+
 export const create = async (
   values: Create,
 ): Promise<Record> => {
@@ -184,4 +195,18 @@ export const create = async (
     values,
   })
   return newRecords[0]
+}
+
+export const update = async (
+  id: number,
+  values: Update,
+): Promise<Record> => {
+  const updatedDNA = await databaseAdapter.update({
+    tableName: tableEnum.NAMES.TRADER_DNA,
+    values,
+    conditions: [
+      { key: 'id', value: id },
+    ],
+  })
+  return updatedDNA[0]
 }
