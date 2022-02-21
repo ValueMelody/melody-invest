@@ -8,7 +8,7 @@ export interface Holding {
 }
 
 export interface Record {
-  id: number;
+  id: string;
   traderId: number;
   date: string;
   totalValue: number;
@@ -17,7 +17,7 @@ export interface Record {
 }
 
 interface Raw {
-  id: number;
+  id: string;
   traderId: number;
   date: string;
   totalValue: string;

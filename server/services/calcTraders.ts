@@ -36,6 +36,7 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       : dateTool.getInitialDate()
 
     let rebalancedAt = trader.rebalancedAt || tradeDate
+    let startedAt = trader.startedAt
     let hasRebalanced = false
 
     const today = dateTool.getCurrentDate()
@@ -222,6 +223,7 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       }
 
       if (hasTransaction) {
+        if (!startedAt) startedAt = tradeDate
         holding = await traderHoldingModel.create({
           traderId: trader.id,
           date: tradeDate,
@@ -244,10 +246,18 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       if (!matchedDaily) return total
       return total + matchedDaily.adjustedClosePrice * holding.shares
     }, holding.totalCash)
+    const initialValue = marketTool.getInitialCash()
+    const totalEarning = totalValue - initialValue
+    const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
+    const grossPercent = totalEarning * 100 / initialValue
     const updatedTrader = await traderModel.update(trader.id, {
       totalValue,
       estimatedAt: latestDate,
       rebalancedAt: hasRebalanced ? rebalancedAt : undefined,
+      startedAt: startedAt ?? undefined,
+      grossPercent: grossPercent.toFixed(2),
+      yearlyPercent: (grossPercent * 365 / totalDays).toFixed(2),
+      totalDays,
     })
     return updatedTrader
   })

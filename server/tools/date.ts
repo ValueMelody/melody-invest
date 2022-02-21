@@ -149,6 +149,13 @@ export const getDayNumber = (date: string): number => {
   return moment(date).isoWeekday()
 }
 
+export const getDurationCount = (startDate: string, endDate: string): number => {
+  const end = moment(endDate)
+  const start = moment(startDate)
+  const differ = moment.duration(end.diff(start)).asDays()
+  return Math.floor(differ)
+}
+
 export const getAdjustedQuarter = (
   quarter: string, differ: number | null,
 ) => {
