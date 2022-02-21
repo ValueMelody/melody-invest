@@ -9,6 +9,10 @@ export interface Record {
   rebalancedAt: string;
   totalValue: number | null;
   estimatedAt: string | null;
+  startedAt: string | null;
+  yearlyPercent: string | null;
+  grossPercent: string | null;
+  totalDays: number | null;
 }
 
 export interface Raw {
@@ -19,6 +23,10 @@ export interface Raw {
   rebalancedAt: string;
   totalValue: string | null;
   estimatedAt: string | null;
+  startedAt: string | null;
+  yearlyPercent: string | null;
+  grossPercent: string | null;
+  totalDays: number | null;
 }
 
 interface Update {
@@ -26,6 +34,10 @@ interface Update {
   rebalancedAt?: string;
   totalValue?: number;
   estimatedAt?: string;
+  startedAt?: string ;
+  yearlyPercent?: string;
+  grossPercent?: string;
+  totalDays?: number;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -36,6 +48,10 @@ const convertToRecord = (raw: Raw): Record => ({
   rebalancedAt: raw.rebalancedAt,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
   estimatedAt: raw.estimatedAt,
+  startedAt: raw.startedAt,
+  yearlyPercent: raw.yearlyPercent,
+  grossPercent: raw.grossPercent,
+  totalDays: raw.totalDays,
 })
 
 export const getByUK = async (
