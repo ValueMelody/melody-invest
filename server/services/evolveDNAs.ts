@@ -14,7 +14,7 @@ export const generateRandomDNAs = async () => {
   const newDNAs = []
   for (const genes of dnaGenes) {
     const dnaString = JSON.stringify(genes)
-    const hashCode = cryptoTool.toSHA256(dnaString)
+    const hashCode = cryptoTool.toSHA512(dnaString)
     const currentDNA = await traderDNAModel.getByUK(hashCode)
     if (currentDNA) return
     const geneValues = genes.reduce((values, gene) => {

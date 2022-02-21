@@ -3,6 +3,7 @@ import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
+import * as cryptoTool from '../tools/crypto'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
@@ -280,6 +281,11 @@ export const getPriceMovementSellWeights = (
   }, 1)
 
   return weights
+}
+
+export const getDNAHashCode = (dna: traderDNAModel.Record): string => {
+  const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
+  return cryptoTool.toSHA512(JSON.stringify(template))
 }
 
 // export const getBaseDNAs = () => {

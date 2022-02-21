@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import * as calcTickers from '../services/calcTickers'
 import * as calcTraders from '../services/calcTraders'
+import * as calcTraderDNAs from '../services/calcTraderDNAs'
 
 const calcRouter = Router()
 export default calcRouter
@@ -35,8 +36,14 @@ calcRouter.get('/traders/performance', async (req, res) => {
   return res.status(200).send({ result })
 })
 
-calcRouter.get('/trader/descendant', async (req, res) => {
+calcRouter.get('/traders/descendant', async (req, res) => {
   const result = await calcTraders.calcDescendant()
+
+  return res.status(200).send({ result })
+})
+
+calcRouter.get('/trader_dnas/hash_code', async (req, res) => {
+  const result = await calcTraderDNAs.calcHashCode()
 
   return res.status(200).send({ result })
 })
