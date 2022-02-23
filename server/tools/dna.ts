@@ -1,4 +1,5 @@
 import * as geneEnums from '../enums/gene'
+import * as traderModel from '../models/trader'
 import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
@@ -286,6 +287,19 @@ export const getPriceMovementSellWeights = (
 export const getDNAHashCode = (dna: traderDNAModel.Record): string => {
   const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
   return cryptoTool.toSHA512(JSON.stringify(template))
+}
+
+export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
+  return traders.reduce((couples: traderModel.Record[][], trader, index) => {
+    if (index % 2 === 0) {
+      const lastCouple = [...couples[couples.length - 1], trader]
+      return couples.map((couple, i) => i === couples.length - 1 ? lastCouple : couple)
+    }
+    return [
+      ...couples,
+      [trader],
+    ]
+  }, [])
 }
 
 // export const getBaseDNAs = () => {

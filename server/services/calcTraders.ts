@@ -267,6 +267,8 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
 
 export const calcDescendant = async (): Promise<traderModel.Record[]> => {
   const traders = await traderModel.getActives()
+  const topTraders = traders.slice(0, 20)
+  const couples = dnaTool.groupDNACouples(topTraders)
 
   return traders
 }
