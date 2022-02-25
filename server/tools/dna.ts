@@ -4,8 +4,7 @@ import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
-import * as cryptoTool from '../tools/crypto'
-import * as randomTool from './random'
+import * as generateTool from './generate'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
@@ -287,7 +286,7 @@ export const getPriceMovementSellWeights = (
 
 export const getDNAHashCode = (dna: traderDNAModel.Record): string => {
   const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
-  return cryptoTool.toSHA512(JSON.stringify(template))
+  return generateTool.toSHA512(JSON.stringify(template))
 }
 
 export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
@@ -316,14 +315,14 @@ const pickTradingGenes = (
   const remainingTotal = Math.floor(allValues.length) || 1
   const chanceOfStay = remainingTotal * 100 / allValues.length
   const subValues = allValues.reduce((values: Gene[], value: Gene) => {
-    const shouldStay = randomTool.pickOneInRange(1, 100) <= chanceOfStay
+    const shouldStay = generateTool.pickOneInRange(1, 100) <= chanceOfStay
     const hasRoom = values.length < remainingTotal
     if (shouldStay && hasRoom) return [...values, value]
     return values
   }, [])
 
   if (!subValues.length) {
-    const index = randomTool.pickOneInRange(0, allValues.length - 1)
+    const index = generateTool.pickOneInRange(0, allValues.length - 1)
     subValues.push(allValues[index])
   }
 
@@ -383,13 +382,13 @@ export const generateDNAChild = (
     incomeYearlyDecreaseSell: null,
     revenueYearlyIncreaseSell: null,
     revenueYearlyDecreaseSell: null,
-    cashMaxPercent: randomTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
-    tickerMinPercent: randomTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
-    tickerMaxPercent: randomTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),
-    holdingBuyPercent: randomTool.pickOneNumber(first.holdingBuyPercent, second.holdingBuyPercent),
-    holdingSellPercent: randomTool.pickOneNumber(first.holdingSellPercent, second.holdingSellPercent),
-    tradeFrequency: randomTool.pickOneNumber(first.tradeFrequency, second.tradeFrequency),
-    rebalanceFrequency: randomTool.pickOneNumber(first.rebalanceFrequency, second.rebalanceFrequency),
+    cashMaxPercent: generateTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
+    tickerMinPercent: generateTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
+    tickerMaxPercent: generateTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),
+    holdingBuyPercent: generateTool.pickOneNumber(first.holdingBuyPercent, second.holdingBuyPercent),
+    holdingSellPercent: generateTool.pickOneNumber(first.holdingSellPercent, second.holdingSellPercent),
+    tradeFrequency: generateTool.pickOneNumber(first.tradeFrequency, second.tradeFrequency),
+    rebalanceFrequency: generateTool.pickOneNumber(first.rebalanceFrequency, second.rebalanceFrequency),
   }
 
   const buyGeneKeys = GENE_GROUPS[0]
@@ -397,14 +396,6 @@ export const generateDNAChild = (
   childBuyGenes.forEach((gene) => {
     newChild[gene.type] = gene.value
   })
-
-  const sellGeneKeys = GENE_GROUPS[1]
-  const childSellGenes = pickGenesFromGroup(sellGeneKeys, first, second)
-
-
-
-  
-
 }
 
 // export const getBaseDNAs = () => {

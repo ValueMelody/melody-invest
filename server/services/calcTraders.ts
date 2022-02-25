@@ -7,7 +7,7 @@ import * as tickerYearlyModel from '../models/tickerYearly'
 import * as dateTool from '../tools/date'
 import * as dnaTool from '../tools/dna'
 import * as marketTool from '../tools/market'
-import * as arrayTool from '../tools/array'
+import * as runTool from '../tools/run'
 import * as errorEnum from '../enums/error'
 
 interface HoldingDetails {
@@ -19,7 +19,7 @@ interface HoldingDetails {
 export const calcPerformance = async (): Promise<traderModel.Record[]> => {
   const traders = await traderModel.getActives()
 
-  await arrayTool.asyncMap(traders, async (trader: traderModel.Record) => {
+  await runTool.asyncMap(traders, async (trader: traderModel.Record) => {
     const dna = await traderDNAModel.getByPK(trader.traderDNAId)
     if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
@@ -270,11 +270,10 @@ export const calcDescendant = async (): Promise<traderModel.Record[]> => {
   const topTraders = traders.slice(0, 20)
   const couples = dnaTool.groupDNACouples(topTraders)
 
-  const newDNAs = await arrayTool.asyncMap(couples, async (couple: traderModel.Record[]) => {
+  const newDNAs = await runTool.asyncMap(couples, async (couple: traderModel.Record[]) => {
     const [firstTrader, secondTrader] = couple
     const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
     const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
-    
   })
 
   return traders
