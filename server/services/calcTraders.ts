@@ -270,5 +270,12 @@ export const calcDescendant = async (): Promise<traderModel.Record[]> => {
   const topTraders = traders.slice(0, 20)
   const couples = dnaTool.groupDNACouples(topTraders)
 
+  const newDNAs = await arrayTool.asyncMap(couples, async (couple: traderModel.Record[]) => {
+    const [firstTrader, secondTrader] = couple
+    const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
+    const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
+    
+  })
+
   return traders
 }

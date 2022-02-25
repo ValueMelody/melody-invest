@@ -1,5 +1,5 @@
 import * as dnaTool from '../tools/dna'
-import * as numberTool from '../tools/number'
+import * as randomTool from '../tools/random'
 import * as cryptoTool from '../tools/crypto'
 import * as traderDNAModel from '../models/traderDNA'
 
@@ -7,7 +7,7 @@ export const generateRandomDNAs = async () => {
   const dnaGroups = dnaTool.getGeneGroups()
   const dnaGenes = Array(5).fill(null).map(() => (
     dnaGroups.map((dnaGroup) => {
-      const randomIndex = numberTool.getRandomNumber(0, dnaGroup.length - 1)
+      const randomIndex = randomTool.pickOneInRange(0, dnaGroup.length - 1)
       return dnaGroup[randomIndex]
     })
   ))

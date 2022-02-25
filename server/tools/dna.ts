@@ -5,6 +5,7 @@ import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
 import * as cryptoTool from '../tools/crypto'
+import * as randomTool from './random'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
@@ -300,6 +301,110 @@ export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Reco
       [trader],
     ]
   }, [])
+}
+
+const pickTradingGenes = (
+  geneTypes: traderDNAModel.GeneType[],
+  first: traderDNAModel.Record,
+  second: traderDNAModel.Record,
+): Gene[] => {
+  const allValues = geneTypes.reduce((values: Gene[], type: traderDNAModel.GeneType): Gene[] => {
+    if (first[type]) return [...values, { type, value: first[type]! }]
+    if (second[type]) return [...values, { type, value: second[type]! }]
+    return values
+  }, [])
+  const remainingTotal = Math.floor(allValues.length) || 1
+  const chanceOfStay = remainingTotal * 100 / allValues.length
+  const subValues = allValues.reduce((values: Gene[], value: Gene) => {
+    const shouldStay = randomTool.pickOneInRange(1, 100) <= chanceOfStay
+    const hasRoom = values.length < remainingTotal
+    if (shouldStay && hasRoom) return [...values, value]
+    return values
+  }, [])
+
+  if (!subValues.length) {
+    const index = randomTool.pickOneInRange(0, allValues.length - 1)
+    subValues.push(allValues[index])
+  }
+
+  return subValues
+}
+
+export const generateDNAChild = (
+  first: traderDNAModel.Record,
+  second: traderDNAModel.Record,
+) => {
+  const newChild: traderDNAModel.Record = {
+    priceDailyIncreaseBuy: null,
+    priceDailyIncreaseSell: null,
+    priceDailyDecreaseBuy: null,
+    priceDailyDecreaseSell: null,
+    priceWeeklyIncreaseBuy: null,
+    priceWeeklyIncreaseSell: null,
+    priceWeeklyDecreaseBuy: null,
+    priceWeeklyDecreaseSell: null,
+    priceMonthlyIncreaseBuy: null,
+    priceMonthlyIncreaseSell: null,
+    priceMonthlyDecreaseBuy: null,
+    priceMonthlyDecreaseSell: null,
+    priceQuarterlyIncreaseBuy: null,
+    priceQuarterlyIncreaseSell: null,
+    priceQuarterlyDecreaseBuy: null,
+    priceQuarterlyDecreaseSell: null,
+    priceYearlyIncreaseBuy: null,
+    priceYearlyIncreaseSell: null,
+    priceYearlyDecreaseBuy: null,
+    priceYearlyDecreaseSell: null,
+    epsQuarterlyBeatsBuy: null,
+    epsQuarterlyMissBuy: null,
+    epsQuarterlyBeatsSell: null,
+    epsQuarterlyMissSell: null,
+    profitQuarterlyIncreaseBuy: null,
+    profitQuarterlyDecreaseBuy: null,
+    incomeQuarterlyIncreaseBuy: null,
+    incomeQuarterlyDecreaseBuy: null,
+    revenueQuarterlyIncreaseBuy: null,
+    revenueQuarterlyDecreaseBuy: null,
+    profitQuarterlyIncreaseSell: null,
+    profitQuarterlyDecreaseSell: null,
+    incomeQuarterlyIncreaseSell: null,
+    incomeQuarterlyDecreaseSell: null,
+    revenueQuarterlyIncreaseSell: null,
+    revenueQuarterlyDecreaseSell: null,
+    profitYearlyIncreaseBuy: null,
+    profitYearlyDecreaseBuy: null,
+    incomeYearlyIncreaseBuy: null,
+    incomeYearlyDecreaseBuy: null,
+    revenueYearlyIncreaseBuy: null,
+    revenueYearlyDecreaseBuy: null,
+    profitYearlyIncreaseSell: null,
+    profitYearlyDecreaseSell: null,
+    incomeYearlyIncreaseSell: null,
+    incomeYearlyDecreaseSell: null,
+    revenueYearlyIncreaseSell: null,
+    revenueYearlyDecreaseSell: null,
+    cashMaxPercent: randomTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
+    tickerMinPercent: randomTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
+    tickerMaxPercent: randomTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),
+    holdingBuyPercent: randomTool.pickOneNumber(first.holdingBuyPercent, second.holdingBuyPercent),
+    holdingSellPercent: randomTool.pickOneNumber(first.holdingSellPercent, second.holdingSellPercent),
+    tradeFrequency: randomTool.pickOneNumber(first.tradeFrequency, second.tradeFrequency),
+    rebalanceFrequency: randomTool.pickOneNumber(first.rebalanceFrequency, second.rebalanceFrequency),
+  }
+
+  const buyGeneKeys = GENE_GROUPS[0]
+  const childBuyGenes = pickTradingGenes(buyGeneKeys, first, second)
+  childBuyGenes.forEach((gene) => {
+    newChild[gene.type] = gene.value
+  })
+
+  const sellGeneKeys = GENE_GROUPS[1]
+  const childSellGenes = pickGenesFromGroup(sellGeneKeys, first, second)
+
+
+
+  
+
 }
 
 // export const getBaseDNAs = () => {
