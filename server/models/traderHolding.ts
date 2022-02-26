@@ -1,3 +1,4 @@
+import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
@@ -58,7 +59,7 @@ export const getLatest = async (
 }
 
 export const create = async (
-  values: Create,
+  values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
@@ -69,6 +70,7 @@ export const create = async (
       totalCash: String(values.totalCash),
       holdings: JSON.stringify(values.holdings),
     },
+    transaction,
   })
   return convertToRecord(newRecords[0])
 }

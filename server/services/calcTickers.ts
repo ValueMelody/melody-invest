@@ -3,51 +3,52 @@ import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
 import * as geneEnums from '../enums/gene'
+import * as databaseAdapter from '../adapters/database'
+import * as runTool from '../tools/run'
 
-const calcAverage = (
+const calcAverageOfRange = (
   dailyRecords: tickerDailyModel.Record[],
 ): number => {
   const total = dailyRecords.reduce((total, daily) => total + daily.adjustedClosePrice, 0)
   return total / dailyRecords.length
 }
 
-export const calcAveragePrice = async (): Promise<tickerModel.Record[]> => {
-  const tickers = await tickerModel.getAll()
+const calcTickerAveragePrice = async (tickerId: number) => {
+  const tickerDailyRecords = await tickerDailyModel.getAll(tickerId)
+  if (!tickerDailyRecords.length) return
 
-  for (const ticker of tickers) {
-    const tickerDailyRecords = await tickerDailyModel.getAll(ticker.id)
-    if (!tickerDailyRecords.length) continue
-
-    let index = -1
-    for (const tickerDaily of tickerDailyRecords) {
-      index++
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(tickerDailyRecords, async (
+      tickerDaily: tickerDailyModel.Record, index: number,
+    ) => {
       let hasUpdate = false
 
       let weeklyAverage = tickerDaily.weeklyAveragePrice
       if (index >= geneEnums.DAYS.WEEK && tickerDaily.weeklyAveragePrice === null) {
         const relatedDaily = tickerDailyRecords.slice(index - geneEnums.DAYS.WEEK, index)
-        weeklyAverage = calcAverage(relatedDaily)
+        weeklyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let monthlyAverage = tickerDaily.monthlyAveragePrice
       if (index >= geneEnums.DAYS.MONTH && tickerDaily.monthlyAveragePrice === null) {
         const relatedDaily = tickerDailyRecords.slice(index - geneEnums.DAYS.MONTH, index)
-        monthlyAverage = calcAverage(relatedDaily)
+        monthlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let quarterlyAverage = tickerDaily.quarterlyAveragePrice
       if (index >= geneEnums.DAYS.QUARTER && tickerDaily.quarterlyAveragePrice === null) {
         const relatedDaily = tickerDailyRecords.slice(index - geneEnums.DAYS.QUARTER, index)
-        quarterlyAverage = calcAverage(relatedDaily)
+        quarterlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let yearlyAverage = tickerDaily.yearlyAveragePrice
       if (index >= geneEnums.DAYS.YEAR && tickerDaily.yearlyAveragePrice === null) {
         const relatedDaily = tickerDailyRecords.slice(index - geneEnums.DAYS.YEAR, index)
-        yearlyAverage = calcAverage(relatedDaily)
+        yearlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
@@ -57,22 +58,31 @@ export const calcAveragePrice = async (): Promise<tickerModel.Record[]> => {
           monthlyAveragePrice: monthlyAverage ? Math.floor(monthlyAverage) : null,
           quarterlyAveragePrice: quarterlyAverage ? Math.floor(quarterlyAverage) : null,
           yearlyAveragePrice: yearlyAverage ? Math.floor(yearlyAverage) : null,
-        })
+        }, transaction)
       }
-    }
+    })
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
-  return tickers
 }
 
-export const calcPriceMovement = async (): Promise<tickerModel.Record[]> => {
+export const calcAllTickersAveragePrice = async () => {
   const tickers = await tickerModel.getAll()
+  await runTool.asyncForEach(tickers, async (ticker: tickerDailyModel.Record) => {
+    await calcTickerAveragePrice(ticker.id)
+  })
+}
 
-  for (const ticker of tickers) {
-    const tickerDailyRecords = await tickerDailyModel.getAll(ticker.id)
-    if (!tickerDailyRecords.length) continue
+const calcTickerPriceMovement = async (tickerId: number) => {
+  const tickerDailyRecords = await tickerDailyModel.getAll(tickerId)
+  if (!tickerDailyRecords.length) return
 
+  const transaction = await databaseAdapter.createTransaction()
+  try {
     const checkedDaily: tickerDailyModel.Record[] = []
-    for (const tickerDaily of tickerDailyRecords) {
+    await runTool.asyncForEach(tickerDailyRecords, async (tickerDaily: tickerDailyModel.Record) => {
       let dailyIncrease = tickerDaily.priceDailyIncrease
       let dailyDecrease = tickerDaily.priceDailyDecrease
       if (checkedDaily.length > 0) {
@@ -151,23 +161,33 @@ export const calcPriceMovement = async (): Promise<tickerModel.Record[]> => {
           priceQuarterlyDecrease: quarterlyDecrease,
           priceYearlyIncrease: yearlyIncrease,
           priceYearlyDecrease: yearlyDecrease,
-        })
+        }, transaction)
         : tickerDaily
       checkedDaily.push(daily)
-    }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
-  return tickers
 }
 
-export const calcQuarterlyFinancial = async (): Promise<tickerModel.Record[]> => {
+export const calcAllTickersPriceMovement = async () => {
   const tickers = await tickerModel.getAll()
+  await runTool.asyncForEach(tickers, async (ticker: tickerDailyModel.Record) => {
+    await calcTickerPriceMovement(ticker.id)
+  })
+}
 
-  for (const ticker of tickers) {
-    const tickerQuarterlyRecords = await tickerQuarterlyModel.getAll(ticker.id)
-    if (!tickerQuarterlyRecords.length) continue
+const calcTickerQuarterlyFinancial = async (tickerId: number) => {
+  const tickerQuarterlyRecords = await tickerQuarterlyModel.getAll(tickerId)
+  if (!tickerQuarterlyRecords.length) return
 
+  const transaction = await databaseAdapter.createTransaction()
+  try {
     const checkedQuarterly: tickerQuarterlyModel.Record[] = []
-    for (const tickerQuarterly of tickerQuarterlyRecords) {
+    await runTool.asyncForEach(tickerQuarterlyRecords, async (tickerQuarterly: tickerQuarterlyModel.Record) => {
       const lastRecord = checkedQuarterly.length ? checkedQuarterly[checkedQuarterly.length - 1] : null
 
       let epsQuarterlyBeats = tickerQuarterly.epsQuarterlyBeats
@@ -233,24 +253,34 @@ export const calcQuarterlyFinancial = async (): Promise<tickerModel.Record[]> =>
           profitQuarterlyDecrease,
           incomeQuarterlyIncrease,
           incomeQuarterlyDecrease,
-        })
+        }, transaction)
         : tickerQuarterly
 
       checkedQuarterly.push(quarterly)
-    }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
-  return tickers
 }
 
-export const calcYearlyFinancial = async (): Promise<tickerModel.Record[]> => {
+export const calcAllTickersQuarterlyFinancial = async () => {
   const tickers = await tickerModel.getAll()
+  await runTool.asyncForEach(tickers, async (ticker: tickerDailyModel.Record) => {
+    await calcTickerQuarterlyFinancial(ticker.id)
+  })
+}
 
-  for (const ticker of tickers) {
-    const tickerYearlyRecords = await tickerYearlyModel.getAll(ticker.id)
-    if (!tickerYearlyRecords.length) continue
+const calcTickerYearlyFinancial = async (tickerId: number) => {
+  const tickerYearlyRecords = await tickerYearlyModel.getAll(tickerId)
+  if (!tickerYearlyRecords.length) return
 
+  const transaction = await databaseAdapter.createTransaction()
+  try {
     const checkedYearly: tickerYearlyModel.Record[] = []
-    for (const tickerYearly of tickerYearlyRecords) {
+    await runTool.asyncForEach(tickerYearlyRecords, async (tickerYearly: tickerYearlyModel.Record) => {
       const lastRecord = checkedYearly.length ? checkedYearly[checkedYearly.length - 1] : null
 
       let revenueYearlyIncrease = tickerYearly.revenueYearlyIncrease
@@ -302,11 +332,22 @@ export const calcYearlyFinancial = async (): Promise<tickerModel.Record[]> => {
           profitYearlyDecrease,
           incomeYearlyIncrease,
           incomeYearlyDecrease,
-        })
+        }, transaction)
         : tickerYearly
 
       checkedYearly.push(yearly)
-    }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
-  return tickers
+}
+
+export const calcAllTickersYearlyFinancial = async () => {
+  const tickers = await tickerModel.getAll()
+  await runTool.asyncForEach(tickers, async (ticker: tickerDailyModel.Record) => {
+    await calcTickerYearlyFinancial(ticker.id)
+  })
 }

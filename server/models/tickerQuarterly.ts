@@ -1,3 +1,4 @@
+import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
@@ -174,11 +175,12 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create,
+  values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     values,
+    transaction,
   })
   return convertToRecord(newRecords[0])
 }
@@ -186,6 +188,7 @@ export const create = async (
 export const update = async (
   tickerQuarterlyId: number,
   values: Update,
+  transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedQuarterly = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER_QUARTERLY,
@@ -193,6 +196,7 @@ export const update = async (
     conditions: [
       { key: 'id', value: tickerQuarterlyId },
     ],
+    transaction,
   })
   return convertToRecord(updatedQuarterly[0])
 }

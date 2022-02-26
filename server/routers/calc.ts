@@ -7,31 +7,31 @@ const calcRouter = Router()
 export default calcRouter
 
 calcRouter.get('/tickers/average_price', async (req, res) => {
-  const result = await calcTickers.calcAveragePrice()
+  const result = await calcTickers.calcAllTickersAveragePrice()
 
   return res.status(200).send({ result })
 })
 
 calcRouter.get('/tickers/price_movement', async (req, res) => {
-  const result = await calcTickers.calcPriceMovement()
+  const result = await calcTickers.calcAllTickersPriceMovement()
 
   return res.status(200).send({ result })
 })
 
 calcRouter.get('/tickers/quarterly_financial', async (req, res) => {
-  const result = await calcTickers.calcQuarterlyFinancial()
+  const result = await calcTickers.calcAllTickersQuarterlyFinancial()
 
   return res.status(200).send({ result })
 })
 
 calcRouter.get('/tickers/yearly_financial', async (req, res) => {
-  const result = await calcTickers.calcYearlyFinancial()
+  const result = await calcTickers.calcAllTickersYearlyFinancial()
 
   return res.status(200).send({ result })
 })
 
 calcRouter.get('/traders/performance', async (req, res) => {
-  const result = await calcTraders.calcPerformance()
+  const result = await calcTraders.calcAllTradersPerformance()
 
   return res.status(200).send({ result })
 })

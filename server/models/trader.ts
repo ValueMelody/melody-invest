@@ -1,3 +1,4 @@
+import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
@@ -97,29 +98,31 @@ export const getTops = async (total: number): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create,
+  values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER,
     values,
+    transaction,
   })
   return newRecords[0]
 }
 
 export const createOrActive = async (
-  traderEnvId: number, traderDNAId: number,
+  traderEnvId: number, traderDNAId: number, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const currentRecord = await getByUK(traderEnvId, traderDNAId)
-  if (!currentRecord) return create({ traderEnvId, traderDNAId, isActive: true })
+  if (!currentRecord) return create({ traderEnvId, traderDNAId, isActive: true }, transaction)
 
   if (currentRecord.isActive) return currentRecord
 
-  return update(currentRecord.id, { isActive: true })
+  return update(currentRecord.id, { isActive: true }, transaction)
 }
 
 export const update = async (
   traderId: number,
   values: Update,
+  transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedTrader = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TRADER,
@@ -127,6 +130,7 @@ export const update = async (
     conditions: [
       { key: 'id', value: traderId },
     ],
+    transaction,
   })
   return convertToRecord(updatedTrader[0])
 }

@@ -285,7 +285,7 @@ export const getPriceMovementSellWeights = (
 }
 
 export const getDNAHashCode = (
-  dna: traderDNAModel.Record | traderDNAModel.Create
+  dna: traderDNAModel.Record | traderDNAModel.Create,
 ): string => {
   const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
   return generateTool.toSHA512(JSON.stringify(template))

@@ -1,3 +1,4 @@
+import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
@@ -188,26 +189,28 @@ export const getAll = async (): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create,
+  values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_DNA,
     values,
+    transaction,
   })
   return newRecords[0]
 }
 
 export const createIfEmpty = async (
-  values: Create,
+  values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const currentRecord = await getByUK(values.hashCode)
   if (currentRecord) return currentRecord
-  return create(values)
+  return create(values, transaction)
 }
 
 export const update = async (
   id: number,
   values: Update,
+  transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedDNA = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TRADER_DNA,
@@ -215,6 +218,7 @@ export const update = async (
     conditions: [
       { key: 'id', value: id },
     ],
+    transaction,
   })
   return updatedDNA[0]
 }

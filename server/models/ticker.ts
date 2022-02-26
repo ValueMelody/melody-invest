@@ -1,3 +1,4 @@
+import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
@@ -60,6 +61,7 @@ export const getAll = async (): Promise<Record[]> => {
 export const update = async (
   tickerId: number,
   values: Update,
+  transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedTicker = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TICKER,
@@ -67,6 +69,7 @@ export const update = async (
     conditions: [
       { key: 'id', value: tickerId },
     ],
+    transaction,
   })
   return updatedTicker[0]
 }
