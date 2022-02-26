@@ -9,6 +9,7 @@ import * as runTool from '../tools/run'
 import * as dnaLogic from '../logics/dna'
 import * as marketLogic from '../logics/market'
 import * as errorEnum from '../enums/error'
+import * as databaseAdapter from '../adapters/database'
 
 interface HoldingDetails {
   totalCash: number,
@@ -16,31 +17,27 @@ interface HoldingDetails {
   holdings: traderHoldingModel.Holding[]
 }
 
-export const calcPerformance = async (): Promise<traderModel.Record[]> => {
-  const traders = await traderModel.getActives()
+const calcTraderPerformance = async (trader: traderModel.Record) => {
+  const dna = await traderDNAModel.getByPK(trader.traderDNAId)
+  if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  await runTool.asyncMap(traders, async (trader: traderModel.Record) => {
-    const dna = await traderDNAModel.getByPK(trader.traderDNAId)
-    if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  const tickerMinPercent = dna.tickerMinPercent / 100
+  const tickerMaxPercent = dna.tickerMaxPercent / 100
+  const holdingBuyPercent = dna.holdingBuyPercent / 100
+  const holdingSellPercent = dna.holdingSellPercent / 100
+  const cashMaxPercent = dna.cashMaxPercent / 100
 
-    const tickerMinPercent = dna.tickerMinPercent / 100
-    const tickerMaxPercent = dna.tickerMaxPercent / 100
-    const holdingBuyPercent = dna.holdingBuyPercent / 100
-    const holdingSellPercent = dna.holdingSellPercent / 100
-    const cashMaxPercent = dna.cashMaxPercent / 100
-
+  const transaction = await databaseAdapter.createTransaction()
+  try {
     let holding = await traderHoldingModel.getLatest(trader.id)
-
     let tradeDate = holding
       ? dateTool.getNextDate(holding.date, dna.tradeFrequency)
       : dateTool.getInitialDate()
-
     let rebalancedAt = trader.rebalancedAt || tradeDate
     let startedAt = trader.startedAt
     let hasRebalanced = false
 
     const today = dateTool.getCurrentDate()
-
     while (tradeDate <= today) {
       tradeDate = dateTool.getNextDate(tradeDate, dna.tradeFrequency)
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
@@ -230,11 +227,11 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
           totalValue: detailsAfterBuy.totalValue,
           totalCash: detailsAfterBuy.totalCash,
           holdings: detailsAfterBuy.holdings,
-        })
+        }, transaction)
       }
     }
 
-    if (!holding) return trader
+    if (!holding) return
 
     const latestDaily = await tickerDailyModel.getLatestAll()
     const latestDate = latestDaily.reduce((date, daily) => {
@@ -250,7 +247,7 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
     const totalEarning = totalValue - initialValue
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = totalEarning * 100 / initialValue
-    const updatedTrader = await traderModel.update(trader.id, {
+    await traderModel.update(trader.id, {
       totalValue,
       estimatedAt: latestDate,
       rebalancedAt: hasRebalanced ? rebalancedAt : undefined,
@@ -258,46 +255,63 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       grossPercent: grossPercent.toFixed(2),
       yearlyPercent: (grossPercent * 365 / totalDays).toFixed(2),
       totalDays,
-    })
-    return updatedTrader
-  })
+    }, transaction)
 
-  return traders
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const calcAllTradersPerformance = async () => {
+  const traders = await traderModel.getActives()
+
+  await runTool.asyncForEach(traders, async (trader: traderModel.Record) => {
+    await calcTraderPerformance(trader)
+  })
 }
 
 export const calcDescendant = async (): Promise<traderModel.Record[]> => {
   const topTraders = await traderModel.getTops(20)
   const couples = dnaLogic.groupDNACouples(topTraders)
 
-  const newTraders = await runTool.asyncReduce(couples, async (
-    allTraders: traderModel.Record[], couple: traderModel.Record[],
-  ) => {
-    const [firstTrader, secondTrader] = couple
-    const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
-    const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const newTraders = await runTool.asyncReduce(couples, async (
+      allTraders: traderModel.Record[], couple: traderModel.Record[],
+    ) => {
+      const [firstTrader, secondTrader] = couple
+      const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
+      const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
 
-    const childOne = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-    const dnaOne = await traderDNAModel.createIfEmpty(childOne)
-    const traderOne = await traderModel.createOrActive(1, dnaOne.id)
+      const childOne = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+      const dnaOne = await traderDNAModel.createIfEmpty(childOne, transaction)
+      const traderOne = await traderModel.createOrActive(1, dnaOne.id, transaction)
 
-    const childTwo = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-    const dnaTwo = await traderDNAModel.createIfEmpty(childTwo)
-    const traderTwo = await traderModel.createOrActive(1, dnaTwo.id)
+      const childTwo = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+      const dnaTwo = await traderDNAModel.createIfEmpty(childTwo, transaction)
+      const traderTwo = await traderModel.createOrActive(1, dnaTwo.id, transaction)
 
-    const childThree = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-    const dnaThree = await traderDNAModel.createIfEmpty(childThree)
-    const traderThree = await traderModel.createOrActive(1, dnaThree.id)
+      const childThree = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+      const dnaThree = await traderDNAModel.createIfEmpty(childThree, transaction)
+      const traderThree = await traderModel.createOrActive(1, dnaThree.id, transaction)
 
-    const childFour = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-    const dnaFour = await traderDNAModel.createIfEmpty(childFour)
-    const traderFour = await traderModel.createOrActive(1, dnaFour.id)
+      const childFour = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+      const dnaFour = await traderDNAModel.createIfEmpty(childFour, transaction)
+      const traderFour = await traderModel.createOrActive(1, dnaFour.id, transaction)
 
-    const childFive = dnaLogic.generateDNAChild(firstDNA!, secondDNA!, true)
-    const dnaFive = await traderDNAModel.createIfEmpty(childFive)
-    const traderFive = await traderModel.createOrActive(1, dnaFive.id)
+      const childFive = dnaLogic.generateDNAChild(firstDNA!, secondDNA!, true)
+      const dnaFive = await traderDNAModel.createIfEmpty(childFive, transaction)
+      const traderFive = await traderModel.createOrActive(1, dnaFive.id, transaction)
 
-    return [...allTraders, traderOne, traderTwo, traderThree, traderFour, traderFive]
-  })
+      return [...allTraders, traderOne, traderTwo, traderThree, traderFour, traderFive]
+    })
 
-  return newTraders
+    await transaction.commit()
+    return newTraders
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }

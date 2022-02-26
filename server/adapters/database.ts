@@ -22,12 +22,14 @@ interface Find {
 interface Create {
   tableName: string;
   values: object;
+  transaction: Knex.Transaction;
 }
 
 interface Update {
   tableName: string;
   values: object;
   conditions: Condition[];
+  transaction: Knex.Transaction;
 }
 
 let _db: Knex | null = null
@@ -92,10 +94,13 @@ export const findAll = async (
 export const create = async ({
   tableName,
   values,
+  transaction,
 }: Create) => {
   const db = getConnection()
   const record = await db
     .table(tableName)
+    .transacting(transaction)
+    .clone()
     .insert(values)
     .returning('*')
   return record
@@ -105,10 +110,13 @@ export const update = async ({
   tableName,
   values,
   conditions,
+  transaction,
 }: Update) => {
   const db = getConnection()
   const query = db
     .table(tableName)
+    .transacting(transaction)
+    .clone()
     .update(values)
     .returning('*')
 
@@ -123,4 +131,11 @@ export const update = async ({
 
   const records = await query
   return records
+}
+
+export const createTransaction = async (): Promise<Knex.Transaction> => {
+  const db = getConnection()
+  return new Promise((resolve) => {
+    return db.transaction(resolve)
+  })
 }

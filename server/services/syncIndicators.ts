@@ -3,7 +3,9 @@ import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
+import * as runTool from '../tools/run'
 import * as marketEnum from '../enums/market'
+import * as databaseAdapter from '../adapters/database'
 
 type MonthlyIndicatorType =
   typeof marketEnum.TYPES.FUNDS_RATE |
@@ -23,9 +25,7 @@ interface MonthlyIndicatorOptions {
 export const syncMonthly = async (
   type: MonthlyIndicatorType,
   options?: MonthlyIndicatorOptions,
-): Promise<{
-  relatedMonthly: indicatorMonthlyModel.Record[]
-}> => {
+) => {
   const region = 'US'
   const initMonth = dateTool.getInitialMonth()
 
@@ -78,28 +78,30 @@ export const syncMonthly = async (
       break
   }
 
-  const relatedIndicators = []
-  for (const result of indicatorResult.data) {
-    const month = result.date.substring(0, 7)
-    if (month < initMonth) continue
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
+      const month = result.date.substring(0, 7)
+      if (month < initMonth) return
 
-    const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
-    if (!currentRecord) {
-      const created = await indicatorMonthlyModel.create({
-        month,
-        region,
-        [indicatorKey]: result.value,
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord[indicatorKey]) {
-      const updated = await indicatorMonthlyModel.update(currentRecord.id, {
-        [indicatorKey]: result.value,
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedMonthly: relatedIndicators,
+      const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+      if (!currentRecord) {
+        await indicatorMonthlyModel.create({
+          month,
+          region,
+          [indicatorKey]: result.value,
+        }, transaction)
+      } else if (currentRecord && !currentRecord[indicatorKey]) {
+        await indicatorMonthlyModel.update(currentRecord.id, {
+          [indicatorKey]: result.value,
+        }, transaction)
+      }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
 }
 
@@ -107,9 +109,7 @@ type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
 
 export const syncQuarterly = async (
   type: QuarterlyIndicatorType,
-): Promise<{
-  relatedQuarterly: indicatorQuarterlyModel.Record[]
-}> => {
+) => {
   const region = 'US'
   const initQuarter = dateTool.getInitialQuarter()
 
@@ -124,28 +124,30 @@ export const syncQuarterly = async (
       break
   }
 
-  const relatedIndicators = []
-  for (const result of indicatorResult.data) {
-    const quarter = result.date.substring(0, 7)
-    if (quarter < initQuarter) continue
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
+      const quarter = result.date.substring(0, 7)
+      if (quarter < initQuarter) return
 
-    const currentRecord = await indicatorQuarterlyModel.getByUK(region, quarter)
-    if (!currentRecord) {
-      const created = await indicatorQuarterlyModel.create({
-        quarter,
-        region,
-        [indicatorKey]: result.value,
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord[indicatorKey]) {
-      const updated = await indicatorQuarterlyModel.update(currentRecord.id, {
-        [indicatorKey]: result.value,
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedQuarterly: relatedIndicators,
+      const currentRecord = await indicatorQuarterlyModel.getByUK(region, quarter)
+      if (!currentRecord) {
+        await indicatorQuarterlyModel.create({
+          quarter,
+          region,
+          [indicatorKey]: result.value,
+        }, transaction)
+      } else if (currentRecord && !currentRecord[indicatorKey]) {
+        await indicatorQuarterlyModel.update(currentRecord.id, {
+          [indicatorKey]: result.value,
+        }, transaction)
+      }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
 }
 
@@ -159,9 +161,7 @@ interface YearlyIndicatorOptions {
 export const syncYearly = async (
   type: YearlyIndicatorType,
   options?: YearlyIndicatorOptions,
-): Promise<{
-  relatedYearly: indicatorYearlyModel.Record[]
-}> => {
+) => {
   const region = 'US'
   const initYear = dateTool.getInitialYear()
 
@@ -180,31 +180,33 @@ export const syncYearly = async (
       break
   }
 
-  const relatedIndicators = []
-  for (const result of indicatorResult.data) {
-    const year = result.date.substring(0, 4)
-    if (year < initYear) continue
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
+      const year = result.date.substring(0, 4)
+      if (year < initYear) return
 
-    const value = options?.valueLength
-      ? result.value.substring(0, options.valueLength)
-      : result.value
+      const value = options?.valueLength
+        ? result.value.substring(0, options.valueLength)
+        : result.value
 
-    const currentRecord = await indicatorYearlyModel.getByUK(region, year)
-    if (!currentRecord) {
-      const created = await indicatorYearlyModel.create({
-        year,
-        region,
-        [indicatorKey]: value,
-      })
-      relatedIndicators.push(created)
-    } else if (currentRecord && !currentRecord[indicatorKey]) {
-      const updated = await indicatorYearlyModel.update(currentRecord.id, {
-        [indicatorKey]: value,
-      })
-      relatedIndicators.push(updated)
-    }
-  }
-  return {
-    relatedYearly: relatedIndicators,
+      const currentRecord = await indicatorYearlyModel.getByUK(region, year)
+      if (!currentRecord) {
+        await indicatorYearlyModel.create({
+          year,
+          region,
+          [indicatorKey]: value,
+        }, transaction)
+      } else if (currentRecord && !currentRecord[indicatorKey]) {
+        await indicatorYearlyModel.update(currentRecord.id, {
+          [indicatorKey]: value,
+        }, transaction)
+      }
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
 }

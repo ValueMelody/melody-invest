@@ -9,7 +9,7 @@ export const DAYS = {
 }
 
 export const VALUES = {
-  MOVEMENT_VALUE: [1, 2, 3, 5, 8],
+  MOVEMENT_VALUE: [1, 2, 3, 5],
   CASH_MAX_PERCENT: [0, 10, 20, 30, 50, 80, 100],
   PORTFOLIO_PERCENT: [1, 2, 3, 5, 8, 13, 21, 34, 55],
   HOLDING_PERCENT: [20, 40, 60, 80, 100],
