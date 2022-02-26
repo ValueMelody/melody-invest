@@ -17,6 +17,16 @@ interface HoldingDetails {
   holdings: traderHoldingModel.Holding[]
 }
 
+interface Target {
+  daily: tickerDailyModel.Record,
+  quarterly?: tickerQuarterlyModel.Record
+  yearly?: tickerYearlyModel.Record
+}
+
+interface Targets {
+  [key: number]: Target
+}
+
 const calcTraderPerformance = async (trader: traderModel.Record) => {
   const dna = await traderDNAModel.getByPK(trader.traderDNAId)
   if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
@@ -44,11 +54,14 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
 
-      const targets = dailyTargets.map((daily) => {
+      const availableTargets: Targets = dailyTargets.reduce((tickers, daily) => {
         const quarterly = quarterlyTargets.find((quarterly) => quarterly.tickerId === daily.tickerId)
         const yearly = yearlyTargets.find((yearly) => yearly.tickerId === daily.tickerId)
-        return { daily, quarterly, yearly }
-      })
+        return {
+          ...tickers,
+          [daily.tickerId]: { daily, quarterly, yearly },
+        }
+      }, {})
 
       const totalCash = holding ? holding.totalCash : marketLogic.getInitialCash()
       const holdings = holding ? holding.holdings : []
@@ -57,7 +70,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
         totalValue: totalCash, totalCash, holdings: [],
       }
       const detailsAfterUpdate = holdings.reduce((details, holding) => {
-        const matched = targets.find(({ daily }) => daily.tickerId === holding.tickerId)
+        const matched = availableTargets[holding.tickerId]
         const matchedDaily = matched?.daily
         const holdingValue = matchedDaily ? holding.shares * matchedDaily.adjustedClosePrice : holding.value
         const updatedHolding = { tickerId: holding.tickerId, shares: holding.shares, value: holdingValue }
@@ -79,7 +92,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
         holdings: [],
       }
       const detailsAfterRebalance = detailsAfterUpdate.holdings.reduce((details, holding) => {
-        const matched = targets.find(({ daily }) => daily.tickerId === holding.tickerId)
+        const matched = availableTargets[holding.tickerId]
         const matchedDaily = matched?.daily
         const holdingPercent = holding.value / details.totalValue
         const isMoreThanMaxPercent = matchedDaily && holdingPercent > tickerMaxPercent
@@ -126,7 +139,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       }, detailsBeforeRebalance)
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
-      const sellTickerIds = targets
+      const sellTickerIds = Object.values(availableTargets)
         .filter(({ daily, quarterly, yearly }) => {
           return holdingTickerIds.includes(daily.tickerId) &&
           dnaLogic.getPriceMovementSellWeights(dna, daily, quarterly, yearly)
@@ -145,7 +158,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       }
       const detailsAfterSell = detailsAfterRebalance.holdings.reduce((details, holding) => {
         const isSellTarget = sellTickerIds.includes(holding.tickerId)
-        const matched = targets.find(({ daily }) => daily.tickerId === holding.tickerId)
+        const matched = availableTargets[holding.tickerId]
         const matchedDaily = matched?.daily
         const sharesSold = matchedDaily ? Math.floor(holding.shares * holdingSellPercent) : 0
         const tickerPrice = matchedDaily ? matchedDaily.adjustedClosePrice : 0
@@ -179,7 +192,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
-      const buyTargets = targets
+      const buyTargets: Target[] = Object.values(availableTargets)
         .filter(({ daily, quarterly, yearly }) => !!dnaLogic.getPriceMovementBuyWeights(dna, daily, quarterly, yearly))
         .sort((first, second) => {
           const firstWeight = dnaLogic.getPriceMovementBuyWeights(dna, first.daily, first.quarterly, first.yearly)
