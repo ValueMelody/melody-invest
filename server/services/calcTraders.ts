@@ -5,9 +5,9 @@ import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
 import * as dateTool from '../tools/date'
-import * as dnaTool from '../tools/dna'
-import * as marketTool from '../tools/market'
-import * as arrayTool from '../tools/array'
+import * as runTool from '../tools/run'
+import * as dnaLogic from '../logics/dna'
+import * as marketLogic from '../logics/market'
 import * as errorEnum from '../enums/error'
 
 interface HoldingDetails {
@@ -19,7 +19,7 @@ interface HoldingDetails {
 export const calcPerformance = async (): Promise<traderModel.Record[]> => {
   const traders = await traderModel.getActives()
 
-  await arrayTool.asyncMap(traders, async (trader: traderModel.Record) => {
+  await runTool.asyncMap(traders, async (trader: traderModel.Record) => {
     const dna = await traderDNAModel.getByPK(trader.traderDNAId)
     if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
@@ -53,7 +53,7 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
         return { daily, quarterly, yearly }
       })
 
-      const totalCash = holding ? holding.totalCash : marketTool.getInitialCash()
+      const totalCash = holding ? holding.totalCash : marketLogic.getInitialCash()
       const holdings = holding ? holding.holdings : []
 
       const detailsBeforeUpdate: HoldingDetails = {
@@ -132,11 +132,11 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       const sellTickerIds = targets
         .filter(({ daily, quarterly, yearly }) => {
           return holdingTickerIds.includes(daily.tickerId) &&
-            dnaTool.getPriceMovementSellWeights(dna, daily, quarterly, yearly)
+          dnaLogic.getPriceMovementSellWeights(dna, daily, quarterly, yearly)
         })
         .sort((first, second) => {
-          const firstWeight = dnaTool.getPriceMovementSellWeights(dna, first.daily, first.quarterly, first.yearly)
-          const secondWeight = dnaTool.getPriceMovementSellWeights(dna, second.daily, second.quarterly, second.yearly)
+          const firstWeight = dnaLogic.getPriceMovementSellWeights(dna, first.daily, first.quarterly, first.yearly)
+          const secondWeight = dnaLogic.getPriceMovementSellWeights(dna, second.daily, second.quarterly, second.yearly)
           return firstWeight >= secondWeight ? -1 : 1
         })
         .map(({ daily }) => daily.tickerId)
@@ -183,10 +183,10 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
       const buyTargets = targets
-        .filter(({ daily, quarterly, yearly }) => !!dnaTool.getPriceMovementBuyWeights(dna, daily, quarterly, yearly))
+        .filter(({ daily, quarterly, yearly }) => !!dnaLogic.getPriceMovementBuyWeights(dna, daily, quarterly, yearly))
         .sort((first, second) => {
-          const firstWeight = dnaTool.getPriceMovementBuyWeights(dna, first.daily, first.quarterly, first.yearly)
-          const secondWeight = dnaTool.getPriceMovementBuyWeights(dna, second.daily, second.quarterly, second.yearly)
+          const firstWeight = dnaLogic.getPriceMovementBuyWeights(dna, first.daily, first.quarterly, first.yearly)
+          const secondWeight = dnaLogic.getPriceMovementBuyWeights(dna, second.daily, second.quarterly, second.yearly)
           return firstWeight >= secondWeight ? -1 : 1
         })
 
@@ -246,7 +246,7 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
       if (!matchedDaily) return total
       return total + matchedDaily.adjustedClosePrice * holding.shares
     }, holding.totalCash)
-    const initialValue = marketTool.getInitialCash()
+    const initialValue = marketLogic.getInitialCash()
     const totalEarning = totalValue - initialValue
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = totalEarning * 100 / initialValue
@@ -266,7 +266,38 @@ export const calcPerformance = async (): Promise<traderModel.Record[]> => {
 }
 
 export const calcDescendant = async (): Promise<traderModel.Record[]> => {
-  const traders = await traderModel.getActives()
+  const topTraders = await traderModel.getTops(20)
+  const couples = dnaLogic.groupDNACouples(topTraders)
 
-  return traders
+  const newTraders = await runTool.asyncReduce(couples, async (
+    allTraders: traderModel.Record[], couple: traderModel.Record[],
+  ) => {
+    const [firstTrader, secondTrader] = couple
+    const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
+    const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
+
+    const childOne = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+    const dnaOne = await traderDNAModel.createIfEmpty(childOne)
+    const traderOne = await traderModel.createOrActive(1, dnaOne.id)
+
+    const childTwo = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+    const dnaTwo = await traderDNAModel.createIfEmpty(childTwo)
+    const traderTwo = await traderModel.createOrActive(1, dnaTwo.id)
+
+    const childThree = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+    const dnaThree = await traderDNAModel.createIfEmpty(childThree)
+    const traderThree = await traderModel.createOrActive(1, dnaThree.id)
+
+    const childFour = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
+    const dnaFour = await traderDNAModel.createIfEmpty(childFour)
+    const traderFour = await traderModel.createOrActive(1, dnaFour.id)
+
+    const childFive = dnaLogic.generateDNAChild(firstDNA!, secondDNA!, true)
+    const dnaFive = await traderDNAModel.createIfEmpty(childFive)
+    const traderFive = await traderModel.createOrActive(1, dnaFive.id)
+
+    return [...allTraders, traderOne, traderTwo, traderThree, traderFour, traderFive]
+  })
+
+  return newTraders
 }

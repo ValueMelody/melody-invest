@@ -63,34 +63,34 @@ export interface Record {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
-  epsQuarterlyBeatsBuy: number;
-  epsQuarterlyMissBuy: number;
-  epsQuarterlyBeatsSell: number;
-  epsQuarterlyMissSell: number;
-  profitQuarterlyIncreaseBuy: number;
-  profitQuarterlyDecreaseBuy: number;
-  incomeQuarterlyIncreaseBuy: number;
-  incomeQuarterlyDecreaseBuy: number;
-  revenueQuarterlyIncreaseBuy: number;
-  revenueQuarterlyDecreaseBuy: number;
-  profitQuarterlyIncreaseSell: number;
-  profitQuarterlyDecreaseSell: number;
-  incomeQuarterlyIncreaseSell: number;
-  incomeQuarterlyDecreaseSell: number;
-  revenueQuarterlyIncreaseSell: number;
-  revenueQuarterlyDecreaseSell: number;
-  profitYearlyIncreaseBuy: number;
-  profitYearlyDecreaseBuy: number;
-  incomeYearlyIncreaseBuy: number;
-  incomeYearlyDecreaseBuy: number;
-  revenueYearlyIncreaseBuy: number;
-  revenueYearlyDecreaseBuy: number;
-  profitYearlyIncreaseSell: number;
-  profitYearlyDecreaseSell: number;
-  incomeYearlyIncreaseSell: number;
-  incomeYearlyDecreaseSell: number;
-  revenueYearlyIncreaseSell: number;
-  revenueYearlyDecreaseSell: number;
+  epsQuarterlyBeatsBuy: number | null;
+  epsQuarterlyMissBuy: number | null;
+  epsQuarterlyBeatsSell: number | null;
+  epsQuarterlyMissSell: number | null;
+  profitQuarterlyIncreaseBuy: number | null;
+  profitQuarterlyDecreaseBuy: number | null;
+  incomeQuarterlyIncreaseBuy: number | null;
+  incomeQuarterlyDecreaseBuy: number | null;
+  revenueQuarterlyIncreaseBuy: number | null;
+  revenueQuarterlyDecreaseBuy: number | null;
+  profitQuarterlyIncreaseSell: number | null;
+  profitQuarterlyDecreaseSell: number | null;
+  incomeQuarterlyIncreaseSell: number | null;
+  incomeQuarterlyDecreaseSell: number | null;
+  revenueQuarterlyIncreaseSell: number | null;
+  revenueQuarterlyDecreaseSell: number | null;
+  profitYearlyIncreaseBuy: number | null;
+  profitYearlyDecreaseBuy: number | null;
+  incomeYearlyIncreaseBuy: number | null;
+  incomeYearlyDecreaseBuy: number | null;
+  revenueYearlyIncreaseBuy: number | null;
+  revenueYearlyDecreaseBuy: number | null;
+  profitYearlyIncreaseSell: number | null;
+  profitYearlyDecreaseSell: number | null;
+  incomeYearlyIncreaseSell: number | null;
+  incomeYearlyDecreaseSell: number | null;
+  revenueYearlyIncreaseSell: number | null;
+  revenueYearlyDecreaseSell: number | null;
 }
 
 export interface Create {
@@ -195,6 +195,14 @@ export const create = async (
     values,
   })
   return newRecords[0]
+}
+
+export const createIfEmpty = async (
+  values: Create,
+): Promise<Record> => {
+  const currentRecord = await getByUK(values.hashCode)
+  if (currentRecord) return currentRecord
+  return create(values)
 }
 
 export const update = async (

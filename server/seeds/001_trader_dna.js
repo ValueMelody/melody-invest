@@ -1,7 +1,6 @@
 exports.seed = (knex) => knex('trader_dna').then(() => {
   return knex('trader_dna').insert([
     {
-      id: 1,
       hashCode: 'DNA001',
       priceDailyIncreaseBuy: 3,
       priceDailyIncreaseSell: null,
@@ -60,7 +59,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      id: 2,
       hashCode: 'DNA002',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: 3,
@@ -119,7 +117,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      id: 3,
       hashCode: 'DNA003',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -178,7 +175,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      id: 4,
       hashCode: 'DNA004',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -237,7 +233,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      id: 5,
       hashCode: 'DNA005',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -296,7 +291,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      id: 6,
       hashCode: 'DNA006',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -355,7 +349,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      id: 7,
       hashCode: 'DNA007',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -414,7 +407,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      id: 8,
       hashCode: 'DNA008',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -473,7 +465,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      id: 9,
       hashCode: 'DNA009',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -532,7 +523,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 0,
     },
     {
-      id: 10,
       hashCode: 'DNA010',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -591,7 +581,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 0,
     },
     {
-      id: 11,
       hashCode: 'DNA011',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -650,7 +639,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      id: 12,
       hashCode: 'DNA012',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -709,7 +697,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      id: 13,
       hashCode: 'DNA013',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -768,7 +755,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      id: 14,
       hashCode: 'DNA014',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -827,7 +813,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      id: 15,
       hashCode: 'DNA015',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -886,7 +871,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      id: 16,
       hashCode: 'DNA016',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -945,7 +929,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      id: 17,
       hashCode: 'DNA017',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1004,7 +987,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      id: 18,
       hashCode: 'DNA018',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1063,7 +1045,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      id: 19,
       hashCode: 'DNA019',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1122,7 +1103,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      id: 20,
       hashCode: 'DNA020',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1181,7 +1161,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      id: 21,
       hashCode: 'DNA021',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1240,7 +1219,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      id: 22,
       hashCode: 'DNA022',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1299,7 +1277,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      id: 23,
       hashCode: 'DNA023',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,
@@ -1358,7 +1335,6 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      id: 24,
       hashCode: 'DNA024',
       priceDailyIncreaseBuy: null,
       priceDailyIncreaseSell: null,

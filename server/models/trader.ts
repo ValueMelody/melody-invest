@@ -29,6 +29,12 @@ export interface Raw {
   totalDays: number | null;
 }
 
+interface Create {
+  traderEnvId: number;
+  traderDNAId: number;
+  isActive: boolean;
+}
+
 interface Update {
   isActive?: boolean;
   rebalancedAt?: string;
@@ -76,6 +82,39 @@ export const getActives = async (): Promise<Record[]> => {
     ],
   })
   return traders.map((trader) => convertToRecord(trader))
+}
+
+export const getTops = async (total: number): Promise<Record[]> => {
+  const traders = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'isActive', value: true },
+    ],
+    orderBy: { key: 'yearlyPercent', type: 'desc' },
+    limit: total,
+  })
+  return traders.map((trader) => convertToRecord(trader))
+}
+
+export const create = async (
+  values: Create,
+): Promise<Record> => {
+  const newRecords = await databaseAdapter.create({
+    tableName: tableEnum.NAMES.TRADER,
+    values,
+  })
+  return newRecords[0]
+}
+
+export const createOrActive = async (
+  traderEnvId: number, traderDNAId: number,
+): Promise<Record> => {
+  const currentRecord = await getByUK(traderEnvId, traderDNAId)
+  if (!currentRecord) return create({ traderEnvId, traderDNAId, isActive: true })
+
+  if (currentRecord.isActive) return currentRecord
+
+  return update(currentRecord.id, { isActive: true })
 }
 
 export const update = async (

@@ -1,8 +1,8 @@
 import * as errorEnum from '../enums/error'
 import * as marketAdapter from '../adapters/market'
 import * as dateTool from '../tools/date'
-import * as marketTool from '../tools/market'
 import * as runTool from '../tools/run'
+import * as marketLogic from '../logics/market'
 import * as tickerModel from '../models/ticker'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerYearlyModel from '../models/tickerYearly'
@@ -52,16 +52,16 @@ export const syncPrices = async (
     const previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, date)
 
     const adjustedClose = previousRecord
-      ? marketTool.getAdjustedClosePrice(
+      ? marketLogic.getAdjustedClosePrice(
         closePrice,
         splitCoefficient,
         previousRecord.closePrice,
         previousRecord.adjustedClosePrice,
       )
-      : marketTool.convertToIntPrice(closePrice)
+      : marketLogic.convertToIntPrice(closePrice)
 
     const dividendPercent = previousRecord
-      ? marketTool.getDividendPercent(
+      ? marketLogic.getDividendPercent(
         dividendAmount,
         previousRecord.closePrice,
       )
