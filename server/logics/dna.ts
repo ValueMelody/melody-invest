@@ -4,7 +4,7 @@ import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
-import * as generateTool from './generate'
+import * as generateTool from '../tools/generate'
 
 const GENE_VALUES = {
   priceDailyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
@@ -284,7 +284,9 @@ export const getPriceMovementSellWeights = (
   return weights
 }
 
-export const getDNAHashCode = (dna: traderDNAModel.Record): string => {
+export const getDNAHashCode = (
+  dna: traderDNAModel.Record | traderDNAModel.Create
+): string => {
   const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
   return generateTool.toSHA512(JSON.stringify(template))
 }
@@ -292,13 +294,11 @@ export const getDNAHashCode = (dna: traderDNAModel.Record): string => {
 export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
   return traders.reduce((couples: traderModel.Record[][], trader, index) => {
     if (index % 2 === 0) {
-      const lastCouple = [...couples[couples.length - 1], trader]
-      return couples.map((couple, i) => i === couples.length - 1 ? lastCouple : couple)
+      return [...couples, [trader]]
     }
-    return [
-      ...couples,
-      [trader],
-    ]
+
+    const lastCouple = [...couples[couples.length - 1], trader]
+    return couples.map((couple, i) => i === couples.length - 1 ? lastCouple : couple)
   }, [])
 }
 
@@ -312,17 +312,17 @@ const pickTradingGenes = (
     if (second[type]) return [...values, { type, value: second[type]! }]
     return values
   }, [])
-  const remainingTotal = Math.floor(allValues.length) || 1
+  const remainingTotal = Math.floor(allValues.length / 2) || 1
   const chanceOfStay = remainingTotal * 100 / allValues.length
   const subValues = allValues.reduce((values: Gene[], value: Gene) => {
-    const shouldStay = generateTool.pickOneInRange(1, 100) <= chanceOfStay
+    const shouldStay = generateTool.pickNumberInRange(1, 100) <= chanceOfStay
     const hasRoom = values.length < remainingTotal
     if (shouldStay && hasRoom) return [...values, value]
     return values
   }, [])
 
   if (!subValues.length) {
-    const index = generateTool.pickOneInRange(0, allValues.length - 1)
+    const index = generateTool.pickNumberInRange(0, allValues.length - 1)
     subValues.push(allValues[index])
   }
 
@@ -332,8 +332,10 @@ const pickTradingGenes = (
 export const generateDNAChild = (
   first: traderDNAModel.Record,
   second: traderDNAModel.Record,
+  shouldMutation: boolean = false,
 ) => {
-  const newChild: traderDNAModel.Record = {
+  const newChild: traderDNAModel.Create = {
+    hashCode: '',
     priceDailyIncreaseBuy: null,
     priceDailyIncreaseSell: null,
     priceDailyDecreaseBuy: null,
@@ -394,24 +396,30 @@ export const generateDNAChild = (
   const buyGeneKeys = GENE_GROUPS[0]
   const childBuyGenes = pickTradingGenes(buyGeneKeys, first, second)
   childBuyGenes.forEach((gene) => {
-    newChild[gene.type] = gene.value
+    newChild[gene.type] = newChild[gene.type]
+      ? generateTool.pickOneNumber(gene.value, newChild[gene.type]!)
+      : gene.value
   })
-}
 
-// export const getBaseDNAs = () => {
-//   const genesInGroups = getGeneGroups()
-//   const DNAs = genesInGroups.reduce((allDNAs: Gene[][], genesInGroup) => {
-//     console.log(allDNAs.length)
-//     if (allDNAs.length === 0) {
-//       return genesInGroup.map((gene) => [gene])
-//     }
-//     return genesInGroup.reduce((newDNAS: Gene[][], gene) => {
-//       const combos = allDNAs.map((combo) => [...combo, gene])
-//       return [
-//         ...newDNAS,
-//         ...combos
-//       ]
-//     }, [])
-//   }, [])
-//   return DNAs
-// }
+  const sellGeneKeys = GENE_GROUPS[1]
+  const childSellGenes = pickTradingGenes(sellGeneKeys, first, second)
+  childSellGenes.forEach((gene) => {
+    newChild[gene.type] = newChild[gene.type]
+      ? generateTool.pickOneNumber(gene.value, newChild[gene.type]!)
+      : gene.value
+  })
+
+  if (shouldMutation) {
+    const potentialKeys = Object.keys(GENE_VALUES) as Array<keyof typeof GENE_VALUES>
+    const keyIndex = generateTool.pickNumberInRange(0, potentialKeys.length - 1)
+    const geneKey = potentialKeys[keyIndex]
+    const potentialValues = GENE_VALUES[geneKey]
+    const valueIndex = generateTool.pickNumberInRange(0, potentialValues.length - 1)
+    const geneValue = potentialValues[valueIndex]
+    newChild[geneKey] = geneValue
+  }
+
+  newChild.hashCode = getDNAHashCode(newChild)
+
+  return newChild
+}

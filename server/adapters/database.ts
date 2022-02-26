@@ -16,6 +16,7 @@ interface Find {
   tableName: string;
   conditions?: Condition[];
   orderBy?: OrderBy;
+  limit?: number;
 }
 
 interface Create {
@@ -47,6 +48,7 @@ const find = async ({
   tableName,
   conditions,
   orderBy = { key: 'id', type: 'asc' },
+  limit,
 }: Find): Promise<any[] | null> => {
   const db = getConnection()
   const query = db.select('*').from(tableName)
@@ -66,6 +68,8 @@ const find = async ({
     const { key, type } = orderBy
     query.orderBy(key, type)
   }
+
+  if (limit) query.limit(limit)
 
   const records = await query
   return records

@@ -197,6 +197,14 @@ export const create = async (
   return newRecords[0]
 }
 
+export const createIfEmpty = async (
+  values: Create,
+): Promise<Record> => {
+  const currentRecord = await getByUK(values.hashCode)
+  if (currentRecord) return currentRecord
+  return create(values)
+}
+
 export const update = async (
   id: number,
   values: Update,
