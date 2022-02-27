@@ -37,6 +37,12 @@ calcRouter.get('/indicators/yearly', async (req, res) => {
   return res.status(200).send({ result })
 })
 
+calcRouter.get('/indicators/quarterly', async (req, res) => {
+  const result = await calcIndicators.calcQuarterly()
+
+  return res.status(200).send({ result })
+})
+
 calcRouter.get('/traders/performance', async (req, res) => {
   const result = await calcTraders.calcAllTradersPerformance()
 

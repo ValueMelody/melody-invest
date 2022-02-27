@@ -10,7 +10,7 @@ export interface Record {
   region: string;
   realGDP: number | null;
   inflation: number | null;
-  gdpChangePercent: string | null;
+  gdpYearlyChangePercent: string | null;
   inflationYearlyIncrease: number | null;
   inflationYearlyDecrease: number | null;
 }
@@ -21,7 +21,7 @@ interface Raw {
   region: string;
   realGDP: string | null;
   inflation: string | null;
-  gdpChangePercent: string | null;
+  gdpYearlyChangePercent: string | null;
   inflationYearlyIncrease: number | null;
   inflationYearlyDecrease: number | null;
 }
@@ -36,7 +36,7 @@ interface Create {
 interface Update {
   realGDP?: string;
   inflation?: string;
-  gdpChangePercent?: string;
+  gdpYearlyChangePercent?: string;
   inflationYearlyIncrease?: number;
   inflationYearlyDecrease?: number;
 }
@@ -47,7 +47,7 @@ const convertToRecord = (raw: Raw): Record => ({
   region: raw.region,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
-  gdpChangePercent: raw.gdpChangePercent,
+  gdpYearlyChangePercent: raw.gdpYearlyChangePercent,
   inflationYearlyIncrease: raw.inflationYearlyIncrease,
   inflationYearlyDecrease: raw.inflationYearlyDecrease,
 })

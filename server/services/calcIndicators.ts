@@ -1,5 +1,7 @@
 import * as indicatorYearlyModel from '../models/indicatorYearly'
+import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as runTool from '../tools/run'
+import * as dateTool from '../tools/date'
 import * as databaseAdapter from '../adapters/database'
 
 export const calcYearly = async () => {
@@ -11,7 +13,7 @@ export const calcYearly = async () => {
       indicator: indicatorYearlyModel.Record, index: number,
     ) => {
       if (
-        indicator.gdpChangePercent !== null &&
+        indicator.gdpYearlyChangePercent !== null &&
         indicator.inflationYearlyIncrease !== null &&
         indicator.inflationYearlyDecrease !== null
       ) return
@@ -32,7 +34,48 @@ export const calcYearly = async () => {
       await indicatorYearlyModel.update(indicator.id, {
         inflationYearlyIncrease: inflationIncrease,
         inflationYearlyDecrease: inflationDecrease,
-        gdpChangePercent: gdpChangePercent.toFixed(2),
+        gdpYearlyChangePercent: gdpChangePercent.toFixed(2),
+      }, transaction)
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const calcQuarterly = async () => {
+  const indicators = await indicatorQuarterlyModel.getAll()
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(indicators, async (
+      indicator: indicatorQuarterlyModel.Record, index: number,
+    ) => {
+      if (
+        indicator.gdpQuarterlyChangePercent !== null &&
+        indicator.gdpQuarterlyYoYChangePercent !== null
+      ) return
+
+      if (index === 0) return
+
+      const lastIndicator = indicators[index - 1]
+      const changePercent = (indicator.realGDP! - lastIndicator.realGDP!) * 100 / lastIndicator.realGDP!
+
+      const currentYear = indicator.quarter.substring(0, 4)
+      const currentQuarter = indicator.quarter.substring(5, 7)
+      const lastYear = dateTool.getPreviousYear(currentYear)
+      const lastYoYQuarter = `${lastYear}-${currentQuarter}`
+      const lastYoYIndicator = indicators.find((indicator) => indicator.quarter === lastYoYQuarter)
+
+      const yoyChangePercent = lastYoYIndicator
+        ? (indicator.realGDP! - lastYoYIndicator.realGDP!) * 100 / lastYoYIndicator.realGDP!
+        : null
+
+      await indicatorQuarterlyModel.update(indicator.id, {
+        gdpQuarterlyChangePercent: changePercent.toFixed(2),
+        gdpQuarterlyYoYChangePercent: yoyChangePercent?.toFixed(2),
       }, transaction)
     })
 
