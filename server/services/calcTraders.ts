@@ -49,7 +49,6 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 
     const today = dateTool.getCurrentDate()
     while (tradeDate <= today) {
-      tradeDate = dateTool.getNextDate(tradeDate, dna.tradeFrequency)
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
@@ -242,6 +241,8 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
           holdings: detailsAfterBuy.holdings,
         }, transaction)
       }
+
+      tradeDate = dateTool.getNextDate(tradeDate, dna.tradeFrequency)
     }
 
     if (!holding) return
