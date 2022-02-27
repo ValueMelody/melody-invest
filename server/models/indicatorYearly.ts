@@ -10,6 +10,9 @@ export interface Record {
   region: string;
   realGDP: number | null;
   inflation: number | null;
+  gdpChangePercent: string | null;
+  inflationYearlyIncrease: number | null;
+  inflationYearlyDecrease: number | null;
 }
 
 interface Raw {
@@ -18,6 +21,9 @@ interface Raw {
   region: string;
   realGDP: string | null;
   inflation: string | null;
+  gdpChangePercent: string | null;
+  inflationYearlyIncrease: number | null;
+  inflationYearlyDecrease: number | null;
 }
 
 interface Create {
@@ -30,6 +36,9 @@ interface Create {
 interface Update {
   realGDP?: string;
   inflation?: string;
+  gdpChangePercent?: string;
+  inflationYearlyIncrease?: number;
+  inflationYearlyDecrease?: number;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -38,6 +47,9 @@ const convertToRecord = (raw: Raw): Record => ({
   region: raw.region,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
+  gdpChangePercent: raw.gdpChangePercent,
+  inflationYearlyIncrease: raw.inflationYearlyIncrease,
+  inflationYearlyDecrease: raw.inflationYearlyDecrease,
 })
 
 export const getByUK = async (
@@ -52,6 +64,14 @@ export const getByUK = async (
     ],
   })
   return yearly ? convertToRecord(yearly) : null
+}
+
+export const getAll = async (): Promise<Record[]> => {
+  const yearly = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    orderBy: { key: 'year', type: 'asc' },
+  })
+  return yearly
 }
 
 export const create = async (
