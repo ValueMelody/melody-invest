@@ -23,13 +23,9 @@ export const calcYearly = async () => {
 
       const lastIndicator = indicators[index - 1]
       const lastInflationIncrease = lastIndicator.inflationYearlyIncrease || 0
+      const inflationIncrease = indicator.inflation! > lastIndicator.inflation! ? lastInflationIncrease + 1 : 0
       const lastInflationDecrease = lastIndicator.inflationYearlyDecrease || 0
-      const inflationIncrease = indicator.inflation! > lastIndicator.inflation!
-        ? lastInflationIncrease + 1
-        : 0
-      const inflationDecrease = indicator.inflation! < lastIndicator.inflation!
-        ? lastInflationDecrease + 1
-        : 0
+      const inflationDecrease = indicator.inflation! < lastIndicator.inflation! ? lastInflationDecrease + 1 : 0
       const gdpChangePercent = (indicator.realGDP! - lastIndicator.realGDP!) * 100 / lastIndicator.realGDP!
 
       await indicatorYearlyModel.update(indicator.id, {
@@ -92,7 +88,57 @@ export const calcMonthly = async () => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    await runTool.asyncForEach(indicators, async (indicator: indicatorMonthlyModel.Record) => {
+    await runTool.asyncForEach(indicators, async (indicator: indicatorMonthlyModel.Record, index: number) => {
+      if (
+        indicator.fundsRateMonthlyIncrease !== null &&
+        indicator.fundsRateMonthlyDecrease !== null &&
+        indicator.thirtyYearsTreasuryIncrease !== null &&
+        indicator.thirtyYearsTreasuryDecrease !== null &&
+        indicator.tenYearsTreasuryIncrease !== null &&
+        indicator.tenYearsTreasuryDecrease !== null &&
+        indicator.inflationMonthlyIncrease !== null &&
+        indicator.inflationMonthlyDecrease !== null &&
+        indicator.cpiMonthlyIncrease !== null &&
+        indicator.cpiMonthlyDecrease !== null &&
+        indicator.consumerSentimentMonthlyIncrease !== null &&
+        indicator.consumerSentimentMonthlyDecrease !== null &&
+        indicator.retailSalesMonthlyIncrease !== null &&
+        indicator.retailSalesMonthlyDecrease !== null &&
+        indicator.durableGoodsMonthlyIncrease !== null &&
+        indicator.durableGoodsMonthlyDecrease !== null &&
+        indicator.unemployeementRateMonthlyIncrease !== null &&
+        indicator.unemployeementRateMonthlyDecrease !== null &&
+        indicator.nofarmPayrollMonthlyIncrease !== null &&
+        indicator.nofarmPayrollMonthlyDecrease !== null
+      ) return
+
+      if (index === 0) return
+
+      const lastIndicator = indicators[index - 1]
+
+      const lastFundsRateIncrease = lastIndicator.fundsRateMonthlyIncrease || 0
+      const inflationIncrease = indicator.fundsRate! > lastIndicator.fundsRate! ? lastFundsRateIncrease + 1 : 0
+      const lastFundsRateDecrease = lastIndicator.fundsRateMonthlyDecrease || 0
+      const inflationDecrease = indicator.fundsRate! < lastIndicator.fundsRate! ? lastFundsRateDecrease + 1 : 0
+
+      const lastThirtyYearsTreasuryIncrease = lastIndicator.thirtyYearsTreasuryIncrease || 0
+      const thirtyYearsTreasuryIncrease = indicator.thirtyYearsTreasury! > lastIndicator.thirtyYearsTreasury!
+        ? lastThirtyYearsTreasuryIncrease + 1
+        : 0
+      const lastThirtyYearsTreasuryDecrease = lastIndicator.thirtyYearsTreasuryDecrease || 0
+      const thirtyYearsTreasuryDecrease = indicator.thirtyYearsTreasury! < lastIndicator.thirtyYearsTreasury!
+        ? lastThirtyYearsTreasuryDecrease + 1
+        : 0
+
+      const lastTenYearsTreasuryIncrease = lastIndicator.tenYearsTreasuryIncrease || 0
+      const tenYearsTreasuryIncrease = indicator.tenYearsTreasury! > lastIndicator.tenYearsTreasury!
+        ? lastTenYearsTreasuryIncrease + 1
+        : 0
+      const lastTenYearsTreasuryDecrease = lastIndicator.tenYearsTreasuryDecrease || 0
+      const tenYearsTreasuryDecrease = indicator.tenYearsTreasury! < lastIndicator.tenYearsTreasury!
+        ? lastTenYearsTreasuryDecrease + 1
+        : 0
+
       
     })
 
