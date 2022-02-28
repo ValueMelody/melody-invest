@@ -1,5 +1,6 @@
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
+import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as runTool from '../tools/run'
 import * as dateTool from '../tools/date'
 import * as databaseAdapter from '../adapters/database'
@@ -77,6 +78,22 @@ export const calcQuarterly = async () => {
         gdpQuarterlyChangePercent: changePercent.toFixed(2),
         gdpQuarterlyYoYChangePercent: yoyChangePercent?.toFixed(2),
       }, transaction)
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const calcMonthly = async () => {
+  const indicators = await indicatorMonthlyModel.getAll()
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(indicators, async (indicator: indicatorMonthlyModel.Record) => {
+      
     })
 
     await transaction.commit()
