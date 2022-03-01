@@ -30,7 +30,7 @@ export const syncMonthly = async (
   const initMonth = dateTool.getInitialMonth()
 
   let indicatorResult
-  let indicatorKey: indicatorMonthlyModel.IndicatorKeys
+  let indicatorKey: indicatorMonthlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.UNEMPLOYMENT_RATE:
@@ -114,7 +114,7 @@ export const syncQuarterly = async (
   const initQuarter = dateTool.getInitialQuarter()
 
   let indicatorResult
-  let indicatorKey: indicatorQuarterlyModel.IndicatorKeys
+  let indicatorKey: indicatorQuarterlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.GDP:
@@ -166,7 +166,7 @@ export const syncYearly = async (
   const initYear = dateTool.getInitialYear()
 
   let indicatorResult
-  let indicatorKey: indicatorYearlyModel.IndicatorKeys
+  let indicatorKey: indicatorYearlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.GDP:

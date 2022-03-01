@@ -2,7 +2,9 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorKeys = 'inflation' | 'realGDP'
+export type IndicatorKey = 'inflation' | 'realGDP'
+
+export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
 
 export interface Record {
   id: number;

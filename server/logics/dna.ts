@@ -4,6 +4,8 @@ import * as traderDNAModel from '../models/traderDNA'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
+import * as indicatorYearlyModel from '../models/indicatorYearly'
+import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as generateTool from '../tools/generate'
 
 const GENE_VALUES = {
@@ -55,6 +57,50 @@ const GENE_VALUES = {
   revenueYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
   revenueYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
   revenueYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
   cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
   tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
@@ -90,6 +136,28 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'profitYearlyDecreaseBuy',
     'incomeYearlyDecreaseBuy',
     'revenueYearlyDecreaseBuy',
+    'inflationYearlyIncreaseBuy',
+    'inflationYearlyDecreaseBuy',
+    'fundsRateMonthlyIncreaseBuy',
+    'fundsRateMonthlyDecreaseBuy',
+    'thirtyYearsTreasuryMonthlyIncreaseBuy',
+    'thirtyYearsTreasuryMonthlyDecreaseBuy',
+    'tenYearsTreasuryMonthlyIncreaseBuy',
+    'tenYearsTreasuryMonthlyDecreaseBuy',
+    'inflationMonthlyIncreaseBuy',
+    'inflationMonthlyDecreaseBuy',
+    'cpiMonthlyIncreaseBuy',
+    'cpiMonthlyDecreaseBuy',
+    'consumerSentimentMonthlyIncreaseBuy',
+    'consumerSentimentMonthlyDecreaseBuy',
+    'retailSalesMonthlyIncreaseBuy',
+    'retailSalesMonthlyDecreaseBuy',
+    'durableGoodsMonthlyIncreaseBuy',
+    'durableGoodsMonthlyDecreaseBuy',
+    'unemployeementRateMonthlyIncreaseBuy',
+    'unemployeementRateMonthlyDecreaseBuy',
+    'nonfarmPayrollMonthlyIncreaseBuy',
+    'nonfarmPayrollMonthlyDecreaseBuy',
   ],
   [
     'priceDailyIncreaseSell',
@@ -116,6 +184,28 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'profitYearlyDecreaseSell',
     'incomeYearlyDecreaseSell',
     'revenueYearlyDecreaseSell',
+    'inflationYearlyIncreaseSell',
+    'inflationYearlyDecreaseSell',
+    'fundsRateMonthlyIncreaseSell',
+    'fundsRateMonthlyDecreaseSell',
+    'thirtyYearsTreasuryMonthlyIncreaseSell',
+    'thirtyYearsTreasuryMonthlyDecreaseSell',
+    'tenYearsTreasuryMonthlyIncreaseSell',
+    'tenYearsTreasuryMonthlyDecreaseSell',
+    'inflationMonthlyIncreaseSell',
+    'inflationMonthlyDecreaseSell',
+    'cpiMonthlyIncreaseSell',
+    'cpiMonthlyDecreaseSell',
+    'consumerSentimentMonthlyIncreaseSell',
+    'consumerSentimentMonthlyDecreaseSell',
+    'retailSalesMonthlyIncreaseSell',
+    'retailSalesMonthlyDecreaseSell',
+    'durableGoodsMonthlyIncreaseSell',
+    'durableGoodsMonthlyDecreaseSell',
+    'unemployeementRateMonthlyIncreaseSell',
+    'unemployeementRateMonthlyDecreaseSell',
+    'nonfarmPayrollMonthlyIncreaseSell',
+    'nonfarmPayrollMonthlyDecreaseSell',
   ],
   ['cashMaxPercent'],
   ['tickerMinPercent'],
@@ -132,7 +222,11 @@ interface Gene {
 }
 
 type MovementKey =
-  tickerDailyModel.MovementKey | tickerQuarterlyModel.MovementKey | tickerYearlyModel.MovementKey
+  tickerDailyModel.MovementKey |
+  tickerQuarterlyModel.MovementKey |
+  tickerYearlyModel.MovementKey |
+  indicatorYearlyModel.MovementKey |
+  indicatorMonthlyModel.MovementKey
 
 export const getGeneGroups = () => (
   GENE_GROUPS.map((group) => (

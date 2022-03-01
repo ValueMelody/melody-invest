@@ -2,10 +2,22 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorKeys =
+export type IndicatorKey =
   'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
   'inflationExpectation' | 'consumerSentiment' | 'retailSales' |
   'durableGoods' | 'unemploymentRate' | 'nonfarmPayroll'
+
+export type MovementKey =
+  'fundsRateMonthlyIncrease' | 'fundsRateMonthlyDecrease' |
+  'thirtyYearsTreasuryMonthlyIncrease' | 'thirtyYearsTreasuryMonthlyDecrease' |
+  'tenYearsTreasuryMonthlyIncrease' | 'tenYearsTreasuryMonthlyDecrease' |
+  'inflationMonthlyIncrease' | 'inflationMonthlyDecrease' |
+  'cpiMonthlyIncrease' | 'cpiMonthlyDecrease' |
+  'consumerSentimentMonthlyIncrease' | 'consumerSentimentMonthlyDecrease' |
+  'retailSalesMonthlyIncrease' | 'retailSalesMonthlyDecrease' |
+  'durableGoodsMonthlyIncrease' | 'durableGoodsMonthlyDecrease' |
+  'unemployeementRateMonthlyIncrease' | 'unemployeementRateMonthlyDecrease' |
+  'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
 
 export interface Record {
   id: number;
