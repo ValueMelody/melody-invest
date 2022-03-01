@@ -36,9 +36,9 @@ interface Create {
 interface Update {
   realGDP?: string;
   inflation?: string;
-  gdpYearlyChangePercent?: string;
-  inflationYearlyIncrease?: number;
-  inflationYearlyDecrease?: number;
+  gdpYearlyChangePercent?: string | null;
+  inflationYearlyIncrease?: number | null;
+  inflationYearlyDecrease?: number | null;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -71,7 +71,7 @@ export const getAll = async (): Promise<Record[]> => {
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     orderBy: { key: 'year', type: 'asc' },
   })
-  return yearly
+  return yearly.map((raw) => convertToRecord(raw))
 }
 
 export const create = async (
