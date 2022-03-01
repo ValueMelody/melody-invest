@@ -30,8 +30,8 @@ interface Create {
 
 interface Update {
   realGDP?: string;
-  gdpQuarterlyChangePercent?: string;
-  gdpQuarterlyYoYChangePercent?: string;
+  gdpQuarterlyChangePercent?: string | null;
+  gdpQuarterlyYoYChangePercent?: string | null;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -58,11 +58,11 @@ export const getByUK = async (
 }
 
 export const getAll = async (): Promise<Record[]> => {
-  const yearly = await databaseAdapter.findAll({
+  const quarterly = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     orderBy: { key: 'quarter', type: 'asc' },
   })
-  return yearly
+  return quarterly.map((raw) => convertToRecord(raw))
 }
 
 export const create = async (
