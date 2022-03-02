@@ -1,6 +1,7 @@
 import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
 
 export type IndicatorKey = 'inflation' | 'realGDP'
 
@@ -74,6 +75,23 @@ export const getAll = async (): Promise<Record[]> => {
     orderBy: { key: 'year', type: 'asc' },
   })
   return yearly.map((raw) => convertToRecord(raw))
+}
+
+export const getPublishedByDate = async (date: string) => {
+  const currentQuarter = dateTool.getQuarterByDate(date)
+  const [year, quarter] = currentQuarter.split('-')
+
+  const previousYear = dateTool.getPreviousYear(year)
+  const yearBeforePrevious = dateTool.getPreviousYear(previousYear)
+  const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
+
+  const raw = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    conditions: [
+      { key: 'year', value: targetYear },
+    ],
+  })
+  return raw ? convertToRecord(raw) : null
 }
 
 export const create = async (

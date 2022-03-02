@@ -4,6 +4,8 @@ import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
+import * as indicatorYearlyModel from '../models/indicatorYearly'
+import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
 import * as dnaLogic from '../logics/dna'
@@ -18,9 +20,10 @@ interface HoldingDetails {
 }
 
 interface Target {
-  daily: tickerDailyModel.Record,
-  quarterly?: tickerQuarterlyModel.Record
-  yearly?: tickerYearlyModel.Record
+  daily: tickerDailyModel.Record;
+  quarterly: tickerQuarterlyModel.Record | null;
+  yearly: tickerYearlyModel.Record | null;
+  yearlyIndicator: indicatorYearlyModel.Record | null;
 }
 
 interface Targets {
@@ -52,13 +55,21 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
+      const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(tradeDate)
+      const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(tradeDate)
 
       const availableTargets: Targets = dailyTargets.reduce((tickers, daily) => {
         const quarterly = quarterlyTargets.find((quarterly) => quarterly.tickerId === daily.tickerId)
         const yearly = yearlyTargets.find((yearly) => yearly.tickerId === daily.tickerId)
         return {
           ...tickers,
-          [daily.tickerId]: { daily, quarterly, yearly },
+          [daily.tickerId]: {
+            daily,
+            quarterly: quarterly || null,
+            yearly: yearly || null,
+            yearlyIndicator,
+            monthlyIndicator,
+          },
         }
       }, {})
 
@@ -139,13 +150,19 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly }) => {
+        .filter(({ daily, quarterly, yearly, yearlyIndicator }) => {
           return holdingTickerIds.includes(daily.tickerId) &&
-          dnaLogic.getPriceMovementSellWeights(dna, daily, quarterly, yearly)
+          dnaLogic.getPriceMovementSellWeights(
+            dna, daily, quarterly, yearly, monthlyIndicator, yearlyIndicator,
+          )
         })
         .sort((first, second) => {
-          const firstWeight = dnaLogic.getPriceMovementSellWeights(dna, first.daily, first.quarterly, first.yearly)
-          const secondWeight = dnaLogic.getPriceMovementSellWeights(dna, second.daily, second.quarterly, second.yearly)
+          const firstWeight = dnaLogic.getPriceMovementSellWeights(
+            dna, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.yearlyIndicator,
+          )
+          const secondWeight = dnaLogic.getPriceMovementSellWeights(
+            dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.yearlyIndicator,
+          )
           return firstWeight >= secondWeight ? -1 : 1
         })
         .map(({ daily }) => daily.tickerId)
@@ -192,10 +209,16 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
       const buyTargets: Target[] = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly }) => !!dnaLogic.getPriceMovementBuyWeights(dna, daily, quarterly, yearly))
+        .filter(({ daily, quarterly, yearly, monthlyIndicator, yearlyIndicator }) => !!dnaLogic.getPriceMovementBuyWeights(
+          dna, daily, quarterly, yearly, monthlyIndicator, yearlyIndicator,
+        ))
         .sort((first, second) => {
-          const firstWeight = dnaLogic.getPriceMovementBuyWeights(dna, first.daily, first.quarterly, first.yearly)
-          const secondWeight = dnaLogic.getPriceMovementBuyWeights(dna, second.daily, second.quarterly, second.yearly)
+          const firstWeight = dnaLogic.getPriceMovementBuyWeights(
+            dna, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.yearlyIndicator,
+          )
+          const secondWeight = dnaLogic.getPriceMovementBuyWeights(
+            dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.yearlyIndicator,
+          )
           return firstWeight >= secondWeight ? -1 : 1
         })
 

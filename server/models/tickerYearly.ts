@@ -149,7 +149,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
     ],
     orderBy: { key: 'year', type: 'desc' },
   })
-  return records
+  return records.map((raw) => convertToRecord(raw))
 }
 
 export const create = async (

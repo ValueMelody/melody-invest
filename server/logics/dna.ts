@@ -228,23 +228,61 @@ type MovementKey =
   indicatorYearlyModel.MovementKey |
   indicatorMonthlyModel.MovementKey
 
-export const getGeneGroups = () => (
-  GENE_GROUPS.map((group) => (
-    group.reduce((allValues: Gene[], type) => {
-      const geneValues: number[] = GENE_VALUES[type]
-      const genes = geneValues.map((value: number) => ({
-        type, value,
-      }))
-      return [...allValues, ...genes]
-    }, [])
-  ))
-)
+const buildInitialTickerInfo = (
+  tickerDaily: tickerDailyModel.Record,
+  tickerQuarterly: tickerQuarterlyModel.Record | null,
+  tickerYearly: tickerYearlyModel.Record | null,
+  indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorYearly: indicatorYearlyModel.Record | null,
+) => {
+  return {
+    ...tickerDaily,
+    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
+    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
+    profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
+    profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
+    incomeQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyIncrease : null,
+    incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
+    revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
+    revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
+    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
+    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
+    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
+    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
+    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
+    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
+    inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
+    inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
+    fundsRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyIncrease : null,
+    fundsRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyDecrease : null,
+    thirtyYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyIncrease : null,
+    thirtyYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyDecrease : null,
+    tenYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyIncrease : null,
+    tenYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyDecrease : null,
+    inflationMonthlyIncrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyIncrease : null,
+    inflationMonthlyDecrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyDecrease : null,
+    cpiMonthlyIncrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyIncrease : null,
+    cpiMonthlyDecrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyDecrease : null,
+    consumerSentimentMonthlyIncrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyIncrease : null,
+    consumerSentimentMonthlyDecrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyDecrease : null,
+    retailSalesMonthlyIncrease: indicatorMonthly ? indicatorMonthly.retailSalesMonthlyIncrease : null,
+    retailSalesMonthlyDecrease: indicatorMonthly ? indicatorMonthly.retailSalesMonthlyDecrease : null,
+    durableGoodsMonthlyIncrease: indicatorMonthly ? indicatorMonthly.durableGoodsMonthlyIncrease : null,
+    durableGoodsMonthlyDecrease: indicatorMonthly ? indicatorMonthly.durableGoodsMonthlyDecrease : null,
+    unemployeementRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.unemployeementRateMonthlyIncrease : null,
+    unemployeementRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.unemployeementRateMonthlyDecrease : null,
+    nonfarmPayrollMonthlyIncrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyIncrease : null,
+    nonfarmPayrollMonthlyDecrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyDecrease : null,
+  }
+}
 
 export const getPriceMovementBuyWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
-  tickerQuarterly?: tickerQuarterlyModel.Record,
-  tickerYearly?: tickerYearlyModel.Record,
+  tickerQuarterly: tickerQuarterlyModel.Record | null,
+  tickerYearly: tickerYearlyModel.Record | null,
+  indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const GENE_TRIGGERS: {
     [key in traderDNAModel.BuyGene]: MovementKey
@@ -273,25 +311,31 @@ export const getPriceMovementBuyWeights = (
     incomeYearlyDecreaseBuy: 'incomeYearlyDecrease',
     revenueYearlyIncreaseBuy: 'revenueYearlyIncrease',
     revenueYearlyDecreaseBuy: 'revenueYearlyDecrease',
+    inflationYearlyIncreaseBuy: 'inflationMonthlyIncrease',
+    inflationYearlyDecreaseBuy: 'inflationYearlyDecrease',
+    fundsRateMonthlyIncreaseBuy: 'fundsRateMonthlyIncrease',
+    fundsRateMonthlyDecreaseBuy: 'fundsRateMonthlyDecrease',
+    thirtyYearsTreasuryMonthlyIncreaseBuy: 'thirtyYearsTreasuryMonthlyIncrease',
+    thirtyYearsTreasuryMonthlyDecreaseBuy: 'thirtyYearsTreasuryMonthlyDecrease',
+    tenYearsTreasuryMonthlyIncreaseBuy: 'tenYearsTreasuryMonthlyIncrease',
+    tenYearsTreasuryMonthlyDecreaseBuy: 'tenYearsTreasuryMonthlyDecrease',
+    inflationMonthlyIncreaseBuy: 'inflationMonthlyIncrease',
+    inflationMonthlyDecreaseBuy: 'inflationMonthlyDecrease',
+    cpiMonthlyIncreaseBuy: 'cpiMonthlyIncrease',
+    cpiMonthlyDecreaseBuy: 'cpiMonthlyDecrease',
+    consumerSentimentMonthlyIncreaseBuy: 'consumerSentimentMonthlyIncrease',
+    consumerSentimentMonthlyDecreaseBuy: 'consumerSentimentMonthlyDecrease',
+    retailSalesMonthlyIncreaseBuy: 'retailSalesMonthlyIncrease',
+    retailSalesMonthlyDecreaseBuy: 'retailSalesMonthlyDecrease',
+    durableGoodsMonthlyIncreaseBuy: 'durableGoodsMonthlyIncrease',
+    durableGoodsMonthlyDecreaseBuy: 'durableGoodsMonthlyDecrease',
+    unemployeementRateMonthlyIncreaseBuy: 'unemployeementRateMonthlyIncrease',
+    unemployeementRateMonthlyDecreaseBuy: 'unemployeementRateMonthlyDecrease',
+    nonfarmPayrollMonthlyIncreaseBuy: 'nonfarmPayrollMonthlyIncrease',
+    nonfarmPayrollMonthlyDecreaseBuy: 'nonfarmPayrollMonthlyDecrease',
   }
 
-  const tickerInfo = {
-    ...tickerDaily,
-    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
-    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
-    profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
-    profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
-    incomeQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyIncrease : null,
-    incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
-    revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
-    revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
-    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
-    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
-    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
-    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
-    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
-    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
-  }
+  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
@@ -312,8 +356,10 @@ export const getPriceMovementBuyWeights = (
 export const getPriceMovementSellWeights = (
   dna: traderDNAModel.Record,
   tickerDaily: tickerDailyModel.Record,
-  tickerQuarterly?: tickerQuarterlyModel.Record,
-  tickerYearly?: tickerYearlyModel.Record,
+  tickerQuarterly: tickerQuarterlyModel.Record | null,
+  tickerYearly: tickerYearlyModel.Record | null,
+  indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const GENE_TRIGGERS: {
     [key in traderDNAModel.SellGene]: MovementKey
@@ -342,25 +388,31 @@ export const getPriceMovementSellWeights = (
     incomeYearlyDecreaseSell: 'incomeYearlyDecrease',
     revenueYearlyIncreaseSell: 'revenueYearlyIncrease',
     revenueYearlyDecreaseSell: 'revenueYearlyDecrease',
+    inflationYearlyIncreaseSell: 'inflationYearlyIncrease',
+    inflationYearlyDecreaseSell: 'inflationYearlyDecrease',
+    fundsRateMonthlyIncreaseSell: 'fundsRateMonthlyIncrease',
+    fundsRateMonthlyDecreaseSell: 'fundsRateMonthlyDecrease',
+    thirtyYearsTreasuryMonthlyIncreaseSell: 'thirtyYearsTreasuryMonthlyIncrease',
+    thirtyYearsTreasuryMonthlyDecreaseSell: 'thirtyYearsTreasuryMonthlyDecrease',
+    tenYearsTreasuryMonthlyIncreaseSell: 'tenYearsTreasuryMonthlyIncrease',
+    tenYearsTreasuryMonthlyDecreaseSell: 'tenYearsTreasuryMonthlyDecrease',
+    inflationMonthlyIncreaseSell: 'inflationMonthlyIncrease',
+    inflationMonthlyDecreaseSell: 'inflationMonthlyDecrease',
+    cpiMonthlyIncreaseSell: 'cpiMonthlyIncrease',
+    cpiMonthlyDecreaseSell: 'cpiMonthlyDecrease',
+    consumerSentimentMonthlyIncreaseSell: 'consumerSentimentMonthlyIncrease',
+    consumerSentimentMonthlyDecreaseSell: 'consumerSentimentMonthlyDecrease',
+    retailSalesMonthlyIncreaseSell: 'retailSalesMonthlyIncrease',
+    retailSalesMonthlyDecreaseSell: 'retailSalesMonthlyDecrease',
+    durableGoodsMonthlyIncreaseSell: 'durableGoodsMonthlyIncrease',
+    durableGoodsMonthlyDecreaseSell: 'durableGoodsMonthlyDecrease',
+    unemployeementRateMonthlyIncreaseSell: 'unemployeementRateMonthlyIncrease',
+    unemployeementRateMonthlyDecreaseSell: 'unemployeementRateMonthlyDecrease',
+    nonfarmPayrollMonthlyIncreaseSell: 'nonfarmPayrollMonthlyIncrease',
+    nonfarmPayrollMonthlyDecreaseSell: 'nonfarmPayrollMonthlyDecrease',
   }
 
-  const tickerInfo = {
-    ...tickerDaily,
-    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
-    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
-    profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
-    profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
-    incomeQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyIncrease : null,
-    incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
-    revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
-    revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
-    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
-    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
-    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
-    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
-    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
-    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
-  }
+  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
   const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
 
   const weights = geneTriggerKeys.reduce((
@@ -478,6 +530,50 @@ export const generateDNAChild = (
     incomeYearlyDecreaseSell: null,
     revenueYearlyIncreaseSell: null,
     revenueYearlyDecreaseSell: null,
+    inflationYearlyIncreaseBuy: null,
+    inflationYearlyDecreaseBuy: null,
+    inflationYearlyIncreaseSell: null,
+    inflationYearlyDecreaseSell: null,
+    fundsRateMonthlyIncreaseBuy: null,
+    fundsRateMonthlyDecreaseBuy: null,
+    fundsRateMonthlyIncreaseSell: null,
+    fundsRateMonthlyDecreaseSell: null,
+    thirtyYearsTreasuryMonthlyIncreaseBuy: null,
+    thirtyYearsTreasuryMonthlyDecreaseBuy: null,
+    thirtyYearsTreasuryMonthlyIncreaseSell: null,
+    thirtyYearsTreasuryMonthlyDecreaseSell: null,
+    tenYearsTreasuryMonthlyIncreaseBuy: null,
+    tenYearsTreasuryMonthlyDecreaseBuy: null,
+    tenYearsTreasuryMonthlyIncreaseSell: null,
+    tenYearsTreasuryMonthlyDecreaseSell: null,
+    inflationMonthlyIncreaseBuy: null,
+    inflationMonthlyDecreaseBuy: null,
+    inflationMonthlyIncreaseSell: null,
+    inflationMonthlyDecreaseSell: null,
+    cpiMonthlyIncreaseBuy: null,
+    cpiMonthlyDecreaseBuy: null,
+    cpiMonthlyIncreaseSell: null,
+    cpiMonthlyDecreaseSell: null,
+    consumerSentimentMonthlyIncreaseBuy: null,
+    consumerSentimentMonthlyDecreaseBuy: null,
+    consumerSentimentMonthlyIncreaseSell: null,
+    consumerSentimentMonthlyDecreaseSell: null,
+    retailSalesMonthlyIncreaseBuy: null,
+    retailSalesMonthlyDecreaseBuy: null,
+    retailSalesMonthlyIncreaseSell: null,
+    retailSalesMonthlyDecreaseSell: null,
+    durableGoodsMonthlyIncreaseBuy: null,
+    durableGoodsMonthlyDecreaseBuy: null,
+    durableGoodsMonthlyIncreaseSell: null,
+    durableGoodsMonthlyDecreaseSell: null,
+    unemployeementRateMonthlyIncreaseBuy: null,
+    unemployeementRateMonthlyDecreaseBuy: null,
+    unemployeementRateMonthlyIncreaseSell: null,
+    unemployeementRateMonthlyDecreaseSell: null,
+    nonfarmPayrollMonthlyIncreaseBuy: null,
+    nonfarmPayrollMonthlyDecreaseBuy: null,
+    nonfarmPayrollMonthlyIncreaseSell: null,
+    nonfarmPayrollMonthlyDecreaseSell: null,
     cashMaxPercent: generateTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
     tickerMinPercent: generateTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
     tickerMaxPercent: generateTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),

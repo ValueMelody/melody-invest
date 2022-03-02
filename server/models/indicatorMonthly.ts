@@ -1,6 +1,7 @@
 import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
 
 export type IndicatorKey =
   'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
@@ -195,6 +196,19 @@ export const getAll = async (): Promise<Record[]> => {
     orderBy: { key: 'month', type: 'asc' },
   })
   return monthly.map((raw) => convertToRecord(raw))
+}
+
+export const getPublishedByDate = async (date: string): Promise<Record | null> => {
+  const estimatedDate = dateTool.getPreviousDate(date, 15)
+  const month = estimatedDate.substring(0, 7)
+
+  const raw = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    conditions: [
+      { key: 'month', value: month },
+    ],
+  })
+  return raw ? convertToRecord(raw) : null
 }
 
 export const create = async (

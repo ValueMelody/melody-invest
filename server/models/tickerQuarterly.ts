@@ -155,7 +155,7 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
     ],
     orderBy: { key: 'quarter', type: 'asc' },
   })
-  return records
+  return records.map((raw) => convertToRecord(raw))
 }
 
 export const getPublishedByDate = async (date: string): Promise<Record[]> => {
@@ -171,7 +171,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
     ],
     orderBy: { key: 'quarter', type: 'desc' },
   })
-  return records
+  return records.map((raw) => convertToRecord(raw))
 }
 
 export const create = async (
