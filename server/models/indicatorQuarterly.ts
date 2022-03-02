@@ -2,7 +2,7 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type IndicatorKeys = 'realGDP'
+export type IndicatorKey = 'realGDP'
 
 export interface Record {
   id: number;

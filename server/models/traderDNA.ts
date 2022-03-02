@@ -14,7 +14,18 @@ export type BuyGene =
   'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy' |
   'profitYearlyIncreaseBuy' | 'profitYearlyDecreaseBuy' |
   'incomeYearlyIncreaseBuy' | 'incomeYearlyDecreaseBuy' |
-  'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy'
+  'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy' |
+  'inflationYearlyIncreaseBuy' | 'inflationYearlyDecreaseBuy' |
+  'fundsRateMonthlyIncreaseBuy' | 'fundsRateMonthlyDecreaseBuy' |
+  'thirtyYearsTreasuryMonthlyIncreaseBuy' | 'thirtyYearsTreasuryMonthlyDecreaseBuy' |
+  'tenYearsTreasuryMonthlyIncreaseBuy' | 'tenYearsTreasuryMonthlyDecreaseBuy' |
+  'inflationMonthlyIncreaseBuy' | 'inflationMonthlyDecreaseBuy' |
+  'cpiMonthlyIncreaseBuy' | 'cpiMonthlyDecreaseBuy' |
+  'consumerSentimentMonthlyIncreaseBuy' | 'consumerSentimentMonthlyDecreaseBuy' |
+  'retailSalesMonthlyIncreaseBuy' | 'retailSalesMonthlyDecreaseBuy' |
+  'durableGoodsMonthlyIncreaseBuy' | 'durableGoodsMonthlyDecreaseBuy' |
+  'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
+  'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
 export type SellGene =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
@@ -28,7 +39,18 @@ export type SellGene =
   'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell' |
   'profitYearlyIncreaseSell' | 'profitYearlyDecreaseSell' |
   'incomeYearlyIncreaseSell' | 'incomeYearlyDecreaseSell' |
-  'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell'
+  'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell' |
+  'inflationYearlyIncreaseSell' | 'inflationYearlyDecreaseSell' |
+  'fundsRateMonthlyIncreaseSell' | 'fundsRateMonthlyDecreaseSell' |
+  'thirtyYearsTreasuryMonthlyIncreaseSell' | 'thirtyYearsTreasuryMonthlyDecreaseSell' |
+  'tenYearsTreasuryMonthlyIncreaseSell' | 'tenYearsTreasuryMonthlyDecreaseSell' |
+  'inflationMonthlyIncreaseSell' | 'inflationMonthlyDecreaseSell' |
+  'cpiMonthlyIncreaseSell' | 'cpiMonthlyDecreaseSell' |
+  'consumerSentimentMonthlyIncreaseSell' | 'consumerSentimentMonthlyDecreaseSell' |
+  'retailSalesMonthlyIncreaseSell' | 'retailSalesMonthlyDecreaseSell' |
+  'durableGoodsMonthlyIncreaseSell' | 'durableGoodsMonthlyDecreaseSell' |
+  'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
+  'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
 export type GeneType =
   BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
@@ -92,6 +114,50 @@ export interface Record {
   incomeYearlyDecreaseSell: number | null;
   revenueYearlyIncreaseSell: number | null;
   revenueYearlyDecreaseSell: number | null;
+  inflationYearlyIncreaseBuy: number | null;
+  inflationYearlyDecreaseBuy: number | null;
+  inflationYearlyIncreaseSell: number | null;
+  inflationYearlyDecreaseSell: number | null;
+  fundsRateMonthlyIncreaseBuy: number | null;
+  fundsRateMonthlyDecreaseBuy: number | null;
+  fundsRateMonthlyIncreaseSell: number | null;
+  fundsRateMonthlyDecreaseSell: number | null;
+  thirtyYearsTreasuryMonthlyIncreaseBuy: number | null;
+  thirtyYearsTreasuryMonthlyDecreaseBuy: number | null;
+  thirtyYearsTreasuryMonthlyIncreaseSell: number | null;
+  thirtyYearsTreasuryMonthlyDecreaseSell: number | null;
+  tenYearsTreasuryMonthlyIncreaseBuy: number | null;
+  tenYearsTreasuryMonthlyDecreaseBuy: number | null;
+  tenYearsTreasuryMonthlyIncreaseSell: number | null;
+  tenYearsTreasuryMonthlyDecreaseSell: number | null;
+  inflationMonthlyIncreaseBuy: number | null;
+  inflationMonthlyDecreaseBuy: number | null;
+  inflationMonthlyIncreaseSell: number | null;
+  inflationMonthlyDecreaseSell: number | null;
+  cpiMonthlyIncreaseBuy: number | null;
+  cpiMonthlyDecreaseBuy: number | null;
+  cpiMonthlyIncreaseSell: number | null;
+  cpiMonthlyDecreaseSell: number | null;
+  consumerSentimentMonthlyIncreaseBuy: number | null;
+  consumerSentimentMonthlyDecreaseBuy: number | null;
+  consumerSentimentMonthlyIncreaseSell: number | null;
+  consumerSentimentMonthlyDecreaseSell: number | null;
+  retailSalesMonthlyIncreaseBuy: number | null;
+  retailSalesMonthlyDecreaseBuy: number | null;
+  retailSalesMonthlyIncreaseSell: number | null;
+  retailSalesMonthlyDecreaseSell: number | null;
+  durableGoodsMonthlyIncreaseBuy: number | null;
+  durableGoodsMonthlyDecreaseBuy: number | null;
+  durableGoodsMonthlyIncreaseSell: number | null;
+  durableGoodsMonthlyDecreaseSell: number | null;
+  unemployeementRateMonthlyIncreaseBuy: number | null;
+  unemployeementRateMonthlyDecreaseBuy: number | null;
+  unemployeementRateMonthlyIncreaseSell: number | null;
+  unemployeementRateMonthlyDecreaseSell: number | null;
+  nonfarmPayrollMonthlyIncreaseBuy: number | null;
+  nonfarmPayrollMonthlyDecreaseBuy: number | null;
+  nonfarmPayrollMonthlyIncreaseSell: number | null;
+  nonfarmPayrollMonthlyDecreaseSell: number | null;
 }
 
 export interface Create {
@@ -151,6 +217,50 @@ export interface Create {
   incomeYearlyDecreaseSell: number | null;
   revenueYearlyIncreaseSell: number | null;
   revenueYearlyDecreaseSell: number | null;
+  inflationYearlyIncreaseBuy: number | null;
+  inflationYearlyDecreaseBuy: number | null;
+  inflationYearlyIncreaseSell: number | null;
+  inflationYearlyDecreaseSell: number | null;
+  fundsRateMonthlyIncreaseBuy: number | null;
+  fundsRateMonthlyDecreaseBuy: number | null;
+  fundsRateMonthlyIncreaseSell: number | null;
+  fundsRateMonthlyDecreaseSell: number | null;
+  thirtyYearsTreasuryMonthlyIncreaseBuy: number | null;
+  thirtyYearsTreasuryMonthlyDecreaseBuy: number | null;
+  thirtyYearsTreasuryMonthlyIncreaseSell: number | null;
+  thirtyYearsTreasuryMonthlyDecreaseSell: number | null;
+  tenYearsTreasuryMonthlyIncreaseBuy: number | null;
+  tenYearsTreasuryMonthlyDecreaseBuy: number | null;
+  tenYearsTreasuryMonthlyIncreaseSell: number | null;
+  tenYearsTreasuryMonthlyDecreaseSell: number | null;
+  inflationMonthlyIncreaseBuy: number | null;
+  inflationMonthlyDecreaseBuy: number | null;
+  inflationMonthlyIncreaseSell: number | null;
+  inflationMonthlyDecreaseSell: number | null;
+  cpiMonthlyIncreaseBuy: number | null;
+  cpiMonthlyDecreaseBuy: number | null;
+  cpiMonthlyIncreaseSell: number | null;
+  cpiMonthlyDecreaseSell: number | null;
+  consumerSentimentMonthlyIncreaseBuy: number | null;
+  consumerSentimentMonthlyDecreaseBuy: number | null;
+  consumerSentimentMonthlyIncreaseSell: number | null;
+  consumerSentimentMonthlyDecreaseSell: number | null;
+  retailSalesMonthlyIncreaseBuy: number | null;
+  retailSalesMonthlyDecreaseBuy: number | null;
+  retailSalesMonthlyIncreaseSell: number | null;
+  retailSalesMonthlyDecreaseSell: number | null;
+  durableGoodsMonthlyIncreaseBuy: number | null;
+  durableGoodsMonthlyDecreaseBuy: number | null;
+  durableGoodsMonthlyIncreaseSell: number | null;
+  durableGoodsMonthlyDecreaseSell: number | null;
+  unemployeementRateMonthlyIncreaseBuy: number | null;
+  unemployeementRateMonthlyDecreaseBuy: number | null;
+  unemployeementRateMonthlyIncreaseSell: number | null;
+  unemployeementRateMonthlyDecreaseSell: number | null;
+  nonfarmPayrollMonthlyIncreaseBuy: number | null;
+  nonfarmPayrollMonthlyDecreaseBuy: number | null;
+  nonfarmPayrollMonthlyIncreaseSell: number | null;
+  nonfarmPayrollMonthlyDecreaseSell: number | null;
 }
 
 export interface Update {
