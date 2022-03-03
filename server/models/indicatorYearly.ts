@@ -10,7 +10,6 @@ export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
 export interface Record {
   id: number;
   year: string;
-  region: string;
   realGDP: number | null;
   inflation: number | null;
   gdpYearlyChangePercent: string | null;
@@ -21,7 +20,6 @@ export interface Record {
 interface Raw {
   id: number;
   year: string;
-  region: string;
   realGDP: string | null;
   inflation: string | null;
   gdpYearlyChangePercent: string | null;
@@ -31,7 +29,6 @@ interface Raw {
 
 interface Create {
   year: string;
-  region: string;
   realGDP?: string;
   inflation?: string;
 }
@@ -47,7 +44,6 @@ interface Update {
 const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
   year: raw.year,
-  region: raw.region,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
   gdpYearlyChangePercent: raw.gdpYearlyChangePercent,
@@ -56,13 +52,11 @@ const convertToRecord = (raw: Raw): Record => ({
 })
 
 export const getByUK = async (
-  region: string,
   year: string,
 ): Promise<Record | null> => {
   const yearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_YEARLY,
     conditions: [
-      { key: 'region', value: region },
       { key: 'year', value: year },
     ],
   })
