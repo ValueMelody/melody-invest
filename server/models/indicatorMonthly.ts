@@ -22,7 +22,6 @@ export type MovementKey =
 
 export interface Record {
   id: number;
-  region: string;
   month: string;
   fundsRate: number | null;
   cpi: number | null;
@@ -58,7 +57,6 @@ export interface Record {
 
 export interface Raw {
   id: number;
-  region: string;
   month: string;
   fundsRate: string | null;
   cpi: string | null;
@@ -93,7 +91,6 @@ export interface Raw {
 }
 
 interface Create {
-  region: string;
   month: string;
   fundsRate?: string;
   cpi?: string;
@@ -142,7 +139,6 @@ interface Update {
 
 const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
-  region: raw.region,
   month: raw.month,
   fundsRate: raw.fundsRate ? parseFloat(raw.fundsRate) : null,
   cpi: raw.cpi ? parseFloat(raw.cpi) : null,
@@ -177,13 +173,11 @@ const convertToRecord = (raw: Raw): Record => ({
 })
 
 export const getByUK = async (
-  region: string,
   month: string,
 ): Promise<Record | null> => {
   const monthly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
     conditions: [
-      { key: 'region', value: region },
       { key: 'month', value: month },
     ],
   })

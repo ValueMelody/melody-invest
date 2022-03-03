@@ -17,6 +17,7 @@ type MonthlyIndicatorType =
   typeof marketEnum.TYPES.DURABLE_GOODS |
   typeof marketEnum.TYPES.UNEMPLOYMENT_RATE |
   typeof marketEnum.TYPES.NONFARM_PAYROLL
+
 interface MonthlyIndicatorOptions {
   isTenYearsTreasury?: boolean;
   isThirtyYearsTreasury?: boolean;
@@ -26,7 +27,6 @@ export const syncMonthly = async (
   type: MonthlyIndicatorType,
   options?: MonthlyIndicatorOptions,
 ) => {
-  const region = 'US'
   const initMonth = dateTool.getInitialMonth()
 
   let indicatorResult
@@ -84,11 +84,10 @@ export const syncMonthly = async (
       const month = result.date.substring(0, 7)
       if (month < initMonth) return
 
-      const currentRecord = await indicatorMonthlyModel.getByUK(region, month)
+      const currentRecord = await indicatorMonthlyModel.getByUK(month)
       if (!currentRecord) {
         await indicatorMonthlyModel.create({
           month,
-          region,
           [indicatorKey]: result.value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {
@@ -110,7 +109,6 @@ type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
 export const syncQuarterly = async (
   type: QuarterlyIndicatorType,
 ) => {
-  const region = 'US'
   const initQuarter = dateTool.getInitialQuarter()
 
   let indicatorResult
@@ -130,11 +128,10 @@ export const syncQuarterly = async (
       const quarter = result.date.substring(0, 7)
       if (quarter < initQuarter) return
 
-      const currentRecord = await indicatorQuarterlyModel.getByUK(region, quarter)
+      const currentRecord = await indicatorQuarterlyModel.getByUK(quarter)
       if (!currentRecord) {
         await indicatorQuarterlyModel.create({
           quarter,
-          region,
           [indicatorKey]: result.value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {
@@ -162,7 +159,6 @@ export const syncYearly = async (
   type: YearlyIndicatorType,
   options?: YearlyIndicatorOptions,
 ) => {
-  const region = 'US'
   const initYear = dateTool.getInitialYear()
 
   let indicatorResult
@@ -190,11 +186,10 @@ export const syncYearly = async (
         ? result.value.substring(0, options.valueLength)
         : result.value
 
-      const currentRecord = await indicatorYearlyModel.getByUK(region, year)
+      const currentRecord = await indicatorYearlyModel.getByUK(year)
       if (!currentRecord) {
         await indicatorYearlyModel.create({
           year,
-          region,
           [indicatorKey]: value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {

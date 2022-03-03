@@ -6,7 +6,6 @@ export type IndicatorKey = 'realGDP'
 
 export interface Record {
   id: number;
-  region: string;
   quarter: string;
   realGDP: number | null;
   gdpQuarterlyChangePercent: string | null;
@@ -15,7 +14,6 @@ export interface Record {
 
 interface Raw {
   id: number;
-  region: string;
   quarter: string;
   realGDP: string | null;
   gdpQuarterlyChangePercent: string | null;
@@ -23,7 +21,6 @@ interface Raw {
 }
 
 interface Create {
-  region: string;
   quarter: string;
   realGDP?: string;
 }
@@ -36,7 +33,6 @@ interface Update {
 
 const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
-  region: raw.region,
   quarter: raw.quarter,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent,
@@ -44,13 +40,11 @@ const convertToRecord = (raw: Raw): Record => ({
 })
 
 export const getByUK = async (
-  region: string,
   quarter: string,
 ): Promise<Record | null> => {
   const quarterly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     conditions: [
-      { key: 'region', value: region },
       { key: 'quarter', value: quarter },
     ],
   })
