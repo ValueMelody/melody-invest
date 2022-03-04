@@ -7,12 +7,14 @@ export type IndicatorKey = 'inflation' | 'realGDP'
 
 export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
 
+export type CompareKey = 'gdpYearlyChangePercent'
+
 export interface Record {
   id: number;
   year: string;
   realGDP: number | null;
   inflation: number | null;
-  gdpYearlyChangePercent: string | null;
+  gdpYearlyChangePercent: number | null;
   inflationYearlyIncrease: number | null;
   inflationYearlyDecrease: number | null;
 }
@@ -46,7 +48,7 @@ const convertToRecord = (raw: Raw): Record => ({
   year: raw.year,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
-  gdpYearlyChangePercent: raw.gdpYearlyChangePercent,
+  gdpYearlyChangePercent: raw.gdpYearlyChangePercent ? parseFloat(raw.gdpYearlyChangePercent) : null,
   inflationYearlyIncrease: raw.inflationYearlyIncrease,
   inflationYearlyDecrease: raw.inflationYearlyDecrease,
 })

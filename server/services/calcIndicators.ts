@@ -36,8 +36,7 @@ export const calcYearly = async () => {
 
       let gdpChangePercent = indicator.gdpYearlyChangePercent
       if (indicator.realGDP !== null && lastIndicator.realGDP !== null) {
-        const differ = (indicator.realGDP - lastIndicator.realGDP) / lastIndicator.realGDP
-        gdpChangePercent = (differ * 100).toFixed(2)
+        gdpChangePercent = (indicator.realGDP - lastIndicator.realGDP) * 100 / lastIndicator.realGDP
       }
 
       const hasUpdate = inflationIncrease !== indicator.inflationYearlyIncrease ||
@@ -49,7 +48,7 @@ export const calcYearly = async () => {
         updatedYearly = await indicatorYearlyModel.update(indicator.id, {
           inflationYearlyIncrease: inflationIncrease,
           inflationYearlyDecrease: inflationDecrease,
-          gdpYearlyChangePercent: gdpChangePercent,
+          gdpYearlyChangePercent: gdpChangePercent ? gdpChangePercent.toFixed(2) : null,
         }, transaction)
       }
 

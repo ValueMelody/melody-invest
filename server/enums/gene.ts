@@ -25,4 +25,5 @@ export const VALUES = {
     DAYS.HALF_QUARTER, DAYS.QUARTER,
     DAYS.HALF_YEAR, DAYS.YEAR,
   ],
+  GDP_CHANGE_PERCENT: [-5, -3, -2, -1, 1, 2, 3, 5],
 }

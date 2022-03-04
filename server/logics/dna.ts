@@ -101,6 +101,10 @@ const GENE_VALUES = {
   nonfarmPayrollMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
   nonfarmPayrollMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
   nonfarmPayrollMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
+  gdpYearlyChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
   cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
   tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
@@ -228,6 +232,8 @@ type MovementKey =
   indicatorYearlyModel.MovementKey |
   indicatorMonthlyModel.MovementKey
 
+type CompareKey = indicatorYearlyModel.CompareKey
+
 const buildInitialTickerInfo = (
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
@@ -253,6 +259,7 @@ const buildInitialTickerInfo = (
     revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
     inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
     inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
+    gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
     fundsRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyIncrease : null,
     fundsRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyDecrease : null,
     thirtyYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyIncrease : null,
@@ -284,8 +291,8 @@ export const getPriceMovementBuyWeights = (
   indicatorMonthly: indicatorMonthlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
-  const GENE_TRIGGERS: {
-    [key in traderDNAModel.BuyGene]: MovementKey
+  const MOVEMENT_TRIGGERS: {
+    [key in traderDNAModel.MovementBuyGene]: MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -335,13 +342,21 @@ export const getPriceMovementBuyWeights = (
     nonfarmPayrollMonthlyDecreaseBuy: 'nonfarmPayrollMonthlyDecrease',
   }
 
-  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
-  const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
+  const COMPARE_TRIGGERS: {
+    [key in traderDNAModel.CompareBuyGene]: CompareKey
+  } = {
+    gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
+    gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
+  }
 
-  const weights = geneTriggerKeys.reduce((
+  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
+  const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
+  const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
+
+  const movementWeights = movementTriggers.reduce((
     weights: number, gene,
   ): number => {
-    const tickerKey = GENE_TRIGGERS[gene]
+    const tickerKey = MOVEMENT_TRIGGERS[gene]
     const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
 
@@ -350,7 +365,28 @@ export const getPriceMovementBuyWeights = (
     return weights * (tickerValue - dnaValue + 2)
   }, 1)
 
-  return weights
+  const compareWeights = compareTriggers.reduce((
+    weights: number, gene,
+  ): number => {
+    const tickerKey = COMPARE_TRIGGERS[gene]
+    const tickerValue = tickerInfo[tickerKey]
+    const dnaValue = dna[gene]
+
+    if (dnaValue === null) return weights
+    if (gene.includes('Above') && tickerValue && tickerValue > dnaValue) {
+      return weights * (tickerValue - dnaValue + 2)
+    }
+
+    if (gene.includes('Below') && tickerValue && tickerValue < dnaValue) {
+      return weights * (tickerValue - dnaValue + 2)
+    }
+
+    return 0
+  }, 1)
+
+  if (!movementWeights || !compareWeights) return 0
+
+  return movementWeights * compareWeights
 }
 
 export const getPriceMovementSellWeights = (
@@ -361,8 +397,8 @@ export const getPriceMovementSellWeights = (
   indicatorMonthly: indicatorMonthlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
-  const GENE_TRIGGERS: {
-    [key in traderDNAModel.SellGene]: MovementKey
+  const MOVEMENT_TRIGGERS: {
+    [key in traderDNAModel.MovementSellGene]: MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -412,13 +448,21 @@ export const getPriceMovementSellWeights = (
     nonfarmPayrollMonthlyDecreaseSell: 'nonfarmPayrollMonthlyDecrease',
   }
 
-  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
-  const geneTriggerKeys = Object.keys(GENE_TRIGGERS) as Array<keyof typeof GENE_TRIGGERS>
+  const COMPARE_TRIGGERS: {
+    [key in traderDNAModel.CompareSellGene]: CompareKey
+  } = {
+    gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
+    gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
+  }
 
-  const weights = geneTriggerKeys.reduce((
+  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
+  const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
+  const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
+
+  const movementWeights = movementTriggers.reduce((
     weights: number, gene,
   ): number => {
-    const tickerKey = GENE_TRIGGERS[gene]
+    const tickerKey = MOVEMENT_TRIGGERS[gene]
     const tickerValue = tickerInfo[tickerKey]
     const dnaValue = dna[gene]
 
@@ -427,7 +471,28 @@ export const getPriceMovementSellWeights = (
     return weights * (tickerValue - dnaValue + 2)
   }, 1)
 
-  return weights
+  const compareWeights = compareTriggers.reduce((
+    weights: number, gene,
+  ): number => {
+    const tickerKey = COMPARE_TRIGGERS[gene]
+    const tickerValue = tickerInfo[tickerKey]
+    const dnaValue = dna[gene]
+
+    if (dnaValue === null) return weights
+    if (gene.includes('Above') && tickerValue && tickerValue > dnaValue) {
+      return weights * (tickerValue - dnaValue + 2)
+    }
+
+    if (gene.includes('Below') && tickerValue && tickerValue < dnaValue) {
+      return weights * (tickerValue - dnaValue + 2)
+    }
+
+    return 0
+  }, 1)
+
+  if (!movementWeights || !compareWeights) return 0
+
+  return movementWeights * compareWeights
 }
 
 export const getDNAHashCode = (
@@ -574,6 +639,10 @@ export const generateDNAChild = (
     nonfarmPayrollMonthlyDecreaseBuy: null,
     nonfarmPayrollMonthlyIncreaseSell: null,
     nonfarmPayrollMonthlyDecreaseSell: null,
+    gdpYearlyChangeAboveBuy: null,
+    gdpYearlyChangeAboveSell: null,
+    gdpYearlyChangeBelowBuy: null,
+    gdpYearlyChangeBelowSell: null,
     cashMaxPercent: generateTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
     tickerMinPercent: generateTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
     tickerMaxPercent: generateTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),
