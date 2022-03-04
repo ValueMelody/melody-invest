@@ -2,7 +2,7 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type BuyGene =
+export type MovementBuyGene =
   'priceDailyIncreaseBuy' | 'priceDailyDecreaseBuy' |
   'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
@@ -27,7 +27,9 @@ export type BuyGene =
   'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
-export type SellGene =
+export type CompareBuyGene = 'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy'
+
+export type MovementSellGene =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
   'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
@@ -52,9 +54,14 @@ export type SellGene =
   'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
+export type CompareSellGene = 'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell'
+
 export type GeneType =
-  BuyGene | SellGene | 'cashMaxPercent' | 'tickerMinPercent' | 'tickerMaxPercent' |
-  'holdingBuyPercent' | 'holdingSellPercent' | 'tradeFrequency' | 'rebalanceFrequency'
+  MovementBuyGene | MovementSellGene |
+  CompareBuyGene | CompareSellGene |
+  'tickerMinPercent' | 'tickerMaxPercent' |
+  'holdingBuyPercent' | 'holdingSellPercent' |
+  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent'
 
 export interface Record {
   id: number;
@@ -158,6 +165,10 @@ export interface Record {
   nonfarmPayrollMonthlyDecreaseBuy: number | null;
   nonfarmPayrollMonthlyIncreaseSell: number | null;
   nonfarmPayrollMonthlyDecreaseSell: number | null;
+  gdpYearlyChangeAboveBuy: number | null;
+  gdpYearlyChangeAboveSell: number | null;
+  gdpYearlyChangeBelowBuy: number | null;
+  gdpYearlyChangeBelowSell:  number | null;
 }
 
 export interface Create {
@@ -261,6 +272,10 @@ export interface Create {
   nonfarmPayrollMonthlyDecreaseBuy: number | null;
   nonfarmPayrollMonthlyIncreaseSell: number | null;
   nonfarmPayrollMonthlyDecreaseSell: number | null;
+  gdpYearlyChangeAboveBuy: number | null;
+  gdpYearlyChangeAboveSell: number | null;
+  gdpYearlyChangeBelowBuy: number | null;
+  gdpYearlyChangeBelowSell: number | null;
 }
 
 export interface Update {
