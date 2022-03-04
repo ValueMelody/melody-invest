@@ -125,13 +125,27 @@ export const syncQuarterly = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
-      const quarter = result.date.substring(0, 7)
+      const reportAt = result.date.substring(0, 7)
+      const [reportYear, reportMonth] = reportAt.split('-')
+      let quarter = reportAt
+      if (reportMonth === '04') {
+        quarter = `${reportYear}-03`
+      } else if (reportMonth === '07') {
+        quarter = `${reportYear}-06`
+      } else if (reportMonth === '10') {
+        quarter = `${reportYear}-09`
+      } else if (reportMonth === '01') {
+        const previousYear = dateTool.getPreviousYear(reportYear)
+        quarter = `${previousYear}-12`
+      }
+
       if (quarter < initQuarter) return
 
       const currentRecord = await indicatorQuarterlyModel.getByUK(quarter)
       if (!currentRecord) {
         await indicatorQuarterlyModel.create({
           quarter,
+          reportMonth: reportAt,
           [indicatorKey]: result.value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {

@@ -27,7 +27,10 @@ export type MovementBuyGene =
   'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
-export type CompareBuyGene = 'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy'
+export type CompareBuyGene =
+  'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy' |
+  'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
+  'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
 
 export type MovementSellGene =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
@@ -54,7 +57,10 @@ export type MovementSellGene =
   'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
-export type CompareSellGene = 'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell'
+export type CompareSellGene =
+  'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell' |
+  'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
+  'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
 
 export type GeneType =
   MovementBuyGene | MovementSellGene |
@@ -168,7 +174,15 @@ export interface Record {
   gdpYearlyChangeAboveBuy: number | null;
   gdpYearlyChangeAboveSell: number | null;
   gdpYearlyChangeBelowBuy: number | null;
-  gdpYearlyChangeBelowSell:  number | null;
+  gdpYearlyChangeBelowSell: number | null;
+  gdpQuarterlyChangeAboveBuy: number | null;
+  gdpQuarterlyChangeBelowBuy: number | null;
+  gdpQuarterlyChangeAboveSell: number | null;
+  gdpQuarterlyChangeBelowSell: number | null;
+  gdpQuarterlyYoYChangeAboveBuy: number | null;
+  gdpQuarterlyYoYChangeBelowBuy: number | null;
+  gdpQuarterlyYoYChangeAboveSell: number | null;
+  gdpQuarterlyYoYChangeBelowSell: number | null;
 }
 
 export interface Create {
@@ -276,6 +290,14 @@ export interface Create {
   gdpYearlyChangeAboveSell: number | null;
   gdpYearlyChangeBelowBuy: number | null;
   gdpYearlyChangeBelowSell: number | null;
+  gdpQuarterlyChangeAboveBuy: number | null;
+  gdpQuarterlyChangeBelowBuy: number | null;
+  gdpQuarterlyChangeAboveSell: number | null;
+  gdpQuarterlyChangeBelowSell: number | null;
+  gdpQuarterlyYoYChangeAboveBuy: number | null;
+  gdpQuarterlyYoYChangeBelowBuy: number | null;
+  gdpQuarterlyYoYChangeAboveSell: number | null;
+  gdpQuarterlyYoYChangeBelowSell: number | null;
 }
 
 export interface Update {
