@@ -5,6 +5,7 @@ import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
+import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as generateTool from '../tools/generate'
 
@@ -105,6 +106,14 @@ const GENE_VALUES = {
   gdpYearlyChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
   gdpYearlyChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
   gdpYearlyChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
   cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
   tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
   tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
@@ -162,6 +171,12 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'unemployeementRateMonthlyDecreaseBuy',
     'nonfarmPayrollMonthlyIncreaseBuy',
     'nonfarmPayrollMonthlyDecreaseBuy',
+    'gdpYearlyChangeAboveBuy',
+    'gdpYearlyChangeBelowBuy',
+    'gdpQuarterlyChangeAboveBuy',
+    'gdpQuarterlyChangeBelowBuy',
+    'gdpQuarterlyYoYChangeAboveBuy',
+    'gdpQuarterlyYoYChangeBelowBuy',
   ],
   [
     'priceDailyIncreaseSell',
@@ -210,6 +225,12 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
     'unemployeementRateMonthlyDecreaseSell',
     'nonfarmPayrollMonthlyIncreaseSell',
     'nonfarmPayrollMonthlyDecreaseSell',
+    'gdpYearlyChangeAboveSell',
+    'gdpYearlyChangeBelowSell',
+    'gdpQuarterlyChangeAboveSell',
+    'gdpQuarterlyChangeBelowSell',
+    'gdpQuarterlyYoYChangeAboveSell',
+    'gdpQuarterlyYoYChangeBelowSell',
   ],
   ['cashMaxPercent'],
   ['tickerMinPercent'],
@@ -232,13 +253,15 @@ type MovementKey =
   indicatorYearlyModel.MovementKey |
   indicatorMonthlyModel.MovementKey
 
-type CompareKey = indicatorYearlyModel.CompareKey
+type CompareKey = indicatorYearlyModel.CompareKey |
+  indicatorQuarterlyModel.CompareKey
 
 const buildInitialTickerInfo = (
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ) => {
   return {
@@ -260,6 +283,8 @@ const buildInitialTickerInfo = (
     inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
     inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
     gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
+    gdpQuarterlyChangePercent: indicatorQuarterly ? indicatorQuarterly.gdpQuarterlyChangePercent : null,
+    gdpQuarterlyYoYChangePercent: indicatorQuarterly ? indicatorQuarterly.gdpQuarterlyYoYChangePercent : null,
     fundsRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyIncrease : null,
     fundsRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyDecrease : null,
     thirtyYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyIncrease : null,
@@ -289,6 +314,7 @@ export const getPriceMovementBuyWeights = (
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
@@ -347,9 +373,15 @@ export const getPriceMovementBuyWeights = (
   } = {
     gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
+    gdpQuarterlyChangeAboveBuy: 'gdpQuarterlyChangePercent',
+    gdpQuarterlyChangeBelowBuy: 'gdpQuarterlyChangePercent',
+    gdpQuarterlyYoYChangeAboveBuy: 'gdpQuarterlyChangePercent',
+    gdpQuarterlyYoYChangeBelowBuy: 'gdpQuarterlyChangePercent',
   }
 
-  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
+  const tickerInfo = buildInitialTickerInfo(
+    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly,
+  )
   const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
@@ -395,6 +427,7 @@ export const getPriceMovementSellWeights = (
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
@@ -453,9 +486,15 @@ export const getPriceMovementSellWeights = (
   } = {
     gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
+    gdpQuarterlyChangeAboveSell: 'gdpQuarterlyChangePercent',
+    gdpQuarterlyChangeBelowSell: 'gdpQuarterlyChangePercent',
+    gdpQuarterlyYoYChangeAboveSell: 'gdpQuarterlyYoYChangePercent',
+    gdpQuarterlyYoYChangeBelowSell: 'gdpQuarterlyYoYChangePercent',
   }
 
-  const tickerInfo = buildInitialTickerInfo(tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorYearly)
+  const tickerInfo = buildInitialTickerInfo(
+    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly
+  )
   const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
@@ -643,6 +682,14 @@ export const generateDNAChild = (
     gdpYearlyChangeAboveSell: null,
     gdpYearlyChangeBelowBuy: null,
     gdpYearlyChangeBelowSell: null,
+    gdpQuarterlyChangeAboveBuy: null,
+    gdpQuarterlyChangeAboveSell: null,
+    gdpQuarterlyChangeBelowBuy: null,
+    gdpQuarterlyChangeBelowSell: null,
+    gdpQuarterlyYoYChangeAboveBuy: null,
+    gdpQuarterlyYoYChangeAboveSell: null,
+    gdpQuarterlyYoYChangeBelowBuy: null,
+    gdpQuarterlyYoYChangeBelowSell: null,
     cashMaxPercent: generateTool.pickOneNumber(first.cashMaxPercent, second.cashMaxPercent),
     tickerMinPercent: generateTool.pickOneNumber(first.tickerMinPercent, second.tickerMinPercent),
     tickerMaxPercent: generateTool.pickOneNumber(first.tickerMaxPercent, second.tickerMaxPercent),

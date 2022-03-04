@@ -46,5 +46,11 @@ exports.seed = (knex) => knex('trader').then(() => {
     { traderDNAId: 44, traderEnvId: 1, isActive: true },
     { traderDNAId: 45, traderEnvId: 1, isActive: true },
     { traderDNAId: 46, traderEnvId: 1, isActive: true },
+    { traderDNAId: 47, traderEnvId: 1, isActive: true },
+    { traderDNAId: 48, traderEnvId: 1, isActive: true },
+    { traderDNAId: 49, traderEnvId: 1, isActive: true },
+    { traderDNAId: 50, traderEnvId: 1, isActive: true },
+    { traderDNAId: 51, traderEnvId: 1, isActive: true },
+    { traderDNAId: 52, traderEnvId: 1, isActive: true },
   ])
 })

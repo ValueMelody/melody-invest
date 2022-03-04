@@ -81,8 +81,7 @@ export const calcQuarterly = async () => {
 
       let changePercent = indicator.gdpQuarterlyChangePercent
       if (indicator.realGDP && lastIndicator.realGDP) {
-        const differ = (indicator.realGDP - lastIndicator.realGDP) / lastIndicator.realGDP
-        changePercent = (differ * 100).toFixed(2)
+        changePercent = (indicator.realGDP - lastIndicator.realGDP) * 100 / lastIndicator.realGDP
       }
 
       let yoyChangePercent = indicator.gdpQuarterlyYoYChangePercent
@@ -92,8 +91,7 @@ export const calcQuarterly = async () => {
       const lastYoYQuarter = `${lastYear}-${currentQuarter}`
       const lastYoYIndicator = indicators.find((indicator) => indicator.quarter === lastYoYQuarter)
       if (indicator.realGDP && lastYoYIndicator?.realGDP) {
-        const differ = (indicator.realGDP - lastYoYIndicator.realGDP) / lastYoYIndicator.realGDP
-        yoyChangePercent = (differ * 100).toFixed(2)
+        yoyChangePercent = (indicator.realGDP - lastYoYIndicator.realGDP) * 100 / lastYoYIndicator.realGDP
       }
 
       const hasUpdate = changePercent !== indicator.gdpQuarterlyChangePercent &&
@@ -101,8 +99,8 @@ export const calcQuarterly = async () => {
 
       if (hasUpdate) {
         await indicatorQuarterlyModel.update(indicator.id, {
-          gdpQuarterlyChangePercent: changePercent,
-          gdpQuarterlyYoYChangePercent: yoyChangePercent,
+          gdpQuarterlyChangePercent: changePercent ? changePercent.toFixed(2) : null,
+          gdpQuarterlyYoYChangePercent: yoyChangePercent ? yoyChangePercent.toFixed(2) : null,
         }, transaction)
       }
     })

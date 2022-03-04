@@ -1,15 +1,18 @@
 import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
 
 export type IndicatorKey = 'realGDP'
+
+export type CompareKey = 'gdpQuarterlyChangePercent' | 'gdpQuarterlyYoYChangePercent'
 
 export interface Record {
   id: number;
   quarter: string;
   realGDP: number | null;
-  gdpQuarterlyChangePercent: string | null;
-  gdpQuarterlyYoYChangePercent: string | null;
+  gdpQuarterlyChangePercent: number | null;
+  gdpQuarterlyYoYChangePercent: number | null;
 }
 
 interface Raw {
@@ -35,8 +38,8 @@ const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
   quarter: raw.quarter,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
-  gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent,
-  gdpQuarterlyYoYChangePercent: raw.gdpQuarterlyYoYChangePercent,
+  gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null,
+  gdpQuarterlyYoYChangePercent: raw.gdpQuarterlyYoYChangePercent ? parseFloat(raw.gdpQuarterlyYoYChangePercent) : null,
 })
 
 export const getByUK = async (
@@ -49,6 +52,20 @@ export const getByUK = async (
     ],
   })
   return quarterly ? convertToRecord(quarterly) : null
+}
+
+export const getPublishedByDate = async (date: string): Promise<Record | null> => {
+  const targetDate = dateTool.getPreviousDate(date, 30)
+  const quarter = dateTool.getQuarterByDate(targetDate)
+  const previousQuarter = dateTool.getPreviousQuarter(quarter)
+
+  const raw = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    conditions: [
+      { key: 'quarter', value: previousQuarter },
+    ],
+  })
+  return raw ? convertToRecord(raw) : null
 }
 
 export const getAll = async (): Promise<Record[]> => {
