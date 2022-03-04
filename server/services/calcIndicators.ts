@@ -94,7 +94,7 @@ export const calcQuarterly = async () => {
         yoyChangePercent = (indicator.realGDP - lastYoYIndicator.realGDP) * 100 / lastYoYIndicator.realGDP
       }
 
-      const hasUpdate = changePercent !== indicator.gdpQuarterlyChangePercent &&
+      const hasUpdate = changePercent !== indicator.gdpQuarterlyChangePercent ||
         yoyChangePercent !== indicator.gdpQuarterlyYoYChangePercent
 
       if (hasUpdate) {

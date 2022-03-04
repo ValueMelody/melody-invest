@@ -10,6 +10,7 @@ export type CompareKey = 'gdpQuarterlyChangePercent' | 'gdpQuarterlyYoYChangePer
 export interface Record {
   id: number;
   quarter: string;
+  reportMonth: string;
   realGDP: number | null;
   gdpQuarterlyChangePercent: number | null;
   gdpQuarterlyYoYChangePercent: number | null;
@@ -18,6 +19,7 @@ export interface Record {
 interface Raw {
   id: number;
   quarter: string;
+  reportMonth: string;
   realGDP: string | null;
   gdpQuarterlyChangePercent: string | null;
   gdpQuarterlyYoYChangePercent: string | null;
@@ -25,6 +27,7 @@ interface Raw {
 
 interface Create {
   quarter: string;
+  reportMonth: string;
   realGDP?: string;
 }
 
@@ -37,6 +40,7 @@ interface Update {
 const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
   quarter: raw.quarter,
+  reportMonth: raw.reportMonth,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null,
   gdpQuarterlyYoYChangePercent: raw.gdpQuarterlyYoYChangePercent ? parseFloat(raw.gdpQuarterlyYoYChangePercent) : null,

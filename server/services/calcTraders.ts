@@ -34,6 +34,7 @@ interface Targets {
 const calcTraderPerformance = async (trader: traderModel.Record) => {
   const dna = await traderDNAModel.getByPK(trader.traderDNAId)
   if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  if (dna.id < 49) return
 
   const tickerMinPercent = dna.tickerMinPercent / 100
   const tickerMaxPercent = dna.tickerMaxPercent / 100
@@ -70,6 +71,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
             quarterly: quarterly || null,
             yearly: yearly || null,
             yearlyIndicator,
+            quarterlyIndicator,
             monthlyIndicator,
           },
         }

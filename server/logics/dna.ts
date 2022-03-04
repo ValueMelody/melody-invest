@@ -493,7 +493,7 @@ export const getPriceMovementSellWeights = (
   }
 
   const tickerInfo = buildInitialTickerInfo(
-    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly
+    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly,
   )
   const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
