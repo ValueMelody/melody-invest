@@ -140,6 +140,14 @@ export const getPreviousOne = async (
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
+export const getLatestDate = async (): Promise<string | null> => {
+  const tickerDaily = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TICKER_DAILY,
+    orderBy: { key: 'date', type: 'desc' },
+  })
+  return tickerDaily ? tickerDaily.date : null
+}
+
 export const getAll = async (
   tickerId: number,
 ): Promise<Record[]> => {
@@ -153,10 +161,13 @@ export const getAll = async (
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
-export const getLatestAll = async (): Promise<Record[]> => {
+export const getAllLatestByDate = async (date: string): Promise<Record[]> => {
   const allRecords = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     orderBy: { key: 'date', type: 'desc' },
+    conditions: [
+      { key: 'date', value: date, type: '<=' },
+    ],
   })
   const details = allRecords.reduce((details, record) => {
     if (details.tickerIds[record.tickerId]) return details
