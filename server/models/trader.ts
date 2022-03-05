@@ -12,12 +12,12 @@ export interface Record {
   estimatedAt: string | null;
   startedAt: string | null;
   totalDays: number | null;
-  yearlyPercent: number | null;
-  grossPercent: number | null;
-  pastYearPercent: number | null;
-  pastQuarterPercent: number | null;
-  pastMonthPercent: number | null;
-  pastWeekPercent: number | null;
+  yearlyPercentNumber: number | null;
+  grossPercentNumber: number | null;
+  pastYearPercentNumber: number | null;
+  pastQuarterPercentNumber: number | null;
+  pastMonthPercentNumber: number | null;
+  pastWeekPercentNumber: number | null;
 }
 
 export interface Raw {
@@ -30,12 +30,12 @@ export interface Raw {
   estimatedAt: string | null;
   startedAt: string | null;
   totalDays: number | null;
-  yearlyPercent: number | null;
-  grossPercent: number | null;
-  pastYearPercent: number | null;
-  pastQuarterPercent: number | null;
-  pastMonthPercent: number | null;
-  pastWeekPercent: number | null;
+  yearlyPercentNumber: number | null;
+  grossPercentNumber: number | null;
+  pastYearPercentNumber: number | null;
+  pastQuarterPercentNumber: number | null;
+  pastMonthPercentNumber: number | null;
+  pastWeekPercentNumber: number | null;
 }
 
 interface Create {
@@ -51,12 +51,12 @@ interface Update {
   estimatedAt?: string;
   startedAt?: string ;
   totalDays?: number;
-  yearlyPercent?: number;
-  grossPercent?: number;
-  pastYearPercent?: number;
-  pastQuarterPercent?: number;
-  pastMonthPercent?: number;
-  pastWeekPercent?: number;
+  yearlyPercentNumber?: number;
+  grossPercentNumber?: number;
+  pastYearPercentNumber?: number;
+  pastQuarterPercentNumber?: number;
+  pastMonthPercentNumber?: number;
+  pastWeekPercentNumber?: number;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -69,12 +69,12 @@ const convertToRecord = (raw: Raw): Record => ({
   estimatedAt: raw.estimatedAt,
   startedAt: raw.startedAt,
   totalDays: raw.totalDays,
-  yearlyPercent: raw.yearlyPercent,
-  grossPercent: raw.grossPercent,
-  pastYearPercent: raw.pastYearPercent,
-  pastQuarterPercent: raw.pastQuarterPercent,
-  pastMonthPercent: raw.pastMonthPercent,
-  pastWeekPercent: raw.pastWeekPercent,
+  yearlyPercentNumber: raw.yearlyPercentNumber,
+  grossPercentNumber: raw.grossPercentNumber,
+  pastYearPercentNumber: raw.pastYearPercentNumber,
+  pastQuarterPercentNumber: raw.pastQuarterPercentNumber,
+  pastMonthPercentNumber: raw.pastMonthPercentNumber,
+  pastWeekPercentNumber: raw.pastWeekPercentNumber,
 })
 
 export const getByUK = async (

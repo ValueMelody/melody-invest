@@ -317,12 +317,12 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       rebalancedAt: hasRebalanced ? rebalancedAt : undefined,
       startedAt: startedAt ?? undefined,
       totalDays,
-      grossPercent: Math.floor(grossPercent),
-      yearlyPercent: Math.floor(grossPercent * 365 / totalDays),
-      pastYearPercent: generateTool.getChangePercent(totalValue, pastYearValue),
-      pastQuarterPercent: generateTool.getChangePercent(totalValue, pastQuarterValue),
-      pastMonthPercent: generateTool.getChangePercent(totalValue, pastMonthValue),
-      pastWeekPercent: generateTool.getChangePercent(totalValue, pastWeekValue),
+      grossPercentNumber: Math.floor(grossPercent),
+      yearlyPercentNumber: Math.floor(grossPercent * 365 / totalDays),
+      pastYearPercentNumber: generateTool.getChangePercent(totalValue, pastYearValue),
+      pastQuarterPercentNumber: generateTool.getChangePercent(totalValue, pastQuarterValue),
+      pastMonthPercentNumber: generateTool.getChangePercent(totalValue, pastMonthValue),
+      pastWeekPercentNumber: generateTool.getChangePercent(totalValue, pastWeekValue),
     }, transaction)
 
     await transaction.commit()
