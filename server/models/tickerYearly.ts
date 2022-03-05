@@ -104,7 +104,7 @@ export const getLatest = async (
   const tickerYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
     conditions: whereConditions,
-    orderBy: { key: 'year', type: 'desc' },
+    orderBy: [{ column: 'year', order: 'desc' }],
   })
   return tickerYearly ? convertToRecord(tickerYearly) : null
 }
@@ -129,7 +129,7 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
-    orderBy: { key: 'year', type: 'asc' },
+    orderBy: [{ column: 'year', order: 'asc' }],
   })
   return records
 }
@@ -147,7 +147,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
     conditions: [
       { key: 'year', value: targetYear },
     ],
-    orderBy: { key: 'year', type: 'desc' },
+    orderBy: [{ column: 'year', order: 'desc' }],
   })
   return records.map((raw) => convertToRecord(raw))
 }

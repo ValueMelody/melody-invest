@@ -135,7 +135,7 @@ export const getPreviousOne = async (
       { key: 'tickerId', value: tickerId },
       { key: 'date', type: '<', value: date },
     ],
-    orderBy: { key: 'date', type: 'desc' },
+    orderBy: [{ column: 'date', order: 'desc' }],
   })
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
@@ -143,7 +143,7 @@ export const getPreviousOne = async (
 export const getLatestDate = async (): Promise<string | null> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_DAILY,
-    orderBy: { key: 'date', type: 'desc' },
+    orderBy: [{ column: 'date', order: 'desc' }],
   })
   return tickerDaily ? tickerDaily.date : null
 }
@@ -156,28 +156,25 @@ export const getAll = async (
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
-    orderBy: { key: 'date', type: 'asc' },
+    orderBy: [{ column: 'date', order: 'asc' }],
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
 export const getAllLatestByDate = async (date: string): Promise<Record[]> => {
-  const allRecords = await databaseAdapter.findAll({
+  const latestTickerDailys = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TICKER_DAILY,
-    orderBy: { key: 'date', type: 'desc' },
+    orderBy: [{ column: 'tickerId', order: 'asc' }, { column: 'date', order: 'desc' }],
+    groupBy: [
+      `${tableEnum.NAMES.TICKER_DAILY}.id`,
+      `${tableEnum.NAMES.TICKER_DAILY}.tickerId`,
+    ],
     conditions: [
       { key: 'date', value: date, type: '<=' },
     ],
+    distinctOn: 'tickerId',
   })
-  const details = allRecords.reduce((details, record) => {
-    if (details.tickerIds[record.tickerId]) return details
-    return {
-      latest: [...details.latest, convertToRecord(record)],
-      tickerIds: { ...details.tickerIds, [record.tickerId]: true },
-    }
-  }, { latest: [], tickerIds: {} })
-
-  return details.latest
+  return latestTickerDailys
 }
 
 export const getByDate = async (

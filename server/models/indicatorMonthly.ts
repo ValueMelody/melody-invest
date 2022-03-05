@@ -187,7 +187,7 @@ export const getByUK = async (
 export const getAll = async (): Promise<Record[]> => {
   const monthly = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
-    orderBy: { key: 'month', type: 'asc' },
+    orderBy: [{ column: 'month', order: 'asc' }],
   })
   return monthly.map((raw) => convertToRecord(raw))
 }
