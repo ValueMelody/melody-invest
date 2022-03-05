@@ -11,9 +11,13 @@ export interface Record {
   totalValue: number | null;
   estimatedAt: string | null;
   startedAt: string | null;
-  yearlyPercent: string | null;
-  grossPercent: string | null;
   totalDays: number | null;
+  yearlyPercent: number | null;
+  grossPercent: number | null;
+  pastYearPercent: number | null;
+  pastQuarterPercent: number | null;
+  pastMonthPercent: number | null;
+  pastWeekPercent: number | null;
 }
 
 export interface Raw {
@@ -25,9 +29,13 @@ export interface Raw {
   totalValue: string | null;
   estimatedAt: string | null;
   startedAt: string | null;
-  yearlyPercent: string | null;
-  grossPercent: string | null;
   totalDays: number | null;
+  yearlyPercent: number | null;
+  grossPercent: number | null;
+  pastYearPercent: number | null;
+  pastQuarterPercent: number | null;
+  pastMonthPercent: number | null;
+  pastWeekPercent: number | null;
 }
 
 interface Create {
@@ -42,9 +50,13 @@ interface Update {
   totalValue?: number;
   estimatedAt?: string;
   startedAt?: string ;
-  yearlyPercent?: string;
-  grossPercent?: string;
   totalDays?: number;
+  yearlyPercent?: number;
+  grossPercent?: number;
+  pastYearPercent?: number;
+  pastQuarterPercent?: number;
+  pastMonthPercent?: number;
+  pastWeekPercent?: number;
 }
 
 const convertToRecord = (raw: Raw): Record => ({
@@ -56,9 +68,13 @@ const convertToRecord = (raw: Raw): Record => ({
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
   estimatedAt: raw.estimatedAt,
   startedAt: raw.startedAt,
+  totalDays: raw.totalDays,
   yearlyPercent: raw.yearlyPercent,
   grossPercent: raw.grossPercent,
-  totalDays: raw.totalDays,
+  pastYearPercent: raw.pastYearPercent,
+  pastQuarterPercent: raw.pastQuarterPercent,
+  pastMonthPercent: raw.pastMonthPercent,
+  pastWeekPercent: raw.pastWeekPercent,
 })
 
 export const getByUK = async (

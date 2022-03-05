@@ -9,6 +9,7 @@ import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
+import * as generateTool from '../tools/generate'
 import * as dnaLogic from '../logics/dna'
 import * as marketLogic from '../logics/market'
 import * as errorEnum from '../enums/error'
@@ -31,10 +32,20 @@ interface Targets {
   [key: number]: Target
 }
 
+const getHoldingValue = (
+  holding: HoldingDetails,
+  dailys: tickerDailyModel.Record[],
+): number => {
+  return holding.holdings.reduce((total, holding) => {
+    const matchedDaily = dailys.find((daily) => daily.tickerId === holding.tickerId)
+    if (!matchedDaily) return total
+    return total + matchedDaily.adjustedClosePrice * holding.shares
+  }, holding.totalCash)
+}
+
 const calcTraderPerformance = async (trader: traderModel.Record) => {
   const dna = await traderDNAModel.getByPK(trader.traderDNAId)
   if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
-  if (dna.id < 49) return
 
   const tickerMinPercent = dna.tickerMinPercent / 100
   const tickerMaxPercent = dna.tickerMaxPercent / 100
@@ -52,8 +63,10 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
     let startedAt = trader.startedAt
     let hasRebalanced = false
 
-    const today = dateTool.getCurrentDate()
-    while (tradeDate <= today) {
+    const latestDate = await tickerDailyModel.getLatestDate()
+    if (!latestDate) return
+
+    while (tradeDate <= latestDate) {
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
@@ -276,28 +289,40 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 
     if (!holding) return
 
-    const latestDaily = await tickerDailyModel.getLatestAll()
-    const latestDate = latestDaily.reduce((date, daily) => {
-      if (!date) return daily.date
-      return date < daily.date ? daily.date : date
-    }, '')
-    const totalValue = holding.holdings.reduce((total, holding) => {
-      const matchedDaily = latestDaily.find((daily) => daily.tickerId === holding.tickerId)
-      if (!matchedDaily) return total
-      return total + matchedDaily.adjustedClosePrice * holding.shares
-    }, holding.totalCash)
+    const latestDailys = await tickerDailyModel.getAllLatestByDate(latestDate)
+    const totalValue = getHoldingValue(holding, latestDailys)
     const initialValue = marketLogic.getInitialCash()
-    const totalEarning = totalValue - initialValue
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
-    const grossPercent = totalEarning * 100 / initialValue
+    const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
+
+    const pastWeek = dateTool.getPreviousDate(latestDate, 7)
+    const pastWeekDailys = await tickerDailyModel.getAllLatestByDate(pastWeek)
+    const pastWeekValue = getHoldingValue(holding, pastWeekDailys)
+
+    const pastMonth = dateTool.getPreviousDate(latestDate, 30)
+    const pastMonthDailys = await tickerDailyModel.getAllLatestByDate(pastMonth)
+    const pastMonthValue = getHoldingValue(holding, pastMonthDailys)
+
+    const pastQuarter = dateTool.getPreviousDate(latestDate, 91)
+    const pastQuarterDailys = await tickerDailyModel.getAllLatestByDate(pastQuarter)
+    const pastQuarterValue = getHoldingValue(holding, pastQuarterDailys)
+
+    const pastYear = dateTool.getPreviousDate(latestDate, 365)
+    const pastYearDailys = await tickerDailyModel.getAllLatestByDate(pastYear)
+    const pastYearValue = getHoldingValue(holding, pastYearDailys)
+
     await traderModel.update(trader.id, {
       totalValue,
       estimatedAt: latestDate,
       rebalancedAt: hasRebalanced ? rebalancedAt : undefined,
       startedAt: startedAt ?? undefined,
-      grossPercent: grossPercent.toFixed(2),
-      yearlyPercent: (grossPercent * 365 / totalDays).toFixed(2),
       totalDays,
+      grossPercent: Math.floor(grossPercent),
+      yearlyPercent: Math.floor(grossPercent * 365 / totalDays),
+      pastYearPercent: generateTool.getChangePercent(totalValue, pastYearValue),
+      pastQuarterPercent: generateTool.getChangePercent(totalValue, pastQuarterValue),
+      pastMonthPercent: generateTool.getChangePercent(totalValue, pastMonthValue),
+      pastWeekPercent: generateTool.getChangePercent(totalValue, pastWeekValue),
     }, transaction)
 
     await transaction.commit()

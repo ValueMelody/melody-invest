@@ -80,7 +80,10 @@ const find = async ({
 export const findOne = async (
   params: Find,
 ): Promise<any | null> => {
-  const records = await find(params)
+  const records = await find({
+    ...params,
+    limit: 1,
+  })
   return records?.length ? records[0] : null
 }
 

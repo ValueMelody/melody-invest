@@ -12,3 +12,8 @@ export const pickOneNumber = (first: number, second: number): number => {
   const value = pickNumberInRange(1, 2)
   return value === 1 ? first : second
 }
+
+export const getChangePercent = (value: number, compareValue: number): number => {
+  const differ = value - compareValue
+  return Math.floor(differ * 10000 / compareValue)
+}
