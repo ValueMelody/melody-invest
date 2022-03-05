@@ -107,7 +107,7 @@ export const getTops = async (total: number): Promise<Record[]> => {
     conditions: [
       { key: 'isActive', value: true },
     ],
-    orderBy: { key: 'yearlyPercent', type: 'desc' },
+    orderBy: [{ column: 'yearlyPercent', order: 'desc' }],
     limit: total,
   })
   return traders.map((trader) => convertToRecord(trader))

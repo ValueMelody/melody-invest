@@ -53,7 +53,7 @@ export const getLatest = async (
     conditions: [
       { key: 'traderId', value: traderId },
     ],
-    orderBy: { key: 'date', type: 'desc' },
+    orderBy: [{ column: 'date', order: 'desc' }],
   })
   return record ? convertToRecord(record) : null
 }

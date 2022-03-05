@@ -2,8 +2,8 @@ import knex, { Knex } from 'knex'
 import * as connectionEnums from '../enums/connect'
 
 interface OrderBy {
-  key: string;
-  type: 'asc' | 'desc';
+  column: string;
+  order: 'asc' | 'desc';
 }
 
 export interface Condition {
@@ -12,11 +12,24 @@ export interface Condition {
   type?: string;
 }
 
+export interface Join {
+  joinTable: string;
+  foreignKey: string;
+  joinKey: string;
+}
+
 interface Find {
   tableName: string;
   conditions?: Condition[];
-  orderBy?: OrderBy;
+  orderBy?: OrderBy[];
   limit?: number;
+  select?: string[];
+  leftJoin?: Join;
+  groupBy?: string[];
+  groupByRaw?: string;
+  max?: string;
+  distinct?: string;
+  distinctOn?: string;
 }
 
 interface Create {
@@ -49,11 +62,25 @@ const getConnection = (): Knex => {
 const find = async ({
   tableName,
   conditions,
-  orderBy = { key: 'id', type: 'asc' },
+  orderBy = [{ column: 'id', order: 'asc' }],
   limit,
+  select = ['*'],
+  leftJoin,
+  groupBy,
+  max,
+  distinct,
+  distinctOn,
 }: Find): Promise<any[] | null> => {
   const db = getConnection()
-  const query = db.select('*').from(tableName)
+  const query = db.select(...select).from(tableName)
+
+  if (max) query.max(max)
+
+  if (distinct) query.distinct(distinct)
+
+  if (distinctOn) query.distinctOn(distinctOn)
+
+  if (leftJoin) query.leftJoin(leftJoin.joinTable, leftJoin.foreignKey, leftJoin.joinKey)
 
   if (conditions) {
     conditions.forEach((condition, index) => {
@@ -66,10 +93,9 @@ const find = async ({
     })
   }
 
-  if (orderBy) {
-    const { key, type } = orderBy
-    query.orderBy(key, type)
-  }
+  if (groupBy) query.groupBy(...groupBy)
+
+  if (orderBy) query.orderBy(orderBy)
 
   if (limit) query.limit(limit)
 

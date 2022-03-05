@@ -142,7 +142,7 @@ export const getLatest = async (
   const tickerQuarterly = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TICKER_QUARTERLY,
     conditions: whereConditions,
-    orderBy: { key: 'quarter', type: 'desc' },
+    orderBy: [{ column: 'quarter', order: 'desc' }],
   })
   return tickerQuarterly ? convertToRecord(tickerQuarterly) : null
 }
@@ -153,7 +153,7 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
-    orderBy: { key: 'quarter', type: 'asc' },
+    orderBy: [{ column: 'quarter', order: 'asc' }],
   })
   return records.map((raw) => convertToRecord(raw))
 }
@@ -169,7 +169,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
       { key: 'quarter', value: previousQuarter, type: '>=' },
       { key: 'quarter', value: currentQuarter, type: '<=' },
     ],
-    orderBy: { key: 'quarter', type: 'desc' },
+    orderBy: [{ column: 'quarter', order: 'desc' }],
   })
   return records.map((raw) => convertToRecord(raw))
 }

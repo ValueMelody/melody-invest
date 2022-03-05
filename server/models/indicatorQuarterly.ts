@@ -75,7 +75,7 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
 export const getAll = async (): Promise<Record[]> => {
   const quarterly = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
-    orderBy: { key: 'quarter', type: 'asc' },
+    orderBy: [{ column: 'quarter', order: 'asc' }],
   })
   return quarterly.map((raw) => convertToRecord(raw))
 }
