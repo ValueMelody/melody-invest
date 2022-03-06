@@ -67,7 +67,8 @@ export type GeneType =
   CompareBuyGene | CompareSellGene |
   'tickerMinPercent' | 'tickerMaxPercent' |
   'holdingBuyPercent' | 'holdingSellPercent' |
-  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent'
+  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |
+  'buyPreference' | 'sellPreference'
 
 export interface Record {
   id: number;
@@ -183,6 +184,8 @@ export interface Record {
   gdpQuarterlyYoYChangeBelowBuy: number | null;
   gdpQuarterlyYoYChangeAboveSell: number | null;
   gdpQuarterlyYoYChangeBelowSell: number | null;
+  buyPreference: number;
+  sellPreference: number;
 }
 
 export interface Create {
@@ -298,6 +301,8 @@ export interface Create {
   gdpQuarterlyYoYChangeBelowBuy: number | null;
   gdpQuarterlyYoYChangeAboveSell: number | null;
   gdpQuarterlyYoYChangeBelowSell: number | null;
+  buyPreference: number | null;
+  sellPreference: number | null;
 }
 
 export interface Update {
