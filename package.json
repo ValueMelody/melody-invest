@@ -1,7 +1,8 @@
 {
   "name": "dioxider-app",
+  "private": true,
   "workspaces": [
-    "server"
+    "server", "client"
   ],
   "version": "0.0.1",
   "description": "",
@@ -16,6 +17,8 @@
     "url": "git+https://github.com/byn9826/dioxider-app"
   },
   "scripts": {
+    "client:start": "npm run start --workspace=client",
+    "client:lint": "npm run lint --workspace=client",
     "server:start": "npm run start --workspace=server",
     "server:lint": "npm run lint --workspace=server",
     "server:seed": "npm run seed --workspace=server",

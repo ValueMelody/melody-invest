@@ -4,7 +4,7 @@
         "es2021": true
     },
     "extends": [
-        "standard"
+        "standard", "react-app"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {

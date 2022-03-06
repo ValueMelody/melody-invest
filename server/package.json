@@ -1,5 +1,6 @@
 {
   "name": "dioxider-server",
+  "private": true,
   "scripts": {
     "start": "ts-node-dev --project ../tsconfig.json ./index.ts",
     "seed": "knex seed:run",
