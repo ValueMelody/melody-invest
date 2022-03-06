@@ -2,6 +2,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
   return knex('trader_dna').insert([
     {
       hashCode: 'DNA001',
+      buyPreference: 1,
+      sellPreference: 2,
       priceDailyIncreaseBuy: 3,
       priceDailyDecreaseSell: 3,
       cashMaxPercent: 20,
@@ -14,6 +16,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA002',
+      buyPreference: 1,
+      sellPreference: 2,
       priceDailyIncreaseSell: 3,
       priceDailyDecreaseBuy: 3,
       cashMaxPercent: 20,
@@ -26,6 +30,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA003',
+      buyPreference: 1,
+      sellPreference: 2,
       priceWeeklyIncreaseBuy: 2,
       priceWeeklyDecreaseSell: 2,
       cashMaxPercent: 20,
@@ -38,6 +44,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA004',
+      buyPreference: 1,
+      sellPreference: 2,
       priceWeeklyIncreaseSell: 2,
       priceWeeklyDecreaseBuy: 2,
       cashMaxPercent: 20,
@@ -50,6 +58,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA005',
+      buyPreference: 1,
+      sellPreference: 2,
       priceMonthlyIncreaseBuy: 2,
       priceMonthlyDecreaseSell: 2,
       cashMaxPercent: 10,
@@ -62,6 +72,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA006',
+      buyPreference: 1,
+      sellPreference: 2,
       priceMonthlyIncreaseSell: 2,
       priceMonthlyDecreaseBuy: 2,
       cashMaxPercent: 10,
@@ -74,6 +86,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA007',
+      buyPreference: 1,
+      sellPreference: 2,
       priceQuarterlyIncreaseBuy: 1,
       priceQuarterlyDecreaseSell: 1,
       cashMaxPercent: 10,
@@ -86,6 +100,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA008',
+      buyPreference: 1,
+      sellPreference: 2,
       priceQuarterlyIncreaseSell: 1,
       priceQuarterlyDecreaseBuy: 1,
       cashMaxPercent: 10,
@@ -98,6 +114,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA009',
+      buyPreference: 1,
+      sellPreference: 2,
       priceYearlyIncreaseBuy: 1,
       priceYearlyDecreaseSell: 1,
       cashMaxPercent: 20,
@@ -110,6 +128,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA010',
+      buyPreference: 1,
+      sellPreference: 2,
       priceYearlyIncreaseSell: 1,
       priceYearlyDecreaseBuy: 1,
       cashMaxPercent: 20,
@@ -122,6 +142,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA011',
+      buyPreference: 1,
+      sellPreference: 2,
       epsQuarterlyBeatsBuy: 3,
       epsQuarterlyMissSell: 3,
       cashMaxPercent: 30,
@@ -134,6 +156,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA012',
+      buyPreference: 1,
+      sellPreference: 2,
       epsQuarterlyMissBuy: 3,
       epsQuarterlyBeatsSell: 3,
       cashMaxPercent: 30,
@@ -146,6 +170,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA013',
+      buyPreference: 1,
+      sellPreference: 2,
       profitQuarterlyIncreaseBuy: 3,
       profitQuarterlyDecreaseSell: 3,
       cashMaxPercent: 30,
@@ -158,6 +184,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA014',
+      buyPreference: 1,
+      sellPreference: 2,
       profitQuarterlyDecreaseBuy: 3,
       profitQuarterlyIncreaseSell: 3,
       cashMaxPercent: 30,
@@ -170,6 +198,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA015',
+      buyPreference: 1,
+      sellPreference: 2,
       incomeQuarterlyIncreaseBuy: 3,
       incomeQuarterlyDecreaseSell: 3,
       cashMaxPercent: 50,
@@ -182,6 +212,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA016',
+      buyPreference: 1,
+      sellPreference: 2,
       incomeQuarterlyDecreaseBuy: 3,
       incomeQuarterlyIncreaseSell: 3,
       cashMaxPercent: 50,
@@ -194,6 +226,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA017',
+      buyPreference: 1,
+      sellPreference: 2,
       revenueQuarterlyIncreaseBuy: 2,
       revenueQuarterlyDecreaseSell: 2,
       cashMaxPercent: 50,
@@ -206,6 +240,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA018',
+      buyPreference: 1,
+      sellPreference: 2,
       revenueQuarterlyDecreaseBuy: 2,
       revenueQuarterlyIncreaseSell: 2,
       cashMaxPercent: 50,
@@ -218,6 +254,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA019',
+      buyPreference: 1,
+      sellPreference: 2,
       profitYearlyIncreaseBuy: 2,
       profitYearlyDecreaseSell: 2,
       cashMaxPercent: 30,
@@ -230,6 +268,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA020',
+      buyPreference: 1,
+      sellPreference: 2,
       profitYearlyDecreaseBuy: 2,
       profitYearlyIncreaseSell: 2,
       cashMaxPercent: 30,
@@ -242,6 +282,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA021',
+      buyPreference: 1,
+      sellPreference: 2,
       incomeYearlyIncreaseBuy: 1,
       incomeYearlyDecreaseSell: 1,
       cashMaxPercent: 30,
@@ -254,6 +296,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA022',
+      buyPreference: 1,
+      sellPreference: 2,
       incomeYearlyDecreaseBuy: 1,
       incomeYearlyIncreaseSell: 1,
       cashMaxPercent: 30,
@@ -266,6 +310,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA023',
+      buyPreference: 1,
+      sellPreference: 2,
       revenueYearlyIncreaseBuy: 1,
       revenueYearlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -278,6 +324,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA024',
+      buyPreference: 1,
+      sellPreference: 2,
       revenueYearlyDecreaseBuy: 1,
       revenueYearlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -290,6 +338,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA025',
+      buyPreference: 1,
+      sellPreference: 2,
       inflationYearlyIncreaseBuy: 1,
       inflationYearlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -302,6 +352,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA026',
+      buyPreference: 1,
+      sellPreference: 2,
       inflationYearlyDecreaseBuy: 1,
       inflationYearlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -314,6 +366,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA027',
+      buyPreference: 1,
+      sellPreference: 2,
       fundsRateMonthlyIncreaseBuy: 1,
       fundsRateMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -326,6 +380,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA028',
+      buyPreference: 1,
+      sellPreference: 2,
       fundsRateMonthlyDecreaseBuy: 1,
       fundsRateMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -338,6 +394,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA029',
+      buyPreference: 1,
+      sellPreference: 2,
       thirtyYearsTreasuryMonthlyIncreaseBuy: 1,
       thirtyYearsTreasuryMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -350,6 +408,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA030',
+      buyPreference: 1,
+      sellPreference: 2,
       thirtyYearsTreasuryMonthlyDecreaseBuy: 2,
       thirtyYearsTreasuryMonthlyIncreaseSell: 2,
       cashMaxPercent: 80,
@@ -362,6 +422,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA031',
+      buyPreference: 1,
+      sellPreference: 2,
       tenYearsTreasuryMonthlyIncreaseBuy: 2,
       tenYearsTreasuryMonthlyDecreaseSell: 2,
       cashMaxPercent: 80,
@@ -374,6 +436,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA032',
+      buyPreference: 1,
+      sellPreference: 2,
       tenYearsTreasuryMonthlyDecreaseBuy: 2,
       tenYearsTreasuryMonthlyIncreaseSell: 2,
       cashMaxPercent: 80,
@@ -386,6 +450,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA033',
+      buyPreference: 1,
+      sellPreference: 2,
       inflationMonthlyIncreaseBuy: 2,
       inflationMonthlyDecreaseSell: 2,
       cashMaxPercent: 80,
@@ -398,6 +464,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA034',
+      buyPreference: 1,
+      sellPreference: 2,
       inflationMonthlyDecreaseBuy: 1,
       inflationMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -410,6 +478,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA035',
+      buyPreference: 1,
+      sellPreference: 2,
       cpiMonthlyIncreaseBuy: 1,
       cpiMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -422,6 +492,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA036',
+      buyPreference: 1,
+      sellPreference: 2,
       cpiMonthlyDecreaseBuy: 1,
       cpiMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -434,6 +506,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA037',
+      buyPreference: 1,
+      sellPreference: 2,
       consumerSentimentMonthlyIncreaseBuy: 2,
       consumerSentimentMonthlyDecreaseSell: 2,
       cashMaxPercent: 80,
@@ -446,6 +520,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA038',
+      buyPreference: 1,
+      sellPreference: 2,
       consumerSentimentMonthlyDecreaseBuy: 2,
       consumerSentimentMonthlyIncreaseSell: 2,
       cashMaxPercent: 80,
@@ -458,6 +534,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA039',
+      buyPreference: 1,
+      sellPreference: 2,
       retailSalesMonthlyIncreaseBuy: 2,
       retailSalesMonthlyDecreaseSell: 2,
       cashMaxPercent: 80,
@@ -470,6 +548,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA040',
+      buyPreference: 1,
+      sellPreference: 2,
       retailSalesMonthlyDecreaseBuy: 2,
       retailSalesMonthlyIncreaseSell: 2,
       cashMaxPercent: 80,
@@ -482,6 +562,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA041',
+      buyPreference: 1,
+      sellPreference: 2,
       durableGoodsMonthlyIncreaseBuy: 1,
       durableGoodsMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -494,6 +576,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA042',
+      buyPreference: 1,
+      sellPreference: 2,
       durableGoodsMonthlyDecreaseBuy: 1,
       durableGoodsMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -506,6 +590,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA043',
+      buyPreference: 1,
+      sellPreference: 2,
       unemployeementRateMonthlyIncreaseBuy: 1,
       unemployeementRateMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -518,6 +604,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA044',
+      buyPreference: 1,
+      sellPreference: 2,
       unemployeementRateMonthlyDecreaseBuy: 1,
       unemployeementRateMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -530,6 +618,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA045',
+      buyPreference: 1,
+      sellPreference: 2,
       nonfarmPayrollMonthlyIncreaseBuy: 1,
       nonfarmPayrollMonthlyDecreaseSell: 1,
       cashMaxPercent: 80,
@@ -542,6 +632,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA046',
+      buyPreference: 1,
+      sellPreference: 2,
       nonfarmPayrollMonthlyDecreaseBuy: 1,
       nonfarmPayrollMonthlyIncreaseSell: 1,
       cashMaxPercent: 80,
@@ -554,6 +646,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA047',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpYearlyChangeAboveBuy: 1,
       gdpYearlyChangeBelowSell: 1,
       cashMaxPercent: 50,
@@ -566,6 +660,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA048',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpYearlyChangeAboveSell: 1,
       gdpYearlyChangeBelowBuy: 1,
       cashMaxPercent: 50,
@@ -578,6 +674,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA049',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpQuarterlyChangeAboveBuy: 1,
       gdpQuarterlyChangeBelowSell: 1,
       cashMaxPercent: 50,
@@ -590,6 +688,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA050',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpQuarterlyChangeAboveSell: 1,
       gdpQuarterlyChangeBelowBuy: 1,
       cashMaxPercent: 50,
@@ -602,6 +702,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA051',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpQuarterlyYoYChangeAboveBuy: 2,
       gdpQuarterlyYoYChangeBelowSell: 2,
       cashMaxPercent: 50,
@@ -614,6 +716,8 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
     },
     {
       hashCode: 'DNA052',
+      buyPreference: 1,
+      sellPreference: 2,
       gdpQuarterlyYoYChangeAboveSell: 2,
       gdpQuarterlyYoYChangeBelowBuy: 2,
       cashMaxPercent: 50,

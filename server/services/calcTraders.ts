@@ -168,10 +168,19 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = Object.values(availableTargets)
         .filter(({ daily, quarterly, yearly, yearlyIndicator }) => {
-          return holdingTickerIds.includes(daily.tickerId) &&
-          dnaLogic.getPriceMovementSellWeights(
+          if (!holdingTickerIds.includes(daily.tickerId)) return false
+
+          const preferValue = dnaLogic.getTickerPreferValue(
+            dna.sellPreference, daily, quarterly, yearly,
+          )
+          if (preferValue === null) return false
+
+          const hasWeight = dnaLogic.getPriceMovementSellWeights(
             dna, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
           )
+          if (!hasWeight) return false
+
+          return true
         })
         .sort((first, second) => {
           const firstWeight = dnaLogic.getPriceMovementSellWeights(
@@ -180,7 +189,16 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
           const secondWeight = dnaLogic.getPriceMovementSellWeights(
             dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
-          return firstWeight >= secondWeight ? -1 : 1
+          if (firstWeight > secondWeight) return -1
+          if (firstWeight < secondWeight) return 1
+
+          const firstPreferValue = dnaLogic.getTickerPreferValue(
+            dna.sellPreference, first.daily, first.quarterly, first.yearly,
+          )
+          const secondPreferValue = dnaLogic.getTickerPreferValue(
+            dna.sellPreference, second.daily, second.quarterly, second.yearly,
+          )
+          return firstPreferValue! >= secondPreferValue! ? -1 : 1
         })
         .map(({ daily }) => daily.tickerId)
 
@@ -228,9 +246,16 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
       const buyTargets: Target[] = Object.values(availableTargets)
         .filter(({
           daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-        }) => !!dnaLogic.getPriceMovementBuyWeights(
-          dna, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-        ))
+        }) => {
+          const preferValue = dnaLogic.getTickerPreferValue(
+            dna.buyPreference, daily, quarterly, yearly,
+          )
+          if (preferValue === null) return false
+
+          return !!dnaLogic.getPriceMovementBuyWeights(
+            dna, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+          )
+        })
         .sort((first, second) => {
           const firstWeight = dnaLogic.getPriceMovementBuyWeights(
             dna, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
@@ -238,7 +263,16 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
           const secondWeight = dnaLogic.getPriceMovementBuyWeights(
             dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
-          return firstWeight >= secondWeight ? -1 : 1
+          if (firstWeight > secondWeight) return -1
+          if (firstWeight < secondWeight) return 1
+
+          const firstPreferValue = dnaLogic.getTickerPreferValue(
+            dna.buyPreference, first.daily, first.quarterly, first.yearly,
+          )
+          const secondPreferValue = dnaLogic.getTickerPreferValue(
+            dna.buyPreference, second.daily, second.quarterly, second.yearly,
+          )
+          return firstPreferValue! >= secondPreferValue! ? -1 : 1
         })
 
       const detailsAfterBuy = buyTargets.reduce((details, { daily }) => {

@@ -42,10 +42,10 @@ export const syncPrices = async (
       const record = await tickerDailyModel.getByUK(ticker.id, date)
       if (record) return
 
-      const closePrice = dailyData['4. close']
-      const volume = dailyData['6. volume']
-      const dividendAmount = dailyData['7. dividend amount']
-      const splitCoefficient = dailyData['8. split coefficient']
+      const closePrice: string = dailyData['4. close']
+      const volume: string = dailyData['6. volume']
+      const dividendAmount: string = dailyData['7. dividend amount']
+      const splitCoefficient: string = dailyData['8. split coefficient']
 
       const previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, date)
 

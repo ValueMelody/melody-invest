@@ -121,6 +121,8 @@ const GENE_VALUES = {
   holdingSellPercent: [...geneEnums.VALUES.HOLDING_PERCENT],
   tradeFrequency: [...geneEnums.VALUES.TRADE_FREQUENCY],
   rebalanceFrequency: [...geneEnums.VALUES.REBALANCE_FREQUENCY],
+  buyPreference: [...geneEnums.VALUES.PREFERENCE],
+  sellPreference: [...geneEnums.VALUES.PREFERENCE],
 }
 
 const GENE_GROUPS: traderDNAModel.GeneType[][] = [
@@ -239,6 +241,8 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
   ['holdingSellPercent'],
   ['tradeFrequency'],
   ['rebalanceFrequency'],
+  ['buyPreference'],
+  ['sellPreference'],
 ]
 
 interface Gene {
@@ -534,6 +538,51 @@ export const getPriceMovementSellWeights = (
   return movementWeights * compareWeights
 }
 
+export const getTickerPreferValue = (
+  preference: number,
+  tickerDaily: tickerDailyModel.Record,
+  tickerQuarterly: tickerQuarterlyModel.Record | null,
+  tickerYearly: tickerYearlyModel.Record | null,
+): number | null => {
+  switch (preference) {
+    case geneEnums.PREFERENCE.HIGHER_PRICE:
+    case geneEnums.PREFERENCE.LOWER_PRICE:
+      return tickerDaily.closePrice
+    case geneEnums.PREFERENCE.HIGHER_QUARTER_EPS:
+    case geneEnums.PREFERENCE.LOWER_QUARTER_EPS:
+      return tickerQuarterly ? tickerQuarterly.eps : null
+    case geneEnums.PREFERENCE.HIGHER_QUARTER_EBITDA:
+    case geneEnums.PREFERENCE.LOWER_QUARTER_EBITDA:
+      return tickerQuarterly ? tickerQuarterly.ebitda : null
+    case geneEnums.PREFERENCE.HIGHER_QUARTER_INCOME:
+    case geneEnums.PREFERENCE.LOWER_QUARTER_INCOME:
+      return tickerQuarterly ? tickerQuarterly.netIncome : null
+    case geneEnums.PREFERENCE.HIGHER_QUARTER_PROFIT:
+    case geneEnums.PREFERENCE.LOWER_QUARTER_PROFIT:
+      return tickerQuarterly ? tickerQuarterly.grossProfit : null
+    case geneEnums.PREFERENCE.HIGHER_QUARTER_REVENUE:
+    case geneEnums.PREFERENCE.LOWER_QUARTER_REVENUE:
+      return tickerQuarterly ? tickerQuarterly.totalRevenue : null
+    case geneEnums.PREFERENCE.HIGHER_YEAR_EPS:
+    case geneEnums.PREFERENCE.LOWER_YEAR_EPS:
+      return tickerYearly ? tickerYearly.eps : null
+    case geneEnums.PREFERENCE.HIGHER_YEAR_EBITDA:
+    case geneEnums.PREFERENCE.LOWER_YEAR_EBITDA:
+      return tickerYearly ? tickerYearly.ebitda : null
+    case geneEnums.PREFERENCE.HIGHER_YEAR_INCOME:
+    case geneEnums.PREFERENCE.LOWER_YEAR_INCOME:
+      return tickerYearly ? tickerYearly.netIncome : null
+    case geneEnums.PREFERENCE.HIGHER_YEAR_PROFIT:
+    case geneEnums.PREFERENCE.LOWER_YEAR_PROFIT:
+      return tickerYearly ? tickerYearly.grossProfit : null
+    case geneEnums.PREFERENCE.HIGHER_YEAR_REVENUE:
+    case geneEnums.PREFERENCE.LOWER_YEAR_REVENUE:
+      return tickerYearly ? tickerYearly.totalRevenue : null
+    default:
+      return null
+  }
+}
+
 export const getDNAHashCode = (
   dna: traderDNAModel.Record | traderDNAModel.Create,
 ): string => {
@@ -697,6 +746,8 @@ export const generateDNAChild = (
     holdingSellPercent: generateTool.pickOneNumber(first.holdingSellPercent, second.holdingSellPercent),
     tradeFrequency: generateTool.pickOneNumber(first.tradeFrequency, second.tradeFrequency),
     rebalanceFrequency: generateTool.pickOneNumber(first.rebalanceFrequency, second.rebalanceFrequency),
+    buyPreference: generateTool.pickOneNumber(first.buyPreference, second.buyPreference),
+    sellPreference: generateTool.pickOneNumber(first.sellPreference, second.sellPreference),
   }
 
   const buyGeneKeys = GENE_GROUPS[0]

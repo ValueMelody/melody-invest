@@ -14,7 +14,7 @@ export interface Record {
   tickerId: number;
   date: string;
   volume: number;
-  closePrice: string;
+  closePrice: number;
   splitCoefficient: string;
   dividendPercent: string;
   adjustedClosePrice: number;
@@ -91,7 +91,7 @@ const convertToRecord = (raw: Raw): Record => ({
   tickerId: raw.tickerId,
   date: raw.date,
   volume: raw.volume,
-  closePrice: raw.closePrice,
+  closePrice: parseFloat(raw.closePrice),
   splitCoefficient: raw.splitCoefficient,
   dividendPercent: raw.dividendPercent,
   adjustedClosePrice: parseInt(raw.adjustedClosePrice),
