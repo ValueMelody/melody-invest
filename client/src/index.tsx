@@ -1,10 +1,16 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import App from './App'
+import Router from './containers/Router'
+import * as localTool from './tools/locale'
+
+import './index.css'
+import 'semantic-ui-css/semantic.min.css'
+
+localTool.init()
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Router />
   </React.StrictMode>,
   document.getElementById('root'),
 )
