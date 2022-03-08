@@ -3,13 +3,14 @@ body {
   margin: 0;
 }
 
-.ui-row {
+.row-between {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: space-between;
 }
 
-.ui-column {
+.column {
   display: column;
   flex-direction: column;
 }
