@@ -1,6 +1,6 @@
-import * as geneEnums from '../enums/gene'
+import * as patternEnums from '../enums/pattern'
 import * as traderModel from '../models/trader'
-import * as traderDNAModel from '../models/traderDNA'
+import * as traderPatternModel from '../models/traderPattern'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
@@ -9,123 +9,123 @@ import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as generateTool from '../tools/generate'
 
-const GENE_VALUES = {
-  priceDailyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyBeatsBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyMissBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyBeatsSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyMissSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  unemployeementRateMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  unemployeementRateMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  unemployeementRateMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  unemployeementRateMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyIncreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyDecreaseBuy: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyIncreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyDecreaseSell: [...geneEnums.VALUES.MOVEMENT_VALUE],
-  gdpYearlyChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeAboveBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeAboveSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeBelowBuy: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeBelowSell: [...geneEnums.VALUES.GDP_CHANGE_PERCENT],
-  cashMaxPercent: [...geneEnums.VALUES.CASH_MAX_PERCENT],
-  tickerMinPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
-  tickerMaxPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
-  holdingBuyPercent: [...geneEnums.VALUES.PORTFOLIO_PERCENT],
-  holdingSellPercent: [...geneEnums.VALUES.HOLDING_PERCENT],
-  tradeFrequency: [...geneEnums.VALUES.TRADE_FREQUENCY],
-  rebalanceFrequency: [...geneEnums.VALUES.REBALANCE_FREQUENCY],
-  buyPreference: [...geneEnums.VALUES.PREFERENCE],
-  sellPreference: [...geneEnums.VALUES.PREFERENCE],
+const BEHAVIOR_VALUES = {
+  priceDailyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceDailyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceDailyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceDailyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceWeeklyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceWeeklyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceWeeklyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceWeeklyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  priceYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  epsQuarterlyBeatsBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  epsQuarterlyMissBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  epsQuarterlyBeatsSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  epsQuarterlyMissSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  profitYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  incomeYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  revenueYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  fundsRateMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  thirtyYearsTreasuryMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  tenYearsTreasuryMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  inflationMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  cpiMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  consumerSentimentMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  retailSalesMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  durableGoodsMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  unemployeementRateMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  nonfarmPayrollMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
+  gdpYearlyChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpYearlyChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  gdpQuarterlyYoYChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
+  cashMaxPercent: [...patternEnums.VALUES.CASH_MAX_PERCENT],
+  tickerMinPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
+  tickerMaxPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
+  holdingBuyPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
+  holdingSellPercent: [...patternEnums.VALUES.HOLDING_PERCENT],
+  tradeFrequency: [...patternEnums.VALUES.TRADE_FREQUENCY],
+  rebalanceFrequency: [...patternEnums.VALUES.REBALANCE_FREQUENCY],
+  buyPreference: [...patternEnums.VALUES.PREFERENCE],
+  sellPreference: [...patternEnums.VALUES.PREFERENCE],
 }
 
-const GENE_GROUPS: traderDNAModel.GeneType[][] = [
+const BEHAVIOR_GROUPS: traderPatternModel.BehaviorType[][] = [
   [
     'priceDailyIncreaseBuy',
     'priceDailyDecreaseBuy',
@@ -245,8 +245,8 @@ const GENE_GROUPS: traderDNAModel.GeneType[][] = [
   ['sellPreference'],
 ]
 
-interface Gene {
-  type: traderDNAModel.GeneType;
+interface Behavior {
+  type: traderPatternModel.BehaviorType;
   value: number;
 }
 
@@ -313,7 +313,7 @@ const buildInitialTickerInfo = (
 }
 
 export const getPriceMovementBuyWeights = (
-  dna: traderDNAModel.Record,
+  pattern: traderPatternModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
@@ -322,7 +322,7 @@ export const getPriceMovementBuyWeights = (
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
-    [key in traderDNAModel.MovementBuyGene]: MovementKey
+    [key in traderPatternModel.MovementBuyBehavior]: MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -373,7 +373,7 @@ export const getPriceMovementBuyWeights = (
   }
 
   const COMPARE_TRIGGERS: {
-    [key in traderDNAModel.CompareBuyGene]: CompareKey
+    [key in traderPatternModel.CompareBuyBehavior]: CompareKey
   } = {
     gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
@@ -390,31 +390,31 @@ export const getPriceMovementBuyWeights = (
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
   const movementWeights = movementTriggers.reduce((
-    weights: number, gene,
+    weights: number, behavior,
   ): number => {
-    const tickerKey = MOVEMENT_TRIGGERS[gene]
+    const tickerKey = MOVEMENT_TRIGGERS[behavior]
     const tickerValue = tickerInfo[tickerKey]
-    const dnaValue = dna[gene]
+    const patternValue = pattern[behavior]
 
-    if (!dnaValue) return weights
-    if (!tickerValue || tickerValue < dnaValue) return 0
-    return weights * (tickerValue - dnaValue + 2)
+    if (!patternValue) return weights
+    if (!tickerValue || tickerValue < patternValue) return 0
+    return weights * (tickerValue - patternValue + 2)
   }, 1)
 
   const compareWeights = compareTriggers.reduce((
-    weights: number, gene,
+    weights: number, behavior,
   ): number => {
-    const tickerKey = COMPARE_TRIGGERS[gene]
+    const tickerKey = COMPARE_TRIGGERS[behavior]
     const tickerValue = tickerInfo[tickerKey]
-    const dnaValue = dna[gene]
+    const patternValue = pattern[behavior]
 
-    if (dnaValue === null) return weights
-    if (gene.includes('Above') && tickerValue && tickerValue > dnaValue) {
-      return weights * (tickerValue - dnaValue + 2)
+    if (patternValue === null) return weights
+    if (behavior.includes('Above') && tickerValue && tickerValue > patternValue) {
+      return weights * (tickerValue - patternValue + 2)
     }
 
-    if (gene.includes('Below') && tickerValue && tickerValue < dnaValue) {
-      return weights * (tickerValue - dnaValue + 2)
+    if (behavior.includes('Below') && tickerValue && tickerValue < patternValue) {
+      return weights * (tickerValue - patternValue + 2)
     }
 
     return 0
@@ -426,7 +426,7 @@ export const getPriceMovementBuyWeights = (
 }
 
 export const getPriceMovementSellWeights = (
-  dna: traderDNAModel.Record,
+  pattern: traderPatternModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
@@ -435,7 +435,7 @@ export const getPriceMovementSellWeights = (
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
-    [key in traderDNAModel.MovementSellGene]: MovementKey
+    [key in traderPatternModel.MovementSellBehavior]: MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -486,7 +486,7 @@ export const getPriceMovementSellWeights = (
   }
 
   const COMPARE_TRIGGERS: {
-    [key in traderDNAModel.CompareSellGene]: CompareKey
+    [key in traderPatternModel.CompareSellBehavior]: CompareKey
   } = {
     gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
@@ -503,31 +503,31 @@ export const getPriceMovementSellWeights = (
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
   const movementWeights = movementTriggers.reduce((
-    weights: number, gene,
+    weights: number, behavior,
   ): number => {
-    const tickerKey = MOVEMENT_TRIGGERS[gene]
+    const tickerKey = MOVEMENT_TRIGGERS[behavior]
     const tickerValue = tickerInfo[tickerKey]
-    const dnaValue = dna[gene]
+    const patternValue = pattern[behavior]
 
-    if (!dnaValue) return weights
-    if (!tickerValue || tickerValue < dnaValue) return 0
-    return weights * (tickerValue - dnaValue + 2)
+    if (!patternValue) return weights
+    if (!tickerValue || tickerValue < patternValue) return 0
+    return weights * (tickerValue - patternValue + 2)
   }, 1)
 
   const compareWeights = compareTriggers.reduce((
-    weights: number, gene,
+    weights: number, behavior,
   ): number => {
-    const tickerKey = COMPARE_TRIGGERS[gene]
+    const tickerKey = COMPARE_TRIGGERS[behavior]
     const tickerValue = tickerInfo[tickerKey]
-    const dnaValue = dna[gene]
+    const patternValue = pattern[behavior]
 
-    if (dnaValue === null) return weights
-    if (gene.includes('Above') && tickerValue && tickerValue > dnaValue) {
-      return weights * (tickerValue - dnaValue + 2)
+    if (patternValue === null) return weights
+    if (behavior.includes('Above') && tickerValue && tickerValue > patternValue) {
+      return weights * (tickerValue - patternValue + 2)
     }
 
-    if (gene.includes('Below') && tickerValue && tickerValue < dnaValue) {
-      return weights * (tickerValue - dnaValue + 2)
+    if (behavior.includes('Below') && tickerValue && tickerValue < patternValue) {
+      return weights * (tickerValue - patternValue + 2)
     }
 
     return 0
@@ -545,52 +545,52 @@ export const getTickerPreferValue = (
   tickerYearly: tickerYearlyModel.Record | null,
 ): number | null => {
   switch (preference) {
-    case geneEnums.PREFERENCE.HIGHER_PRICE:
-    case geneEnums.PREFERENCE.LOWER_PRICE:
+    case patternEnums.PREFERENCE.HIGHER_PRICE:
+    case patternEnums.PREFERENCE.LOWER_PRICE:
       return tickerDaily.closePrice
-    case geneEnums.PREFERENCE.HIGHER_QUARTER_EPS:
-    case geneEnums.PREFERENCE.LOWER_QUARTER_EPS:
+    case patternEnums.PREFERENCE.HIGHER_QUARTER_EPS:
+    case patternEnums.PREFERENCE.LOWER_QUARTER_EPS:
       return tickerQuarterly ? tickerQuarterly.eps : null
-    case geneEnums.PREFERENCE.HIGHER_QUARTER_EBITDA:
-    case geneEnums.PREFERENCE.LOWER_QUARTER_EBITDA:
+    case patternEnums.PREFERENCE.HIGHER_QUARTER_EBITDA:
+    case patternEnums.PREFERENCE.LOWER_QUARTER_EBITDA:
       return tickerQuarterly ? tickerQuarterly.ebitda : null
-    case geneEnums.PREFERENCE.HIGHER_QUARTER_INCOME:
-    case geneEnums.PREFERENCE.LOWER_QUARTER_INCOME:
+    case patternEnums.PREFERENCE.HIGHER_QUARTER_INCOME:
+    case patternEnums.PREFERENCE.LOWER_QUARTER_INCOME:
       return tickerQuarterly ? tickerQuarterly.netIncome : null
-    case geneEnums.PREFERENCE.HIGHER_QUARTER_PROFIT:
-    case geneEnums.PREFERENCE.LOWER_QUARTER_PROFIT:
+    case patternEnums.PREFERENCE.HIGHER_QUARTER_PROFIT:
+    case patternEnums.PREFERENCE.LOWER_QUARTER_PROFIT:
       return tickerQuarterly ? tickerQuarterly.grossProfit : null
-    case geneEnums.PREFERENCE.HIGHER_QUARTER_REVENUE:
-    case geneEnums.PREFERENCE.LOWER_QUARTER_REVENUE:
+    case patternEnums.PREFERENCE.HIGHER_QUARTER_REVENUE:
+    case patternEnums.PREFERENCE.LOWER_QUARTER_REVENUE:
       return tickerQuarterly ? tickerQuarterly.totalRevenue : null
-    case geneEnums.PREFERENCE.HIGHER_YEAR_EPS:
-    case geneEnums.PREFERENCE.LOWER_YEAR_EPS:
+    case patternEnums.PREFERENCE.HIGHER_YEAR_EPS:
+    case patternEnums.PREFERENCE.LOWER_YEAR_EPS:
       return tickerYearly ? tickerYearly.eps : null
-    case geneEnums.PREFERENCE.HIGHER_YEAR_EBITDA:
-    case geneEnums.PREFERENCE.LOWER_YEAR_EBITDA:
+    case patternEnums.PREFERENCE.HIGHER_YEAR_EBITDA:
+    case patternEnums.PREFERENCE.LOWER_YEAR_EBITDA:
       return tickerYearly ? tickerYearly.ebitda : null
-    case geneEnums.PREFERENCE.HIGHER_YEAR_INCOME:
-    case geneEnums.PREFERENCE.LOWER_YEAR_INCOME:
+    case patternEnums.PREFERENCE.HIGHER_YEAR_INCOME:
+    case patternEnums.PREFERENCE.LOWER_YEAR_INCOME:
       return tickerYearly ? tickerYearly.netIncome : null
-    case geneEnums.PREFERENCE.HIGHER_YEAR_PROFIT:
-    case geneEnums.PREFERENCE.LOWER_YEAR_PROFIT:
+    case patternEnums.PREFERENCE.HIGHER_YEAR_PROFIT:
+    case patternEnums.PREFERENCE.LOWER_YEAR_PROFIT:
       return tickerYearly ? tickerYearly.grossProfit : null
-    case geneEnums.PREFERENCE.HIGHER_YEAR_REVENUE:
-    case geneEnums.PREFERENCE.LOWER_YEAR_REVENUE:
+    case patternEnums.PREFERENCE.HIGHER_YEAR_REVENUE:
+    case patternEnums.PREFERENCE.LOWER_YEAR_REVENUE:
       return tickerYearly ? tickerYearly.totalRevenue : null
     default:
       return null
   }
 }
 
-export const getDNAHashCode = (
-  dna: traderDNAModel.Record | traderDNAModel.Create,
+export const getPatternHashCode = (
+  pattern: traderPatternModel.Record | traderPatternModel.Create,
 ): string => {
-  const template = GENE_GROUPS.map((group) => group.map((gene) => dna[gene]))
+  const template = BEHAVIOR_GROUPS.map((group) => group.map((behavior) => pattern[behavior]))
   return generateTool.toSHA512(JSON.stringify(template))
 }
 
-export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
+export const groupPatternCouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
   return traders.reduce((couples: traderModel.Record[][], trader, index) => {
     if (index % 2 === 0) {
       return [...couples, [trader]]
@@ -601,19 +601,19 @@ export const groupDNACouples = (traders: traderModel.Record[]): traderModel.Reco
   }, [])
 }
 
-const pickTradingGenes = (
-  geneTypes: traderDNAModel.GeneType[],
-  first: traderDNAModel.Record,
-  second: traderDNAModel.Record,
-): Gene[] => {
-  const allValues = geneTypes.reduce((values: Gene[], type: traderDNAModel.GeneType): Gene[] => {
+const pickTradingPatterns = (
+  behaviorTypes: traderPatternModel.BehaviorType[],
+  first: traderPatternModel.Record,
+  second: traderPatternModel.Record,
+): Behavior[] => {
+  const allValues = behaviorTypes.reduce((values: Behavior[], type: traderPatternModel.BehaviorType): Behavior[] => {
     if (first[type]) return [...values, { type, value: first[type]! }]
     if (second[type]) return [...values, { type, value: second[type]! }]
     return values
   }, [])
   const remainingTotal = Math.floor(allValues.length / 2) || 1
   const chanceOfStay = remainingTotal * 100 / allValues.length
-  const subValues = allValues.reduce((values: Gene[], value: Gene) => {
+  const subValues = allValues.reduce((values: Behavior[], value: Behavior) => {
     const shouldStay = generateTool.pickNumberInRange(1, 100) <= chanceOfStay
     const hasRoom = values.length < remainingTotal
     if (shouldStay && hasRoom) return [...values, value]
@@ -628,12 +628,12 @@ const pickTradingGenes = (
   return subValues
 }
 
-export const generateDNAChild = (
-  first: traderDNAModel.Record,
-  second: traderDNAModel.Record,
+export const generatePatternChild = (
+  first: traderPatternModel.Record,
+  second: traderPatternModel.Record,
   shouldMutation: boolean = false,
 ) => {
-  const newChild: traderDNAModel.Create = {
+  const newChild: traderPatternModel.Create = {
     hashCode: '',
     priceDailyIncreaseBuy: null,
     priceDailyIncreaseSell: null,
@@ -750,33 +750,33 @@ export const generateDNAChild = (
     sellPreference: generateTool.pickOneNumber(first.sellPreference, second.sellPreference),
   }
 
-  const buyGeneKeys = GENE_GROUPS[0]
-  const childBuyGenes = pickTradingGenes(buyGeneKeys, first, second)
-  childBuyGenes.forEach((gene) => {
-    newChild[gene.type] = newChild[gene.type]
-      ? generateTool.pickOneNumber(gene.value, newChild[gene.type]!)
-      : gene.value
+  const buyBehaviorKeys = BEHAVIOR_GROUPS[0]
+  const childBuyBehaviors = pickTradingPatterns(buyBehaviorKeys, first, second)
+  childBuyBehaviors.forEach((behavior) => {
+    newChild[behavior.type] = newChild[behavior.type]
+      ? generateTool.pickOneNumber(behavior.value, newChild[behavior.type]!)
+      : behavior.value
   })
 
-  const sellGeneKeys = GENE_GROUPS[1]
-  const childSellGenes = pickTradingGenes(sellGeneKeys, first, second)
-  childSellGenes.forEach((gene) => {
-    newChild[gene.type] = newChild[gene.type]
-      ? generateTool.pickOneNumber(gene.value, newChild[gene.type]!)
-      : gene.value
+  const sellBehaviorKeys = BEHAVIOR_GROUPS[1]
+  const childSellBehaviors = pickTradingPatterns(sellBehaviorKeys, first, second)
+  childSellBehaviors.forEach((behavior) => {
+    newChild[behavior.type] = newChild[behavior.type]
+      ? generateTool.pickOneNumber(behavior.value, newChild[behavior.type]!)
+      : behavior.value
   })
 
   if (shouldMutation) {
-    const potentialKeys = Object.keys(GENE_VALUES) as Array<keyof typeof GENE_VALUES>
+    const potentialKeys = Object.keys(BEHAVIOR_VALUES) as Array<keyof typeof BEHAVIOR_VALUES>
     const keyIndex = generateTool.pickNumberInRange(0, potentialKeys.length - 1)
-    const geneKey = potentialKeys[keyIndex]
-    const potentialValues = GENE_VALUES[geneKey]
+    const behaviorKey = potentialKeys[keyIndex]
+    const potentialValues = BEHAVIOR_VALUES[behaviorKey]
     const valueIndex = generateTool.pickNumberInRange(0, potentialValues.length - 1)
-    const geneValue = potentialValues[valueIndex]
-    newChild[geneKey] = geneValue
+    const behaviorValue = potentialValues[valueIndex]
+    newChild[behaviorKey] = behaviorValue
   }
 
-  newChild.hashCode = getDNAHashCode(newChild)
+  newChild.hashCode = getPatternHashCode(newChild)
 
   return newChild
 }

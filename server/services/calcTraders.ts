@@ -1,5 +1,5 @@
 import * as traderModel from '../models/trader'
-import * as traderDNAModel from '../models/traderDNA'
+import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
@@ -10,7 +10,7 @@ import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
 import * as generateTool from '../tools/generate'
-import * as dnaLogic from '../logics/dna'
+import * as patternLogic from '../logics/pattern'
 import * as marketLogic from '../logics/market'
 import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
@@ -44,20 +44,20 @@ const getHoldingValue = (
 }
 
 const calcTraderPerformance = async (trader: traderModel.Record) => {
-  const dna = await traderDNAModel.getByPK(trader.traderDNAId)
-  if (!dna) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
+  if (!pattern) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
-  const tickerMinPercent = dna.tickerMinPercent / 100
-  const tickerMaxPercent = dna.tickerMaxPercent / 100
-  const holdingBuyPercent = dna.holdingBuyPercent / 100
-  const holdingSellPercent = dna.holdingSellPercent / 100
-  const cashMaxPercent = dna.cashMaxPercent / 100
+  const tickerMinPercent = pattern.tickerMinPercent / 100
+  const tickerMaxPercent = pattern.tickerMaxPercent / 100
+  const holdingBuyPercent = pattern.holdingBuyPercent / 100
+  const holdingSellPercent = pattern.holdingSellPercent / 100
+  const cashMaxPercent = pattern.cashMaxPercent / 100
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     let holding = await traderHoldingModel.getLatest(trader.id)
     let tradeDate = holding
-      ? dateTool.getNextDate(holding.date, dna.tradeFrequency)
+      ? dateTool.getNextDate(holding.date, pattern.tradeFrequency)
       : dateTool.getInitialDate()
     let rebalancedAt = trader.rebalancedAt || tradeDate
     let startedAt = trader.startedAt
@@ -112,7 +112,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 
       const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent
 
-      const shouldRebalance = dna.rebalanceFrequency && dateTool.getNextDate(rebalancedAt, dna.rebalanceFrequency) <= tradeDate
+      const shouldRebalance = pattern.rebalanceFrequency && dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
       const detailsBeforeRebalance: HoldingDetails = {
         totalValue: detailsAfterUpdate.totalValue,
         totalCash: detailsAfterUpdate.totalCash,
@@ -170,33 +170,33 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
         .filter(({ daily, quarterly, yearly, yearlyIndicator }) => {
           if (!holdingTickerIds.includes(daily.tickerId)) return false
 
-          const preferValue = dnaLogic.getTickerPreferValue(
-            dna.sellPreference, daily, quarterly, yearly,
+          const preferValue = patternLogic.getTickerPreferValue(
+            pattern.sellPreference, daily, quarterly, yearly,
           )
           if (preferValue === null) return false
 
-          const hasWeight = dnaLogic.getPriceMovementSellWeights(
-            dna, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+          const hasWeight = patternLogic.getPriceMovementSellWeights(
+            pattern, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
           )
           if (!hasWeight) return false
 
           return true
         })
         .sort((first, second) => {
-          const firstWeight = dnaLogic.getPriceMovementSellWeights(
-            dna, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+          const firstWeight = patternLogic.getPriceMovementSellWeights(
+            pattern, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
           )
-          const secondWeight = dnaLogic.getPriceMovementSellWeights(
-            dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+          const secondWeight = patternLogic.getPriceMovementSellWeights(
+            pattern, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
 
-          const firstPreferValue = dnaLogic.getTickerPreferValue(
-            dna.sellPreference, first.daily, first.quarterly, first.yearly,
+          const firstPreferValue = patternLogic.getTickerPreferValue(
+            pattern.sellPreference, first.daily, first.quarterly, first.yearly,
           )
-          const secondPreferValue = dnaLogic.getTickerPreferValue(
-            dna.sellPreference, second.daily, second.quarterly, second.yearly,
+          const secondPreferValue = patternLogic.getTickerPreferValue(
+            pattern.sellPreference, second.daily, second.quarterly, second.yearly,
           )
           return firstPreferValue! >= secondPreferValue! ? -1 : 1
         })
@@ -247,30 +247,30 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
         .filter(({
           daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
         }) => {
-          const preferValue = dnaLogic.getTickerPreferValue(
-            dna.buyPreference, daily, quarterly, yearly,
+          const preferValue = patternLogic.getTickerPreferValue(
+            pattern.buyPreference, daily, quarterly, yearly,
           )
           if (preferValue === null) return false
 
-          return !!dnaLogic.getPriceMovementBuyWeights(
-            dna, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+          return !!patternLogic.getPriceMovementBuyWeights(
+            pattern, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
           )
         })
         .sort((first, second) => {
-          const firstWeight = dnaLogic.getPriceMovementBuyWeights(
-            dna, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+          const firstWeight = patternLogic.getPriceMovementBuyWeights(
+            pattern, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
           )
-          const secondWeight = dnaLogic.getPriceMovementBuyWeights(
-            dna, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+          const secondWeight = patternLogic.getPriceMovementBuyWeights(
+            pattern, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
 
-          const firstPreferValue = dnaLogic.getTickerPreferValue(
-            dna.buyPreference, first.daily, first.quarterly, first.yearly,
+          const firstPreferValue = patternLogic.getTickerPreferValue(
+            pattern.buyPreference, first.daily, first.quarterly, first.yearly,
           )
-          const secondPreferValue = dnaLogic.getTickerPreferValue(
-            dna.buyPreference, second.daily, second.quarterly, second.yearly,
+          const secondPreferValue = patternLogic.getTickerPreferValue(
+            pattern.buyPreference, second.daily, second.quarterly, second.yearly,
           )
           return firstPreferValue! >= secondPreferValue! ? -1 : 1
         })
@@ -318,7 +318,7 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
         }, transaction)
       }
 
-      tradeDate = dateTool.getNextDate(tradeDate, dna.tradeFrequency)
+      tradeDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
     }
 
     if (!holding) return
@@ -376,7 +376,7 @@ export const calcAllTradersPerformance = async () => {
 
 export const calcDescendant = async (): Promise<traderModel.Record[]> => {
   const topTraders = await traderModel.getTops(20)
-  const couples = dnaLogic.groupDNACouples(topTraders)
+  const couples = patternLogic.groupPatternCouples(topTraders)
 
   const transaction = await databaseAdapter.createTransaction()
   try {
@@ -384,28 +384,28 @@ export const calcDescendant = async (): Promise<traderModel.Record[]> => {
       allTraders: traderModel.Record[], couple: traderModel.Record[],
     ) => {
       const [firstTrader, secondTrader] = couple
-      const firstDNA = await traderDNAModel.getByPK(firstTrader.traderDNAId)
-      const secondDNA = await traderDNAModel.getByPK(secondTrader.traderDNAId)
+      const firstPattern = await traderPatternModel.getByPK(firstTrader.traderPatternId)
+      const secondPattern = await traderPatternModel.getByPK(secondTrader.traderPatternId)
 
-      const childOne = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-      const dnaOne = await traderDNAModel.createIfEmpty(childOne, transaction)
-      const traderOne = await traderModel.createOrActive(1, dnaOne.id, transaction)
+      const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
+      const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
+      const traderOne = await traderModel.createOrActive(1, patternOne.id, transaction)
 
-      const childTwo = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-      const dnaTwo = await traderDNAModel.createIfEmpty(childTwo, transaction)
-      const traderTwo = await traderModel.createOrActive(1, dnaTwo.id, transaction)
+      const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
+      const patternTwo = await traderPatternModel.createIfEmpty(childTwo, transaction)
+      const traderTwo = await traderModel.createOrActive(1, patternTwo.id, transaction)
 
-      const childThree = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-      const dnaThree = await traderDNAModel.createIfEmpty(childThree, transaction)
-      const traderThree = await traderModel.createOrActive(1, dnaThree.id, transaction)
+      const childThree = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
+      const patternThree = await traderPatternModel.createIfEmpty(childThree, transaction)
+      const traderThree = await traderModel.createOrActive(1, patternThree.id, transaction)
 
-      const childFour = dnaLogic.generateDNAChild(firstDNA!, secondDNA!)
-      const dnaFour = await traderDNAModel.createIfEmpty(childFour, transaction)
-      const traderFour = await traderModel.createOrActive(1, dnaFour.id, transaction)
+      const childFour = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
+      const patternFour = await traderPatternModel.createIfEmpty(childFour, transaction)
+      const traderFour = await traderModel.createOrActive(1, patternFour.id, transaction)
 
-      const childFive = dnaLogic.generateDNAChild(firstDNA!, secondDNA!, true)
-      const dnaFive = await traderDNAModel.createIfEmpty(childFive, transaction)
-      const traderFive = await traderModel.createOrActive(1, dnaFive.id, transaction)
+      const childFive = patternLogic.generatePatternChild(firstPattern!, secondPattern!, true)
+      const patternFive = await traderPatternModel.createIfEmpty(childFive, transaction)
+      const traderFive = await traderModel.createOrActive(1, patternFive.id, transaction)
 
       return [...allTraders, traderOne, traderTwo, traderThree, traderFour, traderFive]
     })

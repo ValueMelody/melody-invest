@@ -2,7 +2,7 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type MovementBuyGene =
+export type MovementBuyBehavior =
   'priceDailyIncreaseBuy' | 'priceDailyDecreaseBuy' |
   'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
@@ -27,12 +27,12 @@ export type MovementBuyGene =
   'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
-export type CompareBuyGene =
+export type CompareBuyBehavior =
   'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy' |
   'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
   'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
 
-export type MovementSellGene =
+export type MovementSellBehavior =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
   'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
@@ -57,14 +57,14 @@ export type MovementSellGene =
   'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
-export type CompareSellGene =
+export type CompareSellBehavior =
   'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell' |
   'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
   'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
 
-export type GeneType =
-  MovementBuyGene | MovementSellGene |
-  CompareBuyGene | CompareSellGene |
+export type BehaviorType =
+  MovementBuyBehavior | MovementSellBehavior |
+  CompareBuyBehavior | CompareSellBehavior |
   'tickerMinPercent' | 'tickerMaxPercent' |
   'holdingBuyPercent' | 'holdingSellPercent' |
   'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |
@@ -312,43 +312,43 @@ export interface Update {
 export const getByPK = async (
   id: number,
 ): Promise<Record | null> => {
-  const dna = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_DNA,
+  const pattern = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TRADER_PATTERN,
     conditions: [
       { key: 'id', value: id },
     ],
   })
-  return dna
+  return pattern
 }
 
 export const getByUK = async (
   hashCode: string,
 ): Promise<Record | null> => {
-  const dna = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_DNA,
+  const pattern = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TRADER_PATTERN,
     conditions: [
       { key: 'hashCode', value: hashCode },
     ],
   })
-  return dna
+  return pattern
 }
 
 export const getAll = async (): Promise<Record[]> => {
-  const dnas = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER_DNA,
+  const patterns = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER_PATTERN,
   })
-  return dnas
+  return patterns
 }
 
 export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const newRecords = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADER_DNA,
+  const patterns = await databaseAdapter.create({
+    tableName: tableEnum.NAMES.TRADER_PATTERN,
     values,
     transaction,
   })
-  return newRecords[0]
+  return patterns[0]
 }
 
 export const createIfEmpty = async (
@@ -364,13 +364,13 @@ export const update = async (
   values: Update,
   transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const updatedDNA = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TRADER_DNA,
+  const patterns = await databaseAdapter.update({
+    tableName: tableEnum.NAMES.TRADER_PATTERN,
     values,
     conditions: [
       { key: 'id', value: id },
     ],
     transaction,
   })
-  return updatedDNA[0]
+  return patterns[0]
 }

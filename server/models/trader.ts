@@ -5,7 +5,7 @@ import * as databaseAdapter from '../adapters/database'
 export interface Record {
   id: number;
   traderEnvId: number;
-  traderDNAId: number;
+  traderPatternId: number;
   isActive: boolean;
   rebalancedAt: string;
   totalValue: number | null;
@@ -23,7 +23,7 @@ export interface Record {
 export interface Raw {
   id: number;
   traderEnvId: number;
-  traderDNAId: number;
+  traderPatternId: number;
   isActive: boolean;
   rebalancedAt: string;
   totalValue: string | null;
@@ -40,7 +40,7 @@ export interface Raw {
 
 interface Create {
   traderEnvId: number;
-  traderDNAId: number;
+  traderPatternId: number;
   isActive: boolean;
 }
 
@@ -62,7 +62,7 @@ interface Update {
 const convertToRecord = (raw: Raw): Record => ({
   id: raw.id,
   traderEnvId: raw.traderEnvId,
-  traderDNAId: raw.traderDNAId,
+  traderPatternId: raw.traderPatternId,
   isActive: raw.isActive,
   rebalancedAt: raw.rebalancedAt,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
@@ -79,13 +79,13 @@ const convertToRecord = (raw: Raw): Record => ({
 
 export const getByUK = async (
   envId: number,
-  dnaId: number,
+  patternId: number,
 ): Promise<Record | null> => {
   const trader = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
       { key: 'traderEnvId', value: envId },
-      { key: 'traderDNAId', value: dnaId },
+      { key: 'traderPatternId', value: patternId },
     ],
   })
   return trader ? convertToRecord(trader) : null
@@ -125,10 +125,10 @@ export const create = async (
 }
 
 export const createOrActive = async (
-  traderEnvId: number, traderDNAId: number, transaction: Knex.Transaction,
+  traderEnvId: number, traderPatternId: number, transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const currentRecord = await getByUK(traderEnvId, traderDNAId)
-  if (!currentRecord) return create({ traderEnvId, traderDNAId, isActive: true }, transaction)
+  const currentRecord = await getByUK(traderEnvId, traderPatternId)
+  if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true }, transaction)
 
   if (currentRecord.isActive) return currentRecord
 

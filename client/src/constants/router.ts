@@ -1,3 +1,3 @@
 export const NAV = {
-  TOP_TRADERS: 'top-traders',
+  TOP_PATTERNS: 'top-patterns',
 }
