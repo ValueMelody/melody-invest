@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import * as calcTickers from '../services/calcTickers'
 import * as calcTraders from '../services/calcTraders'
-import * as calcTraderDNAs from '../services/calcTraderDNAs'
+import * as calcTraderPatterns from '../services/calcTraderPatterns'
 import * as calcIndicators from '../services/calcIndicators'
 
 const calcRouter = Router()
@@ -61,8 +61,8 @@ calcRouter.get('/traders/descendant', async (req, res) => {
   return res.status(200).send({ result })
 })
 
-calcRouter.get('/trader_dnas/hash_code', async (req, res) => {
-  const result = await calcTraderDNAs.calcHashCode()
+calcRouter.get('/trader_patterns/hash_code', async (req, res) => {
+  const result = await calcTraderPatterns.calcHashCode()
 
   return res.status(200).send({ result })
 })

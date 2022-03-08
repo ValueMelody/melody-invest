@@ -1,7 +1,7 @@
-exports.seed = (knex) => knex('trader_dna').then(() => {
-  return knex('trader_dna').insert([
+exports.seed = (knex) => knex('trader_pattern').then(() => {
+  return knex('trader_pattern').insert([
     {
-      hashCode: 'DNA001',
+      hashCode: 'PATTERN001',
       buyPreference: 1,
       sellPreference: 2,
       priceDailyIncreaseBuy: 3,
@@ -15,7 +15,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA002',
+      hashCode: 'PATTERN002',
       buyPreference: 1,
       sellPreference: 2,
       priceDailyIncreaseSell: 3,
@@ -29,7 +29,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA003',
+      hashCode: 'PATTERN003',
       buyPreference: 1,
       sellPreference: 2,
       priceWeeklyIncreaseBuy: 2,
@@ -43,7 +43,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA004',
+      hashCode: 'PATTERN004',
       buyPreference: 1,
       sellPreference: 2,
       priceWeeklyIncreaseSell: 2,
@@ -57,7 +57,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA005',
+      hashCode: 'PATTERN005',
       buyPreference: 1,
       sellPreference: 2,
       priceMonthlyIncreaseBuy: 2,
@@ -71,7 +71,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA006',
+      hashCode: 'PATTERN006',
       buyPreference: 1,
       sellPreference: 2,
       priceMonthlyIncreaseSell: 2,
@@ -85,7 +85,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA007',
+      hashCode: 'PATTERN007',
       buyPreference: 1,
       sellPreference: 2,
       priceQuarterlyIncreaseBuy: 1,
@@ -99,7 +99,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA008',
+      hashCode: 'PATTERN008',
       buyPreference: 1,
       sellPreference: 2,
       priceQuarterlyIncreaseSell: 1,
@@ -113,7 +113,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA009',
+      hashCode: 'PATTERN009',
       buyPreference: 1,
       sellPreference: 2,
       priceYearlyIncreaseBuy: 1,
@@ -127,7 +127,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 0,
     },
     {
-      hashCode: 'DNA010',
+      hashCode: 'PATTERN010',
       buyPreference: 1,
       sellPreference: 2,
       priceYearlyIncreaseSell: 1,
@@ -141,7 +141,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 0,
     },
     {
-      hashCode: 'DNA011',
+      hashCode: 'PATTERN011',
       buyPreference: 1,
       sellPreference: 2,
       epsQuarterlyBeatsBuy: 3,
@@ -155,7 +155,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      hashCode: 'DNA012',
+      hashCode: 'PATTERN012',
       buyPreference: 1,
       sellPreference: 2,
       epsQuarterlyMissBuy: 3,
@@ -169,7 +169,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      hashCode: 'DNA013',
+      hashCode: 'PATTERN013',
       buyPreference: 1,
       sellPreference: 2,
       profitQuarterlyIncreaseBuy: 3,
@@ -183,7 +183,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      hashCode: 'DNA014',
+      hashCode: 'PATTERN014',
       buyPreference: 1,
       sellPreference: 2,
       profitQuarterlyDecreaseBuy: 3,
@@ -197,7 +197,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 40,
     },
     {
-      hashCode: 'DNA015',
+      hashCode: 'PATTERN015',
       buyPreference: 1,
       sellPreference: 2,
       incomeQuarterlyIncreaseBuy: 3,
@@ -211,7 +211,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      hashCode: 'DNA016',
+      hashCode: 'PATTERN016',
       buyPreference: 1,
       sellPreference: 2,
       incomeQuarterlyDecreaseBuy: 3,
@@ -225,7 +225,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      hashCode: 'DNA017',
+      hashCode: 'PATTERN017',
       buyPreference: 1,
       sellPreference: 2,
       revenueQuarterlyIncreaseBuy: 2,
@@ -239,7 +239,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      hashCode: 'DNA018',
+      hashCode: 'PATTERN018',
       buyPreference: 1,
       sellPreference: 2,
       revenueQuarterlyDecreaseBuy: 2,
@@ -253,7 +253,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 20,
     },
     {
-      hashCode: 'DNA019',
+      hashCode: 'PATTERN019',
       buyPreference: 1,
       sellPreference: 2,
       profitYearlyIncreaseBuy: 2,
@@ -267,7 +267,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      hashCode: 'DNA020',
+      hashCode: 'PATTERN020',
       buyPreference: 1,
       sellPreference: 2,
       profitYearlyDecreaseBuy: 2,
@@ -281,7 +281,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      hashCode: 'DNA021',
+      hashCode: 'PATTERN021',
       buyPreference: 1,
       sellPreference: 2,
       incomeYearlyIncreaseBuy: 1,
@@ -295,7 +295,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      hashCode: 'DNA022',
+      hashCode: 'PATTERN022',
       buyPreference: 1,
       sellPreference: 2,
       incomeYearlyDecreaseBuy: 1,
@@ -309,7 +309,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 320,
     },
     {
-      hashCode: 'DNA023',
+      hashCode: 'PATTERN023',
       buyPreference: 1,
       sellPreference: 2,
       revenueYearlyIncreaseBuy: 1,
@@ -323,7 +323,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA024',
+      hashCode: 'PATTERN024',
       buyPreference: 1,
       sellPreference: 2,
       revenueYearlyDecreaseBuy: 1,
@@ -337,7 +337,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA025',
+      hashCode: 'PATTERN025',
       buyPreference: 1,
       sellPreference: 2,
       inflationYearlyIncreaseBuy: 1,
@@ -351,7 +351,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA026',
+      hashCode: 'PATTERN026',
       buyPreference: 1,
       sellPreference: 2,
       inflationYearlyDecreaseBuy: 1,
@@ -365,7 +365,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA027',
+      hashCode: 'PATTERN027',
       buyPreference: 1,
       sellPreference: 2,
       fundsRateMonthlyIncreaseBuy: 1,
@@ -379,7 +379,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA028',
+      hashCode: 'PATTERN028',
       buyPreference: 1,
       sellPreference: 2,
       fundsRateMonthlyDecreaseBuy: 1,
@@ -393,7 +393,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA029',
+      hashCode: 'PATTERN029',
       buyPreference: 1,
       sellPreference: 2,
       thirtyYearsTreasuryMonthlyIncreaseBuy: 1,
@@ -407,7 +407,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA030',
+      hashCode: 'PATTERN030',
       buyPreference: 1,
       sellPreference: 2,
       thirtyYearsTreasuryMonthlyDecreaseBuy: 2,
@@ -421,7 +421,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA031',
+      hashCode: 'PATTERN031',
       buyPreference: 1,
       sellPreference: 2,
       tenYearsTreasuryMonthlyIncreaseBuy: 2,
@@ -435,7 +435,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA032',
+      hashCode: 'PATTERN032',
       buyPreference: 1,
       sellPreference: 2,
       tenYearsTreasuryMonthlyDecreaseBuy: 2,
@@ -449,7 +449,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA033',
+      hashCode: 'PATTERN033',
       buyPreference: 1,
       sellPreference: 2,
       inflationMonthlyIncreaseBuy: 2,
@@ -463,7 +463,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA034',
+      hashCode: 'PATTERN034',
       buyPreference: 1,
       sellPreference: 2,
       inflationMonthlyDecreaseBuy: 1,
@@ -477,7 +477,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA035',
+      hashCode: 'PATTERN035',
       buyPreference: 1,
       sellPreference: 2,
       cpiMonthlyIncreaseBuy: 1,
@@ -491,7 +491,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA036',
+      hashCode: 'PATTERN036',
       buyPreference: 1,
       sellPreference: 2,
       cpiMonthlyDecreaseBuy: 1,
@@ -505,7 +505,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA037',
+      hashCode: 'PATTERN037',
       buyPreference: 1,
       sellPreference: 2,
       consumerSentimentMonthlyIncreaseBuy: 2,
@@ -519,7 +519,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA038',
+      hashCode: 'PATTERN038',
       buyPreference: 1,
       sellPreference: 2,
       consumerSentimentMonthlyDecreaseBuy: 2,
@@ -533,7 +533,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA039',
+      hashCode: 'PATTERN039',
       buyPreference: 1,
       sellPreference: 2,
       retailSalesMonthlyIncreaseBuy: 2,
@@ -547,7 +547,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA040',
+      hashCode: 'PATTERN040',
       buyPreference: 1,
       sellPreference: 2,
       retailSalesMonthlyDecreaseBuy: 2,
@@ -561,7 +561,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA041',
+      hashCode: 'PATTERN041',
       buyPreference: 1,
       sellPreference: 2,
       durableGoodsMonthlyIncreaseBuy: 1,
@@ -575,7 +575,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA042',
+      hashCode: 'PATTERN042',
       buyPreference: 1,
       sellPreference: 2,
       durableGoodsMonthlyDecreaseBuy: 1,
@@ -589,7 +589,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA043',
+      hashCode: 'PATTERN043',
       buyPreference: 1,
       sellPreference: 2,
       unemployeementRateMonthlyIncreaseBuy: 1,
@@ -603,7 +603,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA044',
+      hashCode: 'PATTERN044',
       buyPreference: 1,
       sellPreference: 2,
       unemployeementRateMonthlyDecreaseBuy: 1,
@@ -617,7 +617,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA045',
+      hashCode: 'PATTERN045',
       buyPreference: 1,
       sellPreference: 2,
       nonfarmPayrollMonthlyIncreaseBuy: 1,
@@ -631,7 +631,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA046',
+      hashCode: 'PATTERN046',
       buyPreference: 1,
       sellPreference: 2,
       nonfarmPayrollMonthlyDecreaseBuy: 1,
@@ -645,7 +645,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 160,
     },
     {
-      hashCode: 'DNA047',
+      hashCode: 'PATTERN047',
       buyPreference: 1,
       sellPreference: 2,
       gdpYearlyChangeAboveBuy: 1,
@@ -659,7 +659,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA048',
+      hashCode: 'PATTERN048',
       buyPreference: 1,
       sellPreference: 2,
       gdpYearlyChangeAboveSell: 1,
@@ -673,7 +673,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA049',
+      hashCode: 'PATTERN049',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyChangeAboveBuy: 1,
@@ -687,7 +687,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA050',
+      hashCode: 'PATTERN050',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyChangeAboveSell: 1,
@@ -701,7 +701,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA051',
+      hashCode: 'PATTERN051',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyYoYChangeAboveBuy: 2,
@@ -715,7 +715,7 @@ exports.seed = (knex) => knex('trader_dna').then(() => {
       rebalanceFrequency: 80,
     },
     {
-      hashCode: 'DNA052',
+      hashCode: 'PATTERN052',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyYoYChangeAboveSell: 2,
