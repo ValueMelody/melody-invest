@@ -19,6 +19,7 @@
     "url": "git+https://github.com/byn9826/dioxider-app"
   },
   "scripts": {
+    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
     "client:start": "npm run start --workspace=client",
     "client:lint": "npm run lint --workspace=client",
     "server:start": "npm run start --workspace=server",
@@ -36,6 +37,7 @@
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.3.1",
     "@typescript-eslint/parser": "^5.3.1",
+    "concurrently": "^7.0.0",
     "eslint": "^8.0.0",
     "eslint-config-react-app": "^7.0.0",
     "eslint-config-standard": "^16.0.3",
