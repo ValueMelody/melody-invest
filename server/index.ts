@@ -1,9 +1,11 @@
 import express, { Response, Request, NextFunction } from 'express'
 import 'express-async-errors'
+import cors from 'cors'
 import { initConnection as initDatabase } from './adapters/database'
 // import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
+import patternRouter from './routers/pattern'
 import * as errorEnum from './enums/error'
 
 const app = express()
@@ -11,6 +13,7 @@ export default app
 
 const port = process.env.SERVER_PORT || 3000
 
+app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
@@ -19,6 +22,7 @@ initDatabase()
 
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
+app.use('/patterns', patternRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err)
