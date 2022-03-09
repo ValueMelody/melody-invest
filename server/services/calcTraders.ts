@@ -1,3 +1,4 @@
+import * as interfaces from '@interfaces'
 import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
@@ -43,7 +44,7 @@ const getHoldingValue = (
   }, holding.totalCash)
 }
 
-const calcTraderPerformance = async (trader: traderModel.Record) => {
+const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
   if (!pattern) throw errorEnum.HTTP_ERRORS.NOT_FOUND
 
@@ -369,19 +370,23 @@ const calcTraderPerformance = async (trader: traderModel.Record) => {
 export const calcAllTradersPerformance = async () => {
   const traders = await traderModel.getActives()
 
-  await runTool.asyncForEach(traders, async (trader: traderModel.Record) => {
+  await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
     await calcTraderPerformance(trader)
   })
 }
 
-export const calcDescendant = async (): Promise<traderModel.Record[]> => {
-  const topTraders = await traderModel.getTops(20)
+export const calcDescendant = async (): Promise<interfaces.traderModel.Record[]> => {
+  const tops = await traderModel.getTops(30)
+  const topTraders = [
+    ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
+  ]
+
   const couples = patternLogic.groupPatternCouples(topTraders)
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     const newTraders = await runTool.asyncReduce(couples, async (
-      allTraders: traderModel.Record[], couple: traderModel.Record[],
+      allTraders: interfaces.traderModel.Record[], couple: interfaces.traderModel.Record[],
     ) => {
       const [firstTrader, secondTrader] = couple
       const firstPattern = await traderPatternModel.getByPK(firstTrader.traderPatternId)

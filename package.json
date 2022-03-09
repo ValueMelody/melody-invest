@@ -3,7 +3,8 @@
   "private": true,
   "workspaces": [
     "server",
-    "client"
+    "client",
+    "interfaces"
   ],
   "version": "0.0.1",
   "description": "",

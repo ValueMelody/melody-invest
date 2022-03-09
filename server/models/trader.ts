@@ -1,65 +1,9 @@
 import { Knex } from 'knex'
+import * as interfaces from '@interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface Record {
-  id: number;
-  traderEnvId: number;
-  traderPatternId: number;
-  isActive: boolean;
-  rebalancedAt: string;
-  totalValue: number | null;
-  estimatedAt: string | null;
-  startedAt: string | null;
-  totalDays: number | null;
-  yearlyPercentNumber: number | null;
-  grossPercentNumber: number | null;
-  pastYearPercentNumber: number | null;
-  pastQuarterPercentNumber: number | null;
-  pastMonthPercentNumber: number | null;
-  pastWeekPercentNumber: number | null;
-}
-
-export interface Raw {
-  id: number;
-  traderEnvId: number;
-  traderPatternId: number;
-  isActive: boolean;
-  rebalancedAt: string;
-  totalValue: string | null;
-  estimatedAt: string | null;
-  startedAt: string | null;
-  totalDays: number | null;
-  yearlyPercentNumber: number | null;
-  grossPercentNumber: number | null;
-  pastYearPercentNumber: number | null;
-  pastQuarterPercentNumber: number | null;
-  pastMonthPercentNumber: number | null;
-  pastWeekPercentNumber: number | null;
-}
-
-interface Create {
-  traderEnvId: number;
-  traderPatternId: number;
-  isActive: boolean;
-}
-
-interface Update {
-  isActive?: boolean;
-  rebalancedAt?: string;
-  totalValue?: number;
-  estimatedAt?: string;
-  startedAt?: string ;
-  totalDays?: number;
-  yearlyPercentNumber?: number;
-  grossPercentNumber?: number;
-  pastYearPercentNumber?: number;
-  pastQuarterPercentNumber?: number;
-  pastMonthPercentNumber?: number;
-  pastWeekPercentNumber?: number;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (raw: interfaces.traderModel.Raw): interfaces.traderModel.Record => ({
   id: raw.id,
   traderEnvId: raw.traderEnvId,
   traderPatternId: raw.traderPatternId,
@@ -80,7 +24,7 @@ const convertToRecord = (raw: Raw): Record => ({
 export const getByUK = async (
   envId: number,
   patternId: number,
-): Promise<Record | null> => {
+): Promise<interfaces.traderModel.Record | null> => {
   const trader = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
@@ -91,7 +35,7 @@ export const getByUK = async (
   return trader ? convertToRecord(trader) : null
 }
 
-export const getActives = async (): Promise<Record[]> => {
+export const getActives = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
@@ -101,21 +45,74 @@ export const getActives = async (): Promise<Record[]> => {
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getTops = async (total: number): Promise<Record[]> => {
-  const traders = await databaseAdapter.findAll({
+interface Tops {
+  yearly: interfaces.traderModel.Record[],
+  pastYear: interfaces.traderModel.Record[],
+  pastQuarter: interfaces.traderModel.Record[],
+  pastMonth: interfaces.traderModel.Record[],
+  pastWeek: interfaces.traderModel.Record[],
+}
+
+export const getTops = async (total: number): Promise<Tops> => {
+  const eachNumber = Math.floor(total / 5)
+
+  const topYearly = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
-    orderBy: [{ column: 'yearlyPercent', order: 'desc' }],
-    limit: total,
+    orderBy: [{ column: 'yearlyPercentNumber', order: 'desc' }],
+    limit: eachNumber,
   })
-  return traders.map((trader) => convertToRecord(trader))
+
+  const topPastYear = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'isActive', value: true },
+    ],
+    orderBy: [{ column: 'pastYearPercentNumber', order: 'desc' }],
+    limit: eachNumber,
+  })
+
+  const topPastQuarter = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'isActive', value: true },
+    ],
+    orderBy: [{ column: 'pastQuarterPercentNumber', order: 'desc' }],
+    limit: eachNumber,
+  })
+
+  const topPastMonth = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'isActive', value: true },
+    ],
+    orderBy: [{ column: 'pastMonthPercentNumber', order: 'desc' }],
+    limit: eachNumber,
+  })
+
+  const topPastWeek = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'isActive', value: true },
+    ],
+    orderBy: [{ column: 'pastWeekPercentNumber', order: 'desc' }],
+    limit: eachNumber,
+  })
+
+  return {
+    yearly: topYearly.map((trader) => convertToRecord(trader)),
+    pastYear: topPastYear.map((trader) => convertToRecord(trader)),
+    pastQuarter: topPastQuarter.map((trader) => convertToRecord(trader)),
+    pastMonth: topPastMonth.map((trader) => convertToRecord(trader)),
+    pastWeek: topPastWeek.map((trader) => convertToRecord(trader)),
+  }
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.traderModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.traderModel.Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER,
     values,
@@ -126,7 +123,7 @@ export const create = async (
 
 export const createOrActive = async (
   traderEnvId: number, traderPatternId: number, transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.traderModel.Record> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
   if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true }, transaction)
 
@@ -137,9 +134,9 @@ export const createOrActive = async (
 
 export const update = async (
   traderId: number,
-  values: Update,
+  values: interfaces.traderModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.traderModel.Record> => {
   const updatedTrader = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TRADER,
     values,

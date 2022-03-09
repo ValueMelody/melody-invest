@@ -5,7 +5,7 @@ import { initConnection as initDatabase } from './adapters/database'
 // import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
-import patternRouter from './routers/pattern'
+import patternsRouter from './routers/patterns'
 import * as errorEnum from './enums/error'
 
 const app = express()
@@ -22,7 +22,7 @@ initDatabase()
 
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
-app.use('/patterns', patternRouter)
+app.use('/patterns', patternsRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err)

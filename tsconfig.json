@@ -8,6 +8,9 @@
     "moduleResolution": "node",
     "strict": true,
     "skipLibCheck": true,
-    "target": "ES2020"
+    "target": "ES2020",
+    "paths": {
+      "@interfaces": ["./interfaces/index.ts"]
+    }
   }
 }
