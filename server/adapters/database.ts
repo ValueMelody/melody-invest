@@ -8,7 +8,7 @@ interface OrderBy {
 
 export interface Condition {
   key: string;
-  value: string | number | boolean | null;
+  value: string | number | boolean | null | number[];
   type?: string;
 }
 
@@ -85,7 +85,9 @@ const find = async ({
   if (conditions) {
     conditions.forEach((condition, index) => {
       const { key, type = '=', value } = condition
-      if (index === 0) {
+      if (type === 'IN' && Array.isArray(value)) {
+        query.whereIn(key, value)
+      } else if (index === 0) {
         query.where(key, type, value)
       } else {
         query.andWhere(key, type, value)

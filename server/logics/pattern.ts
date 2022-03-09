@@ -1,5 +1,5 @@
+import * as interfaces from '@interfaces'
 import * as patternEnums from '../enums/pattern'
-import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
@@ -313,7 +313,7 @@ const buildInitialTickerInfo = (
 }
 
 export const getPriceMovementBuyWeights = (
-  pattern: traderPatternModel.Record,
+  pattern: interfaces.traderPatternModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
@@ -426,7 +426,7 @@ export const getPriceMovementBuyWeights = (
 }
 
 export const getPriceMovementSellWeights = (
-  pattern: traderPatternModel.Record,
+  pattern: interfaces.traderPatternModel.Record,
   tickerDaily: tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
@@ -584,14 +584,16 @@ export const getTickerPreferValue = (
 }
 
 export const getPatternHashCode = (
-  pattern: traderPatternModel.Record | traderPatternModel.Create,
+  pattern: interfaces.traderPatternModel.Record | interfaces.traderPatternModel.Create,
 ): string => {
   const template = BEHAVIOR_GROUPS.map((group) => group.map((behavior) => pattern[behavior]))
   return generateTool.toSHA512(JSON.stringify(template))
 }
 
-export const groupPatternCouples = (traders: traderModel.Record[]): traderModel.Record[][] => {
-  return traders.reduce((couples: traderModel.Record[][], trader, index) => {
+export const groupPatternCouples = (
+  traders: interfaces.traderModel.Record[],
+): interfaces.traderModel.Record[][] => {
+  return traders.reduce((couples: interfaces.traderModel.Record[][], trader, index) => {
     if (index % 2 === 0) {
       return [...couples, [trader]]
     }
@@ -603,8 +605,8 @@ export const groupPatternCouples = (traders: traderModel.Record[]): traderModel.
 
 const pickTradingPatterns = (
   behaviorTypes: traderPatternModel.BehaviorType[],
-  first: traderPatternModel.Record,
-  second: traderPatternModel.Record,
+  first: interfaces.traderPatternModel.Record,
+  second: interfaces.traderPatternModel.Record,
 ): Behavior[] => {
   const allValues = behaviorTypes.reduce((values: Behavior[], type: traderPatternModel.BehaviorType): Behavior[] => {
     if (first[type]) return [...values, { type, value: first[type]! }]
@@ -629,11 +631,11 @@ const pickTradingPatterns = (
 }
 
 export const generatePatternChild = (
-  first: traderPatternModel.Record,
-  second: traderPatternModel.Record,
+  first: interfaces.traderPatternModel.Record,
+  second: interfaces.traderPatternModel.Record,
   shouldMutation: boolean = false,
 ) => {
-  const newChild: traderPatternModel.Create = {
+  const newChild: interfaces.traderPatternModel.Create = {
     hashCode: '',
     priceDailyIncreaseBuy: null,
     priceDailyIncreaseSell: null,

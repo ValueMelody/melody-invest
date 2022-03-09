@@ -1,3 +1,4 @@
+import * as interfaces from '@interfaces'
 import * as traderPatternModel from '../models/traderPattern'
 import * as runTool from '../tools/run'
 import * as patternLogic from '../logics/pattern'
@@ -8,7 +9,7 @@ export const calcHashCode = async () => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    await runTool.asyncForEach(patterns, async (pattern: traderPatternModel.Record) => {
+    await runTool.asyncForEach(patterns, async (pattern: interfaces.traderPatternModel.Record) => {
       const hashCode = patternLogic.getPatternHashCode(pattern)
       const updatedPattern = await traderPatternModel.update(pattern.id, { hashCode }, transaction)
       return updatedPattern
