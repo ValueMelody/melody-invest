@@ -236,3 +236,71 @@ export interface Create {
 export interface Update {
   hashCode: string;
 }
+
+export type MovementBuyBehavior =
+  'priceDailyIncreaseBuy' | 'priceDailyDecreaseBuy' |
+  'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
+  'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
+  'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
+  'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy' |
+  'epsQuarterlyBeatsBuy' | 'epsQuarterlyMissBuy' |
+  'profitQuarterlyIncreaseBuy' | 'profitQuarterlyDecreaseBuy' |
+  'incomeQuarterlyIncreaseBuy' | 'incomeQuarterlyDecreaseBuy' |
+  'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy' |
+  'profitYearlyIncreaseBuy' | 'profitYearlyDecreaseBuy' |
+  'incomeYearlyIncreaseBuy' | 'incomeYearlyDecreaseBuy' |
+  'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy' |
+  'inflationYearlyIncreaseBuy' | 'inflationYearlyDecreaseBuy' |
+  'fundsRateMonthlyIncreaseBuy' | 'fundsRateMonthlyDecreaseBuy' |
+  'thirtyYearsTreasuryMonthlyIncreaseBuy' | 'thirtyYearsTreasuryMonthlyDecreaseBuy' |
+  'tenYearsTreasuryMonthlyIncreaseBuy' | 'tenYearsTreasuryMonthlyDecreaseBuy' |
+  'inflationMonthlyIncreaseBuy' | 'inflationMonthlyDecreaseBuy' |
+  'cpiMonthlyIncreaseBuy' | 'cpiMonthlyDecreaseBuy' |
+  'consumerSentimentMonthlyIncreaseBuy' | 'consumerSentimentMonthlyDecreaseBuy' |
+  'retailSalesMonthlyIncreaseBuy' | 'retailSalesMonthlyDecreaseBuy' |
+  'durableGoodsMonthlyIncreaseBuy' | 'durableGoodsMonthlyDecreaseBuy' |
+  'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
+  'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
+
+export type CompareBuyBehavior =
+  'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy' |
+  'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
+  'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
+
+export type MovementSellBehavior =
+  'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
+  'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
+  'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
+  'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
+  'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell' |
+  'epsQuarterlyBeatsSell' | 'epsQuarterlyMissSell' |
+  'profitQuarterlyIncreaseSell' | 'profitQuarterlyDecreaseSell' |
+  'incomeQuarterlyIncreaseSell' | 'incomeQuarterlyDecreaseSell' |
+  'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell' |
+  'profitYearlyIncreaseSell' | 'profitYearlyDecreaseSell' |
+  'incomeYearlyIncreaseSell' | 'incomeYearlyDecreaseSell' |
+  'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell' |
+  'inflationYearlyIncreaseSell' | 'inflationYearlyDecreaseSell' |
+  'fundsRateMonthlyIncreaseSell' | 'fundsRateMonthlyDecreaseSell' |
+  'thirtyYearsTreasuryMonthlyIncreaseSell' | 'thirtyYearsTreasuryMonthlyDecreaseSell' |
+  'tenYearsTreasuryMonthlyIncreaseSell' | 'tenYearsTreasuryMonthlyDecreaseSell' |
+  'inflationMonthlyIncreaseSell' | 'inflationMonthlyDecreaseSell' |
+  'cpiMonthlyIncreaseSell' | 'cpiMonthlyDecreaseSell' |
+  'consumerSentimentMonthlyIncreaseSell' | 'consumerSentimentMonthlyDecreaseSell' |
+  'retailSalesMonthlyIncreaseSell' | 'retailSalesMonthlyDecreaseSell' |
+  'durableGoodsMonthlyIncreaseSell' | 'durableGoodsMonthlyDecreaseSell' |
+  'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
+  'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
+
+export type CompareSellBehavior =
+  'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell' |
+  'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
+  'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
+
+export type BehaviorType =
+  MovementBuyBehavior | MovementSellBehavior |
+  CompareBuyBehavior | CompareSellBehavior |
+  'tickerMinPercent' | 'tickerMaxPercent' |
+  'holdingBuyPercent' | 'holdingSellPercent' |
+  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |
+  'buyPreference' | 'sellPreference'

@@ -24,7 +24,7 @@ const App = () => {
 
   return (
     <React.StrictMode>
-      <Loader active={common.isLoading} size="large" />
+      <Loader active={common.isLoading} size='large' />
       <context.Provider value={states}>
         <ThemeProvider theme={themeConstants.BASIC}>
           <Router />

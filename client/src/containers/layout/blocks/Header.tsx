@@ -6,15 +6,15 @@ import * as routerConstant from '../../../constants/router'
 import * as themeConstant from '../../../constants/theme'
 import * as localeTool from '../../../tools/locale'
 
-const useStyles = createUseStyles((theme: themeConstant.THEME) => ({
+const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   header: {
-    height: 50,
+    height: '3rem',
     position: 'fixed',
     top: 0,
     width: '100%',
     backgroundColor: theme.PRIMARY_COLOR,
-    paddingLeft: theme.SPACING,
-    paddingRight: theme.SPACING,
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
     zIndex: 1000,
   },
 }))
@@ -27,7 +27,7 @@ const Header = () => {
       <nav>
         <Link to={routerConstant.NAV.TOP_PATTERNS}>
           <Label>
-            <Icon name="chart line" />
+            <Icon name='chart line' />
             {localeTool.t('topPatterns.title')}
           </Label>
         </Link>

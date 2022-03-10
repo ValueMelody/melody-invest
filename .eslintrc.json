@@ -22,6 +22,6 @@
         "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
         "arrow-parens": "error",
         "react/react-in-jsx-scope": "off",
-        "jsx-quotes": ["error", "prefer-double"]
+        "jsx-quotes": ["error", "prefer-single"]
     }
 }
