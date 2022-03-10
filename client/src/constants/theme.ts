@@ -5,5 +5,5 @@ export interface THEME {
 
 export const BASIC: THEME = {
   PRIMARY_COLOR: '#428af5',
-  SPACING: 8,
+  SPACING: 16,
 }

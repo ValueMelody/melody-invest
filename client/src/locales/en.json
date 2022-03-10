@@ -1,5 +1,15 @@
 {
   "translation": {
-    "topPatterns.title": "Top Patterns"
+    "topPatterns.title": "Top Patterns",
+    "topPatterns.titleYearly": "All Time",
+    "topPatterns.titlePastYear": "Past year",
+    "topPatterns.titlePastQuarter": "Past Quarter",
+    "topPatterns.titlePastMonth": "Past Month",
+    "topPatterns.titlePastWeek": "Past Week",
+    "gain.yearly": "AVG. Annual Return",
+    "gain.pastYear": "One Year Return",
+    "gain.pastQuarter": "One Quarter Return",
+    "gain.pastMonth": "One Month Return",
+    "gain.pastWeek": "One Week Return"
   }
 }

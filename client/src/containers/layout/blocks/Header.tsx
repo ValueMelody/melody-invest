@@ -13,8 +13,9 @@ const useStyles = createUseStyles((theme: themeConstant.THEME) => ({
     top: 0,
     width: '100%',
     backgroundColor: theme.PRIMARY_COLOR,
-    paddingLeft: theme.SPACING * 2,
-    paddingRight: theme.SPACING * 2,
+    paddingLeft: theme.SPACING,
+    paddingRight: theme.SPACING,
+    zIndex: 1000,
   },
 }))
 
