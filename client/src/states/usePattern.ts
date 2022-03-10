@@ -5,7 +5,7 @@ import * as requestAdpater from '../adapters/request'
 import * as routerConstant from '../constants/router'
 
 const usePattern = () => {
-  const { startLoading } = useCommon()
+  const { startLoading, stopLoading } = useCommon()
 
   const [topPatterns, setTopPatterns] = useState<interfaces.patternsResponse.Top | null>(null)
 
@@ -13,7 +13,7 @@ const usePattern = () => {
     const endpoint = `${routerConstant.API.PATTERNS}/top`
     startLoading()
     const patterns = await requestAdpater.sendGetRequest(endpoint)
-    // stopLoading()
+    stopLoading()
     setTopPatterns(patterns)
   }
 
