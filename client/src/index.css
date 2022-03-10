@@ -3,6 +3,11 @@ body {
   margin: 0;
 }
 
+#root {
+  height: 100%;
+  width: 100%;
+}
+
 .row-between {
   display: flex;
   flex-direction: row;
