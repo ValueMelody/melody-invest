@@ -1,7 +1,7 @@
 import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 
-interface TraderWithPattern {
+export interface TraderWithPattern {
   trader: traderModel.Record;
   pattern: traderPatternModel.Record;
 }

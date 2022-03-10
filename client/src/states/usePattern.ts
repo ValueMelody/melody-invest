@@ -1,5 +1,5 @@
-import * as interfaces from '@shared/interfaces'
 import { useState } from 'react'
+import * as interfaces from '@shared/interfaces'
 import useCommon from './useCommon'
 import * as requestAdpater from '../adapters/request'
 import * as routerConstant from '../constants/router'
