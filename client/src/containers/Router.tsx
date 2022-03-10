@@ -8,7 +8,7 @@ const Router = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
-          <Route path="/">
+          <Route path='/'>
             <Route path={routerConstant.NAV.TOP_PATTERNS} element={<TopPatterns />} />
           </Route>
         </Routes>

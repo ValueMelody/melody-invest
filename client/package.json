@@ -20,7 +20,7 @@
     "@shared/interfaces": "*"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint ./ --ext .tsx --ext .ts"
   },

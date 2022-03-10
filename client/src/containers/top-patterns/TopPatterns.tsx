@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import usePattern from '../../states/usePattern'
-import PatternsSection from './blocks/PatternsSection'
+import PatternsSection, { GAIN_TYPE } from './blocks/PatternsSection'
+import * as localeTool from '../../tools/locale'
 
 const TopPatterns = () => {
   const { topPatterns, fetchTopPatterns } = usePattern()
@@ -14,24 +15,29 @@ const TopPatterns = () => {
   return (
     <div>
       <PatternsSection
-        gainType="YEARLY"
-        patterns={topPatterns.yearly}
+        title={localeTool.t('topPatterns.titleYearly')}
+        gainType={GAIN_TYPE.YEARLY}
+        traderWithPatterns={topPatterns.yearly}
       />
       <PatternsSection
-        gainType="PAST_YEAR"
-        patterns={topPatterns.pastYear}
+        title={localeTool.t('topPatterns.titlePastYear')}
+        gainType={GAIN_TYPE.PAST_YEAR}
+        traderWithPatterns={topPatterns.pastYear}
       />
       <PatternsSection
-        gainType="PAST_QUARTER"
-        patterns={topPatterns.pastQuarter}
+        title={localeTool.t('topPatterns.titlePastQuarter')}
+        gainType={GAIN_TYPE.PAST_QUARTER}
+        traderWithPatterns={topPatterns.pastQuarter}
       />
       <PatternsSection
-        gainType="PAST_MONTH"
-        patterns={topPatterns.pastMonth}
+        title={localeTool.t('topPatterns.titlePastMonth')}
+        gainType={GAIN_TYPE.PAST_MONTH}
+        traderWithPatterns={topPatterns.pastMonth}
       />
       <PatternsSection
-        gainType="PAST_WEEK"
-        patterns={topPatterns.pastWeek}
+        title={localeTool.t('topPatterns.titlePastWeek')}
+        gainType={GAIN_TYPE.PAST_WEEK}
+        traderWithPatterns={topPatterns.pastWeek}
       />
     </div>
   )

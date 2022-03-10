@@ -1,6 +1,5 @@
 import * as interfaces from '@interfaces'
 import * as patternEnums from '../enums/pattern'
-import * as traderPatternModel from '../models/traderPattern'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
@@ -125,7 +124,7 @@ const BEHAVIOR_VALUES = {
   sellPreference: [...patternEnums.VALUES.PREFERENCE],
 }
 
-const BEHAVIOR_GROUPS: traderPatternModel.BehaviorType[][] = [
+const BEHAVIOR_GROUPS: interfaces.traderPatternModel.BehaviorType[][] = [
   [
     'priceDailyIncreaseBuy',
     'priceDailyDecreaseBuy',
@@ -246,7 +245,7 @@ const BEHAVIOR_GROUPS: traderPatternModel.BehaviorType[][] = [
 ]
 
 interface Behavior {
-  type: traderPatternModel.BehaviorType;
+  type: interfaces.traderPatternModel.BehaviorType;
   value: number;
 }
 
@@ -322,7 +321,7 @@ export const getPriceMovementBuyWeights = (
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
-    [key in traderPatternModel.MovementBuyBehavior]: MovementKey
+    [key in interfaces.traderPatternModel.MovementBuyBehavior]: MovementKey
   } = {
     priceDailyIncreaseBuy: 'priceDailyIncrease',
     priceDailyDecreaseBuy: 'priceDailyDecrease',
@@ -373,7 +372,7 @@ export const getPriceMovementBuyWeights = (
   }
 
   const COMPARE_TRIGGERS: {
-    [key in traderPatternModel.CompareBuyBehavior]: CompareKey
+    [key in interfaces.traderPatternModel.CompareBuyBehavior]: CompareKey
   } = {
     gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
@@ -435,7 +434,7 @@ export const getPriceMovementSellWeights = (
   indicatorYearly: indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
-    [key in traderPatternModel.MovementSellBehavior]: MovementKey
+    [key in interfaces.traderPatternModel.MovementSellBehavior]: MovementKey
   } = {
     priceDailyIncreaseSell: 'priceDailyIncrease',
     priceDailyDecreaseSell: 'priceDailyDecrease',
@@ -486,7 +485,7 @@ export const getPriceMovementSellWeights = (
   }
 
   const COMPARE_TRIGGERS: {
-    [key in traderPatternModel.CompareSellBehavior]: CompareKey
+    [key in interfaces.traderPatternModel.CompareSellBehavior]: CompareKey
   } = {
     gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
     gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
@@ -604,11 +603,13 @@ export const groupPatternCouples = (
 }
 
 const pickTradingPatterns = (
-  behaviorTypes: traderPatternModel.BehaviorType[],
+  behaviorTypes: interfaces.traderPatternModel.BehaviorType[],
   first: interfaces.traderPatternModel.Record,
   second: interfaces.traderPatternModel.Record,
 ): Behavior[] => {
-  const allValues = behaviorTypes.reduce((values: Behavior[], type: traderPatternModel.BehaviorType): Behavior[] => {
+  const allValues = behaviorTypes.reduce((
+    values: Behavior[], type: interfaces.traderPatternModel.BehaviorType,
+  ): Behavior[] => {
     if (first[type]) return [...values, { type, value: first[type]! }]
     if (second[type]) return [...values, { type, value: second[type]! }]
     return values

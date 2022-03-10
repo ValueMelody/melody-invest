@@ -8,6 +8,12 @@ body {
   width: 100%;
 }
 
+h4, h5, h6 {
+  font-weight: 500 !important;
+  padding: 0 !important;
+  margin: 0.25rem 0 !important;
+}
+
 .row-between {
   display: flex;
   flex-wrap: wrap;
@@ -16,7 +22,32 @@ body {
   justify-content: space-between;
 }
 
-.column {
+.row-around {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.row-start {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.column-center {
   display: column;
   flex-direction: column;
+  align-items: center;
+}
+
+.click-cursor {
+  cursor: pointer;
+}
+
+.info-cursor {
+  cursor: help;
 }

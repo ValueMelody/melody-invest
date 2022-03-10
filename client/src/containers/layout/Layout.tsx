@@ -1,15 +1,14 @@
 import { FunctionComponent } from 'react'
 import { createUseStyles } from 'react-jss'
-import * as themeConstant from '../../constants/theme'
 import Header from './blocks/Header'
 
-const useStyles = createUseStyles((theme: themeConstant.THEME) => ({
+const useStyles = createUseStyles({
   main: {
-    paddingTop: 50 + theme.SPACING,
-    paddingLeft: theme.SPACING,
-    paddingRight: theme.SPACING,
+    paddingTop: '4rem',
+    paddingLeft: '1rem',
+    paddingRight: '1rem',
   },
-}))
+})
 
 const Layout: FunctionComponent = ({
   children,
