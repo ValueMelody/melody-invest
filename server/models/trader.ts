@@ -2,24 +2,24 @@ import { Knex } from 'knex'
 import * as interfaces from '@interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as generateTool from '../tools/generate'
 
 const convertToRecord = (raw: interfaces.traderModel.Raw): interfaces.traderModel.Record => ({
-  id: raw.id,
-  traderEnvId: raw.traderEnvId,
-  traderPatternId: raw.traderPatternId,
-  isActive: raw.isActive,
-  rebalancedAt: raw.rebalancedAt,
+  ...raw,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
-  estimatedAt: raw.estimatedAt,
-  startedAt: raw.startedAt,
-  totalDays: raw.totalDays,
-  yearlyPercentNumber: raw.yearlyPercentNumber,
-  grossPercentNumber: raw.grossPercentNumber,
-  pastYearPercentNumber: raw.pastYearPercentNumber,
-  pastQuarterPercentNumber: raw.pastQuarterPercentNumber,
-  pastMonthPercentNumber: raw.pastMonthPercentNumber,
-  pastWeekPercentNumber: raw.pastWeekPercentNumber,
 })
+
+export const getByPK = async (
+  id: number,
+): Promise<interfaces.traderModel.Record | null> => {
+  const pattern = await databaseAdapter.findOne({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'id', value: id },
+    ],
+  })
+  return pattern
+}
 
 export const getByUK = async (
   envId: number,
@@ -43,6 +43,13 @@ export const getActives = async (): Promise<interfaces.traderModel.Record[]> => 
     ],
   })
   return traders.map((trader) => convertToRecord(trader))
+}
+
+export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
+  const traders = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+  })
+  return traders
 }
 
 interface Tops {
@@ -125,7 +132,8 @@ export const createOrActive = async (
   traderEnvId: number, traderPatternId: number, transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
-  if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true }, transaction)
+  const accessCode = generateTool.buildAccessHash(16)
+  if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true, accessCode }, transaction)
 
   if (currentRecord.isActive) return currentRecord
 

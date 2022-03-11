@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
-import usePattern from '../../states/usePattern'
+import useResource from '../../states/useResource'
 import PatternsSection, { GAIN_TYPE } from './blocks/PatternsSection'
 import * as localeTool from '../../tools/locale'
 
 const TopPatterns = () => {
-  const { topPatterns, fetchTopPatterns } = usePattern()
+  const { topPatterns, fetchTopPatterns } = useResource()
   console.log(topPatterns)
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => { fetchTopPatterns() }, [])
+  useEffect(() => {
+    if (topPatterns) return
+    fetchTopPatterns()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topPatterns])
 
   if (!topPatterns) return null
 

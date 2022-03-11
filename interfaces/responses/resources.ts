@@ -3,10 +3,10 @@ import * as traderPatternModel from '../models/traderPattern'
 
 export interface TraderWithPattern {
   trader: traderModel.Record;
-  pattern: traderPatternModel.Record;
+  pattern: traderPatternModel.Public;
 }
 
-export interface Top {
+export interface TopPatterns {
   yearly: TraderWithPattern[];
   pastYear: TraderWithPattern[];
   pastQuarter: TraderWithPattern[];

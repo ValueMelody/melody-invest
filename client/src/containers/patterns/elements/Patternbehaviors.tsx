@@ -15,7 +15,7 @@ const useStyles = createUseStyles({
 const PatternBehaviors = ({
   pattern,
 }: {
-  pattern: interfaces.traderPatternModel.Record;
+  pattern: interfaces.traderPatternModel.Public;
 }) => {
   const classes = useStyles()
 

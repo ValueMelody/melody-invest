@@ -1,25 +1,25 @@
 import { useContext } from 'react'
-import { context, Context } from './context'
+import { store, Context } from './context'
 
 const useCommon = () => {
-  const store: Context = useContext(context)
+  const context: Context = useContext(store)
 
   const startLoading = () => {
-    store.setCommon((common) => ({
+    context.setCommon((common) => ({
       ...common,
       isLoading: true,
     }))
   }
 
   const stopLoading = () => {
-    store.setCommon((common) => ({
+    context.setCommon((common) => ({
       ...common,
       isLoading: false,
     }))
   }
 
   return {
-    isLoading: store.common.isLoading,
+    isLoading: context.common.isLoading,
     startLoading,
     stopLoading,
   }

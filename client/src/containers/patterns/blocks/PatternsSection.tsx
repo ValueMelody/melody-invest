@@ -1,13 +1,18 @@
 import { Segment, Header, Label, Menu } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
+import * as routerConstant from '../../../constants/router'
 import * as themeConstant from '../../../constants/theme'
 import PatternBehaviors from '../elements/Patternbehaviors'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
+  section: {
+    alignItems: 'flex-start',
+  },
   pattern: {
     width: '32%',
     marginTop: '0 !important',
@@ -37,19 +42,29 @@ const PatternsSection = ({
 }: {
   title: string;
   gainType: string;
-  traderWithPatterns: interfaces.patternsResponse.TraderWithPattern[];
+  traderWithPatterns: interfaces.resourcesResponse.TraderWithPattern[];
 }) => {
   const classes = useStyles()
+  const navigate = useNavigate()
+
   const gainCellClass = classNames('column-center', classes.gainCell)
+
+  const handleClick = (
+    trader: interfaces.traderModel.Record,
+  ) => {
+    const link = `${routerConstant.NAV.PATTERNS}/${trader.id}/${trader.accessCode}`
+    navigate(link)
+  }
 
   return (
     <Segment>
       <Header as='h4'>{title}</Header>
-      <section className='row-between'>
-        {traderWithPatterns.map(({ pattern, trader }) => (
+      <section className={classNames('row-between', classes.section)} >
+        {traderWithPatterns.map(({ trader, pattern }) => (
           <Segment
-            className={classNames('row-around', classes.pattern)}
             key={trader.id}
+            className={classNames('row-around', 'click-cursor', classes.pattern)}
+            onClick={() => handleClick(trader)}
             padded
           >
             <Label attached='top left' color='blue'>

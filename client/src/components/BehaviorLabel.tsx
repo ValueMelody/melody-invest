@@ -12,7 +12,7 @@ const BehaviorLabel = ({
   className,
   onClick,
 }: {
-  pattern: interfaces.traderPatternModel.Record;
+  pattern: interfaces.traderPatternModel.Public;
   type: interfaces.traderPatternModel.BehaviorType;
   color: SemanticCOLORS;
   className: string;

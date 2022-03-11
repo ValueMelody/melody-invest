@@ -2,8 +2,8 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { ThemeProvider } from 'react-jss'
 import { Loader } from 'semantic-ui-react'
-import { context } from './states/context'
 import Router from './containers/Router'
+import * as context from './states/context'
 import * as localTool from './tools/locale'
 import * as themeConstants from './constants/theme'
 
@@ -13,23 +13,33 @@ import 'semantic-ui-css/semantic.min.css'
 localTool.init()
 
 const App = () => {
-  const [common, setCommon] = useState({
+  const [common, setCommon] = useState<context.Common>({
     isLoading: false,
   })
+
+  const [resources, setResources] = useState<context.Resources>({
+    topPatterns: null,
+  })
+
+  const [traders, setTraders] = useState<context.Traders>({})
 
   const states = {
     common,
     setCommon,
+    resources,
+    setResources,
+    traders,
+    setTraders,
   }
 
   return (
     <React.StrictMode>
       <Loader active={common.isLoading} size='large' />
-      <context.Provider value={states}>
+      <context.store.Provider value={states}>
         <ThemeProvider theme={themeConstants.BASIC}>
           <Router />
         </ThemeProvider>
-      </context.Provider>
+      </context.store.Provider>
     </React.StrictMode>
   )
 }

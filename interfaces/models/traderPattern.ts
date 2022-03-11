@@ -1,6 +1,5 @@
-export interface Record {
+export interface Public {
   id: number;
-  hashCode: string;
   priceDailyIncreaseBuy: number | null;
   priceDailyIncreaseSell: number | null;
   priceDailyDecreaseBuy: number | null;
@@ -114,6 +113,10 @@ export interface Record {
   gdpQuarterlyYoYChangeBelowSell: number | null;
   buyPreference: number;
   sellPreference: number;
+}
+
+export interface Record extends Public {
+  hashCode: string;
 }
 
 export interface Create {
