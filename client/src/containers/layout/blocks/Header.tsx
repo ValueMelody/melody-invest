@@ -25,7 +25,7 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerConstant.NAV.TOP_PATTERNS}>
+        <Link to={routerConstant.NAV.TOP_TRADERS}>
           <Label>
             <Icon name='chart line' />
             {localeTool.t('topPatterns.title')}

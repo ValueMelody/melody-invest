@@ -1,49 +1,48 @@
 import { useEffect } from 'react'
-import useResource from '../../states/useResource'
-import PatternsSection, { GAIN_TYPE } from './blocks/PatternsSection'
+import useTrader from '../../states/useTrader'
+import TraderSection, { GAIN_TYPE } from './blocks/TraderSection'
 import * as localeTool from '../../tools/locale'
 
-const TopPatterns = () => {
-  const { topPatterns, fetchTopPatterns } = useResource()
-  console.log(topPatterns)
+const TopTraders = () => {
+  const { topTraders, fetchTopTraders } = useTrader()
 
   useEffect(() => {
-    if (topPatterns) return
-    fetchTopPatterns()
+    if (topTraders) return
+    fetchTopTraders()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topPatterns])
+  }, [topTraders])
 
-  if (!topPatterns) return null
+  if (!topTraders) return null
 
   return (
     <div>
-      <PatternsSection
+      <TraderSection
         title={localeTool.t('topPatterns.titleYearly')}
         gainType={GAIN_TYPE.YEARLY}
-        traderWithPatterns={topPatterns.yearly}
+        traderWithPatterns={topTraders.yearly}
       />
-      <PatternsSection
+      <TraderSection
         title={localeTool.t('topPatterns.titlePastYear')}
         gainType={GAIN_TYPE.PAST_YEAR}
-        traderWithPatterns={topPatterns.pastYear}
+        traderWithPatterns={topTraders.pastYear}
       />
-      <PatternsSection
+      <TraderSection
         title={localeTool.t('topPatterns.titlePastQuarter')}
         gainType={GAIN_TYPE.PAST_QUARTER}
-        traderWithPatterns={topPatterns.pastQuarter}
+        traderWithPatterns={topTraders.pastQuarter}
       />
-      <PatternsSection
+      <TraderSection
         title={localeTool.t('topPatterns.titlePastMonth')}
         gainType={GAIN_TYPE.PAST_MONTH}
-        traderWithPatterns={topPatterns.pastMonth}
+        traderWithPatterns={topTraders.pastMonth}
       />
-      <PatternsSection
+      <TraderSection
         title={localeTool.t('topPatterns.titlePastWeek')}
         gainType={GAIN_TYPE.PAST_WEEK}
-        traderWithPatterns={topPatterns.pastWeek}
+        traderWithPatterns={topTraders.pastWeek}
       />
     </div>
   )
 }
 
-export default TopPatterns
+export default TopTraders

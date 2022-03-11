@@ -35,14 +35,14 @@ export const GAIN_TYPE = {
   PAST_WEEK: 'PAST_WEEK',
 }
 
-const PatternsSection = ({
+const TraderSection = ({
   title,
   gainType,
   traderWithPatterns,
 }: {
   title: string;
   gainType: string;
-  traderWithPatterns: interfaces.resourcesResponse.TraderWithPattern[];
+  traderWithPatterns: interfaces.tradersResponse.TraderSummary[];
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -52,7 +52,7 @@ const PatternsSection = ({
   const handleClick = (
     trader: interfaces.traderModel.Record,
   ) => {
-    const link = `${routerConstant.NAV.PATTERNS}/${trader.id}/${trader.accessCode}`
+    const link = `${routerConstant.NAV.TRADERS}/${trader.id}/${trader.accessCode}`
     navigate(link)
   }
 
@@ -130,4 +130,4 @@ const PatternsSection = ({
   )
 }
 
-export default PatternsSection
+export default TraderSection

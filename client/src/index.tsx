@@ -17,15 +17,24 @@ const App = () => {
     isLoading: false,
   })
 
+  const startLoading = () => {
+    setCommon((state) => ({ ...state, isLoading: true }))
+  }
+
+  const stopLoading = () => {
+    setCommon((state) => ({ ...state, isLoading: false }))
+  }
+
   const [resources, setResources] = useState<context.Resources>({
-    topPatterns: null,
+    topTraders: null,
   })
 
   const [traders, setTraders] = useState<context.Traders>({})
 
   const states = {
     common,
-    setCommon,
+    startLoading,
+    stopLoading,
     resources,
     setResources,
     traders,

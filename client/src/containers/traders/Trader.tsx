@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import useTrader from '../../states/useTrader'
 import * as routerConstant from '../../constants/router'
 
-const Pattern = () => {
+const Trader = () => {
   const params = useParams()
   const navigate = useNavigate()
   const { getTrader, fetchTrader } = useTrader()
@@ -11,7 +11,6 @@ const Pattern = () => {
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
   const trader = getTrader(traderId)
-  console.log(trader)
 
   useEffect(() => {
     if (trader) return
@@ -28,4 +27,4 @@ const Pattern = () => {
   )
 }
 
-export default Pattern
+export default Trader
