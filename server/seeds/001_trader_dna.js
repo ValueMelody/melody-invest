@@ -2,6 +2,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
   return knex('trader_pattern').insert([
     {
       hashCode: 'PATTERN001',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceDailyIncreaseBuy: 3,
@@ -16,6 +17,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN002',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceDailyIncreaseSell: 3,
@@ -30,6 +32,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN003',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceWeeklyIncreaseBuy: 2,
@@ -44,6 +47,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN004',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceWeeklyIncreaseSell: 2,
@@ -58,6 +62,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN005',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceMonthlyIncreaseBuy: 2,
@@ -72,6 +77,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN006',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceMonthlyIncreaseSell: 2,
@@ -86,6 +92,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN007',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceQuarterlyIncreaseBuy: 1,
@@ -100,6 +107,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN008',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceQuarterlyIncreaseSell: 1,
@@ -114,6 +122,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN009',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceYearlyIncreaseBuy: 1,
@@ -128,6 +137,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN010',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       priceYearlyIncreaseSell: 1,
@@ -142,6 +152,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN011',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       epsQuarterlyBeatsBuy: 3,
@@ -156,6 +167,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN012',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       epsQuarterlyMissBuy: 3,
@@ -170,6 +182,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN013',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       profitQuarterlyIncreaseBuy: 3,
@@ -184,6 +197,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN014',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       profitQuarterlyDecreaseBuy: 3,
@@ -198,6 +212,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN015',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       incomeQuarterlyIncreaseBuy: 3,
@@ -212,6 +227,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN016',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       incomeQuarterlyDecreaseBuy: 3,
@@ -226,6 +242,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN017',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       revenueQuarterlyIncreaseBuy: 2,
@@ -240,6 +257,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN018',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       revenueQuarterlyDecreaseBuy: 2,
@@ -254,6 +272,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN019',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       profitYearlyIncreaseBuy: 2,
@@ -268,6 +287,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN020',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       profitYearlyDecreaseBuy: 2,
@@ -282,6 +302,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN021',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       incomeYearlyIncreaseBuy: 1,
@@ -296,6 +317,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN022',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       incomeYearlyDecreaseBuy: 1,
@@ -310,6 +332,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN023',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       revenueYearlyIncreaseBuy: 1,
@@ -324,6 +347,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN024',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       revenueYearlyDecreaseBuy: 1,
@@ -338,6 +362,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN025',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       inflationYearlyIncreaseBuy: 1,
@@ -352,6 +377,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN026',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       inflationYearlyDecreaseBuy: 1,
@@ -366,6 +392,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN027',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       fundsRateMonthlyIncreaseBuy: 1,
@@ -380,6 +407,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN028',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       fundsRateMonthlyDecreaseBuy: 1,
@@ -394,6 +422,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN029',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       thirtyYearsTreasuryMonthlyIncreaseBuy: 1,
@@ -408,6 +437,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN030',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       thirtyYearsTreasuryMonthlyDecreaseBuy: 2,
@@ -422,6 +452,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN031',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       tenYearsTreasuryMonthlyIncreaseBuy: 2,
@@ -436,6 +467,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN032',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       tenYearsTreasuryMonthlyDecreaseBuy: 2,
@@ -450,6 +482,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN033',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       inflationMonthlyIncreaseBuy: 2,
@@ -464,6 +497,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN034',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       inflationMonthlyDecreaseBuy: 1,
@@ -478,6 +512,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN035',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       cpiMonthlyIncreaseBuy: 1,
@@ -492,6 +527,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN036',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       cpiMonthlyDecreaseBuy: 1,
@@ -506,6 +542,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN037',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       consumerSentimentMonthlyIncreaseBuy: 2,
@@ -520,6 +557,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN038',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       consumerSentimentMonthlyDecreaseBuy: 2,
@@ -534,6 +572,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN039',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       retailSalesMonthlyIncreaseBuy: 2,
@@ -548,6 +587,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN040',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       retailSalesMonthlyDecreaseBuy: 2,
@@ -562,6 +602,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN041',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       durableGoodsMonthlyIncreaseBuy: 1,
@@ -576,6 +617,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN042',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       durableGoodsMonthlyDecreaseBuy: 1,
@@ -590,6 +632,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN043',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       unemployeementRateMonthlyIncreaseBuy: 1,
@@ -604,6 +647,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN044',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       unemployeementRateMonthlyDecreaseBuy: 1,
@@ -618,6 +662,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN045',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       nonfarmPayrollMonthlyIncreaseBuy: 1,
@@ -632,6 +677,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN046',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       nonfarmPayrollMonthlyDecreaseBuy: 1,
@@ -646,6 +692,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN047',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpYearlyChangeAboveBuy: 1,
@@ -660,6 +707,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN048',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpYearlyChangeAboveSell: 1,
@@ -674,6 +722,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN049',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyChangeAboveBuy: 1,
@@ -688,6 +737,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN050',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyChangeAboveSell: 1,
@@ -702,6 +752,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN051',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyYoYChangeAboveBuy: 2,
@@ -716,6 +767,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
     },
     {
       hashCode: 'PATTERN052',
+      accessCode: '000',
       buyPreference: 1,
       sellPreference: 2,
       gdpQuarterlyYoYChangeAboveSell: 2,

@@ -44,6 +44,12 @@ h4, h5, h6 {
   align-items: center;
 }
 
+.column-top {
+  display: column;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .click-cursor {
   cursor: pointer;
 }

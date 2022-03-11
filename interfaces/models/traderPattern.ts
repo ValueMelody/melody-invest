@@ -1,6 +1,6 @@
-export interface Record {
+export interface Public {
   id: number;
-  hashCode: string;
+  accessCode: string;
   priceDailyIncreaseBuy: number | null;
   priceDailyIncreaseSell: number | null;
   priceDailyDecreaseBuy: number | null;
@@ -116,8 +116,13 @@ export interface Record {
   sellPreference: number;
 }
 
+export interface Record extends Public {
+  hashCode: string;
+}
+
 export interface Create {
   hashCode: string;
+  accessCode: string;
   priceDailyIncreaseBuy: number | null;
   priceDailyIncreaseSell: number | null;
   priceDailyDecreaseBuy: number | null;
@@ -235,6 +240,7 @@ export interface Create {
 
 export interface Update {
   hashCode: string;
+  accessCode: string;
 }
 
 export type MovementBuyBehavior =

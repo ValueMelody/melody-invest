@@ -11,7 +11,8 @@ export const calcHashCode = async () => {
   try {
     await runTool.asyncForEach(patterns, async (pattern: interfaces.traderPatternModel.Record) => {
       const hashCode = patternLogic.getPatternHashCode(pattern)
-      const updatedPattern = await traderPatternModel.update(pattern.id, { hashCode }, transaction)
+      const accessCode = hashCode.substring(0, 10)
+      const updatedPattern = await traderPatternModel.update(pattern.id, { hashCode, accessCode }, transaction)
       return updatedPattern
     })
 
