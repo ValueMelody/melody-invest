@@ -2,6 +2,7 @@ export interface Record {
   id: number;
   traderEnvId: number;
   traderPatternId: number;
+  accessCode: string;
   isActive: boolean;
   rebalancedAt: string;
   totalValue: number | null;
@@ -20,6 +21,7 @@ export interface Raw {
   id: number;
   traderEnvId: number;
   traderPatternId: number;
+  accessCode: string;
   isActive: boolean;
   rebalancedAt: string;
   totalValue: string | null;
@@ -38,9 +40,11 @@ export interface Create {
   traderEnvId: number;
   traderPatternId: number;
   isActive: boolean;
+  accessCode: string;
 }
 
 export interface Update {
+  accessCode?: string;
   isActive?: boolean;
   rebalancedAt?: string;
   totalValue?: number;

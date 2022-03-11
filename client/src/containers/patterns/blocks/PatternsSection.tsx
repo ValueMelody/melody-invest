@@ -51,9 +51,8 @@ const PatternsSection = ({
 
   const handleClick = (
     trader: interfaces.traderModel.Record,
-    pattern: interfaces.traderPatternModel.Public,
   ) => {
-    const link = `${routerConstant.NAV.PATTERNS}/${trader.id}/${pattern.accessCode}`
+    const link = `${routerConstant.NAV.PATTERNS}/${trader.id}/${trader.accessCode}`
     navigate(link)
   }
 
@@ -65,7 +64,7 @@ const PatternsSection = ({
           <Segment
             key={trader.id}
             className={classNames('row-around', 'click-cursor', classes.pattern)}
-            onClick={() => handleClick(trader, pattern)}
+            onClick={() => handleClick(trader)}
             padded
           >
             <Label attached='top left' color='blue'>

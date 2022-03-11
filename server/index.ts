@@ -6,6 +6,7 @@ import { initConnection as initDatabase } from './adapters/database'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
 import resourcesRouter from './routers/resources'
+import tradersRouter from './routers/traders'
 import * as errorEnum from './enums/error'
 
 const app = express()
@@ -23,6 +24,7 @@ initDatabase()
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
 app.use('/resources', resourcesRouter)
+app.use('/traders', tradersRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err)

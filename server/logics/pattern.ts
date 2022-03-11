@@ -638,7 +638,6 @@ export const generatePatternChild = (
 ) => {
   const newChild: interfaces.traderPatternModel.Create = {
     hashCode: '',
-    accessCode: '',
     priceDailyIncreaseBuy: null,
     priceDailyIncreaseSell: null,
     priceDailyDecreaseBuy: null,
@@ -781,7 +780,6 @@ export const generatePatternChild = (
   }
 
   newChild.hashCode = getPatternHashCode(newChild)
-  newChild.accessCode = newChild.hashCode.substring(0, 10)
 
   return newChild
 }
