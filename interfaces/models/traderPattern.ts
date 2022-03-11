@@ -267,6 +267,8 @@ export type CompareBuyBehavior =
   'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
   'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
 
+export type BuyBehavior = MovementBuyBehavior | CompareBuyBehavior
+
 export type MovementSellBehavior =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
   'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
@@ -297,9 +299,10 @@ export type CompareSellBehavior =
   'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
   'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
 
+export type SellBehavior = MovementSellBehavior | CompareSellBehavior
+
 export type BehaviorType =
-  MovementBuyBehavior | MovementSellBehavior |
-  CompareBuyBehavior | CompareSellBehavior |
+  BuyBehavior | SellBehavior |
   'tickerMinPercent' | 'tickerMaxPercent' |
   'holdingBuyPercent' | 'holdingSellPercent' |
   'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |

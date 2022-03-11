@@ -53,7 +53,7 @@ const PatternsSection = ({
             padded
           >
             <Label attached='top left' color='blue'>
-              #{pattern.id}
+              {localeTool.t('common.pattern')}: #{pattern.id}
             </Label>
             <Menu compact>
               <Menu.Item className={classNames(gainCellClass, {
