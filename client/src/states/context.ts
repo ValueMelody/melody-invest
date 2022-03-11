@@ -6,16 +6,17 @@ export interface Common {
 }
 
 export interface Resources {
-  topPatterns: interfaces.resourcesResponse.TopPatterns | null;
+  topTraders: interfaces.tradersResponse.Top | null;
 }
 
 export interface Traders {
-  [key: number]: interfaces.traderPatternModel.Public
+  [key: number]: interfaces.tradersResponse.TraderSummary;
 }
 
 export interface Context {
   common: Common;
-  setCommon: Dispatch<React.SetStateAction<Common>>;
+  startLoading: () => void;
+  stopLoading: () => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
   traders: Traders;

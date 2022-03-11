@@ -5,3 +5,11 @@ export interface TraderSummary {
   trader: traderModel.Record,
   pattern: traderPatternModel.Public,
 }
+
+export interface Top {
+  yearly: TraderSummary[];
+  pastYear: TraderSummary[];
+  pastQuarter: TraderSummary[];
+  pastMonth: TraderSummary[];
+  pastWeek: TraderSummary[];
+}
