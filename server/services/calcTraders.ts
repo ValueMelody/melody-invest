@@ -1,4 +1,4 @@
-import * as interfaces from '@interfaces'
+import * as interfaces from '@shared/interfaces'
 import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
@@ -19,7 +19,7 @@ import * as databaseAdapter from '../adapters/database'
 interface HoldingDetails {
   totalCash: number,
   totalValue: number,
-  holdings: traderHoldingModel.Holding[]
+  holdings: interfaces.traderHoldingModel.Holding[]
 }
 
 interface Target {

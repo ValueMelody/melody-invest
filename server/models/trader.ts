@@ -1,5 +1,5 @@
 import { Knex } from 'knex'
-import * as interfaces from '@interfaces'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as generateTool from '../tools/generate'

@@ -1,11 +1,10 @@
-export interface Record {
+interface Common {
   id: number;
   traderEnvId: number;
   traderPatternId: number;
   accessCode: string;
   isActive: boolean;
   rebalancedAt: string;
-  totalValue: number | null;
   estimatedAt: string | null;
   startedAt: string | null;
   totalDays: number | null;
@@ -17,23 +16,12 @@ export interface Record {
   pastWeekPercentNumber: number | null;
 }
 
-export interface Raw {
-  id: number;
-  traderEnvId: number;
-  traderPatternId: number;
-  accessCode: string;
-  isActive: boolean;
-  rebalancedAt: string;
+export interface Record extends Common {
+  totalValue: number | null;
+}
+
+export interface Raw extends Common {
   totalValue: string | null;
-  estimatedAt: string | null;
-  startedAt: string | null;
-  totalDays: number | null;
-  yearlyPercentNumber: number | null;
-  grossPercentNumber: number | null;
-  pastYearPercentNumber: number | null;
-  pastQuarterPercentNumber: number | null;
-  pastMonthPercentNumber: number | null;
-  pastWeekPercentNumber: number | null;
 }
 
 export interface Create {

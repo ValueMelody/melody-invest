@@ -1,4 +1,4 @@
-import * as interfaces from '@interfaces'
+import * as interfaces from '@shared/interfaces'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderModel from '../models/trader'
 import * as runTool from '../tools/run'

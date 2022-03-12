@@ -1,45 +1,13 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export interface Holding {
-  tickerId: number;
-  shares: number;
-  value: number;
-}
-
-export interface Record {
-  id: string;
-  traderId: number;
-  date: string;
-  totalValue: number;
-  totalCash: number;
-  holdings: Holding[];
-}
-
-interface Raw {
-  id: string;
-  traderId: number;
-  date: string;
-  totalValue: string;
-  totalCash: string;
-  holdings: Holding[];
-}
-
-interface Create {
-  traderId: number;
-  date: string;
-  totalValue: number;
-  totalCash: number;
-  holdings: Holding[];
-}
-
-const convertToRecord = (raw: Raw): Record => {
+const convertToRecord = (
+  raw: interfaces.traderHoldingModel.Raw,
+): interfaces.traderHoldingModel.Record => {
   return {
-    id: raw.id,
-    traderId: raw.traderId,
-    date: raw.date,
-    holdings: raw.holdings,
+    ...raw,
     totalValue: parseInt(raw.totalValue),
     totalCash: parseInt(raw.totalCash),
   }
@@ -47,7 +15,7 @@ const convertToRecord = (raw: Raw): Record => {
 
 export const getLatest = async (
   traderId: number,
-): Promise<Record | null> => {
+): Promise<interfaces.traderHoldingModel.Record | null> => {
   const record = await databaseAdapter.findOne({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
     conditions: [
@@ -58,9 +26,23 @@ export const getLatest = async (
   return record ? convertToRecord(record) : null
 }
 
+export const getAll = async (
+  traderId: number,
+): Promise<interfaces.traderHoldingModel.Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER_HOLDING,
+    conditions: [
+      { key: 'traderId', value: traderId },
+    ],
+    orderBy: [{ column: 'date', order: 'asc' }],
+  })
+  return records.map((raw) => convertToRecord(raw))
+}
+
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.traderHoldingModel.Create,
+  transaction: Knex.Transaction,
+): Promise<interfaces.traderHoldingModel.Record> => {
   const newRecords = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
     values: {
