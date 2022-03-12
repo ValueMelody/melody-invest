@@ -1,4 +1,4 @@
-import * as interfaces from '@interfaces'
+import * as interfaces from '@shared/interfaces'
 import * as patternEnums from '../enums/pattern'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'

@@ -1,31 +1,31 @@
 import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
-import { store, Context } from './context'
+import { context, Context } from './context'
 import * as requestAdpater from '../adapters/request'
 import * as routerConstant from '../constants/router'
 
 const useTraderProfile = () => {
-  const context: Context = useContext(store)
+  const store: Context = useContext(context)
 
   const getTraderProfile = (id: number | null) => {
     if (!id) return null
-    return context.traderProfiles[id] || null
+    return store.traderProfiles[id] || null
   }
 
   const storeTraderProfile = (profile: interfaces.traderProfileRes.TraderProfile) => {
-    context.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
+    store.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
   }
 
   const fetchTraderProfile = async (id: number, accessCode: string) => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}`
-    context.startLoading()
+    store.startLoading()
     const profile = await requestAdpater.sendGetRequest(endpoint)
     storeTraderProfile(profile)
-    context.stopLoading()
+    store.stopLoading()
   }
 
   const storeTopProfiles = (topProfiles: interfaces.traderProfileRes.TopProfiles) => {
-    context.setResources((resources) => ({ ...resources, topProfiles }))
+    store.setResources((resources) => ({ ...resources, topProfiles }))
     const profiles = [
       ...topProfiles.yearly,
       ...topProfiles.pastYear, ...topProfiles.pastQuarter,
@@ -34,21 +34,36 @@ const useTraderProfile = () => {
     const traderProfiles = profiles.reduce((traderProfiles, profile) => {
       return { ...traderProfiles, [profile.trader.id]: profile }
     }, {})
-    context.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
   }
 
   const fetchTopProfiles = async () => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/top`
-    context.startLoading()
+    store.startLoading()
     const traders = await requestAdpater.sendGetRequest(endpoint)
-    context.stopLoading()
+    store.stopLoading()
     storeTopProfiles(traders)
+  }
+
+  const getProfileHoldings = (id: number | null) => {
+    if (!id) return null
+    return store.profileHoldings[id] || null
+  }
+
+  const fetchProfileHoldings = async (id: number, accessCode: string) => {
+    const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
+    store.startLoading()
+    const holdings = await requestAdpater.sendGetRequest(endpoint)
+    console.log(holdings)
+    store.stopLoading()
   }
 
   return {
     getTraderProfile,
     fetchTraderProfile,
-    topProfiles: context.resources.topProfiles,
+    getProfileHoldings,
+    fetchProfileHoldings,
+    topProfiles: store.resources.topProfiles,
     fetchTopProfiles,
   }
 }

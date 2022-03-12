@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
+import * as traderHoldingModel from '../models/traderHolding'
 import * as errorEnum from '../enums/error'
 
 export const getTraderStat = async (
@@ -18,6 +19,16 @@ export const getTraderStat = async (
     trader,
     pattern: patternPublic,
   }
+}
+
+export const getTraderHoldings = async (
+  id: number, accessCode: string,
+): Promise<interfaces.traderHoldingModel.Record[]> => {
+  const trader = await traderModel.getByPK(id)
+  if (!trader || trader.accessCode !== accessCode) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+
+  const holdings = await traderHoldingModel.getAll(trader.id)
+  return holdings
 }
 
 const combineTraderAndPattern = (
