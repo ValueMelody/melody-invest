@@ -8,17 +8,11 @@ export type MovementKey =
   'profitYearlyIncrease' | 'profitYearlyDecrease' |
   'revenueYearlyIncrease' | 'revenueYearlyDecrease'
 
-export interface Record {
+interface Common {
   id: number;
   tickerId: number;
   year: string;
   earningDate: string | null;
-  eps: number | null;
-  ebitda: number | null;
-  netIncome: number | null;
-  grossProfit: number | null;
-  totalRevenue: number | null;
-  costOfRevenue: number | null;
   profitYearlyIncrease: number | null;
   profitYearlyDecrease: number | null;
   revenueYearlyIncrease: number | null;
@@ -27,23 +21,22 @@ export interface Record {
   incomeYearlyDecrease: number | null;
 }
 
-interface Raw {
-  id: number;
-  tickerId: number;
-  year: string;
-  earningDate: string | null;
+export interface Record extends Common {
+  eps: number | null;
+  ebitda: number | null;
+  netIncome: number | null;
+  grossProfit: number | null;
+  totalRevenue: number | null;
+  costOfRevenue: number | null;
+}
+
+interface Raw extends Common {
   eps: string | null;
   ebitda: string | null;
   netIncome: string | null;
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
-  profitYearlyIncrease: number | null;
-  profitYearlyDecrease: number | null;
-  revenueYearlyIncrease: number | null;
-  revenueYearlyDecrease: number | null;
-  incomeYearlyIncrease: number | null;
-  incomeYearlyDecrease: number | null;
 }
 
 interface Create {
@@ -75,22 +68,13 @@ interface Update {
 }
 
 const convertToRecord = (raw: Raw): Record => ({
-  id: raw.id,
-  tickerId: raw.tickerId,
-  year: raw.year,
-  earningDate: raw.earningDate,
+  ...raw,
   eps: raw.eps ? parseFloat(raw.eps) : null,
   ebitda: raw.ebitda ? parseInt(raw.ebitda) : null,
   netIncome: raw.netIncome ? parseInt(raw.netIncome) : null,
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
-  profitYearlyIncrease: raw.profitYearlyIncrease,
-  profitYearlyDecrease: raw.profitYearlyDecrease,
-  revenueYearlyIncrease: raw.revenueYearlyIncrease,
-  revenueYearlyDecrease: raw.revenueYearlyDecrease,
-  incomeYearlyIncrease: raw.incomeYearlyIncrease,
-  incomeYearlyDecrease: raw.incomeYearlyDecrease,
 })
 
 export const getLatest = async (

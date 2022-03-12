@@ -9,24 +9,23 @@ export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
 
 export type CompareKey = 'gdpYearlyChangePercent'
 
-export interface Record {
+interface Common {
   id: number;
   year: string;
-  realGDP: number | null;
-  inflation: number | null;
-  gdpYearlyChangePercent: number | null;
   inflationYearlyIncrease: number | null;
   inflationYearlyDecrease: number | null;
 }
 
-interface Raw {
-  id: number;
-  year: string;
+export interface Record extends Common {
+  realGDP: number | null;
+  inflation: number | null;
+  gdpYearlyChangePercent: number | null;
+}
+
+interface Raw extends Common {
   realGDP: string | null;
   inflation: string | null;
   gdpYearlyChangePercent: string | null;
-  inflationYearlyIncrease: number | null;
-  inflationYearlyDecrease: number | null;
 }
 
 interface Create {
@@ -44,13 +43,10 @@ interface Update {
 }
 
 const convertToRecord = (raw: Raw): Record => ({
-  id: raw.id,
-  year: raw.year,
+  ...raw,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
   gdpYearlyChangePercent: raw.gdpYearlyChangePercent ? parseFloat(raw.gdpYearlyChangePercent) : null,
-  inflationYearlyIncrease: raw.inflationYearlyIncrease,
-  inflationYearlyDecrease: raw.inflationYearlyDecrease,
 })
 
 export const getByUK = async (

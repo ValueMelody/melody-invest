@@ -9,19 +9,13 @@ export type MovementKey =
   'priceQuarterlyIncrease' | 'priceQuarterlyDecrease' |
   'priceYearlyIncrease' | 'priceYearlyDecrease'
 
-export interface Record {
+interface Common {
   id: number;
   tickerId: number;
   date: string;
   volume: number;
-  closePrice: number;
   splitCoefficient: string;
   dividendPercent: string;
-  adjustedClosePrice: number;
-  weeklyAveragePrice: number | null;
-  monthlyAveragePrice: number | null;
-  quarterlyAveragePrice: number | null;
-  yearlyAveragePrice: number | null;
   priceDailyIncrease: number | null;
   priceDailyDecrease: number | null;
   priceWeeklyIncrease: number | null;
@@ -34,29 +28,22 @@ export interface Record {
   priceYearlyDecrease: number | null;
 }
 
-interface Raw {
-  id: number;
-  tickerId: number;
-  date: string;
-  volume: number;
+export interface Record extends Common {
+  closePrice: number;
+  adjustedClosePrice: number;
+  weeklyAveragePrice: number | null;
+  monthlyAveragePrice: number | null;
+  quarterlyAveragePrice: number | null;
+  yearlyAveragePrice: number | null;
+}
+
+interface Raw extends Common {
   closePrice: string;
-  splitCoefficient: string;
-  dividendPercent: string;
   adjustedClosePrice: string;
   weeklyAveragePrice: string | null;
   monthlyAveragePrice: string | null;
   quarterlyAveragePrice: string | null;
   yearlyAveragePrice: string | null;
-  priceDailyIncrease: number | null;
-  priceDailyDecrease: number | null;
-  priceWeeklyIncrease: number | null;
-  priceWeeklyDecrease: number | null;
-  priceMonthlyIncrease: number | null;
-  priceMonthlyDecrease: number | null;
-  priceQuarterlyIncrease: number | null;
-  priceQuarterlyDecrease: number | null;
-  priceYearlyIncrease: number | null;
-  priceYearlyDecrease: number | null;
 }
 
 interface Create {
@@ -87,28 +74,13 @@ interface Update {
 }
 
 const convertToRecord = (raw: Raw): Record => ({
-  id: raw.id,
-  tickerId: raw.tickerId,
-  date: raw.date,
-  volume: raw.volume,
+  ...raw,
   closePrice: parseFloat(raw.closePrice),
-  splitCoefficient: raw.splitCoefficient,
-  dividendPercent: raw.dividendPercent,
   adjustedClosePrice: parseInt(raw.adjustedClosePrice),
   weeklyAveragePrice: raw.weeklyAveragePrice ? parseInt(raw.weeklyAveragePrice) : null,
   monthlyAveragePrice: raw.monthlyAveragePrice ? parseInt(raw.monthlyAveragePrice) : null,
   quarterlyAveragePrice: raw.quarterlyAveragePrice ? parseInt(raw.quarterlyAveragePrice) : null,
   yearlyAveragePrice: raw.yearlyAveragePrice ? parseInt(raw.yearlyAveragePrice) : null,
-  priceDailyIncrease: raw.priceDailyIncrease,
-  priceDailyDecrease: raw.priceDailyDecrease,
-  priceWeeklyIncrease: raw.priceWeeklyIncrease,
-  priceWeeklyDecrease: raw.priceWeeklyDecrease,
-  priceMonthlyIncrease: raw.priceMonthlyIncrease,
-  priceMonthlyDecrease: raw.priceMonthlyDecrease,
-  priceQuarterlyIncrease: raw.priceQuarterlyIncrease,
-  priceQuarterlyDecrease: raw.priceQuarterlyDecrease,
-  priceYearlyIncrease: raw.priceYearlyIncrease,
-  priceYearlyDecrease: raw.priceYearlyDecrease,
 })
 
 export const getByUK = async (
