@@ -2,12 +2,14 @@
   "translation": {
     "common.pattern": "Pattern",
 
-    "top.title": "Top Performance",
+    "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
     "top.pastYear.title": "Past year",
     "top.pastQuarter.title": "Past Quarter",
     "top.pastMonth.title": "Past Month",
     "top.pastWeek.title": "Past Week",
+
+    "profile.history": "Holding History",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",
