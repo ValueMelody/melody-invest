@@ -20,19 +20,9 @@ export type MovementKey =
   'unemployeementRateMonthlyIncrease' | 'unemployeementRateMonthlyDecrease' |
   'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
 
-export interface Record {
+interface Common {
   id: number;
   month: string;
-  fundsRate: number | null;
-  cpi: number | null;
-  tenYearsTreasury: number | null;
-  thirtyYearsTreasury: number | null;
-  inflationExpectation: number | null;
-  consumerSentiment: number | null;
-  retailSales: number | null;
-  durableGoods: number | null;
-  unemploymentRate: number | null;
-  nonfarmPayroll: number | null;
   fundsRateMonthlyIncrease: number | null;
   fundsRateMonthlyDecrease: number | null;
   thirtyYearsTreasuryMonthlyIncrease: number | null;
@@ -55,9 +45,20 @@ export interface Record {
   nonfarmPayrollMonthlyDecrease: number | null;
 }
 
-export interface Raw {
-  id: number;
-  month: string;
+export interface Record extends Common {
+  fundsRate: number | null;
+  cpi: number | null;
+  tenYearsTreasury: number | null;
+  thirtyYearsTreasury: number | null;
+  inflationExpectation: number | null;
+  consumerSentiment: number | null;
+  retailSales: number | null;
+  durableGoods: number | null;
+  unemploymentRate: number | null;
+  nonfarmPayroll: number | null;
+}
+
+export interface Raw extends Common {
   fundsRate: string | null;
   cpi: string | null;
   tenYearsTreasury: string | null;
@@ -68,26 +69,6 @@ export interface Raw {
   durableGoods: string | null;
   unemploymentRate: string | null;
   nonfarmPayroll: string | null;
-  fundsRateMonthlyIncrease: number | null;
-  fundsRateMonthlyDecrease: number | null;
-  thirtyYearsTreasuryMonthlyIncrease: number | null;
-  thirtyYearsTreasuryMonthlyDecrease: number | null;
-  tenYearsTreasuryMonthlyIncrease: number | null;
-  tenYearsTreasuryMonthlyDecrease: number | null;
-  inflationMonthlyIncrease: number | null;
-  inflationMonthlyDecrease: number | null;
-  cpiMonthlyIncrease: number | null;
-  cpiMonthlyDecrease: number | null;
-  consumerSentimentMonthlyIncrease: number | null;
-  consumerSentimentMonthlyDecrease: number | null;
-  retailSalesMonthlyIncrease: number | null;
-  retailSalesMonthlyDecrease: number | null;
-  durableGoodsMonthlyIncrease: number | null;
-  durableGoodsMonthlyDecrease: number | null;
-  unemployeementRateMonthlyIncrease: number | null;
-  unemployeementRateMonthlyDecrease: number | null;
-  nonfarmPayrollMonthlyIncrease: number | null;
-  nonfarmPayrollMonthlyDecrease: number | null;
 }
 
 interface Create {
@@ -138,8 +119,7 @@ interface Update {
 }
 
 const convertToRecord = (raw: Raw): Record => ({
-  id: raw.id,
-  month: raw.month,
+  ...raw,
   fundsRate: raw.fundsRate ? parseFloat(raw.fundsRate) : null,
   cpi: raw.cpi ? parseFloat(raw.cpi) : null,
   tenYearsTreasury: raw.tenYearsTreasury ? parseFloat(raw.tenYearsTreasury) : null,
@@ -150,26 +130,6 @@ const convertToRecord = (raw: Raw): Record => ({
   durableGoods: raw.durableGoods ? parseInt(raw.durableGoods) : null,
   unemploymentRate: raw.unemploymentRate ? parseFloat(raw.unemploymentRate) : null,
   nonfarmPayroll: raw.nonfarmPayroll ? parseInt(raw.nonfarmPayroll) : null,
-  fundsRateMonthlyIncrease: raw.fundsRateMonthlyIncrease,
-  fundsRateMonthlyDecrease: raw.fundsRateMonthlyDecrease,
-  thirtyYearsTreasuryMonthlyIncrease: raw.thirtyYearsTreasuryMonthlyIncrease,
-  thirtyYearsTreasuryMonthlyDecrease: raw.thirtyYearsTreasuryMonthlyDecrease,
-  tenYearsTreasuryMonthlyIncrease: raw.tenYearsTreasuryMonthlyIncrease,
-  tenYearsTreasuryMonthlyDecrease: raw.tenYearsTreasuryMonthlyDecrease,
-  inflationMonthlyIncrease: raw.inflationMonthlyIncrease,
-  inflationMonthlyDecrease: raw.inflationMonthlyDecrease,
-  cpiMonthlyIncrease: raw.cpiMonthlyIncrease,
-  cpiMonthlyDecrease: raw.cpiMonthlyDecrease,
-  consumerSentimentMonthlyIncrease: raw.consumerSentimentMonthlyIncrease,
-  consumerSentimentMonthlyDecrease: raw.consumerSentimentMonthlyDecrease,
-  retailSalesMonthlyIncrease: raw.retailSalesMonthlyIncrease,
-  retailSalesMonthlyDecrease: raw.retailSalesMonthlyDecrease,
-  durableGoodsMonthlyIncrease: raw.durableGoodsMonthlyIncrease,
-  durableGoodsMonthlyDecrease: raw.durableGoodsMonthlyDecrease,
-  unemployeementRateMonthlyIncrease: raw.unemployeementRateMonthlyIncrease,
-  unemployeementRateMonthlyDecrease: raw.unemployeementRateMonthlyDecrease,
-  nonfarmPayrollMonthlyIncrease: raw.nonfarmPayrollMonthlyIncrease,
-  nonfarmPayrollMonthlyDecrease: raw.nonfarmPayrollMonthlyDecrease,
 })
 
 export const getByUK = async (

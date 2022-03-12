@@ -9,20 +9,12 @@ export type MovementKey =
   'profitQuarterlyIncrease' | 'profitQuarterlyDecrease' |
   'revenueQuarterlyIncrease' | 'revenueQuarterlyDecrease'
 
-export interface Record {
+interface Common {
   id: number;
   tickerId: number;
   quarter: string;
   earningDate: string | null;
   earningReportDate: string | null;
-  eps: number | null;
-  estimatedEPS: number | null;
-  epsSurprisePercent: number | null;
-  ebitda: number | null;
-  netIncome: number | null;
-  grossProfit: number | null;
-  totalRevenue: number | null;
-  costOfRevenue: number | null;
   epsQuarterlyBeats: number | null;
   epsQuarterlyMiss: number | null;
   profitQuarterlyIncrease: number | null;
@@ -33,12 +25,18 @@ export interface Record {
   incomeQuarterlyDecrease: number | null;
 }
 
-interface Raw {
-  id: number;
-  tickerId: number;
-  quarter: string;
-  earningDate: string | null;
-  earningReportDate: string | null;
+export interface Record extends Common {
+  eps: number | null;
+  estimatedEPS: number | null;
+  epsSurprisePercent: number | null;
+  ebitda: number | null;
+  netIncome: number | null;
+  grossProfit: number | null;
+  totalRevenue: number | null;
+  costOfRevenue: number | null;
+}
+
+interface Raw extends Common {
   eps: string | null;
   estimatedEPS: string | null;
   epsSurprisePercent: string | null;
@@ -47,14 +45,6 @@ interface Raw {
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
-  epsQuarterlyBeats: number | null;
-  epsQuarterlyMiss: number | null;
-  profitQuarterlyIncrease: number | null;
-  profitQuarterlyDecrease: number | null;
-  revenueQuarterlyIncrease: number | null;
-  revenueQuarterlyDecrease: number | null;
-  incomeQuarterlyIncrease: number | null;
-  incomeQuarterlyDecrease: number | null;
 }
 
 interface Create {
@@ -94,11 +84,7 @@ interface Update {
 }
 
 const convertToRecord = (raw: Raw): Record => ({
-  id: raw.id,
-  tickerId: raw.tickerId,
-  quarter: raw.quarter,
-  earningDate: raw.earningDate,
-  earningReportDate: raw.earningReportDate,
+  ...raw,
   eps: raw.eps ? parseFloat(raw.eps) : null,
   estimatedEPS: raw.estimatedEPS ? parseFloat(raw.estimatedEPS) : null,
   epsSurprisePercent: raw.epsSurprisePercent ? parseFloat(raw.epsSurprisePercent) : null,
@@ -107,14 +93,6 @@ const convertToRecord = (raw: Raw): Record => ({
   grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
   totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
-  epsQuarterlyBeats: raw.epsQuarterlyBeats,
-  epsQuarterlyMiss: raw.epsQuarterlyMiss,
-  profitQuarterlyIncrease: raw.profitQuarterlyIncrease,
-  profitQuarterlyDecrease: raw.profitQuarterlyDecrease,
-  revenueQuarterlyIncrease: raw.revenueQuarterlyIncrease,
-  revenueQuarterlyDecrease: raw.revenueQuarterlyDecrease,
-  incomeQuarterlyIncrease: raw.incomeQuarterlyIncrease,
-  incomeQuarterlyDecrease: raw.incomeQuarterlyDecrease,
 })
 
 export const getByUK = async (
