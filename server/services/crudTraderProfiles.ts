@@ -3,9 +3,9 @@ import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 import * as errorEnum from '../enums/error'
 
-export const getTrader = async (
-  id: number, accessCode: string
-): Promise<interfaces.tradersResponse.TraderSummary> => {
+export const getTraderStat = async (
+  id: number, accessCode: string,
+): Promise<interfaces.traderProfileRes.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.HTTP_ERRORS.FORBIDDEN
 
@@ -28,7 +28,7 @@ const combineTraderAndPattern = (
   return { trader, pattern: matchedPattern }
 }
 
-export const getTopPatterns = async (): Promise<interfaces.tradersResponse.Top> => {
+export const getTopPatterns = async (): Promise<interfaces.traderProfileRes.TopProfiles> => {
   const tops = await traderModel.getTops(15)
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatternIds = topTraders.map((trader) => trader.traderPatternId)

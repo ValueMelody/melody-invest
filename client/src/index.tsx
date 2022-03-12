@@ -26,10 +26,10 @@ const App = () => {
   }
 
   const [resources, setResources] = useState<context.Resources>({
-    topTraders: null,
+    topProfiles: null,
   })
 
-  const [traders, setTraders] = useState<context.Traders>({})
+  const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
 
   const states = {
     common,
@@ -37,8 +37,8 @@ const App = () => {
     stopLoading,
     resources,
     setResources,
-    traders,
-    setTraders,
+    traderProfiles,
+    setTraderProfiles,
   }
 
   return (

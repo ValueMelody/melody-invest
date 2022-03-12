@@ -2,12 +2,12 @@
   "translation": {
     "common.pattern": "Pattern",
 
-    "topPatterns.title": "Top Patterns",
-    "topPatterns.titleYearly": "All Time",
-    "topPatterns.titlePastYear": "Past year",
-    "topPatterns.titlePastQuarter": "Past Quarter",
-    "topPatterns.titlePastMonth": "Past Month",
-    "topPatterns.titlePastWeek": "Past Week",
+    "top.title": "Top Performance",
+    "top.yearly.title": "All Time",
+    "top.pastYear.title": "Past year",
+    "top.pastQuarter.title": "Past Quarter",
+    "top.pastMonth.title": "Past Month",
+    "top.pastWeek.title": "Past Week",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",

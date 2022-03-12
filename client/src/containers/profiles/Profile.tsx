@@ -1,28 +1,34 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import useTrader from '../../states/useTrader'
+import useTrader from '../../states/useTraderProfile'
 import * as routerConstant from '../../constants/router'
+import TraderSummary from './blocks/TraderStats'
 
 const Trader = () => {
   const params = useParams()
   const navigate = useNavigate()
-  const { getTrader, fetchTrader } = useTrader()
+  const { getTraderProfile, fetchTraderProfile } = useTrader()
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
-  const trader = getTrader(traderId)
+  const traderProfile = getTraderProfile(traderId)
 
   useEffect(() => {
-    if (trader) return
+    if (traderProfile) return
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerConstant.NAV.NOT_FOUND)
-    fetchTrader(traderId!, accessCode!)
+    fetchTraderProfile(traderId!, accessCode!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [trader])
+  }, [traderProfile])
+
+  if (!traderProfile) return null
 
   return (
     <div>
-      123
+      <TraderSummary
+        trader={traderProfile.trader}
+        pattern={traderProfile.pattern}
+      />
     </div>
   )
 }
