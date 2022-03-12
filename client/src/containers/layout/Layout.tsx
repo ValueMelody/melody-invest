@@ -4,9 +4,9 @@ import Header from './blocks/Header'
 
 const useStyles = createUseStyles({
   main: {
-    paddingTop: '4rem',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
+    paddingTop: '4.5rem',
+    paddingLeft: '1.5rem',
+    paddingRight: '1.5rem',
   },
 })
 

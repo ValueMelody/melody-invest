@@ -6,11 +6,11 @@ export interface Common {
 }
 
 export interface Resources {
-  topTraders: interfaces.tradersResponse.Top | null;
+  topProfiles: interfaces.traderProfileRes.TopProfiles | null;
 }
 
-export interface Traders {
-  [key: number]: interfaces.tradersResponse.TraderSummary;
+export interface TraderProfiles {
+  [key: number]: interfaces.traderProfileRes.TraderProfile;
 }
 
 export interface Context {
@@ -19,8 +19,8 @@ export interface Context {
   stopLoading: () => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
-  traders: Traders;
-  setTraders: Dispatch<React.SetStateAction<Traders>>;
+  traderProfiles: TraderProfiles;
+  setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
 }
 
 // @ts-ignore

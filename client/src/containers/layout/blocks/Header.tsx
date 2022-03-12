@@ -25,10 +25,10 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerConstant.NAV.TOP_TRADERS}>
+        <Link to={routerConstant.NAV.TOP_PROFILES}>
           <Label>
             <Icon name='chart line' />
-            {localeTool.t('topPatterns.title')}
+            {localeTool.t('top.title')}
           </Label>
         </Link>
       </nav>
