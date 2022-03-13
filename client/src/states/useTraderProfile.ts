@@ -38,9 +38,10 @@ const useTraderProfile = () => {
   }
 
   const fetchTopProfiles = async () => {
-    const endpoint = `${routerConstant.API.TRADER_PROFILES}/top`
+    const endpoint = `${routerConstant.API.TRADER_PROFILES}/tops`
     store.startLoading()
     const traders = await requestAdpater.sendGetRequest(endpoint)
+    console.log(traders)
     store.stopLoading()
     storeTopProfiles(traders)
   }

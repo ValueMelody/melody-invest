@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import * as errorEnum from '../enums/error'
 import * as marketAdapter from '../adapters/market'
 import * as dateTool from '../tools/date'
@@ -78,7 +79,7 @@ export const syncPrices = async (
       if (!firstPriceDate) firstPriceDate = date
     })
 
-    const newTickerInfo: tickerModel.Update = {}
+    const newTickerInfo: interfaces.tickerModel.Update = {}
     newTickerInfo.lastPriceDate = lastRefreshed
     if (!ticker.firstPriceDate && firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
 
@@ -95,7 +96,7 @@ export const syncAllPrices = async (date: string) => {
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  await runTool.asyncForEach(allTickers, async (ticker: tickerModel.Record) => {
+  await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     const isDateSynced = ticker.lastPriceDate && ticker.lastPriceDate >= date
     if (isDateSynced) return
     await syncPrices(ticker.region, ticker.symbol)
@@ -213,7 +214,7 @@ export const syncEarnings = async (
       }
     })
 
-    const newTickerInfo: tickerModel.Update = {}
+    const newTickerInfo: interfaces.tickerModel.Update = {}
     if (relatedYearly.length) {
       newTickerInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
       if (!ticker.firstEPSYear || forceRecheck) newTickerInfo.firstEPSYear = relatedYearly[0].year
@@ -240,7 +241,7 @@ export const syncAllEarnings = async (
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  await runTool.asyncForEach(allTickers, async (ticker: tickerModel.Record) => {
+  await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     const isYearSynced = ticker.lastEPSYear && ticker.lastEPSYear >= year
     const isQuarterSynced = ticker.lastEPSQuarter && ticker.lastEPSQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) return
@@ -353,7 +354,7 @@ export const syncIncomes = async (
       }
     })
 
-    const newTickerInfo: tickerModel.Update = {}
+    const newTickerInfo: interfaces.tickerModel.Update = {}
     if (relatedYearly.length) {
       newTickerInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
       if (!ticker.firstIncomeYear || forceRecheck) newTickerInfo.firstIncomeYear = relatedYearly[0].year
@@ -380,7 +381,7 @@ export const syncAllIncomes = async (
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
-  await runTool.asyncForEach(allTickers, async (ticker: tickerModel.Record) => {
+  await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     const isYearSynced = ticker.lastIncomeYear && ticker.lastIncomeYear >= year
     const isQuarterSynced = ticker.lastIncomeQuarter && ticker.lastIncomeQuarter >= quarter
     if (isYearSynced && isQuarterSynced && !forceRecheck) return

@@ -17,14 +17,14 @@ const App = () => {
   const store = useStore()
 
   return (
-    <React.StrictMode>
+    <>
       <Loader active={store.common.isLoading} size='large' />
       <context.Provider value={store}>
         <ThemeProvider theme={themeConstants.BASIC}>
           <Router />
         </ThemeProvider>
       </context.Provider>
-    </React.StrictMode>
+    </>
   )
 }
 
