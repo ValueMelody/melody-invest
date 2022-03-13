@@ -20,7 +20,7 @@ const App = () => {
     <>
       <Loader active={store.common.isLoading} size='large' />
       <context.Provider value={store}>
-        <ThemeProvider theme={themeConstants.BASIC}>
+        <ThemeProvider theme={themeConstants.theme}>
           <Router />
         </ThemeProvider>
       </context.Provider>

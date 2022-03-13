@@ -3,20 +3,21 @@ import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import useTickerProfile from '../../../states/useTickerProfile'
 import * as localeTool from '../../../tools/locale'
+import * as themeConstant from '../../../constants/theme'
 import classNames from 'classnames'
 
-const useStyles = createUseStyles(({
+const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   ticker: {
     margin: '0.5rem !important',
   },
   differ: {
     marginLeft: '0.5rem',
   },
-  green: {
-    color: 'green',
+  increaseColor: {
+    color: theme.INCREASE_COLOR,
   },
-  red: {
-    color: 'red',
+  decreaseColor: {
+    color: theme.DECREASE_COLOR,
   },
 }))
 
@@ -45,8 +46,8 @@ const HoldingShare = ({
       {!!shareDiffer && (
         <span
           className={classNames(classes.differ, {
-            [classes.green]: shareDiffer > 0,
-            [classes.red]: shareDiffer < 0,
+            [classes.increaseColor]: shareDiffer > 0,
+            [classes.decreaseColor]: shareDiffer < 0,
           })}
         >
           {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)}
