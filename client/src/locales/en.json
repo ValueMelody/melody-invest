@@ -5,6 +5,7 @@
     "common.cash": "Cash",
     "common.totalValue": "Total Value",
     "common.showAll": "Show All",
+    "common.shares": "shares",
 
     "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
@@ -14,6 +15,8 @@
     "top.pastWeek.title": "Past Week",
 
     "profile.history": "Holding History",
+    "profile.value.increased": "Total value increased compare to previous",
+    "profile.value.decreased": "Total value decreased compare to previous",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",

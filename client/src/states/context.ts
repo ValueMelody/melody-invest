@@ -5,8 +5,13 @@ export interface Common {
   isLoading: boolean;
 }
 
+interface TickerIdentities {
+  [key: number]: interfaces.tickerProfileRes.TickerIdentity
+}
+
 export interface Resources {
   topProfiles: interfaces.traderProfileRes.TopProfiles | null;
+  tickerIdentities: TickerIdentities | null;
 }
 
 export interface TraderProfiles {

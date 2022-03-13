@@ -5,6 +5,7 @@ import { initConnection as initDatabase } from './adapters/database'
 // import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
+import tickerProfilesRouter from './routers/tickerProfiles'
 import traderProfilesRouter from './routers/traderProfiles'
 import * as errorEnum from './enums/error'
 
@@ -22,6 +23,7 @@ initDatabase()
 
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
+app.use('/ticker-profiles', tickerProfilesRouter)
 app.use('/trader-profiles', traderProfilesRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

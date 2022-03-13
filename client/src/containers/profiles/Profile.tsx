@@ -3,12 +3,14 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
-import useTrader from '../../states/useTraderProfile'
+import useTraderProfile from '../../states/useTraderProfile'
+import useTickerProfile from '../../states/useTickerProfile'
 import * as routerConstant from '../../constants/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
 import TraderStats from './blocks/TraderStats'
 import ValueDiffer from './elements/ValueDiffer'
+import HoldingShare from './elements/HoldingShare'
 
 const useStyles = createUseStyles(({
   container: {
@@ -29,7 +31,8 @@ const Profile = () => {
   const classes = useStyles()
   const {
     getTraderProfile, fetchTraderProfile, getProfileHoldings, fetchProfileHoldings,
-  } = useTrader()
+  } = useTraderProfile()
+  const { tickerIdentities, fetchTickerIdentities } = useTickerProfile()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
@@ -58,6 +61,12 @@ const Profile = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileHoldings])
 
+  useEffect(() => {
+    if (tickerIdentities) return
+    fetchTickerIdentities()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [tickerIdentities])
+
   const handleClickShowAll = () => setShowAllHoldings(true)
 
   if (!traderProfile || !profileHoldings) return null
@@ -84,8 +93,8 @@ const Profile = () => {
               )}
               {index + 1 < holdings.length && (
                 <ValueDiffer
-                  currentHolding={holding}
-                  previousHolding={holdings[index + 1]}
+                  currentValue={holding.totalValue}
+                  previousValue={holdings[index + 1].totalValue}
                 />
               )}
               {holding.totalCash !== null && (
@@ -96,6 +105,13 @@ const Profile = () => {
               )}
             </div>
             <Divider />
+            {holding.holdings.map((tickerHolding) => (
+              <HoldingShare
+                key={tickerHolding.tickerId}
+                tickerHolding={tickerHolding}
+                previousHoldings={holdings[index + 1]?.holdings}
+              />
+            ))}
           </Segment>
         ))}
         {!showAllHoldings && displayedHoldings.length !== holdings.length && (

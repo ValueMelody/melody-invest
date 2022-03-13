@@ -1,8 +1,7 @@
-import { useMemo } from 'react'
 import { Label, Icon } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
-import * as interfaces from '@shared/interfaces'
 import * as parseTool from '../../../tools/parse'
+import * as localeTool from '../../../tools/locale'
 
 const useStyles = createUseStyles(({
   container: {
@@ -14,31 +13,27 @@ const useStyles = createUseStyles(({
 }))
 
 const ValueDiffer = ({
-  currentHolding,
-  previousHolding,
+  currentValue,
+  previousValue,
 }: {
-  currentHolding: interfaces.traderHoldingModel.Record;
-  previousHolding: interfaces.traderHoldingModel.Record;
+  currentValue: number;
+  previousValue: number;
 }) => {
   const classes = useStyles()
 
-  const differ = (currentHolding.totalValue - previousHolding.totalValue) / previousHolding.totalValue
+  const differ = (currentValue - previousValue) / previousValue
+  const isPositive = differ > 0
 
-  const color = useMemo(() => {
-    if (differ > 0) return 'green'
-    if (differ < 0) return 'red'
-    return undefined
-  }, [differ])
+  if (!differ) return null
 
   return (
     <Label
       className={classes.container}
-      color={color}
+      color={isPositive ? 'green' : 'red'}
+      title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
     >
       {parseTool.floatToPercent(differ)}
-      {differ && (
-        <Icon className={classes.icon} name={differ > 0 ? 'level up' : 'level down'} />
-      )}
+      <Icon className={classes.icon} name={isPositive ? 'level up' : 'level down'} />
     </Label>
   )
 }

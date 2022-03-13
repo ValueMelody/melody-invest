@@ -7,5 +7,6 @@ export const NAV = {
 const base = `${process.env.REACT_APP_SERVER_TYPE}://${process.env.REACT_APP_SERVER_HOST}`
 
 export const API = {
+  TICKER_PROFILES: `${base}/ticker-profiles`,
   TRADER_PROFILES: `${base}/trader-profiles`,
 }

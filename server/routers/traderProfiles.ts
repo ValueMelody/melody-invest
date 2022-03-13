@@ -5,7 +5,7 @@ import * as errorEnums from '../enums/error'
 const traderProfilesRouter = Router()
 export default traderProfilesRouter
 
-traderProfilesRouter.get('/top', async (req, res) => {
+traderProfilesRouter.get('/tops', async (req, res) => {
   const patterns = await crudTraderStats.getTopPatterns()
   return res.status(200).send(patterns)
 })
