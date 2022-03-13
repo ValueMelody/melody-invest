@@ -7,6 +7,7 @@ const useStyles = createUseStyles({
     paddingTop: '4.5rem',
     paddingLeft: '1.5rem',
     paddingRight: '1.5rem',
+    paddingBottom: '2rem',
   },
 })
 
