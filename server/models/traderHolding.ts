@@ -34,7 +34,7 @@ export const getAll = async (
     conditions: [
       { key: 'traderId', value: traderId },
     ],
-    orderBy: [{ column: 'date', order: 'asc' }],
+    orderBy: [{ column: 'date', order: 'desc' }],
   })
   return records.map((raw) => convertToRecord(raw))
 }

@@ -23,3 +23,12 @@ export const patternPreference = (value: number | null): string => {
   }
   return ''
 }
+
+export const holdingValue = (value: number | null): string | null => {
+  if (value === null) return null
+  return (value / 10000).toFixed(2)
+}
+
+export const floatToPercent = (value: number): string => {
+  return `${(value * 100).toFixed(2)}%`
+}

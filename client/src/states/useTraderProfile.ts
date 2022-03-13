@@ -50,11 +50,18 @@ const useTraderProfile = () => {
     return store.profileHoldings[id] || null
   }
 
+  const storeProfileHoldings = (
+    traderId: number,
+    holdings: interfaces.traderHoldingModel.Record[],
+  ) => {
+    store.setProfileHoldings((profiles) => ({ ...profiles, [traderId]: holdings }))
+  }
+
   const fetchProfileHoldings = async (id: number, accessCode: string) => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
     store.startLoading()
     const holdings = await requestAdpater.sendGetRequest(endpoint)
-    console.log(holdings)
+    storeProfileHoldings(id, holdings)
     store.stopLoading()
   }
 
