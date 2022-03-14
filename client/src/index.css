@@ -57,3 +57,7 @@ h4, h5, h6 {
 .info-cursor {
   cursor: help;
 }
+
+#root .ui.label > .icon {
+  margin: 0;
+}
