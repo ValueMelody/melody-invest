@@ -6,6 +6,18 @@
     "common.totalValue": "Total Value",
     "common.showAll": "Show All",
     "common.shares": "shares",
+    "common.email": "Email",
+    "common.password": "Password",
+    "common.retypePassword": "Retype Password",
+
+    "error.password.requireSame": "Retype password doesn't match password!",
+    "error.password.requireMin": "Password must include minimum {{num}} characters!",
+    "error.password.requireUpper": "Password must include at least 1 upper case letter!",
+    "error.password.requireLower": "Password must include at least 1 lower case letter!",
+    "error.password.requireSymbol": "Password must include at least 1 symbol!",
+
+    "signUp.title": "Create an account",
+    "signUp.button": "Sign Up",
 
     "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
