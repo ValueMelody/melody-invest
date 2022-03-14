@@ -1,4 +1,6 @@
 export const NAV = {
+  SIGNUP: '/sign-up',
+  SIGNIN: '/sign-in',
   TOP_PROFILES: '/top-profiles',
   PROFILES: '/profiles',
   NOT_FOUND: '/404',

@@ -4,6 +4,7 @@ import * as context from './context'
 const useStore = () => {
   const [common, setCommon] = useState<context.Common>({
     isLoading: false,
+    messages: [],
   })
 
   const startLoading = () => {
@@ -12,6 +13,24 @@ const useStore = () => {
 
   const stopLoading = () => {
     setCommon((state) => ({ ...state, isLoading: false }))
+  }
+
+  const addMessage = (message: context.Message) => {
+    setCommon((state) => {
+      const messages = [...state.messages, message]
+      return { ...state, messages }
+    })
+  }
+
+  const removeMessage = (id: number) => {
+    setCommon((state) => {
+      const messages = state.messages.filter((message) => message.id !== id)
+      return { ...state, messages }
+    })
+  }
+
+  const clearMessages = () => {
+    setCommon((state) => ({ ...state, messages: [] }))
   }
 
   const [resources, setResources] = useState<context.Resources>({
@@ -27,6 +46,9 @@ const useStore = () => {
     common,
     startLoading,
     stopLoading,
+    addMessage,
+    removeMessage,
+    clearMessages,
     resources,
     setResources,
     traderProfiles,

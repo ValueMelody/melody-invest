@@ -1,8 +1,16 @@
 import React, { createContext, Dispatch } from 'react'
 import * as interfaces from '@shared/interfaces'
 
+export interface Message {
+  id: number;
+  type: 'success' | 'info' | 'warning' | 'error';
+  title: string;
+  desc?: string;
+}
+
 export interface Common {
   isLoading: boolean;
+  messages: Message[];
 }
 
 interface TickerIdentities {
@@ -26,6 +34,9 @@ export interface Context {
   common: Common;
   startLoading: () => void;
   stopLoading: () => void;
+  addMessage: (message: Message) => void;
+  removeMessage: (id: number) => void;
+  clearMessages: () => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;

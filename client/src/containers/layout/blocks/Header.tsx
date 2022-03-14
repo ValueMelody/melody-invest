@@ -32,6 +32,13 @@ const Header = () => {
           </Label>
         </Link>
       </nav>
+      <nav>
+        <Link to={routerConstant.NAV.SIGNUP}>
+          <Label>
+            <Icon name='user circle' />
+          </Label>
+        </Link>
+      </nav>
     </header>
   )
 }

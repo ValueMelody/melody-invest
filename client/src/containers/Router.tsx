@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Signup from './auths/Signup'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import Profile from './profiles/Profile'
@@ -9,6 +10,10 @@ const Router = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
+          <Route
+            path={routerConstant.NAV.SIGNUP}
+            element={<Signup />}
+          />
           <Route
             path={routerConstant.NAV.TOP_PROFILES}
             element={<TopProfiles />}
