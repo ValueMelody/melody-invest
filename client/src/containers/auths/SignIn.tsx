@@ -1,13 +1,16 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import { Input, Button, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
 import RequiredLabel from './elements/RequiredLabel'
 import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
+import * as routerConstant from '../../constants/router'
 import useAuth from './useAuth'
 
 const SignIn = () => {
+  const navigate = useNavigate()
   const { clearMessages, addMessage } = useCommon()
   const { classes, getPasswordError } = useAuth()
   const { createUserToken } = useUser()
@@ -40,6 +43,7 @@ const SignIn = () => {
       return
     }
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)
+      .then(() => navigate(routerConstant.NAVS.DASHBOARD))
   }
 
   return (

@@ -27,7 +27,7 @@ const ProfileSection = ({
   const handleClick = (
     trader: interfaces.traderModel.Record,
   ) => {
-    const link = `${routerConstant.NAV.PROFILES}/${trader.id}/${trader.accessCode}`
+    const link = `${routerConstant.NAVS.PROFILES}/${trader.id}/${trader.accessCode}`
     navigate(link)
   }
 

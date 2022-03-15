@@ -3,6 +3,10 @@ import * as localeTool from '../tools/locale'
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://127.0.0.1:3100'
 
+export const setJWTToken = (token: string) => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`
+}
+
 export const sendGetRequest = async (endpoint: string) => {
   try {
     const res = await axios.get(endpoint)

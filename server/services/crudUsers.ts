@@ -4,6 +4,7 @@ import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
 import * as generateTool from '../tools/generate'
 import * as errorEnum from '../enums/error'
+import * as userEnum from '../enums/user'
 
 export const createUser = async (
   email: string, password: string,
@@ -25,6 +26,7 @@ export const createUser = async (
         password: generateTool.buildEncryptedPassword(password),
         activationCode: generateTool.buildActivationCode(),
         activationSentAt: new Date(),
+        type: userEnum.TYPE.NORMAL,
       }, transaction)
     }
 
@@ -46,6 +48,6 @@ export const createUserToken = async (
   if (user.activationCode) throw errorEnum.CUSTOM.USER_NOT_ACTIVATED
 
   const expiresIn = remember ? '30d' : '12h'
-  const token = jwt.sign({ email, password }, process.env.TOKEN_SECRET!, { expiresIn })
-  return { token, expiresIn }
+  const jwtToken = jwt.sign({ email, password }, process.env.TOKEN_SECRET!, { expiresIn })
+  return { jwtToken, expiresIn, userType: user.type }
 }

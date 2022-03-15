@@ -7,6 +7,7 @@ export interface Record {
   activationSentAt: Date | null;
   email: string;
   password: string;
+  type: number;
 }
 
 export interface Create {
@@ -14,6 +15,7 @@ export interface Create {
   activationSentAt: Date;
   email: string;
   password: string;
+  type: number;
 }
 
 export interface Update {
