@@ -36,7 +36,7 @@ const Header = () => {
         </Link>
       </nav>
       <nav>
-        <Link to={routerConstant.NAV.SIGNUP}>
+        <Link to={routerConstant.NAV.SIGN_IN}>
           <Label>
             <Icon name='user circle' />
           </Label>

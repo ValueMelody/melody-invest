@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Signup from './auths/Signup'
+import SignUp from './auths/SignUp'
+import SignIn from './auths/SignIn'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import Profile from './profiles/Profile'
@@ -10,9 +11,13 @@ const Router = () => {
     <BrowserRouter>
       <Layout>
         <Routes>
+        <Route
+            path={routerConstant.NAV.SIGN_IN}
+            element={<SignIn />}
+          />
           <Route
-            path={routerConstant.NAV.SIGNUP}
-            element={<Signup />}
+            path={routerConstant.NAV.SIGN_UP}
+            element={<SignUp />}
           />
           <Route
             path={routerConstant.NAV.TOP_PROFILES}
