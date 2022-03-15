@@ -41,7 +41,6 @@ const Profile = () => {
   const profileHoldings = getProfileHoldings(traderId)
   const holdings = profileHoldings || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
-  console.log(displayedHoldings)
 
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16

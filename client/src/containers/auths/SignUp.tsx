@@ -1,35 +1,14 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
 import { Button, Input, Checkbox } from 'semantic-ui-react'
-import PasswordValidator from 'password-validator'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from '../../tools/locale'
 import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
-import RequiredLabel from '../auths/elements/RequiredLabel'
+import useAuth from './useAuth'
+import RequiredLabel from './elements/RequiredLabel'
 
-const useStyles = createUseStyles(({
-  container: {
-    height: '80vh',
-  },
-  title: {
-    marginBottom: '2rem',
-  },
-  row: {
-    width: 360,
-    marginBottom: '2rem',
-  },
-}))
-
-const Signup = () => {
-  const classes = useStyles()
-  const passwordSchema = new PasswordValidator()
-  passwordSchema
-    .has().min(10, localeTool.t('error.password.requireMin', { num: 10 }))
-    .has().uppercase(1, localeTool.t('error.password.requireUpper'))
-    .has().lowercase(1, localeTool.t('error.password.requireLower'))
-    .has().symbols(1, localeTool.t('error.password.requireSymbol'))
-
+const SignUp = () => {
+  const { classes, getPasswordError } = useAuth()
   const { addMessage, clearMessages } = useCommon()
   const { postUser } = useUser()
 
@@ -59,23 +38,17 @@ const Signup = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    const parsePassword = password.trim()
-    const parseRetypePasswod = retypePassword.trim()
-    let error = ''
-    if (parsePassword !== parseRetypePasswod) {
-      error = localeTool.t('error.password.requireSame')
-    } else {
-      const errors = passwordSchema.validate(password, { list: true, details: true })
-      error = Array.isArray(errors) && errors.length ? errors[0].message : ''
-    }
+    const parsedEmail = email.trim().toLowerCase()
+    const parsedPassword = password.trim()
+    const parsedRetypePasswod = retypePassword.trim()
+    const error = parsedPassword !== parsedRetypePasswod
+      ? localeTool.t('error.password.requireSame')
+      : getPasswordError(parsedPassword)
     if (error) {
-      addMessage({
-        id: Math.random(),
-        type: 'error',
-        title: error,
-      })
+      addMessage({ id: Math.random(), type: 'error', title: error })
+      return
     }
-    await postUser(email, password, isConfirmed)
+    await postUser(parsedEmail, parsedPassword, isConfirmed)
   }
 
   return (
@@ -127,4 +100,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default SignUp

@@ -23,8 +23,13 @@ const useUser = () => {
     }
   }
 
+  const getUserToken = (email: string, password: string) => {
+
+  }
+
   return {
     postUser,
+    getUserToken,
   }
 }
 
