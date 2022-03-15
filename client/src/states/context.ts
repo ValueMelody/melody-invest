@@ -9,6 +9,7 @@ export interface Message {
 }
 
 export interface Common {
+  jwtToken: string;
   isLoading: boolean;
   messages: Message[];
 }
@@ -34,6 +35,7 @@ export interface Context {
   common: Common;
   startLoading: () => void;
   stopLoading: () => void;
+  saveJWTToken: (token: string) => void;
   addMessage: (message: Message) => void;
   removeMessage: (id: number) => void;
   clearMessages: () => void;

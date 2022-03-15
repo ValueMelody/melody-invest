@@ -14,12 +14,14 @@
     "express": "^4.17.1",
     "express-async-errors": "^3.1.1",
     "ioredis": "^4.28.2",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^0.95.13",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
     "qs": "^6.10.1"
   },
   "devDependencies": {
-    "@types/cors": "^2.8.12"
+    "@types/cors": "^2.8.12",
+    "@types/jsonwebtoken": "^8.5.8"
   }
 }

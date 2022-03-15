@@ -23,4 +23,6 @@ export const CUSTOM = {
   PASSWORD_TOO_SHORT: { code: 403, message: 'Password is too short.' },
   EMAIL_TOO_LONG: { code: 403, message: 'Email is too long.' },
   EMAIL_WRONG_FORMAT: { code: 403, message: 'Email format required.' },
+  USER_NOT_FOUND: { code: 404, message: 'Can not find user matches provided email and password' },
+  USER_NOT_ACTIVATED: { code: 403, message: 'User not activated' },
 }

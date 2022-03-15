@@ -23,7 +23,6 @@ const Layout: FunctionComponent = ({
 }) => {
   const classes = useStyles()
   const { messages, removeMessage } = useCommon()
-
   const handleRemoveMessage = (id: number) => removeMessage(id)
 
   return (

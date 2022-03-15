@@ -15,12 +15,14 @@
     "error.password.requireUpper": "Password must include at least 1 upper case letter!",
     "error.password.requireLower": "Password must include at least 1 lower case letter!",
     "error.password.requireSymbol": "Password must include at least 1 symbol!",
-
     "error.500": "Something went wrong, please try again later",
 
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
-    "signup.terms": "By using dioxider, you are agreeing to our terms and conditions.",
+    "signUp.terms": "By using dioxider, you are agreeing to our terms and conditions.",
+    "signIn.remember": "Remember for one month",
+    "signIn.button": "Sign In",
+    "signIn.title": "Sign In",
 
     "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
