@@ -4,6 +4,7 @@ import SignIn from './auths/SignIn'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import Profile from './profiles/Profile'
+import Dashboard from './dashboard/Dashboard'
 import * as routerConstant from '../constants/router'
 
 const Router = () => {
@@ -12,19 +13,23 @@ const Router = () => {
       <Layout>
         <Routes>
         <Route
-            path={routerConstant.NAV.SIGN_IN}
+            path={routerConstant.NAVS.SIGN_IN}
             element={<SignIn />}
           />
           <Route
-            path={routerConstant.NAV.SIGN_UP}
+            path={routerConstant.NAVS.SIGN_UP}
             element={<SignUp />}
           />
           <Route
-            path={routerConstant.NAV.TOP_PROFILES}
+            path={routerConstant.NAVS.DASHBOARD}
+            element={<Dashboard />}
+          />
+          <Route
+            path={routerConstant.NAVS.TOP_PROFILES}
             element={<TopProfiles />}
           />
           <Route
-            path={`${routerConstant.NAV.PROFILES}/:traderId/:accessCode`}
+            path={`${routerConstant.NAVS.PROFILES}/:traderId/:accessCode`}
             element={<Profile />}
           />
         </Routes>

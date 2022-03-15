@@ -1,5 +1,6 @@
 export const KEYS = {
   JWT_TOKEN: 'jwtToken',
+  USER_TYPE: 'userType',
 }
 
 type KeyIndex = keyof typeof KEYS

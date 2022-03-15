@@ -1,18 +1,21 @@
 import { useState } from 'react'
 import * as context from './context'
-import * as storageAdpater from '../adapters/storage'
+import * as storageAdapter from '../adapters/storage'
+import * as requestAdapter from '../adapters/request'
 
-const token = storageAdpater.get(storageAdpater.KEYS.JWT_TOKEN)
+const userType = storageAdapter.get(storageAdapter.KEYS.USER_TYPE)
+const jwtToken = storageAdapter.get(storageAdapter.KEYS.JWT_TOKEN)
+if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
 const useStore = () => {
   const [common, setCommon] = useState<context.Common>({
-    jwtToken: token || '',
+    userType: userType ? parseInt(userType) : 0,
     isLoading: false,
     messages: [],
   })
 
-  const saveJWTToken = (token: string) => {
-    setCommon((state) => ({ ...state, jwtToken: token }))
+  const loadUserType = (type: number) => {
+    setCommon((state) => ({ ...state, userType: type }))
   }
 
   const startLoading = () => {
@@ -61,7 +64,7 @@ const useStore = () => {
 
   return {
     common,
-    saveJWTToken,
+    loadUserType,
     startLoading,
     stopLoading,
     addMessage,

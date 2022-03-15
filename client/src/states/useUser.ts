@@ -26,9 +26,10 @@ const useUser = () => {
   }
 
   const storeUserToken = (userToken: interfaces.userRes.UserToken) => {
-    const { token } = userToken
-    storageAdpater.set(storageAdpater.KEYS.JWT_TOKEN, token)
-    store.saveJWTToken(token)
+    const { jwtToken, userType } = userToken
+    storageAdpater.set(storageAdpater.KEYS.JWT_TOKEN, jwtToken)
+    storageAdpater.set(storageAdpater.KEYS.USER_TYPE, userType.toString())
+    store.loadUserType(userType)
   }
 
   const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {

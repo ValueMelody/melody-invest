@@ -44,7 +44,7 @@ const Profile = () => {
 
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
-    if (!hasValidParam) navigate(routerConstant.NAV.NOT_FOUND)
+    if (!hasValidParam) navigate(routerConstant.NAVS.NOT_FOUND)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
