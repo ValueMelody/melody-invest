@@ -49,7 +49,7 @@ export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
     tableName: tableEnum.NAMES.TRADER,
   })
-  return traders
+  return traders.map((trader) => convertToRecord(trader))
 }
 
 interface Tops {
@@ -120,12 +120,12 @@ export const getTops = async (total: number): Promise<Tops> => {
 export const create = async (
   values: interfaces.traderModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
-  const newRecords = await databaseAdapter.create({
+  const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER,
     values,
     transaction,
   })
-  return newRecords[0]
+  return convertToRecord(newRecord)
 }
 
 export const createOrActive = async (
@@ -134,9 +134,7 @@ export const createOrActive = async (
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
   const accessCode = generateTool.buildAccessHash(16)
   if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true, accessCode }, transaction)
-
   if (currentRecord.isActive) return currentRecord
-
   return update(currentRecord.id, { isActive: true }, transaction)
 }
 
@@ -145,7 +143,7 @@ export const update = async (
   values: interfaces.traderModel.Update,
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
-  const updatedTrader = await databaseAdapter.update({
+  const updatedTraders = await databaseAdapter.update({
     tableName: tableEnum.NAMES.TRADER,
     values,
     conditions: [
@@ -153,5 +151,5 @@ export const update = async (
     ],
     transaction,
   })
-  return convertToRecord(updatedTrader[0])
+  return convertToRecord(updatedTraders[0])
 }

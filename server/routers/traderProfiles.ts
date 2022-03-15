@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import * as crudTraderStats from '../services/crudTraderProfiles'
-import * as errorEnums from '../enums/error'
+import * as errorEnum from '../enums/error'
 
 const traderProfilesRouter = Router()
 export default traderProfilesRouter
@@ -12,7 +12,7 @@ traderProfilesRouter.get('/tops', async (req, res) => {
 
 const validGetProfileParam = (id: number, accessCode: string) => {
   const hasValidParam = id && accessCode && accessCode.length === 16
-  if (!hasValidParam) throw errorEnums.HTTP_ERRORS.FORBIDDEN
+  if (!hasValidParam) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 }
 
 traderProfilesRouter.get('/:id/:access_code', async (req, res) => {

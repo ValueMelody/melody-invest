@@ -146,7 +146,7 @@ export const getAllLatestByDate = async (date: string): Promise<Record[]> => {
     ],
     distinctOn: 'tickerId',
   })
-  return latestTickerDailys
+  return latestTickerDailys.map((daily) => convertToRecord(daily))
 }
 
 export const getByDate = async (
@@ -164,12 +164,12 @@ export const getByDate = async (
 export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const newRecords = await databaseAdapter.create({
+  const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKER_DAILY,
     values,
     transaction,
   })
-  return convertToRecord(newRecords[0])
+  return convertToRecord(newRecord)
 }
 
 export const update = async (

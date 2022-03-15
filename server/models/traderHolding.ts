@@ -43,7 +43,7 @@ export const create = async (
   values: interfaces.traderHoldingModel.Create,
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderHoldingModel.Record> => {
-  const newRecords = await databaseAdapter.create({
+  const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_HOLDING,
     values: {
       traderId: values.traderId,
@@ -54,5 +54,5 @@ export const create = async (
     },
     transaction,
   })
-  return convertToRecord(newRecords[0])
+  return convertToRecord(newRecord)
 }

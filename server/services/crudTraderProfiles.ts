@@ -8,10 +8,10 @@ export const getTraderStat = async (
   id: number, accessCode: string,
 ): Promise<interfaces.traderProfileRes.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
-  if (!trader || trader.accessCode !== accessCode) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+  if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
-  if (!pattern) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+  if (!pattern) throw errorEnum.CUSTOM.FOREIGN_RECORD_MISSING
 
   const { hashCode, ...patternPublic } = pattern
 
@@ -25,7 +25,7 @@ export const getTraderHoldings = async (
   id: number, accessCode: string,
 ): Promise<interfaces.traderHoldingModel.Record[]> => {
   const trader = await traderModel.getByPK(id)
-  if (!trader || trader.accessCode !== accessCode) throw errorEnum.HTTP_ERRORS.FORBIDDEN
+  if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
   const holdings = await traderHoldingModel.getAll(trader.id)
   return holdings

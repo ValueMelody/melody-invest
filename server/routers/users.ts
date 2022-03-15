@@ -11,12 +11,12 @@ usersRouter.post('/', async (req, res) => {
   const password = req.body.password?.trim()
   const isConfirmed = req.body.isConfirmed
 
-  if (!email || !password || !isConfirmed) throw errorConstant.HTTP_ERRORS.FORBIDDEN
-  if (email.length > 100) throw errorConstant.HTTP_ERRORS.FORBIDDEN
-  if (password.length < 10) throw errorConstant.HTTP_ERRORS.FORBIDDEN
+  if (!email || !password || !isConfirmed) throw errorConstant.CUSTOM.PARAMS_MISSING
+  if (email.length > 100) throw errorConstant.CUSTOM.EMAIL_TOO_LONG
+  if (password.length < 10) throw errorConstant.CUSTOM.PASSWORD_TOO_SHORT
 
   const isEmail = verifyTool.isEmail(email)
-  if (!isEmail) throw errorConstant.HTTP_ERRORS.FORBIDDEN
+  if (!isEmail) throw errorConstant.CUSTOM.EMAIL_WRONG_FORMAT
 
   const user = await crudUsers.createUser(email, password)
   return res.status(201).send(user)

@@ -9,14 +9,18 @@ const useUser = () => {
   const postUser = async (email: string, password: string, isConfirmed: boolean) => {
     const endpoint = `${routerConstant.API.USERS}`
     store.startLoading()
-    const user = await requestAdpater.sendPostRequest(endpoint, {
-      email,
-      password,
-      isConfirmed,
-    })
-    console.log(user)
-    store.stopLoading()
-    return user
+    try {
+      const user = await requestAdpater.sendPostRequest(endpoint, {
+        email,
+        password,
+        isConfirmed,
+      })
+      return user
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   return {

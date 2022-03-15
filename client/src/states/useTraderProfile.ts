@@ -19,9 +19,14 @@ const useTraderProfile = () => {
   const fetchTraderProfile = async (id: number, accessCode: string) => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}`
     store.startLoading()
-    const profile = await requestAdpater.sendGetRequest(endpoint)
-    storeTraderProfile(profile)
-    store.stopLoading()
+    try {
+      const profile = await requestAdpater.sendGetRequest(endpoint)
+      storeTraderProfile(profile)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   const storeTopProfiles = (topProfiles: interfaces.traderProfileRes.TopProfiles) => {
@@ -40,10 +45,14 @@ const useTraderProfile = () => {
   const fetchTopProfiles = async () => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/tops`
     store.startLoading()
-    const traders = await requestAdpater.sendGetRequest(endpoint)
-    console.log(traders)
-    store.stopLoading()
-    storeTopProfiles(traders)
+    try {
+      const traders = await requestAdpater.sendGetRequest(endpoint)
+      storeTopProfiles(traders)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   const getProfileHoldings = (id: number | null) => {
@@ -61,9 +70,14 @@ const useTraderProfile = () => {
   const fetchProfileHoldings = async (id: number, accessCode: string) => {
     const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
     store.startLoading()
-    const holdings = await requestAdpater.sendGetRequest(endpoint)
-    storeProfileHoldings(id, holdings)
-    store.stopLoading()
+    try {
+      const holdings = await requestAdpater.sendGetRequest(endpoint)
+      storeProfileHoldings(id, holdings)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   return {

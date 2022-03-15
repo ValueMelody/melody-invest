@@ -115,7 +115,7 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
     ],
     orderBy: [{ column: 'year', order: 'asc' }],
   })
-  return records
+  return records.map((record) => convertToRecord(record))
 }
 
 export const getPublishedByDate = async (date: string): Promise<Record[]> => {
@@ -139,12 +139,12 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
 export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const newRecords = await databaseAdapter.create({
+  const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TICKER_YEARLY,
     values,
     transaction,
   })
-  return convertToRecord(newRecords[0])
+  return convertToRecord(newRecord)
 }
 
 export const update = async (

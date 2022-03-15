@@ -25,7 +25,7 @@ syncRouter.get('/tickers/:type/:region/:symbol', async (req, res) => {
       result = await syncTickers.syncIncomes(region, symbol, forceRecheck)
       break
     default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+      throw errorEnum.DEFAULT.NOT_FOUND
   }
 
   return res.status(200).send({ result })
@@ -50,7 +50,7 @@ syncRouter.get('/batch_tickers/:type', async (req, res) => {
       result = await syncTickers.syncAllIncomes(year, quarter, forceRecheck)
       break
     default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+      throw errorEnum.DEFAULT.NOT_FOUND
   }
 
   return res.status(200).send({ result })
@@ -98,12 +98,10 @@ syncRouter.get('/indicators/monthly/:type', async (req, res) => {
       result = await syncIndicators.syncMonthly(marketEnum.TYPES.NONFARM_PAYROLL)
       break
     default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+      throw errorEnum.DEFAULT.NOT_FOUND
   }
 
-  return res.status(200).send({
-    result,
-  })
+  return res.status(200).send({ result })
 })
 
 syncRouter.get('/indicators/quarterly/:type', async (req, res) => {
@@ -115,12 +113,10 @@ syncRouter.get('/indicators/quarterly/:type', async (req, res) => {
       result = await syncIndicators.syncQuarterly(marketEnum.TYPES.GDP)
       break
     default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+      throw errorEnum.DEFAULT.NOT_FOUND
   }
 
-  return res.status(200).send({
-    result,
-  })
+  return res.status(200).send({ result })
 })
 
 syncRouter.get('/indicators/yearly/:type', async (req, res) => {
@@ -138,7 +134,7 @@ syncRouter.get('/indicators/yearly/:type', async (req, res) => {
       result = await syncIndicators.syncYearly(marketEnum.TYPES.GDP)
       break
     default:
-      throw errorEnum.HTTP_ERRORS.FORBIDDEN
+      throw errorEnum.DEFAULT.NOT_FOUND
   }
 
   return res.status(200).send({

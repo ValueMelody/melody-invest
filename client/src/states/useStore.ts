@@ -33,6 +33,15 @@ const useStore = () => {
     setCommon((state) => ({ ...state, messages: [] }))
   }
 
+  const showRequestError = (message?: string) => {
+    if (!message) return
+    addMessage({
+      id: Math.random(),
+      title: message,
+      type: 'error',
+    })
+  }
+
   const [resources, setResources] = useState<context.Resources>({
     topProfiles: null,
     tickerIdentities: null,
@@ -49,6 +58,7 @@ const useStore = () => {
     addMessage,
     removeMessage,
     clearMessages,
+    showRequestError,
     resources,
     setResources,
     traderProfiles,
