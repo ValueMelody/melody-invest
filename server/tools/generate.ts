@@ -15,6 +15,14 @@ export const buildAccessHash = (digits: number): string => {
   return code.substring(0, digits)
 }
 
+export const buildEncryptedPassword = (password: string): string => {
+  return toSHA256(toSHA512(password))
+}
+
+export const buildActivationCode = (): string => {
+  return toSHA256(Math.random().toString())
+}
+
 export const pickNumberInRange = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max + 1 - min)) + min
 }

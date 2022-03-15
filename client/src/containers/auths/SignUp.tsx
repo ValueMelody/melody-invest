@@ -81,7 +81,7 @@ const SignUp = () => {
         </div>
         <div className={classes.row}>
           <Checkbox
-            label={localeTool.t('signup.terms')}
+            label={localeTool.t('signUp.terms')}
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />

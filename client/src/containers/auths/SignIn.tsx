@@ -1,19 +1,20 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
-import { Input, Button } from 'semantic-ui-react'
+import { Input, Button, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
 import RequiredLabel from './elements/RequiredLabel'
-import useStore from '../../states/useStore'
+import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
 import useAuth from './useAuth'
 
 const SignIn = () => {
-  const { clearMessages, addMessage } = useStore()
+  const { clearMessages, addMessage } = useCommon()
   const { classes, getPasswordError } = useAuth()
-  const { getUserToken } = useUser()
+  const { createUserToken } = useUser()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [shouldRemember, setShouldRemember] = useState(false)
 
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -25,6 +26,10 @@ const SignIn = () => {
     clearMessages()
   }
 
+  const handleToggleRemember = () => {
+    setShouldRemember(!shouldRemember)
+  }
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
@@ -34,12 +39,12 @@ const SignIn = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    await getUserToken(parsedEmail, parsedPassword)
+    await createUserToken(parsedEmail, parsedPassword, shouldRemember)
   }
 
   return (
     <div className={classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('signUp.title')}</h2>
+      <h2 className={classes.title}>{localeTool.t('signIn.title')}</h2>
       <form onSubmit={handleSubmit}>
         <div className={classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.email')} />
@@ -57,13 +62,20 @@ const SignIn = () => {
             onChange={handleChangePassword}
           />
         </div>
+        <div className={classes.row}>
+          <Checkbox
+            label={localeTool.t('signIn.remember')}
+            checked={shouldRemember}
+            onChange={handleToggleRemember}
+          />
+        </div>
         <div className='row-around'>
           <Button
             type='submit'
             color='blue'
             disabled={!email || !password}
           >
-            {localeTool.t('signUp.button')}
+            {localeTool.t('signIn.button')}
           </Button>
         </div>
       </form>

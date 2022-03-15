@@ -4,7 +4,7 @@ import { ThemeProvider } from 'react-jss'
 import { Loader } from 'semantic-ui-react'
 import Router from './containers/Router'
 import { context } from './states/context'
-import useStore from './states/useStore'
+import useStore from './states/store'
 import * as localTool from './tools/locale'
 import * as themeConstants from './constants/theme'
 
