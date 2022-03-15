@@ -24,7 +24,7 @@ export const create = async (
     values,
     transaction,
   })
-  return createdUser[0]
+  return createdUser
 }
 
 export const update = async (

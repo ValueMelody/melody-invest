@@ -16,6 +16,8 @@
     "error.password.requireLower": "Password must include at least 1 lower case letter!",
     "error.password.requireSymbol": "Password must include at least 1 symbol!",
 
+    "error.500": "Something went wrong, please try again later",
+
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
     "signup.terms": "By using dioxider, you are agreeing to our terms and conditions.",

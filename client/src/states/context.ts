@@ -37,6 +37,7 @@ export interface Context {
   addMessage: (message: Message) => void;
   removeMessage: (id: number) => void;
   clearMessages: () => void;
+  showRequestError: (message: string) => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;

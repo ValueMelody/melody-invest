@@ -49,12 +49,12 @@ export const getAll = async (): Promise<interfaces.traderPatternModel.Record[]> 
 export const create = async (
   values: interfaces.traderPatternModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
-  const patterns = await databaseAdapter.create({
+  const pattern = await databaseAdapter.create({
     tableName: tableEnum.NAMES.TRADER_PATTERN,
     values,
     transaction,
   })
-  return patterns[0]
+  return pattern
 }
 
 export const createIfEmpty = async (

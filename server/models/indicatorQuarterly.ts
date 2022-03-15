@@ -81,12 +81,12 @@ export const getAll = async (): Promise<Record[]> => {
 export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
-  const newRecords = await databaseAdapter.create({
+  const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
     values,
     transaction,
   })
-  return convertToRecord(newRecords[0])
+  return convertToRecord(newRecord)
 }
 
 export const update = async (

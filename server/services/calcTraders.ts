@@ -13,7 +13,7 @@ import * as runTool from '../tools/run'
 import * as generateTool from '../tools/generate'
 import * as patternLogic from '../logics/pattern'
 import * as marketLogic from '../logics/market'
-import * as errorEnum from '../enums/error'
+import * as errorEnums from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 
 interface HoldingDetails {
@@ -46,7 +46,7 @@ const getHoldingValue = (
 
 const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
-  if (!pattern) throw errorEnum.HTTP_ERRORS.NOT_FOUND
+  if (!pattern) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
 
   const tickerMinPercent = pattern.tickerMinPercent / 100
   const tickerMaxPercent = pattern.tickerMaxPercent / 100
