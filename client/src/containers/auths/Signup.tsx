@@ -1,10 +1,12 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
-import { Button, Input } from 'semantic-ui-react'
+import { Button, Input, Checkbox } from 'semantic-ui-react'
 import PasswordValidator from 'password-validator'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from '../../tools/locale'
 import useCommon from '../../states/useCommon'
+import useUser from '../../states/useUser'
+import RequiredLabel from '../auths/elements/RequiredLabel'
 
 const useStyles = createUseStyles(({
   container: {
@@ -29,9 +31,12 @@ const Signup = () => {
     .has().symbols(1, localeTool.t('error.password.requireSymbol'))
 
   const { addMessage, clearMessages } = useCommon()
+  const { postUser } = useUser()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [retypePassword, setRetypePassword] = useState('')
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -48,7 +53,11 @@ const Signup = () => {
     clearMessages()
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleToggleTerms = () => {
+    setIsConfirmed(!isConfirmed)
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const parsePassword = password.trim()
     const parseRetypePasswod = retypePassword.trim()
@@ -66,6 +75,7 @@ const Signup = () => {
         title: error,
       })
     }
+    await postUser(email, password, isConfirmed)
   }
 
   return (
@@ -73,42 +83,45 @@ const Signup = () => {
       <h2 className={classes.title}>{localeTool.t('signUp.title')}</h2>
       <form onSubmit={handleSubmit}>
         <div className={classNames('row-between', classes.row)}>
-          <h5><b>{localeTool.t('common.email')}</b></h5>
+          <RequiredLabel title={localeTool.t('common.email')} />
           <Input
             type='email'
-            label={{ icon: 'asterisk' }}
-            labelPosition='left corner'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
         <div className={classNames('row-between', classes.row)}>
-          <h5><b>{localeTool.t('common.password')}</b></h5>
+          <RequiredLabel title={localeTool.t('common.password')} />
           <Input
             type='password'
-            label={{ icon: 'asterisk' }}
-            labelPosition='left corner'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
         <div className={classNames('row-between', classes.row)}>
-          <h5><b>{localeTool.t('common.retypePassword')}</b></h5>
+          <RequiredLabel title={localeTool.t('common.retypePassword')} />
           <Input
             type='password'
-            label={{ icon: 'asterisk' }}
-            labelPosition='left corner'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
         </div>
-        <Button
-          type='submit'
-          color='blue'
-          disabled={!email || !password || !retypePassword}
-        >
-          {localeTool.t('signUp.button')}
-        </Button>
+        <div className={classes.row}>
+          <Checkbox
+            label={localeTool.t('signup.terms')}
+            checked={isConfirmed}
+            onChange={handleToggleTerms}
+          />
+        </div>
+        <div className='row-around'>
+          <Button
+            type='submit'
+            color='blue'
+            disabled={!email || !password || !retypePassword || !isConfirmed}
+          >
+            {localeTool.t('signUp.button')}
+          </Button>
+        </div>
       </form>
     </div>
   )

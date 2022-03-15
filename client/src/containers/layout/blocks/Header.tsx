@@ -17,6 +17,9 @@ const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
     paddingRight: '1rem',
     zIndex: 1000,
   },
+  icon: {
+    marginRight: '0.5rem !important',
+  },
 }))
 
 const Header = () => {
@@ -27,7 +30,7 @@ const Header = () => {
       <nav>
         <Link to={routerConstant.NAV.TOP_PROFILES}>
           <Label>
-            <Icon name='chart line' />
+            <Icon name='chart line' className={classes.icon} />
             {localeTool.t('top.title')}
           </Label>
         </Link>

@@ -7,5 +7,10 @@ export const sendGetRequest = async (endpoint: string) => {
   return res ? res.data : null
 }
 
+export const sendPostRequest = async (endpoint: string, params: object) => {
+  const res = await axios.post(endpoint, params).catch(handleRequestError)
+  return res ? res.data : null
+}
+
 const handleRequestError = () => {
 }
