@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react'
 import { Segment, Label, Button, Icon } from 'semantic-ui-react'
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
@@ -7,6 +8,7 @@ import * as themeConstant from '../../../constants/theme'
 import PatternBehaviors from '../../../components/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../../../components/TraderPerformance'
 import useUser from '../../../states/useUser'
+import useCommon from '../../../states/useCommon'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   pattern: {
@@ -44,12 +46,29 @@ const ProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
-  const { userTraderIds } = useUser()
+  const { userTraderIds, userType, createUserFollowed, deleteUserFollowed } = useUser()
+  const { addMessage } = useCommon()
   const isWatched = userTraderIds && userTraderIds.includes(trader.id)
 
   const handleClick = () => {
     if (!onClick) return
     return onClick(trader)
+  }
+
+  const handleToggleWatch = (e: MouseEvent) => {
+    e.stopPropagation()
+    if (!userType) {
+      addMessage({
+        id: Math.random(),
+        title: localeTool.t('error.guest'),
+        type: 'error',
+      })
+    }
+    if (isWatched) {
+      deleteUserFollowed(trader.id)
+    } else {
+      createUserFollowed(trader.id)
+    }
   }
 
   return (
@@ -65,9 +84,9 @@ const ProfileCard = ({
           {localeTool.t('common.pattern')}: #{trader.traderPatternId}
         </Label>
         {!!userTraderIds && (
-          <Button className={classes.action}>
+          <Button className={classes.action} onClick={handleToggleWatch}>
             <Icon name='eye' />
-            {localeTool.t(isWatched ? 'common.watch' : 'common.unwatched')}
+            {localeTool.t(isWatched ? 'common.unwatch' : 'common.watch')}
           </Button>
         )}
       </header>

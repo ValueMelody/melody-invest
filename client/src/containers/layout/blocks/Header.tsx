@@ -42,7 +42,7 @@ const Header = () => {
         </Link>
       </nav>
       <nav>
-        {userType && (
+        {!!userType && (
           <Link to={routerConstant.NAV.DASHBOARD}>
             <Label className={classes.label}>
               <Icon name='table' className={classes.icon} />

@@ -56,7 +56,7 @@ usersRouter.post('/traders/:trader_id', authMiddleware.normalUser, async (req, r
 
   const auth: interfaces.common.Auth = req.body.auth
   await crudTraderProfiles.createFollowedTrader(auth.id, traderId)
-  return res.status(201)
+  return res.status(201).send()
 })
 
 usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req, res) => {
@@ -65,5 +65,5 @@ usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req,
 
   const auth: interfaces.common.Auth = req.body.auth
   await crudTraderProfiles.deleteFollowedTrader(auth.id, traderId)
-  return res.status(204)
+  return res.status(204).send()
 })
