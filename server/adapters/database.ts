@@ -46,6 +46,12 @@ interface Update {
   transaction: Knex.Transaction;
 }
 
+interface Destroy {
+  tableName: string;
+  conditions: Condition[];
+  transaction: Knex.Transaction;
+}
+
 let _db: Knex | null = null
 
 export const initConnection = () => {
@@ -166,6 +172,32 @@ export const update = async ({
 
   if (!records || records.length === 0) throw errorEnum.CUSTOM.DB_UPDATE_FAILED
   return records
+}
+
+export const destroy = async ({
+  tableName,
+  conditions,
+  transaction,
+}: Destroy) => {
+  const db = getConnection()
+  const query = db
+    .table(tableName)
+    .transacting(transaction)
+    .clone()
+    .delete()
+
+  conditions.forEach((condition, index) => {
+    const { key, type = '=', value } = condition
+    if (index === 0) {
+      query.where(key, type, value)
+    } else {
+      query.andWhere(key, type, value)
+    }
+  })
+
+  await query
+
+  return true
 }
 
 export const createTransaction = async (): Promise<Knex.Transaction> => {

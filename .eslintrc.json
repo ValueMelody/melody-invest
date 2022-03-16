@@ -16,12 +16,12 @@
     ],
     "rules": {
         "react/prop-types": "off",
+        "react/react-in-jsx-scope": "off",
+        "arrow-parens": "error",
+        "jsx-quotes": ["error", "prefer-single"],
         "no-unused-vars": "off",
         "@typescript-eslint/no-unused-vars": "error",
         "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
-        "arrow-parens": "error",
-        "react/react-in-jsx-scope": "off",
-        "jsx-quotes": ["error", "prefer-single"]
+        "@typescript-eslint/comma-dangle": ["error", "always-multiline"]
     }
 }
