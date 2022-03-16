@@ -4,6 +4,7 @@ import * as traderFollowerModel from '../models/traderFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as errorEnum from '../enums/error'
+import * as databaseAdapter from '../adapters/database'
 
 export const getTraderStat = async (
   id: number, accessCode: string,
@@ -65,4 +66,35 @@ export const getFollowedTraders = async (userId: number) => {
   const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
 
   return traders.map((trader) => combineTraderAndPattern(trader, relatedPatterns))
+}
+
+export const createFollowedTrader = async (
+  userId: number, traderId: number,
+) => {
+  const currentRecord = await traderFollowerModel.getByUK(userId, traderId)
+  if (currentRecord) return true
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await traderFollowerModel.create({ userId, traderId }, transaction)
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const deleteFollowedTrader = async (
+  userId: number, traderId: number,
+) => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await traderFollowerModel.destroy(userId, traderId, transaction)
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }
