@@ -2,10 +2,11 @@ import { Segment, Label, Button, Icon } from 'semantic-ui-react'
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../tools/locale'
-import * as themeConstant from '../constants/theme'
-import PatternBehaviors from './PatternBehaviors'
-import TraderPerformance, { FocusType } from './TraderPerformance'
+import * as localeTool from '../../../tools/locale'
+import * as themeConstant from '../../../constants/theme'
+import PatternBehaviors from '../../../components/PatternBehaviors'
+import TraderPerformance, { FocusType } from '../../../components/TraderPerformance'
+import useUser from '../../../states/useUser'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   pattern: {
@@ -31,7 +32,7 @@ const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   },
 }))
 
-const TraderProfileCard = ({
+const ProfileCard = ({
   trader,
   pattern,
   focusType,
@@ -43,6 +44,8 @@ const TraderProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
+  const { userTraderIds } = useUser()
+  const isWatched = userTraderIds && userTraderIds.includes(trader.id)
 
   const handleClick = () => {
     if (!onClick) return
@@ -61,10 +64,12 @@ const TraderProfileCard = ({
         <Label color='blue' className={classes.label}>
           {localeTool.t('common.pattern')}: #{trader.traderPatternId}
         </Label>
-        <Button className={classes.action}>
-          <Icon name='eye' />
-          {localeTool.t('common.watch')}
-        </Button>
+        {!!userTraderIds && (
+          <Button className={classes.action}>
+            <Icon name='eye' />
+            {localeTool.t(isWatched ? 'common.watch' : 'common.unwatched')}
+          </Button>
+        )}
       </header>
 
       <div className={classes.body}>
@@ -75,4 +80,4 @@ const TraderProfileCard = ({
   )
 }
 
-export default TraderProfileCard
+export default ProfileCard

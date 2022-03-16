@@ -21,6 +21,7 @@ interface TickerIdentities {
 export interface Resources {
   topProfiles: interfaces.traderProfileRes.TopProfiles | null;
   tickerIdentities: TickerIdentities | null;
+  userTraderIds: number[] | null;
 }
 
 export interface TraderProfiles {

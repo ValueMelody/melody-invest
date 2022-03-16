@@ -4,7 +4,7 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as routerConstant from '../../../constants/router'
-import TraderProfileCard from '../../../components/TraderProfileCard'
+import ProfileCard from './ProfileCard'
 import { FocusType } from '../../../components/TraderPerformance'
 
 const useStyles = createUseStyles(({
@@ -13,7 +13,7 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const ProfileCards = ({
+const ProfileList = ({
   title,
   focusType,
   traderWithPatterns,
@@ -37,7 +37,7 @@ const ProfileCards = ({
       <Header as='h4'>{title}</Header>
       <section className={classNames('row-between', classes.section)} >
         {traderWithPatterns.map(({ trader, pattern }) => (
-          <TraderProfileCard
+          <ProfileCard
             key={trader.id}
             trader={trader}
             pattern={pattern}
@@ -50,4 +50,4 @@ const ProfileCards = ({
   )
 }
 
-export default ProfileCards
+export default ProfileList

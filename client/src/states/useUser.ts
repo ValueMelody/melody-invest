@@ -66,6 +66,8 @@ const useUser = () => {
     postUser,
     createUserToken,
     fetchUserFollowed,
+    userTraderIds: store.resources.userTraderIds,
+    userType: store.common.userType,
   }
 }
 

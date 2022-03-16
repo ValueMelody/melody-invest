@@ -5,7 +5,7 @@ import { Icon, Label } from 'semantic-ui-react'
 import * as routerConstant from '../../../constants/router'
 import * as themeConstant from '../../../constants/theme'
 import * as localeTool from '../../../tools/locale'
-import useCommon from '../../../states/useCommon'
+import useUser from '../../../states/useUser'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   header: {
@@ -29,7 +29,7 @@ const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
 
 const Header = () => {
   const classes = useStyles()
-  const { userType } = useCommon()
+  const { userType } = useUser()
 
   return (
     <header className={classNames('row-between', classes.header)}>
