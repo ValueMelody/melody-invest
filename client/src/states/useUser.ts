@@ -49,9 +49,23 @@ const useUser = () => {
     }
   }
 
+  const fetchUserFollowed = async () => {
+    const endpoint = `${routerConstant.API.USERS}/traders`
+    store.startLoading()
+    try {
+      const traders = await requestAdpater.sendGetRequest(endpoint)
+      console.log(traders)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   return {
     postUser,
     createUserToken,
+    fetchUserFollowed,
   }
 }
 

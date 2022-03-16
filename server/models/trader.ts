@@ -60,6 +60,18 @@ interface Tops {
   pastWeek: interfaces.traderModel.Record[],
 }
 
+export const getInPKs = async (
+  ids: number[],
+): Promise<interfaces.traderModel.Record[]> => {
+  const traders = await databaseAdapter.findAll({
+    tableName: tableEnum.NAMES.TRADER,
+    conditions: [
+      { key: 'id', value: ids, type: 'IN' },
+    ],
+  })
+  return traders.map((trader) => convertToRecord(trader))
+}
+
 export const getTops = async (total: number): Promise<Tops> => {
   const eachNumber = Math.floor(total / 5)
 

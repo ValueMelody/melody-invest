@@ -1,5 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import * as traderModel from '../models/trader'
+import * as traderFollowerModel from '../models/traderFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as errorEnum from '../enums/error'
@@ -53,4 +54,15 @@ export const getTopPatterns = async (): Promise<interfaces.traderProfileRes.TopP
     pastMonth: tops.pastMonth.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
     pastWeek: tops.pastWeek.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
   }
+}
+
+export const getFollowedTraders = async (userId: number) => {
+  const userTraders = await traderFollowerModel.getUserFollowed(userId)
+  const traderIds = userTraders.map((userTrader) => userTrader.traderId)
+  const traders = await traderModel.getInPKs(traderIds)
+  const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
+  const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
+  const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
+
+  return traders.map((trader) => combineTraderAndPattern(trader, relatedPatterns))
 }

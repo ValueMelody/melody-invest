@@ -1,7 +1,10 @@
 import { Router } from 'express'
+import * as interfaces from '@shared/interfaces'
 import * as errorConstant from '../enums/error'
 import * as crudUsers from '../services/crudUsers'
+import * as crudTraderProfiles from '../services/crudTraderProfiles'
 import * as verifyTool from '../tools/verify'
+import * as authMiddleware from '../middlewares/auth'
 
 const usersRouter = Router()
 export default usersRouter
@@ -35,4 +38,11 @@ usersRouter.post('/', async (req, res) => {
 
   const user = await crudUsers.createUser(email, password)
   return res.status(201).send(user)
+})
+
+usersRouter.get('/traders', authMiddleware.normalUser, async (req, res) => {
+  const auth: interfaces.common.Auth = req.body.auth
+  const { id } = auth
+  const traders = await crudTraderProfiles.getFollowedTraders(id)
+  return res.status(200).send(traders)
 })

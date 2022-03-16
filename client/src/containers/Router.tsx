@@ -13,23 +13,23 @@ const Router = () => {
       <Layout>
         <Routes>
         <Route
-            path={routerConstant.NAVS.SIGN_IN}
+            path={routerConstant.NAV.SIGN_IN}
             element={<SignIn />}
           />
           <Route
-            path={routerConstant.NAVS.SIGN_UP}
+            path={routerConstant.NAV.SIGN_UP}
             element={<SignUp />}
           />
           <Route
-            path={routerConstant.NAVS.DASHBOARD}
+            path={routerConstant.NAV.DASHBOARD}
             element={<Dashboard />}
           />
           <Route
-            path={routerConstant.NAVS.TOP_PROFILES}
+            path={routerConstant.NAV.TOP_PROFILES}
             element={<TopProfiles />}
           />
           <Route
-            path={`${routerConstant.NAVS.PROFILES}/:traderId/:accessCode`}
+            path={`${routerConstant.NAV.PROFILES}/:traderId/:accessCode`}
             element={<Profile />}
           />
         </Routes>
