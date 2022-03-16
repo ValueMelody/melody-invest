@@ -34,7 +34,7 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerConstant.NAVS.TOP_PROFILES}>
+        <Link to={routerConstant.NAV.TOP_PROFILES}>
           <Label className={classes.label}>
             <Icon name='chart line' className={classes.icon} />
             {localeTool.t('top.title')}
@@ -43,14 +43,14 @@ const Header = () => {
       </nav>
       <nav>
         {userType && (
-          <Link to={routerConstant.NAVS.DASHBOARD}>
+          <Link to={routerConstant.NAV.DASHBOARD}>
             <Label className={classes.label}>
               <Icon name='table' className={classes.icon} />
               {localeTool.t('dashboard.title')}
             </Label>
           </Link>
         )}
-        <Link to={routerConstant.NAVS.SIGN_IN}>
+        <Link to={routerConstant.NAV.SIGN_IN}>
           <Label className={classes.label}>
             <Icon name='user circle' />
           </Label>

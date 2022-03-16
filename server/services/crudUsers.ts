@@ -1,4 +1,3 @@
-import jwt from 'jsonwebtoken'
 import * as interfaces from '@shared/interfaces'
 import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
@@ -48,6 +47,6 @@ export const createUserToken = async (
   if (user.activationCode) throw errorEnum.CUSTOM.USER_NOT_ACTIVATED
 
   const expiresIn = remember ? '30d' : '12h'
-  const jwtToken = jwt.sign({ email, password }, process.env.TOKEN_SECRET!, { expiresIn })
+  const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
   return { jwtToken, expiresIn, userType: user.type }
 }

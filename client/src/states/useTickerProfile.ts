@@ -20,9 +20,14 @@ const useTickerProfile = () => {
   const fetchTickerIdentities = async () => {
     const endpoint = `${routerConstant.API.TICKER_PROFILES}/identities`
     store.startLoading()
-    const identitites = await requestAdpater.sendGetRequest(endpoint)
-    store.stopLoading()
-    storeTickerIdentities(identitites)
+    try {
+      const identitites = await requestAdpater.sendGetRequest(endpoint)
+      storeTickerIdentities(identitites)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   return {

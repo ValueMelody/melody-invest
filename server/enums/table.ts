@@ -1,5 +1,6 @@
 export const NAMES = {
   USER: 'user',
+  TRADER_FOLLOWER: 'trader_follower',
   TICKER: 'ticker',
   TICKER_DAILY: 'ticker_daily',
   TICKER_YEARLY: 'ticker_yearly',

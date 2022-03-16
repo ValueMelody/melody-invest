@@ -43,7 +43,7 @@ const SignIn = () => {
       return
     }
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)
-      .then(() => navigate(routerConstant.NAVS.DASHBOARD))
+      .then(() => navigate(routerConstant.NAV.DASHBOARD))
   }
 
   return (
