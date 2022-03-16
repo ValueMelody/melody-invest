@@ -56,3 +56,7 @@ h4, h5, h6 {
 #root .ui.label > .icon {
   margin: 0;
 }
+
+#root button {
+  font-size: 12px;
+}

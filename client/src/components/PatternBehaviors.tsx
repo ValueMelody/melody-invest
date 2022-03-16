@@ -1,8 +1,8 @@
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
-import * as themeConstant from '../../../constants/theme'
-import { BehaviorLabel } from '../../../components'
+import * as themeConstant from '../constants/theme'
+import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = createUseStyles({
   container: {
