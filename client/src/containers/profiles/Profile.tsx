@@ -8,7 +8,7 @@ import useTickerProfile from '../../states/useTickerProfile'
 import * as routerConstant from '../../constants/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
-import TraderStats from './blocks/TraderStats'
+import TraderProfileCard from '../../components/TraderProfileCard'
 import ValueDiffer from './elements/ValueDiffer'
 import HoldingShare from './elements/HoldingShare'
 
@@ -72,7 +72,7 @@ const Profile = () => {
 
   return (
     <div className={classNames('row-between', classes.container)}>
-      <TraderStats
+      <TraderProfileCard
         trader={traderProfile.trader}
         pattern={traderProfile.pattern}
       />
