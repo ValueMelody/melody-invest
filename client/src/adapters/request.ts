@@ -16,10 +16,18 @@ export const sendGetRequest = async (endpoint: string) => {
   }
 }
 
-export const sendPostRequest = async (endpoint: string, params: object) => {
+export const sendPostRequest = async (endpoint: string, params?: object) => {
   try {
     const res = await axios.post(endpoint, params)
     return res ? res.data : null
+  } catch (e: any) {
+    handleRequestError(e)
+  }
+}
+
+export const sendDeleteRequest = async (endpoint: string) => {
+  try {
+    await axios.delete(endpoint)
   } catch (e: any) {
     handleRequestError(e)
   }

@@ -1,8 +1,9 @@
-import { FunctionComponent } from 'react'
+import { useEffect, FunctionComponent } from 'react'
 import { createUseStyles } from 'react-jss'
 import { Message, Icon } from 'semantic-ui-react'
 import Header from './blocks/Header'
 import useCommon from '../../states/useCommon'
+import useUser from '../../states/useUser'
 
 const useStyles = createUseStyles({
   main: {
@@ -23,7 +24,14 @@ const Layout: FunctionComponent = ({
 }) => {
   const classes = useStyles()
   const { messages, removeMessage } = useCommon()
+  const { userType, fetchUserFollowed } = useUser()
   const handleRemoveMessage = (id: number) => removeMessage(id)
+
+  useEffect(() => {
+    if (!userType) return
+    fetchUserFollowed()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userType])
 
   return (
     <>

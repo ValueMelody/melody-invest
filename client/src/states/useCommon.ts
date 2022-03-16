@@ -5,7 +5,6 @@ const useCommon = () => {
   const store: Context = useContext(context)
 
   return {
-    userType: store.common.userType,
     messages: store.common.messages,
     addMessage: store.addMessage,
     removeMessage: store.removeMessage,

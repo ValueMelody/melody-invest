@@ -72,12 +72,11 @@ export const createFollowedTrader = async (
   userId: number, traderId: number,
 ) => {
   const currentRecord = await traderFollowerModel.getByUK(userId, traderId)
-  if (currentRecord) return true
+  if (currentRecord) return
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     await traderFollowerModel.create({ userId, traderId }, transaction)
-
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()
@@ -91,7 +90,6 @@ export const deleteFollowedTrader = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await traderFollowerModel.destroy(userId, traderId, transaction)
-
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()

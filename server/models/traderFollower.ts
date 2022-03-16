@@ -18,6 +18,7 @@ export const getByUK = async (
       { key: 'userId', value: userId },
       { key: 'traderId', value: traderId },
     ],
+    orderBy: [{ column: 'traderId', order: 'asc' }],
   })
   return record
 }

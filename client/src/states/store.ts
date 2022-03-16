@@ -4,15 +4,26 @@ import * as storageAdapter from '../adapters/storage'
 import * as requestAdapter from '../adapters/request'
 
 const userType = storageAdapter.get(storageAdapter.KEYS.USER_TYPE)
+const currentUserType = userType ? parseInt(userType) : 0
 const jwtToken = storageAdapter.get(storageAdapter.KEYS.JWT_TOKEN)
 if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
 const useStore = () => {
   const [common, setCommon] = useState<context.Common>({
-    userType: userType ? parseInt(userType) : 0,
+    userType: currentUserType,
     isLoading: false,
     messages: [],
   })
+
+  const [resources, setResources] = useState<context.Resources>({
+    topProfiles: null,
+    tickerIdentities: null,
+    userTraderIds: currentUserType ? null : [],
+  })
+
+  const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
+
+  const [profileHoldings, setProfileHoldings] = useState<context.ProfileHoldings>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
@@ -52,15 +63,6 @@ const useStore = () => {
       type: 'error',
     })
   }
-
-  const [resources, setResources] = useState<context.Resources>({
-    topProfiles: null,
-    tickerIdentities: null,
-  })
-
-  const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
-
-  const [profileHoldings, setProfileHoldings] = useState<context.ProfileHoldings>({})
 
   return {
     common,
