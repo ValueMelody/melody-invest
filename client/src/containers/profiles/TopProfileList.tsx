@@ -3,9 +3,9 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import * as routerConstant from '../../../constants/router'
-import ProfileCard from './ProfileCard'
-import { FocusType } from '../../../components/TraderPerformance'
+import * as routerConstant from '../../constants/router'
+import ProfileCard from './blocks/ProfileCard'
+import { FocusType } from './elements/TraderPerformance'
 
 const useStyles = createUseStyles(({
   section: {
@@ -13,14 +13,14 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const ProfileList = ({
+const TopProfileList = ({
   title,
   focusType,
-  traderWithPatterns,
+  profiles,
 }: {
   title: string;
   focusType: FocusType;
-  traderWithPatterns: interfaces.traderProfileRes.TraderProfile[];
+  profiles: interfaces.traderProfileRes.TraderProfile[];
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
@@ -35,8 +35,8 @@ const ProfileList = ({
   return (
     <Segment>
       <Header as='h4'>{title}</Header>
-      <section className={classNames('row-between', classes.section)} >
-        {traderWithPatterns.map(({ trader, pattern }) => (
+      <section className={classNames('row-start', classes.section)} >
+        {profiles.map(({ trader, pattern }) => (
           <ProfileCard
             key={trader.id}
             trader={trader}
@@ -50,4 +50,4 @@ const ProfileList = ({
   )
 }
 
-export default ProfileList
+export default TopProfileList

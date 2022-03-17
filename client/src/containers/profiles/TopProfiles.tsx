@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import useTraderProfile from '../../states/useTraderProfile'
-import ProfileList from './blocks/ProfileList'
+import TopProfileList from './TopProfileList'
 import * as localeTool from '../../tools/locale'
 
 const TopProfiles = () => {
@@ -16,30 +16,30 @@ const TopProfiles = () => {
 
   return (
     <>
-      <ProfileList
+      <TopProfileList
         title={localeTool.t('top.yearly.title')}
         focusType='YEARLY'
-        traderWithPatterns={topProfiles.yearly}
+        profiles={topProfiles.yearly}
       />
-      <ProfileList
+      <TopProfileList
         title={localeTool.t('top.pastYear.title')}
         focusType='PAST_YEAR'
-        traderWithPatterns={topProfiles.pastYear}
+        profiles={topProfiles.pastYear}
       />
-      <ProfileList
+      <TopProfileList
         title={localeTool.t('top.pastQuarter.title')}
         focusType='PAST_QUARTER'
-        traderWithPatterns={topProfiles.pastQuarter}
+        profiles={topProfiles.pastQuarter}
       />
-      <ProfileList
+      <TopProfileList
         title={localeTool.t('top.pastMonth.title')}
         focusType='PAST_MONTH'
-        traderWithPatterns={topProfiles.pastMonth}
+        profiles={topProfiles.pastMonth}
       />
-      <ProfileList
+      <TopProfileList
         title={localeTool.t('top.pastWeek.title')}
         focusType='PAST_WEEK'
-        traderWithPatterns={topProfiles.pastWeek}
+        profiles={topProfiles.pastWeek}
       />
     </>
   )
