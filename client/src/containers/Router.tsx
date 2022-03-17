@@ -4,7 +4,7 @@ import SignIn from './auths/SignIn'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import Profile from './profiles/Profile'
-import Dashboard from './dashboard/Dashboard'
+import Dashboard from './profiles/Dashboard'
 import * as routerConstant from '../constants/router'
 
 const Router = () => {

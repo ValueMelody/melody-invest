@@ -1,8 +1,8 @@
 import { useMemo } from 'react'
 import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../tools/locale'
-import * as parseTool from '../tools/parse'
+import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
 import classNames from 'classnames'
 
 const BehaviorLabel = ({

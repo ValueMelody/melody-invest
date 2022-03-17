@@ -12,8 +12,8 @@ import useUser from '../../../states/useUser'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   pattern: {
-    margin: '0 1rem 1rem 1rem !important',
-    width: '28rem',
+    margin: '0 0 2rem 0 !important',
+    width: '100%',
     padding: '0 !important',
   },
   header: {

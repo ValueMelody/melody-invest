@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { Menu, Header } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../tools/locale'
-import * as parseTool from '../tools/parse'
-import * as themeConstant from '../constants/theme'
+import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
+import * as themeConstant from '../../../constants/theme'
 
 const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
   gainCell: {
