@@ -53,7 +53,7 @@ export const getByUK = async (
   year: string,
 ): Promise<Record | null> => {
   const yearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    tableName: tableEnum.NAME.INDICATOR_YEARLY,
     conditions: [
       { key: 'year', value: year },
     ],
@@ -63,7 +63,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<Record[]> => {
   const yearly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    tableName: tableEnum.NAME.INDICATOR_YEARLY,
     orderBy: [{ column: 'year', order: 'asc' }],
   })
   return yearly.map((raw) => convertToRecord(raw))
@@ -78,7 +78,7 @@ export const getPublishedByDate = async (date: string) => {
   const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    tableName: tableEnum.NAME.INDICATOR_YEARLY,
     conditions: [
       { key: 'year', value: targetYear },
     ],
@@ -90,7 +90,7 @@ export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    tableName: tableEnum.NAME.INDICATOR_YEARLY,
     values,
     transaction,
   })
@@ -103,7 +103,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.INDICATOR_YEARLY,
+    tableName: tableEnum.NAME.INDICATOR_YEARLY,
     values,
     conditions: [
       { key: 'id', value: indicatorYearlyId },

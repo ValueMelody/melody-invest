@@ -136,7 +136,7 @@ export const getByUK = async (
   month: string,
 ): Promise<Record | null> => {
   const monthly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     conditions: [
       { key: 'month', value: month },
     ],
@@ -146,7 +146,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<Record[]> => {
   const monthly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     orderBy: [{ column: 'month', order: 'asc' }],
   })
   return monthly.map((raw) => convertToRecord(raw))
@@ -157,7 +157,7 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
   const month = estimatedDate.substring(0, 7)
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     conditions: [
       { key: 'month', value: month },
     ],
@@ -169,7 +169,7 @@ export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     values,
     transaction,
   })
@@ -182,7 +182,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.INDICATOR_MONTHLY,
+    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     values,
     conditions: [
       { key: 'id', value: indicatorMonthlyId },

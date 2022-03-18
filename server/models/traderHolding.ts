@@ -17,7 +17,7 @@ export const getLatest = async (
   traderId: number,
 ): Promise<interfaces.traderHoldingModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_HOLDING,
+    tableName: tableEnum.NAME.TRADER_HOLDING,
     conditions: [
       { key: 'traderId', value: traderId },
     ],
@@ -30,7 +30,7 @@ export const getAll = async (
   traderId: number,
 ): Promise<interfaces.traderHoldingModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER_HOLDING,
+    tableName: tableEnum.NAME.TRADER_HOLDING,
     conditions: [
       { key: 'traderId', value: traderId },
     ],
@@ -44,7 +44,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderHoldingModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADER_HOLDING,
+    tableName: tableEnum.NAME.TRADER_HOLDING,
     values: {
       traderId: values.traderId,
       date: values.date,

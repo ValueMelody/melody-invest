@@ -86,7 +86,7 @@ export const getLatest = async (
     ? [...pkCondition, ...conditions]
     : pkCondition
   const tickerYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: whereConditions,
     orderBy: [{ column: 'year', order: 'desc' }],
   })
@@ -98,7 +98,7 @@ export const getByUK = async (
   year: string,
 ): Promise<Record | null> => {
   const tickerYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'year', value: year },
@@ -109,7 +109,7 @@ export const getByUK = async (
 
 export const getAll = async (tickerId: number): Promise<Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
@@ -127,7 +127,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
   const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
 
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: [
       { key: 'year', value: targetYear },
     ],
@@ -140,7 +140,7 @@ export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     values,
     transaction,
   })
@@ -153,7 +153,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedYearly = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKER_YEARLY,
+    tableName: tableEnum.NAME.TICKER_YEARLY,
     values,
     conditions: [
       { key: 'id', value: tickerYearlyId },

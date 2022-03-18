@@ -7,7 +7,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -19,7 +19,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderPatternModel.Record[]> => {
   const patterns = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],
@@ -31,7 +31,7 @@ export const getByUK = async (
   hashCode: string,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
     conditions: [
       { key: 'hashCode', value: hashCode },
     ],
@@ -41,7 +41,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<interfaces.traderPatternModel.Record[]> => {
   const patterns = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
   })
   return patterns
 }
@@ -50,7 +50,7 @@ export const create = async (
   values: interfaces.traderPatternModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
   const pattern = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
     values,
     transaction,
   })
@@ -71,7 +71,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
   const patterns = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TRADER_PATTERN,
+    tableName: tableEnum.NAME.TRADER_PATTERN,
     values,
     conditions: [
       { key: 'id', value: id },

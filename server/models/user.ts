@@ -7,7 +7,7 @@ export const getByUK = async (
   email: string,
 ): Promise<interfaces.userModel.Record | null> => {
   const user = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.USER,
+    tableName: tableEnum.NAME.USER,
     conditions: [
       { key: 'email', value: email },
     ],
@@ -20,7 +20,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.userModel.Record> => {
   const createdUser = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.USER,
+    tableName: tableEnum.NAME.USER,
     values,
     transaction,
   })
@@ -33,7 +33,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.userModel.Record> => {
   const updatedUser = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.USER,
+    tableName: tableEnum.NAME.USER,
     values,
     conditions: [
       { key: 'id', value: userId },

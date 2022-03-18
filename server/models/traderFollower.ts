@@ -13,7 +13,7 @@ export const getByUK = async (
   traderId: number,
 ): Promise<traderFollowerModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER_FOLLOWER,
+    tableName: tableEnum.NAME.TRADER_FOLLOWER,
     conditions: [
       { key: 'userId', value: userId },
       { key: 'traderId', value: traderId },
@@ -27,7 +27,7 @@ export const getUserFollowed = async (
   userId: number,
 ): Promise<Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER_FOLLOWER,
+    tableName: tableEnum.NAME.TRADER_FOLLOWER,
     conditions: [
       { key: 'userId', value: userId },
     ],
@@ -41,7 +41,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const record = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADER_FOLLOWER,
+    tableName: tableEnum.NAME.TRADER_FOLLOWER,
     values,
     transaction,
   })
@@ -54,7 +54,7 @@ export const destroy = async (
   transaction: Knex.Transaction,
 ) => {
   await databaseAdapter.destroy({
-    tableName: tableEnum.NAMES.TRADER_FOLLOWER,
+    tableName: tableEnum.NAME.TRADER_FOLLOWER,
     conditions: [
       { key: 'userId', value: userId },
       { key: 'traderId', value: traderId },

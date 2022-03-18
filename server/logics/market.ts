@@ -1,8 +1,15 @@
-const PRICE_PADDING = 10000
+const PRICE_PADDING = 100
 
-export const convertToIntPrice = (price: string | number): number => {
-  const floatPrice = typeof price === 'number' ? price : parseFloat(price)
-  return Math.floor(floatPrice * PRICE_PADDING)
+export const convertToIntPrice = (price: string): number => {
+  const value = parseFloat(price)
+  return Math.floor(value * PRICE_PADDING)
+}
+
+export const getSplitMultiplier = (
+  splitCoefficient: string,
+  previousDaily: ticker
+) => {
+
 }
 
 export const getInitialCash = (): number => {
