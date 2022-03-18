@@ -2,6 +2,71 @@ import { Knex } from 'knex'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export type MovementKey =
+  'priceDailyIncrease' | 'priceDailyDecrease' |
+  'priceWeeklyIncrease' | 'priceWeeklyDecrease' |
+  'priceMonthlyIncrease' | 'priceMonthlyDecrease' |
+  'priceQuarterlyIncrease' | 'priceQuarterlyDecrease' |
+  'priceYearlyIncrease' | 'priceYearlyDecrease'
+
+interface Common {
+  id: number;
+  tickerId: number;
+  date: string;
+  volume: number;
+  closePrice: number;
+  weeklyAverageFinalPrice: string | null;
+  monthlyAverageFinalPrice: string | null
+  quarterlyAverageFinalPrice: string | null
+  yearlyAverageFinalPrice: string | null
+  priceDailyIncrease: number | null;
+  priceDailyDecrease: number | null;
+  priceWeeklyIncrease: number | null;
+  priceWeeklyDecrease: number | null;
+  priceMonthlyIncrease: number | null;
+  priceMonthlyDecrease: number | null;
+  priceQuarterlyIncrease: number | null;
+  priceQuarterlyDecrease: number | null;
+  priceYearlyIncrease: number | null;
+  priceYearlyDecrease: number | null;
+}
+
+export interface Record extends Common {
+  dividendAmount: number;
+  splitMultiplier: number;
+}
+
+interface Raw extends Common {
+  dividendAmount: string;
+  splitMultiplier: string;
+}
+
+interface Create {
+  tickerId: number;
+  date: string;
+  volume: number;
+  closePrice: number;
+  splitMultiplier: string;
+  dividend: string;
+}
+
+interface Update {
+  weeklyAverageFinalPrice?: string | null;
+  monthlyAverageFinalPrice?: string | null
+  quarterlyAverageFinalPrice?: string | null
+  yearlyAverageFinalPrice?: string | null
+  priceDailyIncrease?: number | null;
+  priceDailyDecrease?: number | null;
+  priceWeeklyIncrease?: number | null;
+  priceWeeklyDecrease?: number | null;
+  priceMonthlyIncrease?: number | null;
+  priceMonthlyDecrease?: number | null;
+  priceQuarterlyIncrease?: number | null;
+  priceQuarterlyDecrease?: number | null;
+  priceYearlyIncrease?: number | null;
+  priceYearlyDecrease?: number | null;
+}
+
 const convertToRecord = (raw: Raw): Record => ({
   ...raw,
   dividendAmount: parseFloat(raw.dividendAmount),
