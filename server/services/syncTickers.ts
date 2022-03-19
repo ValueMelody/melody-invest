@@ -19,7 +19,7 @@ export const syncPrices = async (
 
   const tickerData = await marketAdapter.getTickerPrices(symbol)
   const metaData = tickerData['Meta Data']
-  const lastRefreshed = metaData['3. Last Refreshed']
+  const lastRefreshed = metaData['3. Last Refreshed'].substring(0, 10)
 
   if (lastRefreshed === ticker.lastPriceDate) return
 
@@ -36,7 +36,6 @@ export const syncPrices = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     let firstPriceDate: string | null = null
-    let lastPriceDate: string | null = null
     let previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, allDates[0])
     await runTool.asyncForEach(allDates, async (date: string) => {
       const dailyData = allDaysData[date]
@@ -49,47 +48,24 @@ export const syncPrices = async (
 
       const splitMultiplier = marketLogic.getSplitMultiplier(
         splitCoefficient,
-        previousRecord
+        previousRecord,
       )
 
-      // const adjustedClose = previousRecord
-      //   ? marketLogic.getAdjustedClosePrice(
-      //     closePrice,
-      //     splitCoefficient,
-      //     previousRecord.closePrice,
-      //     previousRecord.adjustedClosePrice,
-      //   )
-      //   : marketLogic.convertToIntPrice(closePrice)
-
-      // const dividendPercent = previousRecord
-      //   ? marketLogic.getDividendPercent(
-      //     dividendAmount,
-      //     previousRecord.closePrice,
-      //   )
-      //   : '0.00'
-
-      await tickerDailyModel.create({
+      previousRecord = await tickerDailyModel.create({
         tickerId: ticker.id,
         date,
-        volume: parseInt(volume),
-        closePrice: closePrice,
-        splitCoefficient: splitCoefficient.substring(0, 10),
-        dividendPercent: dividendPercent,
-        adjustedClosePrice: adjustedClose,
-
-        tickerId: ticker.id,
-        date,
-        volume: parseInt(volume),
+        volume,
         closePrice: marketLogic.convertToIntPrice(closePrice),
-        splitMultiplier: number;
-        dividendAmount: dividendAmount,
+        splitMultiplier: splitMultiplier.toFixed(5),
+        dividendAmount,
       }, transaction)
 
       if (!firstPriceDate) firstPriceDate = date
     })
 
-    const newTickerInfo: interfaces.tickerModel.Update = {}
-    newTickerInfo.lastPriceDate = lastRefreshed
+    const newTickerInfo: interfaces.tickerModel.Update = {
+      lastPriceDate: lastRefreshed,
+    }
     if (!ticker.firstPriceDate && firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
 
     await tickerModel.update(ticker.id, newTickerInfo, transaction)
@@ -108,6 +84,7 @@ export const syncAllPrices = async (date: string) => {
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     const isDateSynced = ticker.lastPriceDate && ticker.lastPriceDate >= date
     if (isDateSynced) return
+    console.log(ticker.id)
     await syncPrices(ticker.region, ticker.symbol)
     await runTool.sleep(cooldown)
   })

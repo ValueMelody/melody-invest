@@ -1,3 +1,5 @@
+import * as interfaces from '@shared/interfaces'
+
 const PRICE_PADDING = 100
 
 export const convertToIntPrice = (price: string): number => {
@@ -7,9 +9,11 @@ export const convertToIntPrice = (price: string): number => {
 
 export const getSplitMultiplier = (
   splitCoefficient: string,
-  previousDaily: ticker
+  previousDaily: interfaces.tickerDailyModel.Record | null,
 ) => {
-
+  const baseMultiplier = previousDaily?.splitMultiplier || 1
+  const newMultiplier = parseFloat(splitCoefficient)
+  return baseMultiplier * newMultiplier
 }
 
 export const getInitialCash = (): number => {

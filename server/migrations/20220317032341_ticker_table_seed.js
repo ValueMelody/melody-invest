@@ -320,7 +320,7 @@ exports.up = (knex) => {
     { symbol: 'KEYS', region: 'US', name: 'Keysight Technologies Inc.' },
     { symbol: 'EXPE', region: 'US', name: 'Expedia Group Inc.' },
     { symbol: 'ANET', region: 'US', name: 'Arista Network Inc.' },
-    { symbol: 'Cern', region: 'US', name: 'Cerner Corporation' },
+    { symbol: 'CERN', region: 'US', name: 'Cerner Corporation' },
     { symbol: 'RSG', region: 'US', name: 'Republic Services Inc.' },
     { symbol: 'ARE', region: 'US', name: 'Alexandria Real Estate Equities Inc.' },
     { symbol: 'DHI', region: 'US', name: 'D.R. Horton Inc.' },

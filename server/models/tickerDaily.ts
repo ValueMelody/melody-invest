@@ -1,73 +1,11 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
-export type MovementKey =
-  'priceDailyIncrease' | 'priceDailyDecrease' |
-  'priceWeeklyIncrease' | 'priceWeeklyDecrease' |
-  'priceMonthlyIncrease' | 'priceMonthlyDecrease' |
-  'priceQuarterlyIncrease' | 'priceQuarterlyDecrease' |
-  'priceYearlyIncrease' | 'priceYearlyDecrease'
-
-interface Common {
-  id: number;
-  tickerId: number;
-  date: string;
-  volume: number;
-  closePrice: number;
-  weeklyAverageFinalPrice: string | null;
-  monthlyAverageFinalPrice: string | null
-  quarterlyAverageFinalPrice: string | null
-  yearlyAverageFinalPrice: string | null
-  priceDailyIncrease: number | null;
-  priceDailyDecrease: number | null;
-  priceWeeklyIncrease: number | null;
-  priceWeeklyDecrease: number | null;
-  priceMonthlyIncrease: number | null;
-  priceMonthlyDecrease: number | null;
-  priceQuarterlyIncrease: number | null;
-  priceQuarterlyDecrease: number | null;
-  priceYearlyIncrease: number | null;
-  priceYearlyDecrease: number | null;
-}
-
-export interface Record extends Common {
-  dividendAmount: number;
-  splitMultiplier: number;
-}
-
-interface Raw extends Common {
-  dividendAmount: string;
-  splitMultiplier: string;
-}
-
-interface Create {
-  tickerId: number;
-  date: string;
-  volume: number;
-  closePrice: number;
-  splitMultiplier: string;
-  dividend: string;
-}
-
-interface Update {
-  weeklyAverageFinalPrice?: string | null;
-  monthlyAverageFinalPrice?: string | null
-  quarterlyAverageFinalPrice?: string | null
-  yearlyAverageFinalPrice?: string | null
-  priceDailyIncrease?: number | null;
-  priceDailyDecrease?: number | null;
-  priceWeeklyIncrease?: number | null;
-  priceWeeklyDecrease?: number | null;
-  priceMonthlyIncrease?: number | null;
-  priceMonthlyDecrease?: number | null;
-  priceQuarterlyIncrease?: number | null;
-  priceQuarterlyDecrease?: number | null;
-  priceYearlyIncrease?: number | null;
-  priceYearlyDecrease?: number | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.tickerDailyModel.Raw,
+): interfaces.tickerDailyModel.Record => ({
   ...raw,
   dividendAmount: parseFloat(raw.dividendAmount),
   splitMultiplier: parseFloat(raw.splitMultiplier),
@@ -76,7 +14,7 @@ const convertToRecord = (raw: Raw): Record => ({
 export const getByUK = async (
   tickerId: number,
   date: string,
-): Promise<Record | null> => {
+): Promise<interfaces.tickerDailyModel.Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.TICKER_DAILY,
     conditions: [
@@ -90,7 +28,7 @@ export const getByUK = async (
 export const getPreviousOne = async (
   tickerId: number,
   date: string,
-): Promise<Record | null> => {
+): Promise<interfaces.tickerDailyModel.Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.TICKER_DAILY,
     conditions: [
@@ -112,7 +50,7 @@ export const getLatestDate = async (): Promise<string | null> => {
 
 export const getAll = async (
   tickerId: number,
-): Promise<Record[]> => {
+): Promise<interfaces.tickerDailyModel.Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
     conditions: [
@@ -123,7 +61,9 @@ export const getAll = async (
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
-export const getAllLatestByDate = async (date: string): Promise<Record[]> => {
+export const getAllLatestByDate = async (
+  date: string,
+): Promise<interfaces.tickerDailyModel.Record[]> => {
   const latestTickerDailys = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
     orderBy: [{ column: 'tickerId', order: 'asc' }, { column: 'date', order: 'desc' }],
@@ -141,7 +81,7 @@ export const getAllLatestByDate = async (date: string): Promise<Record[]> => {
 
 export const getByDate = async (
   date: string,
-): Promise<Record[]> => {
+): Promise<interfaces.tickerDailyModel.Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
     conditions: [
@@ -152,8 +92,8 @@ export const getByDate = async (
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.tickerDailyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.tickerDailyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.TICKER_DAILY,
     values,
@@ -164,9 +104,9 @@ export const create = async (
 
 export const update = async (
   tickerDailyId: number,
-  values: Update,
+  values: interfaces.tickerDailyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.tickerDailyModel.Record> => {
   const updatedDaily = await databaseAdapter.update({
     tableName: tableEnum.NAME.TICKER_DAILY,
     values,
