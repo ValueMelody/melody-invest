@@ -84,7 +84,6 @@ export const syncAllPrices = async (date: string) => {
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     const isDateSynced = ticker.lastPriceDate && ticker.lastPriceDate >= date
     if (isDateSynced) return
-    console.log(ticker.id)
     await syncPrices(ticker.region, ticker.symbol)
     await runTool.sleep(cooldown)
   })
