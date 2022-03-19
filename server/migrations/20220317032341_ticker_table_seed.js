@@ -164,7 +164,7 @@ exports.up = (knex) => {
     { symbol: 'CEG', region: 'US', name: 'Constellation Energe Corp' },
     { symbol: 'DOCU', region: 'US', name: 'DocuSign Inc.' },
     { symbol: 'PDD', region: 'US', name: 'pinduoduo Inc. ADR' },
-    { symbol: 'BRK.B', region: 'US', name: 'Berkshire Hathaway Inc.' },
+    { symbol: 'BRK-B', region: 'US', name: 'Berkshire Hathaway Inc.' },
     { symbol: 'BAC', region: 'US', name: 'Bank of America Corp' },
     { symbol: 'ABBV', region: 'US', name: 'AbbVie Inc.' },
     { symbol: 'TMO', region: 'US', name: 'Thermo Fisher Scientific Inc.' },

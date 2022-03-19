@@ -1,73 +1,12 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
 
-export type MovementKey =
-  'incomeYearlyIncrease' | 'incomeYearlyDecrease' |
-  'profitYearlyIncrease' | 'profitYearlyDecrease' |
-  'revenueYearlyIncrease' | 'revenueYearlyDecrease'
-
-interface Common {
-  id: number;
-  tickerId: number;
-  year: string;
-  earningDate: string | null;
-  profitYearlyIncrease: number | null;
-  profitYearlyDecrease: number | null;
-  revenueYearlyIncrease: number | null;
-  revenueYearlyDecrease: number | null;
-  incomeYearlyIncrease: number | null;
-  incomeYearlyDecrease: number | null;
-}
-
-export interface Record extends Common {
-  eps: number | null;
-  ebitda: number | null;
-  netIncome: number | null;
-  grossProfit: number | null;
-  totalRevenue: number | null;
-  costOfRevenue: number | null;
-}
-
-interface Raw extends Common {
-  eps: string | null;
-  ebitda: string | null;
-  netIncome: string | null;
-  grossProfit: string | null;
-  totalRevenue: string | null;
-  costOfRevenue: string | null;
-}
-
-interface Create {
-  tickerId: number;
-  year: string;
-  earningDate?: string;
-  eps?: string;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
-}
-
-interface Update {
-  earningDate?: string;
-  eps?: string;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
-  profitYearlyIncrease?: number | null;
-  profitYearlyDecrease?: number | null;
-  revenueYearlyIncrease?: number | null;
-  revenueYearlyDecrease?: number | null;
-  incomeYearlyIncrease?: number | null;
-  incomeYearlyDecrease?: number | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.tickerYearlyModel.Raw,
+): interfaces.tickerYearlyModel.Record => ({
   ...raw,
   eps: raw.eps ? parseFloat(raw.eps) : null,
   ebitda: raw.ebitda ? parseInt(raw.ebitda) : null,
@@ -80,7 +19,7 @@ const convertToRecord = (raw: Raw): Record => ({
 export const getLatest = async (
   tickerId: number,
   conditions?: databaseAdapter.Condition[],
-): Promise<Record | null> => {
+): Promise<interfaces.tickerYearlyModel.Record | null> => {
   const pkCondition = [{ key: 'tickerId', value: tickerId }]
   const whereConditions = conditions
     ? [...pkCondition, ...conditions]
@@ -96,7 +35,7 @@ export const getLatest = async (
 export const getByUK = async (
   tickerId: number,
   year: string,
-): Promise<Record | null> => {
+): Promise<interfaces.tickerYearlyModel.Record | null> => {
   const tickerYearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: [
@@ -107,7 +46,9 @@ export const getByUK = async (
   return tickerYearly ? convertToRecord(tickerYearly) : null
 }
 
-export const getAll = async (tickerId: number): Promise<Record[]> => {
+export const getAll = async (
+  tickerId: number,
+): Promise<interfaces.tickerYearlyModel.Record[]> => {
   const records = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_YEARLY,
     conditions: [
@@ -118,7 +59,9 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
   return records.map((record) => convertToRecord(record))
 }
 
-export const getPublishedByDate = async (date: string): Promise<Record[]> => {
+export const getPublishedByDate = async (
+  date: string,
+): Promise<interfaces.tickerYearlyModel.Record[]> => {
   const currentQuarter = dateTool.getQuarterByDate(date)
   const [year, quarter] = currentQuarter.split('-')
 
@@ -137,8 +80,8 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.tickerYearlyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.tickerYearlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.TICKER_YEARLY,
     values,
@@ -149,9 +92,9 @@ export const create = async (
 
 export const update = async (
   tickerYearlyId: number,
-  values: Update,
+  values: interfaces.tickerYearlyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.tickerYearlyModel.Record> => {
   const updatedYearly = await databaseAdapter.update({
     tableName: tableEnum.NAME.TICKER_YEARLY,
     values,

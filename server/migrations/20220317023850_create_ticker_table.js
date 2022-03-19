@@ -9,6 +9,8 @@ exports.up = (knex) => {
       table.specificType('lastPriceDate', 'CHAR(10)')
       table.specificType('firstEPSYear', 'CHAR(4)')
       table.specificType('lastEPSYear', 'CHAR(4)')
+      table.specificType('firstEPSQuarter', 'CHAR(7)')
+      table.specificType('lastEPSQuarter', 'CHAR(7)')
       table.specificType('firstIncomeYear', 'CHAR(4)')
       table.specificType('lastIncomeYear', 'CHAR(4)')
       table.specificType('firstIncomeQuarter', 'CHAR(7)')

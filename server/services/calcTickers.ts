@@ -55,10 +55,10 @@ const calcTickerAveragePrice = async (tickerId: number) => {
 
       if (hasUpdate) {
         await tickerDailyModel.update(tickerDaily.id, {
-          weeklyAverageFinalPrice: weeklyAverage,
-          monthlyAverageFinalPrice: monthlyAverage,
-          quarterlyAverageFinalPrice: quarterlyAverage,
-          yearlyAverageFinalPrice: yearlyAverage,
+          weeklyAverageFinalPrice: weeklyAverage === null ? null : Math.floor(weeklyAverage),
+          monthlyAverageFinalPrice: monthlyAverage === null ? null : Math.floor(monthlyAverage),
+          quarterlyAverageFinalPrice: quarterlyAverage === null ? null : Math.floor(quarterlyAverage),
+          yearlyAverageFinalPrice: yearlyAverage === null ? null : Math.floor(yearlyAverage),
         }, transaction)
       }
     })
@@ -191,18 +191,20 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const checkedQuarterly: tickerQuarterlyModel.Record[] = []
-    await runTool.asyncForEach(tickerQuarterlyRecords, async (tickerQuarterly: tickerQuarterlyModel.Record) => {
+    const checkedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
+    await runTool.asyncForEach(tickerQuarterlyRecords, async (
+      tickerQuarterly: interfaces.tickerQuarterlyModel.Record,
+    ) => {
       const lastRecord = checkedQuarterly.length ? checkedQuarterly[checkedQuarterly.length - 1] : null
 
-      let epsQuarterlyBeats = tickerQuarterly.epsQuarterlyBeats
+      let epsQuarterlyBeat = tickerQuarterly.epsQuarterlyBeat
       let epsQuarterlyMiss = tickerQuarterly.epsQuarterlyMiss
       if (tickerQuarterly.eps !== null && tickerQuarterly.estimatedEPS !== null) {
-        const isBeats = tickerQuarterly.eps >= tickerQuarterly.estimatedEPS
-        const previousBeats = lastRecord?.epsQuarterlyBeats || 0
-        const previousMiss = lastRecord?.epsQuarterlyBeats || 0
-        epsQuarterlyBeats = isBeats ? previousBeats + 1 : 1
-        epsQuarterlyMiss = !isBeats ? previousMiss + 1 : 1
+        const isBeat = tickerQuarterly.eps >= tickerQuarterly.estimatedEPS
+        const previousBeats = lastRecord?.epsQuarterlyBeat || 0
+        const previousMiss = lastRecord?.epsQuarterlyBeat || 0
+        epsQuarterlyBeat = isBeat ? previousBeats + 1 : 1
+        epsQuarterlyMiss = !isBeat ? previousMiss + 1 : 1
       }
 
       let revenueQuarterlyIncrease = tickerQuarterly.revenueQuarterlyIncrease
@@ -239,7 +241,7 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
       }
 
       const hasUpdate =
-        tickerQuarterly.epsQuarterlyBeats !== epsQuarterlyBeats ||
+        tickerQuarterly.epsQuarterlyBeat !== epsQuarterlyBeat ||
         tickerQuarterly.epsQuarterlyMiss !== epsQuarterlyMiss ||
         tickerQuarterly.revenueQuarterlyIncrease !== revenueQuarterlyIncrease ||
         tickerQuarterly.revenueQuarterlyDecrease !== revenueQuarterlyDecrease ||
@@ -250,7 +252,7 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
 
       const quarterly = hasUpdate
         ? await tickerQuarterlyModel.update(tickerQuarterly.id, {
-          epsQuarterlyBeats,
+          epsQuarterlyBeat,
           epsQuarterlyMiss,
           revenueQuarterlyIncrease,
           revenueQuarterlyDecrease,
@@ -284,8 +286,10 @@ const calcTickerYearlyFinancial = async (tickerId: number) => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const checkedYearly: tickerYearlyModel.Record[] = []
-    await runTool.asyncForEach(tickerYearlyRecords, async (tickerYearly: tickerYearlyModel.Record) => {
+    const checkedYearly: interfaces.tickerYearlyModel.Record[] = []
+    await runTool.asyncForEach(tickerYearlyRecords, async (
+      tickerYearly: interfaces.tickerYearlyModel.Record,
+    ) => {
       const lastRecord = checkedYearly.length ? checkedYearly[checkedYearly.length - 1] : null
 
       let revenueYearlyIncrease = tickerYearly.revenueYearlyIncrease

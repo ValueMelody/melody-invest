@@ -1,8 +1,5 @@
 import * as interfaces from '@shared/interfaces'
 import * as patternEnums from '../enums/pattern'
-import * as tickerDailyModel from '../models/tickerDaily'
-import * as tickerQuarterlyModel from '../models/tickerQuarterly'
-import * as tickerYearlyModel from '../models/tickerYearly'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
@@ -251,8 +248,8 @@ interface Behavior {
 
 type MovementKey =
   interfaces.tickerDailyModel.MovementKey |
-  tickerQuarterlyModel.MovementKey |
-  tickerYearlyModel.MovementKey |
+  interfaces.tickerQuarterlyModel.MovementKey |
+  interfaces.tickerYearlyModel.MovementKey |
   indicatorYearlyModel.MovementKey |
   indicatorMonthlyModel.MovementKey
 
@@ -261,15 +258,15 @@ type CompareKey = indicatorYearlyModel.CompareKey |
 
 const buildInitialTickerInfo = (
   tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: tickerQuarterlyModel.Record | null,
-  tickerYearly: tickerYearlyModel.Record | null,
+  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
+  tickerYearly: interfaces.tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
   indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
 ) => {
   return {
     ...tickerDaily,
-    epsQuarterlyBeats: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeats : null,
+    epsQuarterlyBeat: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeat : null,
     epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
     profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
     profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
@@ -314,8 +311,8 @@ const buildInitialTickerInfo = (
 export const getPriceMovementBuyWeights = (
   pattern: interfaces.traderPatternModel.Record,
   tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: tickerQuarterlyModel.Record | null,
-  tickerYearly: tickerYearlyModel.Record | null,
+  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
+  tickerYearly: interfaces.tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
   indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
@@ -333,7 +330,7 @@ export const getPriceMovementBuyWeights = (
     priceQuarterlyDecreaseBuy: 'priceQuarterlyDecrease',
     priceYearlyIncreaseBuy: 'priceYearlyIncrease',
     priceYearlyDecreaseBuy: 'priceYearlyDecrease',
-    epsQuarterlyBeatsBuy: 'epsQuarterlyBeats',
+    epsQuarterlyBeatsBuy: 'epsQuarterlyBeat',
     epsQuarterlyMissBuy: 'epsQuarterlyMiss',
     profitQuarterlyIncreaseBuy: 'profitQuarterlyIncrease',
     profitQuarterlyDecreaseBuy: 'profitQuarterlyDecrease',
@@ -427,8 +424,8 @@ export const getPriceMovementBuyWeights = (
 export const getPriceMovementSellWeights = (
   pattern: interfaces.traderPatternModel.Record,
   tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: tickerQuarterlyModel.Record | null,
-  tickerYearly: tickerYearlyModel.Record | null,
+  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
+  tickerYearly: interfaces.tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
   indicatorQuarterly: indicatorQuarterlyModel.Record | null,
   indicatorYearly: indicatorYearlyModel.Record | null,
@@ -446,7 +443,7 @@ export const getPriceMovementSellWeights = (
     priceQuarterlyDecreaseSell: 'priceQuarterlyDecrease',
     priceYearlyIncreaseSell: 'priceYearlyIncrease',
     priceYearlyDecreaseSell: 'priceYearlyDecrease',
-    epsQuarterlyBeatsSell: 'epsQuarterlyBeats',
+    epsQuarterlyBeatsSell: 'epsQuarterlyBeat',
     epsQuarterlyMissSell: 'epsQuarterlyMiss',
     profitQuarterlyIncreaseSell: 'profitQuarterlyIncrease',
     profitQuarterlyDecreaseSell: 'profitQuarterlyDecrease',
@@ -540,8 +537,8 @@ export const getPriceMovementSellWeights = (
 export const getTickerPreferValue = (
   preference: number,
   tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: tickerQuarterlyModel.Record | null,
-  tickerYearly: tickerYearlyModel.Record | null,
+  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
+  tickerYearly: interfaces.tickerYearlyModel.Record | null,
 ): number | null => {
   switch (preference) {
     case patternEnums.PREFERENCE.HIGHER_PRICE:

@@ -115,7 +115,7 @@ export const syncEarnings = async (
     const endYear = dateTool.getCurrentYear()
     const allYears = dateTool.getYearsInRange(startYear, endYear)
 
-    const relatedYearly: tickerYearlyModel.Record[] = []
+    const relatedYearly: interfaces.tickerYearlyModel.Record[] = []
     await runTool.asyncForEach(allYears, async (year: string) => {
       const matchedEarning = annualEarnings.find((earning) => {
         return year === earning.fiscalDateEnding.substring(0, 4)
@@ -158,7 +158,7 @@ export const syncEarnings = async (
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
-    const relatedQuarterly: tickerQuarterlyModel.Record[] = []
+    const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedEarning = quarterlyEarnings.find((earning) => {
         return quarter === earning.fiscalDateEnding.substring(0, 7)
@@ -261,7 +261,7 @@ export const syncIncomes = async (
     const endYear = dateTool.getCurrentYear()
     const allYears = dateTool.getYearsInRange(startYear, endYear)
 
-    const relatedYearly: tickerYearlyModel.Record[] = []
+    const relatedYearly: interfaces.tickerYearlyModel.Record[] = []
     await runTool.asyncForEach(allYears, async (year: string) => {
       const matchedIncome = annualIncomes.find((income) => {
         return year === income.fiscalDateEnding.substring(0, 4)
@@ -307,7 +307,7 @@ export const syncIncomes = async (
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
-    const relatedQuarterly: tickerQuarterlyModel.Record[] = []
+    const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedIncome = quarterlyIncomes.find((income) => {
         return quarter === income.fiscalDateEnding.substring(0, 7)

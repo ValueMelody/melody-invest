@@ -24,8 +24,8 @@ interface HoldingDetails {
 
 interface Target {
   daily: interfaces.tickerDailyModel.Record;
-  quarterly: tickerQuarterlyModel.Record | null;
-  yearly: tickerYearlyModel.Record | null;
+  quarterly: interfaces.tickerQuarterlyModel.Record | null;
+  yearly: interfaces.tickerYearlyModel.Record | null;
   yearlyIndicator: indicatorYearlyModel.Record | null;
 }
 
