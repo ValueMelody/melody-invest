@@ -1,89 +1,12 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
 
-export type MovementKey =
-  'epsQuarterlyBeats' | 'epsQuarterlyMiss' |
-  'incomeQuarterlyIncrease' | 'incomeQuarterlyDecrease' |
-  'profitQuarterlyIncrease' | 'profitQuarterlyDecrease' |
-  'revenueQuarterlyIncrease' | 'revenueQuarterlyDecrease'
-
-interface Common {
-  id: number;
-  tickerId: number;
-  quarter: string;
-  earningDate: string | null;
-  earningReportDate: string | null;
-  epsQuarterlyBeats: number | null;
-  epsQuarterlyMiss: number | null;
-  profitQuarterlyIncrease: number | null;
-  profitQuarterlyDecrease: number | null;
-  revenueQuarterlyIncrease: number | null;
-  revenueQuarterlyDecrease: number | null;
-  incomeQuarterlyIncrease: number | null;
-  incomeQuarterlyDecrease: number | null;
-}
-
-export interface Record extends Common {
-  eps: number | null;
-  estimatedEPS: number | null;
-  epsSurprisePercent: number | null;
-  ebitda: number | null;
-  netIncome: number | null;
-  grossProfit: number | null;
-  totalRevenue: number | null;
-  costOfRevenue: number | null;
-}
-
-interface Raw extends Common {
-  eps: string | null;
-  estimatedEPS: string | null;
-  epsSurprisePercent: string | null;
-  ebitda: string | null;
-  netIncome: string | null;
-  grossProfit: string | null;
-  totalRevenue: string | null;
-  costOfRevenue: string | null;
-}
-
-interface Create {
-  tickerId: number;
-  quarter: string;
-  earningDate?: string;
-  earningReportDate?: string;
-  eps?: string | null;
-  estimatedEPS?: string | null;
-  epsSurprisePercent?: string | null;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
-}
-
-interface Update {
-  earningDate?: string;
-  earningReportDate?: string;
-  eps?: string | null;
-  estimatedEPS?: string | null;
-  epsSurprisePercent?: string | null;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
-  epsQuarterlyBeats?: number | null;
-  epsQuarterlyMiss?: number | null;
-  profitQuarterlyIncrease?: number | null;
-  profitQuarterlyDecrease?: number | null;
-  revenueQuarterlyIncrease?: number | null;
-  revenueQuarterlyDecrease?: number | null;
-  incomeQuarterlyIncrease?: number | null;
-  incomeQuarterlyDecrease?: number | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.tickerQuarterlyModel.Raw,
+): interfaces.tickerQuarterlyModel.Record => ({
   ...raw,
   eps: raw.eps ? parseFloat(raw.eps) : null,
   estimatedEPS: raw.estimatedEPS ? parseFloat(raw.estimatedEPS) : null,
@@ -98,7 +21,7 @@ const convertToRecord = (raw: Raw): Record => ({
 export const getByUK = async (
   tickerId: number,
   quarter: string,
-): Promise<Record | null> => {
+): Promise<interfaces.tickerQuarterlyModel.Record | null> => {
   const tickerQuarterly = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: [
@@ -112,7 +35,7 @@ export const getByUK = async (
 export const getLatest = async (
   tickerId: number,
   conditions?: databaseAdapter.Condition[],
-): Promise<Record | null> => {
+): Promise<interfaces.tickerQuarterlyModel.Record | null> => {
   const pkCondition = [{ key: 'tickerId', value: tickerId }]
   const whereConditions = conditions
     ? [...pkCondition, ...conditions]
@@ -125,7 +48,9 @@ export const getLatest = async (
   return tickerQuarterly ? convertToRecord(tickerQuarterly) : null
 }
 
-export const getAll = async (tickerId: number): Promise<Record[]> => {
+export const getAll = async (
+  tickerId: number,
+): Promise<interfaces.tickerQuarterlyModel.Record[]> => {
   const records = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: [
@@ -136,7 +61,9 @@ export const getAll = async (tickerId: number): Promise<Record[]> => {
   return records.map((raw) => convertToRecord(raw))
 }
 
-export const getPublishedByDate = async (date: string): Promise<Record[]> => {
+export const getPublishedByDate = async (
+  date: string,
+): Promise<interfaces.tickerQuarterlyModel.Record[]> => {
   const currentQuarter = dateTool.getQuarterByDate(date)
   const previousQuarter = dateTool.getPreviousQuarter(currentQuarter)
 
@@ -153,8 +80,8 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.tickerQuarterlyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.tickerQuarterlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.TICKER_QUARTERLY,
     values,
@@ -165,9 +92,9 @@ export const create = async (
 
 export const update = async (
   tickerQuarterlyId: number,
-  values: Update,
+  values: interfaces.tickerQuarterlyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.tickerQuarterlyModel.Record> => {
   const updatedQuarterly = await databaseAdapter.update({
     tableName: tableEnum.NAME.TICKER_QUARTERLY,
     values,

@@ -1,6 +1,8 @@
 import * as userModel from './models/user'
 import * as tickerModel from './models/ticker'
 import * as tickerDailyModel from './models/tickerDaily'
+import * as tickerQuarterlyModel from './models/tickerQuarterly'
+import * as tickerYearlyModel from './models/tickerYearly'
 import * as traderModel from './models/trader'
 import * as traderPatternModel from './models/traderPattern'
 import * as traderHoldingModel from './models/traderHolding'
@@ -13,6 +15,8 @@ export {
   userModel,
   tickerModel,
   tickerDailyModel,
+  tickerQuarterlyModel,
+  tickerYearlyModel,
   traderModel,
   traderPatternModel,
   traderHoldingModel,
