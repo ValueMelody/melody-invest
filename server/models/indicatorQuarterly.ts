@@ -48,7 +48,7 @@ export const getByUK = async (
   quarter: string,
 ): Promise<Record | null> => {
   const quarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     conditions: [
       { key: 'quarter', value: quarter },
     ],
@@ -62,7 +62,7 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
   const previousQuarter = dateTool.getPreviousQuarter(quarter)
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     conditions: [
       { key: 'quarter', value: previousQuarter },
     ],
@@ -72,7 +72,7 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
 
 export const getAll = async (): Promise<Record[]> => {
   const quarterly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     orderBy: [{ column: 'quarter', order: 'asc' }],
   })
   return quarterly.map((raw) => convertToRecord(raw))
@@ -82,7 +82,7 @@ export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     values,
     transaction,
   })
@@ -95,7 +95,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.INDICATOR_QUARTERLY,
+    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     values,
     conditions: [
       { key: 'id', value: indicatorQuarterlyId },

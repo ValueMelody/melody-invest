@@ -100,7 +100,7 @@ export const getByUK = async (
   quarter: string,
 ): Promise<Record | null> => {
   const tickerQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'quarter', value: quarter },
@@ -118,7 +118,7 @@ export const getLatest = async (
     ? [...pkCondition, ...conditions]
     : pkCondition
   const tickerQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: whereConditions,
     orderBy: [{ column: 'quarter', order: 'desc' }],
   })
@@ -127,7 +127,7 @@ export const getLatest = async (
 
 export const getAll = async (tickerId: number): Promise<Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
@@ -141,7 +141,7 @@ export const getPublishedByDate = async (date: string): Promise<Record[]> => {
   const previousQuarter = dateTool.getPreviousQuarter(currentQuarter)
 
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     conditions: [
       { key: 'earningReportDate', value: date, type: '<' },
       { key: 'quarter', value: previousQuarter, type: '>=' },
@@ -156,7 +156,7 @@ export const create = async (
   values: Create, transaction: Knex.Transaction,
 ): Promise<Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     values,
     transaction,
   })
@@ -169,7 +169,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<Record> => {
   const updatedQuarterly = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKER_QUARTERLY,
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
     values,
     conditions: [
       { key: 'id', value: tickerQuarterlyId },

@@ -1,4 +1,4 @@
-export const NAMES = {
+export const NAME = {
   USER: 'user',
   TRADER_FOLLOWER: 'trader_follower',
   TICKER: 'ticker',

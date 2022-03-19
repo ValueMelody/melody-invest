@@ -11,7 +11,7 @@ export const getByUK = async (
   const tickerSymbol = symbol.toUpperCase()
 
   const ticker = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TICKER,
+    tableName: tableEnum.NAME.TICKER,
     conditions: [
       { key: 'region', value: tickerRegion },
       { key: 'symbol', value: tickerSymbol },
@@ -22,7 +22,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<interfaces.tickerModel.Record[]> => {
   const tickers = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TICKER,
+    tableName: tableEnum.NAME.TICKER,
   })
   return tickers
 }
@@ -33,7 +33,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerModel.Record> => {
   const updatedTicker = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TICKER,
+    tableName: tableEnum.NAME.TICKER,
     values,
     conditions: [
       { key: 'id', value: tickerId },

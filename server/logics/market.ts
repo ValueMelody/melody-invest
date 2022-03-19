@@ -1,8 +1,19 @@
-const PRICE_PADDING = 10000
+import * as interfaces from '@shared/interfaces'
 
-export const convertToIntPrice = (price: string | number): number => {
-  const floatPrice = typeof price === 'number' ? price : parseFloat(price)
-  return Math.floor(floatPrice * PRICE_PADDING)
+const PRICE_PADDING = 100
+
+export const convertToIntPrice = (price: string): number => {
+  const value = parseFloat(price)
+  return Math.floor(value * PRICE_PADDING)
+}
+
+export const getSplitMultiplier = (
+  splitCoefficient: string,
+  previousDaily: interfaces.tickerDailyModel.Record | null,
+) => {
+  const baseMultiplier = previousDaily?.splitMultiplier || 1
+  const newMultiplier = parseFloat(splitCoefficient)
+  return baseMultiplier * newMultiplier
 }
 
 export const getInitialCash = (): number => {

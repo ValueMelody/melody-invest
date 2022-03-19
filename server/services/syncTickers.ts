@@ -18,9 +18,8 @@ export const syncPrices = async (
   if (!ticker) throw errorEnum.DEFAULT.NOT_FOUND
 
   const tickerData = await marketAdapter.getTickerPrices(symbol)
-
   const metaData = tickerData['Meta Data']
-  const lastRefreshed = metaData['3. Last Refreshed']
+  const lastRefreshed = metaData['3. Last Refreshed'].substring(0, 10)
 
   if (lastRefreshed === ticker.lastPriceDate) return
 
@@ -32,55 +31,41 @@ export const syncPrices = async (
   const endDate = dateTool.getCurrentDate()
 
   const allDates = dateTool.getDaysInRange(startDate, endDate)
+  if (!allDates.length) return
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     let firstPriceDate: string | null = null
+    let previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, allDates[0])
     await runTool.asyncForEach(allDates, async (date: string) => {
       const dailyData = allDaysData[date]
       if (!dailyData) return
-
-      const record = await tickerDailyModel.getByUK(ticker.id, date)
-      if (record) return
 
       const closePrice: string = dailyData['4. close']
       const volume: string = dailyData['6. volume']
       const dividendAmount: string = dailyData['7. dividend amount']
       const splitCoefficient: string = dailyData['8. split coefficient']
 
-      const previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, date)
+      const splitMultiplier = marketLogic.getSplitMultiplier(
+        splitCoefficient,
+        previousRecord,
+      )
 
-      const adjustedClose = previousRecord
-        ? marketLogic.getAdjustedClosePrice(
-          closePrice,
-          splitCoefficient,
-          previousRecord.closePrice,
-          previousRecord.adjustedClosePrice,
-        )
-        : marketLogic.convertToIntPrice(closePrice)
-
-      const dividendPercent = previousRecord
-        ? marketLogic.getDividendPercent(
-          dividendAmount,
-          previousRecord.closePrice,
-        )
-        : '0.00'
-
-      await tickerDailyModel.create({
+      previousRecord = await tickerDailyModel.create({
         tickerId: ticker.id,
         date,
-        volume: parseInt(volume),
-        closePrice: closePrice,
-        splitCoefficient: splitCoefficient.substring(0, 10),
-        dividendPercent: dividendPercent,
-        adjustedClosePrice: adjustedClose,
+        volume,
+        closePrice: marketLogic.convertToIntPrice(closePrice),
+        splitMultiplier: splitMultiplier.toFixed(5),
+        dividendAmount,
       }, transaction)
 
       if (!firstPriceDate) firstPriceDate = date
     })
 
-    const newTickerInfo: interfaces.tickerModel.Update = {}
-    newTickerInfo.lastPriceDate = lastRefreshed
+    const newTickerInfo: interfaces.tickerModel.Update = {
+      lastPriceDate: lastRefreshed,
+    }
     if (!ticker.firstPriceDate && firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
 
     await tickerModel.update(ticker.id, newTickerInfo, transaction)

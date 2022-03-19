@@ -13,7 +13,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -26,7 +26,7 @@ export const getByUK = async (
   patternId: number,
 ): Promise<interfaces.traderModel.Record | null> => {
   const trader = await databaseAdapter.findOne({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'traderEnvId', value: envId },
       { key: 'traderPatternId', value: patternId },
@@ -37,7 +37,7 @@ export const getByUK = async (
 
 export const getActives = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -47,7 +47,7 @@ export const getActives = async (): Promise<interfaces.traderModel.Record[]> => 
 
 export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
   })
   return traders.map((trader) => convertToRecord(trader))
 }
@@ -64,7 +64,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],
@@ -76,7 +76,7 @@ export const getTops = async (total: number): Promise<Tops> => {
   const eachNumber = Math.floor(total / 5)
 
   const topYearly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -85,7 +85,7 @@ export const getTops = async (total: number): Promise<Tops> => {
   })
 
   const topPastYear = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -94,7 +94,7 @@ export const getTops = async (total: number): Promise<Tops> => {
   })
 
   const topPastQuarter = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -103,7 +103,7 @@ export const getTops = async (total: number): Promise<Tops> => {
   })
 
   const topPastMonth = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -112,7 +112,7 @@ export const getTops = async (total: number): Promise<Tops> => {
   })
 
   const topPastWeek = await databaseAdapter.findAll({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -133,7 +133,7 @@ export const create = async (
   values: interfaces.traderModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     values,
     transaction,
   })
@@ -156,7 +156,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
   const updatedTraders = await databaseAdapter.update({
-    tableName: tableEnum.NAMES.TRADER,
+    tableName: tableEnum.NAME.TRADER,
     values,
     conditions: [
       { key: 'id', value: traderId },

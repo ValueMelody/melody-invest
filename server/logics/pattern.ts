@@ -250,7 +250,7 @@ interface Behavior {
 }
 
 type MovementKey =
-  tickerDailyModel.MovementKey |
+  interfaces.tickerDailyModel.MovementKey |
   tickerQuarterlyModel.MovementKey |
   tickerYearlyModel.MovementKey |
   indicatorYearlyModel.MovementKey |
@@ -260,7 +260,7 @@ type CompareKey = indicatorYearlyModel.CompareKey |
   indicatorQuarterlyModel.CompareKey
 
 const buildInitialTickerInfo = (
-  tickerDaily: tickerDailyModel.Record,
+  tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
@@ -313,7 +313,7 @@ const buildInitialTickerInfo = (
 
 export const getPriceMovementBuyWeights = (
   pattern: interfaces.traderPatternModel.Record,
-  tickerDaily: tickerDailyModel.Record,
+  tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
@@ -426,7 +426,7 @@ export const getPriceMovementBuyWeights = (
 
 export const getPriceMovementSellWeights = (
   pattern: interfaces.traderPatternModel.Record,
-  tickerDaily: tickerDailyModel.Record,
+  tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
   indicatorMonthly: indicatorMonthlyModel.Record | null,
@@ -539,7 +539,7 @@ export const getPriceMovementSellWeights = (
 
 export const getTickerPreferValue = (
   preference: number,
-  tickerDaily: tickerDailyModel.Record,
+  tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: tickerQuarterlyModel.Record | null,
   tickerYearly: tickerYearlyModel.Record | null,
 ): number | null => {

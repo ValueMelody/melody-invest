@@ -23,7 +23,7 @@ interface HoldingDetails {
 }
 
 interface Target {
-  daily: tickerDailyModel.Record;
+  daily: interfaces.tickerDailyModel.Record;
   quarterly: tickerQuarterlyModel.Record | null;
   yearly: tickerYearlyModel.Record | null;
   yearlyIndicator: indicatorYearlyModel.Record | null;
@@ -35,12 +35,12 @@ interface Targets {
 
 const getHoldingValue = (
   holding: HoldingDetails,
-  dailys: tickerDailyModel.Record[],
+  dailys: interfaces.tickerDailyModel.Record[],
 ): number => {
   return holding.holdings.reduce((total, holding) => {
     const matchedDaily = dailys.find((daily) => daily.tickerId === holding.tickerId)
     if (!matchedDaily) return total
-    return total + matchedDaily.adjustedClosePrice * holding.shares
+    return total + matchedDaily.closePrice * matchedDaily.splitMultiplier * holding.shares
   }, holding.totalCash)
 }
 
@@ -100,8 +100,15 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
       const detailsAfterUpdate = holdings.reduce((details, holding) => {
         const matched = availableTargets[holding.tickerId]
         const matchedDaily = matched?.daily
-        const holdingValue = matchedDaily ? holding.shares * matchedDaily.adjustedClosePrice : holding.value
-        const updatedHolding = { tickerId: holding.tickerId, shares: holding.shares, value: holdingValue }
+        const holdingValue = matchedDaily
+          ? holding.shares * matchedDaily.closePrice * matchedDaily.splitMultiplier
+          : holding.value
+        const updatedHolding = {
+          tickerId: holding.tickerId,
+          shares: holding.shares,
+          value: holdingValue,
+          splitMultiplier: matchedDaily.splitMultiplier,
+        }
         return {
           totalValue: details.totalValue + holdingValue,
           totalCash: details.totalCash,
@@ -141,15 +148,17 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
         if (shouldRebalance && isMoreThanMaxPercent) {
           const sellPercent = holdingPercent - tickerMaxPercent
           const sellValue = details.totalValue * sellPercent
-          const sharesSold = Math.ceil(sellValue / matchedDaily.adjustedClosePrice)
+          const dailyFinalPrice = matchedDaily.closePrice * matchedDaily.splitMultiplier
+          const sharesSold = Math.ceil(sellValue / dailyFinalPrice)
           const sharesLeft = holding.shares - sharesSold
-          const cashAfterSell = details.totalCash + sharesSold * matchedDaily.adjustedClosePrice
+          const cashAfterSell = details.totalCash + sharesSold * dailyFinalPrice
           if (sharesLeft && cashAfterSell <= maxCashValue) {
             hasTransaction = true
             const holdingAfterSell = {
               tickerId: holding.tickerId,
               shares: sharesLeft,
-              value: sharesLeft * matchedDaily.adjustedClosePrice,
+              value: sharesLeft * dailyFinalPrice,
+              splitMultiplier: matchedDaily.splitMultiplier,
             }
             return {
               totalValue: details.totalValue,
@@ -213,7 +222,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
         const matched = availableTargets[holding.tickerId]
         const matchedDaily = matched?.daily
         const sharesSold = matchedDaily ? Math.floor(holding.shares * holdingSellPercent) : 0
-        const tickerPrice = matchedDaily ? matchedDaily.adjustedClosePrice : 0
+        const tickerPrice = matchedDaily ? matchedDaily.closePrice * matchedDaily.splitMultiplier : 0
         const valueSold = sharesSold * tickerPrice
         const percentAfterSell = holding.value - valueSold / details.totalValue
         const cashAfterSell = details.totalCash + valueSold
@@ -226,7 +235,12 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
           hasTransaction = true
           const sharesAfterSell = holding.shares - sharesSold
           const valueAfterSell = sharesAfterSell * tickerPrice
-          const holdingDetail = { tickerId: holding.tickerId, shares: sharesAfterSell, value: valueAfterSell }
+          const holdingDetail = {
+            tickerId: holding.tickerId,
+            shares: sharesAfterSell,
+            value: valueAfterSell,
+            splitMultiplier: matchedDaily.splitMultiplier,
+          }
           const holdings = sharesAfterSell ? [...details.holdings, holdingDetail] : details.holdings
           return {
             totalValue: details.totalValue,
@@ -278,7 +292,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
       const detailsAfterBuy = buyTargets.reduce((details, { daily }) => {
         const maxCashToUse = details.totalCash < maxBuyAmount ? details.totalCash : maxBuyAmount
-        const sharePrice = daily.adjustedClosePrice
+        const sharePrice = daily.closePrice * daily.splitMultiplier
         const sharesBought = Math.floor(maxCashToUse / sharePrice)
         if (!sharesBought) return details
 
@@ -292,7 +306,12 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
         hasTransaction = true
 
-        const holdingDetail = { tickerId: daily.tickerId, shares: sharesAfterBuy, value: valueAfterBuy }
+        const holdingDetail = {
+          tickerId: daily.tickerId,
+          shares: sharesAfterBuy,
+          value: valueAfterBuy,
+          splitMultiplier: daily.splitMultiplier,
+        }
         const holdings = isNewHolding
           ? [...details.holdings, holdingDetail]
           : details.holdings.map((holding, index) => index === holdingIndex ? holdingDetail : holding)

@@ -1,6 +1,7 @@
 export interface Holding {
   tickerId: number;
   shares: number;
+  splitMultiplier: number;
   value: number;
 }
 
