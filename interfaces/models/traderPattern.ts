@@ -91,10 +91,10 @@ export interface Public {
   durableGoodsMonthlyDecreaseBuy: number | null;
   durableGoodsMonthlyIncreaseSell: number | null;
   durableGoodsMonthlyDecreaseSell: number | null;
-  unemployeementRateMonthlyIncreaseBuy: number | null;
-  unemployeementRateMonthlyDecreaseBuy: number | null;
-  unemployeementRateMonthlyIncreaseSell: number | null;
-  unemployeementRateMonthlyDecreaseSell: number | null;
+  unemploymentRateMonthlyIncreaseBuy: number | null;
+  unemploymentRateMonthlyDecreaseBuy: number | null;
+  unemploymentRateMonthlyIncreaseSell: number | null;
+  unemploymentRateMonthlyDecreaseSell: number | null;
   nonfarmPayrollMonthlyIncreaseBuy: number | null;
   nonfarmPayrollMonthlyDecreaseBuy: number | null;
   nonfarmPayrollMonthlyIncreaseSell: number | null;
@@ -212,10 +212,10 @@ export interface Create {
   durableGoodsMonthlyDecreaseBuy: number | null;
   durableGoodsMonthlyIncreaseSell: number | null;
   durableGoodsMonthlyDecreaseSell: number | null;
-  unemployeementRateMonthlyIncreaseBuy: number | null;
-  unemployeementRateMonthlyDecreaseBuy: number | null;
-  unemployeementRateMonthlyIncreaseSell: number | null;
-  unemployeementRateMonthlyDecreaseSell: number | null;
+  unemploymentRateMonthlyIncreaseBuy: number | null;
+  unemploymentRateMonthlyDecreaseBuy: number | null;
+  unemploymentRateMonthlyIncreaseSell: number | null;
+  unemploymentRateMonthlyDecreaseSell: number | null;
   nonfarmPayrollMonthlyIncreaseBuy: number | null;
   nonfarmPayrollMonthlyDecreaseBuy: number | null;
   nonfarmPayrollMonthlyIncreaseSell: number | null;
@@ -262,7 +262,7 @@ export type MovementBuyBehavior =
   'consumerSentimentMonthlyIncreaseBuy' | 'consumerSentimentMonthlyDecreaseBuy' |
   'retailSalesMonthlyIncreaseBuy' | 'retailSalesMonthlyDecreaseBuy' |
   'durableGoodsMonthlyIncreaseBuy' | 'durableGoodsMonthlyDecreaseBuy' |
-  'unemployeementRateMonthlyIncreaseBuy' | 'unemployeementRateMonthlyDecreaseBuy' |
+  'unemploymentRateMonthlyIncreaseBuy' | 'unemploymentRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
 export type CompareBuyBehavior =
@@ -294,7 +294,7 @@ export type MovementSellBehavior =
   'consumerSentimentMonthlyIncreaseSell' | 'consumerSentimentMonthlyDecreaseSell' |
   'retailSalesMonthlyIncreaseSell' | 'retailSalesMonthlyDecreaseSell' |
   'durableGoodsMonthlyIncreaseSell' | 'durableGoodsMonthlyDecreaseSell' |
-  'unemployeementRateMonthlyIncreaseSell' | 'unemployeementRateMonthlyDecreaseSell' |
+  'unemploymentRateMonthlyIncreaseSell' | 'unemploymentRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
 export type CompareSellBehavior =

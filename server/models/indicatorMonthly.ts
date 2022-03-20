@@ -17,7 +17,7 @@ export type MovementKey =
   'consumerSentimentMonthlyIncrease' | 'consumerSentimentMonthlyDecrease' |
   'retailSalesMonthlyIncrease' | 'retailSalesMonthlyDecrease' |
   'durableGoodsMonthlyIncrease' | 'durableGoodsMonthlyDecrease' |
-  'unemployeementRateMonthlyIncrease' | 'unemployeementRateMonthlyDecrease' |
+  'unemploymentRateMonthlyIncrease' | 'unemploymentRateMonthlyDecrease' |
   'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
 
 interface Common {
@@ -39,8 +39,8 @@ interface Common {
   retailSalesMonthlyDecrease: number | null;
   durableGoodsMonthlyIncrease: number | null;
   durableGoodsMonthlyDecrease: number | null;
-  unemployeementRateMonthlyIncrease: number | null;
-  unemployeementRateMonthlyDecrease: number | null;
+  unemploymentRateMonthlyIncrease: number | null;
+  unemploymentRateMonthlyDecrease: number | null;
   nonfarmPayrollMonthlyIncrease: number | null;
   nonfarmPayrollMonthlyDecrease: number | null;
 }
@@ -112,8 +112,8 @@ interface Update {
   retailSalesMonthlyDecrease?: number | null;
   durableGoodsMonthlyIncrease?: number | null;
   durableGoodsMonthlyDecrease?: number | null;
-  unemployeementRateMonthlyIncrease?: number | null;
-  unemployeementRateMonthlyDecrease?: number | null;
+  unemploymentRateMonthlyIncrease?: number | null;
+  unemploymentRateMonthlyDecrease?: number | null;
   nonfarmPayrollMonthlyIncrease?: number | null;
   nonfarmPayrollMonthlyDecrease?: number | null;
 }
