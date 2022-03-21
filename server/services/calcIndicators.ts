@@ -218,13 +218,13 @@ export const calcMonthly = async () => {
         durableGoodsDecrease = indicator.durableGoods < lastIndicator.durableGoods ? lastDurableGoodsDecrease + 1 : 0
       }
 
-      let unemployeementRateIncrease = indicator.unemploymentRateMonthlyIncrease
-      let unemployeementRateDecrease = indicator.unemploymentRateMonthlyDecrease
+      let unemploymentRateIncrease = indicator.unemploymentRateMonthlyIncrease
+      let unemploymentRateDecrease = indicator.unemploymentRateMonthlyDecrease
       if (indicator.unemploymentRate && lastIndicator.unemploymentRate) {
-        const lastUnemployeementRateIncrease = lastIndicator.unemploymentRateMonthlyIncrease || 0
-        unemployeementRateIncrease = indicator.unemploymentRate > lastIndicator.unemploymentRate ? lastUnemployeementRateIncrease + 1 : 0
-        const lastUnemployeementRateDecrease = lastIndicator.unemploymentRateMonthlyDecrease || 0
-        unemployeementRateDecrease = indicator.unemploymentRate < lastIndicator.unemploymentRate ? lastUnemployeementRateDecrease + 1 : 0
+        const lastUnemploymentRateIncrease = lastIndicator.unemploymentRateMonthlyIncrease || 0
+        unemploymentRateIncrease = indicator.unemploymentRate > lastIndicator.unemploymentRate ? lastUnemploymentRateIncrease + 1 : 0
+        const lastUnemploymentRateDecrease = lastIndicator.unemploymentRateMonthlyDecrease || 0
+        unemploymentRateDecrease = indicator.unemploymentRate < lastIndicator.unemploymentRate ? lastUnemploymentRateDecrease + 1 : 0
       }
 
       let nofarmPayrollIncrease = indicator.nonfarmPayrollMonthlyIncrease
@@ -252,8 +252,8 @@ export const calcMonthly = async () => {
         retailSalesDecrease !== indicator.retailSalesMonthlyDecrease ||
         durableGoodsIncrease !== indicator.durableGoodsMonthlyIncrease ||
         durableGoodsDecrease !== indicator.durableGoodsMonthlyDecrease ||
-        unemployeementRateIncrease !== indicator.unemploymentRateMonthlyIncrease ||
-        unemployeementRateDecrease !== indicator.unemploymentRateMonthlyDecrease ||
+        unemploymentRateIncrease !== indicator.unemploymentRateMonthlyIncrease ||
+        unemploymentRateDecrease !== indicator.unemploymentRateMonthlyDecrease ||
         nofarmPayrollIncrease !== indicator.nonfarmPayrollMonthlyIncrease ||
         nofarmPayrollDecrease !== indicator.nonfarmPayrollMonthlyDecrease
 
@@ -276,8 +276,8 @@ export const calcMonthly = async () => {
           retailSalesMonthlyDecrease: retailSalesDecrease,
           durableGoodsMonthlyIncrease: durableGoodsIncrease,
           durableGoodsMonthlyDecrease: durableGoodsDecrease,
-          unemploymentRateMonthlyIncrease: unemployeementRateIncrease,
-          unemploymentRateMonthlyDecrease: unemployeementRateDecrease,
+          unemploymentRateMonthlyIncrease: unemploymentRateIncrease,
+          unemploymentRateMonthlyDecrease: unemploymentRateDecrease,
           nonfarmPayrollMonthlyIncrease: nofarmPayrollIncrease,
           nonfarmPayrollMonthlyDecrease: nofarmPayrollDecrease,
         }, transaction)
