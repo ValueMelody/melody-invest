@@ -13,7 +13,6 @@ export interface Record {
   lastIncomeYear: string | null;
   firstIncomeQuarter: string | null;
   lastIncomeQuarter: string | null;
-  quarterlyEPSMonthDiffer: number | null;
 }
 
 export interface Update {
@@ -27,5 +26,4 @@ export interface Update {
   lastIncomeYear?: string;
   firstIncomeQuarter?: string;
   lastIncomeQuarter?: string;
-  quarterlyEPSMonthDiffer?: number | null;
 }

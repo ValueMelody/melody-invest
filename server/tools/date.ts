@@ -17,10 +17,8 @@ export const getInitialYear = (): string => {
   return INITIAL_YEAR
 }
 
-export const getInitialQuarter = (differ?: number | null): string => {
-  return differ
-    ? getAdjustedQuarter(INITIAL_QUARTER, differ)
-    : INITIAL_QUARTER
+export const getInitialQuarter = (): string => {
+  return INITIAL_QUARTER
 }
 
 export const getInitialMonth = (): string => {
