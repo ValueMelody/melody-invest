@@ -15,7 +15,6 @@ exports.up = (knex) => {
       table.specificType('lastIncomeYear', 'CHAR(4)')
       table.specificType('firstIncomeQuarter', 'CHAR(7)')
       table.specificType('lastIncomeQuarter', 'CHAR(7)')
-      table.specificType('quarterlyEPSMonthDiffer', 'INT2')
       table.unique(['symbol', 'region'], 'ticker_ukey')
     })
 }

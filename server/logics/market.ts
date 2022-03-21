@@ -20,23 +20,15 @@ export const getInitialCash = (): number => {
   return 100000 * PRICE_PADDING
 }
 
-export const getAdjustedClosePrice = (
-  closePrice: string,
-  splitCoefficient: string,
-  previousClosePrice: number,
-  previousAdjustedClosePrice: number,
-): number => {
-  const combinedClose = parseFloat(closePrice) * parseFloat(splitCoefficient)
-  const differRatio = (combinedClose - previousClosePrice) / previousClosePrice
-  const adjustedClose = previousAdjustedClosePrice * (1 + differRatio)
-  return Math.floor(adjustedClose)
-}
-
-export const getDividendPercent = (
-  dividendAmount: string,
-  previousClose: number,
-): string => {
-  const dividend = parseFloat(dividendAmount)
-  const ratio = dividend / previousClose
-  return (ratio * 100).toFixed(2)
+export const isMatchedQuarter = (
+  quarter: string, fiscalDateEnding: string,
+): boolean => {
+  const fiscalQuarter = fiscalDateEnding.substring(0, 7)
+  const [fiscalYear, fiscalMonth] = fiscalQuarter.split('-')
+  const [year, month] = quarter.split('-')
+  if (year !== fiscalYear) return false
+  if (month === fiscalMonth) return true
+  if (parseInt(month) + 1 === parseInt(fiscalMonth)) return true
+  if (parseInt(month) - 1 === parseInt(fiscalMonth)) return true
+  return false
 }

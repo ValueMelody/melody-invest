@@ -154,14 +154,14 @@ export const syncEarnings = async (
 
     const startQuarter = lastQuarterlyRecord
       ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-      : dateTool.getInitialQuarter(ticker.quarterlyEPSMonthDiffer)
+      : dateTool.getInitialQuarter()
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
     const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedEarning = quarterlyEarnings.find((earning) => {
-        return quarter === earning.fiscalDateEnding.substring(0, 7)
+        return marketLogic.isMatchedQuarter(quarter, earning.fiscalDateEnding)
       })
       if (!matchedEarning) return
 
@@ -303,14 +303,14 @@ export const syncIncomes = async (
 
     const startQuarter = lastQuarterlyRecord
       ? dateTool.getNextQuarter(lastQuarterlyRecord.quarter)
-      : dateTool.getInitialQuarter(ticker.quarterlyEPSMonthDiffer)
+      : dateTool.getInitialQuarter()
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
     const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedIncome = quarterlyIncomes.find((income) => {
-        return quarter === income.fiscalDateEnding.substring(0, 7)
+        return marketLogic.isMatchedQuarter(quarter, income.fiscalDateEnding)
       })
       if (!matchedIncome) return
 
