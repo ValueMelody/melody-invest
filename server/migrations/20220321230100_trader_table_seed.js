@@ -1,4 +1,4 @@
-exports.seed = (knex) => knex('trader').then(() => {
+exports.up = (knex) => {
   return knex('trader').insert([
     { traderPatternId: 1, traderEnvId: 1, isActive: true, accessCode: '000' },
     { traderPatternId: 2, traderEnvId: 1, isActive: true, accessCode: '000' },
@@ -53,4 +53,6 @@ exports.seed = (knex) => knex('trader').then(() => {
     { traderPatternId: 51, traderEnvId: 1, isActive: true, accessCode: '000' },
     { traderPatternId: 52, traderEnvId: 1, isActive: true, accessCode: '000' },
   ])
-})
+}
+
+exports.down = () => {}

@@ -1,4 +1,4 @@
-exports.seed = (knex) => knex('trader_pattern').then(() => {
+exports.up = (knex) => {
   return knex('trader_pattern').insert([
     {
       hashCode: 'PATTERN001',
@@ -144,7 +144,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
       hashCode: 'PATTERN011',
       buyPreference: 1,
       sellPreference: 2,
-      epsQuarterlyBeatsBuy: 3,
+      epsQuarterlyBeatBuy: 3,
       epsQuarterlyMissSell: 3,
       cashMaxPercent: 30,
       tickerMinPercent: 2,
@@ -159,7 +159,7 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
       buyPreference: 1,
       sellPreference: 2,
       epsQuarterlyMissBuy: 3,
-      epsQuarterlyBeatsSell: 3,
+      epsQuarterlyBeatSell: 3,
       cashMaxPercent: 30,
       tickerMinPercent: 2,
       tickerMaxPercent: 8,
@@ -729,4 +729,6 @@ exports.seed = (knex) => knex('trader_pattern').then(() => {
       rebalanceFrequency: 80,
     },
   ])
-})
+}
+
+exports.down = () => {}
