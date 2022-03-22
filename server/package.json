@@ -1,5 +1,5 @@
 {
-  "name": "dioxider-server",
+  "name": "server",
   "private": true,
   "scripts": {
     "start": "ts-node-dev --project ../tsconfig.json ./index.ts",

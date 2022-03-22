@@ -1,5 +1,5 @@
 {
-  "name": "dioxider-app",
+  "name": "melody-app",
   "private": true,
   "workspaces": [
     "server",
@@ -16,7 +16,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/byn9826/dioxider-app"
+    "url": "git+https://github.com/byn9826/melody-app"
   },
   "scripts": {
     "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
