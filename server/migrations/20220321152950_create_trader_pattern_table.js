@@ -8,7 +8,6 @@ exports.up = (knex) => {
       table.smallint('cashMaxPercent').notNullable()
       table.smallint('tickerMinPercent').notNullable()
       table.smallint('tickerMaxPercent').notNullable()
-      table.smallint('tickerMaxPercent').notNullable()
       table.smallint('holdingBuyPercent').notNullable()
       table.smallint('holdingSellPercent').notNullable()
       table.smallint('tradeFrequency').notNullable()
