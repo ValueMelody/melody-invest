@@ -1,48 +1,12 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
 
-export type IndicatorKey = 'inflation' | 'realGDP'
-
-export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
-
-export type CompareKey = 'gdpYearlyChangePercent'
-
-interface Common {
-  id: number;
-  year: string;
-  inflationYearlyIncrease: number | null;
-  inflationYearlyDecrease: number | null;
-}
-
-export interface Record extends Common {
-  realGDP: number | null;
-  inflation: number | null;
-  gdpYearlyChangePercent: number | null;
-}
-
-interface Raw extends Common {
-  realGDP: string | null;
-  inflation: string | null;
-  gdpYearlyChangePercent: string | null;
-}
-
-interface Create {
-  year: string;
-  realGDP?: string;
-  inflation?: string;
-}
-
-interface Update {
-  realGDP?: string;
-  inflation?: string;
-  gdpYearlyChangePercent?: string | null;
-  inflationYearlyIncrease?: number | null;
-  inflationYearlyDecrease?: number | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.indicatorYearlyModel.Raw,
+): interfaces.indicatorYearlyModel.Record => ({
   ...raw,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   inflation: raw.inflation ? parseFloat(raw.inflation) : null,
@@ -51,7 +15,7 @@ const convertToRecord = (raw: Raw): Record => ({
 
 export const getByUK = async (
   year: string,
-): Promise<Record | null> => {
+): Promise<interfaces.indicatorYearlyModel.Record | null> => {
   const yearly = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.INDICATOR_YEARLY,
     conditions: [
@@ -61,7 +25,9 @@ export const getByUK = async (
   return yearly ? convertToRecord(yearly) : null
 }
 
-export const getAll = async (): Promise<Record[]> => {
+export const getAll = async (): Promise<
+  interfaces.indicatorYearlyModel.Record[]
+> => {
   const yearly = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.INDICATOR_YEARLY,
     orderBy: [{ column: 'year', order: 'asc' }],
@@ -87,8 +53,8 @@ export const getPublishedByDate = async (date: string) => {
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.indicatorYearlyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.indicatorYearlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.INDICATOR_YEARLY,
     values,
@@ -99,9 +65,9 @@ export const create = async (
 
 export const update = async (
   indicatorYearlyId: number,
-  values: Update,
+  values: interfaces.indicatorYearlyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.indicatorYearlyModel.Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAME.INDICATOR_YEARLY,
     values,

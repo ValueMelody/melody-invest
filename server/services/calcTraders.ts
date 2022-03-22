@@ -26,7 +26,7 @@ interface Target {
   daily: interfaces.tickerDailyModel.Record;
   quarterly: interfaces.tickerQuarterlyModel.Record | null;
   yearly: interfaces.tickerYearlyModel.Record | null;
-  yearlyIndicator: indicatorYearlyModel.Record | null;
+  yearlyIndicator: interfaces.indicatorYearlyModel.Record | null;
 }
 
 interface Targets {

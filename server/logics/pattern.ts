@@ -1,8 +1,5 @@
 import * as interfaces from '@shared/interfaces'
 import * as patternEnums from '../enums/pattern'
-import * as indicatorYearlyModel from '../models/indicatorYearly'
-import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
-import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as generateTool from '../tools/generate'
 
 const BEHAVIOR_VALUES = {
@@ -250,19 +247,20 @@ type MovementKey =
   interfaces.tickerDailyModel.MovementKey |
   interfaces.tickerQuarterlyModel.MovementKey |
   interfaces.tickerYearlyModel.MovementKey |
-  indicatorYearlyModel.MovementKey |
-  indicatorMonthlyModel.MovementKey
+  interfaces.indicatorYearlyModel.MovementKey |
+  interfaces.indicatorMonthlyModel.MovementKey
 
-type CompareKey = indicatorYearlyModel.CompareKey |
-  indicatorQuarterlyModel.CompareKey
+type CompareKey =
+  interfaces.indicatorYearlyModel.CompareKey |
+  interfaces.indicatorQuarterlyModel.CompareKey
 
 const buildInitialTickerInfo = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
-  indicatorYearly: indicatorYearlyModel.Record | null,
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
 ) => {
   return {
     ...tickerDaily,
@@ -313,9 +311,9 @@ export const getPriceMovementBuyWeights = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
-  indicatorYearly: indicatorYearlyModel.Record | null,
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
     [key in interfaces.traderPatternModel.MovementBuyBehavior]: MovementKey
@@ -426,9 +424,9 @@ export const getPriceMovementSellWeights = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: indicatorQuarterlyModel.Record | null,
-  indicatorYearly: indicatorYearlyModel.Record | null,
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
 ): number => {
   const MOVEMENT_TRIGGERS: {
     [key in interfaces.traderPatternModel.MovementSellBehavior]: MovementKey
