@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
@@ -10,9 +11,9 @@ export const calcYearly = async () => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const checkedYearly: indicatorYearlyModel.Record[] = []
+    const checkedYearly: interfaces.indicatorYearlyModel.Record[] = []
     await runTool.asyncForEach(indicators, async (
-      indicator: indicatorYearlyModel.Record,
+      indicator: interfaces.indicatorYearlyModel.Record,
     ) => {
       const hasValidValues = indicator.inflationYearlyIncrease !== null &&
         indicator.inflationYearlyDecrease !== null &&
@@ -68,7 +69,7 @@ export const calcQuarterly = async () => {
   const transaction = await databaseAdapter.createTransaction()
   try {
     await runTool.asyncForEach(indicators, async (
-      indicator: indicatorQuarterlyModel.Record, index: number,
+      indicator: interfaces.indicatorQuarterlyModel.Record, index: number,
     ) => {
       if (
         indicator.gdpQuarterlyChangePercent !== null &&
@@ -117,8 +118,10 @@ export const calcMonthly = async () => {
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const checkedMonthly: indicatorMonthlyModel.Record[] = []
-    await runTool.asyncForEach(indicators, async (indicator: indicatorMonthlyModel.Record) => {
+    const checkedMonthly: interfaces.indicatorMonthlyModel.Record[] = []
+    await runTool.asyncForEach(indicators, async (
+      indicator: interfaces.indicatorMonthlyModel.Record,
+    ) => {
       const hasValidValues = indicator.fundsRateMonthlyIncrease !== null &&
         indicator.fundsRateMonthlyDecrease !== null &&
         indicator.thirtyYearsTreasuryMonthlyIncrease !== null &&

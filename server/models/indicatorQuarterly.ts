@@ -1,43 +1,12 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
 
-export type IndicatorKey = 'realGDP'
-
-export type CompareKey = 'gdpQuarterlyChangePercent' | 'gdpQuarterlyYoYChangePercent'
-
-interface Common {
-  id: number;
-  quarter: string;
-  reportMonth: string;
-}
-
-export interface Record extends Common {
-  realGDP: number | null;
-  gdpQuarterlyChangePercent: number | null;
-  gdpQuarterlyYoYChangePercent: number | null;
-}
-
-interface Raw extends Common {
-  realGDP: string | null;
-  gdpQuarterlyChangePercent: string | null;
-  gdpQuarterlyYoYChangePercent: string | null;
-}
-
-interface Create {
-  quarter: string;
-  reportMonth: string;
-  realGDP?: string;
-}
-
-interface Update {
-  realGDP?: string;
-  gdpQuarterlyChangePercent?: string | null;
-  gdpQuarterlyYoYChangePercent?: string | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.indicatorQuarterlyModel.Raw,
+): interfaces.indicatorQuarterlyModel.Record => ({
   ...raw,
   realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
   gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null,
@@ -46,7 +15,7 @@ const convertToRecord = (raw: Raw): Record => ({
 
 export const getByUK = async (
   quarter: string,
-): Promise<Record | null> => {
+): Promise<interfaces.indicatorQuarterlyModel.Record | null> => {
   const quarterly = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     conditions: [
@@ -56,7 +25,9 @@ export const getByUK = async (
   return quarterly ? convertToRecord(quarterly) : null
 }
 
-export const getPublishedByDate = async (date: string): Promise<Record | null> => {
+export const getPublishedByDate = async (
+  date: string,
+): Promise<interfaces.indicatorQuarterlyModel.Record | null> => {
   const targetDate = dateTool.getPreviousDate(date, 30)
   const quarter = dateTool.getQuarterByDate(targetDate)
   const previousQuarter = dateTool.getPreviousQuarter(quarter)
@@ -70,7 +41,9 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
   return raw ? convertToRecord(raw) : null
 }
 
-export const getAll = async (): Promise<Record[]> => {
+export const getAll = async (): Promise<
+  interfaces.indicatorQuarterlyModel.Record[]
+> => {
   const quarterly = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     orderBy: [{ column: 'quarter', order: 'asc' }],
@@ -79,8 +52,8 @@ export const getAll = async (): Promise<Record[]> => {
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.indicatorQuarterlyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.indicatorQuarterlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     values,
@@ -91,9 +64,9 @@ export const create = async (
 
 export const update = async (
   indicatorQuarterlyId: number,
-  values: Update,
+  values: interfaces.indicatorQuarterlyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.indicatorQuarterlyModel.Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
     values,

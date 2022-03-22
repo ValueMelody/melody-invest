@@ -6,6 +6,10 @@ import * as tickerYearlyModel from './models/tickerYearly'
 import * as traderModel from './models/trader'
 import * as traderPatternModel from './models/traderPattern'
 import * as traderHoldingModel from './models/traderHolding'
+import * as traderFollowerModel from './models/traderFollower'
+import * as indicatorMonthlyModel from './models/indicatorMonthly'
+import * as indicatorQuarterlyModel from './models/indicatorQuarterly'
+import * as indicatorYearlyModel from './models/indicatorYearly'
 import * as userRes from './responses/user'
 import * as tickerProfileRes from './responses/tickerProfile'
 import * as traderProfileRes from './responses/traderProfile'
@@ -20,6 +24,10 @@ export {
   traderModel,
   traderPatternModel,
   traderHoldingModel,
+  traderFollowerModel,
+  indicatorMonthlyModel,
+  indicatorQuarterlyModel,
+  indicatorYearlyModel,
   userRes,
   tickerProfileRes,
   traderProfileRes,

@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import * as marketAdapter from '../adapters/market'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
@@ -30,7 +31,7 @@ export const syncMonthly = async (
   const initMonth = dateTool.getInitialMonth()
 
   let indicatorResult
-  let indicatorKey: indicatorMonthlyModel.IndicatorKey
+  let indicatorKey: interfaces.indicatorMonthlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.UNEMPLOYMENT_RATE:
@@ -112,7 +113,7 @@ export const syncQuarterly = async (
   const initQuarter = dateTool.getInitialQuarter()
 
   let indicatorResult
-  let indicatorKey: indicatorQuarterlyModel.IndicatorKey
+  let indicatorKey: interfaces.indicatorQuarterlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.GDP:
@@ -176,7 +177,7 @@ export const syncYearly = async (
   const initYear = dateTool.getInitialYear()
 
   let indicatorResult
-  let indicatorKey: indicatorYearlyModel.IndicatorKey
+  let indicatorKey: interfaces.indicatorYearlyModel.IndicatorKey
 
   switch (type) {
     case marketEnum.TYPES.GDP:

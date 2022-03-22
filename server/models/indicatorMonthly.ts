@@ -1,124 +1,12 @@
 import { Knex } from 'knex'
+import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
 
-export type IndicatorKey =
-  'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
-  'inflationExpectation' | 'consumerSentiment' | 'retailSales' |
-  'durableGoods' | 'unemploymentRate' | 'nonfarmPayroll'
-
-export type MovementKey =
-  'fundsRateMonthlyIncrease' | 'fundsRateMonthlyDecrease' |
-  'thirtyYearsTreasuryMonthlyIncrease' | 'thirtyYearsTreasuryMonthlyDecrease' |
-  'tenYearsTreasuryMonthlyIncrease' | 'tenYearsTreasuryMonthlyDecrease' |
-  'inflationMonthlyIncrease' | 'inflationMonthlyDecrease' |
-  'cpiMonthlyIncrease' | 'cpiMonthlyDecrease' |
-  'consumerSentimentMonthlyIncrease' | 'consumerSentimentMonthlyDecrease' |
-  'retailSalesMonthlyIncrease' | 'retailSalesMonthlyDecrease' |
-  'durableGoodsMonthlyIncrease' | 'durableGoodsMonthlyDecrease' |
-  'unemploymentRateMonthlyIncrease' | 'unemploymentRateMonthlyDecrease' |
-  'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
-
-interface Common {
-  id: number;
-  month: string;
-  fundsRateMonthlyIncrease: number | null;
-  fundsRateMonthlyDecrease: number | null;
-  thirtyYearsTreasuryMonthlyIncrease: number | null;
-  thirtyYearsTreasuryMonthlyDecrease: number | null;
-  tenYearsTreasuryMonthlyIncrease: number | null;
-  tenYearsTreasuryMonthlyDecrease: number | null;
-  inflationMonthlyIncrease: number | null;
-  inflationMonthlyDecrease: number | null;
-  cpiMonthlyIncrease: number | null;
-  cpiMonthlyDecrease: number | null;
-  consumerSentimentMonthlyIncrease: number | null;
-  consumerSentimentMonthlyDecrease: number | null;
-  retailSalesMonthlyIncrease: number | null;
-  retailSalesMonthlyDecrease: number | null;
-  durableGoodsMonthlyIncrease: number | null;
-  durableGoodsMonthlyDecrease: number | null;
-  unemploymentRateMonthlyIncrease: number | null;
-  unemploymentRateMonthlyDecrease: number | null;
-  nonfarmPayrollMonthlyIncrease: number | null;
-  nonfarmPayrollMonthlyDecrease: number | null;
-}
-
-export interface Record extends Common {
-  fundsRate: number | null;
-  cpi: number | null;
-  tenYearsTreasury: number | null;
-  thirtyYearsTreasury: number | null;
-  inflationExpectation: number | null;
-  consumerSentiment: number | null;
-  retailSales: number | null;
-  durableGoods: number | null;
-  unemploymentRate: number | null;
-  nonfarmPayroll: number | null;
-}
-
-export interface Raw extends Common {
-  fundsRate: string | null;
-  cpi: string | null;
-  tenYearsTreasury: string | null;
-  thirtyYearsTreasury: string | null;
-  inflationExpectation: string | null;
-  consumerSentiment: string | null;
-  retailSales: string | null;
-  durableGoods: string | null;
-  unemploymentRate: string | null;
-  nonfarmPayroll: string | null;
-}
-
-interface Create {
-  month: string;
-  fundsRate?: string;
-  cpi?: string;
-  tenYearsTreasury?: string;
-  thirtyYearsTreasury?: string;
-  inflationExpectation?: string;
-  consumerSentiment?: string;
-  retailSales?: string;
-  durableGoods?: string;
-  unemploymentRate?: string;
-  nonfarmPayroll?: string;
-}
-
-interface Update {
-  fundsRate?: string;
-  cpi?: string;
-  tenYearsTreasury?: string;
-  thirtyYearsTreasury?: string;
-  inflationExpectation?: string;
-  consumerSentiment?: string;
-  retailSales?: string;
-  durableGoods?: string;
-  unemploymentRate?: string;
-  nonfarmPayroll?: string;
-  fundsRateMonthlyIncrease?: number | null;
-  fundsRateMonthlyDecrease?: number | null;
-  thirtyYearsTreasuryMonthlyIncrease?: number | null;
-  thirtyYearsTreasuryMonthlyDecrease?: number | null;
-  tenYearsTreasuryMonthlyIncrease?: number | null;
-  tenYearsTreasuryMonthlyDecrease?: number | null;
-  inflationMonthlyIncrease?: number | null;
-  inflationMonthlyDecrease?: number | null;
-  cpiMonthlyIncrease?: number | null;
-  cpiMonthlyDecrease?: number | null;
-  consumerSentimentMonthlyIncrease?: number | null;
-  consumerSentimentMonthlyDecrease?: number | null;
-  retailSalesMonthlyIncrease?: number | null;
-  retailSalesMonthlyDecrease?: number | null;
-  durableGoodsMonthlyIncrease?: number | null;
-  durableGoodsMonthlyDecrease?: number | null;
-  unemploymentRateMonthlyIncrease?: number | null;
-  unemploymentRateMonthlyDecrease?: number | null;
-  nonfarmPayrollMonthlyIncrease?: number | null;
-  nonfarmPayrollMonthlyDecrease?: number | null;
-}
-
-const convertToRecord = (raw: Raw): Record => ({
+const convertToRecord = (
+  raw: interfaces.indicatorMonthlyModel.Raw,
+): interfaces.indicatorMonthlyModel.Record => ({
   ...raw,
   fundsRate: raw.fundsRate ? parseFloat(raw.fundsRate) : null,
   cpi: raw.cpi ? parseFloat(raw.cpi) : null,
@@ -134,7 +22,7 @@ const convertToRecord = (raw: Raw): Record => ({
 
 export const getByUK = async (
   month: string,
-): Promise<Record | null> => {
+): Promise<interfaces.indicatorMonthlyModel.Record | null> => {
   const monthly = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     conditions: [
@@ -144,7 +32,9 @@ export const getByUK = async (
   return monthly ? convertToRecord(monthly) : null
 }
 
-export const getAll = async (): Promise<Record[]> => {
+export const getAll = async (): Promise<
+  interfaces.indicatorMonthlyModel.Record[]
+> => {
   const monthly = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     orderBy: [{ column: 'month', order: 'asc' }],
@@ -152,7 +42,9 @@ export const getAll = async (): Promise<Record[]> => {
   return monthly.map((raw) => convertToRecord(raw))
 }
 
-export const getPublishedByDate = async (date: string): Promise<Record | null> => {
+export const getPublishedByDate = async (
+  date: string,
+): Promise<interfaces.indicatorMonthlyModel.Record | null> => {
   const estimatedDate = dateTool.getPreviousDate(date, 15)
   const month = estimatedDate.substring(0, 7)
 
@@ -166,8 +58,8 @@ export const getPublishedByDate = async (date: string): Promise<Record | null> =
 }
 
 export const create = async (
-  values: Create, transaction: Knex.Transaction,
-): Promise<Record> => {
+  values: interfaces.indicatorMonthlyModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.indicatorMonthlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     values,
@@ -178,9 +70,9 @@ export const create = async (
 
 export const update = async (
   indicatorMonthlyId: number,
-  values: Update,
+  values: interfaces.indicatorMonthlyModel.Update,
   transaction: Knex.Transaction,
-): Promise<Record> => {
+): Promise<interfaces.indicatorMonthlyModel.Record> => {
   const updated = await databaseAdapter.update({
     tableName: tableEnum.NAME.INDICATOR_MONTHLY,
     values,
