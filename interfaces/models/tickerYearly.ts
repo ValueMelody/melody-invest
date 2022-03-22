@@ -38,22 +38,22 @@ export interface Create {
   tickerId: number;
   year: string;
   earningDate?: string;
-  eps?: string;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
+  eps?: string | null;
+  ebitda?: string | null;
+  netIncome?: string | null;
+  grossProfit?: string | null;
+  totalRevenue?: string | null;
+  costOfRevenue?: string | null;
 }
 
 export interface Update {
   earningDate?: string;
-  eps?: string;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
+  eps?: string | null;
+  ebitda?: string | null;
+  netIncome?: string | null;
+  grossProfit?: string | null;
+  totalRevenue?: string | null;
+  costOfRevenue?: string | null;
   profitYearlyIncrease?: number | null;
   profitYearlyDecrease?: number | null;
   revenueYearlyIncrease?: number | null;

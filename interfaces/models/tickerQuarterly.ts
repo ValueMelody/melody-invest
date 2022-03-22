@@ -50,11 +50,11 @@ export interface Create {
   eps?: string | null;
   estimatedEPS?: string | null;
   epsSurprisePercent?: string | null;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
+  ebitda?: string | null;
+  netIncome?: string | null;
+  grossProfit?: string | null;
+  totalRevenue?: string | null;
+  costOfRevenue?: string | null;
 }
 
 export interface Update {
@@ -63,11 +63,11 @@ export interface Update {
   eps?: string | null;
   estimatedEPS?: string | null;
   epsSurprisePercent?: string | null;
-  ebitda?: string;
-  netIncome?: string;
-  grossProfit?: string;
-  totalRevenue?: string;
-  costOfRevenue?: string;
+  ebitda?: string | null;
+  netIncome?: string | null;
+  grossProfit?: string | null;
+  totalRevenue?: string | null;
+  costOfRevenue?: string | null;
   epsQuarterlyBeat?: number | null;
   epsQuarterlyMiss?: number | null;
   profitQuarterlyIncrease?: number | null;
