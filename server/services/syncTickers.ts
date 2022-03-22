@@ -122,10 +122,14 @@ export const syncEarnings = async (
       })
       if (!matchedEarning) return
 
+      const eps = matchedEarning.reportedEPS === 'None'
+        ? null
+        : matchedEarning.reportedEPS.substring(0, 10)
+
       const yearlyEPS = {
         year,
         earningDate: matchedEarning.fiscalDateEnding,
-        eps: matchedEarning.reportedEPS.substring(0, 10),
+        eps,
       }
 
       const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
@@ -136,7 +140,7 @@ export const syncEarnings = async (
           ...yearlyEPS,
         }, transaction)
         relatedYearly.push(createdRecord)
-      } else if (currentRecord && !currentRecord.eps) {
+      } else if (currentRecord && currentRecord.eps !== yearlyEPS.eps) {
         const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyEPS, transaction)
         relatedYearly.push(updatedRecord)
       } else if (forceRecheck) {
@@ -191,7 +195,11 @@ export const syncEarnings = async (
           ...quarterlyEPS,
         }, transaction)
         relatedQuarterly.push(createdRecord)
-      } else if (currentRecord && !currentRecord.eps) {
+      } else if (currentRecord && (
+        currentRecord.eps !== quarterlyEPS.eps ||
+        currentRecord.estimatedEPS !== quarterlyEPS.estimatedEPS ||
+        currentRecord.epsSurprisePercent !== quarterlyEPS.epsSurprisePercent
+      )) {
         const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS, transaction)
         relatedQuarterly.push(updatedRecord)
       } else if (forceRecheck) {
@@ -268,13 +276,14 @@ export const syncIncomes = async (
       })
       if (!matchedIncome) return
 
+      const ebitda = matchedIncome.ebitda === 'None' ? null : matchedIncome.ebitda
+      const netIncome = matchedIncome.netIncome === 'None' ? null : matchedIncome.netIncome
+      const grossProfit = matchedIncome.grossProfit === 'None' ? null : matchedIncome.grossProfit
+      const totalRevenue = matchedIncome.totalRevenue === 'None' ? null : matchedIncome.totalRevenue
+      const costOfRevenue = matchedIncome.costOfRevenue === 'None' ? null : matchedIncome.costOfRevenue
+
       const yearlyIncome = {
-        year,
-        ebitda: matchedIncome.ebitda,
-        netIncome: matchedIncome.netIncome,
-        grossProfit: matchedIncome.grossProfit,
-        totalRevenue: matchedIncome.totalRevenue,
-        costOfRevenue: matchedIncome.costOfRevenue,
+        year, ebitda, netIncome, grossProfit, totalRevenue, costOfRevenue,
       }
 
       const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
@@ -285,7 +294,13 @@ export const syncIncomes = async (
           ...yearlyIncome,
         }, transaction)
         relatedYearly.push(createdRecord)
-      } else if (currentRecord && !currentRecord.netIncome) {
+      } else if (currentRecord && (
+        currentRecord.ebitda !== yearlyIncome.ebitda ||
+        currentRecord.netIncome !== yearlyIncome.netIncome ||
+        currentRecord.grossProfit !== yearlyIncome.grossProfit ||
+        currentRecord.totalRevenue !== yearlyIncome.totalRevenue ||
+        currentRecord.costOfRevenue !== yearlyIncome.costOfRevenue
+      )) {
         const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyIncome, transaction)
         relatedYearly.push(updatedRecord)
       } else if (forceRecheck) {
@@ -314,13 +329,14 @@ export const syncIncomes = async (
       })
       if (!matchedIncome) return
 
+      const ebitda = matchedIncome.ebitda === 'None' ? null : matchedIncome.ebitda
+      const netIncome = matchedIncome.netIncome === 'None' ? null : matchedIncome.netIncome
+      const grossProfit = matchedIncome.grossProfit === 'None' ? null : matchedIncome.grossProfit
+      const totalRevenue = matchedIncome.totalRevenue === 'None' ? null : matchedIncome.totalRevenue
+      const costOfRevenue = matchedIncome.costOfRevenue === 'None' ? null : matchedIncome.costOfRevenue
+
       const quarterlyEPS = {
-        quarter,
-        ebitda: matchedIncome.ebitda,
-        netIncome: matchedIncome.netIncome,
-        grossProfit: matchedIncome.grossProfit,
-        totalRevenue: matchedIncome.totalRevenue,
-        costOfRevenue: matchedIncome.costOfRevenue,
+        quarter, ebitda, netIncome, grossProfit, totalRevenue, costOfRevenue,
       }
 
       const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
@@ -331,7 +347,13 @@ export const syncIncomes = async (
           ...quarterlyEPS,
         }, transaction)
         relatedQuarterly.push(createdRecord)
-      } else if (currentRecord && !currentRecord.netIncome) {
+      } else if (currentRecord && (
+        currentRecord.ebitda !== quarterlyEPS.ebitda ||
+        currentRecord.netIncome !== quarterlyEPS.netIncome ||
+        currentRecord.grossProfit !== quarterlyEPS.grossProfit ||
+        currentRecord.totalRevenue !== quarterlyEPS.totalRevenue ||
+        currentRecord.costOfRevenue !== quarterlyEPS.costOfRevenue
+      )) {
         const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS, transaction)
         relatedQuarterly.push(updatedRecord)
       } else if (forceRecheck) {
