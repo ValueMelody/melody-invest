@@ -4,7 +4,6 @@
   "scripts": {
     "start": "ts-node-dev --project ../tsconfig.json ./index.ts",
     "migrate": "knex migrate:latest",
-    "seed": "knex seed:run",
     "lint": "eslint ./ --ext .ts"
   },
   "dependencies": {
