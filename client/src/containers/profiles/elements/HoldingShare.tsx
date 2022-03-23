@@ -3,10 +3,10 @@ import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import useTickerProfile from '../../../states/useTickerProfile'
 import * as localeTool from '../../../tools/locale'
-import * as themeConstant from '../../../constants/theme'
+import * as themeEnum from '../../../enums/theme'
 import classNames from 'classnames'
 
-const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   ticker: {
     margin: '0.5rem !important',
   },

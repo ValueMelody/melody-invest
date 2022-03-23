@@ -2,12 +2,12 @@ import { Link } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Icon, Label } from 'semantic-ui-react'
-import * as routerConstant from '../../../constants/router'
-import * as themeConstant from '../../../constants/theme'
+import * as routerEnum from '../../../enums/router'
+import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import useUser from '../../../states/useUser'
 
-const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   header: {
     height: '3rem',
     position: 'fixed',
@@ -34,7 +34,7 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerConstant.NAV.TOP_PROFILES}>
+        <Link to={routerEnum.NAV.TOP_PROFILES}>
           <Label className={classes.label}>
             <Icon name='chart line' className={classes.icon} />
             {localeTool.t('top.title')}
@@ -43,14 +43,14 @@ const Header = () => {
       </nav>
       <nav>
         {!!userType && (
-          <Link to={routerConstant.NAV.DASHBOARD}>
+          <Link to={routerEnum.NAV.DASHBOARD}>
             <Label className={classes.label}>
               <Icon name='table' className={classes.icon} />
               {localeTool.t('dashboard.title')}
             </Label>
           </Link>
         )}
-        <Link to={routerConstant.NAV.SIGN_IN}>
+        <Link to={routerEnum.NAV.SIGN_IN}>
           <Label className={classes.label}>
             <Icon name='user circle' />
           </Label>

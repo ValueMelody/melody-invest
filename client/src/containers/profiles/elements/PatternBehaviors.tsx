@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
-import * as themeConstant from '../../../constants/theme'
+import * as themeEnum from '../../../enums/theme'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = createUseStyles({
@@ -97,7 +97,7 @@ const PatternBehaviors = ({
           pattern={pattern}
           type={behavior}
           className={classes.label}
-          color={themeConstant.theme.INCREASE_COLOR}
+          color={themeEnum.theme.INCREASE_COLOR}
         />
       ))}
       {activeSellBehaviors.map((behavior) => (
@@ -106,7 +106,7 @@ const PatternBehaviors = ({
           pattern={pattern}
           type={behavior}
           className={classes.label}
-          color={themeConstant.theme.DECREASE_COLOR}
+          color={themeEnum.theme.DECREASE_COLOR}
         />
       ))}
       {normalBehaviors.map((behavior) => (

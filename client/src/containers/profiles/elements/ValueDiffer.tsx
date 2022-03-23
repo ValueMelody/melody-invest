@@ -2,7 +2,7 @@ import { Label, Icon } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
-import * as themeConstant from '../../../constants/theme'
+import * as themeEnum from '../../../enums/theme'
 
 const useStyles = createUseStyles(({
   container: {
@@ -30,7 +30,7 @@ const ValueDiffer = ({
   return (
     <Label
       className={classes.container}
-      color={isPositive ? themeConstant.theme.INCREASE_COLOR : themeConstant.theme.DECREASE_COLOR}
+      color={isPositive ? themeEnum.theme.INCREASE_COLOR : themeEnum.theme.DECREASE_COLOR}
       title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
     >
       {parseTool.floatToPercent(differ)}

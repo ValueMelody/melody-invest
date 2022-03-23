@@ -4,9 +4,9 @@ import { Menu, Header } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
-import * as themeConstant from '../../../constants/theme'
+import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   gainCell: {
     padding: '0.5rem !important',
   },

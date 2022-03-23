@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
 import * as requestAdpater from '../adapters/request'
-import * as routerConstant from '../constants/router'
+import * as routerEnum from '../enums/router'
 
 const useTickerProfile = () => {
   const store: Context = useContext(context)
@@ -18,7 +18,7 @@ const useTickerProfile = () => {
   }
 
   const fetchTickerIdentities = async () => {
-    const endpoint = `${routerConstant.API.TICKER_PROFILES}/identities`
+    const endpoint = `${routerEnum.API.TICKER_PROFILES}/identities`
     store.startLoading()
     try {
       const identitites = await requestAdpater.sendGetRequest(endpoint)

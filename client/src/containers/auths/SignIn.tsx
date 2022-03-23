@@ -6,7 +6,7 @@ import * as localeTool from '../../tools/locale'
 import RequiredLabel from './elements/RequiredLabel'
 import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
-import * as routerConstant from '../../constants/router'
+import * as routerEnum from '../../enums/router'
 import useAuth from './useAuth'
 
 const SignIn = () => {
@@ -43,7 +43,7 @@ const SignIn = () => {
       return
     }
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)
-      .then(() => navigate(routerConstant.NAV.DASHBOARD))
+      .then(() => navigate(routerEnum.NAV.DASHBOARD))
   }
 
   return (

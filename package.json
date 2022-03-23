@@ -4,7 +4,8 @@
   "workspaces": [
     "server",
     "client",
-    "interfaces"
+    "interfaces",
+    "constants"
   ],
   "version": "0.0.1",
   "description": "",
@@ -25,6 +26,7 @@
     "server:start": "npm run start --workspace=server",
     "server:lint": "npm run lint --workspace=server",
     "server:migrate": "npm run migrate --workspace=server",
+    "library:compile": "npm run compile --workspace=constants",
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
     "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Dropbox/Temp/melody.bak",

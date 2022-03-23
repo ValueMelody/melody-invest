@@ -3,13 +3,13 @@ import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
-import * as routerConstant from '../constants/router'
+import * as routerEnum from '../enums/router'
 
 const useUser = () => {
   const store: Context = useContext(context)
 
   const postUser = async (email: string, password: string, isConfirmed: boolean) => {
-    const endpoint = `${routerConstant.API.USERS}`
+    const endpoint = `${routerEnum.API.USERS}`
     store.startLoading()
     try {
       const user = await requestAdapter.sendPostRequest(endpoint, {
@@ -34,7 +34,7 @@ const useUser = () => {
   }
 
   const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {
-    const endpoint = `${routerConstant.API.USERS}/token`
+    const endpoint = `${routerEnum.API.USERS}/token`
     store.startLoading()
     try {
       const userToken = await requestAdapter.sendPostRequest(endpoint, {
@@ -60,7 +60,7 @@ const useUser = () => {
   }
 
   const fetchUserFollowed = async () => {
-    const endpoint = `${routerConstant.API.USERS}/traders`
+    const endpoint = `${routerEnum.API.USERS}/traders`
     store.startLoading()
     try {
       const profiles = await requestAdapter.sendGetRequest(endpoint)
@@ -79,7 +79,7 @@ const useUser = () => {
   }
 
   const createUserFollowed = async (traderId: number) => {
-    const endpoint = `${routerConstant.API.USERS}/traders/${traderId}`
+    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
     store.startLoading()
     try {
       await requestAdapter.sendPostRequest(endpoint)
@@ -98,7 +98,7 @@ const useUser = () => {
   }
 
   const deleteUserFollowed = async (traderId: number) => {
-    const endpoint = `${routerConstant.API.USERS}/traders/${traderId}`
+    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
     store.startLoading()
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
