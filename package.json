@@ -20,7 +20,7 @@
     "url": "git+https://github.com/byn9826/melody-app"
   },
   "scripts": {
-    "start": "concurrently \"npm run client:start\" \"npm run server:start\"",
+    "start": "npm run library:compile && concurrently \"npm run client:start\" \"npm run server:start\"",
     "client:start": "npm run start --workspace=client",
     "client:lint": "npm run lint --workspace=client",
     "server:start": "npm run start --workspace=server",
