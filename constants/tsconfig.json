@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationMap": true,
+    "module": "commonjs",
+    "rootDir": "src",
+    "outDir": "dist"
+  },
+  "include": ["src"]
+}

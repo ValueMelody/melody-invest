@@ -18,7 +18,8 @@
     "knex": "^0.95.13",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "@shared/constants": "*"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

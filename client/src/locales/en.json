@@ -11,6 +11,7 @@
     "common.retypePassword": "Retype Password",
     "common.watch": "Watch",
     "common.unwatch": "Unwatch",
+    "common.build": "Build",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -28,6 +29,8 @@
     "signIn.title": "Sign In",
 
     "dashboard.title": "Dashboard",
+    "dashboard.watchedProfiles": "Your watched profiles",
+    "dashboard.buildDesc": "Build a new pattern",
 
     "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
@@ -39,6 +42,10 @@
     "profile.history": "Holding History",
     "profile.value.increased": "Total value increased compare to previous",
     "profile.value.decreased": "Total value decreased compare to previous",
+
+    "profileBuild.title": "Pattern Builder",
+    "profileBuild.buyBehavior": "Buy behaviors (Select one or multiple)",
+    "profileBuild.sellBehavior": "Sell behaviors (Select one or multiple)",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",

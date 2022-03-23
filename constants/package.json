@@ -1,0 +1,11 @@
+{
+  "name": "@shared/constants",
+  "private": true,
+  "main": "dist/index.js",
+  "devDependencies": {
+    "@shared/interfaces": "*"
+  },
+  "scripts": {
+    "compile": "tsc"
+  }
+}

@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
 import * as requestAdpater from '../adapters/request'
-import * as routerConstant from '../constants/router'
+import * as routerEnum from '../enums/router'
 
 const useTraderProfile = () => {
   const store: Context = useContext(context)
@@ -17,7 +17,7 @@ const useTraderProfile = () => {
   }
 
   const fetchTraderProfile = async (id: number, accessCode: string) => {
-    const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}`
+    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}`
     store.startLoading()
     try {
       const profile = await requestAdpater.sendGetRequest(endpoint)
@@ -43,7 +43,7 @@ const useTraderProfile = () => {
   }
 
   const fetchTopProfiles = async () => {
-    const endpoint = `${routerConstant.API.TRADER_PROFILES}/tops`
+    const endpoint = `${routerEnum.API.TRADER_PROFILES}/tops`
     store.startLoading()
     try {
       const traders = await requestAdpater.sendGetRequest(endpoint)
@@ -68,7 +68,7 @@ const useTraderProfile = () => {
   }
 
   const fetchProfileHoldings = async (id: number, accessCode: string) => {
-    const endpoint = `${routerConstant.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
+    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
     store.startLoading()
     try {
       const holdings = await requestAdpater.sendGetRequest(endpoint)

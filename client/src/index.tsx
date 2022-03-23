@@ -5,7 +5,7 @@ import Router from './containers/Router'
 import { context } from './states/context'
 import useStore from './states/store'
 import * as localTool from './tools/locale'
-import * as themeConstants from './constants/theme'
+import * as themeEnum from './enums/theme'
 
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
@@ -19,7 +19,7 @@ const App = () => {
     <>
       <Loader active={store.common.isLoading} size='large' />
       <context.Provider value={store}>
-        <ThemeProvider theme={themeConstants.theme}>
+        <ThemeProvider theme={themeEnum.theme}>
           <Router />
         </ThemeProvider>
       </context.Provider>

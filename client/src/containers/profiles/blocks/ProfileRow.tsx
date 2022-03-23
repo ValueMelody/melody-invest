@@ -2,7 +2,7 @@ import { Segment } from 'semantic-ui-react'
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
-import * as themeConstant from '../../../constants/theme'
+import * as themeEnum from '../../../enums/theme'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
@@ -10,7 +10,7 @@ import PatternLabel from '../elements/PatternLabel'
 import useToggleWatch from '../hooks/useToggleWatch'
 import useUser from '../../../states/useUser'
 
-const useStyles = createUseStyles((theme: themeConstant.Theme) => ({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',
     width: '100%',

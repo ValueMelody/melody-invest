@@ -5,7 +5,7 @@ import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
 import useTraderProfile from '../../states/useTraderProfile'
 import useTickerProfile from '../../states/useTickerProfile'
-import * as routerConstant from '../../constants/router'
+import * as routerEnum from '../../enums/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
 import ProfileCard from './blocks/ProfileCard'
@@ -25,7 +25,7 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const Profile = () => {
+const ProfileDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
   const classes = useStyles()
@@ -44,7 +44,7 @@ const Profile = () => {
 
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
-    if (!hasValidParam) navigate(routerConstant.NAV.NOT_FOUND)
+    if (!hasValidParam) navigate(routerEnum.NAV.NOT_FOUND)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -125,4 +125,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default ProfileDetail
