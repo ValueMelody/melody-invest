@@ -21,12 +21,10 @@ const PatternBehaviors = ({
 }) => {
   const classes = useStyles()
 
-  const normalBehaviors: interfaces.traderPatternModel.BehaviorType[] = [
-    'cashMaxPercent',
-    'tickerMinPercent', 'tickerMaxPercent',
-    'holdingBuyPercent', 'holdingSellPercent',
-    'tradeFrequency', 'rebalanceFrequency',
-    'buyPreference', 'sellPreference',
+  const otherBehaviors: interfaces.traderPatternModel.BehaviorType[] = [
+    ...constants.behavior.allocateBehavior,
+    ...constants.behavior.frequencyBehavior,
+    ...constants.behavior.preferenceBehaviors,
   ]
 
   const activeBuyBehaviors = constants.behavior.buyBehaviors.filter((key) => pattern[key] !== null)
@@ -52,7 +50,7 @@ const PatternBehaviors = ({
           color={themeEnum.theme.DECREASE_COLOR}
         />
       ))}
-      {normalBehaviors.map((behavior) => (
+      {otherBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
           pattern={pattern}

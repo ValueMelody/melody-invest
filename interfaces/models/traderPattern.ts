@@ -304,9 +304,13 @@ export type CompareSellBehavior =
 
 export type SellBehavior = MovementSellBehavior | CompareSellBehavior
 
-export type BehaviorType =
-  BuyBehavior | SellBehavior |
+export type preferenceBehavior = 'buyPreference' | 'sellPreference'
+
+export type allocateBehavior = 'cashMaxPercent' |
   'tickerMinPercent' | 'tickerMaxPercent' |
-  'holdingBuyPercent' | 'holdingSellPercent' |
-  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |
-  'buyPreference' | 'sellPreference'
+  'holdingBuyPercent' | 'holdingSellPercent'
+
+export type frequencyBehavior = 'tradeFrequency' | 'rebalanceFrequency'
+
+export type BehaviorType =
+  BuyBehavior | SellBehavior | allocateBehavior | frequencyBehavior | preferenceBehavior

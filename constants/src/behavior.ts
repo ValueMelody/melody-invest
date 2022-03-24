@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 
-const priceIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const priceIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'priceDailyIncreaseBuy',
   'priceWeeklyIncreaseBuy',
   'priceMonthlyIncreaseBuy',
@@ -8,7 +8,7 @@ const priceIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'priceYearlyIncreaseBuy',
 ]
 
-const priceDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const priceDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'priceDailyDecreaseBuy',
   'priceWeeklyDecreaseBuy',
   'priceMonthlyDecreaseBuy',
@@ -16,7 +16,7 @@ const priceDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'priceYearlyDecreaseBuy',
 ]
 
-const financialImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const financialImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'epsQuarterlyBeatsBuy',
   'profitQuarterlyIncreaseBuy',
   'incomeQuarterlyIncreaseBuy',
@@ -26,7 +26,7 @@ const financialImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] 
   'revenueYearlyIncreaseBuy',
 ]
 
-const financialSetbackBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const financialWorsenBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'epsQuarterlyMissBuy',
   'profitQuarterlyDecreaseBuy',
   'incomeQuarterlyDecreaseBuy',
@@ -36,7 +36,7 @@ const financialSetbackBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] 
   'revenueYearlyDecreaseBuy',
 ]
 
-const indicatorIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const indicatorIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'inflationYearlyIncreaseBuy',
   'fundsRateMonthlyIncreaseBuy',
   'thirtyYearsTreasuryMonthlyIncreaseBuy',
@@ -50,7 +50,7 @@ const indicatorIncreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[]
   'nonfarmPayrollMonthlyIncreaseBuy',
 ]
 
-const indicatorDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const indicatorDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'inflationYearlyDecreaseBuy',
   'fundsRateMonthlyDecreaseBuy',
   'thirtyYearsTreasuryMonthlyDecreaseBuy',
@@ -64,13 +64,13 @@ const indicatorDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[]
   'nonfarmPayrollMonthlyDecreaseBuy',
 ]
 
-const economyImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const economyImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'gdpYearlyChangeAboveBuy',
   'gdpQuarterlyChangeAboveBuy',
   'gdpQuarterlyYoYChangeAboveBuy',
 ]
 
-const economySetbackBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
+export const economyWorsenBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   'gdpYearlyChangeBelowBuy',
   'gdpQuarterlyChangeBelowBuy',
   'gdpQuarterlyYoYChangeBelowBuy',
@@ -80,14 +80,14 @@ export const buyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
   ...priceIncreaseBuyBehaviors,
   ...priceDecreaseBuyBehaviors,
   ...financialImproveBuyBehaviors,
-  ...financialSetbackBuyBehaviors,
+  ...financialWorsenBuyBehaviors,
   ...indicatorIncreaseBuyBehaviors,
   ...indicatorDecreaseBuyBehaviors,
   ...economyImproveBuyBehaviors,
-  ...economySetbackBuyBehaviors,
+  ...economyWorsenBuyBehaviors,
 ]
 
-const priceIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const priceIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'priceDailyIncreaseSell',
   'priceWeeklyIncreaseSell',
   'priceMonthlyIncreaseSell',
@@ -95,7 +95,7 @@ const priceIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] =
   'priceYearlyIncreaseSell',
 ]
 
-const priceDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const priceDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'priceDailyDecreaseSell',
   'priceWeeklyDecreaseSell',
   'priceMonthlyDecreaseSell',
@@ -103,7 +103,7 @@ const priceDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] =
   'priceYearlyDecreaseSell',
 ]
 
-const financialImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const financialImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'epsQuarterlyBeatsSell',
   'profitQuarterlyIncreaseSell',
   'incomeQuarterlyIncreaseSell',
@@ -113,7 +113,7 @@ const financialImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[
   'revenueYearlyIncreaseSell',
 ]
 
-const financialSetbackSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const financialWorsenSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'epsQuarterlyMissSell',
   'profitQuarterlyDecreaseSell',
   'incomeQuarterlyDecreaseSell',
@@ -123,7 +123,7 @@ const financialSetbackSellBehaviors: interfaces.traderPatternModel.SellBehavior[
   'revenueYearlyDecreaseSell',
 ]
 
-const indicatorIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const indicatorIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'inflationYearlyIncreaseSell',
   'fundsRateMonthlyIncreaseSell',
   'thirtyYearsTreasuryMonthlyIncreaseSell',
@@ -137,7 +137,7 @@ const indicatorIncreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior
   'nonfarmPayrollMonthlyIncreaseSell',
 ]
 
-const indicatorDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const indicatorDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'inflationYearlyDecreaseSell',
   'fundsRateMonthlyDecreaseSell',
   'thirtyYearsTreasuryMonthlyDecreaseSell',
@@ -151,13 +151,13 @@ const indicatorDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehavior
   'nonfarmPayrollMonthlyDecreaseSell',
 ]
 
-const economyImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const economyImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'gdpYearlyChangeAboveSell',
   'gdpQuarterlyChangeAboveSell',
   'gdpQuarterlyYoYChangeAboveSell',
 ]
 
-const economySetbackSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
+export const economyWorsenSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   'gdpYearlyChangeBelowSell',
   'gdpQuarterlyChangeBelowSell',
   'gdpQuarterlyYoYChangeBelowSell',
@@ -167,9 +167,21 @@ export const sellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   ...priceIncreaseSellBehaviors,
   ...priceDecreaseSellBehaviors,
   ...financialImproveSellBehaviors,
-  ...financialSetbackSellBehaviors,
+  ...financialWorsenSellBehaviors,
   ...indicatorIncreaseSellBehaviors,
   ...indicatorDecreaseSellBehaviors,
   ...economyImproveSellBehaviors,
-  ...economySetbackSellBehaviors,
+  ...economyWorsenSellBehaviors,
+]
+
+export const allocateBehavior: interfaces.traderPatternModel.allocateBehavior[] = [
+  'cashMaxPercent', 'tickerMinPercent', 'tickerMaxPercent', 'holdingBuyPercent', 'holdingSellPercent',
+]
+
+export const frequencyBehavior: interfaces.traderPatternModel.frequencyBehavior[] = [
+  'tradeFrequency', 'rebalanceFrequency',
+]
+
+export const preferenceBehaviors: interfaces.traderPatternModel.preferenceBehavior[] = [
+  'buyPreference', 'sellPreference',
 ]
