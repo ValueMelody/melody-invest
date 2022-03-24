@@ -201,9 +201,9 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
       let epsQuarterlyMiss = tickerQuarterly.epsQuarterlyMiss
       if (tickerQuarterly.eps !== null && tickerQuarterly.estimatedEPS !== null) {
         const isBeat = tickerQuarterly.eps >= tickerQuarterly.estimatedEPS
-        const previousBeats = lastRecord?.epsQuarterlyBeat || 0
+        const previousBeat = lastRecord?.epsQuarterlyBeat || 0
         const previousMiss = lastRecord?.epsQuarterlyBeat || 0
-        epsQuarterlyBeat = isBeat ? previousBeats + 1 : 1
+        epsQuarterlyBeat = isBeat ? previousBeat + 1 : 1
         epsQuarterlyMiss = !isBeat ? previousMiss + 1 : 1
       }
 

@@ -22,8 +22,8 @@ const PatternBehaviors = ({
   const classes = useStyles()
 
   const otherBehaviors: interfaces.traderPatternModel.BehaviorType[] = [
-    ...constants.behavior.allocateBehavior,
-    ...constants.behavior.frequencyBehavior,
+    ...constants.behavior.allocateBehaviors,
+    ...constants.behavior.frequencyBehaviors,
     ...constants.behavior.preferenceBehaviors,
   ]
 

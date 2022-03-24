@@ -25,15 +25,20 @@ const useStyles = createUseStyles({
 const GroupHeader = ({
   title,
   isExtended,
-  onToggle,
+  onExtend,
+  allowExtend = false,
 }: {
   title: string;
-  isExtended: boolean;
-  onToggle: () => void;
+  isExtended?: boolean;
+  onExtend?: () => void;
+  allowExtend?: boolean;
 }) => {
   const classes = useStyles()
 
-  const handleToggleBuyBehaviors = () => onToggle()
+  const handleToggleBuyBehaviors = () => {
+    if (!onExtend) return
+    onExtend()
+  }
 
   return (
     <header
@@ -45,11 +50,13 @@ const GroupHeader = ({
       <h3 className={classes.segmentTitle}>
         {title}
       </h3>
-      <Icon
-        size='large'
-        color='blue'
-        name={isExtended ? 'caret down' : 'caret right'}
-      />
+      {allowExtend && (
+        <Icon
+          size='large'
+          color='blue'
+          name={isExtended ? 'caret down' : 'caret right'}
+        />
+      )}
     </header>
   )
 }
@@ -89,14 +96,15 @@ const ProfileBuilder = () => {
   return (
     <div>
       <div className='row-around'>
-        <h2>{localeTool.t('profileBuild.title')}</h2>
+        <h2>{localeTool.t('profileBuilder.title')}</h2>
       </div>
       <Segment.Group>
         <Segment>
           <GroupHeader
-            title={localeTool.t('profileBuild.buyBehavior')}
+            title={localeTool.t('profileBuilder.buyBehaviors')}
+            allowExtend
             isExtended={isBuyBehaviorsExtended}
-            onToggle={handleToggleBuyBehaviors}
+            onExtend={handleToggleBuyBehaviors}
           />
           {isBuyBehaviorsExtended && (
             <div>
@@ -137,9 +145,10 @@ const ProfileBuilder = () => {
         </Segment>
         <Segment>
           <GroupHeader
-            title={localeTool.t('profileBuild.sellBehavior')}
+            allowExtend
+            title={localeTool.t('profileBuilder.sellBehaviors')}
             isExtended={isSellBehaviorsExtended}
-            onToggle={handleToggleSellBehaviors}
+            onExtend={handleToggleSellBehaviors}
           />
           {isSellBehaviorsExtended && (
             <div>
@@ -180,10 +189,42 @@ const ProfileBuilder = () => {
         </Segment>
         <Segment>
           <GroupHeader
-            title={localeTool.t('profileBuild.sellBehavior')}
-            isExtended={isSellBehaviorsExtended}
-            onToggle={handleToggleSellBehaviors}
+            title={localeTool.t('profileBuilder.preferenceBehaviors')}
           />
+          <Segment secondary>
+            {constants.behavior.preferenceBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                type={behavior}
+              />
+            ))}
+          </Segment>
+        </Segment>
+        <Segment>
+          <GroupHeader
+            title={localeTool.t('profileBuilder.allocateBehaviors')}
+          />
+          <Segment secondary>
+            {constants.behavior.allocateBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                type={behavior}
+              />
+            ))}
+          </Segment>
+        </Segment>
+        <Segment>
+          <GroupHeader
+            title={localeTool.t('profileBuilder.frequencyBehaviors')}
+          />
+          <Segment secondary>
+            {constants.behavior.frequencyBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                type={behavior}
+              />
+            ))}
+          </Segment>
         </Segment>
       </Segment.Group>
     </div>

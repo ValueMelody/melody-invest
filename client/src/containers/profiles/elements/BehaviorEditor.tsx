@@ -16,11 +16,12 @@ const BehaviorEditor = ({
 }) => {
   const classes = useStyles()
 
-  const localeKey = `behavior.${type}`
+  const titleLocaleKey = `behaviorTitle.${type}`
+  const descLocaleKey = `behaviorDesc.${type}`
 
   return (
-    <Label className={classes.container} title={localeTool.t(localeKey)}>
-      {type}
+    <Label className={classes.container} title={localeTool.t(descLocaleKey)}>
+      {localeTool.t(titleLocaleKey)}
     </Label>
   )
 }

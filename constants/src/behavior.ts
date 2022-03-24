@@ -17,7 +17,7 @@ export const priceDecreaseBuyBehaviors: interfaces.traderPatternModel.BuyBehavio
 ]
 
 export const financialImproveBuyBehaviors: interfaces.traderPatternModel.BuyBehavior[] = [
-  'epsQuarterlyBeatsBuy',
+  'epsQuarterlyBeatBuy',
   'profitQuarterlyIncreaseBuy',
   'incomeQuarterlyIncreaseBuy',
   'revenueQuarterlyIncreaseBuy',
@@ -104,7 +104,7 @@ export const priceDecreaseSellBehaviors: interfaces.traderPatternModel.SellBehav
 ]
 
 export const financialImproveSellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
-  'epsQuarterlyBeatsSell',
+  'epsQuarterlyBeatSell',
   'profitQuarterlyIncreaseSell',
   'incomeQuarterlyIncreaseSell',
   'revenueQuarterlyIncreaseSell',
@@ -174,11 +174,11 @@ export const sellBehaviors: interfaces.traderPatternModel.SellBehavior[] = [
   ...economyWorsenSellBehaviors,
 ]
 
-export const allocateBehavior: interfaces.traderPatternModel.allocateBehavior[] = [
+export const allocateBehaviors: interfaces.traderPatternModel.allocateBehavior[] = [
   'cashMaxPercent', 'tickerMinPercent', 'tickerMaxPercent', 'holdingBuyPercent', 'holdingSellPercent',
 ]
 
-export const frequencyBehavior: interfaces.traderPatternModel.frequencyBehavior[] = [
+export const frequencyBehaviors: interfaces.traderPatternModel.frequencyBehavior[] = [
   'tradeFrequency', 'rebalanceFrequency',
 ]
 
