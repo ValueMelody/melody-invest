@@ -27,9 +27,9 @@ export interface Public {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
-  epsQuarterlyBeatsBuy: number | null;
+  epsQuarterlyBeatBuy: number | null;
   epsQuarterlyMissBuy: number | null;
-  epsQuarterlyBeatsSell: number | null;
+  epsQuarterlyBeatSell: number | null;
   epsQuarterlyMissSell: number | null;
   profitQuarterlyIncreaseBuy: number | null;
   profitQuarterlyDecreaseBuy: number | null;
@@ -148,9 +148,9 @@ export interface Create {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
-  epsQuarterlyBeatsBuy: number | null;
+  epsQuarterlyBeatBuy: number | null;
   epsQuarterlyMissBuy: number | null;
-  epsQuarterlyBeatsSell: number | null;
+  epsQuarterlyBeatSell: number | null;
   epsQuarterlyMissSell: number | null;
   profitQuarterlyIncreaseBuy: number | null;
   profitQuarterlyDecreaseBuy: number | null;
@@ -246,7 +246,7 @@ export type MovementBuyBehavior =
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
   'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
   'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy' |
-  'epsQuarterlyBeatsBuy' | 'epsQuarterlyMissBuy' |
+  'epsQuarterlyBeatBuy' | 'epsQuarterlyMissBuy' |
   'profitQuarterlyIncreaseBuy' | 'profitQuarterlyDecreaseBuy' |
   'incomeQuarterlyIncreaseBuy' | 'incomeQuarterlyDecreaseBuy' |
   'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy' |
@@ -278,7 +278,7 @@ export type MovementSellBehavior =
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
   'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
   'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell' |
-  'epsQuarterlyBeatsSell' | 'epsQuarterlyMissSell' |
+  'epsQuarterlyBeatSell' | 'epsQuarterlyMissSell' |
   'profitQuarterlyIncreaseSell' | 'profitQuarterlyDecreaseSell' |
   'incomeQuarterlyIncreaseSell' | 'incomeQuarterlyDecreaseSell' |
   'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell' |
@@ -304,9 +304,13 @@ export type CompareSellBehavior =
 
 export type SellBehavior = MovementSellBehavior | CompareSellBehavior
 
-export type BehaviorType =
-  BuyBehavior | SellBehavior |
+export type preferenceBehavior = 'buyPreference' | 'sellPreference'
+
+export type allocateBehavior = 'cashMaxPercent' |
   'tickerMinPercent' | 'tickerMaxPercent' |
-  'holdingBuyPercent' | 'holdingSellPercent' |
-  'tradeFrequency' | 'rebalanceFrequency' | 'cashMaxPercent' |
-  'buyPreference' | 'sellPreference'
+  'holdingBuyPercent' | 'holdingSellPercent'
+
+export type frequencyBehavior = 'tradeFrequency' | 'rebalanceFrequency'
+
+export type BehaviorType =
+  BuyBehavior | SellBehavior | allocateBehavior | frequencyBehavior | preferenceBehavior

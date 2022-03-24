@@ -18,7 +18,8 @@ const BehaviorLabel = ({
   className: string;
   onClick?: Function;
 }) => {
-  const localeKey = `behavior.${type}`
+  const titleLocaleKey = `behaviorTitle.${type}`
+  const descLocaleKey = `behaviorDesc.${type}`
 
   const handleClick = () => {
     if (!onClick) return
@@ -40,10 +41,10 @@ const BehaviorLabel = ({
         'click-cursor': !!onClick,
       })}
       color={color}
-      title={localeTool.t(localeKey)}
+      title={localeTool.t(descLocaleKey)}
       onClick={handleClick}
     >
-      {type}: {value}
+      {localeTool.t(titleLocaleKey)}: {value}
     </Label>
   )
 }

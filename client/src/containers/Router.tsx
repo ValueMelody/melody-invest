@@ -5,7 +5,7 @@ import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import ProfileDetail from './profiles/ProfileDetail'
 import Dashboard from './profiles/Dashboard'
-import ProfileBuild from './profiles/ProfileBuild'
+import ProfileBuilder from './profiles/ProfileBuilder'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -23,7 +23,7 @@ const Router = () => {
           />
           <Route
             path={`${routerEnum.NAV.PROFILES}/build`}
-            element={<ProfileBuild />}
+            element={<ProfileBuilder />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}
