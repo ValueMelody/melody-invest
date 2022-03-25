@@ -1,33 +1,11 @@
 import { useState } from 'react'
-import classNames from 'classnames'
-import { Segment, Icon } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
+import { Segment } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../tools/locale'
+import ProfileBuilderHeader from './ProfileBuilderHeader'
+import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from './elements/BehaviorEditor'
-
-const useStyles = createUseStyles({
-  segmentHeader: {
-    marginBottom: '1rem',
-  },
-  segmentTitle: {
-    margin: '0 !important',
-  },
-  subSegment: {
-    padding: '0.5rem !important',
-  },
-  groupTitle: {
-    marginLeft: '0.5rem !important',
-  },
-  count: {
-    marginLeft: '0.5rem !important',
-    marginRight: '1rem !important',
-  },
-  invalidMessage: {
-    color: 'red',
-  },
-})
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
@@ -35,97 +13,6 @@ type SelectedValue = number | null
 
 type BehaviorValueDict = {
   [key in interfaces.traderPatternModel.Behavior]?: SelectedValue
-}
-
-const GroupHeader = ({
-  title,
-  activeCount,
-  isValid,
-  invalidMessage,
-  isExtended,
-  onExtend,
-}: {
-  title: string;
-  activeCount: number;
-  isValid: boolean;
-  invalidMessage: string;
-  isExtended: boolean;
-  onExtend: () => void;
-}) => {
-  const classes = useStyles()
-
-  const handleToggleBuyBehaviors = () => {
-    if (!onExtend) return
-    onExtend()
-  }
-
-  return (
-    <header
-      onClick={handleToggleBuyBehaviors}
-      className={classNames('row-start', 'click-cursor', {
-        [classes.segmentHeader]: isExtended,
-      })}
-    >
-      <h3 className={classes.segmentTitle}>
-        {title}
-      </h3>
-      <Icon
-        size='large'
-        color='blue'
-        name={isExtended ? 'caret down' : 'caret right'}
-      />
-      <h5 className={classes.count}>
-        {localeTool.t('common.numSelected', { num: activeCount })}
-      </h5>
-      {isValid && <Icon name='checkmark' color='green' />}
-      {!isValid && <h5 className={classes.invalidMessage}>* {invalidMessage}</h5>}
-    </header>
-  )
-}
-
-const GroupSection = ({
-  title,
-  behaviors,
-  currentBehavior,
-  behaviorValueDict,
-  onClickBehavior,
-  onSelectValue,
-} : {
-  title: string;
-  behaviors: interfaces.traderPatternModel.Behavior[];
-  currentBehavior: ActiveBehavior;
-  behaviorValueDict: BehaviorValueDict;
-  onClickBehavior: (behavior: interfaces.traderPatternModel.Behavior) => void;
-  onSelectValue: (behavior: interfaces.traderPatternModel.Behavior, value: SelectedValue) => void;
-}) => {
-  const classes = useStyles()
-
-  const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => onClickBehavior(behavior)
-
-  const handleSelectValue = (
-    behavior: interfaces.traderPatternModel.Behavior,
-    value: SelectedValue,
-  ) => {
-    onSelectValue(behavior, value)
-  }
-
-  return (
-    <Segment secondary className={classes.subSegment}>
-      <h5 className={classes.groupTitle}>
-        {title}
-      </h5>
-      {behaviors.map((behavior) => (
-        <BehaviorEditor
-          key={behavior}
-          behavior={behavior}
-          behaviorValue={behaviorValueDict[behavior] || null}
-          isEditing={behavior === currentBehavior}
-          onClick={handleClickBehavior}
-          onSelect={handleSelectValue}
-        />
-      ))}
-    </Segment>
-  )
 }
 
 const getActiveBehaviorCount = (
@@ -267,7 +154,7 @@ const ProfileBuilder = () => {
       </div>
       <Segment.Group>
         <Segment>
-          <GroupHeader
+          <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.buyBehaviors')}
             isExtended={isBuyBehaviorsExtended}
             onExtend={handleToggleBuyBehaviors}
@@ -278,7 +165,7 @@ const ProfileBuilder = () => {
           {isBuyBehaviorsExtended && (
             <div>
               {BUY_GROUPS.map((buyGroup) => (
-                <GroupSection
+                <ProfileBuilderGroup
                   key={buyGroup.title}
                   title={buyGroup.title}
                   behaviors={buyGroup.behaviors}
@@ -292,7 +179,7 @@ const ProfileBuilder = () => {
           )}
         </Segment>
         <Segment>
-          <GroupHeader
+          <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.sellBehaviors')}
             isExtended={isSellBehaviorsExtended}
             onExtend={handleToggleSellBehaviors}
@@ -303,7 +190,7 @@ const ProfileBuilder = () => {
           {isSellBehaviorsExtended && (
             <div>
               {SELL_GROUPS.map((sellGroup) => (
-                <GroupSection
+                <ProfileBuilderGroup
                   key={sellGroup.title}
                   title={sellGroup.title}
                   behaviors={sellGroup.behaviors}
@@ -317,7 +204,7 @@ const ProfileBuilder = () => {
           )}
         </Segment>
         <Segment>
-          <GroupHeader
+          <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.preferenceBehaviors')}
             activeCount={activePreferenceBehaviorCount}
             isValid={activePreferenceBehaviorCount === constants.behavior.preferenceBehaviors.length}
@@ -341,7 +228,7 @@ const ProfileBuilder = () => {
           )}
         </Segment>
         <Segment>
-          <GroupHeader
+          <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.allocateBehaviors')}
             activeCount={activeAllocateBehaviorCount}
             isValid={activeAllocateBehaviorCount === constants.behavior.allocateBehaviors.length}
@@ -365,7 +252,7 @@ const ProfileBuilder = () => {
           )}
         </Segment>
         <Segment>
-          <GroupHeader
+          <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.frequencyBehaviors')}
             activeCount={activeFrequencyBehaviorCount}
             isValid={activeFrequencyBehaviorCount === constants.behavior.frequencyBehaviors.length}
