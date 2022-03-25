@@ -4,7 +4,7 @@ import SignIn from './auths/SignIn'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import ProfileDetail from './profiles/ProfileDetail'
-import Dashboard from './profiles/Dashboard'
+import ProfileDashboard from './profiles/ProfileDashboard'
 import ProfileBuilder from './profiles/ProfileBuilder'
 import * as routerEnum from '../enums/router'
 
@@ -27,7 +27,7 @@ const Router = () => {
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}
-            element={<Dashboard />}
+            element={<ProfileDashboard />}
           />
           <Route
             path={routerEnum.NAV.SIGN_IN}

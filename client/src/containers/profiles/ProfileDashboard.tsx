@@ -14,7 +14,7 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const Dashboard = () => {
+const ProfileDashboard = () => {
   const classes = useStyles()
   const navigate = useNavigate()
   const { userTraderIds } = useUser()
@@ -56,4 +56,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default ProfileDashboard

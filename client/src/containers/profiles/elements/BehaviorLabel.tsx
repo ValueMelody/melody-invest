@@ -1,50 +1,49 @@
-import { useMemo } from 'react'
 import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../tools/locale'
+import { createUseStyles } from 'react-jss'
 import * as parseTool from '../../../tools/parse'
 import classNames from 'classnames'
 
+const useStyles = createUseStyles({
+  container: {
+    margin: '0.25rem 0.125rem !important',
+  },
+})
+
 const BehaviorLabel = ({
-  pattern,
-  type,
+  behavior,
+  value,
   color,
-  className,
   onClick,
 }: {
-  pattern: interfaces.traderPatternModel.Public;
-  type: interfaces.traderPatternModel.BehaviorType;
+  behavior: interfaces.traderPatternModel.Behavior;
   color: SemanticCOLORS;
-  className: string;
-  onClick?: Function;
+  value?: number | null;
+  onClick?: () => void;
 }) => {
-  const titleLocaleKey = `behaviorTitle.${type}`
-  const descLocaleKey = `behaviorDesc.${type}`
+  const classes = useStyles()
+
+  const behaviorTitle = parseTool.behaviorTitle(behavior)
+  const behaviorDesc = parseTool.behaviorDesc(behavior)
+  const hasValue = value !== null && value !== undefined
+  const behaviorValue = hasValue ? parseTool.behaviorValue(behavior, value) : null
 
   const handleClick = () => {
     if (!onClick) return
-    onClick(type, pattern)
+    onClick()
   }
-
-  const value = useMemo(() => {
-    const rawValue = pattern[type]
-    if (type.includes('Percent')) return parseTool.dbPercent(rawValue)
-    if (type.includes('Frequency')) return parseTool.patternFrequency(rawValue)
-    if (type.includes('Preference')) return parseTool.patternPreference(rawValue)
-    return rawValue
-  }, [type, pattern])
 
   return (
     <Label
-      className={classNames(className, {
+      className={classNames(classes.container, {
         'info-cursor': !onClick,
         'click-cursor': !!onClick,
       })}
       color={color}
-      title={localeTool.t(descLocaleKey)}
+      title={behaviorDesc}
       onClick={handleClick}
     >
-      {localeTool.t(titleLocaleKey)}: {value}
+      {hasValue ? `${behaviorTitle}: ${behaviorValue}` : behaviorTitle}
     </Label>
   )
 }

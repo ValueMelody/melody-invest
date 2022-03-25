@@ -312,5 +312,5 @@ export type allocateBehavior = 'cashMaxPercent' |
 
 export type frequencyBehavior = 'tradeFrequency' | 'rebalanceFrequency'
 
-export type BehaviorType =
+export type Behavior =
   BuyBehavior | SellBehavior | allocateBehavior | frequencyBehavior | preferenceBehavior

@@ -1,9 +1,9 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as tickerModel from '../models/ticker'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
-import * as patternEnums from '../enums/pattern'
 import * as databaseAdapter from '../adapters/database'
 import * as runTool from '../tools/run'
 
@@ -26,29 +26,29 @@ const calcTickerAveragePrice = async (tickerId: number) => {
       let hasUpdate = false
 
       let weeklyAverage = tickerDaily.weeklyAverageFinalPrice
-      if (index >= patternEnums.DAY.WEEK && weeklyAverage === null) {
-        const relatedDaily = tickerDailyRecords.slice(index - patternEnums.DAY.WEEK, index)
+      if (index >= constants.time.day.WEEK && weeklyAverage === null) {
+        const relatedDaily = tickerDailyRecords.slice(index - constants.time.day.WEEK, index)
         weeklyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let monthlyAverage = tickerDaily.monthlyAverageFinalPrice
-      if (index >= patternEnums.DAY.MONTH && monthlyAverage === null) {
-        const relatedDaily = tickerDailyRecords.slice(index - patternEnums.DAY.MONTH, index)
+      if (index >= constants.time.day.MONTH && monthlyAverage === null) {
+        const relatedDaily = tickerDailyRecords.slice(index - constants.time.day.MONTH, index)
         monthlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let quarterlyAverage = tickerDaily.quarterlyAverageFinalPrice
-      if (index >= patternEnums.DAY.QUARTER && quarterlyAverage === null) {
-        const relatedDaily = tickerDailyRecords.slice(index - patternEnums.DAY.QUARTER, index)
+      if (index >= constants.time.day.QUARTER && quarterlyAverage === null) {
+        const relatedDaily = tickerDailyRecords.slice(index - constants.time.day.QUARTER, index)
         quarterlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
 
       let yearlyAverage = tickerDaily.yearlyAverageFinalPrice
-      if (index >= patternEnums.DAY.YEAR && yearlyAverage === null) {
-        const relatedDaily = tickerDailyRecords.slice(index - patternEnums.DAY.YEAR, index)
+      if (index >= constants.time.day.YEAR && yearlyAverage === null) {
+        const relatedDaily = tickerDailyRecords.slice(index - constants.time.day.YEAR, index)
         yearlyAverage = calcAverageOfRange(relatedDaily)
         hasUpdate = true
       }
@@ -101,8 +101,8 @@ const calcTickerPriceMovement = async (tickerId: number) => {
 
       let weeklyIncrease = tickerDaily.priceWeeklyIncrease
       let weeklyDecrease = tickerDaily.priceWeeklyDecrease
-      if (checkedDaily.length > patternEnums.DAY.WEEK) {
-        const previousDaily = checkedDaily[checkedDaily.length - patternEnums.DAY.WEEK]
+      if (checkedDaily.length > constants.time.day.WEEK) {
+        const previousDaily = checkedDaily[checkedDaily.length - constants.time.day.WEEK]
         const priceDiffer = tickerDaily.weeklyAverageFinalPrice! - previousDaily.weeklyAverageFinalPrice!
         const previousIncrease = previousDaily.priceWeeklyIncrease || 0
         const previousDecrease = previousDaily.priceWeeklyDecrease || 0
@@ -112,8 +112,8 @@ const calcTickerPriceMovement = async (tickerId: number) => {
 
       let monthlyIncrease = tickerDaily.priceMonthlyIncrease
       let monthlyDecrease = tickerDaily.priceMonthlyDecrease
-      if (checkedDaily.length > patternEnums.DAY.MONTH) {
-        const previousMonthly = checkedDaily[checkedDaily.length - patternEnums.DAY.MONTH]
+      if (checkedDaily.length > constants.time.day.MONTH) {
+        const previousMonthly = checkedDaily[checkedDaily.length - constants.time.day.MONTH]
         const priceDiffer = tickerDaily.monthlyAverageFinalPrice! - previousMonthly.monthlyAverageFinalPrice!
         const previousIncrease = previousMonthly.priceMonthlyIncrease || 0
         const previousDecrease = previousMonthly.priceMonthlyDecrease || 0
@@ -123,8 +123,8 @@ const calcTickerPriceMovement = async (tickerId: number) => {
 
       let quarterlyIncrease = tickerDaily.priceQuarterlyIncrease
       let quarterlyDecrease = tickerDaily.priceQuarterlyDecrease
-      if (checkedDaily.length > patternEnums.DAY.QUARTER) {
-        const previousQuarterly = checkedDaily[checkedDaily.length - patternEnums.DAY.QUARTER]
+      if (checkedDaily.length > constants.time.day.QUARTER) {
+        const previousQuarterly = checkedDaily[checkedDaily.length - constants.time.day.QUARTER]
         const priceDiffer = tickerDaily.quarterlyAverageFinalPrice! - previousQuarterly.quarterlyAverageFinalPrice!
         const previousIncrease = previousQuarterly.priceQuarterlyIncrease || 0
         const previousDecrease = previousQuarterly.priceQuarterlyDecrease || 0
@@ -134,8 +134,8 @@ const calcTickerPriceMovement = async (tickerId: number) => {
 
       let yearlyIncrease = tickerDaily.priceYearlyIncrease
       let yearlyDecrease = tickerDaily.priceYearlyDecrease
-      if (checkedDaily.length > patternEnums.DAY.YEAR) {
-        const previousYearly = checkedDaily[checkedDaily.length - patternEnums.DAY.YEAR]
+      if (checkedDaily.length > constants.time.day.YEAR) {
+        const previousYearly = checkedDaily[checkedDaily.length - constants.time.day.YEAR]
         const priceDiffer = tickerDaily.yearlyAverageFinalPrice! - previousYearly.yearlyAverageFinalPrice!
         const previousIncrease = previousYearly.priceYearlyIncrease || 0
         const previousDecrease = previousYearly.priceYearlyDecrease || 0

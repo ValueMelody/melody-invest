@@ -12,6 +12,7 @@
     "common.watch": "Watch",
     "common.unwatch": "Unwatch",
     "common.build": "Build",
+    "common.numSelected": "{{num}} selected",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -44,11 +45,14 @@
     "profile.value.decreased": "Total value decreased compare to previous",
 
     "profileBuilder.title": "Pattern Builder",
-    "profileBuilder.buyBehaviors": "Buy Criterion (Please config one or multiple of the followings)",
-    "profileBuilder.sellBehaviors": "Sell Criterion (Please config one or multiple of the followings)",
-    "profileBuilder.preferenceBehaviors": "Stock Preference (Please config all of the followings)",
-    "profileBuilder.allocateBehaviors": "Stock Allocation (Please config all of the followings)",
-    "profileBuilder.frequencyBehaviors": "Trade Frequency (Please config all of the followings)",
+    "profileBuilder.requireOne": "Please config one or multiple of the following behaviors",
+    "profileBuilder.requireAll": "Please config all of the following behaviors",
+    "profileBuilder.buyBehaviors": "Buy Criterion",
+    "profileBuilder.sellBehaviors": "Sell Criterion",
+    "profileBuilder.preferenceBehaviors": "Stock Preference",
+    "profileBuilder.allocateBehaviors": "Stock Allocation",
+    "profileBuilder.frequencyBehaviors": "Trade Frequency",
+    "profileBuilder.select": "Select a behavior",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",
@@ -302,6 +306,7 @@
     "behaviorDesc.gdpQuarterlyYoYChangeBelowSell": "Sell when US GDP changed below the expected percent compare to the same quarter of last year",
 
     "behavior.frequency.type": "Every {{num}} Day(s)",
+
     "behavior.preference.type.1": "Higher share price",
     "behavior.preference.type.2": "Lower share price",
     "behavior.preference.type.3": "Higher quarterly EPS",

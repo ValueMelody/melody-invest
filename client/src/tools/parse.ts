@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from './locale'
 
 export const dbPercentNumber = (value: number | null): string => {
@@ -10,18 +11,37 @@ export const dbPercent = (value: number | null): string => {
   return `${value}%`
 }
 
-export const patternFrequency = (value: number | null): string => {
+const patternFrequency = (value: number | null): string => {
   if (value === null) return ''
   return localeTool.t('behavior.frequency.type', { num: value })
 }
 
-export const patternPreference = (value: number | null): string => {
+const patternPreference = (value: number | null): string => {
   if (value === null) return ''
   if (value >= 1 && value <= 22) {
     const localeKey = `behavior.preference.type.${value}`
     return localeTool.t(localeKey)
   }
   return ''
+}
+
+export const behaviorValue = (
+  behavior: interfaces.traderPatternModel.Behavior,
+  value: number | null,
+): string | number | null => {
+  if (!value) return ''
+  if (behavior.includes('Percent')) return dbPercent(value)
+  if (behavior.includes('Frequency')) return patternFrequency(value)
+  if (behavior.includes('Preference')) return patternPreference(value)
+  return value
+}
+
+export const behaviorTitle = (behavior: interfaces.traderPatternModel.Behavior) => {
+  return localeTool.t(`behaviorTitle.${behavior}`)
+}
+
+export const behaviorDesc = (behavior: interfaces.traderPatternModel.Behavior) => {
+  return localeTool.t(`behaviorDesc.${behavior}`)
 }
 
 export const holdingValue = (value: number | null): string | null => {
