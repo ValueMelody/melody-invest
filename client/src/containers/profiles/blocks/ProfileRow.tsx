@@ -9,6 +9,7 @@ import WatchButton from '../elements/WatchButton'
 import PatternLabel from '../elements/PatternLabel'
 import useToggleWatch from '../hooks/useToggleWatch'
 import useUser from '../../../states/useUser'
+import useTraderEnv from '../../../states/useTraderEnv'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   pattern: {
@@ -37,7 +38,10 @@ const ProfileCard = ({
 }) => {
   const classes = useStyles()
   const { userTraderIds } = useUser()
+  const { getTraderEnv } = useTraderEnv()
   const { isWatched, handleToggleWatch } = useToggleWatch({ traderId: trader.id })
+
+  const traerEnv = getTraderEnv(trader.traderEnvId)!
 
   const handleClick = () => {
     if (!onClick) return
@@ -53,7 +57,7 @@ const ProfileCard = ({
       padded
     >
       <header className={classNames('row-between', classes.header)}>
-        <PatternLabel patternId={trader.traderPatternId} />
+        <PatternLabel patternId={trader.traderPatternId} envName={traerEnv.name} />
         {!!userTraderIds && (
           <WatchButton
             isWatched={isWatched}

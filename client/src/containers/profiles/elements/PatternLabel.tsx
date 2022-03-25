@@ -10,14 +10,19 @@ const useStyles = createUseStyles(({
 
 const PatternLabel = ({
   patternId,
+  envName,
 }: {
   patternId: number;
+  envName: string | null;
 }) => {
   const classes = useStyles()
 
+  const envNameLocaleKey = `traderEnvName.${envName}`
+  const envLabel = envName ? `- ${localeTool.t(envNameLocaleKey)}` : ''
+
   return (
     <Label color='blue' className={classes.label}>
-      {localeTool.t('common.pattern')}: #{patternId}
+      {localeTool.t('common.pattern')} #{patternId} {envLabel}
     </Label>
   )
 }

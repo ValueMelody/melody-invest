@@ -1,6 +1,5 @@
 export const NAME = {
   USER: 'user',
-  TRADER_FOLLOWER: 'trader_follower',
   TICKER: 'ticker',
   TICKER_DAILY: 'ticker_daily',
   TICKER_YEARLY: 'ticker_yearly',
@@ -8,7 +7,9 @@ export const NAME = {
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly',
-  TRADER_PATTERN: 'trader_pattern',
   TRADER: 'trader',
+  TRADER_ENV: 'trader_env',
   TRADER_HOLDING: 'trader_holding',
+  TRADER_PATTERN: 'trader_pattern',
+  TRADER_FOLLOWER: 'trader_follower',
 }

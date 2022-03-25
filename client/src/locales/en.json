@@ -54,6 +54,8 @@
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
     "profileBuilder.select": "Select a behavior",
 
+    "traderEnvName.default" : "Default",
+
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",
     "gain.pastQuarter": "One Quarter",

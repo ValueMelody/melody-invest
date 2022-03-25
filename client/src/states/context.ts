@@ -22,6 +22,11 @@ export interface Resources {
   topProfiles: interfaces.traderProfileRes.TopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
+  systemTraderEnvIds: number[] | null;
+}
+
+export interface TraderEnvs {
+  [key: number]: interfaces.traderEnvModel.Record;
 }
 
 export interface TraderProfiles {
@@ -43,6 +48,8 @@ export interface Context {
   showRequestError: (message: string) => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
+  traderEnvs: TraderEnvs;
+  setTraderEnvs: Dispatch<React.SetStateAction<TraderEnvs>>;
   traderProfiles: TraderProfiles;
   setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
   profileHoldings: ProfileHoldings;

@@ -3,6 +3,7 @@ import { createUseStyles } from 'react-jss'
 import { Message, Icon } from 'semantic-ui-react'
 import Header from './blocks/Header'
 import useCommon from '../../states/useCommon'
+import useSystem from '../../states/useSystem'
 import useUser from '../../states/useUser'
 
 const useStyles = createUseStyles({
@@ -25,13 +26,20 @@ const Layout: FunctionComponent = ({
   const classes = useStyles()
   const { messages, removeMessage } = useCommon()
   const { userType, fetchUserFollowed } = useUser()
-  const handleRemoveMessage = (id: number) => removeMessage(id)
+  const { fetchSystemDefaults } = useSystem()
+
+  useEffect(() => {
+    fetchSystemDefaults()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   useEffect(() => {
     if (!userType) return
     fetchUserFollowed()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType])
+
+  const handleRemoveMessage = (id: number) => removeMessage(id)
 
   return (
     <>

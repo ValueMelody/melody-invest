@@ -6,6 +6,7 @@ exports.up = (knex) => {
       table.text('tickerIds')
       table.integer('activeTotal').notNullable()
       table.string('name', 20)
+      table.boolean('isSystem').notNullable()
       table.unique(['startDate', 'tickerIds'], 'trader_env_ukey')
     })
 }
