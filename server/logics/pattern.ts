@@ -1,125 +1,8 @@
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as patternEnums from '../enums/pattern'
 import * as generateTool from '../tools/generate'
 
-const BEHAVIOR_VALUES = {
-  priceDailyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceDailyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceWeeklyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  priceYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyBeatBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyMissBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyBeatSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  epsQuarterlyMissSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueQuarterlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  profitYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  incomeYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  revenueYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationYearlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  fundsRateMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  thirtyYearsTreasuryMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  tenYearsTreasuryMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  inflationMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  cpiMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  consumerSentimentMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  retailSalesMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  durableGoodsMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  unemploymentRateMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  unemploymentRateMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  unemploymentRateMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  unemploymentRateMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyIncreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyDecreaseBuy: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyIncreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  nonfarmPayrollMonthlyDecreaseSell: [...patternEnums.VALUES.MOVEMENT_VALUE],
-  gdpYearlyChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpYearlyChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeAboveBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeAboveSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeBelowBuy: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  gdpQuarterlyYoYChangeBelowSell: [...patternEnums.VALUES.GDP_CHANGE_PERCENT],
-  cashMaxPercent: [...patternEnums.VALUES.CASH_MAX_PERCENT],
-  tickerMinPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
-  tickerMaxPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
-  holdingBuyPercent: [...patternEnums.VALUES.PORTFOLIO_PERCENT],
-  holdingSellPercent: [...patternEnums.VALUES.HOLDING_PERCENT],
-  tradeFrequency: [...patternEnums.VALUES.TRADE_FREQUENCY],
-  rebalanceFrequency: [...patternEnums.VALUES.REBALANCE_FREQUENCY],
-  buyPreference: [...patternEnums.VALUES.PREFERENCE],
-  sellPreference: [...patternEnums.VALUES.PREFERENCE],
-}
-
-const BEHAVIOR_GROUPS: interfaces.traderPatternModel.BehaviorType[][] = [
+const BEHAVIOR_GROUPS: interfaces.traderPatternModel.Behavior[][] = [
   constants.behavior.buyBehaviors,
   constants.behavior.sellBehaviors,
   ['cashMaxPercent'],
@@ -134,7 +17,7 @@ const BEHAVIOR_GROUPS: interfaces.traderPatternModel.BehaviorType[][] = [
 ]
 
 interface Behavior {
-  type: interfaces.traderPatternModel.BehaviorType;
+  type: interfaces.traderPatternModel.Behavior;
   value: number;
 }
 
@@ -434,38 +317,38 @@ export const getTickerPreferValue = (
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
 ): number | null => {
   switch (preference) {
-    case patternEnums.PREFERENCE.HIGHER_PRICE:
-    case patternEnums.PREFERENCE.LOWER_PRICE:
+    case constants.behaviorValue.preference.HIGHER_PRICE:
+    case constants.behaviorValue.preference.LOWER_PRICE:
       return tickerDaily.closePrice
-    case patternEnums.PREFERENCE.HIGHER_QUARTER_EPS:
-    case patternEnums.PREFERENCE.LOWER_QUARTER_EPS:
+    case constants.behaviorValue.preference.HIGHER_QUARTER_EPS:
+    case constants.behaviorValue.preference.LOWER_QUARTER_EPS:
       return tickerQuarterly ? tickerQuarterly.eps : null
-    case patternEnums.PREFERENCE.HIGHER_QUARTER_EBITDA:
-    case patternEnums.PREFERENCE.LOWER_QUARTER_EBITDA:
+    case constants.behaviorValue.preference.HIGHER_QUARTER_EBITDA:
+    case constants.behaviorValue.preference.LOWER_QUARTER_EBITDA:
       return tickerQuarterly ? tickerQuarterly.ebitda : null
-    case patternEnums.PREFERENCE.HIGHER_QUARTER_INCOME:
-    case patternEnums.PREFERENCE.LOWER_QUARTER_INCOME:
+    case constants.behaviorValue.preference.HIGHER_QUARTER_INCOME:
+    case constants.behaviorValue.preference.LOWER_QUARTER_INCOME:
       return tickerQuarterly ? tickerQuarterly.netIncome : null
-    case patternEnums.PREFERENCE.HIGHER_QUARTER_PROFIT:
-    case patternEnums.PREFERENCE.LOWER_QUARTER_PROFIT:
+    case constants.behaviorValue.preference.HIGHER_QUARTER_PROFIT:
+    case constants.behaviorValue.preference.LOWER_QUARTER_PROFIT:
       return tickerQuarterly ? tickerQuarterly.grossProfit : null
-    case patternEnums.PREFERENCE.HIGHER_QUARTER_REVENUE:
-    case patternEnums.PREFERENCE.LOWER_QUARTER_REVENUE:
+    case constants.behaviorValue.preference.HIGHER_QUARTER_REVENUE:
+    case constants.behaviorValue.preference.LOWER_QUARTER_REVENUE:
       return tickerQuarterly ? tickerQuarterly.totalRevenue : null
-    case patternEnums.PREFERENCE.HIGHER_YEAR_EPS:
-    case patternEnums.PREFERENCE.LOWER_YEAR_EPS:
+    case constants.behaviorValue.preference.HIGHER_YEAR_EPS:
+    case constants.behaviorValue.preference.LOWER_YEAR_EPS:
       return tickerYearly ? tickerYearly.eps : null
-    case patternEnums.PREFERENCE.HIGHER_YEAR_EBITDA:
-    case patternEnums.PREFERENCE.LOWER_YEAR_EBITDA:
+    case constants.behaviorValue.preference.HIGHER_YEAR_EBITDA:
+    case constants.behaviorValue.preference.LOWER_YEAR_EBITDA:
       return tickerYearly ? tickerYearly.ebitda : null
-    case patternEnums.PREFERENCE.HIGHER_YEAR_INCOME:
-    case patternEnums.PREFERENCE.LOWER_YEAR_INCOME:
+    case constants.behaviorValue.preference.HIGHER_YEAR_INCOME:
+    case constants.behaviorValue.preference.LOWER_YEAR_INCOME:
       return tickerYearly ? tickerYearly.netIncome : null
-    case patternEnums.PREFERENCE.HIGHER_YEAR_PROFIT:
-    case patternEnums.PREFERENCE.LOWER_YEAR_PROFIT:
+    case constants.behaviorValue.preference.HIGHER_YEAR_PROFIT:
+    case constants.behaviorValue.preference.LOWER_YEAR_PROFIT:
       return tickerYearly ? tickerYearly.grossProfit : null
-    case patternEnums.PREFERENCE.HIGHER_YEAR_REVENUE:
-    case patternEnums.PREFERENCE.LOWER_YEAR_REVENUE:
+    case constants.behaviorValue.preference.HIGHER_YEAR_REVENUE:
+    case constants.behaviorValue.preference.LOWER_YEAR_REVENUE:
       return tickerYearly ? tickerYearly.totalRevenue : null
     default:
       return null
@@ -493,12 +376,12 @@ export const groupPatternCouples = (
 }
 
 const pickTradingPatterns = (
-  behaviorTypes: interfaces.traderPatternModel.BehaviorType[],
+  behaviorTypes: interfaces.traderPatternModel.Behavior[],
   first: interfaces.traderPatternModel.Record,
   second: interfaces.traderPatternModel.Record,
 ): Behavior[] => {
   const allValues = behaviorTypes.reduce((
-    values: Behavior[], type: interfaces.traderPatternModel.BehaviorType,
+    values: Behavior[], type: interfaces.traderPatternModel.Behavior,
   ): Behavior[] => {
     if (first[type]) return [...values, { type, value: first[type]! }]
     if (second[type]) return [...values, { type, value: second[type]! }]
@@ -660,10 +543,12 @@ export const generatePatternChild = (
   })
 
   if (shouldMutation) {
-    const potentialKeys = Object.keys(BEHAVIOR_VALUES) as Array<keyof typeof BEHAVIOR_VALUES>
+    const potentialKeys = Object.keys(constants.behaviorValue.options) as Array<
+      keyof typeof constants.behaviorValue.options
+    >
     const keyIndex = generateTool.pickNumberInRange(0, potentialKeys.length - 1)
     const behaviorKey = potentialKeys[keyIndex]
-    const potentialValues = BEHAVIOR_VALUES[behaviorKey]
+    const potentialValues = constants.behaviorValue.options[behaviorKey]
     const valueIndex = generateTool.pickNumberInRange(0, potentialValues.length - 1)
     const behaviorValue = potentialValues[valueIndex]
     newChild[behaviorKey] = behaviorValue

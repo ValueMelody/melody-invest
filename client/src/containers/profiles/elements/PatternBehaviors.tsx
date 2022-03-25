@@ -9,9 +9,6 @@ const useStyles = createUseStyles({
   container: {
     marginTop: '1rem',
   },
-  label: {
-    marginBottom: '0.5rem !important',
-  },
 })
 
 const PatternBehaviors = ({
@@ -21,7 +18,7 @@ const PatternBehaviors = ({
 }) => {
   const classes = useStyles()
 
-  const otherBehaviors: interfaces.traderPatternModel.BehaviorType[] = [
+  const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
     ...constants.behavior.allocateBehaviors,
     ...constants.behavior.frequencyBehaviors,
     ...constants.behavior.preferenceBehaviors,
@@ -35,27 +32,24 @@ const PatternBehaviors = ({
       {activeBuyBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
-          pattern={pattern}
-          type={behavior}
-          className={classes.label}
+          behavior={behavior}
+          value={pattern[behavior]}
           color={themeEnum.theme.INCREASE_COLOR}
         />
       ))}
       {activeSellBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
-          pattern={pattern}
-          type={behavior}
-          className={classes.label}
+          behavior={behavior}
+          value={pattern[behavior]}
           color={themeEnum.theme.DECREASE_COLOR}
         />
       ))}
       {otherBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
-          pattern={pattern}
-          type={behavior}
-          className={classes.label}
+          behavior={behavior}
+          value={pattern[behavior]}
           color='grey'
         />
       ))}
