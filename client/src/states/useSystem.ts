@@ -31,6 +31,7 @@ const useSystem = () => {
   }
 
   return {
+    systemTraderEnvIds: store.resources.systemTraderEnvIds,
     fetchSystemDefaults,
   }
 }

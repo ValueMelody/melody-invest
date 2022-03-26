@@ -25,7 +25,7 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   },
 }))
 
-const ProfileCard = ({
+const ProfileRow = ({
   trader,
   pattern,
   focusType,
@@ -41,7 +41,7 @@ const ProfileCard = ({
   const { getTraderEnv } = useTraderEnv()
   const { isWatched, handleToggleWatch } = useToggleWatch({ traderId: trader.id })
 
-  const traerEnv = getTraderEnv(trader.traderEnvId)!
+  const traderEnv = getTraderEnv(trader.traderEnvId)!
 
   const handleClick = () => {
     if (!onClick) return
@@ -57,7 +57,7 @@ const ProfileCard = ({
       padded
     >
       <header className={classNames('row-between', classes.header)}>
-        <PatternLabel patternId={trader.traderPatternId} envName={traerEnv.name} />
+        <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
         {!!userTraderIds && (
           <WatchButton
             isWatched={isWatched}
@@ -74,4 +74,4 @@ const ProfileCard = ({
   )
 }
 
-export default ProfileCard
+export default ProfileRow

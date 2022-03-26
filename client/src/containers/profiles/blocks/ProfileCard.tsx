@@ -57,7 +57,7 @@ const ProfileCard = ({
       padded
     >
       <header className={classNames('row-between', classes.header)}>
-        <PatternLabel patternId={trader.traderPatternId} envName={traderEnv.name} />
+        <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
         {!!userTraderIds && (
           <WatchButton
             isWatched={isWatched}

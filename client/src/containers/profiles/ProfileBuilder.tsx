@@ -6,6 +6,9 @@ import * as localeTool from '../../tools/locale'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from './elements/BehaviorEditor'
+import TraderEnvCard from './elements/TraderEnvCard'
+import useSystem from '../../states/useSystem'
+import useTraderEnv from '../../states/useTraderEnv'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
@@ -31,6 +34,10 @@ const ProfileBuilder = () => {
   const [isFrequencyBehaviorsExtended, setIsFrequencyBehaviorsExtended] = useState(false)
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
   const [behaviorValueDict, setBehaviorValueDict] = useState<BehaviorValueDict>({})
+  const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
+
+  const { systemTraderEnvIds } = useSystem()
+  const { getTraderEnv } = useTraderEnv()
 
   const BUY_GROUPS = [
     {
@@ -145,6 +152,11 @@ const ProfileBuilder = () => {
       [behavior]: value,
     }))
     setCurrentEditingBehavior(null)
+  }
+
+  const handleSelectEnv = (envId: number) => {
+    if (selectedTraderEnvId === envId) return
+    setSelectedTraderEnvId(selectedTraderEnvId)
   }
 
   return (
@@ -276,6 +288,18 @@ const ProfileBuilder = () => {
           )}
         </Segment>
       </Segment.Group>
+      <h4>{localeTool.t('common.envs')}:</h4>
+      {systemTraderEnvIds.map((traderEnvId) => {
+        const traderEnv = getTraderEnv(traderEnvId)!
+        return (
+          <TraderEnvCard
+            key={traderEnvId}
+            traderEnv={traderEnv}
+            isActive={traderEnvId === selectedTraderEnvId}
+            onClick={(envId) => handleSelectEnv(envId)}
+          />
+        )
+      })}
     </div>
   )
 }

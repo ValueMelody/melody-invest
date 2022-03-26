@@ -22,7 +22,7 @@ export interface Resources {
   topProfiles: interfaces.traderProfileRes.TopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
-  systemTraderEnvIds: number[] | null;
+  systemTraderEnvIds: number[];
 }
 
 export interface TraderEnvs {

@@ -1,4 +1,4 @@
-import { Segment, Header } from 'semantic-ui-react'
+import { Segment } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
@@ -10,6 +10,10 @@ import { FocusType } from './elements/TraderPerformance'
 const useStyles = createUseStyles(({
   section: {
     alignItems: 'flex-start',
+  },
+  title: {
+    marginLeft: '1rem !important',
+    marginBottom: '1rem !important',
   },
 }))
 
@@ -34,7 +38,7 @@ const TopProfileList = ({
 
   return (
     <Segment>
-      <Header as='h4'>{title}</Header>
+      <h4 className={classes.title}><b>{title}</b></h4>
       <section className={classNames('row-start', classes.section)} >
         {profiles.map(({ trader, pattern }) => (
           <ProfileCard

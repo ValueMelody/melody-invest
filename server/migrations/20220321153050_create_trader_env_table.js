@@ -2,7 +2,7 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('trader_env', (table) => {
       table.increments('id')
-      table.specificType('startDate', 'CHAR(10)')
+      table.specificType('startDate', 'CHAR(10)').notNullable()
       table.text('tickerIds')
       table.integer('activeTotal').notNullable()
       table.string('name', 20)

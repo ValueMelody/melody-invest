@@ -3,6 +3,15 @@ export interface Record {
   activeTotal: number;
   isSystem: boolean;
   name: string | null
-  startDate: string | null;
+  startDate: string;
+  tickerIds: number[] | null;
+}
+
+export interface Raw {
+  id: number;
+  activeTotal: number;
+  isSystem: boolean;
+  name: string | null
+  startDate: string;
   tickerIds: string | null;
 }
