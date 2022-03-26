@@ -5,12 +5,14 @@ import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
 import useTraderProfile from '../../states/useTraderProfile'
 import useTickerProfile from '../../states/useTickerProfile'
+import useTraderEnv from '../../states/useTraderEnv'
 import * as routerEnum from '../../enums/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
 import ProfileCard from './blocks/ProfileCard'
 import ValueDiffer from './elements/ValueDiffer'
 import HoldingShare from './elements/HoldingShare'
+import TraderEnvCard from './elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
   container: {
@@ -23,6 +25,10 @@ const useStyles = createUseStyles(({
     marginLeft: '2rem !important',
     marginRight: '1rem !important',
   },
+  envContainer: {
+    paddingLeft: '1rem !important',
+    paddingRight: '1rem !important',
+  },
 }))
 
 const ProfileDetail = () => {
@@ -32,6 +38,7 @@ const ProfileDetail = () => {
   const {
     getTraderProfile, fetchTraderProfile, getProfileHoldings, fetchProfileHoldings,
   } = useTraderProfile()
+  const { getTraderEnv } = useTraderEnv()
   const { tickerIdentities, fetchTickerIdentities } = useTickerProfile()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
 
@@ -39,6 +46,7 @@ const ProfileDetail = () => {
   const accessCode = params?.accessCode || null
   const traderProfile = getTraderProfile(traderId)
   const profileHoldings = getProfileHoldings(traderId)
+  const traderEnv = traderProfile?.trader && getTraderEnv(traderProfile.trader.traderEnvId)
   const holdings = profileHoldings || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
 
@@ -68,14 +76,20 @@ const ProfileDetail = () => {
 
   const handleClickShowAll = () => setShowAllHoldings(true)
 
-  if (!traderProfile || !profileHoldings) return null
+  if (!traderProfile || !profileHoldings || !traderEnv) return null
 
   return (
     <div className={classNames('row-between', classes.container)}>
-      <ProfileCard
-        trader={traderProfile.trader}
-        pattern={traderProfile.pattern}
-      />
+      <div>
+        <ProfileCard
+          trader={traderProfile.trader}
+          pattern={traderProfile.pattern}
+        />
+        <div className={classes.envContainer}>
+          <h4>{localeTool.t('common.envs')}:</h4>
+          <TraderEnvCard traderEnv={traderEnv} isActive />
+        </div>
+      </div>
       <div className={classes.holdings}>
         <h4><b>{localeTool.t('profile.history')}</b></h4>
         {displayedHoldings.map((holding, index) => (

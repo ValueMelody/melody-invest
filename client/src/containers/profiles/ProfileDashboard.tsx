@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { Button, Icon } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
+import * as interfaces from '@shared/interfaces'
 import useUser from '../../states/useUser'
 import useTraderProfile from '../../states/useTraderProfile'
 import ProfileRow from './blocks/ProfileRow'
@@ -22,6 +23,11 @@ const ProfileDashboard = () => {
 
   const handleClickBuild = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
+  }
+
+  const handleClickRow = (trader: interfaces.traderModel.Record) => {
+    const link = `${routerEnum.NAV.PROFILES}/${trader.id}/${trader.accessCode}`
+    navigate(link)
   }
 
   if (!userTraderIds) return null
@@ -49,6 +55,7 @@ const ProfileDashboard = () => {
             key={traderId}
             trader={profile.trader}
             pattern={profile.pattern}
+            onClick={handleClickRow}
           />
         )
       })}

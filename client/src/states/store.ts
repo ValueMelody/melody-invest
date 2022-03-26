@@ -19,7 +19,10 @@ const useStore = () => {
     topProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
+    systemTraderEnvIds: [],
   })
+
+  const [traderEnvs, setTraderEnvs] = useState<context.TraderEnvs>({})
 
   const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
 
@@ -75,6 +78,8 @@ const useStore = () => {
     showRequestError,
     resources,
     setResources,
+    traderEnvs,
+    setTraderEnvs,
     traderProfiles,
     setTraderProfiles,
     profileHoldings,

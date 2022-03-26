@@ -4,7 +4,9 @@ import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 import * as generateTool from '../tools/generate'
 
-const convertToRecord = (raw: interfaces.traderModel.Raw): interfaces.traderModel.Record => ({
+const convertToRecord = (
+  raw: interfaces.traderModel.Raw,
+): interfaces.traderModel.Record => ({
   ...raw,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
 })

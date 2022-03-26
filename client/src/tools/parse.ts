@@ -44,6 +44,22 @@ export const behaviorDesc = (behavior: interfaces.traderPatternModel.Behavior) =
   return localeTool.t(`behaviorDesc.${behavior}`)
 }
 
+export const traderEnvName = (
+  traderEnv: interfaces.traderEnvModel.Record | null,
+) => {
+  if (!traderEnv) return ''
+  return traderEnv.name ? localeTool.t(`traderEnvName.${traderEnv.name}`) : ''
+}
+
+export const traderEnvStartDate = (traderEnv: interfaces.traderEnvModel.Record) => {
+  return localeTool.t('traderEnv.startAt', { date: traderEnv.startDate })
+}
+
+export const traderEnvTickers = (traderEnv: interfaces.traderEnvModel.Record) => {
+  if (!traderEnv.tickerIds) return localeTool.t('traderEnv.allTickers')
+  return localeTool.t('traderEnv.selectedTickers', { num: traderEnv.tickerIds.length })
+}
+
 export const holdingValue = (value: number | null): string | null => {
   if (value === null) return null
   return (value / 10000).toFixed(2)
