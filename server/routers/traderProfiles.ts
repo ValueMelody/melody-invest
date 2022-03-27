@@ -24,11 +24,11 @@ traderProfilesRouter.get('/:id/:access_code', async (req, res) => {
   return res.status(200).send(trader)
 })
 
-traderProfilesRouter.get('/:id/:access_code/holdings', async (req, res) => {
+traderProfilesRouter.get('/:id/:access_code/detail', async (req, res) => {
   const id = parseInt(req.params.id)
   const accessCode = req.params.access_code
   validGetProfileParam(id, accessCode)
 
-  const holdings = await crudTraderStats.getTraderHoldings(id, accessCode)
-  return res.status(200).send(holdings)
+  const details = await crudTraderStats.getProfileDetail(id, accessCode)
+  return res.status(200).send(details)
 })

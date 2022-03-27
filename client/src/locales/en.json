@@ -60,6 +60,7 @@
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
 
     "traderEnvName.default" : "Default",
+    "traderEnvName.topTech" : "Top Tech",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",

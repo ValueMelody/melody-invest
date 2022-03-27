@@ -36,7 +36,7 @@ const ProfileDetail = () => {
   const navigate = useNavigate()
   const classes = useStyles()
   const {
-    getTraderProfile, fetchTraderProfile, getProfileHoldings, fetchProfileHoldings,
+    getTraderProfile, fetchTraderProfile, getProfileDetail, fetchProfileDetail,
   } = useTraderProfile()
   const { getTraderEnv } = useTraderEnv()
   const { tickerIdentities, fetchTickerIdentities } = useTickerProfile()
@@ -45,9 +45,11 @@ const ProfileDetail = () => {
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
   const traderProfile = getTraderProfile(traderId)
-  const profileHoldings = getProfileHoldings(traderId)
+  const profileDetail = getProfileDetail(traderId)
+  console.log(profileDetail)
   const traderEnv = traderProfile?.trader && getTraderEnv(traderProfile.trader.traderEnvId)
-  const holdings = profileHoldings || []
+  const holdings = profileDetail?.holdings || []
+  const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
 
   useEffect(() => {
@@ -63,10 +65,10 @@ const ProfileDetail = () => {
   }, [traderProfile])
 
   useEffect(() => {
-    if (profileHoldings) return
-    fetchProfileHoldings(traderId!, accessCode!)
+    if (profileDetail) return
+    fetchProfileDetail(traderId!, accessCode!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileHoldings])
+  }, [profileDetail])
 
   useEffect(() => {
     if (tickerIdentities) return
@@ -76,7 +78,12 @@ const ProfileDetail = () => {
 
   const handleClickShowAll = () => setShowAllHoldings(true)
 
-  if (!traderProfile || !profileHoldings || !traderEnv) return null
+  const handleClickEnv = (traderId: number, accessCode: string) => {
+    const link = `${routerEnum.NAV.PROFILES}/${traderId}/${accessCode}`
+    navigate(link)
+  }
+
+  if (!traderProfile || !profileDetail || !traderEnv) return null
 
   return (
     <div className={classNames('row-between', classes.container)}>
@@ -87,7 +94,17 @@ const ProfileDetail = () => {
         />
         <div className={classes.envContainer}>
           <h4>{localeTool.t('common.envs')}:</h4>
-          <TraderEnvCard traderEnv={traderEnv} isActive />
+          {profileEnvs.map((profileEnv) => {
+            const traderEnv = getTraderEnv(profileEnv.traderEnvId)!
+            return (
+              <TraderEnvCard
+                key={profileEnv.traderEnvId}
+                traderEnv={traderEnv}
+                isActive={traderProfile.trader.traderEnvId === profileEnv.traderEnvId}
+                onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
+              />
+            )
+          })}
         </div>
       </div>
       <div className={classes.holdings}>

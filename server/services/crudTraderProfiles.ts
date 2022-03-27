@@ -23,14 +23,25 @@ export const getTraderStat = async (
   }
 }
 
-export const getTraderHoldings = async (
+export const getProfileDetail = async (
   id: number, accessCode: string,
-): Promise<interfaces.traderHoldingModel.Record[]> => {
+): Promise<interfaces.traderProfileRes.ProfileDetail> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
   const holdings = await traderHoldingModel.getAll(trader.id)
-  return holdings
+  const traders = await traderModel.getByPattern(trader.traderPatternId)
+  const profileEnvs = traders.map((trader) => ({
+    traderId: trader.id,
+    traderEnvId: trader.traderEnvId,
+    traderPatternId: trader.traderPatternId,
+    accessCode: trader.accessCode,
+  }))
+
+  return {
+    profileEnvs,
+    holdings,
+  }
 }
 
 const combineTraderAndPattern = (

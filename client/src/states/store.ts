@@ -26,7 +26,7 @@ const useStore = () => {
 
   const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
 
-  const [profileHoldings, setProfileHoldings] = useState<context.ProfileHoldings>({})
+  const [profileDetails, setProfileDetails] = useState<context.ProfileDetails>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
@@ -82,8 +82,8 @@ const useStore = () => {
     setTraderEnvs,
     traderProfiles,
     setTraderProfiles,
-    profileHoldings,
-    setProfileHoldings,
+    profileDetails,
+    setProfileDetails,
   }
 }
 

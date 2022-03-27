@@ -55,24 +55,24 @@ const useTraderProfile = () => {
     }
   }
 
-  const getProfileHoldings = (id: number | null) => {
+  const getProfileDetail = (id: number | null) => {
     if (!id) return null
-    return store.profileHoldings[id] || null
+    return store.profileDetails[id] || null
   }
 
-  const storeProfileHoldings = (
+  const storeProfileDetail = (
     traderId: number,
-    holdings: interfaces.traderHoldingModel.Record[],
+    detail: interfaces.traderProfileRes.ProfileDetail,
   ) => {
-    store.setProfileHoldings((profiles) => ({ ...profiles, [traderId]: holdings }))
+    store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
   }
 
-  const fetchProfileHoldings = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}/holdings`
+  const fetchProfileDetail = async (id: number, accessCode: string) => {
+    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}/detail`
     store.startLoading()
     try {
-      const holdings = await requestAdpater.sendGetRequest(endpoint)
-      storeProfileHoldings(id, holdings)
+      const detail = await requestAdpater.sendGetRequest(endpoint)
+      storeProfileDetail(id, detail)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -83,8 +83,8 @@ const useTraderProfile = () => {
   return {
     getTraderProfile,
     fetchTraderProfile,
-    getProfileHoldings,
-    fetchProfileHoldings,
+    getProfileDetail,
+    fetchProfileDetail,
     topProfiles: store.resources.topProfiles,
     fetchTopProfiles,
   }
