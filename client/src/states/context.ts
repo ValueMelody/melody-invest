@@ -33,8 +33,8 @@ export interface TraderProfiles {
   [key: number]: interfaces.traderProfileRes.TraderProfile;
 }
 
-export interface ProfileHoldings {
-  [key: number]: interfaces.traderHoldingModel.Record[];
+export interface ProfileDetails {
+  [key: number]: interfaces.traderProfileRes.ProfileDetail;
 }
 
 export interface Context {
@@ -52,8 +52,8 @@ export interface Context {
   setTraderEnvs: Dispatch<React.SetStateAction<TraderEnvs>>;
   traderProfiles: TraderProfiles;
   setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
-  profileHoldings: ProfileHoldings;
-  setProfileHoldings: Dispatch<React.SetStateAction<ProfileHoldings>>;
+  profileDetails: ProfileDetails;
+  setProfileDetails: Dispatch<React.SetStateAction<ProfileDetails>>;
 }
 
 // @ts-ignore

@@ -156,7 +156,7 @@ const ProfileBuilder = () => {
 
   const handleSelectEnv = (envId: number) => {
     if (selectedTraderEnvId === envId) return
-    setSelectedTraderEnvId(selectedTraderEnvId)
+    setSelectedTraderEnvId(envId)
   }
 
   return (
@@ -289,17 +289,19 @@ const ProfileBuilder = () => {
         </Segment>
       </Segment.Group>
       <h4>{localeTool.t('common.envs')}:</h4>
-      {systemTraderEnvIds.map((traderEnvId) => {
-        const traderEnv = getTraderEnv(traderEnvId)!
-        return (
-          <TraderEnvCard
-            key={traderEnvId}
-            traderEnv={traderEnv}
-            isActive={traderEnvId === selectedTraderEnvId}
-            onClick={(envId) => handleSelectEnv(envId)}
-          />
-        )
-      })}
+      <div className='row-start'>
+        {systemTraderEnvIds.map((traderEnvId) => {
+          const traderEnv = getTraderEnv(traderEnvId)!
+          return (
+            <TraderEnvCard
+              key={traderEnvId}
+              traderEnv={traderEnv}
+              isActive={traderEnvId === selectedTraderEnvId}
+              onClick={handleSelectEnv}
+            />
+          )
+        })}
+      </div>
     </div>
   )
 }

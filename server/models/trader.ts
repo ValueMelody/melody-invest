@@ -47,6 +47,18 @@ export const getActives = async (): Promise<interfaces.traderModel.Record[]> => 
   return traders.map((trader) => convertToRecord(trader))
 }
 
+export const getByPattern = async (
+  traderPatternId: number,
+): Promise<interfaces.traderModel.Record[]> => {
+  const traders = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER,
+    conditions: [
+      { key: 'traderPatternId', value: traderPatternId },
+    ],
+  })
+  return traders.map((trader) => convertToRecord(trader))
+}
+
 export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
@@ -81,6 +93,7 @@ export const getTops = async (total: number): Promise<Tops> => {
     tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'yearlyPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'yearlyPercentNumber', order: 'desc' }],
     limit: eachNumber,
@@ -90,6 +103,7 @@ export const getTops = async (total: number): Promise<Tops> => {
     tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'pastYearPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastYearPercentNumber', order: 'desc' }],
     limit: eachNumber,
@@ -99,6 +113,7 @@ export const getTops = async (total: number): Promise<Tops> => {
     tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'pastQuarterPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastQuarterPercentNumber', order: 'desc' }],
     limit: eachNumber,
@@ -108,6 +123,7 @@ export const getTops = async (total: number): Promise<Tops> => {
     tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'pastMonthPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastMonthPercentNumber', order: 'desc' }],
     limit: eachNumber,
@@ -117,6 +133,7 @@ export const getTops = async (total: number): Promise<Tops> => {
     tableName: tableEnum.NAME.TRADER,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'pastWeekPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastWeekPercentNumber', order: 'desc' }],
     limit: eachNumber,

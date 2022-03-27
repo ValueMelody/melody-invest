@@ -2,6 +2,7 @@ import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as dateTool from '../tools/date'
 
 const convertToRecord = (
   raw: interfaces.tickerDailyModel.Raw,
@@ -40,12 +41,12 @@ export const getPreviousOne = async (
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
-export const getLatestDate = async (): Promise<string | null> => {
+export const getLatestDate = async (): Promise<string> => {
   const tickerDaily = await databaseAdapter.findOne({
     tableName: tableEnum.NAME.TICKER_DAILY,
     orderBy: [{ column: 'date', order: 'desc' }],
   })
-  return tickerDaily ? tickerDaily.date : null
+  return tickerDaily ? tickerDaily.date : dateTool.getInitialDate()
 }
 
 export const getAll = async (
@@ -81,12 +82,13 @@ export const getAllLatestByDate = async (
 
 export const getByDate = async (
   date: string,
+  tickerIds: number[] | null,
 ): Promise<interfaces.tickerDailyModel.Record[]> => {
+  const conditions: databaseAdapter.Condition[] = [{ key: 'date', value: date }]
+  if (tickerIds) conditions.push({ key: 'tickerId', value: tickerIds, type: 'IN' })
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
-    conditions: [
-      { key: 'date', value: date },
-    ],
+    conditions,
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
 }

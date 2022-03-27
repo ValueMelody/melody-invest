@@ -1,5 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import * as traderModel from '../models/trader'
+import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
@@ -49,27 +50,30 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
   if (!pattern) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
 
+  const env = await traderEnvModel.getByPK(trader.traderEnvId)
+  if (!env) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
+
   const tickerMinPercent = pattern.tickerMinPercent / 100
   const tickerMaxPercent = pattern.tickerMaxPercent / 100
   const holdingBuyPercent = pattern.holdingBuyPercent / 100
   const holdingSellPercent = pattern.holdingSellPercent / 100
   const cashMaxPercent = pattern.cashMaxPercent / 100
 
+  const latestDate = await tickerDailyModel.getLatestDate()
+  if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
+
   const transaction = await databaseAdapter.createTransaction()
   try {
     let holding = await traderHoldingModel.getLatest(trader.id)
     let tradeDate = holding
       ? dateTool.getNextDate(holding.date, pattern.tradeFrequency)
-      : dateTool.getInitialDate()
+      : env.startDate
     let rebalancedAt = trader.rebalancedAt || tradeDate
     let startedAt = trader.startedAt
     let hasRebalanced = false
 
-    const latestDate = await tickerDailyModel.getLatestDate()
-    if (!latestDate) return
-
     while (tradeDate <= latestDate) {
-      const dailyTargets = await tickerDailyModel.getByDate(tradeDate)
+      const dailyTargets = await tickerDailyModel.getByDate(tradeDate, env.tickerIds)
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
       const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(tradeDate)
