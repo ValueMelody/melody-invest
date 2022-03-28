@@ -1,43 +1,57 @@
-import { useState } from 'react'
-import { Segment } from 'semantic-ui-react'
+import { useState, FormEvent } from 'react'
+import { Segment, Button } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
+import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../tools/locale'
+import * as routerEnum from '../../enums/router'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from './elements/BehaviorEditor'
 import TraderEnvCard from './elements/TraderEnvCard'
 import useSystem from '../../states/useSystem'
 import useTraderEnv from '../../states/useTraderEnv'
+import useTraderProfile from '../../states/useTraderProfile'
+
+const useStyles = createUseStyles(({
+  confirmButton: {
+    marginTop: '2rem !important',
+  },
+}))
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
 type SelectedValue = number | null
 
-type BehaviorValueDict = {
+type BehaviorValues = {
   [key in interfaces.traderPatternModel.Behavior]?: SelectedValue
 }
 
 const getActiveBehaviorCount = (
   behaviors: interfaces.traderPatternModel.Behavior[],
-  valueDict: BehaviorValueDict,
+  values: BehaviorValues,
 ): number => {
-  const activeBehaviors = behaviors.filter((behavior) => valueDict[behavior] !== null && valueDict[behavior] !== undefined)
+  const activeBehaviors = behaviors.filter((behavior) => values[behavior] !== null && values[behavior] !== undefined)
   return activeBehaviors.length
 }
 
 const ProfileBuilder = () => {
+  const navigate = useNavigate()
+  const classes = useStyles()
+
   const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = useState(false)
   const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = useState(false)
   const [isPreferenceBehaviorsExtended, setIsPreferenceBehaviorsExtended] = useState(false)
   const [isAllocateBehaviorsExtended, setIsAllocateBehaviorsExtended] = useState(false)
   const [isFrequencyBehaviorsExtended, setIsFrequencyBehaviorsExtended] = useState(false)
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
-  const [behaviorValueDict, setBehaviorValueDict] = useState<BehaviorValueDict>({})
+  const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const { systemTraderEnvIds } = useSystem()
   const { getTraderEnv } = useTraderEnv()
+  const { createTraderProfile } = useTraderProfile()
 
   const BUY_GROUPS = [
     {
@@ -58,11 +72,11 @@ const ProfileBuilder = () => {
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseBuyBehaviors,
+      behaviors: constants.behavior.indicatorIncreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorDecreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseBuyBehaviors,
+      behaviors: constants.behavior.indicatorDecreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyImproveBuyBehaviors')}`,
@@ -97,7 +111,7 @@ const ProfileBuilder = () => {
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorDecreaseSellBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseSellBehaviors,
+      behaviors: constants.behavior.priceDecreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyImproveSellBehaviors')}`,
@@ -110,20 +124,29 @@ const ProfileBuilder = () => {
   ]
 
   const activeBuyBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.buyBehaviors, behaviorValueDict,
+    constants.behavior.buyBehaviors, behaviorValues,
   )
+  const isValidBuyBehavior = activeBuyBehaviorCount >= 1
+
   const activeSellBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.sellBehaviors, behaviorValueDict,
+    constants.behavior.sellBehaviors, behaviorValues,
   )
+  const isValidSellBehavior = activeSellBehaviorCount >= 1
+
   const activePreferenceBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.preferenceBehaviors, behaviorValueDict,
+    constants.behavior.preferenceBehaviors, behaviorValues,
   )
+  const isValidPreferenceBehavior = activePreferenceBehaviorCount === constants.behavior.preferenceBehaviors.length
+
   const activeAllocateBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.allocateBehaviors, behaviorValueDict,
+    constants.behavior.allocateBehaviors, behaviorValues,
   )
+  const isValidAllocateBehavior = activeAllocateBehaviorCount === constants.behavior.allocateBehaviors.length
+
   const activeFrequencyBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.frequencyBehaviors, behaviorValueDict,
+    constants.behavior.frequencyBehaviors, behaviorValues,
   )
+  const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.behavior.frequencyBehaviors.length
 
   const handleToggleBuyBehaviors = () => setIsBuyBehaviorsExtended(!isBuyBehaviorsExtended)
 
@@ -147,8 +170,8 @@ const ProfileBuilder = () => {
     behavior: interfaces.traderPatternModel.Behavior,
     value: SelectedValue,
   ) => {
-    setBehaviorValueDict((valueDict) => ({
-      ...valueDict,
+    setBehaviorValues((values) => ({
+      ...values,
       [behavior]: value,
     }))
     setCurrentEditingBehavior(null)
@@ -157,6 +180,26 @@ const ProfileBuilder = () => {
   const handleSelectEnv = (envId: number) => {
     if (selectedTraderEnvId === envId) return
     setSelectedTraderEnvId(envId)
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // @ts-ignore
+    const defaultValues: interfaces.traderPatternModel.Create = { hashCode: '' }
+    const traderPattern = constants
+      .behavior.behaviors.reduce((
+        values: interfaces.traderPatternModel.Create,
+        behavior: interfaces.traderPatternModel.Behavior,
+      ) => ({
+        ...values,
+        [behavior]: behaviorValues[behavior],
+      }), defaultValues)
+    const result = await createTraderProfile(selectedTraderEnvId, traderPattern)
+    console.log(result)
+    if (result) {
+      const link = `${routerEnum.NAV.PROFILES}/${result.traderId}/${result.accessCode}`
+      navigate(link)
+    }
   }
 
   return (
@@ -171,7 +214,7 @@ const ProfileBuilder = () => {
             isExtended={isBuyBehaviorsExtended}
             onExtend={handleToggleBuyBehaviors}
             activeCount={activeBuyBehaviorCount}
-            isValid={activeBuyBehaviorCount >= 1}
+            isValid={isValidBuyBehavior}
             invalidMessage={localeTool.t('profileBuilder.requireOne')}
           />
           {isBuyBehaviorsExtended && (
@@ -182,7 +225,7 @@ const ProfileBuilder = () => {
                   title={buyGroup.title}
                   behaviors={buyGroup.behaviors}
                   currentBehavior={currentEditingBehavior}
-                  behaviorValueDict={behaviorValueDict}
+                  behaviorValues={behaviorValues}
                   onClickBehavior={handleClickBehavior}
                   onSelectValue={handleSelectValue}
                 />
@@ -196,7 +239,7 @@ const ProfileBuilder = () => {
             isExtended={isSellBehaviorsExtended}
             onExtend={handleToggleSellBehaviors}
             activeCount={activeSellBehaviorCount}
-            isValid={activeSellBehaviorCount >= 1}
+            isValid={isValidSellBehavior}
             invalidMessage={localeTool.t('profileBuilder.requireOne')}
           />
           {isSellBehaviorsExtended && (
@@ -207,7 +250,7 @@ const ProfileBuilder = () => {
                   title={sellGroup.title}
                   behaviors={sellGroup.behaviors}
                   currentBehavior={currentEditingBehavior}
-                  behaviorValueDict={behaviorValueDict}
+                  behaviorValues={behaviorValues}
                   onClickBehavior={handleClickBehavior}
                   onSelectValue={handleSelectValue}
                 />
@@ -219,7 +262,7 @@ const ProfileBuilder = () => {
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.preferenceBehaviors')}
             activeCount={activePreferenceBehaviorCount}
-            isValid={activePreferenceBehaviorCount === constants.behavior.preferenceBehaviors.length}
+            isValid={isValidPreferenceBehavior}
             isExtended={isPreferenceBehaviorsExtended}
             onExtend={handleTogglePreferenceBehaviors}
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
@@ -230,7 +273,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValueDict[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] || null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
@@ -243,7 +286,7 @@ const ProfileBuilder = () => {
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.allocateBehaviors')}
             activeCount={activeAllocateBehaviorCount}
-            isValid={activeAllocateBehaviorCount === constants.behavior.allocateBehaviors.length}
+            isValid={isValidAllocateBehavior}
             isExtended={isAllocateBehaviorsExtended}
             onExtend={handleToggleAllocateBehaviors}
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
@@ -254,7 +297,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValueDict[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] || null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
@@ -267,7 +310,7 @@ const ProfileBuilder = () => {
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.frequencyBehaviors')}
             activeCount={activeFrequencyBehaviorCount}
-            isValid={activeFrequencyBehaviorCount === constants.behavior.frequencyBehaviors.length}
+            isValid={isValidFrequencyBehavior}
             isExtended={isFrequencyBehaviorsExtended}
             onExtend={handleToggleFrequencyBehaviors}
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
@@ -278,7 +321,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValueDict[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] || null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
@@ -302,6 +345,24 @@ const ProfileBuilder = () => {
           )
         })}
       </div>
+      <form onSubmit={handleSubmit}>
+        <div className='row-around'>
+          <Button
+            type='submit'
+            color='blue'
+            className={classes.confirmButton}
+            disabled={
+              !isValidBuyBehavior ||
+              !isValidSellBehavior ||
+              !isValidAllocateBehavior ||
+              !isValidFrequencyBehavior ||
+              !isValidPreferenceBehavior
+            }
+          >
+            {localeTool.t('profileBuilder.confirm')}
+          </Button>
+        </div>
+      </form>
     </div>
   )
 }

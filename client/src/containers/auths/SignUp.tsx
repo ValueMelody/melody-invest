@@ -10,7 +10,7 @@ import RequiredLabel from './elements/RequiredLabel'
 const SignUp = () => {
   const { classes, getPasswordError } = useAuth()
   const { addMessage, clearMessages } = useCommon()
-  const { postUser } = useUser()
+  const { createUser } = useUser()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -48,7 +48,7 @@ const SignUp = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    await postUser(parsedEmail, parsedPassword, isConfirmed)
+    await createUser(parsedEmail, parsedPassword, isConfirmed)
   }
 
   return (

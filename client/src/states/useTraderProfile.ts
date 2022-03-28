@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
-import * as requestAdpater from '../adapters/request'
+import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 
 const useTraderProfile = () => {
@@ -20,7 +20,7 @@ const useTraderProfile = () => {
     const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}`
     store.startLoading()
     try {
-      const profile = await requestAdpater.sendGetRequest(endpoint)
+      const profile = await requestAdapter.sendGetRequest(endpoint)
       storeTraderProfile(profile)
     } catch (e: any) {
       store.showRequestError(e?.message)
@@ -46,7 +46,7 @@ const useTraderProfile = () => {
     const endpoint = `${routerEnum.API.TRADER_PROFILES}/tops`
     store.startLoading()
     try {
-      const traders = await requestAdpater.sendGetRequest(endpoint)
+      const traders = await requestAdapter.sendGetRequest(endpoint)
       storeTopProfiles(traders)
     } catch (e: any) {
       store.showRequestError(e?.message)
@@ -71,8 +71,39 @@ const useTraderProfile = () => {
     const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}/detail`
     store.startLoading()
     try {
-      const detail = await requestAdpater.sendGetRequest(endpoint)
+      const detail = await requestAdapter.sendGetRequest(endpoint)
       storeProfileDetail(id, detail)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const storeUserFollowed = (traderId: number) => {
+    const currentUserIds = store.resources.userTraderIds || []
+    if (currentUserIds.includes(traderId)) return
+    const traderIds = [...currentUserIds, traderId]
+    store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
+  }
+
+  const createTraderProfile = async (
+    traderEnvId: number,
+    traderPattern: interfaces.traderPatternModel.Create,
+  ) => {
+    const endpoint = `${routerEnum.API.TRADER_PROFILES}`
+    store.startLoading()
+    try {
+      const profile: interfaces.traderProfileRes.TraderProfile = await requestAdapter.sendPostRequest(
+        endpoint, { traderEnvId, traderPattern },
+      )
+      storeTraderProfile(profile)
+      storeUserFollowed(profile.trader.id)
+
+      return {
+        traderId: profile.trader.id,
+        accessCode: profile.trader.accessCode,
+      }
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -87,6 +118,7 @@ const useTraderProfile = () => {
     fetchProfileDetail,
     topProfiles: store.resources.topProfiles,
     fetchTopProfiles,
+    createTraderProfile,
   }
 }
 

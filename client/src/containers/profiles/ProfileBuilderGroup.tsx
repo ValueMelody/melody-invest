@@ -16,7 +16,7 @@ type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
 type SelectedValue = number | null
 
-type BehaviorValueDict = {
+type BehaviorValues = {
   [key in interfaces.traderPatternModel.Behavior]?: SelectedValue
 }
 
@@ -24,14 +24,14 @@ const ProfileBuilderGroup = ({
   title,
   behaviors,
   currentBehavior,
-  behaviorValueDict,
+  behaviorValues,
   onClickBehavior,
   onSelectValue,
 } : {
   title: string;
   behaviors: interfaces.traderPatternModel.Behavior[];
   currentBehavior: ActiveBehavior;
-  behaviorValueDict: BehaviorValueDict;
+  behaviorValues: BehaviorValues;
   onClickBehavior: (behavior: interfaces.traderPatternModel.Behavior) => void;
   onSelectValue: (behavior: interfaces.traderPatternModel.Behavior, value: SelectedValue) => void;
 }) => {
@@ -55,7 +55,7 @@ const ProfileBuilderGroup = ({
         <BehaviorEditor
           key={behavior}
           behavior={behavior}
-          behaviorValue={behaviorValueDict[behavior] || null}
+          behaviorValue={behaviorValues[behavior] || null}
           isEditing={behavior === currentBehavior}
           onClick={handleClickBehavior}
           onSelect={handleSelectValue}

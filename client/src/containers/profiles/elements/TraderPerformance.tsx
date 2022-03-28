@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
-import { Menu, Header } from 'semantic-ui-react'
+import { Menu, Header, Message } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
@@ -34,6 +34,10 @@ const TraderPerformance = ({
 }) => {
   const classes = useStyles()
   const gainCellClass = classNames('column-center', classes.gainCell)
+
+  if (!trader.estimatedAt) {
+    return <Message compact>{localeTool.t('profile.noResultYet')}</Message>
+  }
 
   return (
     <Menu compact>

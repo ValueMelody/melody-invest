@@ -185,3 +185,11 @@ export const frequencyBehaviors: interfaces.traderPatternModel.frequencyBehavior
 export const preferenceBehaviors: interfaces.traderPatternModel.preferenceBehavior[] = [
   'buyPreference', 'sellPreference',
 ]
+
+export const behaviors: interfaces.traderPatternModel.Behavior[] = [
+  ...buyBehaviors,
+  ...sellBehaviors,
+  ...allocateBehaviors,
+  ...frequencyBehaviors,
+  ...preferenceBehaviors,
+]
