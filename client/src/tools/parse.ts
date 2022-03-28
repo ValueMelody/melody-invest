@@ -62,7 +62,10 @@ export const traderEnvTickers = (traderEnv: interfaces.traderEnvModel.Record) =>
 
 export const holdingValue = (value: number | null): string | null => {
   if (value === null) return null
-  return (value / 10000).toFixed(2)
+  const realValue = value / 100
+  return Intl
+    ? new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(realValue)
+    : (realValue).toFixed(2)
 }
 
 export const floatToPercent = (value: number): string => {

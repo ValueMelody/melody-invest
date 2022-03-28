@@ -33,7 +33,9 @@ const HoldingShare = ({
   const identities = tickerIdentities || {}
   const identity = identities[tickerHolding.tickerId]
   const previousHolding = previousHoldings?.find((previous) => previous.tickerId === tickerHolding.tickerId)
-  const shareDiffer = previousHolding ? tickerHolding.shares - previousHolding.shares : null
+  const currentShares = Math.floor(tickerHolding.shares * tickerHolding.splitMultiplier)
+  const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
+  const shareDiffer = previousShares ? (currentShares - previousShares) / tickerHolding.splitMultiplier : null
 
   return (
     <Label
@@ -42,7 +44,7 @@ const HoldingShare = ({
       title={identity?.name}
       className={classes.ticker}
     >
-      {identity?.symbol}: {tickerHolding.shares} {localeTool.t('common.shares')}
+      {identity?.symbol}: {currentShares} {localeTool.t('common.shares')}
       {!!shareDiffer && (
         <span
           className={classNames(classes.differ, {
@@ -50,7 +52,7 @@ const HoldingShare = ({
             [classes.decreaseColor]: shareDiffer < 0,
           })}
         >
-          {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)}
+          {shareDiffer > 0 ? '+' : '-'} {Math.abs(Number(shareDiffer.toFixed(0)))}
         </span>
       )}
     </Label>
