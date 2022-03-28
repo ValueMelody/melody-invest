@@ -50,7 +50,7 @@ const ProfileDetail = () => {
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
-  console.log(displayedHoldings)
+
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerEnum.NAV.NOT_FOUND)
