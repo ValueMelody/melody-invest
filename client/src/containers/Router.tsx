@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import SignUp from './auths/SignUp'
 import SignIn from './auths/SignIn'
+import Setting from './auths/Setting'
 import Layout from './layout/Layout'
 import TopProfiles from './profiles/TopProfiles'
 import ProfileDetail from './profiles/ProfileDetail'
@@ -28,6 +29,10 @@ const Router = () => {
           <Route
             path={routerEnum.NAV.DASHBOARD}
             element={<ProfileDashboard />}
+          />
+          <Route
+            path={routerEnum.NAV.SETTING}
+            element={<Setting />}
           />
           <Route
             path={routerEnum.NAV.SIGN_IN}

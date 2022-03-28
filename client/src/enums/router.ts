@@ -1,6 +1,7 @@
 export const NAV = {
   SIGN_UP: '/sign-up',
   SIGN_IN: '/sign-in',
+  SETTING: '/setting',
   TOP_PROFILES: '/top-profiles',
   PROFILES: '/profiles',
   DASHBOARD: '/dashboard',

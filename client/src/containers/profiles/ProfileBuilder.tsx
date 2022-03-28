@@ -13,6 +13,7 @@ import TraderEnvCard from './elements/TraderEnvCard'
 import useSystem from '../../states/useSystem'
 import useTraderEnv from '../../states/useTraderEnv'
 import useTraderProfile from '../../states/useTraderProfile'
+import usePrivate from '../hooks/usePrivate'
 
 const useStyles = createUseStyles(({
   confirmButton: {
@@ -39,6 +40,7 @@ const getActiveBehaviorCount = (
 const ProfileBuilder = () => {
   const navigate = useNavigate()
   const classes = useStyles()
+  usePrivate()
 
   const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = useState(false)
   const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = useState(false)
