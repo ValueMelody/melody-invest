@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
-import * as requestAdpater from '../adapters/request'
+import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 
 const useTickerProfile = () => {
@@ -21,7 +21,7 @@ const useTickerProfile = () => {
     const endpoint = `${routerEnum.API.TICKER_PROFILES}/identities`
     store.startLoading()
     try {
-      const identitites = await requestAdpater.sendGetRequest(endpoint)
+      const identitites = await requestAdapter.sendGetRequest(endpoint)
       storeTickerIdentities(identitites)
     } catch (e: any) {
       store.showRequestError(e?.message)

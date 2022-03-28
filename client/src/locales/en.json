@@ -42,6 +42,7 @@
     "top.pastWeek.title": "Past Week",
 
     "profile.history": "Holding History",
+    "profile.noResultYet": "There's no result generated for this pattern yet",
     "profile.value.increased": "Total value increased compare to previous",
     "profile.value.decreased": "Total value decreased compare to previous",
 
@@ -54,6 +55,7 @@
     "profileBuilder.allocateBehaviors": "Stock Allocation",
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
     "profileBuilder.select": "Select a behavior",
+    "profileBuilder.confirm": "Confirm and start watch",
 
     "traderEnv.startAt": "Start at {{date}}",
     "traderEnv.allTickers": "Trade based on all stocks available",
@@ -86,7 +88,7 @@
     "behaviorGroup.economyWorsenSellBehaviors": "Sell when economy report worsened continuously",
 
     "behaviorTitle.cashMaxPercent": "Cash Max Percent",
-    "behaviorTitle.tickerMinPercent": "Cash Min Percent",
+    "behaviorTitle.tickerMinPercent": "Stock Min Percent",
     "behaviorTitle.tickerMaxPercent": "Stock Max Percent",
     "behaviorTitle.holdingBuyPercent": "Single Buy Percent",
     "behaviorTitle.holdingSellPercent": "Single Sell Percent",
@@ -119,7 +121,7 @@
     "behaviorTitle.epsQuarterlyMissBuy": "Buy: Stock Quarterly EPS Miss",
     "behaviorTitle.epsQuarterlyMissSell": "Sell: Stock Quarterly EPS Miss",
     "behaviorTitle.profitQuarterlyIncreaseBuy": "Buy: Stock Quarterly Profit Increased",
-    "behaviorTitleprofitQuarterlyIncreaseSell": "Sell: Stock Quarterly Profit Increased",
+    "behaviorTitle.profitQuarterlyIncreaseSell": "Sell: Stock Quarterly Profit Increased",
     "behaviorTitle.profitQuarterlyDecreaseBuy": "Buy: Stock Quarterly Profit Decreased",
     "behaviorTitle.profitQuarterlyDecreaseSell": "Sell: Stock Quarterly Profit Decreased",
     "behaviorTitle.incomeQuarterlyIncreaseBuy": "Buy: Stock Quarterly Income Increased",

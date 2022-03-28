@@ -46,7 +46,6 @@ const ProfileDetail = () => {
   const accessCode = params?.accessCode || null
   const traderProfile = getTraderProfile(traderId)
   const profileDetail = getProfileDetail(traderId)
-  console.log(profileDetail)
   const traderEnv = traderProfile?.trader && getTraderEnv(traderProfile.trader.traderEnvId)
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
@@ -109,6 +108,9 @@ const ProfileDetail = () => {
       </div>
       <div className={classes.holdings}>
         <h4><b>{localeTool.t('profile.history')}</b></h4>
+        {!displayedHoldings.length && (
+          <Segment>{localeTool.t('profile.noResultYet')}</Segment>
+        )}
         {displayedHoldings.map((holding, index) => (
           <Segment key={holding.id}>
             <div className='row-start'>

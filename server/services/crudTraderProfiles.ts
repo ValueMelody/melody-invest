@@ -107,3 +107,30 @@ export const deleteFollowedTrader = async (
     throw error
   }
 }
+
+export const createTrader = async (
+  userId: number,
+  traderEnvId: number,
+  traderPattern: interfaces.traderPatternModel.Create,
+): Promise<interfaces.traderProfileRes.TraderProfile> => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const pattern = await traderPatternModel.createIfEmpty(traderPattern, transaction)
+    const trader = await traderModel.createOrActive(traderEnvId, pattern.id, transaction)
+
+    const currentRelation = await traderFollowerModel.getByUK(userId, trader.id)
+    if (!currentRelation) {
+      await traderFollowerModel.create({ userId, traderId: trader.id }, transaction)
+    }
+
+    await transaction.commit()
+
+    return {
+      trader,
+      pattern,
+    }
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}

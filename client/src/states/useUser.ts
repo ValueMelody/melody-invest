@@ -8,7 +8,7 @@ import * as routerEnum from '../enums/router'
 const useUser = () => {
   const store: Context = useContext(context)
 
-  const postUser = async (email: string, password: string, isConfirmed: boolean) => {
+  const createUser = async (email: string, password: string, isConfirmed: boolean) => {
     const endpoint = `${routerEnum.API.USERS}`
     store.startLoading()
     try {
@@ -111,7 +111,7 @@ const useUser = () => {
   }
 
   return {
-    postUser,
+    createUser,
     createUserToken,
     fetchUserFollowed,
     createUserFollowed,
