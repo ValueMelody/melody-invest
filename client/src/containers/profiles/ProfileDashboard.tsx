@@ -5,9 +5,10 @@ import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useUser from '../../states/useUser'
 import useTraderProfile from '../../states/useTraderProfile'
-import ProfileRow from './blocks/ProfileRow'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
+import usePrivate from '../hooks/usePrivate'
+import ProfileRow from './blocks/ProfileRow'
 
 const useStyles = createUseStyles(({
   header: {
@@ -18,6 +19,8 @@ const useStyles = createUseStyles(({
 const ProfileDashboard = () => {
   const classes = useStyles()
   const navigate = useNavigate()
+  usePrivate()
+
   const { userTraderIds } = useUser()
   const { getTraderProfile } = useTraderProfile()
 

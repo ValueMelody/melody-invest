@@ -31,6 +31,8 @@ const Header = () => {
   const classes = useStyles()
   const { userType } = useUser()
 
+  const isLoggedInUser = !!userType
+
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
@@ -42,7 +44,7 @@ const Header = () => {
         </Link>
       </nav>
       <nav>
-        {!!userType && (
+        {isLoggedInUser && (
           <Link to={routerEnum.NAV.DASHBOARD}>
             <Label className={classes.label}>
               <Icon name='table' className={classes.icon} />
@@ -50,7 +52,7 @@ const Header = () => {
             </Label>
           </Link>
         )}
-        <Link to={routerEnum.NAV.SIGN_IN}>
+        <Link to={isLoggedInUser ? routerEnum.NAV.SETTING : routerEnum.NAV.SIGN_IN}>
           <Label className={classes.label}>
             <Icon name='user circle' />
           </Label>

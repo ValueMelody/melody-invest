@@ -4,11 +4,14 @@ import { Button, Input, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
 import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
-import useAuth from './useAuth'
+import useAccount from './hooks/useAccount'
 import RequiredLabel from './elements/RequiredLabel'
+import usePublic from '../hooks/usePublic'
 
 const SignUp = () => {
-  const { classes, getPasswordError } = useAuth()
+  usePublic()
+
+  const { classes, getPasswordError } = useAccount()
   const { addMessage, clearMessages } = useCommon()
   const { createUser } = useUser()
 

@@ -1,6 +1,6 @@
 import { createUseStyles } from 'react-jss'
 import PasswordValidator from 'password-validator'
-import * as localeTool from '../../tools/locale'
+import * as localeTool from '../../../tools/locale'
 
 const useStyles = createUseStyles(({
   container: {
@@ -15,7 +15,7 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const useAuth = () => {
+const useAccount = () => {
   const classes = useStyles()
 
   const passwordSchema = new PasswordValidator()
@@ -37,4 +37,4 @@ const useAuth = () => {
   }
 }
 
-export default useAuth
+export default useAccount

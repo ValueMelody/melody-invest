@@ -7,12 +7,15 @@ import RequiredLabel from './elements/RequiredLabel'
 import useCommon from '../../states/useCommon'
 import useUser from '../../states/useUser'
 import * as routerEnum from '../../enums/router'
-import useAuth from './useAuth'
+import useAccount from './hooks/useAccount'
+import usePublic from '../hooks/usePublic'
 
 const SignIn = () => {
   const navigate = useNavigate()
+  usePublic()
+
   const { clearMessages, addMessage } = useCommon()
-  const { classes, getPasswordError } = useAuth()
+  const { classes, getPasswordError } = useAccount()
   const { createUserToken } = useUser()
 
   const [email, setEmail] = useState('')
