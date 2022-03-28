@@ -24,7 +24,7 @@ const TopProfileList = ({
 }: {
   title: string;
   focusType: FocusType;
-  profiles: interfaces.traderProfileRes.TraderProfile[];
+  profiles: interfaces.traderRes.TraderProfile[];
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()

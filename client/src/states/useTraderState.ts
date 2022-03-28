@@ -4,7 +4,7 @@ import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 
-const useTraderProfile = () => {
+const useTraderState = () => {
   const store: Context = useContext(context)
 
   const getTraderProfile = (id: number | null) => {
@@ -12,12 +12,12 @@ const useTraderProfile = () => {
     return store.traderProfiles[id] || null
   }
 
-  const storeTraderProfile = (profile: interfaces.traderProfileRes.TraderProfile) => {
+  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
     store.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
   }
 
   const fetchTraderProfile = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}`
+    const endpoint = `${routerEnum.API.TRADERS}/${id}/${accessCode}`
     store.startLoading()
     try {
       const profile = await requestAdapter.sendGetRequest(endpoint)
@@ -29,7 +29,7 @@ const useTraderProfile = () => {
     }
   }
 
-  const storeTopProfiles = (topProfiles: interfaces.traderProfileRes.TopProfiles) => {
+  const storeTopProfiles = (topProfiles: interfaces.traderRes.TopProfiles) => {
     store.setResources((resources) => ({ ...resources, topProfiles }))
     const profiles = [
       ...topProfiles.yearly,
@@ -43,7 +43,7 @@ const useTraderProfile = () => {
   }
 
   const fetchTopProfiles = async () => {
-    const endpoint = `${routerEnum.API.TRADER_PROFILES}/tops`
+    const endpoint = `${routerEnum.API.TRADERS}/tops`
     store.startLoading()
     try {
       const traders = await requestAdapter.sendGetRequest(endpoint)
@@ -62,13 +62,13 @@ const useTraderProfile = () => {
 
   const storeProfileDetail = (
     traderId: number,
-    detail: interfaces.traderProfileRes.ProfileDetail,
+    detail: interfaces.traderRes.ProfileDetail,
   ) => {
     store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
   }
 
   const fetchProfileDetail = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADER_PROFILES}/${id}/${accessCode}/detail`
+    const endpoint = `${routerEnum.API.TRADERS}/${id}/${accessCode}/detail`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -91,10 +91,10 @@ const useTraderProfile = () => {
     traderEnvId: number,
     traderPattern: interfaces.traderPatternModel.Create,
   ) => {
-    const endpoint = `${routerEnum.API.TRADER_PROFILES}`
+    const endpoint = `${routerEnum.API.TRADERS}`
     store.startLoading()
     try {
-      const profile: interfaces.traderProfileRes.TraderProfile = await requestAdapter.sendPostRequest(
+      const profile: interfaces.traderRes.TraderProfile = await requestAdapter.sendPostRequest(
         endpoint, { traderEnvId, traderPattern },
       )
       storeTraderProfile(profile)
@@ -122,4 +122,4 @@ const useTraderProfile = () => {
   }
 }
 
-export default useTraderProfile
+export default useTraderState

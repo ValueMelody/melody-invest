@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { context, Context } from './context'
 
-const useTraderEnv = () => {
+const useTraderEnvState = () => {
   const store: Context = useContext(context)
 
   const getTraderEnv = (id: number | null) => {
@@ -14,4 +14,4 @@ const useTraderEnv = () => {
   }
 }
 
-export default useTraderEnv
+export default useTraderEnvState

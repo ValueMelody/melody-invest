@@ -4,10 +4,10 @@ import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 
-const useTickerProfile = () => {
+const useTickerState = () => {
   const store: Context = useContext(context)
 
-  const storeTickerIdentities = (identites: interfaces.tickerProfileRes.TickerIdentity[]) => {
+  const storeTickerIdentities = (identites: interfaces.tickerRes.TickerIdentity[]) => {
     const identitesMap = identites.reduce((identitesMap, identity) => {
       return {
         ...identitesMap,
@@ -18,7 +18,7 @@ const useTickerProfile = () => {
   }
 
   const fetchTickerIdentities = async () => {
-    const endpoint = `${routerEnum.API.TICKER_PROFILES}/identities`
+    const endpoint = `${routerEnum.API.TICKERS}/identities`
     store.startLoading()
     try {
       const identitites = await requestAdapter.sendGetRequest(endpoint)
@@ -36,4 +36,4 @@ const useTickerProfile = () => {
   }
 }
 
-export default useTickerProfile
+export default useTickerState

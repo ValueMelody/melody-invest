@@ -7,9 +7,9 @@ import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
 import PatternLabel from '../elements/PatternLabel'
-import useToggleWatch from '../hooks/useToggleWatch'
-import useUser from '../../../states/useUser'
-import useTraderEnv from '../../../states/useTraderEnv'
+import useWatchInterface from '../hooks/useWatchInterface'
+import useUserState from '../../../states/useUserState'
+import useTraderEnvState from '../../../states/useTraderEnvState'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   pattern: {
@@ -37,9 +37,9 @@ const ProfileRow = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
-  const { userTraderIds } = useUser()
-  const { getTraderEnv } = useTraderEnv()
-  const { isWatched, handleToggleWatch } = useToggleWatch({ traderId: trader.id })
+  const { userTraderIds } = useUserState()
+  const { getTraderEnv } = useTraderEnvState()
+  const { isWatched, handleToggleWatch } = useWatchInterface({ traderId: trader.id })
 
   const traderEnv = getTraderEnv(trader.traderEnvId)!
 

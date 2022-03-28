@@ -1,9 +1,31 @@
 import * as interfaces from '@shared/interfaces'
 import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
+import * as traderModel from '../models/trader'
+import * as traderPatternModel from '../models/traderPattern'
+import * as traderFollowerModel from '../models/traderFollower'
 import * as generateTool from '../tools/generate'
+import * as presentTool from '../tools/present'
 import * as errorEnum from '../enums/error'
 import * as userEnum from '../enums/user'
+
+export const getUserOverall = async (userId: number): Promise<interfaces.userRes.UserOverall> => {
+  const user = await userModel.getByPK(userId)
+
+  if (!user) throw errorEnum.CUSTOM.USER_NOT_FOUND
+
+  const userTraders = await traderFollowerModel.getUserFollowed(userId)
+  const traderIds = userTraders.map((userTrader) => userTrader.traderId)
+  const traders = await traderModel.getInPKs(traderIds)
+  const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
+  const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
+  const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
+
+  return {
+    traderProfiles: traders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    email: user.email,
+  }
+}
 
 export const createUser = async (
   email: string, password: string,

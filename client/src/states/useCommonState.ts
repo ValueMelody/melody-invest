@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { context, Context } from './context'
 
-const useCommon = () => {
+const useCommonState = () => {
   const store: Context = useContext(context)
 
   return {
@@ -12,4 +12,4 @@ const useCommon = () => {
   }
 }
 
-export default useCommon
+export default useCommonState

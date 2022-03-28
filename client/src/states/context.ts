@@ -9,20 +9,21 @@ export interface Message {
 }
 
 export interface Common {
-  userType: number;
   isLoading: boolean;
   messages: Message[];
 }
 
 interface TickerIdentities {
-  [key: number]: interfaces.tickerProfileRes.TickerIdentity
+  [key: number]: interfaces.tickerRes.TickerIdentity
 }
 
 export interface Resources {
-  topProfiles: interfaces.traderProfileRes.TopProfiles | null;
+  topProfiles: interfaces.traderRes.TopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
   systemTraderEnvIds: number[];
+  userType: number;
+  userEmail: string,
 }
 
 export interface TraderEnvs {
@@ -30,11 +31,11 @@ export interface TraderEnvs {
 }
 
 export interface TraderProfiles {
-  [key: number]: interfaces.traderProfileRes.TraderProfile;
+  [key: number]: interfaces.traderRes.TraderProfile;
 }
 
 export interface ProfileDetails {
-  [key: number]: interfaces.traderProfileRes.ProfileDetail;
+  [key: number]: interfaces.traderRes.ProfileDetail;
 }
 
 export interface Context {

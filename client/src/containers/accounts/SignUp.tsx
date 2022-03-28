@@ -2,18 +2,18 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
 import { Button, Input, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
-import useCommon from '../../states/useCommon'
-import useUser from '../../states/useUser'
-import useAccount from './hooks/useAccount'
+import useCommonState from '../../states/useCommonState'
+import useUserState from '../../states/useUserState'
+import useAccountInterface from './hooks/useAccountInterface'
 import RequiredLabel from './elements/RequiredLabel'
-import usePublic from '../hooks/usePublic'
+import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignUp = () => {
-  usePublic()
+  usePublicGuard()
 
-  const { classes, getPasswordError } = useAccount()
-  const { addMessage, clearMessages } = useCommon()
-  const { createUser } = useUser()
+  const { classes, getPasswordError } = useAccountInterface()
+  const { addMessage, clearMessages } = useCommonState()
+  const { createUser } = useUserState()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

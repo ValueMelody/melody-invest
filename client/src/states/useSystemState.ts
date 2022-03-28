@@ -4,7 +4,7 @@ import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 
-const useSystem = () => {
+const useSystemState = () => {
   const store: Context = useContext(context)
 
   const storeSystemDefaults = (systemDefaults: interfaces.systemRes.Defaults) => {
@@ -36,4 +36,4 @@ const useSystem = () => {
   }
 }
 
-export default useSystem
+export default useSystemState

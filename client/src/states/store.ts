@@ -10,7 +10,6 @@ if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
 const useStore = () => {
   const [common, setCommon] = useState<context.Common>({
-    userType: currentUserType,
     isLoading: false,
     messages: [],
   })
@@ -19,6 +18,8 @@ const useStore = () => {
     topProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
+    userType: currentUserType,
+    userEmail: '',
     systemTraderEnvIds: [],
   })
 
