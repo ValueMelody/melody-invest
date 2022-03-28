@@ -5,7 +5,7 @@ import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
 import * as routerEnum from '../enums/router'
 
-const useUser = () => {
+const useUserState = () => {
   const store: Context = useContext(context)
 
   const createUser = async (email: string, password: string, isConfirmed: boolean) => {
@@ -50,21 +50,23 @@ const useUser = () => {
     }
   }
 
-  const storeUserFollowed = (profiles: interfaces.traderProfileRes.TraderProfile[]) => {
+  const storeUserOverall = (overall: interfaces.userRes.UserOverall) => {
+    const { traderProfiles: profiles, email } = overall
     const traderIds = profiles.map((profile) => profile.trader.id)
     store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
     const traderProfiles = profiles.reduce((traderProfiles, profile) => {
       return { ...traderProfiles, [profile.trader.id]: profile }
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    store.setResources((resources) => ({ ...resources, userEmail: email }))
   }
 
-  const fetchUserFollowed = async () => {
-    const endpoint = `${routerEnum.API.USERS}/traders`
+  const fetchUserOverall = async () => {
+    const endpoint = `${routerEnum.API.USERS}/overall`
     store.startLoading()
     try {
-      const profiles = await requestAdapter.sendGetRequest(endpoint)
-      storeUserFollowed(profiles)
+      const overall = await requestAdapter.sendGetRequest(endpoint)
+      storeUserOverall(overall)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -113,12 +115,13 @@ const useUser = () => {
   return {
     createUser,
     createUserToken,
-    fetchUserFollowed,
+    fetchUserOverall,
     createUserFollowed,
     deleteUserFollowed,
     userTraderIds: store.resources.userTraderIds,
-    userType: store.common.userType,
+    userType: store.resources.userType,
+    userEmail: store.resources.userEmail,
   }
 }
 
-export default useUser
+export default useUserState

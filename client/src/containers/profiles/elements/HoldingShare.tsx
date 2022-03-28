@@ -1,7 +1,7 @@
 import { Label } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
-import useTickerProfile from '../../../states/useTickerProfile'
+import useTickerState from '../../../states/useTickerState'
 import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
 import classNames from 'classnames'
@@ -29,7 +29,7 @@ const HoldingShare = ({
   previousHoldings?: interfaces.traderHoldingModel.Holding[];
 }) => {
   const classes = useStyles()
-  const { tickerIdentities } = useTickerProfile()
+  const { tickerIdentities } = useTickerState()
   const identities = tickerIdentities || {}
   const identity = identities[tickerHolding.tickerId]
   const previousHolding = previousHoldings?.find((previous) => previous.tickerId === tickerHolding.tickerId)

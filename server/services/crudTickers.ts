@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as tickerModel from '../models/ticker'
 
-export const getTickerIdentities = async (): Promise<interfaces.tickerProfileRes.TickerIdentity[]> => {
+export const getTickerIdentities = async (): Promise<interfaces.tickerRes.TickerIdentity[]> => {
   const tickers = await tickerModel.getAll()
   return tickers.map((ticker) => ({
     id: ticker.id,

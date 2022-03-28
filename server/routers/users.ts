@@ -2,7 +2,7 @@ import { Router } from 'express'
 import * as interfaces from '@shared/interfaces'
 import * as errorEnum from '../enums/error'
 import * as crudUsers from '../services/crudUsers'
-import * as crudTraderProfiles from '../services/crudTraderProfiles'
+import * as crudTraders from '../services/crudTraders'
 import * as verifyTool from '../tools/verify'
 import * as authMiddleware from '../middlewares/auth'
 
@@ -40,10 +40,10 @@ usersRouter.post('/', async (req, res) => {
   return res.status(201).send(user)
 })
 
-usersRouter.get('/traders', authMiddleware.normalUser, async (req, res) => {
+usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.common.Auth = req.body.auth
-  const traders = await crudTraderProfiles.getFollowedTraders(auth.id)
-  return res.status(200).send(traders)
+  const overall = await crudUsers.getUserOverall(auth.id)
+  return res.status(200).send(overall)
 })
 
 const validTraderId = (traderId: number) => {
@@ -55,7 +55,7 @@ usersRouter.post('/traders/:trader_id', authMiddleware.normalUser, async (req, r
   validTraderId(traderId)
 
   const auth: interfaces.common.Auth = req.body.auth
-  await crudTraderProfiles.createFollowedTrader(auth.id, traderId)
+  await crudTraders.createFollowedTrader(auth.id, traderId)
   return res.status(201).send()
 })
 
@@ -64,6 +64,6 @@ usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req,
   validTraderId(traderId)
 
   const auth: interfaces.common.Auth = req.body.auth
-  await crudTraderProfiles.deleteFollowedTrader(auth.id, traderId)
+  await crudTraders.deleteFollowedTrader(auth.id, traderId)
   return res.status(204).send()
 })

@@ -10,10 +10,10 @@ import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from './elements/BehaviorEditor'
 import TraderEnvCard from './elements/TraderEnvCard'
-import useSystem from '../../states/useSystem'
-import useTraderEnv from '../../states/useTraderEnv'
-import useTraderProfile from '../../states/useTraderProfile'
-import usePrivate from '../hooks/usePrivate'
+import useSystemState from '../../states/useSystemState'
+import useTraderEnvState from '../../states/useTraderEnvState'
+import useTraderState from '../../states/useTraderState'
+import usePrivateGuard from '../hooks/usePrivateGuard'
 
 const useStyles = createUseStyles(({
   confirmButton: {
@@ -40,7 +40,7 @@ const getActiveBehaviorCount = (
 const ProfileBuilder = () => {
   const navigate = useNavigate()
   const classes = useStyles()
-  usePrivate()
+  usePrivateGuard()
 
   const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = useState(false)
   const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = useState(false)
@@ -51,9 +51,9 @@ const ProfileBuilder = () => {
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
-  const { systemTraderEnvIds } = useSystem()
-  const { getTraderEnv } = useTraderEnv()
-  const { createTraderProfile } = useTraderProfile()
+  const { systemTraderEnvIds } = useSystemState()
+  const { getTraderEnv } = useTraderEnvState()
+  const { createTraderProfile } = useTraderState()
 
   const BUY_GROUPS = [
     {

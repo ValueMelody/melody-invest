@@ -3,6 +3,18 @@ import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+export const getByPK = async (
+  id: number,
+): Promise<interfaces.userModel.Record | null> => {
+  const user = await databaseAdapter.findOne({
+    tableName: tableEnum.NAME.USER,
+    conditions: [
+      { key: 'id', value: id },
+    ],
+  })
+  return user
+}
+
 export const getByUK = async (
   email: string,
 ): Promise<interfaces.userModel.Record | null> => {

@@ -1,14 +1,14 @@
-import useUser from '../../../states/useUser'
-import useCommon from '../../../states/useCommon'
+import useUserState from '../../../states/useUserState'
+import useCommonState from '../../../states/useCommonState'
 import * as localeTool from '../../../tools/locale'
 
-const useToggleWatch = ({
+const useWatchInterface = ({
   traderId,
 }: {
   traderId: number;
 }) => {
-  const { userType, userTraderIds, createUserFollowed, deleteUserFollowed } = useUser()
-  const { addMessage } = useCommon()
+  const { userType, userTraderIds, createUserFollowed, deleteUserFollowed } = useUserState()
+  const { addMessage } = useCommonState()
 
   const isWatched = !!userTraderIds && userTraderIds.includes(traderId)
 
@@ -33,4 +33,4 @@ const useToggleWatch = ({
   }
 }
 
-export default useToggleWatch
+export default useWatchInterface

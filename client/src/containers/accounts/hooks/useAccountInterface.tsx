@@ -15,7 +15,7 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const useAccount = () => {
+const useAccountInterface = () => {
   const classes = useStyles()
 
   const passwordSchema = new PasswordValidator()
@@ -37,4 +37,4 @@ const useAccount = () => {
   }
 }
 
-export default useAccount
+export default useAccountInterface

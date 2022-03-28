@@ -1,11 +1,11 @@
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useUser from '../../states/useUser'
+import useUserState from '../../states/useUserState'
 import * as routerEnum from '../../enums/router'
 
-const usePrivate = () => {
+const usePublicGuard = () => {
   const navigate = useNavigate()
-  const { userType } = useUser()
+  const { userType } = useUserState()
 
   useEffect(() => {
     if (userType) navigate(routerEnum.NAV.SETTING)
@@ -13,4 +13,4 @@ const usePrivate = () => {
   }, [userType])
 }
 
-export default usePrivate
+export default usePublicGuard

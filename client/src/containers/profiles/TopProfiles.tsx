@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
-import useTraderProfile from '../../states/useTraderProfile'
+import useTraderState from '../../states/useTraderState'
 import TopProfileList from './TopProfileList'
 import * as localeTool from '../../tools/locale'
 
 const TopProfiles = () => {
-  const { topProfiles, fetchTopProfiles } = useTraderProfile()
+  const { topProfiles, fetchTopProfiles } = useTraderState()
 
   useEffect(() => {
     if (topProfiles) return

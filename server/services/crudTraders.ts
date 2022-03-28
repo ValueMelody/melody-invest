@@ -5,10 +5,11 @@ import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
+import * as presentTool from '../tools/present'
 
 export const getTraderStat = async (
   id: number, accessCode: string,
-): Promise<interfaces.traderProfileRes.TraderProfile> => {
+): Promise<interfaces.traderRes.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
@@ -25,7 +26,7 @@ export const getTraderStat = async (
 
 export const getProfileDetail = async (
   id: number, accessCode: string,
-): Promise<interfaces.traderProfileRes.ProfileDetail> => {
+): Promise<interfaces.traderRes.ProfileDetail> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
@@ -44,15 +45,7 @@ export const getProfileDetail = async (
   }
 }
 
-const combineTraderAndPattern = (
-  trader: interfaces.traderModel.Record,
-  patterns: interfaces.traderPatternModel.Public[],
-) => {
-  const matchedPattern = patterns.find((pattern) => pattern.id === trader.traderPatternId)!
-  return { trader, pattern: matchedPattern }
-}
-
-export const getTopPatterns = async (): Promise<interfaces.traderProfileRes.TopProfiles> => {
+export const getTopPatterns = async (): Promise<interfaces.traderRes.TopProfiles> => {
   const tops = await traderModel.getTops(15)
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatternIds = topTraders.map((trader) => trader.traderPatternId)
@@ -60,23 +53,12 @@ export const getTopPatterns = async (): Promise<interfaces.traderProfileRes.TopP
   const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
 
   return {
-    yearly: tops.yearly.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
-    pastYear: tops.pastYear.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
-    pastQuarter: tops.pastQuarter.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
-    pastMonth: tops.pastMonth.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
-    pastWeek: tops.pastWeek.map((trader) => combineTraderAndPattern(trader, relatedPatterns)),
+    yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastYear: tops.pastYear.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastQuarter: tops.pastQuarter.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastMonth: tops.pastMonth.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastWeek: tops.pastWeek.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
   }
-}
-
-export const getFollowedTraders = async (userId: number) => {
-  const userTraders = await traderFollowerModel.getUserFollowed(userId)
-  const traderIds = userTraders.map((userTrader) => userTrader.traderId)
-  const traders = await traderModel.getInPKs(traderIds)
-  const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
-  const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
-  const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
-
-  return traders.map((trader) => combineTraderAndPattern(trader, relatedPatterns))
 }
 
 export const createFollowedTrader = async (
@@ -112,7 +94,7 @@ export const createTrader = async (
   userId: number,
   traderEnvId: number,
   traderPattern: interfaces.traderPatternModel.Create,
-): Promise<interfaces.traderProfileRes.TraderProfile> => {
+): Promise<interfaces.traderRes.TraderProfile> => {
   const transaction = await databaseAdapter.createTransaction()
   try {
     const pattern = await traderPatternModel.createIfEmpty(traderPattern, transaction)

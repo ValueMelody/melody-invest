@@ -1,4 +1,4 @@
-Convention
+Conventions
 --
 1. Only add minimal required variables to useEffect, useMemo and useCallback  
 use eslint-disable-next-line react-hooks/exhaustive-deps to disable eslint warning message
@@ -13,4 +13,15 @@ useEffect(() => {
 useEffect(() => {
   getSomethingByUserType(userType)
 }, [userType, getSomethingByUserType])
+```
+
+2. Avoid function chain
+```
+// Good
+const handleClick = (e, id) => {}
+<Button onClick={(e) => handleClick(e, id)} />
+
+// Bad
+const handleClick = (e) => (id) => {}
+<Button onClick={handleClick(id)} />
 ```

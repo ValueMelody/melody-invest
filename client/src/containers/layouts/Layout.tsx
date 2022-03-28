@@ -2,9 +2,9 @@ import { useEffect, FunctionComponent } from 'react'
 import { createUseStyles } from 'react-jss'
 import { Message, Icon } from 'semantic-ui-react'
 import Header from './blocks/Header'
-import useCommon from '../../states/useCommon'
-import useSystem from '../../states/useSystem'
-import useUser from '../../states/useUser'
+import useCommonState from '../../states/useCommonState'
+import useSystemState from '../../states/useSystemState'
+import useUserState from '../../states/useUserState'
 
 const useStyles = createUseStyles({
   main: {
@@ -24,9 +24,9 @@ const Layout: FunctionComponent = ({
   children,
 }) => {
   const classes = useStyles()
-  const { messages, removeMessage } = useCommon()
-  const { userType, fetchUserFollowed } = useUser()
-  const { fetchSystemDefaults } = useSystem()
+  const { messages, removeMessage } = useCommonState()
+  const { userType, fetchUserOverall } = useUserState()
+  const { fetchSystemDefaults } = useSystemState()
 
   useEffect(() => {
     fetchSystemDefaults()
@@ -35,7 +35,7 @@ const Layout: FunctionComponent = ({
 
   useEffect(() => {
     if (!userType) return
-    fetchUserFollowed()
+    fetchUserOverall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userType])
 

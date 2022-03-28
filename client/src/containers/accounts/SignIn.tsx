@@ -4,19 +4,19 @@ import { useNavigate } from 'react-router-dom'
 import { Input, Button, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
 import RequiredLabel from './elements/RequiredLabel'
-import useCommon from '../../states/useCommon'
-import useUser from '../../states/useUser'
+import useCommonState from '../../states/useCommonState'
+import useUserState from '../../states/useUserState'
 import * as routerEnum from '../../enums/router'
-import useAccount from './hooks/useAccount'
-import usePublic from '../hooks/usePublic'
+import useAccountInterface from './hooks/useAccountInterface'
+import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignIn = () => {
   const navigate = useNavigate()
-  usePublic()
+  usePublicGuard()
 
-  const { clearMessages, addMessage } = useCommon()
-  const { classes, getPasswordError } = useAccount()
-  const { createUserToken } = useUser()
+  const { classes, getPasswordError } = useAccountInterface()
+  const { clearMessages, addMessage } = useCommonState()
+  const { createUserToken } = useUserState()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

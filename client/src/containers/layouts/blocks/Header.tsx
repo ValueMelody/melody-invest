@@ -5,7 +5,7 @@ import { Icon, Label } from 'semantic-ui-react'
 import * as routerEnum from '../../../enums/router'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
-import useUser from '../../../states/useUser'
+import useUserState from '../../../states/useUserState'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   header: {
@@ -29,7 +29,7 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 
 const Header = () => {
   const classes = useStyles()
-  const { userType } = useUser()
+  const { userType } = useUserState()
 
   const isLoggedInUser = !!userType
 

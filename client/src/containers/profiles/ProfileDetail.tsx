@@ -3,9 +3,9 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
-import useTraderProfile from '../../states/useTraderProfile'
-import useTickerProfile from '../../states/useTickerProfile'
-import useTraderEnv from '../../states/useTraderEnv'
+import useTraderState from '../../states/useTraderState'
+import useTickerState from '../../states/useTickerState'
+import useTraderEnvState from '../../states/useTraderEnvState'
 import * as routerEnum from '../../enums/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
@@ -37,9 +37,9 @@ const ProfileDetail = () => {
   const classes = useStyles()
   const {
     getTraderProfile, fetchTraderProfile, getProfileDetail, fetchProfileDetail,
-  } = useTraderProfile()
-  const { getTraderEnv } = useTraderEnv()
-  const { tickerIdentities, fetchTickerIdentities } = useTickerProfile()
+  } = useTraderState()
+  const { getTraderEnv } = useTraderEnvState()
+  const { tickerIdentities, fetchTickerIdentities } = useTickerState()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null

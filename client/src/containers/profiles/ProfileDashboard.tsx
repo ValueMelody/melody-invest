@@ -3,11 +3,11 @@ import { createUseStyles } from 'react-jss'
 import { Button, Icon } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import useUser from '../../states/useUser'
-import useTraderProfile from '../../states/useTraderProfile'
+import useUserState from '../../states/useUserState'
+import useTraderState from '../../states/useTraderState'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
-import usePrivate from '../hooks/usePrivate'
+import usePrivateGuard from '../hooks/usePrivateGuard'
 import ProfileRow from './blocks/ProfileRow'
 
 const useStyles = createUseStyles(({
@@ -19,10 +19,10 @@ const useStyles = createUseStyles(({
 const ProfileDashboard = () => {
   const classes = useStyles()
   const navigate = useNavigate()
-  usePrivate()
+  usePrivateGuard()
 
-  const { userTraderIds } = useUser()
-  const { getTraderProfile } = useTraderProfile()
+  const { userTraderIds } = useUserState()
+  const { getTraderProfile } = useTraderState()
 
   const handleClickBuild = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
