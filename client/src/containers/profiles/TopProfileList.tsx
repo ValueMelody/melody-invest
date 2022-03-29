@@ -15,7 +15,7 @@ const useStyles = createUseStyles(({
     alignItems: 'flex-start',
   },
   card: {
-    width: '26rem',
+    width: '28rem',
     margin: '0 1rem',
   },
   title: {

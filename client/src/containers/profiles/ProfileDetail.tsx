@@ -19,10 +19,10 @@ const useStyles = createUseStyles(({
     alignItems: 'flex-start',
   },
   left: {
-    width: '26rem',
+    width: '28rem',
   },
   holdings: {
-    width: 'calc(100% - 30rem)',
+    width: 'calc(100% - 32rem)',
     minWidth: '38rem',
   },
   value: {
@@ -111,7 +111,7 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <h3>{localeTool.t('profile.history')}</h3>
+        <h2>{localeTool.t('profile.history')}</h2>
         {!displayedHoldings.length && (
           <Segment>{localeTool.t('profile.noResultYet')}</Segment>
         )}

@@ -15,7 +15,7 @@ import useCommonState from '../../../states/useCommonState'
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',
-    minWidth: '26rem',
+    minWidth: '28rem',
     padding: '0 !important',
   },
   header: {
