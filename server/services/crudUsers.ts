@@ -72,3 +72,21 @@ export const createUserToken = async (
   const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
   return { jwtToken, expiresIn, userType: user.type }
 }
+
+export const updatePassword = async (
+  userId: number, currentPassword: string, newPassword: string,
+) => {
+  const user = await userModel.getByPK(userId)
+  if (!user) throw errorEnum.CUSTOM.USER_NOT_FOUND
+  const encryptedCurrentPassword = generateTool.buildEncryptedPassword(currentPassword)
+  if (user.password !== encryptedCurrentPassword) throw errorEnum.CUSTOM.USER_NOT_FOUND
+  const encryptedNewPassword = generateTool.buildEncryptedPassword(newPassword)
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await userModel.update(userId, { password: encryptedNewPassword }, transaction)
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}

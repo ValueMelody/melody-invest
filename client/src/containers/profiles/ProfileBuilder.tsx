@@ -197,7 +197,6 @@ const ProfileBuilder = () => {
         [behavior]: behaviorValues[behavior],
       }), defaultValues)
     const result = await createTraderProfile(selectedTraderEnvId, traderPattern)
-    console.log(result)
     if (result) {
       const link = `${routerEnum.NAV.PROFILES}/${result.traderId}/${result.accessCode}`
       navigate(link)

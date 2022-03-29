@@ -1,27 +1,28 @@
 {
-    "env": {
-        "browser": true,
-        "es2021": true
-    },
-    "extends": [
-        "standard", "react-app", "plugin:react/recommended"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 12,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "@typescript-eslint"
-    ],
-    "rules": {
-        "react/prop-types": "off",
-        "react/react-in-jsx-scope": "off",
-        "arrow-parens": "error",
-        "jsx-quotes": ["error", "prefer-single"],
-        "no-unused-vars": "off",
-        "@typescript-eslint/no-unused-vars": "error",
-        "comma-dangle": "off",
-        "@typescript-eslint/comma-dangle": ["error", "always-multiline"]
-    }
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "standard", "react-app", "plugin:react/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "rules": {
+    "max-len": ["error", { "code": 120, "tabWidth": 2 }],
+    "react/prop-types": "off",
+    "react/react-in-jsx-scope": "off",
+    "arrow-parens": "error",
+    "jsx-quotes": ["error", "prefer-single"],
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "comma-dangle": "off",
+    "@typescript-eslint/comma-dangle": ["error", "always-multiline"]
+  }
 }

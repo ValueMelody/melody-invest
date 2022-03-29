@@ -7,7 +7,7 @@ const useStyles = createUseStyles(({
     height: '80vh',
   },
   title: {
-    marginBottom: '2rem',
+    marginBottom: '2rem !important',
   },
   row: {
     width: 360,

@@ -3,6 +3,7 @@ import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
+import * as localeTool from '../tools/locale'
 import * as routerEnum from '../enums/router'
 
 const useUserState = () => {
@@ -74,7 +75,7 @@ const useUserState = () => {
     }
   }
 
-  const createFollowed = (traderId: number) => {
+  const storeCreatedFollowed = (traderId: number) => {
     const traderIds = store.resources.userTraderIds || []
     const updatedTraderIds = [...traderIds, traderId]
     store.setResources((resources) => ({ ...resources, userTraderIds: updatedTraderIds }))
@@ -85,7 +86,7 @@ const useUserState = () => {
     store.startLoading()
     try {
       await requestAdapter.sendPostRequest(endpoint)
-      createFollowed(traderId)
+      storeCreatedFollowed(traderId)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -93,7 +94,7 @@ const useUserState = () => {
     }
   }
 
-  const deleteFollowed = (traderId: number) => {
+  const storeDeletedFollowed = (traderId: number) => {
     const traderIds = store.resources.userTraderIds || []
     const remainingTraderIds = traderIds.filter((id) => id !== traderId)
     store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
@@ -104,7 +105,25 @@ const useUserState = () => {
     store.startLoading()
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
-      deleteFollowed(traderId)
+      storeDeletedFollowed(traderId)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const updateUserPassword = async (
+    currentPassword: string,
+    newPassword: string,
+  ) => {
+    const endpoint = `${routerEnum.API.USERS}/password`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPutRequest(endpoint, {
+        currentPassword, newPassword,
+      })
+      store.addMessage({ id: Math.random(), type: 'success', title: localeTool.t('setting.passwordUpdated') })
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -113,10 +132,11 @@ const useUserState = () => {
   }
 
   return {
+    fetchUserOverall,
     createUser,
     createUserToken,
-    fetchUserOverall,
     createUserFollowed,
+    updateUserPassword,
     deleteUserFollowed,
     userTraderIds: store.resources.userTraderIds,
     userType: store.resources.userType,

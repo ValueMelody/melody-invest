@@ -21,5 +21,5 @@ export interface Create {
 export interface Update {
   activationCode?: string;
   activationSentAt?: Date;
-  email?: string;
+  password?: string;
 }

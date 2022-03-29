@@ -9,6 +9,8 @@
     "common.email": "Email",
     "common.password": "Password",
     "common.retypePassword": "Retype Password",
+    "common.currentPassword": "Current Password",
+    "common.newPassword": "New Password",
     "common.watch": "Watch",
     "common.unwatch": "Unwatch",
     "common.build": "Build",
@@ -22,6 +24,10 @@
     "error.password.requireSymbol": "Password must include at least 1 symbol!",
     "error.guest": "Please login first!",
     "error.500": "Something went wrong, please try again later",
+
+    "setting.title": "User Account",
+    "setting.changePassword": "Change Password",
+    "setting.passwordUpdated": "Password Updated!",
 
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
