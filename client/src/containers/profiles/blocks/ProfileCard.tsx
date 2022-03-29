@@ -3,18 +3,19 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
+import * as localeTool from '../../../tools/locale'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
 import PatternLabel from '../elements/PatternLabel'
-import useWatchInterface from '../hooks/useWatchInterface'
 import useUserState from '../../../states/useUserState'
 import useTraderEnvState from '../../../states/useTraderEnvState'
+import useCommonState from '../../../states/useCommonState'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   pattern: {
-    margin: '0 1rem 1rem 1rem !important',
-    width: '28rem',
+    margin: '0 0 2rem 0 !important',
+    minWidth: '26rem',
     padding: '0 !important',
   },
   header: {
@@ -37,15 +38,31 @@ const ProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
-  const { userTraderIds } = useUserState()
+  const { userType, userTraderIds, createUserFollowed, deleteUserFollowed } = useUserState()
   const { getTraderEnv } = useTraderEnvState()
-  const { isWatched, handleToggleWatch } = useWatchInterface({ traderId: trader.id })
+  const { addMessage } = useCommonState()
 
   const traderEnv = getTraderEnv(trader.traderEnvId)!
+  const isWatched = !!userTraderIds && userTraderIds.includes(trader.id)
 
   const handleClick = () => {
     if (!onClick) return
     return onClick(trader)
+  }
+
+  const handleToggleWatch = () => {
+    if (!userType) {
+      addMessage({
+        id: Math.random(),
+        title: localeTool.t('error.guest'),
+        type: 'error',
+      })
+    }
+    if (isWatched) {
+      deleteUserFollowed(trader.id)
+    } else {
+      createUserFollowed(trader.id)
+    }
   }
 
   return (

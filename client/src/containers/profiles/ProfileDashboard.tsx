@@ -8,11 +8,15 @@ import useTraderState from '../../states/useTraderState'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
 import usePrivateGuard from '../hooks/usePrivateGuard'
-import ProfileRow from './blocks/ProfileRow'
+import ProfileCard from './blocks/ProfileCard'
 
 const useStyles = createUseStyles(({
   header: {
     marginBottom: '1rem',
+  },
+  profiles: {
+    width: '60%',
+    minWidth: '26rem',
   },
 }))
 
@@ -36,32 +40,34 @@ const ProfileDashboard = () => {
   if (!userTraderIds) return null
 
   return (
-    <div>
-      <div className={classNames('row-between', classes.header)}>
-        <h3>{localeTool.t('dashboard.watchedProfiles')}:</h3>
-        <Button
-          icon
-          labelPosition='left'
-          color='blue'
-          onClick={handleClickBuild}
-          title={localeTool.t('dashboard.buildDesc')}
-        >
-          <Icon name='cogs' />
-          {localeTool.t('common.build')}
-        </Button>
+    <div className='row-between'>
+      <div className={classes.profiles}>
+        <div className={classNames('row-between', classes.header)}>
+          <h3>{localeTool.t('dashboard.watchedProfiles')}:</h3>
+          <Button
+            icon
+            labelPosition='left'
+            color='blue'
+            onClick={handleClickBuild}
+            title={localeTool.t('dashboard.buildDesc')}
+          >
+            <Icon name='cogs' />
+            {localeTool.t('common.build')}
+          </Button>
+        </div>
+        {userTraderIds.map((traderId) => {
+          const profile = getTraderProfile(traderId)
+          if (!profile) return null
+          return (
+            <ProfileCard
+              key={traderId}
+              trader={profile.trader}
+              pattern={profile.pattern}
+              onClick={handleClickRow}
+            />
+          )
+        })}
       </div>
-      {userTraderIds.map((traderId) => {
-        const profile = getTraderProfile(traderId)
-        if (!profile) return null
-        return (
-          <ProfileRow
-            key={traderId}
-            trader={profile.trader}
-            pattern={profile.pattern}
-            onClick={handleClickRow}
-          />
-        )
-      })}
     </div>
   )
 }

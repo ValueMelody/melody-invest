@@ -8,12 +8,19 @@ import ProfileCard from './blocks/ProfileCard'
 import { FocusType } from './elements/TraderPerformance'
 
 const useStyles = createUseStyles(({
+  container: {
+    marginBottom: '4rem !important',
+  },
   section: {
     alignItems: 'flex-start',
   },
+  card: {
+    width: '26rem',
+    margin: '0 1rem',
+  },
   title: {
     marginLeft: '1rem !important',
-    marginBottom: '1rem !important',
+    marginBottom: '1.5rem !important',
   },
 }))
 
@@ -37,17 +44,18 @@ const TopProfileList = ({
   }
 
   return (
-    <Segment>
-      <h4 className={classes.title}><b>{title}</b></h4>
+    <Segment className={classes.container}>
+      <h2 className={classes.title}>{title}</h2>
       <section className={classNames('row-start', classes.section)} >
         {profiles.map(({ trader, pattern }) => (
-          <ProfileCard
-            key={trader.id}
-            trader={trader}
-            pattern={pattern}
-            onClick={handleClick}
-            focusType={focusType}
-          />
+          <div key={trader.id} className={classes.card}>
+            <ProfileCard
+              trader={trader}
+              pattern={pattern}
+              onClick={handleClick}
+              focusType={focusType}
+            />
+          </div>
         ))}
       </section>
     </Segment>
