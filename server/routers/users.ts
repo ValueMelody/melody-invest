@@ -9,12 +9,16 @@ import * as authMiddleware from '../middlewares/auth'
 const usersRouter = Router()
 export default usersRouter
 
-const validEmailAndPassword = (email: string, password: string) => {
-  if (!email || !password) throw errorEnum.CUSTOM.PARAMS_MISSING
+const validEmail = (email: string) => {
+  if (!email) throw errorEnum.CUSTOM.PARAMS_MISSING
   if (email.length > 100) throw errorEnum.CUSTOM.EMAIL_TOO_LONG
-  if (password.length < 10) throw errorEnum.CUSTOM.PASSWORD_TOO_SHORT
   const isEmail = verifyTool.isEmail(email)
   if (!isEmail) throw errorEnum.CUSTOM.EMAIL_WRONG_FORMAT
+}
+
+const validPassword = (password: string) => {
+  if (!password) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (password.length < 10) throw errorEnum.CUSTOM.PASSWORD_TOO_SHORT
 }
 
 usersRouter.post('/token', async (req, res) => {
@@ -22,7 +26,8 @@ usersRouter.post('/token', async (req, res) => {
   const password = req.body.password?.trim()
   const remember = req.body.remember
 
-  validEmailAndPassword(email, password)
+  validEmail(email)
+  validPassword(password)
 
   const userToken = await crudUsers.createUserToken(email, password, remember)
   return res.status(201).send(userToken)
@@ -34,7 +39,8 @@ usersRouter.post('/', async (req, res) => {
   const isConfirmed = req.body.isConfirmed
 
   if (!isConfirmed) throw errorEnum.CUSTOM.PARAMS_MISSING
-  validEmailAndPassword(email, password)
+  validEmail(email)
+  validPassword(password)
 
   const user = await crudUsers.createUser(email, password)
   return res.status(201).send(user)
@@ -65,5 +71,17 @@ usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req,
 
   const auth: interfaces.common.Auth = req.body.auth
   await crudTraders.deleteFollowedTrader(auth.id, traderId)
+  return res.status(204).send()
+})
+
+usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
+  const currentPassword = req.body.currentPassword?.trim()
+  const newPassword = req.body.newPassword?.trim()
+
+  validPassword(currentPassword)
+  validPassword(newPassword)
+
+  const auth: interfaces.common.Auth = req.body.auth
+  await crudUsers.updatePassword(auth.id, currentPassword, newPassword)
   return res.status(204).send()
 })
