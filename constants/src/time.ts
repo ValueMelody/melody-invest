@@ -7,3 +7,5 @@ export const day = {
   HALF_YEAR: 160,
   YEAR: 320,
 }
+
+export const initialDate = '2001-01-01'

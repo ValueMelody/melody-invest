@@ -10,36 +10,40 @@ body {
 
 h1 {
   font-size: 1.75rem !important;
+  font-weight: 700 !important;
 }
 
 h2 {
   font-size: 1.55rem !important;
+  font-weight: 700 !important;
 }
 
 h3 {
   font-size: 1.35rem !important;
+  font-weight: 700 !important;
 }
 
-h4 {
+h4, .card > .content > .header {
   font-size: 1.15rem !important;
+  font-weight: 500 !important;
 }
 
 h5 {
   font-size: 0.95rem !important;
+  font-weight: 500 !important;
 }
 
 h6 {
   font-size: 0.75rem !important;
+  font-weight: 500 !important;
 }
 
 h1, h2, h3 {
-  font-weight: 700 !important;
   padding: 0 !important;
   margin: 0.25rem 0 !important;
 }
 
 h4, h5, h6 {
-  font-weight: 500 !important;
   padding: 0 !important;
   margin: 0.25rem 0 !important;
 }
@@ -66,6 +70,14 @@ h4, h5, h6 {
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
+}
+
+.row-center {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 .column-center {

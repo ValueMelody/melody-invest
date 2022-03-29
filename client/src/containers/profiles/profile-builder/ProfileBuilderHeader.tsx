@@ -1,7 +1,7 @@
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Icon } from 'semantic-ui-react'
-import * as localeTool from '../../tools/locale'
+import * as localeTool from '../../../tools/locale'
 
 const useStyles = createUseStyles({
   segmentHeader: {

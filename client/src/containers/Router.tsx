@@ -3,10 +3,11 @@ import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
 import Layout from './layouts/Layout'
-import TopProfiles from './profiles/TopProfiles'
+import TopProfiles from './profiles/top-profiles/TopProfiles'
 import ProfileDetail from './profiles/ProfileDetail'
 import ProfileDashboard from './profiles/ProfileDashboard'
-import ProfileBuilder from './profiles/ProfileBuilder'
+import ProfileBuilder from './profiles/profile-builder/ProfileBuilder'
+import EnvBuilder from './profiles/EnvBuilder'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -25,6 +26,10 @@ const Router = () => {
           <Route
             path={`${routerEnum.NAV.PROFILES}/build`}
             element={<ProfileBuilder />}
+          />
+          <Route
+            path={`${routerEnum.NAV.PROFILES}/envs/build`}
+            element={<EnvBuilder />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}

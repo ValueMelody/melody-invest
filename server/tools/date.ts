@@ -1,10 +1,11 @@
 import moment from 'moment'
+import * as constants from '@shared/constants'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
 const QUARTER_FORMAT = 'yyyy-MM'
 const YEAR_FORMAT = 'yyyy'
 
-const INITIAL_DATE = '2001-01-01'
+const INITIAL_DATE = constants.time.initialDate
 const INITIAL_MONTH = '2000-01'
 const INITIAL_QUARTER = '2000-03'
 const INITIAL_YEAR = '2000'

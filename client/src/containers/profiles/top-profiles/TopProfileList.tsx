@@ -3,9 +3,9 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import * as routerEnum from '../../enums/router'
-import ProfileCard from './blocks/ProfileCard'
-import { FocusType } from './elements/TraderPerformance'
+import * as routerEnum from '../../../enums/router'
+import ProfileCard from '../blocks/ProfileCard'
+import { FocusType } from '../elements/TraderPerformance'
 
 const useStyles = createUseStyles(({
   container: {

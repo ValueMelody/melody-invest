@@ -27,6 +27,9 @@ const useStyles = createUseStyles(({
   right: {
     width: '28rem',
   },
+  card: {
+    width: 290,
+  },
 }))
 
 const ProfileDashboard = () => {
@@ -39,8 +42,12 @@ const ProfileDashboard = () => {
   const { systemTraderEnvIds } = useSystemState()
   const { getTraderEnv } = useTraderEnvState()
 
-  const handleClickBuild = () => {
+  const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
+  }
+
+  const handleClickAddEnv = () => {
+    navigate(`${routerEnum.NAV.PROFILES}/envs/build`)
   }
 
   const handleClickRow = (trader: interfaces.traderModel.Record) => {
@@ -59,7 +66,7 @@ const ProfileDashboard = () => {
             icon
             labelPosition='left'
             color='blue'
-            onClick={handleClickBuild}
+            onClick={handleClickBuildProfile}
             title={localeTool.t('dashboard.buildDesc')}
           >
             <Icon name='cogs' />
@@ -80,17 +87,29 @@ const ProfileDashboard = () => {
         })}
       </div>
       <div className={classes.right}>
-        <h2>{localeTool.t('dashboard.defaultEnvs')}</h2>
-          {systemTraderEnvIds.map((envId) => {
-            const traderEnv = getTraderEnv(envId)!
-            return (
-              <TraderEnvCard
-                key={traderEnv.id}
-                traderEnv={traderEnv}
-                isActive={false}
-              />
-            )
-          })}
+        <h2>{localeTool.t('common.envs')}:</h2>
+        {systemTraderEnvIds.map((envId) => {
+          const traderEnv = getTraderEnv(envId)!
+          return (
+            <TraderEnvCard
+              key={traderEnv.id}
+              traderEnv={traderEnv}
+              isActive={false}
+            />
+          )
+        })}
+        <div className={classNames('row-center', classes.card)}>
+          <Button
+            icon
+            labelPosition='left'
+            color='blue'
+            onClick={handleClickAddEnv}
+            title={localeTool.t('dashboard.newDesc')}
+          >
+            <Icon name='plus' />
+            {localeTool.t('common.new')}
+          </Button>
+        </div>
       </div>
     </div>
   )

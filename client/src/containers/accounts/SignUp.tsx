@@ -5,7 +5,7 @@ import * as localeTool from '../../tools/locale'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import useAccountInterface from './hooks/useAccountInterface'
-import RequiredLabel from './elements/RequiredLabel'
+import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignUp = () => {

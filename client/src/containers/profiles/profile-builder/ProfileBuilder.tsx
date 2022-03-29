@@ -4,16 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as localeTool from '../../tools/locale'
-import * as routerEnum from '../../enums/router'
+import * as localeTool from '../../../tools/locale'
+import * as routerEnum from '../../../enums/router'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
-import BehaviorEditor from './elements/BehaviorEditor'
-import TraderEnvCard from './elements/TraderEnvCard'
-import useSystemState from '../../states/useSystemState'
-import useTraderEnvState from '../../states/useTraderEnvState'
-import useTraderState from '../../states/useTraderState'
-import usePrivateGuard from '../hooks/usePrivateGuard'
+import BehaviorEditor from '../elements/BehaviorEditor'
+import TraderEnvCard from '../elements/TraderEnvCard'
+import useSystemState from '../../../states/useSystemState'
+import useTraderEnvState from '../../../states/useTraderEnvState'
+import useTraderState from '../../../states/useTraderState'
+import usePrivateGuard from '../../hooks/usePrivateGuard'
 
 const useStyles = createUseStyles(({
   confirmButton: {
@@ -204,10 +204,10 @@ const ProfileBuilder = () => {
   }
 
   return (
-    <div>
-      <div className='row-around'>
+    <section>
+      <header className='row-around'>
         <h2>{localeTool.t('profileBuilder.title')}</h2>
-      </div>
+      </header>
       <Segment.Group>
         <Segment>
           <ProfileBuilderHeader
@@ -364,7 +364,7 @@ const ProfileBuilder = () => {
           </Button>
         </div>
       </form>
-    </div>
+    </section>
   )
 }
 

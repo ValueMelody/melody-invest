@@ -9,6 +9,7 @@ import * as themeEnum from './enums/theme'
 
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
+import 'react-datepicker/dist/react-datepicker.css'
 
 localTool.init()
 
