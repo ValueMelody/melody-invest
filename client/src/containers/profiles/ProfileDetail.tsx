@@ -18,8 +18,12 @@ const useStyles = createUseStyles(({
   container: {
     alignItems: 'flex-start',
   },
+  left: {
+    width: '26rem',
+  },
   holdings: {
-    width: '60%',
+    width: 'calc(100% - 30rem)',
+    minWidth: '38rem',
   },
   value: {
     marginLeft: '2rem !important',
@@ -86,7 +90,7 @@ const ProfileDetail = () => {
 
   return (
     <div className={classNames('row-between', classes.container)}>
-      <div>
+      <div className={classes.left}>
         <ProfileCard
           trader={traderProfile.trader}
           pattern={traderProfile.pattern}
@@ -107,7 +111,7 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <h4><b>{localeTool.t('profile.history')}</b></h4>
+        <h3>{localeTool.t('profile.history')}</h3>
         {!displayedHoldings.length && (
           <Segment>{localeTool.t('profile.noResultYet')}</Segment>
         )}
