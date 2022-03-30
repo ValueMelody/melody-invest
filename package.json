@@ -21,16 +21,21 @@
   },
   "scripts": {
     "start": "npm run compile && concurrently \"npm run client:start\" \"npm run server:start\"",
+    "lint": "npm run client:lint && npm run server:lint",
+    "lint-fix": "npm run client:lint-fix && npm run server:lint-fix",
     "client:start": "npm run start --workspace=client",
     "client:lint": "npm run lint --workspace=client",
+    "client:lint-fix": "npm run lint-fix --workspace=client",
     "server:start": "npm run start --workspace=server",
     "server:lint": "npm run lint --workspace=server",
+    "server:lint-fix": "npm run lint-fix --workspace=server",
     "server:migrate": "npm run migrate --workspace=server",
     "compile": "npm run compile --workspace=constants",
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
     "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Dropbox/Temp/melody.bak",
-    "database:restore": "pg_restore -d melody -U admin ~/Dropbox/Temp/melody.bak"
+    "database:restore": "pg_restore -d melody -U admin ~/Dropbox/Temp/melody.bak",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "@types/crypto-js": "^4.0.2",
@@ -47,6 +52,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.1",
     "eslint-plugin-react": "^7.29.3",
+    "husky": "^7.0.4",
     "ts-node": "^10.4.0",
     "ts-node-dev": "^1.1.8",
     "typescript": "^4.4.4"
