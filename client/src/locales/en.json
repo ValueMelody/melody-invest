@@ -77,7 +77,7 @@
     "envBuilder.name": "Environment Name",
     "envBuilder.confirm": "Confirm and start watch",
 
-    "traderEnv.startAt": "Start at {{date}}",
+    "traderEnv.startAt": "Start from {{date}}",
     "traderEnv.allTickers": "Trade based on all stocks available",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",

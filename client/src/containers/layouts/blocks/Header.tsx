@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerEnum.NAV.TOP_PROFILES}>
+        <Link to={`${routerEnum.NAV.TRADERS}/profiles/tops`}>
           <Label className={classes.label}>
             <Icon name='chart line' className={classes.icon} />
             {localeTool.t('top.title')}
