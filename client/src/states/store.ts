@@ -18,9 +18,9 @@ const useStore = () => {
     topProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
+    userTraderEnvIds: [],
     userType: currentUserType,
     userEmail: '',
-    systemTraderEnvIds: [],
   })
 
   const [traderEnvs, setTraderEnvs] = useState<context.TraderEnvs>({})

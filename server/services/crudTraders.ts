@@ -1,5 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as traderModel from '../models/trader'
+import * as traderEnvModel from '../models/traderEnv'
+import * as traderEnvFollowerModel from '../models/traderEnvFollower'
 import * as traderFollowerModel from '../models/traderFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
@@ -111,6 +113,37 @@ export const createTrader = async (
       trader,
       pattern,
     }
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const createTraderEnv = async (
+  userId: number,
+  name: string,
+  startDate: string,
+  tickerIds: number[] | null,
+): Promise<interfaces.traderEnvModel.Record> => {
+  const tickerIdsAsString = tickerIds ? tickerIds.sort((a, b) => a - b).join(',') : null
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const env = await traderEnvModel.createIfEmpty({
+      startDate,
+      tickerIds: tickerIdsAsString,
+      name: null,
+      isSystem: false,
+      activeTotal: 1000,
+    }, transaction)
+
+    if (env.isSystem) return env
+
+    const relation = await traderEnvFollowerModel.createIfEmpty({
+      userId, traderEnvId: env.id, name,
+    }, transaction)
+    await transaction.commit()
+
+    return { ...env, name: relation.name }
   } catch (error) {
     await transaction.rollback()
     throw error

@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useUserState from '../../states/useUserState'
 import useTraderState from '../../states/useTraderState'
-import useSystemState from '../../states/useSystemState'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
 import usePrivateGuard from '../hooks/usePrivateGuard'
@@ -36,9 +35,8 @@ const ProfileDashboard = () => {
   const navigate = useNavigate()
   usePrivateGuard()
 
-  const { userTraderIds } = useUserState()
+  const { userTraderIds, userTraderEnvIds } = useUserState()
   const { getTraderProfile, getTraderEnv } = useTraderState()
-  const { systemTraderEnvIds } = useSystemState()
 
   const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
@@ -86,7 +84,7 @@ const ProfileDashboard = () => {
       </div>
       <div className={classes.right}>
         <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
-        {systemTraderEnvIds.map((envId) => {
+        {userTraderEnvIds.map((envId) => {
           const traderEnv = getTraderEnv(envId)!
           return (
             <TraderEnvCard

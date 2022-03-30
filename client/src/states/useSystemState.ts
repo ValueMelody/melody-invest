@@ -13,12 +13,15 @@ const useSystemState = () => {
     }, {})
     store.setTraderEnvs((envs) => ({ ...envs, ...traderEnvs }))
 
-    const systemTraderEnvIds = systemDefaults.traderEnvs.map((env) => env.id)
+    const userTraderEnvIds = [
+      ...store.resources.userTraderEnvIds,
+      ...systemDefaults.traderEnvs.map((env) => env.id),
+    ]
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,
       [identity.id]: identity,
     }), {})
-    store.setResources((resources) => ({ ...resources, systemTraderEnvIds, tickerIdentities }))
+    store.setResources((resources) => ({ ...resources, userTraderEnvIds, tickerIdentities }))
   }
 
   const fetchSystemDefaults = async () => {
@@ -35,7 +38,6 @@ const useSystemState = () => {
   }
 
   return {
-    systemTraderEnvIds: store.resources.systemTraderEnvIds,
     fetchSystemDefaults,
   }
 }

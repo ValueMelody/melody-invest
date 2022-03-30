@@ -9,6 +9,7 @@ export const NAME = {
   INDICATOR_MONTHLY: 'indicator_monthly',
   TRADER: 'trader',
   TRADER_ENV: 'trader_env',
+  TRADER_ENV_FOLLOWER: 'trader_env_follower',
   TRADER_HOLDING: 'trader_holding',
   TRADER_PATTERN: 'trader_pattern',
   TRADER_FOLLOWER: 'trader_follower',

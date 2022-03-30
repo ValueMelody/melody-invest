@@ -116,6 +116,14 @@ const useTraderState = () => {
     return store.traderEnvs[id] || null
   }
 
+  const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
+    store.setTraderEnvs((envs) => ({ ...envs, [env.id]: env }))
+    if (!env.isSystem) {
+      const userTraderEnvIds = [...store.resources.userTraderEnvIds, env.id]
+      store.setResources((resources) => ({ ...resources, userTraderEnvIds }))
+    }
+  }
+
   const createTraderEnv = async (
     name: string,
     startDate: string,
@@ -123,10 +131,15 @@ const useTraderState = () => {
   ) => {
     const endpoint = `${routerEnum.API.TRADERS}/envs`
     store.startLoading()
+    const reqs: interfaces.reqs.TraderEnvCreation = {
+      name, startDate, tickerIds,
+    }
     try {
-      await requestAdapter.sendPostRequest(
-        endpoint, { name, startDate, tickerIds },
+      const env: interfaces.traderEnvModel.Record = await requestAdapter.sendPostRequest(
+        endpoint, reqs,
       )
+      storeTraderEnv(env)
+      return env.id
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {

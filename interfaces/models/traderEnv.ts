@@ -15,3 +15,11 @@ export interface Raw {
   startDate: string;
   tickerIds: string | null;
 }
+
+export interface Create {
+  activeTotal: number;
+  isSystem: boolean;
+  name: string | null
+  startDate: string;
+  tickerIds: string | null;
+}

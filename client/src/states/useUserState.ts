@@ -139,6 +139,7 @@ const useUserState = () => {
     updateUserPassword,
     deleteUserFollowed,
     userTraderIds: store.resources.userTraderIds,
+    userTraderEnvIds: store.resources.userTraderEnvIds,
     userType: store.resources.userType,
     userEmail: store.resources.userEmail,
   }
