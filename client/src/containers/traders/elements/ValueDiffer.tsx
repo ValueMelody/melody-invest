@@ -1,8 +1,8 @@
 import { Label, Icon } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
-import * as parseTool from '../../../../tools/parse'
-import * as localeTool from '../../../../tools/locale'
-import * as themeEnum from '../../../../enums/theme'
+import * as parseTool from '../../../tools/parse'
+import * as localeTool from '../../../tools/locale'
+import * as themeEnum from '../../../enums/theme'
 
 const useStyles = createUseStyles(({
   container: {

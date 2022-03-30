@@ -39,7 +39,7 @@ const Header = () => {
         <Link to={`${routerEnum.NAV.TRADERS}/profiles/tops`}>
           <Label className={classes.label}>
             <Icon name='chart line' className={classes.icon} />
-            {localeTool.t('top.title')}
+            {localeTool.t('topProfiles.title')}
           </Label>
         </Link>
       </nav>

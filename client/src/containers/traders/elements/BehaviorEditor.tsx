@@ -4,10 +4,10 @@ import * as constants from '@shared/constants'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Dropdown, DropdownProps } from 'semantic-ui-react'
-import * as parseTool from '../../../../tools/parse'
-import * as localeTool from '../../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
+import * as localeTool from '../../../tools/locale'
 import BehaviorLabel from './BehaviorLabel'
-import * as themeEnum from '../../../../enums/theme'
+import * as themeEnum from '../../../enums/theme'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   container: {

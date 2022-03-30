@@ -20,16 +20,18 @@ const TraderEnvCard = ({
   isActive,
   onClick,
 }: {
-  traderEnv: interfaces.traderEnvModel.Record;
+  traderEnv: interfaces.traderEnvModel.Record | null;
   isActive: boolean;
   onClick?: (envId: number) => void;
 }) => {
   const classes = useStyles()
 
   const handleClickEnv = () => {
-    if (!onClick) return
+    if (!traderEnv || !onClick) return
     onClick(traderEnv.id)
   }
+
+  if (!traderEnv) return null
 
   return (
     <Card

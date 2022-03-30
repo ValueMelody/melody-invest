@@ -7,23 +7,31 @@ import * as routerEnum from '../enums/router'
 const useTraderState = () => {
   const store: Context = useContext(context)
 
-  const getTraderProfile = (id: number | null) => {
-    if (!id) return null
-    return store.traderProfiles[id] || null
+  // ------------------------------------------------------------ Get --
+
+  const getTopProfiles = (envId: number | null) => {
+    if (envId === null) return null
+    return store.resources.envTopProfiles ? store.resources.envTopProfiles[envId] : null
   }
 
-  const getProfileDetail = (id: number | null) => {
-    if (!id) return null
-    return store.profileDetails[id] || null
+  const getTraderProfile = (traderId: number | null) => {
+    if (!traderId) return null
+    return store.traderProfiles[traderId] || null
   }
 
-  const getTraderEnv = (id: number | null) => {
-    if (!id) return null
-    return store.traderEnvs[id] || null
+  const getProfileDetail = (traderId: number | null) => {
+    if (!traderId) return null
+    return store.profileDetails[traderId] || null
   }
 
-  const storeTopProfiles = (topProfiles: interfaces.traderRes.TopProfiles) => {
-    store.setResources((resources) => ({ ...resources, topProfiles }))
+  const getTraderEnv = (traderEnvId: number | null) => {
+    if (!traderEnvId) return null
+    return store.traderEnvs[traderEnvId] || null
+  }
+
+  // ------------------------------------------------------------ Store --
+
+  const storeTopProfiles = (envId: number, topProfiles: interfaces.traderRes.TopProfiles) => {
     const profiles = [
       ...topProfiles.yearly,
       ...topProfiles.pastYear, ...topProfiles.pastQuarter,
@@ -33,6 +41,21 @@ const useTraderState = () => {
       return { ...traderProfiles, [profile.trader.id]: profile }
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+
+    const tops = {
+      yearly: topProfiles.yearly.map((profile) => profile.trader.id),
+      pastYear: topProfiles.pastYear.map((profile) => profile.trader.id),
+      pastQuarter: topProfiles.pastQuarter.map((profile) => profile.trader.id),
+      pastMonth: topProfiles.pastMonth.map((profile) => profile.trader.id),
+      pastWeek: topProfiles.pastWeek.map((profile) => profile.trader.id),
+    }
+    store.setResources((resources) => ({
+      ...resources,
+      envTopProfiles: {
+        ...resources.envTopProfiles,
+        [envId]: tops,
+      },
+    }))
   }
 
   const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
@@ -61,6 +84,8 @@ const useTraderState = () => {
     store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
   }
 
+  // ------------------------------------------------------------ fetch --
+
   const fetchTraderProfile = async (id: number, accessCode: string) => {
     const endpoint = `${routerEnum.API.TRADERS}/profiles/${id}/${accessCode}`
     store.startLoading()
@@ -74,12 +99,12 @@ const useTraderState = () => {
     }
   }
 
-  const fetchTopProfiles = async () => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles/tops`
+  const fetchTopProfiles = async (envId: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs/${envId}/tops`
     store.startLoading()
     try {
-      const traders = await requestAdapter.sendGetRequest(endpoint)
-      storeTopProfiles(traders)
+      const tops = await requestAdapter.sendGetRequest(endpoint)
+      storeTopProfiles(envId, tops)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -112,6 +137,8 @@ const useTraderState = () => {
       store.stopLoading()
     }
   }
+
+  // ------------------------------------------------------------ create --
 
   const createTraderProfile = async (
     traderEnvId: number,
@@ -160,8 +187,10 @@ const useTraderState = () => {
     }
   }
 
+  // ------------------------------------------------------------ export --
+
   return {
-    topProfiles: store.resources.topProfiles,
+    getTopProfiles,
     getTraderProfile,
     getTraderEnv,
     getProfileDetail,

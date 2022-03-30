@@ -14,11 +14,23 @@ export interface Common {
 }
 
 interface TickerIdentities {
-  [key: number]: interfaces.tickerModel.Identity;
+  [tickerId: number]: interfaces.tickerModel.Identity;
+}
+
+interface TopProfiles {
+  yearly: number[];
+  pastYear: number[];
+  pastQuarter: number[];
+  pastMonth: number[];
+  pastWeek: number[];
+}
+
+interface EnvTopProfiles {
+  [traderEnvId: number]: TopProfiles
 }
 
 export interface Resources {
-  topProfiles: interfaces.traderRes.TopProfiles | null;
+  envTopProfiles: EnvTopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
   userTraderEnvIds: number[];
@@ -27,15 +39,15 @@ export interface Resources {
 }
 
 export interface TraderEnvs {
-  [key: number]: interfaces.traderEnvModel.Record;
+  [traderEnvId: number]: interfaces.traderEnvModel.Record;
 }
 
 export interface TraderProfiles {
-  [key: number]: interfaces.traderRes.TraderProfile;
+  [traderId: number]: interfaces.traderRes.TraderProfile;
 }
 
 export interface ProfileDetails {
-  [key: number]: interfaces.traderRes.ProfileDetail;
+  [traderId: number]: interfaces.traderRes.ProfileDetail;
 }
 
 export interface Context {

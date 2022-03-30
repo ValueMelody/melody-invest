@@ -47,8 +47,11 @@ export const getProfileDetail = async (
   }
 }
 
-export const getTopProfiles = async (): Promise<interfaces.traderRes.TopProfiles> => {
-  const tops = await traderModel.getTops(15)
+export const getEnvTopProfiles = async (envId: number): Promise<interfaces.traderRes.TopProfiles> => {
+  const traderEnvId = envId || null
+  const each = traderEnvId ? 1 : 3
+
+  const tops = await traderModel.getTops(traderEnvId, each)
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatternIds = topTraders.map((trader) => trader.traderPatternId)
   const patterns = await traderPatternModel.getInPKs(relatedPatternIds)

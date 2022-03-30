@@ -8,7 +8,7 @@ import * as localeTool from '../../../../tools/locale'
 import * as routerEnum from '../../../../enums/router'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
-import BehaviorEditor from '../elements/BehaviorEditor'
+import BehaviorEditor from '../../elements/BehaviorEditor'
 import TraderEnvCard from '../../elements/TraderEnvCard'
 import useTraderState from '../../../../states/useTraderState'
 import useUserState from '../../../../states/useUserState'
@@ -332,17 +332,14 @@ const ProfileBuilder = () => {
       </Segment.Group>
       <h4>{localeTool.t('common.envs')}:</h4>
       <div className='row-start'>
-        {userTraderEnvIds.map((traderEnvId) => {
-          const traderEnv = getTraderEnv(traderEnvId)!
-          return (
-            <TraderEnvCard
-              key={traderEnvId}
-              traderEnv={traderEnv}
-              isActive={traderEnvId === selectedTraderEnvId}
-              onClick={handleSelectEnv}
-            />
-          )
-        })}
+        {userTraderEnvIds.map((traderEnvId) => (
+          <TraderEnvCard
+            key={traderEnvId}
+            traderEnv={getTraderEnv(traderEnvId)}
+            isActive={traderEnvId === selectedTraderEnvId}
+            onClick={handleSelectEnv}
+          />
+        ))}
       </div>
       <form onSubmit={handleSubmit}>
         <div className='row-around'>

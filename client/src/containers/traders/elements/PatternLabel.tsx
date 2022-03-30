@@ -1,8 +1,8 @@
 import { Label } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../../tools/locale'
-import * as parseTool from '../../../../tools/parse'
+import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
 
 const useStyles = createUseStyles(({
   label: {

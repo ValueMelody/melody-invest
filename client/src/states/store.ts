@@ -15,7 +15,7 @@ const useStore = () => {
   })
 
   const [resources, setResources] = useState<context.Resources>({
-    topProfiles: null,
+    envTopProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
     userTraderEnvIds: [],

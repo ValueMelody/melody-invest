@@ -8,9 +8,9 @@ import useTickerState from '../../../states/useTickerState'
 import * as routerEnum from '../../../enums/router'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
-import ProfileCard from './blocks/ProfileCard'
-import ValueDiffer from './elements/ValueDiffer'
-import HoldingShare from './elements/HoldingShare'
+import ProfileCard from '../blocks/ProfileCard'
+import ValueDiffer from '../elements/ValueDiffer'
+import HoldingShare from '../elements/HoldingShare'
 import TraderEnvCard from '../elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
@@ -89,8 +89,7 @@ const ProfileDetail = () => {
     <div className={classNames('row-between', classes.container)}>
       <div className={classes.left}>
         <ProfileCard
-          trader={traderProfile.trader}
-          pattern={traderProfile.pattern}
+          profile={traderProfile}
         />
         <div className={classes.envContainer}>
           <h4>{localeTool.t('common.envs')}:</h4>
