@@ -2,6 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
 import * as traderModel from '../models/trader'
+import * as traderEnvModel from '../models/traderEnv'
+import * as traderEnvFollowerModel from '../models/traderEnvFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderFollowerModel from '../models/traderFollower'
 import * as generateTool from '../tools/generate'
@@ -21,8 +23,17 @@ export const getUserOverall = async (userId: number): Promise<interfaces.userRes
   const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
   const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
 
+  const envFollowers = await traderEnvFollowerModel.getUserFollowed(userId)
+  const envIds = envFollowers.map((envFollower) => envFollower.traderEnvId)
+  const envs = await traderEnvModel.getInPKs(envIds)
+  const traderEnvs = envs.map((env) => {
+    const matchedEnvFollower = envFollowers.find((envFollower) => envFollower.traderEnvId === env.id)
+    return { ...env, name: matchedEnvFollower?.name || '' }
+  })
+
   return {
     traderProfiles: traders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    traderEnvs,
     email: user.email,
   }
 }

@@ -17,6 +17,7 @@
     "common.new": "New",
     "common.numSelected": "{{num}} selected",
     "common.envs": "Environments",
+    "common.system": "System",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -77,8 +78,9 @@
     "envBuilder.confirm": "Confirm and start watch",
 
     "traderEnv.startAt": "Start at {{date}}",
-    "traderEnv.allTickers": "Trade based on all stocks available on our platform",
+    "traderEnv.allTickers": "Trade based on all stocks available",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
+    "traderEnv.systemDesc": "System defined trader environment",
 
     "traderEnvName.default" : "Default",
     "traderEnvName.topTech" : "Top Tech",
