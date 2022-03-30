@@ -4,7 +4,8 @@
   "scripts": {
     "start": "ts-node-dev --project ../tsconfig.json ./index.ts",
     "migrate": "knex migrate:latest",
-    "lint": "eslint ./ --ext .ts"
+    "lint": "eslint ./ --ext .ts",
+    "lint-fix": "eslint --fix ./ --ext .ts"
   },
   "dependencies": {
     "axios": "^0.24.0",

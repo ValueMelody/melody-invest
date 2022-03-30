@@ -162,27 +162,39 @@ export const calcMonthly = async () => {
       let thirtyYearsTreasuryDecrease = indicator.thirtyYearsTreasuryMonthlyDecrease
       if (indicator.thirtyYearsTreasury && lastIndicator.thirtyYearsTreasury) {
         const lastThirtyYearsTreasuryIncrease = lastIndicator.thirtyYearsTreasuryMonthlyIncrease || 0
-        thirtyYearsTreasuryIncrease = indicator.thirtyYearsTreasury > lastIndicator.thirtyYearsTreasury ? lastThirtyYearsTreasuryIncrease + 1 : 0
+        thirtyYearsTreasuryIncrease = indicator.thirtyYearsTreasury > lastIndicator.thirtyYearsTreasury
+          ? lastThirtyYearsTreasuryIncrease + 1
+          : 0
         const lastThirtyYearsTreasuryDecrease = lastIndicator.thirtyYearsTreasuryMonthlyDecrease || 0
-        thirtyYearsTreasuryDecrease = indicator.thirtyYearsTreasury < lastIndicator.thirtyYearsTreasury ? lastThirtyYearsTreasuryDecrease + 1 : 0
+        thirtyYearsTreasuryDecrease = indicator.thirtyYearsTreasury < lastIndicator.thirtyYearsTreasury
+          ? lastThirtyYearsTreasuryDecrease + 1
+          : 0
       }
 
       let tenYearsTreasuryIncrease = indicator.tenYearsTreasuryMonthlyIncrease
       let tenYearsTreasuryDecrease = indicator.tenYearsTreasuryMonthlyDecrease
       if (indicator.tenYearsTreasury && lastIndicator.tenYearsTreasury) {
         const lastTenYearsTreasuryIncrease = lastIndicator.tenYearsTreasuryMonthlyIncrease || 0
-        tenYearsTreasuryIncrease = indicator.tenYearsTreasury > lastIndicator.tenYearsTreasury ? lastTenYearsTreasuryIncrease + 1 : 0
+        tenYearsTreasuryIncrease = indicator.tenYearsTreasury > lastIndicator.tenYearsTreasury
+          ? lastTenYearsTreasuryIncrease + 1
+          : 0
         const lastTenYearsTreasuryDecrease = lastIndicator.tenYearsTreasuryMonthlyDecrease || 0
-        tenYearsTreasuryDecrease = indicator.tenYearsTreasury < lastIndicator.tenYearsTreasury ? lastTenYearsTreasuryDecrease + 1 : 0
+        tenYearsTreasuryDecrease = indicator.tenYearsTreasury < lastIndicator.tenYearsTreasury
+          ? lastTenYearsTreasuryDecrease + 1
+          : 0
       }
 
       let inflationIncrease = indicator.inflationMonthlyIncrease
       let inflationDecrease = indicator.inflationMonthlyDecrease
       if (indicator.inflationExpectation && lastIndicator.inflationExpectation) {
         const lastInflationIncrease = lastIndicator.inflationMonthlyIncrease || 0
-        inflationIncrease = indicator.inflationExpectation > lastIndicator.inflationExpectation ? lastInflationIncrease + 1 : 0
+        inflationIncrease = indicator.inflationExpectation > lastIndicator.inflationExpectation
+          ? lastInflationIncrease + 1
+          : 0
         const lastInflationDecrease = lastIndicator.tenYearsTreasuryMonthlyDecrease || 0
-        inflationDecrease = indicator.inflationExpectation < lastIndicator.inflationExpectation ? lastInflationDecrease + 1 : 0
+        inflationDecrease = indicator.inflationExpectation < lastIndicator.inflationExpectation
+          ? lastInflationDecrease + 1
+          : 0
       }
 
       let cpiIncrease = indicator.cpiMonthlyIncrease
@@ -198,9 +210,13 @@ export const calcMonthly = async () => {
       let consumerSentimentDecrease = indicator.consumerSentimentMonthlyDecrease
       if (indicator.consumerSentiment && lastIndicator.consumerSentiment) {
         const lastConsumerSentimentIncrease = lastIndicator.consumerSentimentMonthlyIncrease || 0
-        consumerSentimentIncrease = indicator.consumerSentiment > lastIndicator.consumerSentiment ? lastConsumerSentimentIncrease + 1 : 0
+        consumerSentimentIncrease = indicator.consumerSentiment > lastIndicator.consumerSentiment
+          ? lastConsumerSentimentIncrease + 1
+          : 0
         const lastConsumerSentimentDecrease = lastIndicator.consumerSentimentMonthlyDecrease || 0
-        consumerSentimentDecrease = indicator.consumerSentiment < lastIndicator.consumerSentiment ? lastConsumerSentimentDecrease + 1 : 0
+        consumerSentimentDecrease = indicator.consumerSentiment < lastIndicator.consumerSentiment
+          ? lastConsumerSentimentDecrease + 1
+          : 0
       }
 
       let retailSalesIncrease = indicator.retailSalesMonthlyIncrease
@@ -225,18 +241,26 @@ export const calcMonthly = async () => {
       let unemploymentRateDecrease = indicator.unemploymentRateMonthlyDecrease
       if (indicator.unemploymentRate && lastIndicator.unemploymentRate) {
         const lastUnemploymentRateIncrease = lastIndicator.unemploymentRateMonthlyIncrease || 0
-        unemploymentRateIncrease = indicator.unemploymentRate > lastIndicator.unemploymentRate ? lastUnemploymentRateIncrease + 1 : 0
+        unemploymentRateIncrease = indicator.unemploymentRate > lastIndicator.unemploymentRate
+          ? lastUnemploymentRateIncrease + 1
+          : 0
         const lastUnemploymentRateDecrease = lastIndicator.unemploymentRateMonthlyDecrease || 0
-        unemploymentRateDecrease = indicator.unemploymentRate < lastIndicator.unemploymentRate ? lastUnemploymentRateDecrease + 1 : 0
+        unemploymentRateDecrease = indicator.unemploymentRate < lastIndicator.unemploymentRate
+          ? lastUnemploymentRateDecrease + 1
+          : 0
       }
 
       let nofarmPayrollIncrease = indicator.nonfarmPayrollMonthlyIncrease
       let nofarmPayrollDecrease = indicator.nonfarmPayrollMonthlyDecrease
       if (indicator.nonfarmPayroll && lastIndicator.nonfarmPayroll) {
         const lastNofarmPayrollIncrease = lastIndicator.nonfarmPayrollMonthlyIncrease || 0
-        nofarmPayrollIncrease = indicator.nonfarmPayroll > lastIndicator.nonfarmPayroll ? lastNofarmPayrollIncrease + 1 : 0
+        nofarmPayrollIncrease = indicator.nonfarmPayroll > lastIndicator.nonfarmPayroll
+          ? lastNofarmPayrollIncrease + 1
+          : 0
         const lastNofarmPayrollDecrease = lastIndicator.nonfarmPayrollMonthlyDecrease || 0
-        nofarmPayrollDecrease = indicator.nonfarmPayroll < lastIndicator.nonfarmPayroll ? lastNofarmPayrollDecrease + 1 : 0
+        nofarmPayrollDecrease = indicator.nonfarmPayroll < lastIndicator.nonfarmPayroll
+          ? lastNofarmPayrollDecrease + 1
+          : 0
       }
 
       const hasUpdate = fundsRateIncrease !== indicator.fundsRateMonthlyIncrease ||
