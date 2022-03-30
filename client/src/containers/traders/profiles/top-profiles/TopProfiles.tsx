@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
 import useTraderState from '../../../../states/useTraderState'
 import TopProfileList from './TopProfileList'
+import * as commonEnum from '../../../../enums/common'
 import * as localeTool from '../../../../tools/locale'
 
 const TopProfiles = () => {
-  const { topProfiles, fetchTopProfiles } = useTraderState()
+  const { getTopProfiles, fetchTopProfiles } = useTraderState()
+
+  const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
 
   useEffect(() => {
     if (topProfiles) return
-    fetchTopProfiles()
+    fetchTopProfiles(commonEnum.OVERALL_ENV_ID)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topProfiles])
 
@@ -17,29 +20,29 @@ const TopProfiles = () => {
   return (
     <>
       <TopProfileList
-        title={localeTool.t('top.yearly.title')}
+        title={localeTool.t('bestReturn.yearlyTitle')}
         focusType='YEARLY'
-        profiles={topProfiles.yearly}
+        traderIds={topProfiles.yearly}
       />
       <TopProfileList
-        title={localeTool.t('top.pastYear.title')}
+        title={localeTool.t('bestReturn.pastYearTitle')}
         focusType='PAST_YEAR'
-        profiles={topProfiles.pastYear}
+        traderIds={topProfiles.pastYear}
       />
       <TopProfileList
-        title={localeTool.t('top.pastQuarter.title')}
+        title={localeTool.t('bestReturn.pastQuarterTitle')}
         focusType='PAST_QUARTER'
-        profiles={topProfiles.pastQuarter}
+        traderIds={topProfiles.pastQuarter}
       />
       <TopProfileList
-        title={localeTool.t('top.pastMonth.title')}
+        title={localeTool.t('bestReturn.pastMonthTitle')}
         focusType='PAST_MONTH'
-        profiles={topProfiles.pastMonth}
+        traderIds={topProfiles.pastMonth}
       />
       <TopProfileList
-        title={localeTool.t('top.pastWeek.title')}
+        title={localeTool.t('bestReturn.pastWeekTitle')}
         focusType='PAST_WEEK'
-        profiles={topProfiles.pastWeek}
+        traderIds={topProfiles.pastWeek}
       />
     </>
   )

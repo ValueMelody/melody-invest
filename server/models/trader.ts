@@ -86,57 +86,58 @@ export const getInPKs = async (
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getTops = async (total: number): Promise<Tops> => {
-  const eachNumber = Math.floor(total / 5)
+export const getTops = async (envId: number | null, each: number): Promise<Tops> => {
+  const conditions: databaseAdapter.Condition[] = [{ key: 'isActive', value: true }]
+  if (envId) conditions.push({ key: 'traderEnvId', value: envId })
 
   const topYearly = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
     conditions: [
-      { key: 'isActive', value: true },
+      ...conditions,
       { key: 'yearlyPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'yearlyPercentNumber', order: 'desc' }],
-    limit: eachNumber,
+    limit: each,
   })
 
   const topPastYear = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
     conditions: [
-      { key: 'isActive', value: true },
+      ...conditions,
       { key: 'pastYearPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastYearPercentNumber', order: 'desc' }],
-    limit: eachNumber,
+    limit: each,
   })
 
   const topPastQuarter = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
     conditions: [
-      { key: 'isActive', value: true },
+      ...conditions,
       { key: 'pastQuarterPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastQuarterPercentNumber', order: 'desc' }],
-    limit: eachNumber,
+    limit: each,
   })
 
   const topPastMonth = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
     conditions: [
-      { key: 'isActive', value: true },
+      ...conditions,
       { key: 'pastMonthPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastMonthPercentNumber', order: 'desc' }],
-    limit: eachNumber,
+    limit: each,
   })
 
   const topPastWeek = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
     conditions: [
-      { key: 'isActive', value: true },
+      ...conditions,
       { key: 'pastWeekPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastWeekPercentNumber', order: 'desc' }],
-    limit: eachNumber,
+    limit: each,
   })
 
   return {

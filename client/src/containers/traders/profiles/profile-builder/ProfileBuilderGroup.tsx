@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import { Segment } from 'semantic-ui-react'
-import BehaviorEditor from '../elements/BehaviorEditor'
+import BehaviorEditor from '../../elements/BehaviorEditor'
 
 const useStyles = createUseStyles({
   segment: {

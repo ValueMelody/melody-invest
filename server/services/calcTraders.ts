@@ -31,7 +31,7 @@ interface Target {
 }
 
 interface Targets {
-  [key: number]: Target
+  [tickerId: number]: Target
 }
 
 const getHoldingValue = (
@@ -127,7 +127,8 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
       const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent
 
-      const shouldRebalance = pattern.rebalanceFrequency && dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
+      const shouldRebalance = pattern.rebalanceFrequency &&
+        dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
       const detailsBeforeRebalance: HoldingDetails = {
         totalValue: detailsAfterUpdate.totalValue,
         totalCash: detailsAfterUpdate.totalCash,
@@ -201,10 +202,12 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+            pattern, first.daily, first.quarterly, first.yearly,
+            first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
           )
           const secondWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+            pattern, second.daily, second.quarterly, second.yearly,
+            second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
@@ -280,10 +283,12 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, first.daily, first.quarterly, first.yearly, first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+            pattern, first.daily, first.quarterly, first.yearly,
+            first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
           )
           const secondWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, second.daily, second.quarterly, second.yearly, second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+            pattern, second.daily, second.quarterly, second.yearly,
+            second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
@@ -402,7 +407,7 @@ export const calcAllTradersPerformance = async () => {
 }
 
 export const calcDescendant = async (): Promise<interfaces.traderModel.Record[]> => {
-  const tops = await traderModel.getTops(30)
+  const tops = await traderModel.getTops(null, 30)
   const topTraders = [
     ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
   ]

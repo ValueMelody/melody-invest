@@ -8,7 +8,7 @@ import useTraderState from '../../../states/useTraderState'
 import * as localeTool from '../../../tools/locale'
 import * as routerEnum from '../../../enums/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
-import ProfileCard from './blocks/ProfileCard'
+import ProfileCard from '../blocks/ProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
@@ -53,6 +53,11 @@ const ProfileDashboard = () => {
     navigate(link)
   }
 
+  const handleClickEnv = (envId: number) => {
+    const link = `${routerEnum.NAV.TRADERS}/envs/${envId}`
+    navigate(link)
+  }
+
   if (!userTraderIds) return null
 
   return (
@@ -71,31 +76,24 @@ const ProfileDashboard = () => {
             {localeTool.t('common.build')}
           </Button>
         </div>
-        {userTraderIds.map((traderId) => {
-          const profile = getTraderProfile(traderId)
-          if (!profile) return null
-          return (
-            <ProfileCard
-              key={traderId}
-              trader={profile.trader}
-              pattern={profile.pattern}
-              onClick={handleClickRow}
-            />
-          )
-        })}
+        {userTraderIds.map((traderId) => (
+          <ProfileCard
+            key={traderId}
+            profile={getTraderProfile(traderId)}
+            onClick={handleClickRow}
+          />
+        ))}
       </div>
       <div className={classes.right}>
         <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
-        {traderEnvIds.map((envId) => {
-          const traderEnv = getTraderEnv(envId)!
-          return (
-            <TraderEnvCard
-              key={traderEnv.id}
-              traderEnv={traderEnv}
-              isActive={false}
-            />
-          )
-        })}
+        {traderEnvIds.map((envId) => (
+          <TraderEnvCard
+            key={envId}
+            traderEnv={getTraderEnv(envId)}
+            isActive={false}
+            onClick={handleClickEnv}
+          />
+        ))}
         <div className={classNames('row-center', classes.card)}>
           <Button
             icon

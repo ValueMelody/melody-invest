@@ -1,7 +1,7 @@
 import { MouseEvent } from 'react'
 import { Button, Icon } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
-import * as localeTool from '../../../../tools/locale'
+import * as localeTool from '../../../tools/locale'
 
 const useStyles = createUseStyles(({
   action: {

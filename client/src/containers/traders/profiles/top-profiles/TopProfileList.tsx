@@ -4,8 +4,9 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as routerEnum from '../../../../enums/router'
-import ProfileCard from '../blocks/ProfileCard'
-import { FocusType } from '../elements/TraderPerformance'
+import useTraderState from '../../../../states/useTraderState'
+import ProfileCard from '../../blocks/ProfileCard'
+import { FocusType } from '../../elements/TraderPerformance'
 
 const useStyles = createUseStyles(({
   container: {
@@ -27,14 +28,16 @@ const useStyles = createUseStyles(({
 const TopProfileList = ({
   title,
   focusType,
-  profiles,
+  traderIds,
 }: {
   title: string;
   focusType: FocusType;
-  profiles: interfaces.traderRes.TraderProfile[];
+  traderIds: number[];
 }) => {
   const classes = useStyles()
   const navigate = useNavigate()
+
+  const { getTraderProfile } = useTraderState()
 
   const handleClick = (
     trader: interfaces.traderModel.Record,
@@ -47,11 +50,10 @@ const TopProfileList = ({
     <Segment className={classes.container}>
       <h2 className={classes.title}>{title}</h2>
       <section className={classNames('row-start', classes.section)} >
-        {profiles.map(({ trader, pattern }) => (
-          <div key={trader.id} className={classes.card}>
+        {traderIds.map((traderId) => (
+          <div key={traderId} className={classes.card}>
             <ProfileCard
-              trader={trader}
-              pattern={pattern}
+              profile={getTraderProfile(traderId)}
               onClick={handleClick}
               focusType={focusType}
             />

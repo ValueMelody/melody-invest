@@ -45,12 +45,13 @@
     "dashboard.buildDesc": "Build a new profile",
     "dashboard.newDesc": "Build a new environment",
 
-    "top.title": "Top Profiles",
-    "top.yearly.title": "All Time",
-    "top.pastYear.title": "Past year",
-    "top.pastQuarter.title": "Past Quarter",
-    "top.pastMonth.title": "Past Month",
-    "top.pastWeek.title": "Past Week",
+    "topProfiles.title": "Top Profiles",
+
+    "bestReturn.yearlyTitle": "Best in Annual Return",
+    "bestReturn.pastYearTitle": "Best in One Year Return",
+    "bestReturn.pastQuarterTitle": "Best in One Quarter Return",
+    "bestReturn.pastMonthTitle": "Best in One Month Return",
+    "bestReturn.pastWeekTitle": "Best in One Week Return",
 
     "profile.history": "Holding History",
     "profile.noResultYet": "There's no result generated for this profile yet",
@@ -81,6 +82,7 @@
     "traderEnv.allTickers": "Trade based on all stocks available",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",
+    "traderEnv.noResultYet": "There's no result generated for this environment yet",
 
     "traderEnvName.default" : "Default",
     "traderEnvName.topTech" : "Top Tech",
