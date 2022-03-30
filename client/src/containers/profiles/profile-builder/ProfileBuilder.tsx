@@ -10,8 +10,8 @@ import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from '../elements/BehaviorEditor'
 import TraderEnvCard from '../elements/TraderEnvCard'
-import useSystemState from '../../../states/useSystemState'
 import useTraderState from '../../../states/useTraderState'
+import useUserState from '../../../states/useUserState'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 
 const useStyles = createUseStyles(({
@@ -50,7 +50,7 @@ const ProfileBuilder = () => {
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
-  const { systemTraderEnvIds } = useSystemState()
+  const { userTraderEnvIds } = useUserState()
   const { createTraderProfile, getTraderEnv } = useTraderState()
 
   const BUY_GROUPS = [
@@ -332,7 +332,7 @@ const ProfileBuilder = () => {
       </Segment.Group>
       <h4>{localeTool.t('common.envs')}:</h4>
       <div className='row-start'>
-        {systemTraderEnvIds.map((traderEnvId) => {
+        {userTraderEnvIds.map((traderEnvId) => {
           const traderEnv = getTraderEnv(traderEnvId)!
           return (
             <TraderEnvCard

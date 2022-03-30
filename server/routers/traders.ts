@@ -38,8 +38,18 @@ tradersRouter.get('/:id/:access_code/detail', async (req, res) => {
 tradersRouter.post('/', authMiddleware.normalUser, async (req, res) => {
   const traderEnvId = req.body.traderEnvId
   const traderPattern = req.body.traderPattern
-  const auth: interfaces.common.Auth = req.body.auth
+  const auth: interfaces.reqs.Auth = req.body.auth
 
   const trader = await crudTraders.createTrader(auth.id, traderEnvId, traderPattern)
   return res.status(201).send(trader)
+})
+
+tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
+  const { name, startDate, tickerIds }: interfaces.reqs.TraderEnvCreation = req.body
+  const auth: interfaces.reqs.Auth = req.body.auth
+
+  const traderEnv = await crudTraders.createTraderEnv(
+    auth.id, name, startDate, tickerIds,
+  )
+  return res.status(201).send(traderEnv)
 })

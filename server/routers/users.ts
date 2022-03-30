@@ -47,7 +47,7 @@ usersRouter.post('/', async (req, res) => {
 })
 
 usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
-  const auth: interfaces.common.Auth = req.body.auth
+  const auth: interfaces.reqs.Auth = req.body.auth
   const overall = await crudUsers.getUserOverall(auth.id)
   return res.status(200).send(overall)
 })
@@ -60,7 +60,7 @@ usersRouter.post('/traders/:trader_id', authMiddleware.normalUser, async (req, r
   const traderId = parseInt(req.params.trader_id)
   validTraderId(traderId)
 
-  const auth: interfaces.common.Auth = req.body.auth
+  const auth: interfaces.reqs.Auth = req.body.auth
   await crudTraders.createFollowedTrader(auth.id, traderId)
   return res.status(201).send()
 })
@@ -69,7 +69,7 @@ usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req,
   const traderId = parseInt(req.params.trader_id)
   validTraderId(traderId)
 
-  const auth: interfaces.common.Auth = req.body.auth
+  const auth: interfaces.reqs.Auth = req.body.auth
   await crudTraders.deleteFollowedTrader(auth.id, traderId)
   return res.status(204).send()
 })
@@ -81,7 +81,7 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
   validPassword(currentPassword)
   validPassword(newPassword)
 
-  const auth: interfaces.common.Auth = req.body.auth
+  const auth: interfaces.reqs.Auth = req.body.auth
   await crudUsers.updatePassword(auth.id, currentPassword, newPassword)
   return res.status(204).send()
 })

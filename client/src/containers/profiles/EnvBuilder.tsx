@@ -1,11 +1,12 @@
 import { useState, SyntheticEvent, ChangeEvent, FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import DatePicker from 'react-datepicker'
 import { Input, Checkbox, Dropdown, DropdownProps, Button } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
-import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../tools/locale'
+import * as routerEnum from '../../enums/router'
 import RequiredLabel from '../elements/RequiredLabel'
 import useTickerState from '../../states/useTickerState'
 import useTraderState from '../../states/useTraderState'
@@ -20,12 +21,18 @@ const useStyles = createUseStyles(({
   },
 }))
 
-const parseDateString = (date: string): interfaces.common.Date => {
+interface PlainDate {
+  year: number;
+  month: number;
+  day: number;
+}
+
+const parseDateString = (date: string): PlainDate => {
   const dateDetails = date.split('-').map((detail) => parseInt(detail))
   return { year: dateDetails[0], month: dateDetails[1], day: dateDetails[2] }
 }
 
-const getDateFromString = (date: interfaces.common.Date): Date => {
+const getDateFromString = (date: PlainDate): Date => {
   return new Date(date.year, date.month - 1, date.day)
 }
 
@@ -34,6 +41,7 @@ const minDate = getDateFromString(initialDate)
 
 const EnvBuilder = () => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
@@ -76,7 +84,11 @@ const EnvBuilder = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    await createTraderEnv(envName, startDate, tickerIds)
+    const result = await createTraderEnv(envName, startDate, tickerIds)
+    if (result) {
+      const link = `${routerEnum.NAV.DASHBOARD}`
+      navigate(link)
+    }
   }
 
   return (

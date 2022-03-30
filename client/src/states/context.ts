@@ -21,7 +21,7 @@ export interface Resources {
   topProfiles: interfaces.traderRes.TopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
-  systemTraderEnvIds: number[];
+  userTraderEnvIds: number[];
   userType: number;
   userEmail: string,
 }

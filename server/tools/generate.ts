@@ -26,7 +26,7 @@ export const buildActivationCode = (): string => {
 }
 
 export const encodeJWT = (
-  auth: interfaces.common.Auth, expiresIn: '12h' | '30d',
+  auth: interfaces.reqs.Auth, expiresIn: '12h' | '30d',
 ): string => {
   const jwtToken = jwt.sign(
     auth, process.env.TOKEN_SECRET!, { expiresIn },
@@ -34,7 +34,7 @@ export const encodeJWT = (
   return jwtToken
 }
 
-export const decodeJWT = (token: string): interfaces.common.Auth | null => {
+export const decodeJWT = (token: string): interfaces.reqs.Auth | null => {
   const payload = jwt.verify(token, process.env.TOKEN_SECRET!)
   const id = typeof payload === 'object' && payload.id
   const email = typeof payload === 'object' && payload.email

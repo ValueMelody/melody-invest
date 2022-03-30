@@ -48,6 +48,7 @@ export const traderEnvName = (
   traderEnv: interfaces.traderEnvModel.Record | null,
 ) => {
   if (!traderEnv) return ''
+  if (!traderEnv.isSystem) return traderEnv.name
   return traderEnv.name ? localeTool.t(`traderEnvName.${traderEnv.name}`) : ''
 }
 
