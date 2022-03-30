@@ -5,7 +5,6 @@ import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
 import useTraderState from '../../states/useTraderState'
 import useTickerState from '../../states/useTickerState'
-import useTraderEnvState from '../../states/useTraderEnvState'
 import * as routerEnum from '../../enums/router'
 import * as localeTool from '../../tools/locale'
 import * as parseTool from '../../tools/parse'
@@ -19,10 +18,10 @@ const useStyles = createUseStyles(({
     alignItems: 'flex-start',
   },
   left: {
-    width: '26rem',
+    width: '28rem',
   },
   holdings: {
-    width: 'calc(100% - 30rem)',
+    width: 'calc(100% - 32rem)',
     minWidth: '38rem',
   },
   value: {
@@ -40,10 +39,11 @@ const ProfileDetail = () => {
   const navigate = useNavigate()
   const classes = useStyles()
   const {
-    getTraderProfile, fetchTraderProfile, getProfileDetail, fetchProfileDetail,
+    getTraderProfile, getTraderEnv, getProfileDetail,
+    fetchTraderProfile, fetchProfileDetail,
   } = useTraderState()
-  const { getTraderEnv } = useTraderEnvState()
-  const { tickerIdentities, fetchTickerIdentities } = useTickerState()
+  const { getTickerIdentity } = useTickerState()
+
   const [showAllHoldings, setShowAllHoldings] = useState(false)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
@@ -72,12 +72,6 @@ const ProfileDetail = () => {
     fetchProfileDetail(traderId!, accessCode!)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileDetail])
-
-  useEffect(() => {
-    if (tickerIdentities) return
-    fetchTickerIdentities()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tickerIdentities])
 
   const handleClickShowAll = () => setShowAllHoldings(true)
 
@@ -111,7 +105,7 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <h3>{localeTool.t('profile.history')}</h3>
+        <h2>{localeTool.t('profile.history')}</h2>
         {!displayedHoldings.length && (
           <Segment>{localeTool.t('profile.noResultYet')}</Segment>
         )}
@@ -141,13 +135,17 @@ const ProfileDetail = () => {
               )}
             </div>
             <Divider />
-            {holding.holdings.map((tickerHolding) => (
-              <HoldingShare
-                key={tickerHolding.tickerId}
-                tickerHolding={tickerHolding}
-                previousHoldings={holdings[index + 1]?.holdings}
-              />
-            ))}
+            {holding.holdings.map((tickerHolding) => {
+              const identity = getTickerIdentity(tickerHolding.tickerId)
+              return (
+                <HoldingShare
+                  key={tickerHolding.tickerId}
+                  tickerIdentity={identity}
+                  tickerHolding={tickerHolding}
+                  previousHoldings={holdings[index + 1]?.holdings}
+                />
+              )
+            })}
           </Segment>
         ))}
         {!showAllHoldings && displayedHoldings.length !== holdings.length && (

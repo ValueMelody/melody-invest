@@ -7,7 +7,6 @@ import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
 import systemRouter from './routers/system'
 import usersRouter from './routers/users'
-import tickersRouter from './routers/tickers'
 import tradersRouter from './routers/traders'
 import * as errorEnum from './enums/error'
 
@@ -27,7 +26,6 @@ app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)
 app.use('/system', systemRouter)
 app.use('/users', usersRouter)
-app.use('/tickers', tickersRouter)
 app.use('/traders', tradersRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {

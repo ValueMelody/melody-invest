@@ -5,18 +5,29 @@ import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useUserState from '../../states/useUserState'
 import useTraderState from '../../states/useTraderState'
+import useSystemState from '../../states/useSystemState'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 import ProfileCard from './blocks/ProfileCard'
+import TraderEnvCard from './elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
+  container: {
+    alignItems: 'flex-start',
+  },
   header: {
     marginBottom: '1rem',
   },
-  profiles: {
-    width: '60%',
-    minWidth: '26rem',
+  left: {
+    width: 'calc(100% - 32rem)',
+    minWidth: '28rem',
+  },
+  right: {
+    width: '28rem',
+  },
+  card: {
+    width: 290,
   },
 }))
 
@@ -26,10 +37,15 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { userTraderIds } = useUserState()
-  const { getTraderProfile } = useTraderState()
+  const { getTraderProfile, getTraderEnv } = useTraderState()
+  const { systemTraderEnvIds } = useSystemState()
 
-  const handleClickBuild = () => {
+  const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
+  }
+
+  const handleClickAddEnv = () => {
+    navigate(`${routerEnum.NAV.PROFILES}/envs/build`)
   }
 
   const handleClickRow = (trader: interfaces.traderModel.Record) => {
@@ -40,15 +56,15 @@ const ProfileDashboard = () => {
   if (!userTraderIds) return null
 
   return (
-    <div className='row-between'>
-      <div className={classes.profiles}>
+    <div className={classNames('row-between', classes.container)}>
+      <div className={classes.left}>
         <div className={classNames('row-between', classes.header)}>
-          <h3>{localeTool.t('dashboard.watchedProfiles')}:</h3>
+          <h2>{localeTool.t('dashboard.watchedProfiles')}:</h2>
           <Button
             icon
             labelPosition='left'
             color='blue'
-            onClick={handleClickBuild}
+            onClick={handleClickBuildProfile}
             title={localeTool.t('dashboard.buildDesc')}
           >
             <Icon name='cogs' />
@@ -67,6 +83,31 @@ const ProfileDashboard = () => {
             />
           )
         })}
+      </div>
+      <div className={classes.right}>
+        <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
+        {systemTraderEnvIds.map((envId) => {
+          const traderEnv = getTraderEnv(envId)!
+          return (
+            <TraderEnvCard
+              key={traderEnv.id}
+              traderEnv={traderEnv}
+              isActive={false}
+            />
+          )
+        })}
+        <div className={classNames('row-center', classes.card)}>
+          <Button
+            icon
+            labelPosition='left'
+            color='blue'
+            onClick={handleClickAddEnv}
+            title={localeTool.t('dashboard.newDesc')}
+          >
+            <Icon name='plus' />
+            {localeTool.t('common.new')}
+          </Button>
+        </div>
       </div>
     </div>
   )

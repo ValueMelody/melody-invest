@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss'
 import * as localeTool from '../../tools/locale'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
-import RequiredLabel from './elements/RequiredLabel'
+import RequiredLabel from '../elements/RequiredLabel'
 import useAccountInterface from './hooks/useAccountInterface'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 

@@ -1,8 +1,11 @@
-export interface Record {
+export interface Identity {
   id: number;
   symbol: string;
   region: string;
   name: string;
+}
+
+export interface Record extends Identity {
   firstPriceDate: string | null;
   lastPriceDate: string | null;
   firstEPSYear: string | null;

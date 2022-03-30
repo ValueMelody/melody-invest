@@ -4,6 +4,7 @@ export interface Theme {
   INCREASE_COLOR: 'green' | 'red';
   DECREASE_COLOR: 'green' | 'red';
   SPACING: number;
+  BORDER_RADIUS: number;
 }
 
 export const BASIC: Theme = {
@@ -12,6 +13,7 @@ export const BASIC: Theme = {
   INCREASE_COLOR: 'green',
   DECREASE_COLOR: 'red',
   SPACING: 16,
+  BORDER_RADIUS: 4,
 }
 
 export const theme = process.env.REACT_APP_THEME === 'basic' ? BASIC : BASIC

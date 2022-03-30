@@ -14,6 +14,7 @@
     "common.watch": "Watch",
     "common.unwatch": "Unwatch",
     "common.build": "Build",
+    "common.new": "New",
     "common.numSelected": "{{num}} selected",
     "common.envs": "Environments",
 
@@ -32,13 +33,16 @@
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
     "signUp.terms": "By using valuemelody.com, you are agreeing to our terms and conditions.",
+
     "signIn.remember": "Remember for one month",
     "signIn.button": "Sign In",
     "signIn.title": "Sign In",
 
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",
-    "dashboard.buildDesc": "Build a new pattern",
+    "dashboard.watchedEnvs": "Watched Environments",
+    "dashboard.buildDesc": "Build a new profile",
+    "dashboard.newDesc": "Build a new environment",
 
     "top.title": "Top Profiles",
     "top.yearly.title": "All Time",
@@ -48,11 +52,11 @@
     "top.pastWeek.title": "Past Week",
 
     "profile.history": "Holding History",
-    "profile.noResultYet": "There's no result generated for this pattern yet",
+    "profile.noResultYet": "There's no result generated for this profile yet",
     "profile.value.increased": "Total value increased compare to previous",
     "profile.value.decreased": "Total value decreased compare to previous",
 
-    "profileBuilder.title": "Pattern Builder",
+    "profileBuilder.title": "Profile Builder",
     "profileBuilder.requireOne": "Please config one or multiple of the following behaviors",
     "profileBuilder.requireAll": "Please config all of the following behaviors",
     "profileBuilder.buyBehaviors": "Buy Criterion",
@@ -63,8 +67,17 @@
     "profileBuilder.select": "Select a behavior",
     "profileBuilder.confirm": "Confirm and start watch",
 
+    "envBuilder.title": "Environment Builder",
+    "envBuilder.startDate": "Trade Start Date",
+    "envBuilder.startDateDesc": "Profiles in this env will only start trading after the selected start date",
+    "envBuilder.allTickers": "Trade All Stocks",
+    "envBuilder.targetTickers": "Target Stocks",
+    "envBuilder.targetTickersDesc": "Only trade selected stocks",
+    "envBuilder.name": "Environment Name",
+    "envBuilder.confirm": "Confirm and start watch",
+
     "traderEnv.startAt": "Start at {{date}}",
-    "traderEnv.allTickers": "Trade based on all stocks available",
+    "traderEnv.allTickers": "Trade based on all stocks available on our platform",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
 
     "traderEnvName.default" : "Default",
