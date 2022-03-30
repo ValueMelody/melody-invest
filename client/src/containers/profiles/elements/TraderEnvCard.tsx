@@ -1,7 +1,8 @@
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
-import { Card } from 'semantic-ui-react'
+import { Card, Label } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
+import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
 import * as parseTool from '../../../tools/parse'
 
@@ -36,11 +37,25 @@ const TraderEnvCard = ({
       className={classNames(classes.container, {
         [classes.isActive]: isActive,
       })}
-      header={parseTool.traderEnvName(traderEnv)}
-      meta={parseTool.traderEnvStartDate(traderEnv)}
-      description={parseTool.traderEnvTickers(traderEnv)}
       onClick={handleClickEnv}
-    />
+    >
+      <Card.Content>
+        <Card.Header
+          content={(
+            <div className='row-between'>
+              {parseTool.traderEnvName(traderEnv)}
+              {traderEnv.isSystem && (
+                <Label title={localeTool.t('traderEnv.systemDesc')}>
+                  {localeTool.t('common.system')}
+                </Label>
+              )}
+            </div>
+          )}
+        />
+        <Card.Meta content={parseTool.traderEnvStartDate(traderEnv)} />
+        <Card.Description content={parseTool.traderEnvTickers(traderEnv)} />
+      </Card.Content>
+    </Card>
   )
 }
 

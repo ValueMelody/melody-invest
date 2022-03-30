@@ -18,6 +18,19 @@ export const getByUK = async (
   return record
 }
 
+export const getUserFollowed = async (
+  userId: number,
+): Promise<interfaces.traderEnvFollowerModel.Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER_ENV_FOLLOWER,
+    conditions: [
+      { key: 'userId', value: userId },
+    ],
+    orderBy: [{ column: 'traderEnvId', order: 'asc' }],
+  })
+  return records
+}
+
 export const create = async (
   values: interfaces.traderEnvFollowerModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderEnvFollowerModel.Record> => {

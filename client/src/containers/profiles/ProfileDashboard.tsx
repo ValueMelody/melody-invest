@@ -38,6 +38,8 @@ const ProfileDashboard = () => {
   const { userTraderIds, userTraderEnvIds } = useUserState()
   const { getTraderProfile, getTraderEnv } = useTraderState()
 
+  const traderEnvIds = [...userTraderEnvIds].reverse()
+
   const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
   }
@@ -84,7 +86,7 @@ const ProfileDashboard = () => {
       </div>
       <div className={classes.right}>
         <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
-        {userTraderEnvIds.map((envId) => {
+        {traderEnvIds.map((envId) => {
           const traderEnv = getTraderEnv(envId)!
           return (
             <TraderEnvCard

@@ -19,6 +19,9 @@ const useStyles = createUseStyles(({
   confirmButton: {
     marginTop: '2rem !important',
   },
+  dropdown: {
+    width: 205,
+  },
 }))
 
 interface PlainDate {
@@ -126,6 +129,7 @@ const EnvBuilder = () => {
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
           <Dropdown
+            className={classes.dropdown}
             multiple
             search
             selection

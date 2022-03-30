@@ -39,12 +39,12 @@ export const getByUK = async (
 export const create = async (
   values: interfaces.traderEnvModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderEnvModel.Record> => {
-  const pattern = await databaseAdapter.create({
+  const env = await databaseAdapter.create({
     tableName: tableEnum.NAME.TRADER_ENV,
     values,
     transaction,
   })
-  return pattern
+  return convertToRecord(env)
 }
 
 export const createIfEmpty = async (
@@ -60,6 +60,18 @@ export const getSystemDefined = async (): Promise<interfaces.traderEnvModel.Reco
     tableName: tableEnum.NAME.TRADER_ENV,
     conditions: [
       { key: 'isSystem', value: true },
+    ],
+  })
+  return envs.map((env) => convertToRecord(env))
+}
+
+export const getInPKs = async (
+  ids: number[],
+): Promise<interfaces.traderEnvModel.Record[]> => {
+  const envs = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER_ENV,
+    conditions: [
+      { key: 'id', value: ids, type: 'IN' },
     ],
   })
   return envs.map((env) => convertToRecord(env))
