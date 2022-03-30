@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import useTraderState from '../../../states/useTraderState'
+import useTraderState from '../../../../states/useTraderState'
 import TopProfileList from './TopProfileList'
-import * as localeTool from '../../../tools/locale'
+import * as localeTool from '../../../../tools/locale'
 
 const TopProfiles = () => {
   const { topProfiles, fetchTopProfiles } = useTraderState()

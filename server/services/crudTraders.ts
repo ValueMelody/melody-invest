@@ -9,7 +9,7 @@ import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 import * as presentTool from '../tools/present'
 
-export const getTraderStat = async (
+export const getTraderProfile = async (
   id: number, accessCode: string,
 ): Promise<interfaces.traderRes.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
@@ -47,7 +47,7 @@ export const getProfileDetail = async (
   }
 }
 
-export const getTopPatterns = async (): Promise<interfaces.traderRes.TopProfiles> => {
+export const getTopProfiles = async (): Promise<interfaces.traderRes.TopProfiles> => {
   const tops = await traderModel.getTops(15)
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatternIds = topTraders.map((trader) => trader.traderPatternId)
@@ -92,7 +92,7 @@ export const deleteFollowedTrader = async (
   }
 }
 
-export const createTrader = async (
+export const createTraderProfile = async (
   userId: number,
   traderEnvId: number,
   traderPattern: interfaces.traderPatternModel.Create,
@@ -117,6 +117,20 @@ export const createTrader = async (
     await transaction.rollback()
     throw error
   }
+}
+
+export const getTraderEnv = async (
+  userId: number, envId: number,
+): Promise<interfaces.traderEnvModel.Record> => {
+  const env = await traderEnvModel.getByPK(envId)
+  if (!env) throw errorEnum.DEFAULT.NOT_FOUND
+
+  const envFollower = await traderEnvFollowerModel.getByUK(userId, envId)
+  if (!envFollower && !env.isSystem) throw errorEnum.DEFAULT.NOT_FOUND
+
+  const name = envFollower && !env.isSystem ? envFollower.name : env.name
+
+  return { ...env, name }
 }
 
 export const createTraderEnv = async (

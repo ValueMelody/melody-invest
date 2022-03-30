@@ -2,8 +2,8 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { Card, Label } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
+import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({

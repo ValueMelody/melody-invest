@@ -3,13 +3,13 @@ import { createUseStyles } from 'react-jss'
 import { Button, Icon } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import useUserState from '../../states/useUserState'
-import useTraderState from '../../states/useTraderState'
-import * as localeTool from '../../tools/locale'
-import * as routerEnum from '../../enums/router'
-import usePrivateGuard from '../hooks/usePrivateGuard'
+import useUserState from '../../../states/useUserState'
+import useTraderState from '../../../states/useTraderState'
+import * as localeTool from '../../../tools/locale'
+import * as routerEnum from '../../../enums/router'
+import usePrivateGuard from '../../hooks/usePrivateGuard'
 import ProfileCard from './blocks/ProfileCard'
-import TraderEnvCard from './elements/TraderEnvCard'
+import TraderEnvCard from '../elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
   container: {
@@ -41,15 +41,15 @@ const ProfileDashboard = () => {
   const traderEnvIds = [...userTraderEnvIds].reverse()
 
   const handleClickBuildProfile = () => {
-    navigate(`${routerEnum.NAV.PROFILES}/build`)
+    navigate(`${routerEnum.NAV.TRADERS}/profiles/build`)
   }
 
   const handleClickAddEnv = () => {
-    navigate(`${routerEnum.NAV.PROFILES}/envs/build`)
+    navigate(`${routerEnum.NAV.TRADERS}/envs/build`)
   }
 
   const handleClickRow = (trader: interfaces.traderModel.Record) => {
-    const link = `${routerEnum.NAV.PROFILES}/${trader.id}/${trader.accessCode}`
+    const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
     navigate(link)
   }
 

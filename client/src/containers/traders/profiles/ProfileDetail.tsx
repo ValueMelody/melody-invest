@@ -3,15 +3,15 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Button, Divider, Label, Segment } from 'semantic-ui-react'
-import useTraderState from '../../states/useTraderState'
-import useTickerState from '../../states/useTickerState'
-import * as routerEnum from '../../enums/router'
-import * as localeTool from '../../tools/locale'
-import * as parseTool from '../../tools/parse'
+import useTraderState from '../../../states/useTraderState'
+import useTickerState from '../../../states/useTickerState'
+import * as routerEnum from '../../../enums/router'
+import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
 import ProfileCard from './blocks/ProfileCard'
 import ValueDiffer from './elements/ValueDiffer'
 import HoldingShare from './elements/HoldingShare'
-import TraderEnvCard from './elements/TraderEnvCard'
+import TraderEnvCard from '../elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
   container: {
@@ -38,6 +38,7 @@ const ProfileDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
   const classes = useStyles()
+
   const {
     getTraderProfile, getTraderEnv, getProfileDetail,
     fetchTraderProfile, fetchProfileDetail,
@@ -48,8 +49,10 @@ const ProfileDetail = () => {
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
+
   const traderProfile = getTraderProfile(traderId)
   const profileDetail = getProfileDetail(traderId)
+
   const traderEnv = traderProfile?.trader && getTraderEnv(traderProfile.trader.traderEnvId)
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
@@ -76,7 +79,7 @@ const ProfileDetail = () => {
   const handleClickShowAll = () => setShowAllHoldings(true)
 
   const handleClickEnv = (traderId: number, accessCode: string) => {
-    const link = `${routerEnum.NAV.PROFILES}/${traderId}/${accessCode}`
+    const link = `${routerEnum.NAV.TRADERS}/profiles/${traderId}/${accessCode}`
     navigate(link)
   }
 

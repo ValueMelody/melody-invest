@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as themeEnum from '../../../enums/theme'
+import * as themeEnum from '../../../../enums/theme'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = createUseStyles({

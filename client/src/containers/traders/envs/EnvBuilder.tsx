@@ -5,11 +5,11 @@ import { Input, Checkbox, Dropdown, DropdownProps, Button } from 'semantic-ui-re
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as constants from '@shared/constants'
-import * as localeTool from '../../tools/locale'
-import * as routerEnum from '../../enums/router'
-import RequiredLabel from '../elements/RequiredLabel'
-import useTickerState from '../../states/useTickerState'
-import useTraderState from '../../states/useTraderState'
+import * as localeTool from '../../../tools/locale'
+import * as routerEnum from '../../../enums/router'
+import RequiredLabel from '../../elements/RequiredLabel'
+import useTickerState from '../../../states/useTickerState'
+import useTraderState from '../../../states/useTraderState'
 
 const useStyles = createUseStyles(({
   row: {

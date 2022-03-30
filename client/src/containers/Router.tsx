@@ -3,11 +3,12 @@ import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
 import Layout from './layouts/Layout'
-import TopProfiles from './profiles/top-profiles/TopProfiles'
-import ProfileDetail from './profiles/ProfileDetail'
-import ProfileDashboard from './profiles/ProfileDashboard'
-import ProfileBuilder from './profiles/profile-builder/ProfileBuilder'
-import EnvBuilder from './profiles/EnvBuilder'
+import TopProfiles from './traders/profiles/top-profiles/TopProfiles'
+import ProfileDetail from './traders/profiles/ProfileDetail'
+import ProfileDashboard from './traders/profiles/ProfileDashboard'
+import ProfileBuilder from './traders/profiles/profile-builder/ProfileBuilder'
+import EnvBuilder from './traders/envs/EnvBuilder'
+import EnvDetail from './traders/envs/EnvDetail'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -16,20 +17,24 @@ const Router = () => {
       <Layout>
         <Routes>
           <Route
-            path={routerEnum.NAV.TOP_PROFILES}
+            path={`${routerEnum.NAV.TRADERS}/profiles/tops`}
             element={<TopProfiles />}
           />
           <Route
-            path={`${routerEnum.NAV.PROFILES}/:traderId/:accessCode`}
+            path={`${routerEnum.NAV.TRADERS}/profiles/:traderId/:accessCode`}
             element={<ProfileDetail />}
           />
           <Route
-            path={`${routerEnum.NAV.PROFILES}/build`}
+            path={`${routerEnum.NAV.TRADERS}/profiles/build`}
             element={<ProfileBuilder />}
           />
           <Route
-            path={`${routerEnum.NAV.PROFILES}/envs/build`}
+            path={`${routerEnum.NAV.TRADERS}/envs/build`}
             element={<EnvBuilder />}
+          />
+          <Route
+            path={`${routerEnum.NAV.TRADERS}/envs/:envId`}
+            element={<EnvDetail />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}

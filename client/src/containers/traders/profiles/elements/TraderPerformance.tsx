@@ -2,9 +2,9 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { Menu, Header, Message } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
-import * as themeEnum from '../../../enums/theme'
+import * as localeTool from '../../../../tools/locale'
+import * as parseTool from '../../../../tools/parse'
+import * as themeEnum from '../../../../enums/theme'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   gainCell: {

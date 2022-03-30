@@ -1,8 +1,8 @@
 import { Label } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../tools/locale'
-import * as themeEnum from '../../../enums/theme'
+import * as localeTool from '../../../../tools/locale'
+import * as themeEnum from '../../../../enums/theme'
 import classNames from 'classnames'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({

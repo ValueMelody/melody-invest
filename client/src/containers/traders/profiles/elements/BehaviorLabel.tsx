@@ -1,7 +1,7 @@
 import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
-import * as parseTool from '../../../tools/parse'
+import * as parseTool from '../../../../tools/parse'
 import classNames from 'classnames'
 
 const useStyles = createUseStyles({

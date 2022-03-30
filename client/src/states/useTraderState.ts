@@ -12,21 +12,14 @@ const useTraderState = () => {
     return store.traderProfiles[id] || null
   }
 
-  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
-    store.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
+  const getProfileDetail = (id: number | null) => {
+    if (!id) return null
+    return store.profileDetails[id] || null
   }
 
-  const fetchTraderProfile = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADERS}/${id}/${accessCode}`
-    store.startLoading()
-    try {
-      const profile = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderProfile(profile)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
-    }
+  const getTraderEnv = (id: number | null) => {
+    if (!id) return null
+    return store.traderEnvs[id] || null
   }
 
   const storeTopProfiles = (topProfiles: interfaces.traderRes.TopProfiles) => {
@@ -42,8 +35,47 @@ const useTraderState = () => {
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
   }
 
+  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
+    store.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
+  }
+
+  const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
+    store.setTraderEnvs((envs) => ({ ...envs, [env.id]: env }))
+    if (!env.isSystem) {
+      const userTraderEnvIds = [...store.resources.userTraderEnvIds, env.id]
+      store.setResources((resources) => ({ ...resources, userTraderEnvIds }))
+    }
+  }
+
+  const storeUserFollowed = (traderId: number) => {
+    const currentUserIds = store.resources.userTraderIds || []
+    if (currentUserIds.includes(traderId)) return
+    const traderIds = [...currentUserIds, traderId]
+    store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
+  }
+
+  const storeProfileDetail = (
+    traderId: number,
+    detail: interfaces.traderRes.ProfileDetail,
+  ) => {
+    store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
+  }
+
+  const fetchTraderProfile = async (id: number, accessCode: string) => {
+    const endpoint = `${routerEnum.API.TRADERS}/profiles/${id}/${accessCode}`
+    store.startLoading()
+    try {
+      const profile = await requestAdapter.sendGetRequest(endpoint)
+      storeTraderProfile(profile)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   const fetchTopProfiles = async () => {
-    const endpoint = `${routerEnum.API.TRADERS}/tops`
+    const endpoint = `${routerEnum.API.TRADERS}/profiles/tops`
     store.startLoading()
     try {
       const traders = await requestAdapter.sendGetRequest(endpoint)
@@ -55,20 +87,8 @@ const useTraderState = () => {
     }
   }
 
-  const getProfileDetail = (id: number | null) => {
-    if (!id) return null
-    return store.profileDetails[id] || null
-  }
-
-  const storeProfileDetail = (
-    traderId: number,
-    detail: interfaces.traderRes.ProfileDetail,
-  ) => {
-    store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
-  }
-
   const fetchProfileDetail = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADERS}/${id}/${accessCode}/detail`
+    const endpoint = `${routerEnum.API.TRADERS}/profiles/${id}/${accessCode}/detail`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -80,18 +100,24 @@ const useTraderState = () => {
     }
   }
 
-  const storeUserFollowed = (traderId: number) => {
-    const currentUserIds = store.resources.userTraderIds || []
-    if (currentUserIds.includes(traderId)) return
-    const traderIds = [...currentUserIds, traderId]
-    store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
+  const fetchTraderEnv = async (id: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs/${id}`
+    store.startLoading()
+    try {
+      const env = await requestAdapter.sendGetRequest(endpoint)
+      storeTraderEnv(env)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   const createTraderProfile = async (
     traderEnvId: number,
     traderPattern: interfaces.traderPatternModel.Create,
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}`
+    const endpoint = `${routerEnum.API.TRADERS}/profiles`
     store.startLoading()
     try {
       const profile: interfaces.traderRes.TraderProfile = await requestAdapter.sendPostRequest(
@@ -108,19 +134,6 @@ const useTraderState = () => {
       store.showRequestError(e?.message)
     } finally {
       store.stopLoading()
-    }
-  }
-
-  const getTraderEnv = (id: number | null) => {
-    if (!id) return null
-    return store.traderEnvs[id] || null
-  }
-
-  const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
-    store.setTraderEnvs((envs) => ({ ...envs, [env.id]: env }))
-    if (!env.isSystem) {
-      const userTraderEnvIds = [...store.resources.userTraderEnvIds, env.id]
-      store.setResources((resources) => ({ ...resources, userTraderEnvIds }))
     }
   }
 
@@ -149,11 +162,12 @@ const useTraderState = () => {
 
   return {
     topProfiles: store.resources.topProfiles,
-    fetchTraderProfile,
-    fetchProfileDetail,
     getTraderProfile,
     getTraderEnv,
     getProfileDetail,
+    fetchTraderProfile,
+    fetchProfileDetail,
+    fetchTraderEnv,
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,
