@@ -6,7 +6,6 @@ import * as interfaces from '@shared/interfaces'
 import useUserState from '../../states/useUserState'
 import useTraderState from '../../states/useTraderState'
 import useSystemState from '../../states/useSystemState'
-import useTraderEnvState from '../../states/useTraderEnvState'
 import * as localeTool from '../../tools/locale'
 import * as routerEnum from '../../enums/router'
 import usePrivateGuard from '../hooks/usePrivateGuard'
@@ -38,9 +37,8 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { userTraderIds } = useUserState()
-  const { getTraderProfile } = useTraderState()
+  const { getTraderProfile, getTraderEnv } = useTraderState()
   const { systemTraderEnvIds } = useSystemState()
-  const { getTraderEnv } = useTraderEnvState()
 
   const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.PROFILES}/build`)
@@ -87,7 +85,7 @@ const ProfileDashboard = () => {
         })}
       </div>
       <div className={classes.right}>
-        <h2>{localeTool.t('common.envs')}:</h2>
+        <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
         {systemTraderEnvIds.map((envId) => {
           const traderEnv = getTraderEnv(envId)!
           return (

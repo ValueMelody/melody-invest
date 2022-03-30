@@ -40,6 +40,7 @@
 
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",
+    "dashboard.watchedEnvs": "Watched Environments",
     "dashboard.buildDesc": "Build a new profile",
     "dashboard.newDesc": "Build a new environment",
 
@@ -72,6 +73,8 @@
     "envBuilder.allTickers": "Trade All Stocks",
     "envBuilder.targetTickers": "Target Stocks",
     "envBuilder.targetTickersDesc": "Only trade selected stocks",
+    "envBuilder.name": "Environment Name",
+    "envBuilder.confirm": "Confirm and start watch",
 
     "traderEnv.startAt": "Start at {{date}}",
     "traderEnv.allTickers": "Trade based on all stocks available on our platform",

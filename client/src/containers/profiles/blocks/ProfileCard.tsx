@@ -9,7 +9,7 @@ import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
 import PatternLabel from '../elements/PatternLabel'
 import useUserState from '../../../states/useUserState'
-import useTraderEnvState from '../../../states/useTraderEnvState'
+import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
@@ -39,7 +39,7 @@ const ProfileCard = ({
 }) => {
   const classes = useStyles()
   const { userType, userTraderIds, createUserFollowed, deleteUserFollowed } = useUserState()
-  const { getTraderEnv } = useTraderEnvState()
+  const { getTraderEnv } = useTraderState()
   const { addMessage } = useCommonState()
 
   const traderEnv = getTraderEnv(trader.traderEnvId)!

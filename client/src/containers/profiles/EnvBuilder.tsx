@@ -1,17 +1,22 @@
-import { useState } from 'react'
+import { useState, SyntheticEvent, ChangeEvent, FormEvent } from 'react'
 import DatePicker from 'react-datepicker'
-import { Input, Checkbox } from 'semantic-ui-react'
+import { Input, Checkbox, Dropdown, DropdownProps, Button } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../tools/locale'
 import RequiredLabel from '../elements/RequiredLabel'
+import useTickerState from '../../states/useTickerState'
+import useTraderState from '../../states/useTraderState'
 
 const useStyles = createUseStyles(({
   row: {
-    width: 360,
+    width: 400,
     marginBottom: '2rem',
+  },
+  confirmButton: {
+    marginTop: '2rem !important',
   },
 }))
 
@@ -30,8 +35,22 @@ const minDate = getDateFromString(initialDate)
 const EnvBuilder = () => {
   const classes = useStyles()
 
+  const { getTickerIdentities } = useTickerState()
+  const { createTraderEnv } = useTraderState()
+
   const [startDate, setStartDate] = useState(constants.time.initialDate)
   const [tickerIds, setTickerIds] = useState<number[] | null>(null)
+  const [envName, setEnvName] = useState('')
+
+  const hasValidName = !!envName.trim()
+  const hasValidTickers = !tickerIds || !!tickerIds.length
+
+  const tickerIdentities = getTickerIdentities()
+  const selectableTickers = tickerIdentities.map((identity) => ({
+    key: identity.id,
+    text: identity.name,
+    value: identity.id,
+  }))
 
   const date = parseDateString(startDate)
   const selectedDate = getDateFromString(date)
@@ -42,8 +61,22 @@ const EnvBuilder = () => {
     setStartDate(selected)
   }
 
-  const handleChangeTradeAllTickers = () => {
+  const handleToggleAllTickers = () => {
     setTickerIds(tickerIds ? null : [])
+  }
+
+  const handleSelectTickers = (e: SyntheticEvent, data: DropdownProps) => {
+    const values = Array.isArray(data.value) ? data.value : []
+    setTickerIds(values.map((value) => Number(value)))
+  }
+
+  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+    setEnvName(e.target.value)
+  }
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    await createTraderEnv(envName, startDate, tickerIds)
   }
 
   return (
@@ -72,14 +105,40 @@ const EnvBuilder = () => {
         title={localeTool.t('traderEnv.allTickers')}
       >
         <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
-        <Checkbox toggle checked={!tickerIds} onChange={handleChangeTradeAllTickers} />
+        <Checkbox toggle checked={!tickerIds} onChange={handleToggleAllTickers} />
       </section>
-      <section
-        className={classNames('row-between', classes.row)}
-        title={localeTool.t('envBuilder.targetTickersDesc')}
-      >
-        <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
+      {tickerIds && (
+        <section
+          className={classNames('row-between', classes.row)}
+          title={localeTool.t('envBuilder.targetTickersDesc')}
+        >
+          <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
+          <Dropdown
+            multiple
+            search
+            selection
+            value={tickerIds}
+            onChange={handleSelectTickers}
+            options={selectableTickers}
+          />
+        </section>
+      )}
+      <section className={classNames('row-between', classes.row)}>
+        <RequiredLabel title={localeTool.t('envBuilder.name')} />
+        <Input value={envName} onChange={handleChangeName} />
       </section>
+      <form onSubmit={handleSubmit}>
+        <div className='row-around'>
+          <Button
+            type='submit'
+            color='blue'
+            className={classes.confirmButton}
+            disabled={!hasValidName || !hasValidTickers}
+          >
+            {localeTool.t('envBuilder.confirm')}
+          </Button>
+        </div>
+      </form>
     </section>
   )
 }

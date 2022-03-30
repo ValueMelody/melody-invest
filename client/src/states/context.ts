@@ -14,7 +14,7 @@ export interface Common {
 }
 
 interface TickerIdentities {
-  [key: number]: interfaces.tickerRes.TickerIdentity
+  [key: number]: interfaces.tickerModel.Identity;
 }
 
 export interface Resources {

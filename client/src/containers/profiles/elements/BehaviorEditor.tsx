@@ -46,10 +46,7 @@ const BehaviorEditor = ({
 
   const handleClick = () => onClick(behavior)
 
-  const handleSelect = (
-    e: SyntheticEvent<HTMLElement, Event>,
-    data: DropdownProps,
-  ) => {
+  const handleSelect = (e: SyntheticEvent, data: DropdownProps) => {
     const value = data.value === '' ? null : Number(data.value)
     onSelect(behavior, value)
   }

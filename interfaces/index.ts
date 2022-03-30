@@ -14,7 +14,6 @@ import * as indicatorYearlyModel from './models/indicatorYearly'
 
 import * as systemRes from './responses/system'
 import * as userRes from './responses/user'
-import * as tickerRes from './responses/ticker'
 import * as traderRes from './responses/trader'
 
 import * as common from './common'
@@ -35,7 +34,6 @@ export {
   indicatorYearlyModel,
   systemRes,
   userRes,
-  tickerRes,
   traderRes,
   common,
 }

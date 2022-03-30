@@ -111,14 +111,39 @@ const useTraderState = () => {
     }
   }
 
+  const getTraderEnv = (id: number | null) => {
+    if (!id) return null
+    return store.traderEnvs[id] || null
+  }
+
+  const createTraderEnv = async (
+    name: string,
+    startDate: string,
+    tickerIds: number[] | null,
+  ) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPostRequest(
+        endpoint, { name, startDate, tickerIds },
+      )
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   return {
-    getTraderProfile,
-    fetchTraderProfile,
-    getProfileDetail,
-    fetchProfileDetail,
     topProfiles: store.resources.topProfiles,
+    fetchTraderProfile,
+    fetchProfileDetail,
+    getTraderProfile,
+    getTraderEnv,
+    getProfileDetail,
     fetchTopProfiles,
     createTraderProfile,
+    createTraderEnv,
   }
 }
 

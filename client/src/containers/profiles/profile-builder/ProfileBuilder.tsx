@@ -11,7 +11,6 @@ import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from '../elements/BehaviorEditor'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import useSystemState from '../../../states/useSystemState'
-import useTraderEnvState from '../../../states/useTraderEnvState'
 import useTraderState from '../../../states/useTraderState'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 
@@ -52,8 +51,7 @@ const ProfileBuilder = () => {
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const { systemTraderEnvIds } = useSystemState()
-  const { getTraderEnv } = useTraderEnvState()
-  const { createTraderProfile } = useTraderState()
+  const { createTraderProfile, getTraderEnv } = useTraderState()
 
   const BUY_GROUPS = [
     {
