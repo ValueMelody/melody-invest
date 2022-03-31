@@ -5,12 +5,14 @@ import classNames from 'classnames'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
 import * as routerEnum from '../../../enums/router'
+import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
+import WatchButton from '../elements/WatchButton'
 import ProfileCard from '../blocks/ProfileCard'
 
-const useStyles = createUseStyles(({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   container: {
     alignItems: 'flex-start',
   },
@@ -19,6 +21,9 @@ const useStyles = createUseStyles(({
   },
   tickers: {
     width: 290,
+    paddingBottom: '1rem',
+    marginBottom: '1rem',
+    borderBottom: `1px solid ${theme.PRIMARY_COLOR}`,
   },
   right: {
     width: 'calc(100% - 24rem)',
@@ -47,6 +52,7 @@ const EnvDetail = () => {
   const {
     getTraderEnv, getTopProfiles, getTraderProfile,
     fetchTraderEnv, fetchTopProfiles,
+    deleteWatchedEnv,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
 
@@ -61,6 +67,17 @@ const EnvDetail = () => {
   const bestPastWeek = topProfiles?.pastWeek[0] || null
 
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
+
+  // ------------------------------------------------------------ Handler --
+
+  const handleUnwatch = async () => {
+    if (!envId) return
+    const result = await deleteWatchedEnv(envId)
+    if (result) {
+      const link = `${routerEnum.NAV.DASHBOARD}`
+      navigate(link)
+    }
+  }
 
   // ------------------------------------------------------------ Effect --
 
@@ -102,6 +119,12 @@ const EnvDetail = () => {
               />
             )
           })}
+        </div>
+        <div className='row-around'>
+          <WatchButton
+            isWatched={true}
+            onToggle={handleUnwatch}
+          />
         </div>
       </div>
       <div className={classNames('row-start', classes.right)}>

@@ -70,7 +70,7 @@ const useTraderState = () => {
     }
   }
 
-  const storeUserFollowed = (traderId: number) => {
+  const storeWatchedProfile = (traderId: number) => {
     const currentUserIds = store.resources.userTraderIds || []
     if (currentUserIds.includes(traderId)) return
     const traderIds = [...currentUserIds, traderId]
@@ -82,6 +82,20 @@ const useTraderState = () => {
     detail: interfaces.traderRes.ProfileDetail,
   ) => {
     store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
+  }
+
+  // ------------------------------------------------------------ Remove --
+
+  const removeWatchedProfile = (traderId: number) => {
+    const traderIds = store.resources.userTraderIds || []
+    const remainingTraderIds = traderIds.filter((id) => id !== traderId)
+    store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
+  }
+
+  const removeWatchedEnv = (traderEnvId: number) => {
+    const traderEnvIds = store.resources.userTraderEnvIds
+    const remainingTraderEnvIds = traderEnvIds.filter((id) => id !== traderEnvId)
+    store.setResources((resources) => ({ ...resources, userTraderEnvIds: remainingTraderEnvIds }))
   }
 
   // ------------------------------------------------------------ fetch --
@@ -100,7 +114,9 @@ const useTraderState = () => {
   }
 
   const fetchTopProfiles = async (envId: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs/${envId}/tops`
+    const endpoint = envId
+      ? `${routerEnum.API.TRADERS}/envs/${envId}/tops`
+      : `${routerEnum.API.TRADERS}/envs/tops`
     store.startLoading()
     try {
       const tops = await requestAdapter.sendGetRequest(endpoint)
@@ -151,12 +167,25 @@ const useTraderState = () => {
         endpoint, { traderEnvId, traderPattern },
       )
       storeTraderProfile(profile)
-      storeUserFollowed(profile.trader.id)
+      storeWatchedProfile(profile.trader.id)
 
       return {
         traderId: profile.trader.id,
         accessCode: profile.trader.accessCode,
       }
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const createWatchedProfile = async (traderId: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/profiles/${traderId}`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPostRequest(endpoint)
+      storeWatchedProfile(traderId)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -189,6 +218,36 @@ const useTraderState = () => {
 
   // ------------------------------------------------------------ export --
 
+  const deleteWatchedProfile = async (traderId: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/profiles/${traderId}`
+    store.startLoading()
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      removeWatchedProfile(traderId)
+      return true
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const deleteWatchedEnv = async (traderEnvId: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}`
+    store.startLoading()
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      removeWatchedEnv(traderEnvId)
+      return true
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  // ------------------------------------------------------------ export --
+
   return {
     getTopProfiles,
     getTraderProfile,
@@ -200,6 +259,9 @@ const useTraderState = () => {
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,
+    createWatchedProfile,
+    deleteWatchedProfile,
+    deleteWatchedEnv,
   }
 }
 

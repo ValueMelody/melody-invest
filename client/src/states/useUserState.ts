@@ -52,18 +52,6 @@ const useUserState = () => {
     }))
   }
 
-  const storeCreatedFollowed = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds || []
-    const updatedTraderIds = [...traderIds, traderId]
-    store.setResources((resources) => ({ ...resources, userTraderIds: updatedTraderIds }))
-  }
-
-  const storeDeletedFollowed = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds || []
-    const remainingTraderIds = traderIds.filter((id) => id !== traderId)
-    store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
-  }
-
   // ------------------------------------------------------------ Fetch --
 
   const fetchUserOverall = async () => {
@@ -115,19 +103,6 @@ const useUserState = () => {
     }
   }
 
-  const createUserFollowed = async (traderId: number) => {
-    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPostRequest(endpoint)
-      storeCreatedFollowed(traderId)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   // ------------------------------------------------------------ Update --
 
   const updateUserPassword = async (
@@ -148,21 +123,6 @@ const useUserState = () => {
     }
   }
 
-  // ------------------------------------------------------------ Delete --
-
-  const deleteUserFollowed = async (traderId: number) => {
-    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-      storeDeletedFollowed(traderId)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   // ------------------------------------------------------------ export --
 
   return {
@@ -170,13 +130,7 @@ const useUserState = () => {
     fetchUserOverall,
     createUser,
     createUserToken,
-    createUserFollowed,
     updateUserPassword,
-    deleteUserFollowed,
-    userTraderIds: store.resources.userTraderIds,
-    userTraderEnvIds: store.resources.userTraderEnvIds,
-    userType: store.resources.userType,
-    userEmail: store.resources.userEmail,
   }
 }
 

@@ -2,7 +2,6 @@ import { Router } from 'express'
 import * as interfaces from '@shared/interfaces'
 import * as errorEnum from '../enums/error'
 import * as crudUsers from '../services/crudUsers'
-import * as crudTraders from '../services/crudTraders'
 import * as verifyTool from '../tools/verify'
 import * as authMiddleware from '../middlewares/auth'
 
@@ -21,10 +20,6 @@ const validateEmail = (email: string) => {
 const validatePassword = (password: string) => {
   if (!password) throw errorEnum.CUSTOM.PARAMS_MISSING
   if (password.length < 10) throw errorEnum.CUSTOM.PASSWORD_TOO_SHORT
-}
-
-const validateTraderId = (traderId: number) => {
-  if (!traderId) throw errorEnum.DEFAULT.FORBIDDEN
 }
 
 // ------------------------------------------------------------ Get --
@@ -62,15 +57,6 @@ usersRouter.post('/', async (req, res) => {
   return res.status(201).send(user)
 })
 
-usersRouter.post('/traders/:trader_id', authMiddleware.normalUser, async (req, res) => {
-  const traderId = parseInt(req.params.trader_id)
-  validateTraderId(traderId)
-
-  const auth: interfaces.reqs.Auth = req.body.auth
-  await crudTraders.createFollowedTrader(auth.id, traderId)
-  return res.status(201).send()
-})
-
 // ------------------------------------------------------------ Put --
 
 usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
@@ -82,16 +68,5 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
 
   const auth: interfaces.reqs.Auth = req.body.auth
   await crudUsers.updatePassword(auth.id, currentPassword, newPassword)
-  return res.status(204).send()
-})
-
-// ------------------------------------------------------------ Delete --
-
-usersRouter.delete('/traders/:trader_id', authMiddleware.normalUser, async (req, res) => {
-  const traderId = parseInt(req.params.trader_id)
-  validateTraderId(traderId)
-
-  const auth: interfaces.reqs.Auth = req.body.auth
-  await crudTraders.deleteFollowedTrader(auth.id, traderId)
   return res.status(204).send()
 })

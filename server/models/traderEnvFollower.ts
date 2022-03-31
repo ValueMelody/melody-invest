@@ -49,3 +49,19 @@ export const createIfEmpty = async (
   if (currentRecord) return currentRecord
   return create(values, transaction)
 }
+
+export const destroy = async (
+  userId: number,
+  traderEnvId: number,
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.destroy({
+    tableName: tableEnum.NAME.TRADER_ENV_FOLLOWER,
+    conditions: [
+      { key: 'userId', value: userId },
+      { key: 'traderEnvId', value: traderEnvId },
+    ],
+    transaction,
+  })
+  return true
+}

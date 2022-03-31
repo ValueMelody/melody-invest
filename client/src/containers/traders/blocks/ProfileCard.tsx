@@ -39,8 +39,8 @@ const ProfileCard = ({
 
   // ------------------------------------------------------------ State --
 
-  const { getUser, createUserFollowed, deleteUserFollowed } = useUserState()
-  const { getTraderEnv } = useTraderState()
+  const { getUser } = useUserState()
+  const { getTraderEnv, createWatchedProfile, deleteWatchedProfile } = useTraderState()
   const { addMessage } = useCommonState()
 
   const user = getUser()
@@ -70,9 +70,9 @@ const ProfileCard = ({
       })
     }
     if (isWatched) {
-      deleteUserFollowed(trader.id)
+      deleteWatchedProfile(trader.id)
     } else {
-      createUserFollowed(trader.id)
+      createWatchedProfile(trader.id)
     }
   }
 
