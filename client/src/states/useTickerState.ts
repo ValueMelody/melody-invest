@@ -5,6 +5,8 @@ import { context, Context } from './context'
 const useTickerState = () => {
   const store: Context = useContext(context)
 
+  // ------------------------------------------------------------ Get --
+
   const getTickerIdentity = (
     tickerId: number,
   ): interfaces.tickerModel.Identity | null => {
@@ -16,6 +18,8 @@ const useTickerState = () => {
   const getTickerIdentities = (): interfaces.tickerModel.Identity[] => {
     return Object.values(store.resources.tickerIdentities || {})
   }
+
+  // ------------------------------------------------------------ export --
 
   return {
     getTickerIdentity,

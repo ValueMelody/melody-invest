@@ -20,10 +20,14 @@ const WatchButton = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ Handler --
+
   const handleToggle = (e: MouseEvent) => {
     e.stopPropagation()
     onToggle()
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Button className={classes.action} onClick={handleToggle}>

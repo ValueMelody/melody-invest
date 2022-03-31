@@ -37,6 +37,8 @@ const ProfileBuilderGroup = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ Handler --
+
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => onClickBehavior(behavior)
 
   const handleSelectValue = (
@@ -45,6 +47,8 @@ const ProfileBuilderGroup = ({
   ) => {
     onSelectValue(behavior, value)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Segment secondary className={classes.segment}>

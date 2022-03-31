@@ -33,12 +33,18 @@ const useStyles = createUseStyles(({
 const ProfileDashboard = () => {
   const classes = useStyles()
   const navigate = useNavigate()
+
+  // ------------------------------------------------------------ State --
+
   usePrivateGuard()
 
-  const { userTraderIds, userTraderEnvIds } = useUserState()
+  const { getUser } = useUserState()
   const { getTraderProfile, getTraderEnv } = useTraderState()
 
-  const traderEnvIds = [...userTraderEnvIds].reverse()
+  const user = getUser()
+  const traderEnvIds = [...user.userTraderEnvIds].reverse()
+
+  // ------------------------------------------------------------ Handler --
 
   const handleClickBuildProfile = () => {
     navigate(`${routerEnum.NAV.TRADERS}/profiles/build`)
@@ -58,7 +64,9 @@ const ProfileDashboard = () => {
     navigate(link)
   }
 
-  if (!userTraderIds) return null
+  // ------------------------------------------------------------ Interface --
+
+  if (!user.userTraderIds) return null
 
   return (
     <div className={classNames('row-between', classes.container)}>
@@ -76,7 +84,7 @@ const ProfileDashboard = () => {
             {localeTool.t('common.build')}
           </Button>
         </div>
-        {userTraderIds.map((traderId) => (
+        {user.userTraderIds.map((traderId) => (
           <ProfileCard
             key={traderId}
             profile={getTraderProfile(traderId)}

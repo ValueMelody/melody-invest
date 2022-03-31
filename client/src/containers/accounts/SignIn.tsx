@@ -12,6 +12,9 @@ import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignIn = () => {
   const navigate = useNavigate()
+
+  // ------------------------------------------------------------ State --
+
   usePublicGuard()
 
   const { classes, getPasswordError } = useAccountInterface()
@@ -21,6 +24,8 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [shouldRemember, setShouldRemember] = useState(false)
+
+  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -48,6 +53,8 @@ const SignIn = () => {
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)
       .then(() => navigate(routerEnum.NAV.DASHBOARD))
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <div className={classNames(classes.container, 'column-center')}>

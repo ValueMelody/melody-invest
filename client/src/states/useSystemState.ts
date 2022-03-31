@@ -7,6 +7,8 @@ import * as routerEnum from '../enums/router'
 const useSystemState = () => {
   const store: Context = useContext(context)
 
+  // ------------------------------------------------------------ store --
+
   const storeSystemDefaults = (systemDefaults: interfaces.systemRes.Defaults) => {
     const traderEnvs = systemDefaults.traderEnvs.reduce((envs, env) => {
       return { ...envs, [env.id]: env }
@@ -24,6 +26,8 @@ const useSystemState = () => {
     store.setResources((resources) => ({ ...resources, userTraderEnvIds, tickerIdentities }))
   }
 
+  // ------------------------------------------------------------ fetch --
+
   const fetchSystemDefaults = async () => {
     const endpoint = `${routerEnum.API.SYSTEMS}/defaults`
     store.startLoading()
@@ -36,6 +40,8 @@ const useSystemState = () => {
       store.stopLoading()
     }
   }
+
+  // ------------------------------------------------------------ export --
 
   return {
     fetchSystemDefaults,

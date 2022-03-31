@@ -39,6 +39,8 @@ const ProfileDetail = () => {
   const navigate = useNavigate()
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const {
     getTraderProfile, getTraderEnv, getProfileDetail,
     fetchTraderProfile, fetchProfileDetail,
@@ -58,6 +60,8 @@ const ProfileDetail = () => {
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
 
+  // ------------------------------------------------------------ Effect --
+
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerEnum.NAV.NOT_FOUND)
@@ -76,12 +80,16 @@ const ProfileDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileDetail])
 
+  // ------------------------------------------------------------ Handler --
+
   const handleClickShowAll = () => setShowAllHoldings(true)
 
   const handleClickEnv = (traderId: number, accessCode: string) => {
     const link = `${routerEnum.NAV.TRADERS}/profiles/${traderId}/${accessCode}`
     navigate(link)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   if (!traderProfile || !profileDetail || !traderEnv) return null
 

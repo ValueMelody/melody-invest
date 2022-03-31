@@ -21,7 +21,7 @@ const FOCUS_TYPE = {
   PAST_QUARTER: 'PAST_QUARTER',
   PAST_MONTH: 'PAST_MONTH',
   PAST_WEEK: 'PAST_WEEK',
-} as const
+}
 type FocusTypeKeys = keyof typeof FOCUS_TYPE
 export type FocusType = typeof FOCUS_TYPE[FocusTypeKeys]
 
@@ -34,6 +34,8 @@ const TraderPerformance = ({
 }) => {
   const classes = useStyles()
   const gainCellClass = classNames('column-center', classes.gainCell)
+
+  // ------------------------------------------------------------ Interface --
 
   if (!trader.estimatedAt) {
     return <Message compact>{localeTool.t('profile.noResultYet')}</Message>

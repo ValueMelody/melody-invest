@@ -19,8 +19,12 @@ const PatternLabel = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const envNameLocale = parseTool.traderEnvName(traderEnv)
   const envLabel = envNameLocale ? `- ${envNameLocale}` : ''
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Label color='blue' className={classes.label}>

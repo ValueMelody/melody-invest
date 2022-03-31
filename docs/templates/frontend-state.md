@@ -1,4 +1,5 @@
 Organize state files based on this template
+/client/src/states
 ```
 import { useContext } from 'react'
 
@@ -18,6 +19,7 @@ const useTemplateState = () => {
   // ------------------------------------------------------------ Delete --
 
   // ------------------------------------------------------------ export --
+
   return {
   }
 }

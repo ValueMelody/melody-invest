@@ -39,6 +39,9 @@ const getActiveBehaviorCount = (
 const ProfileBuilder = () => {
   const navigate = useNavigate()
   const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
   usePrivateGuard()
 
   const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = useState(false)
@@ -50,8 +53,9 @@ const ProfileBuilder = () => {
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
-  const { userTraderEnvIds } = useUserState()
+  const { getUser } = useUserState()
   const { createTraderProfile, getTraderEnv } = useTraderState()
+  const user = getUser()
 
   const BUY_GROUPS = [
     {
@@ -148,6 +152,8 @@ const ProfileBuilder = () => {
   )
   const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.behavior.frequencyBehaviors.length
 
+  // ------------------------------------------------------------ Handler --
+
   const handleToggleBuyBehaviors = () => setIsBuyBehaviorsExtended(!isBuyBehaviorsExtended)
 
   const handleToggleSellBehaviors = () => setIsSellBehaviorsExtended(!isSellBehaviorsExtended)
@@ -200,6 +206,8 @@ const ProfileBuilder = () => {
       navigate(link)
     }
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <section>
@@ -332,7 +340,7 @@ const ProfileBuilder = () => {
       </Segment.Group>
       <h4>{localeTool.t('common.envs')}:</h4>
       <div className='row-start'>
-        {userTraderEnvIds.map((traderEnvId) => (
+        {user.userTraderEnvIds.map((traderEnvId) => (
           <TraderEnvCard
             key={traderEnvId}
             traderEnv={getTraderEnv(traderEnvId)}

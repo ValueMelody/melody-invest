@@ -19,16 +19,23 @@ const useStyles = createUseStyles(({
 }))
 
 const Setting = () => {
-  usePrivateGuard()
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
+  usePrivateGuard()
+
   const { classes: accountClasses, getPasswordError } = useAccountInterface()
-  const { userEmail, updateUserPassword } = useUserState()
+  const { getUser, updateUserPassword } = useUserState()
   const { addMessage, clearMessages } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [retypePassword, setRetypePassword] = useState('')
+
+  const user = getUser()
+
+  // ------------------------------------------------------------ Handler --
 
   const handleChangeCurrentPassword = (e: ChangeEvent<HTMLInputElement>) => {
     setCurrentPassword(e.target.value)
@@ -62,11 +69,13 @@ const Setting = () => {
     updateUserPassword(parsedCurrentPassword, parsedNewPassword)
   }
 
+  // ------------------------------------------------------------ Interface --
+
   return (
     <div className={classNames(accountClasses.container, 'column-center')}>
       <h2 className={accountClasses.title}>{localeTool.t('setting.title')}</h2>
       <h3 className={classes.email}>
-        {localeTool.t('common.email')}: {userEmail}
+        {localeTool.t('common.email')}: {user.userEmail}
       </h3>
       <Segment className={classes.container}>
         <form onSubmit={handleSubmit}>

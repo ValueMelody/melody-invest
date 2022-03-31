@@ -46,6 +46,8 @@ const EnvBuilder = () => {
   const classes = useStyles()
   const navigate = useNavigate()
 
+  // ------------------------------------------------------------ State --
+
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
 
@@ -65,6 +67,8 @@ const EnvBuilder = () => {
 
   const date = parseDateString(startDate)
   const selectedDate = getDateFromString(date)
+
+  // ------------------------------------------------------------ Handler --
 
   const handleChangeStartDate = (date: Date | null) => {
     if (!date) return
@@ -93,6 +97,8 @@ const EnvBuilder = () => {
       navigate(link)
     }
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <section className='column-center'>

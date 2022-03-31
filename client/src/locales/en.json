@@ -47,11 +47,11 @@
 
     "topProfiles.title": "Top Profiles",
 
-    "bestReturn.yearlyTitle": "Best in Annual Return",
-    "bestReturn.pastYearTitle": "Best in One Year Return",
-    "bestReturn.pastQuarterTitle": "Best in One Quarter Return",
-    "bestReturn.pastMonthTitle": "Best in One Month Return",
-    "bestReturn.pastWeekTitle": "Best in One Week Return",
+    "bestReturn.yearlyTitle": "Best Return in Annual",
+    "bestReturn.pastYearTitle": "Best Return in One Year",
+    "bestReturn.pastQuarterTitle": "Best Return in One Quarter",
+    "bestReturn.pastMonthTitle": "Best Return in One Month",
+    "bestReturn.pastWeekTitle": "Best Return in One Week",
 
     "profile.history": "Holding History",
     "profile.noResultYet": "There's no result generated for this profile yet",

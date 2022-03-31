@@ -22,8 +22,12 @@ const ValueDiffer = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const differ = (currentValue - previousValue) / previousValue
   const isPositive = differ > 0
+
+  // ------------------------------------------------------------ Interface --
 
   if (!differ) return null
 
