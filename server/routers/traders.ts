@@ -28,6 +28,14 @@ const validateCreateEnvParams = (name: string, startDate: string, tickerIds: num
   if (hasWrongId) throw errorEnum.DEFAULT.FORBIDDEN
 }
 
+const validateTraderId = (traderId: number) => {
+  if (!traderId) throw errorEnum.DEFAULT.FORBIDDEN
+}
+
+const validateEnvId = (envId: number) => {
+  if (!envId) throw errorEnum.DEFAULT.FORBIDDEN
+}
+
 // ------------------------------------------------------------ Get --
 
 tradersRouter.get('/profiles/:id/:access_code', async (req, res) => {
@@ -48,6 +56,11 @@ tradersRouter.get('/profiles/:id/:access_code/detail', async (req, res) => {
   return res.status(200).send(details)
 })
 
+tradersRouter.get('/envs/tops', async (req, res) => {
+  const tops = await crudTraders.getTopProfiles(null)
+  return res.status(200).send(tops)
+})
+
 tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
   const envId = parseInt(req.params.id)
 
@@ -59,10 +72,13 @@ tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
   return res.status(200).send(env)
 })
 
-tradersRouter.get('/envs/:id/tops', async (req, res) => {
-  const envId = parseInt(req.params.id) || 0
+tradersRouter.get('/envs/:id/tops', authMiddleware.normalUser, async (req, res) => {
+  const envId = parseInt(req.params.id)
+  validateEnvId(envId)
 
-  const tops = await crudTraders.getEnvTopProfiles(envId)
+  const auth: interfaces.reqs.Auth = req.body.auth
+
+  const tops = await crudTraders.getTopProfiles(envId, auth.id)
   return res.status(200).send(tops)
 })
 
@@ -79,6 +95,15 @@ tradersRouter.post('/profiles', authMiddleware.normalUser, async (req, res) => {
   return res.status(201).send(trader)
 })
 
+tradersRouter.post('/profiles/:trader_id', authMiddleware.normalUser, async (req, res) => {
+  const traderId = parseInt(req.params.trader_id)
+  validateTraderId(traderId)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.createFollowedTrader(auth.id, traderId)
+  return res.status(201).send()
+})
+
 tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
   const { name, startDate, tickerIds }: interfaces.reqs.TraderEnvCreation = req.body
   const parsedName = name?.trim()
@@ -90,4 +115,24 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
     auth.id, parsedName, startDate, tickerIds,
   )
   return res.status(201).send(traderEnv)
+})
+
+// ------------------------------------------------------------ Delete --
+
+tradersRouter.delete('/profiles/:trader_id', authMiddleware.normalUser, async (req, res) => {
+  const traderId = parseInt(req.params.trader_id)
+  validateTraderId(traderId)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.deleteFollowedProfile(auth.id, traderId)
+  return res.status(204).send()
+})
+
+tradersRouter.delete('/envs/:env_id', authMiddleware.normalUser, async (req, res) => {
+  const envId = parseInt(req.params.env_id)
+  validateEnvId(envId)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.deleteFollowedEnv(auth.id, envId)
+  return res.status(204).send()
 })

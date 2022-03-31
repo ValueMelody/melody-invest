@@ -47,8 +47,22 @@ export const getProfileDetail = async (
   }
 }
 
-export const getEnvTopProfiles = async (envId: number): Promise<interfaces.traderRes.TopProfiles> => {
-  const traderEnvId = envId || null
+export const getTopProfiles = async (
+  traderEnvId: number | null,
+  userId?: number,
+): Promise<interfaces.traderRes.TopProfiles> => {
+  if (traderEnvId) {
+    if (!userId) throw errorEnum.DEFAULT.FORBIDDEN
+
+    const env = await traderEnvModel.getByPK(traderEnvId)
+    if (!env) throw errorEnum.DEFAULT.NOT_FOUND
+
+    if (!env.isSystem) {
+      const envFollower = await traderEnvFollowerModel.getByUK(userId, traderEnvId)
+      if (!envFollower) throw errorEnum.DEFAULT.NOT_FOUND
+    }
+  }
+
   const each = traderEnvId ? 1 : 3
 
   const tops = await traderModel.getTops(traderEnvId, each)
@@ -82,7 +96,7 @@ export const createFollowedTrader = async (
   }
 }
 
-export const deleteFollowedTrader = async (
+export const deleteFollowedProfile = async (
   userId: number, traderId: number,
 ) => {
   const transaction = await databaseAdapter.createTransaction()
@@ -161,6 +175,22 @@ export const createTraderEnv = async (
     await transaction.commit()
 
     return { ...env, name: relation.name }
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const deleteFollowedEnv = async (
+  userId: number, envId: number,
+) => {
+  const envFollower = await traderEnvFollowerModel.getByUK(userId, envId)
+  if (!envFollower) return
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await traderEnvFollowerModel.destroy(userId, envId, transaction)
+    await transaction.commit()
   } catch (error) {
     await transaction.rollback()
     throw error
