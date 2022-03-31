@@ -38,11 +38,15 @@ const BehaviorEditor = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const options = constants.behaviorValue.options[behavior]
   const hasValue = behaviorValue !== null && options.includes(behaviorValue)
   const selectOptions = options.map((option) => ({
     key: option, value: option, text: parseTool.behaviorValue(behavior, option),
   }))
+
+  // ------------------------------------------------------------ Handler --
 
   const handleClick = () => onClick(behavior)
 
@@ -50,6 +54,8 @@ const BehaviorEditor = ({
     const value = data.value === '' ? null : Number(data.value)
     onSelect(behavior, value)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   if (!isEditing) {
     return (

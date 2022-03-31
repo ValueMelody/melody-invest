@@ -29,9 +29,14 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 
 const Header = () => {
   const classes = useStyles()
-  const { userType } = useUserState()
 
-  const isLoggedInUser = !!userType
+  // ------------------------------------------------------------ State --
+
+  const { getUser } = useUserState()
+  const user = getUser()
+  const isLoggedInUser = !!user.userType
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <header className={classNames('row-between', classes.header)}>

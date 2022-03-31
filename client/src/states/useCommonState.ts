@@ -4,6 +4,8 @@ import { context, Context } from './context'
 const useCommonState = () => {
   const store: Context = useContext(context)
 
+  // ------------------------------------------------------------ export --
+
   return {
     messages: store.common.messages,
     addMessage: store.addMessage,

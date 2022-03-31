@@ -5,12 +5,14 @@ import * as routerEnum from '../../enums/router'
 
 const usePrivateGuard = () => {
   const navigate = useNavigate()
-  const { userType } = useUserState()
+  const { getUser } = useUserState()
+
+  const user = getUser()
 
   useEffect(() => {
-    if (!userType) navigate(routerEnum.NAV.SIGN_IN)
+    if (!user.userType) navigate(routerEnum.NAV.SIGN_IN)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userType])
+  }, [user.userType])
 }
 
 export default usePrivateGuard

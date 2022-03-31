@@ -18,6 +18,8 @@ const PatternBehaviors = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
     ...constants.behavior.allocateBehaviors,
     ...constants.behavior.frequencyBehaviors,
@@ -26,6 +28,8 @@ const PatternBehaviors = ({
 
   const activeBuyBehaviors = constants.behavior.buyBehaviors.filter((key) => pattern[key] !== null)
   const activeSellBehaviors = constants.behavior.sellBehaviors.filter((key) => pattern[key] !== null)
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <div className={classNames('row-start', classes.container)}>

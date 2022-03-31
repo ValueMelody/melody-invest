@@ -9,6 +9,8 @@ import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignUp = () => {
+  // ------------------------------------------------------------ State --
+
   usePublicGuard()
 
   const { classes, getPasswordError } = useAccountInterface()
@@ -19,6 +21,8 @@ const SignUp = () => {
   const [password, setPassword] = useState('')
   const [retypePassword, setRetypePassword] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
+
+  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value)
@@ -53,6 +57,8 @@ const SignUp = () => {
     }
     await createUser(parsedEmail, parsedPassword, isConfirmed)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <div className={classNames(classes.container, 'column-center')}>

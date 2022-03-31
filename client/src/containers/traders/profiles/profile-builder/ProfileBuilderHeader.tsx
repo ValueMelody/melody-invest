@@ -36,10 +36,14 @@ const ProfileBuilderHeader = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ Handler --
+
   const handleToggleBuyBehaviors = () => {
     if (!onExtend) return
     onExtend()
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <header

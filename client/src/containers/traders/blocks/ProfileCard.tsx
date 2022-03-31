@@ -36,9 +36,14 @@ const ProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
-  const { userType, userTraderIds, createUserFollowed, deleteUserFollowed } = useUserState()
+
+  // ------------------------------------------------------------ State --
+
+  const { getUser, createUserFollowed, deleteUserFollowed } = useUserState()
   const { getTraderEnv } = useTraderState()
   const { addMessage } = useCommonState()
+
+  const user = getUser()
 
   const trader = profile?.trader || null
   const pattern = profile?.pattern || null
@@ -46,7 +51,9 @@ const ProfileCard = ({
   const traderId = trader?.id || null
 
   const traderEnv = getTraderEnv(traderEnvId)
-  const isWatched = !!userTraderIds && !!traderId && userTraderIds.includes(traderId)
+  const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
+
+  // ------------------------------------------------------------ Handler --
 
   const handleClick = () => {
     if (!onClick || !trader) return
@@ -55,7 +62,7 @@ const ProfileCard = ({
 
   const handleToggleWatch = () => {
     if (!trader) return
-    if (!userType) {
+    if (!user.userType) {
       addMessage({
         id: Math.random(),
         title: localeTool.t('error.guest'),
@@ -69,6 +76,8 @@ const ProfileCard = ({
     }
   }
 
+  // ------------------------------------------------------------ Interface --
+
   if (!trader || !pattern || !traderEnv) return null
 
   return (
@@ -81,7 +90,7 @@ const ProfileCard = ({
     >
       <header className={classNames('row-between', classes.header)}>
         <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
-        {!!userTraderIds && (
+        {!!user.userTraderIds && (
           <WatchButton
             isWatched={isWatched}
             onToggle={handleToggleWatch}

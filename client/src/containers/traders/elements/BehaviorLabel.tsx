@@ -23,15 +23,21 @@ const BehaviorLabel = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ State --
+
   const behaviorTitle = parseTool.behaviorTitle(behavior)
   const behaviorDesc = parseTool.behaviorDesc(behavior)
   const hasValue = value !== null && value !== undefined
   const behaviorValue = hasValue ? parseTool.behaviorValue(behavior, value) : null
 
+  // ------------------------------------------------------------ Handler --
+
   const handleClick = () => {
     if (!onClick) return
     onClick()
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Label

@@ -24,9 +24,16 @@ const Layout: FunctionComponent = ({
   children,
 }) => {
   const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
   const { messages, removeMessage } = useCommonState()
-  const { userType, fetchUserOverall } = useUserState()
+  const { getUser, fetchUserOverall } = useUserState()
   const { fetchSystemDefaults } = useSystemState()
+
+  const user = getUser()
+
+  // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     fetchSystemDefaults()
@@ -34,12 +41,16 @@ const Layout: FunctionComponent = ({
   }, [])
 
   useEffect(() => {
-    if (!userType) return
+    if (!user.userType) return
     fetchUserOverall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userType])
+  }, [user.userType])
+
+  // ------------------------------------------------------------ Handler --
 
   const handleRemoveMessage = (id: number) => removeMessage(id)
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <>

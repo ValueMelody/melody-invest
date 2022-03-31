@@ -1,10 +1,7 @@
 Organize router files based on this template
+/server/routers
 ```
 import { Router } from 'express'
-import * as interfaces from '@shared/interfaces'
-import * as crudTraders from '../services/crudTraders'
-import * as errorEnum from '../enums/error'
-import * as authMiddleware from '../middlewares/auth'
 
 const templateRouter = Router()
 export default templateRouter

@@ -42,6 +42,8 @@ const EnvDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
 
+  // ------------------------------------------------------------ State --
+
   const {
     getTraderEnv, getTopProfiles, getTraderProfile,
     fetchTraderEnv, fetchTopProfiles,
@@ -60,6 +62,8 @@ const EnvDetail = () => {
 
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
 
+  // ------------------------------------------------------------ Effect --
+
   useEffect(() => {
     if (!envId) navigate(routerEnum.NAV.NOT_FOUND)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -76,6 +80,8 @@ const EnvDetail = () => {
     fetchTopProfiles(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [envId, topProfiles])
+
+  // ------------------------------------------------------------ Interface --
 
   if (!traderEnv || !topProfiles) return null
 

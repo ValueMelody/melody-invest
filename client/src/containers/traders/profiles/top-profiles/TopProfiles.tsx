@@ -5,15 +5,20 @@ import * as commonEnum from '../../../../enums/common'
 import * as localeTool from '../../../../tools/locale'
 
 const TopProfiles = () => {
+  // ------------------------------------------------------------ State --
   const { getTopProfiles, fetchTopProfiles } = useTraderState()
 
   const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
+
+  // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     if (topProfiles) return
     fetchTopProfiles(commonEnum.OVERALL_ENV_ID)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topProfiles])
+
+  // ------------------------------------------------------------ Interface --
 
   if (!topProfiles) return null
 

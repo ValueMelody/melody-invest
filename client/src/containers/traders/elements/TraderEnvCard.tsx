@@ -26,10 +26,14 @@ const TraderEnvCard = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ Handler --
+
   const handleClickEnv = () => {
     if (!traderEnv || !onClick) return
     onClick(traderEnv.id)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   if (!traderEnv) return null
 

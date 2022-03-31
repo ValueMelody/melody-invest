@@ -37,7 +37,11 @@ const TopProfileList = ({
   const classes = useStyles()
   const navigate = useNavigate()
 
+  // ------------------------------------------------------------ State --
+
   const { getTraderProfile } = useTraderState()
+
+  // ------------------------------------------------------------ Handler --
 
   const handleClick = (
     trader: interfaces.traderModel.Record,
@@ -45,6 +49,8 @@ const TopProfileList = ({
     const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
     navigate(link)
   }
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Segment className={classes.container}>

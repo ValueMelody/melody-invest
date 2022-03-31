@@ -9,22 +9,17 @@ import * as routerEnum from '../enums/router'
 const useUserState = () => {
   const store: Context = useContext(context)
 
-  const createUser = async (email: string, password: string, isConfirmed: boolean) => {
-    const endpoint = `${routerEnum.API.USERS}`
-    store.startLoading()
-    try {
-      const user = await requestAdapter.sendPostRequest(endpoint, {
-        email,
-        password,
-        isConfirmed,
-      })
-      return user
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
+  // ------------------------------------------------------------ Get --
+  const getUser = () => {
+    return {
+      userTraderIds: store.resources.userTraderIds,
+      userTraderEnvIds: store.resources.userTraderEnvIds,
+      userType: store.resources.userType,
+      userEmail: store.resources.userEmail,
     }
   }
+
+  // ------------------------------------------------------------ store --
 
   const storeUserToken = (userToken: interfaces.userRes.UserToken) => {
     const { jwtToken, userType } = userToken
@@ -32,23 +27,6 @@ const useUserState = () => {
     storageAdapter.set(storageAdapter.KEYS.JWT_TOKEN, jwtToken)
     storageAdapter.set(storageAdapter.KEYS.USER_TYPE, userType.toString())
     store.loadUserType(userType)
-  }
-
-  const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {
-    const endpoint = `${routerEnum.API.USERS}/token`
-    store.startLoading()
-    try {
-      const userToken = await requestAdapter.sendPostRequest(endpoint, {
-        email,
-        password,
-        remember: shouldRemember,
-      })
-      storeUserToken(userToken)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
-    }
   }
 
   const storeUserOverall = (overall: interfaces.userRes.UserOverall) => {
@@ -74,6 +52,20 @@ const useUserState = () => {
     }))
   }
 
+  const storeCreatedFollowed = (traderId: number) => {
+    const traderIds = store.resources.userTraderIds || []
+    const updatedTraderIds = [...traderIds, traderId]
+    store.setResources((resources) => ({ ...resources, userTraderIds: updatedTraderIds }))
+  }
+
+  const storeDeletedFollowed = (traderId: number) => {
+    const traderIds = store.resources.userTraderIds || []
+    const remainingTraderIds = traderIds.filter((id) => id !== traderId)
+    store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
+  }
+
+  // ------------------------------------------------------------ Fetch --
+
   const fetchUserOverall = async () => {
     const endpoint = `${routerEnum.API.USERS}/overall`
     store.startLoading()
@@ -87,10 +79,40 @@ const useUserState = () => {
     }
   }
 
-  const storeCreatedFollowed = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds || []
-    const updatedTraderIds = [...traderIds, traderId]
-    store.setResources((resources) => ({ ...resources, userTraderIds: updatedTraderIds }))
+  // ------------------------------------------------------------ Create --
+
+  const createUser = async (email: string, password: string, isConfirmed: boolean) => {
+    const endpoint = `${routerEnum.API.USERS}`
+    store.startLoading()
+    try {
+      const user = await requestAdapter.sendPostRequest(endpoint, {
+        email,
+        password,
+        isConfirmed,
+      })
+      return user
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {
+    const endpoint = `${routerEnum.API.USERS}/token`
+    store.startLoading()
+    try {
+      const userToken = await requestAdapter.sendPostRequest(endpoint, {
+        email,
+        password,
+        remember: shouldRemember,
+      })
+      storeUserToken(userToken)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
   }
 
   const createUserFollowed = async (traderId: number) => {
@@ -106,24 +128,7 @@ const useUserState = () => {
     }
   }
 
-  const storeDeletedFollowed = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds || []
-    const remainingTraderIds = traderIds.filter((id) => id !== traderId)
-    store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
-  }
-
-  const deleteUserFollowed = async (traderId: number) => {
-    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-      storeDeletedFollowed(traderId)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
-    } finally {
-      store.stopLoading()
-    }
-  }
+  // ------------------------------------------------------------ Update --
 
   const updateUserPassword = async (
     currentPassword: string,
@@ -143,7 +148,25 @@ const useUserState = () => {
     }
   }
 
+  // ------------------------------------------------------------ Delete --
+
+  const deleteUserFollowed = async (traderId: number) => {
+    const endpoint = `${routerEnum.API.USERS}/traders/${traderId}`
+    store.startLoading()
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      storeDeletedFollowed(traderId)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  // ------------------------------------------------------------ export --
+
   return {
+    getUser,
     fetchUserOverall,
     createUser,
     createUserToken,

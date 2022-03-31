@@ -16,6 +16,8 @@ const TickerLabel = ({
 }) => {
   const classes = useStyles()
 
+  // ------------------------------------------------------------ Interface --
+
   if (!ticker) return null
 
   return (

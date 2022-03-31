@@ -30,10 +30,15 @@ const HoldingShare = ({
   previousHoldings?: interfaces.traderHoldingModel.Holding[];
 }) => {
   const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
   const previousHolding = previousHoldings?.find((previous) => previous.tickerId === tickerHolding.tickerId)
   const currentShares = Math.floor(tickerHolding.shares * tickerHolding.splitMultiplier)
   const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
   const shareDiffer = previousShares ? (currentShares - previousShares) / tickerHolding.splitMultiplier : null
+
+  // ------------------------------------------------------------ Interface --
 
   return (
     <Label
