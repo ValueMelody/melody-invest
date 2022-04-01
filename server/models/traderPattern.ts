@@ -60,6 +60,7 @@ export const create = async (
 export const createIfEmpty = async (
   values: interfaces.traderPatternModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
+  console.log(values.hashCode)
   const currentRecord = await getByUK(values.hashCode)
   if (currentRecord) return currentRecord
   return create(values, transaction)

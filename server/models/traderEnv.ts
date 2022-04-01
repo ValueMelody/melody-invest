@@ -10,6 +10,13 @@ const convertToRecord = (
   tickerIds: raw.tickerIds ? raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId)) : null,
 })
 
+export const getAll = async (): Promise<interfaces.traderEnvModel.Record[]> => {
+  const envs = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER_ENV,
+  })
+  return envs.map((env) => convertToRecord(env))
+}
+
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderEnvModel.Record | null> => {
