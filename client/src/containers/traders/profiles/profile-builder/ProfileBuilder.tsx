@@ -111,11 +111,11 @@ const ProfileBuilder = () => {
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseSellBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseSellBehaviors,
+      behaviors: constants.behavior.indicatorIncreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorDecreaseSellBehaviors')}`,
-      behaviors: constants.behavior.priceDecreaseSellBehaviors,
+      behaviors: constants.behavior.indicatorDecreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyImproveSellBehaviors')}`,
