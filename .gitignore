@@ -1,3 +1,6 @@
 node_modules
 .env
 constants/dist
+server/dist
+server/.clinic
+*.log

@@ -27,11 +27,18 @@ interface Target {
   daily: interfaces.tickerDailyModel.Record;
   quarterly: interfaces.tickerQuarterlyModel.Record | null;
   yearly: interfaces.tickerYearlyModel.Record | null;
-  yearlyIndicator: interfaces.indicatorYearlyModel.Record | null;
 }
 
 interface Targets {
   [tickerId: number]: Target
+}
+
+interface QuarterlyHashmap {
+  [tickerId: number]: interfaces.tickerQuarterlyModel.Record
+}
+
+interface YearlyHashmap {
+  [tickerId: number]: interfaces.tickerYearlyModel.Record
 }
 
 const getHoldingValue = (
@@ -62,7 +69,6 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const latestDate = await tickerDailyModel.getLatestDate()
   console.log(trader.id)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
-  console.log(new Date())
 
   const transaction = await databaseAdapter.createTransaction()
   try {
@@ -77,23 +83,35 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
     while (tradeDate <= latestDate) {
       const dailyTargets = await tickerDailyModel.getByDate(tradeDate, env.tickerIds)
       const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
+      const initialQuarterlys: QuarterlyHashmap = {}
+      const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
+        ...quarterlys,
+        [quarterly.tickerId]: quarterly,
+      }), initialQuarterlys)
       const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
+      const initialYearlys: YearlyHashmap = {}
+      const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
+        ...yearlys,
+        [yearly.tickerId]: yearly,
+      }), initialYearlys)
       const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(tradeDate)
       const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(tradeDate)
       const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(tradeDate)
 
       const availableTargets: Targets = dailyTargets.reduce((tickers, daily) => {
-        const quarterly = quarterlyTargets.find((quarterly) => quarterly.tickerId === daily.tickerId)
-        const yearly = yearlyTargets.find((yearly) => yearly.tickerId === daily.tickerId)
+        const quarterly = quarterlys[daily.tickerId] || null
+        const yearly = yearlys[daily.tickerId] || null
+        const tickerInfo = patternLogic.buildInitialTickerInfo(
+          daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+        )
+
         return {
           ...tickers,
           [daily.tickerId]: {
+            tickerInfo,
             daily,
-            quarterly: quarterly || null,
-            yearly: yearly || null,
-            yearlyIndicator,
-            quarterlyIndicator,
-            monthlyIndicator,
+            quarterly,
+            yearly,
           },
         }
       }, {})
@@ -187,7 +205,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly, yearlyIndicator }) => {
+        .filter(({ daily, quarterly, yearly, tickerInfo }) => {
           if (!holdingTickerIds.includes(daily.tickerId)) return false
 
           const preferValue = patternLogic.getTickerPreferValue(
@@ -195,21 +213,17 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
           )
           if (preferValue === null) return false
 
-          const hasWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-          )
+          const hasWeight = patternLogic.getPriceMovementSellWeights(pattern, tickerInfo)
           if (!hasWeight) return false
 
           return true
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, first.daily, first.quarterly, first.yearly,
-            first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+            pattern, first.tickerInfo,
           )
           const secondWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, second.daily, second.quarterly, second.yearly,
-            second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+            pattern, second.tickerInfo,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
@@ -271,26 +285,20 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
       const buyTargets: Target[] = Object.values(availableTargets)
-        .filter(({
-          daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-        }) => {
+        .filter(({ daily, quarterly, yearly, tickerInfo }) => {
           const preferValue = patternLogic.getTickerPreferValue(
             pattern.buyPreference, daily, quarterly, yearly,
           )
           if (preferValue === null) return false
 
-          return !!patternLogic.getPriceMovementBuyWeights(
-            pattern, daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-          )
+          return !!patternLogic.getPriceMovementBuyWeights(pattern, tickerInfo)
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, first.daily, first.quarterly, first.yearly,
-            first.monthlyIndicator, first.quarterlyIndicator, first.yearlyIndicator,
+            pattern, first.tickerInfo,
           )
           const secondWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, second.daily, second.quarterly, second.yearly,
-            second.monthlyIndicator, second.quarterlyIndicator, second.yearlyIndicator,
+            pattern, second.tickerInfo,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1

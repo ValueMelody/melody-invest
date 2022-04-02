@@ -27,6 +27,8 @@
     "client:lint": "npm run lint --workspace=client",
     "client:lint-fix": "npm run lint-fix --workspace=client",
     "server:start": "npm run start --workspace=server",
+    "server:start-check": "npm run start-check --workspace=server",
+    "server:build": "npm run build --workspace=server",
     "server:lint": "npm run lint --workspace=server",
     "server:lint-fix": "npm run lint-fix --workspace=server",
     "server:migrate": "npm run migrate --workspace=server",

@@ -32,14 +32,18 @@ type CompareKey =
   interfaces.indicatorYearlyModel.CompareKey |
   interfaces.indicatorQuarterlyModel.CompareKey
 
-const buildInitialTickerInfo = (
+type TickerInfo = {
+  [key in MovementKey | CompareKey]: number | null;
+}
+
+export const buildInitialTickerInfo = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
   indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
   indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
   indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
-) => {
+): TickerInfo => {
   return {
     ...tickerDaily,
     epsQuarterlyBeat: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeat : null,
@@ -86,12 +90,7 @@ const buildInitialTickerInfo = (
 
 export const getPriceMovementBuyWeights = (
   pattern: interfaces.traderPatternModel.Record,
-  tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
-  tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
-  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
+  tickerInfo: TickerInfo,
 ): number => {
   const MOVEMENT_TRIGGERS: {
     [key in interfaces.traderPatternModel.MovementBuyBehavior]: MovementKey
@@ -155,9 +154,6 @@ export const getPriceMovementBuyWeights = (
     gdpQuarterlyYoYChangeBelowBuy: 'gdpQuarterlyChangePercent',
   }
 
-  const tickerInfo = buildInitialTickerInfo(
-    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly,
-  )
   const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
@@ -199,12 +195,7 @@ export const getPriceMovementBuyWeights = (
 
 export const getPriceMovementSellWeights = (
   pattern: interfaces.traderPatternModel.Record,
-  tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
-  tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
-  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
+  tickerInfo: TickerInfo,
 ): number => {
   const MOVEMENT_TRIGGERS: {
     [key in interfaces.traderPatternModel.MovementSellBehavior]: MovementKey
@@ -268,9 +259,6 @@ export const getPriceMovementSellWeights = (
     gdpQuarterlyYoYChangeBelowSell: 'gdpQuarterlyYoYChangePercent',
   }
 
-  const tickerInfo = buildInitialTickerInfo(
-    tickerDaily, tickerQuarterly, tickerYearly, indicatorMonthly, indicatorQuarterly, indicatorYearly,
-  )
   const movementTriggers = Object.keys(MOVEMENT_TRIGGERS) as Array<keyof typeof MOVEMENT_TRIGGERS>
   const compareTriggers = Object.keys(COMPARE_TRIGGERS) as Array<keyof typeof COMPARE_TRIGGERS>
 
