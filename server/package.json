@@ -2,12 +2,15 @@
   "name": "server",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev --project ../tsconfig.json ./index.ts",
+    "start": "ts-node-dev ./index.ts",
+    "start-check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
+    "build": "tsc --build --clean && tsc --build --force",
     "migrate": "knex migrate:latest",
     "lint": "eslint ./ --ext .ts",
     "lint-fix": "eslint --fix ./ --ext .ts"
   },
   "dependencies": {
+    "@shared/constants": "*",
     "axios": "^0.24.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -19,12 +22,12 @@
     "knex": "^0.95.13",
     "moment": "^2.29.1",
     "pg": "^8.7.1",
-    "qs": "^6.10.1",
-    "@shared/constants": "*"
+    "qs": "^6.10.1"
   },
   "devDependencies": {
+    "@shared/interfaces": "*",
     "@types/cors": "^2.8.12",
     "@types/jsonwebtoken": "^8.5.8",
-    "@shared/interfaces": "*"
+    "clinic": "^11.1.0"
   }
 }
