@@ -60,7 +60,9 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const cashMaxPercent = pattern.cashMaxPercent / 100
 
   const latestDate = await tickerDailyModel.getLatestDate()
+  console.log(trader.id)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
+  console.log(new Date())
 
   const transaction = await databaseAdapter.createTransaction()
   try {
@@ -353,7 +355,13 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
       tradeDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
     }
 
-    if (!holding) return
+    if (!holding) {
+      if (trader.estimatedAt !== latestDate) {
+        await traderModel.update(trader.id, { estimatedAt: latestDate }, transaction)
+        await transaction.commit()
+      }
+      return
+    }
 
     const latestDailys = await tickerDailyModel.getAllLatestByDate(latestDate)
     const totalValue = getHoldingValue(holding, latestDailys)
