@@ -55,8 +55,8 @@ calcRouter.get('/traders/performance', async (req, res) => {
   return res.status(200).send({ result })
 })
 
-calcRouter.get('/traders/descendant', async (req, res) => {
-  const result = await calcTraders.calcDescendant()
+calcRouter.get('/traders/descendants', async (req, res) => {
+  const result = await calcTraders.calcAllEnvDescendants()
 
   return res.status(200).send({ result })
 })

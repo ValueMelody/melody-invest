@@ -407,7 +407,7 @@ const pickTradingPatterns = (
 export const generatePatternChild = (
   first: interfaces.traderPatternModel.Record,
   second: interfaces.traderPatternModel.Record,
-  shouldMutation: boolean = false,
+  shouldMutate: boolean = false,
 ) => {
   const newChild: interfaces.traderPatternModel.Create = {
     hashCode: '',
@@ -542,7 +542,7 @@ export const generatePatternChild = (
       : behavior.value
   })
 
-  if (shouldMutation) {
+  if (shouldMutate) {
     const potentialKeys = Object.keys(constants.behaviorValue.options) as Array<
       keyof typeof constants.behaviorValue.options
     >

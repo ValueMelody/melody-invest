@@ -406,44 +406,54 @@ export const calcAllTradersPerformance = async () => {
   })
 }
 
-export const calcDescendant = async (): Promise<interfaces.traderModel.Record[]> => {
-  const tops = await traderModel.getTops(null, 30)
-  const topTraders = [
-    ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
-  ]
-
-  const couples = patternLogic.groupPatternCouples(topTraders)
+const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel.Record[]) => {
+  const couples = patternLogic.groupPatternCouples(traders)
+  const patternHashs: string[] = []
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const newTraders = await runTool.asyncReduce(couples, async (
-      allTraders: interfaces.traderModel.Record[], couple: interfaces.traderModel.Record[],
+    const newTraders = await runTool.asyncForEach(couples, async (
+      couple: interfaces.traderModel.Record[],
     ) => {
-      const [firstTrader, secondTrader] = couple
+      const firstTrader = couple[0]
+      const secondTrader = couple.length > 1 ? couple[1] : couple[0]
+      const shouldMutate = couple.length !== 2 || couple[0].id === couple[1].id
+
       const firstPattern = await traderPatternModel.getByPK(firstTrader.traderPatternId)
       const secondPattern = await traderPatternModel.getByPK(secondTrader.traderPatternId)
 
-      const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
+      const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
-      const traderOne = await traderModel.createOrActive(1, patternOne.id, transaction)
+      patternHashs.push(patternOne.hashCode)
+      await traderModel.createOrActive(envId, patternOne.id, transaction)
 
-      const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
-      const patternTwo = await traderPatternModel.createIfEmpty(childTwo, transaction)
-      const traderTwo = await traderModel.createOrActive(1, patternTwo.id, transaction)
+      const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
+      if (!patternHashs.includes(childTwo.hashCode)) {
+        const patternTwo = await traderPatternModel.createIfEmpty(childTwo, transaction)
+        patternHashs.push(patternTwo.hashCode)
+        await traderModel.createOrActive(envId, patternTwo.id, transaction)
+      }
 
-      const childThree = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
-      const patternThree = await traderPatternModel.createIfEmpty(childThree, transaction)
-      const traderThree = await traderModel.createOrActive(1, patternThree.id, transaction)
+      const childThree = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
+      if (!patternHashs.includes(childThree.hashCode)) {
+        const patternThree = await traderPatternModel.createIfEmpty(childThree, transaction)
+        patternHashs.push(patternThree.hashCode)
+        await traderModel.createOrActive(envId, patternThree.id, transaction)
+      }
 
-      const childFour = patternLogic.generatePatternChild(firstPattern!, secondPattern!)
-      const patternFour = await traderPatternModel.createIfEmpty(childFour, transaction)
-      const traderFour = await traderModel.createOrActive(1, patternFour.id, transaction)
+      const childFour = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
+      if (!patternHashs.includes(childFour.hashCode)) {
+        const patternFour = await traderPatternModel.createIfEmpty(childFour, transaction)
+        patternHashs.push(patternFour.hashCode)
+        await traderModel.createOrActive(envId, patternFour.id, transaction)
+      }
 
       const childFive = patternLogic.generatePatternChild(firstPattern!, secondPattern!, true)
-      const patternFive = await traderPatternModel.createIfEmpty(childFive, transaction)
-      const traderFive = await traderModel.createOrActive(1, patternFive.id, transaction)
-
-      return [...allTraders, traderOne, traderTwo, traderThree, traderFour, traderFive]
+      if (!patternHashs.includes(childFive.hashCode)) {
+        const patternFive = await traderPatternModel.createIfEmpty(childFive, transaction)
+        patternHashs.push(patternFive.hashCode)
+        await traderModel.createOrActive(envId, patternFive.id, transaction)
+      }
     })
 
     await transaction.commit()
@@ -452,4 +462,16 @@ export const calcDescendant = async (): Promise<interfaces.traderModel.Record[]>
     await transaction.rollback()
     throw error
   }
+}
+
+export const calcAllEnvDescendants = async () => {
+  const envs = await traderEnvModel.getAll()
+  await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+    const tops = await traderModel.getTops(env.id, 30)
+    const topTraders = [
+      ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
+    ]
+    if (!topTraders.length) return
+    await calcEnvDescendants(env.id, topTraders)
+  })
 }
