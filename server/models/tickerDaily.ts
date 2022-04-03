@@ -82,10 +82,8 @@ export const getAllLatestByDate = async (
 
 export const getByDate = async (
   date: string,
-  tickerIds: number[] | null,
 ): Promise<interfaces.tickerDailyModel.Record[]> => {
   const conditions: databaseAdapter.Condition[] = [{ key: 'date', value: date }]
-  if (tickerIds) conditions.push({ key: 'tickerId', value: tickerIds, type: 'IN' })
   const tickerDaily = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
     conditions,

@@ -12,6 +12,7 @@ import * as traderFollowerModel from './models/traderFollower'
 import * as indicatorMonthlyModel from './models/indicatorMonthly'
 import * as indicatorQuarterlyModel from './models/indicatorQuarterly'
 import * as indicatorYearlyModel from './models/indicatorYearly'
+import * as dailyTickersModel from './models/dailyTickers'
 
 import * as systemRes from './responses/system'
 import * as userRes from './responses/user'
@@ -34,6 +35,7 @@ export {
   indicatorMonthlyModel,
   indicatorQuarterlyModel,
   indicatorYearlyModel,
+  dailyTickersModel,
   systemRes,
   userRes,
   traderRes,

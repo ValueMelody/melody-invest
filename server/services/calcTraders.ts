@@ -4,11 +4,7 @@ import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
-import * as tickerQuarterlyModel from '../models/tickerQuarterly'
-import * as tickerYearlyModel from '../models/tickerYearly'
-import * as indicatorYearlyModel from '../models/indicatorYearly'
-import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
-import * as indicatorMonthlyModel from '../models/indicatorMonthly'
+import * as dailyTickersModel from '../models/dailyTickers'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
 import * as generateTool from '../tools/generate'
@@ -21,24 +17,6 @@ interface HoldingDetails {
   totalCash: number,
   totalValue: number,
   holdings: interfaces.traderHoldingModel.Holding[]
-}
-
-interface Target {
-  daily: interfaces.tickerDailyModel.Record;
-  quarterly: interfaces.tickerQuarterlyModel.Record | null;
-  yearly: interfaces.tickerYearlyModel.Record | null;
-}
-
-interface Targets {
-  [tickerId: number]: Target
-}
-
-interface QuarterlyHashmap {
-  [tickerId: number]: interfaces.tickerQuarterlyModel.Record
-}
-
-interface YearlyHashmap {
-  [tickerId: number]: interfaces.tickerYearlyModel.Record
 }
 
 const getHoldingValue = (
@@ -67,7 +45,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   const cashMaxPercent = pattern.cashMaxPercent / 100
 
   const latestDate = await tickerDailyModel.getLatestDate()
-  console.log(trader.id)
+  console.info(`Checking ${trader.id}`)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
   const transaction = await databaseAdapter.createTransaction()
@@ -81,40 +59,15 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
     let hasRebalanced = false
 
     while (tradeDate <= latestDate) {
-      const dailyTargets = await tickerDailyModel.getByDate(tradeDate, env.tickerIds)
-      const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(tradeDate)
-      const initialQuarterlys: QuarterlyHashmap = {}
-      const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
-        ...quarterlys,
-        [quarterly.tickerId]: quarterly,
-      }), initialQuarterlys)
-      const yearlyTargets = await tickerYearlyModel.getPublishedByDate(tradeDate)
-      const initialYearlys: YearlyHashmap = {}
-      const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
-        ...yearlys,
-        [yearly.tickerId]: yearly,
-      }), initialYearlys)
-      const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(tradeDate)
-      const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(tradeDate)
-      const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(tradeDate)
+      const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
-      const availableTargets: Targets = dailyTargets.reduce((tickers, daily) => {
-        const quarterly = quarterlys[daily.tickerId] || null
-        const yearly = yearlys[daily.tickerId] || null
-        const tickerInfo = patternLogic.buildInitialTickerInfo(
-          daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-        )
+      const dailyTickers = await dailyTickersModel.getByUK(tradeDate)
+      if (!dailyTickers) {
+        tradeDate = nextDate
+        continue
+      }
 
-        return {
-          ...tickers,
-          [daily.tickerId]: {
-            tickerInfo,
-            daily,
-            quarterly,
-            yearly,
-          },
-        }
-      }, {})
+      const availableTargets = dailyTickers.tickers
 
       const totalCash = holding ? holding.totalCash : marketLogic.getInitialCash()
       const holdings = holding ? holding.holdings : []
@@ -205,7 +158,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly, tickerInfo }) => {
+        .filter(({ daily, quarterly, yearly, info }) => {
           if (!holdingTickerIds.includes(daily.tickerId)) return false
 
           const preferValue = patternLogic.getTickerPreferValue(
@@ -213,17 +166,17 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
           )
           if (preferValue === null) return false
 
-          const hasWeight = patternLogic.getPriceMovementSellWeights(pattern, tickerInfo)
+          const hasWeight = patternLogic.getPriceMovementSellWeights(pattern, info)
           if (!hasWeight) return false
 
           return true
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, first.tickerInfo,
+            pattern, first.info,
           )
           const secondWeight = patternLogic.getPriceMovementSellWeights(
-            pattern, second.tickerInfo,
+            pattern, second.info,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
@@ -284,21 +237,21 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
 
       const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
 
-      const buyTargets: Target[] = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly, tickerInfo }) => {
+      const buyTargets: interfaces.dailyTickersModel.DailyTicker[] = Object.values(availableTargets)
+        .filter(({ daily, quarterly, yearly, info }) => {
           const preferValue = patternLogic.getTickerPreferValue(
             pattern.buyPreference, daily, quarterly, yearly,
           )
           if (preferValue === null) return false
 
-          return !!patternLogic.getPriceMovementBuyWeights(pattern, tickerInfo)
+          return !!patternLogic.getPriceMovementBuyWeights(pattern, info)
         })
         .sort((first, second) => {
           const firstWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, first.tickerInfo,
+            pattern, first.info,
           )
           const secondWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, second.tickerInfo,
+            pattern, second.info,
           )
           if (firstWeight > secondWeight) return -1
           if (firstWeight < secondWeight) return 1
@@ -360,7 +313,7 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
         }, transaction)
       }
 
-      tradeDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
+      tradeDate = nextDate
     }
 
     if (!holding) {
