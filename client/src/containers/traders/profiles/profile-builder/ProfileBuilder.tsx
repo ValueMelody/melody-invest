@@ -328,7 +328,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] ?? null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
