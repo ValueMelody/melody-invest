@@ -13,6 +13,7 @@ export const dbPercent = (value: number | null): string => {
 
 const patternFrequency = (value: number | null): string => {
   if (value === null) return ''
+  if (value === 0) return localeTool.t('common.never')
   return localeTool.t('behavior.frequency.type', { num: value })
 }
 
@@ -29,7 +30,7 @@ export const behaviorValue = (
   behavior: interfaces.traderPatternModel.Behavior,
   value: number | null,
 ): string | number | null => {
-  if (!value) return ''
+  if (value === null) return ''
   if (behavior.includes('Percent')) return dbPercent(value)
   if (behavior.includes('Frequency')) return patternFrequency(value)
   if (behavior.includes('Preference')) return patternPreference(value)

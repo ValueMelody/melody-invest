@@ -59,7 +59,7 @@ const ProfileBuilderGroup = ({
         <BehaviorEditor
           key={behavior}
           behavior={behavior}
-          behaviorValue={behaviorValues[behavior] || null}
+          behaviorValue={behaviorValues[behavior] ?? null}
           isEditing={behavior === currentBehavior}
           onClick={handleClickBehavior}
           onSelect={handleSelectValue}
