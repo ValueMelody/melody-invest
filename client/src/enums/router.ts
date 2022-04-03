@@ -3,6 +3,7 @@ export const NAV = {
   SIGN_IN: '/sign-in',
   SETTING: '/setting',
   TRADERS: '/traders',
+  BEHAVIORS: '/behaviors',
   DASHBOARD: '/dashboard',
   NOT_FOUND: '/404',
 }

@@ -19,7 +19,7 @@ const BehaviorLabel = ({
   behavior: interfaces.traderPatternModel.Behavior;
   color: SemanticCOLORS;
   value?: number | null;
-  onClick?: () => void;
+  onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
   const classes = useStyles()
 
@@ -34,7 +34,7 @@ const BehaviorLabel = ({
 
   const handleClick = () => {
     if (!onClick) return
-    onClick()
+    onClick(behavior)
   }
 
   // ------------------------------------------------------------ Interface --
