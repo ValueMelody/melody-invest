@@ -13,6 +13,7 @@ const Template = () => {
   const show = getVisibility()
 
   // ------------------------------------------------------------ Effect --
+
   useEffect(() => {
     fetchSomething()
   }, [])

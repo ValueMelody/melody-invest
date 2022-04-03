@@ -7,6 +7,8 @@ import TopProfiles from './traders/profiles/top-profiles/TopProfiles'
 import ProfileDetail from './traders/profiles/ProfileDetail'
 import ProfileDashboard from './traders/profiles/ProfileDashboard'
 import ProfileBuilder from './traders/profiles/profile-builder/ProfileBuilder'
+import BehaviorList from './traders/behaviors/BehaviorList'
+import BehaviorDetail from './traders/behaviors/BehaviorDetail'
 import EnvBuilder from './traders/envs/EnvBuilder'
 import EnvDetail from './traders/envs/EnvDetail'
 import * as routerEnum from '../enums/router'
@@ -35,6 +37,14 @@ const Router = () => {
           <Route
             path={`${routerEnum.NAV.TRADERS}/envs/:envId`}
             element={<EnvDetail />}
+          />
+          <Route
+            path={routerEnum.NAV.BEHAVIORS}
+            element={<BehaviorList />}
+          />
+          <Route
+            path={`${routerEnum.NAV.BEHAVIORS}/:behavior`}
+            element={<BehaviorDetail />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}

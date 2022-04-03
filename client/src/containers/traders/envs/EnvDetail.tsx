@@ -25,6 +25,9 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
     marginBottom: '1rem',
     borderBottom: `1px solid ${theme.PRIMARY_COLOR}`,
   },
+  watch: {
+    width: 290,
+  },
   right: {
     width: 'calc(100% - 24rem)',
     minWidth: '38rem',
@@ -103,31 +106,28 @@ const EnvDetail = () => {
   if (!traderEnv || !topProfiles) return null
 
   return (
-    <div className={classNames('row-between', classes.container)}>
-      <div className={classes.left}>
+    <section className={classNames('row-between', classes.container)}>
+      <aside className={classes.left}>
         <TraderEnvCard
           traderEnv={traderEnv}
           isActive={false}
         />
         <div className={classes.tickers}>
-          {traderEnv.tickerIds && traderEnv.tickerIds.map((tickerId) => {
-            const ticker = getTickerIdentity(tickerId)
-            return (
-              <TickerLabel
-                key={tickerId}
-                ticker={ticker}
-              />
-            )
-          })}
+          {traderEnv.tickerIds && traderEnv.tickerIds.map((tickerId) => (
+            <TickerLabel
+              key={tickerId}
+              ticker={getTickerIdentity(tickerId)}
+            />
+          ))}
         </div>
-        <div className='row-around'>
+        <div className={classNames('row-around', classes.watch)}>
           <WatchButton
             isWatched={true}
             onToggle={handleUnwatch}
           />
         </div>
-      </div>
-      <div className={classNames('row-start', classes.right)}>
+      </aside>
+      <section className={classNames('row-start', classes.right)}>
         {!hasResult && <h4 className={classes.noResult}>{localeTool.t('traderEnv.noResultYet')}</h4>}
         {hasResult && (
           <>
@@ -173,8 +173,8 @@ const EnvDetail = () => {
             </div>
           </>
         )}
-      </div>
-    </div>
+      </section>
+    </section>
   )
 }
 

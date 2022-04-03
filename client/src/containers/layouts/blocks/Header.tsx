@@ -47,6 +47,12 @@ const Header = () => {
             {localeTool.t('topProfiles.title')}
           </Label>
         </Link>
+        <Link to={`${routerEnum.NAV.BEHAVIORS}`}>
+          <Label className={classes.label}>
+            <Icon name='certificate' className={classes.icon} />
+            {localeTool.t('tradeBehaviors.title')}
+          </Label>
+        </Link>
       </nav>
       <nav>
         {isLoggedInUser && (

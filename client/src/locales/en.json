@@ -18,6 +18,7 @@
     "common.numSelected": "{{num}} selected",
     "common.envs": "Environments",
     "common.system": "System",
+    "common.search": "Search",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -46,6 +47,11 @@
     "dashboard.newDesc": "Build a new environment",
 
     "topProfiles.title": "Top Profiles",
+
+    "tradeBehaviors.title": "Trade Behaviors",
+    "tradeBehaviors.buyBehaviors": "Buy Behaviors",
+    "tradeBehaviors.sellBehaviors": "Sell Behaviors",
+    "tradeBehaviors.otherBehaviors": "Other Behaviors",
 
     "bestReturn.yearlyTitle": "Best Return in Annual",
     "bestReturn.pastYearTitle": "Best Return in One Year",
