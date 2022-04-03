@@ -4,8 +4,13 @@ import * as tickerModel from '../models/ticker'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as tickerYearlyModel from '../models/tickerYearly'
+import * as indicatorMonthlyModel from '../models/indicatorMonthly'
+import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
+import * as indicatorYearlyModel from '../models/indicatorYearly'
+import * as dailyTickersModel from '../models/dailyTickers'
 import * as databaseAdapter from '../adapters/database'
 import * as runTool from '../tools/run'
+import * as dateTool from '../tools/date'
 
 const calcAverageOfRange = (
   dailyRecords: interfaces.tickerDailyModel.Record[],
@@ -359,4 +364,128 @@ export const calcAllTickersYearlyFinancial = async () => {
   await runTool.asyncForEach(tickers, async (ticker: interfaces.tickerDailyModel.Record) => {
     await calcTickerYearlyFinancial(ticker.id)
   })
+}
+
+interface Quarterlys {
+  [tickerId: number]: interfaces.tickerQuarterlyModel.Record
+}
+
+interface Yearlys {
+  [tickerId: number]: interfaces.tickerYearlyModel.Record
+}
+
+export const buildTickerInfo = (
+  tickerDaily: interfaces.tickerDailyModel.Record,
+  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
+  tickerYearly: interfaces.tickerYearlyModel.Record | null,
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
+): interfaces.dailyTickersModel.TickerInfo => {
+  return {
+    ...tickerDaily,
+    epsQuarterlyBeat: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeat : null,
+    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
+    profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
+    profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
+    incomeQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyIncrease : null,
+    incomeQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyDecrease : null,
+    revenueQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyIncrease : null,
+    revenueQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.revenueQuarterlyDecrease : null,
+    profitYearlyIncrease: tickerYearly ? tickerYearly.profitYearlyIncrease : null,
+    profitYearlyDecrease: tickerYearly ? tickerYearly.profitYearlyDecrease : null,
+    incomeYearlyIncrease: tickerYearly ? tickerYearly.incomeYearlyIncrease : null,
+    incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
+    revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
+    revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
+    inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
+    inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
+    gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
+    gdpQuarterlyChangePercent: indicatorQuarterly ? indicatorQuarterly.gdpQuarterlyChangePercent : null,
+    gdpQuarterlyYoYChangePercent: indicatorQuarterly ? indicatorQuarterly.gdpQuarterlyYoYChangePercent : null,
+    fundsRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyIncrease : null,
+    fundsRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyDecrease : null,
+    thirtyYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyIncrease : null,
+    thirtyYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyDecrease : null,
+    tenYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyIncrease : null,
+    tenYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyDecrease : null,
+    inflationMonthlyIncrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyIncrease : null,
+    inflationMonthlyDecrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyDecrease : null,
+    cpiMonthlyIncrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyIncrease : null,
+    cpiMonthlyDecrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyDecrease : null,
+    consumerSentimentMonthlyIncrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyIncrease : null,
+    consumerSentimentMonthlyDecrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyDecrease : null,
+    retailSalesMonthlyIncrease: indicatorMonthly ? indicatorMonthly.retailSalesMonthlyIncrease : null,
+    retailSalesMonthlyDecrease: indicatorMonthly ? indicatorMonthly.retailSalesMonthlyDecrease : null,
+    durableGoodsMonthlyIncrease: indicatorMonthly ? indicatorMonthly.durableGoodsMonthlyIncrease : null,
+    durableGoodsMonthlyDecrease: indicatorMonthly ? indicatorMonthly.durableGoodsMonthlyDecrease : null,
+    unemploymentRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.unemploymentRateMonthlyIncrease : null,
+    unemploymentRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.unemploymentRateMonthlyDecrease : null,
+    nonfarmPayrollMonthlyIncrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyIncrease : null,
+    nonfarmPayrollMonthlyDecrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyDecrease : null,
+  }
+}
+
+export const calcDailyAvailableTickers = async () => {
+  const lastPriceDate = await tickerDailyModel.getLatestDate()
+  const lastCalculatedDate = await dailyTickersModel.getLatestDate()
+
+  let targetDate = dateTool.getNextDate(lastCalculatedDate)
+  if (lastPriceDate < targetDate) return
+
+  while (targetDate <= lastPriceDate) {
+    console.info(`Checking ${targetDate}`)
+
+    const nextDate = dateTool.getNextDate(targetDate)
+    const dailyTargets = await tickerDailyModel.getByDate(targetDate)
+    if (!dailyTargets.length) {
+      targetDate = nextDate
+      continue
+    }
+
+    const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate)
+    const initialQuarterlys: Quarterlys = {}
+    const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
+      ...quarterlys,
+      [quarterly.tickerId]: quarterly,
+    }), initialQuarterlys)
+
+    const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate)
+    const initialYearlys: Yearlys = {}
+    const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
+      ...yearlys,
+      [yearly.tickerId]: yearly,
+    }), initialYearlys)
+
+    const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
+    const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
+    const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
+
+    const initialDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
+    const dailyTickers = dailyTargets.reduce((tickers, daily) => {
+      const quarterly = quarterlys[daily.tickerId] || null
+      const yearly = yearlys[daily.tickerId] || null
+      const info = buildTickerInfo(
+        daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+      )
+      return {
+        ...tickers,
+        [daily.tickerId]: { info, daily, quarterly, yearly },
+      }
+    }, initialDailyTickers)
+
+    const transaction = await databaseAdapter.createTransaction()
+    try {
+      await dailyTickersModel.create({
+        date: targetDate,
+        tickers: dailyTickers,
+      }, transaction)
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+
+    targetDate = nextDate
+  }
 }

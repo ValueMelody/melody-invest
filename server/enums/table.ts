@@ -13,4 +13,5 @@ export const NAME = {
   TRADER_HOLDING: 'trader_holding',
   TRADER_PATTERN: 'trader_pattern',
   TRADER_FOLLOWER: 'trader_follower',
+  DAILY_TICKERS: 'daily_tickers',
 }
