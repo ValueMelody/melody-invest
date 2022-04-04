@@ -100,7 +100,7 @@ const ProfileCard = ({
 
       <div className={classes.body}>
         <TraderPerformance trader={trader} focusType={focusType} />
-        <PatternBehaviors pattern={pattern} />
+        <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
       </div>
     </Segment>
   )

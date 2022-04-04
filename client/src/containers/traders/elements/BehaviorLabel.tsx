@@ -1,3 +1,4 @@
+import { MouseEvent } from 'react'
 import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
@@ -32,7 +33,8 @@ const BehaviorLabel = ({
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClick = () => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
+    e.stopPropagation()
     if (!onClick) return
     onClick(behavior)
   }
