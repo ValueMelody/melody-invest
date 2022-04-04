@@ -26,3 +26,7 @@ export interface ProfileDetail {
   profileEnvs: ProfileEnv[],
   holdings: traderHoldingModel.Record[],
 }
+
+export interface BehaviorDetail {
+  topProfiles: TopProfiles
+}

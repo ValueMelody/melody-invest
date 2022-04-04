@@ -436,7 +436,7 @@ const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel
 export const calcAllEnvDescendants = async () => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    const tops = await traderModel.getTops(env.id, 30)
+    const tops = await traderModel.getTops(30, env.id)
     const topTraders = [
       ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
     ]

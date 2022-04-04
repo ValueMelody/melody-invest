@@ -45,7 +45,7 @@ const BehaviorList = () => {
   // ------------------------------------------------------------ Handler --
 
   const handleClickLabel = (behavior: interfaces.traderPatternModel.Behavior) => {
-    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}`
+    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/1`
     navigate(url)
   }
 

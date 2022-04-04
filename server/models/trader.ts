@@ -66,14 +66,6 @@ export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
   return traders.map((trader) => convertToRecord(trader))
 }
 
-interface Tops {
-  yearly: interfaces.traderModel.Record[],
-  pastYear: interfaces.traderModel.Record[],
-  pastQuarter: interfaces.traderModel.Record[],
-  pastMonth: interfaces.traderModel.Record[],
-  pastWeek: interfaces.traderModel.Record[],
-}
-
 export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderModel.Record[]> => {
@@ -86,58 +78,85 @@ export const getInPKs = async (
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getTops = async (envId: number | null, each: number): Promise<Tops> => {
+export const getTops = async (
+  each: number,
+  envId?: number,
+  behavior?: interfaces.traderPatternModel.Behavior,
+): Promise<interfaces.traderModel.Tops> => {
   const conditions: databaseAdapter.Condition[] = [{ key: 'isActive', value: true }]
   if (envId) conditions.push({ key: 'traderEnvId', value: envId })
+  if (behavior) {
+    conditions.push({
+      key: `${tableEnum.NAME.TRADER_PATTERN}.${behavior}`, value: null, type: 'IS NOT',
+    })
+  }
+
+  const leftJoin = behavior
+    ? {
+        joinTable: tableEnum.NAME.TRADER_PATTERN,
+        foreignKey: `${tableEnum.NAME.TRADER}.traderPatternId`,
+        joinKey: `${tableEnum.NAME.TRADER_PATTERN}.id`,
+      }
+    : undefined
 
   const topYearly = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
+    select: [`${tableEnum.NAME.TRADER}.*`],
     conditions: [
       ...conditions,
       { key: 'yearlyPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'yearlyPercentNumber', order: 'desc' }],
     limit: each,
+    leftJoin,
   })
 
   const topPastYear = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
+    select: [`${tableEnum.NAME.TRADER}.*`],
     conditions: [
       ...conditions,
       { key: 'pastYearPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastYearPercentNumber', order: 'desc' }],
     limit: each,
+    leftJoin,
   })
 
   const topPastQuarter = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
+    select: [`${tableEnum.NAME.TRADER}.*`],
     conditions: [
       ...conditions,
       { key: 'pastQuarterPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastQuarterPercentNumber', order: 'desc' }],
     limit: each,
+    leftJoin,
   })
 
   const topPastMonth = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
+    select: [`${tableEnum.NAME.TRADER}.*`],
     conditions: [
       ...conditions,
       { key: 'pastMonthPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastMonthPercentNumber', order: 'desc' }],
     limit: each,
+    leftJoin,
   })
 
   const topPastWeek = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TRADER,
+    select: [`${tableEnum.NAME.TRADER}.*`],
     conditions: [
       ...conditions,
       { key: 'pastWeekPercentNumber', value: null, type: 'IS NOT' },
     ],
     orderBy: [{ column: 'pastWeekPercentNumber', order: 'desc' }],
     limit: each,
+    leftJoin,
   })
 
   return {

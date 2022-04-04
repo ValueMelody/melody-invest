@@ -69,14 +69,14 @@ const ProfileDetail = () => {
   }, [])
 
   useEffect(() => {
-    if (traderProfile) return
-    fetchTraderProfile(traderId!, accessCode!)
+    if (traderProfile || !traderId || !accessCode) return
+    fetchTraderProfile(traderId, accessCode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderProfile])
 
   useEffect(() => {
-    if (profileDetail) return
-    fetchProfileDetail(traderId!, accessCode!)
+    if (profileDetail || !traderId || !accessCode) return
+    fetchProfileDetail(traderId, accessCode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileDetail])
 

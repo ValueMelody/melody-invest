@@ -6,11 +6,10 @@ import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
 import * as routerEnum from '../../../enums/router'
 import * as themeEnum from '../../../enums/theme'
-import * as localeTool from '../../../tools/locale'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
 import WatchButton from '../elements/WatchButton'
-import ProfileCard from '../blocks/ProfileCard'
+import EachTops from '../blocks/EachTops'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   container: {
@@ -33,16 +32,6 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
     minWidth: '38rem',
     alignItems: 'flex-start',
   },
-  noResult: {
-    marginTop: '1rem !important',
-  },
-  card: {
-    width: '28rem',
-    margin: '1rem',
-  },
-  subTitle: {
-    marginBottom: '1rem !important',
-  },
 }))
 
 const EnvDetail = () => {
@@ -53,9 +42,7 @@ const EnvDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTraderEnv, getTopProfiles, getTraderProfile,
-    fetchTraderEnv, fetchTopProfiles,
-    deleteWatchedEnv,
+    getTraderEnv, getTopProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
 
@@ -68,8 +55,6 @@ const EnvDetail = () => {
   const bestPastQuarter = topProfiles?.pastQuarter[0] || null
   const bestPastMonth = topProfiles?.pastMonth[0] || null
   const bestPastWeek = topProfiles?.pastWeek[0] || null
-
-  const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
 
   // ------------------------------------------------------------ Handler --
 
@@ -128,51 +113,13 @@ const EnvDetail = () => {
         </div>
       </aside>
       <section className={classNames('row-start', classes.right)}>
-        {!hasResult && <h4 className={classes.noResult}>{localeTool.t('traderEnv.noResultYet')}</h4>}
-        {hasResult && (
-          <>
-            <div className={classes.card}>
-              <h4 className={classes.subTitle}>
-                {localeTool.t('bestReturn.yearlyTitle')}
-              </h4>
-              <ProfileCard
-                profile={getTraderProfile(bestOverall)}
-              />
-            </div>
-            <div className={classes.card}>
-              <h4 className={classes.subTitle}>
-                {localeTool.t('bestReturn.pastYearTitle')}:
-              </h4>
-              <ProfileCard
-                profile={getTraderProfile(bestPastYear)}
-              />
-            </div>
-            <div className={classes.card}>
-              <h4 className={classes.subTitle}>
-                {localeTool.t('bestReturn.pastQuarterTitle')}:
-              </h4>
-              <ProfileCard
-                profile={getTraderProfile(bestPastQuarter)}
-              />
-            </div>
-            <div className={classes.card}>
-              <h4 className={classes.subTitle}>
-                {localeTool.t('bestReturn.pastMonthTitle')}:
-              </h4>
-              <ProfileCard
-                profile={getTraderProfile(bestPastMonth)}
-              />
-            </div>
-            <div className={classes.card}>
-              <h4 className={classes.subTitle}>
-                {localeTool.t('bestReturn.pastWeekTitle')}:
-              </h4>
-              <ProfileCard
-                profile={getTraderProfile(bestPastWeek)}
-              />
-            </div>
-          </>
-        )}
+        <EachTops
+          bestOverall={bestOverall}
+          bestPastYear={bestPastYear}
+          bestPastQuarter={bestPastQuarter}
+          bestPastMonth={bestPastMonth}
+          bestPastWeek={bestPastWeek}
+        />
       </section>
     </section>
   )

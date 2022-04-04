@@ -50,6 +50,14 @@ export interface ProfileDetails {
   [traderId: number]: interfaces.traderRes.ProfileDetail;
 }
 
+export interface BehaviorDetail {
+  tops: TopProfiles
+}
+
+export interface BehaviorDetails {
+  [key: string]: BehaviorDetail;
+}
+
 export interface Context {
   common: Common;
   startLoading: () => void;
@@ -67,6 +75,8 @@ export interface Context {
   setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
   profileDetails: ProfileDetails;
   setProfileDetails: Dispatch<React.SetStateAction<ProfileDetails>>;
+  behaviorDetails: BehaviorDetails;
+  setBehaviorDetails: Dispatch<React.SetStateAction<BehaviorDetails>>;
 }
 
 // @ts-ignore
