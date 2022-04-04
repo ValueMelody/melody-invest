@@ -1,8 +1,11 @@
 import { createUseStyles } from 'react-jss'
 import { Message } from 'semantic-ui-react'
+import * as interfaces from '@shared/interfaces'
+import { useNavigate } from 'react-router-dom'
 import ProfileCard from './ProfileCard'
 import useTraderState from '../../../states/useTraderState'
 import * as localeTool from '../../../tools/locale'
+import * as routerEnum from '../../../enums/router'
 
 const useStyles = createUseStyles(({
   card: {
@@ -31,11 +34,19 @@ const EachTops = ({
   bestPastWeek: number | null,
 }) => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const { getTraderProfile } = useTraderState()
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
+
+  // ------------------------------------------------------------ Handler --
+
+  const handleClickCard = (trader: interfaces.traderModel.Record) => {
+    const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
+    navigate(link)
+  }
 
   // ------------------------------------------------------------ Interface --
 
@@ -55,6 +66,7 @@ const EachTops = ({
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestOverall)}
+          onClick={handleClickCard}
         />
       </div>
       <div className={classes.card}>
@@ -63,6 +75,7 @@ const EachTops = ({
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestPastYear)}
+          onClick={handleClickCard}
         />
       </div>
       <div className={classes.card}>
@@ -71,6 +84,7 @@ const EachTops = ({
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestPastQuarter)}
+          onClick={handleClickCard}
         />
       </div>
       <div className={classes.card}>
@@ -79,6 +93,7 @@ const EachTops = ({
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestPastMonth)}
+          onClick={handleClickCard}
         />
       </div>
       <div className={classes.card}>
@@ -87,6 +102,7 @@ const EachTops = ({
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestPastWeek)}
+          onClick={handleClickCard}
         />
       </div>
     </>

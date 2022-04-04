@@ -2,7 +2,9 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
+import { useNavigate } from 'react-router-dom'
 import * as themeEnum from '../../../enums/theme'
+import * as routerEnum from '../../../enums/router'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = createUseStyles({
@@ -13,10 +15,13 @@ const useStyles = createUseStyles({
 
 const PatternBehaviors = ({
   pattern,
+  envId,
 }: {
   pattern: interfaces.traderPatternModel.Public;
+  envId: number;
 }) => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -29,6 +34,12 @@ const PatternBehaviors = ({
   const activeBuyBehaviors = constants.behavior.buyBehaviors.filter((key) => pattern[key] !== null)
   const activeSellBehaviors = constants.behavior.sellBehaviors.filter((key) => pattern[key] !== null)
 
+  // ------------------------------------------------------------ Handler --
+  const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
+    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${envId}`
+    navigate(url)
+  }
+
   // ------------------------------------------------------------ Interface --
 
   return (
@@ -39,6 +50,7 @@ const PatternBehaviors = ({
           behavior={behavior}
           value={pattern[behavior]}
           color={themeEnum.theme.INCREASE_COLOR}
+          onClick={handleClickBehavior}
         />
       ))}
       {activeSellBehaviors.map((behavior) => (
@@ -47,6 +59,7 @@ const PatternBehaviors = ({
           behavior={behavior}
           value={pattern[behavior]}
           color={themeEnum.theme.DECREASE_COLOR}
+          onClick={handleClickBehavior}
         />
       ))}
       {otherBehaviors.map((behavior) => (
@@ -55,6 +68,7 @@ const PatternBehaviors = ({
           behavior={behavior}
           value={pattern[behavior]}
           color='grey'
+          onClick={handleClickBehavior}
         />
       ))}
     </div>
