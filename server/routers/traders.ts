@@ -1,5 +1,6 @@
 import { Router } from 'express'
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as crudTraders from '../services/crudTraders'
 import * as errorEnum from '../enums/error'
 import * as authMiddleware from '../middlewares/auth'
@@ -36,6 +37,12 @@ const validateEnvId = (envId: number) => {
   if (!envId) throw errorEnum.DEFAULT.FORBIDDEN
 }
 
+const validateBehavior = (behavior: string): interfaces.traderPatternModel.Behavior => {
+  const matched = constants.behavior.behaviors.find((name) => name === behavior)
+  if (!matched) throw errorEnum.DEFAULT.FORBIDDEN
+  return matched
+}
+
 // ------------------------------------------------------------ Get --
 
 tradersRouter.get('/profiles/:id/:access_code', async (req, res) => {
@@ -57,7 +64,7 @@ tradersRouter.get('/profiles/:id/:access_code/detail', async (req, res) => {
 })
 
 tradersRouter.get('/envs/tops', async (req, res) => {
-  const tops = await crudTraders.getTopProfiles(null)
+  const tops = await crudTraders.getTopProfiles()
   return res.status(200).send(tops)
 })
 
@@ -77,8 +84,22 @@ tradersRouter.get('/envs/:id/tops', authMiddleware.normalUser, async (req, res) 
   validateEnvId(envId)
 
   const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
-  const tops = await crudTraders.getTopProfiles(envId, auth.id)
+  const tops = await crudTraders.getTopProfiles(envId)
+  return res.status(200).send(tops)
+})
+
+tradersRouter.get('/envs/:id/behaviors/:behavior', authMiddleware.normalUser, async (req, res) => {
+  const envId = parseInt(req.params.id)
+  validateEnvId(envId)
+  const behavior = req.params.behavior
+  const matchedBahavior = validateBehavior(behavior)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
+
+  const tops = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
   return res.status(200).send(tops)
 })
 

@@ -29,12 +29,18 @@ const useTraderState = () => {
     return store.traderEnvs[traderEnvId] || null
   }
 
+  const getBehaviorDetail = (
+    traderEnvId: number | null, behavior: interfaces.traderPatternModel.Behavior | null,
+  ) => {
+    if (!traderEnvId || !behavior) return null
+    return store.behaviorDetails[`${traderEnvId}-${behavior}`]
+  }
+
   // ------------------------------------------------------------ Store --
 
   const storeTopProfiles = (envId: number, topProfiles: interfaces.traderRes.TopProfiles) => {
     const profiles = [
-      ...topProfiles.yearly,
-      ...topProfiles.pastYear, ...topProfiles.pastQuarter,
+      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
       ...topProfiles.pastMonth, ...topProfiles.pastWeek,
     ]
     const traderProfiles = profiles.reduce((traderProfiles, profile) => {
@@ -55,6 +61,34 @@ const useTraderState = () => {
         ...resources.envTopProfiles,
         [envId]: tops,
       },
+    }))
+  }
+
+  const storeTraderbehavior = (
+    envId: number,
+    behavior: interfaces.traderPatternModel.Behavior,
+    behaviorDetail: interfaces.traderRes.BehaviorDetail,
+  ) => {
+    const { topProfiles } = behaviorDetail
+    const profiles = [
+      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
+      ...topProfiles.pastMonth, ...topProfiles.pastWeek,
+    ]
+    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
+      return { ...traderProfiles, [profile.trader.id]: profile }
+    }, {})
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+
+    const tops = {
+      yearly: topProfiles.yearly.map((profile) => profile.trader.id),
+      pastYear: topProfiles.pastYear.map((profile) => profile.trader.id),
+      pastQuarter: topProfiles.pastQuarter.map((profile) => profile.trader.id),
+      pastMonth: topProfiles.pastMonth.map((profile) => profile.trader.id),
+      pastWeek: topProfiles.pastWeek.map((profile) => profile.trader.id),
+    }
+    store.setBehaviorDetails((resources) => ({
+      ...resources,
+      [`${envId}-${behavior}`]: { tops },
     }))
   }
 
@@ -134,6 +168,21 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeProfileDetail(id, detail)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const fetchBehaviorDetail = async (
+    traderEnvId: number, behavior: interfaces.traderPatternModel.Behavior,
+  ) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}/behaviors/${behavior}`
+    store.startLoading()
+    try {
+      const detail = await requestAdapter.sendGetRequest(endpoint)
+      storeTraderbehavior(traderEnvId, behavior, detail)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -253,8 +302,10 @@ const useTraderState = () => {
     getTraderProfile,
     getTraderEnv,
     getProfileDetail,
+    getBehaviorDetail,
     fetchTraderProfile,
     fetchProfileDetail,
+    fetchBehaviorDetail,
     fetchTraderEnv,
     fetchTopProfiles,
     createTraderProfile,

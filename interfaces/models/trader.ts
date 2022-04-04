@@ -46,3 +46,11 @@ export interface Update {
   pastMonthPercentNumber?: number;
   pastWeekPercentNumber?: number;
 }
+
+export interface Tops {
+  yearly: Record[],
+  pastYear: Record[],
+  pastQuarter: Record[],
+  pastMonth: Record[],
+  pastWeek: Record[],
+}

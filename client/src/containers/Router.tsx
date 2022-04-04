@@ -43,7 +43,7 @@ const Router = () => {
             element={<BehaviorList />}
           />
           <Route
-            path={`${routerEnum.NAV.BEHAVIORS}/:behavior`}
+            path={`${routerEnum.NAV.BEHAVIORS}/:behavior/envs/:envId`}
             element={<BehaviorDetail />}
           />
           <Route
