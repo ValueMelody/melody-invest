@@ -56,3 +56,17 @@ export const create = async (
   })
   return convertToRecord(newRecord)
 }
+
+export const destroyTraderHoldings = async (
+  traderId: number,
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.destroy({
+    tableName: tableEnum.NAME.TRADER_HOLDING,
+    conditions: [
+      { key: 'traderId', value: traderId },
+    ],
+    transaction,
+  })
+  return true
+}

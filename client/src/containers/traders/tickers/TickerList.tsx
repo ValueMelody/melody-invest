@@ -35,6 +35,7 @@ const TickerList = () => {
   const { getTickerIdentities } = useTickerState()
   const tickers = getTickerIdentities()
   const availableTickers = tickers.filter((ticker) => isSearchedTicker(ticker, searchText))
+  const sortedTickers = availableTickers.sort((prev, curr) => curr.symbol > prev.symbol ? -1 : 1)
 
   // ------------------------------------------------------------ Handler --
 
@@ -60,7 +61,7 @@ const TickerList = () => {
         />
       </header>
       <section className={classes.section}>
-        {availableTickers.map((ticker) => (
+        {sortedTickers.map((ticker) => (
           <TickerLabel
             color='grey'
             key={ticker.id}
