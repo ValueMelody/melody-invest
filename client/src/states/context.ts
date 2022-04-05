@@ -51,11 +51,19 @@ export interface ProfileDetails {
 }
 
 export interface BehaviorDetail {
-  tops: TopProfiles
+  tops: TopProfiles;
 }
 
 export interface BehaviorDetails {
   [key: string]: BehaviorDetail;
+}
+
+export interface TickerDetail {
+  tops: TopProfiles;
+}
+
+export interface TickerDetails {
+  [key: string]: TickerDetail
 }
 
 export interface Context {
@@ -77,6 +85,8 @@ export interface Context {
   setProfileDetails: Dispatch<React.SetStateAction<ProfileDetails>>;
   behaviorDetails: BehaviorDetails;
   setBehaviorDetails: Dispatch<React.SetStateAction<BehaviorDetails>>;
+  tickerDetails: TickerDetails;
+  setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
 }
 
 // @ts-ignore

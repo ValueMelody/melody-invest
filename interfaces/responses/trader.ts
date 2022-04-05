@@ -23,10 +23,14 @@ interface ProfileEnv {
 }
 
 export interface ProfileDetail {
-  profileEnvs: ProfileEnv[],
-  holdings: traderHoldingModel.Record[],
+  profileEnvs: ProfileEnv[];
+  holdings: traderHoldingModel.Record[];
 }
 
 export interface BehaviorDetail {
-  topProfiles: TopProfiles
+  topProfiles: TopProfiles;
+}
+
+export interface TickerDetail {
+  topProfiles: TopProfiles;
 }

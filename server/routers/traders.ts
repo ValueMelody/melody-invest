@@ -37,6 +37,10 @@ const validateEnvId = (envId: number) => {
   if (!envId) throw errorEnum.DEFAULT.FORBIDDEN
 }
 
+const validateTickerId = (tickerId: number) => {
+  if (!tickerId) throw errorEnum.DEFAULT.FORBIDDEN
+}
+
 const validateBehavior = (behavior: string): interfaces.traderPatternModel.Behavior => {
   const matched = constants.behavior.behaviors.find((name) => name === behavior)
   if (!matched) throw errorEnum.DEFAULT.FORBIDDEN
@@ -90,8 +94,8 @@ tradersRouter.get('/envs/:id/tops', authMiddleware.normalUser, async (req, res) 
   return res.status(200).send(tops)
 })
 
-tradersRouter.get('/envs/:id/behaviors/:behavior', authMiddleware.normalUser, async (req, res) => {
-  const envId = parseInt(req.params.id)
+tradersRouter.get('/envs/:env_id/behaviors/:behavior', authMiddleware.normalUser, async (req, res) => {
+  const envId = parseInt(req.params.env_id)
   validateEnvId(envId)
   const behavior = req.params.behavior
   const matchedBahavior = validateBehavior(behavior)
@@ -99,8 +103,21 @@ tradersRouter.get('/envs/:id/behaviors/:behavior', authMiddleware.normalUser, as
   const auth: interfaces.reqs.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
-  const tops = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
-  return res.status(200).send(tops)
+  const detail = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
+  return res.status(200).send(detail)
+})
+
+tradersRouter.get('/envs/:env_id/tickers/:ticker_id', authMiddleware.normalUser, async (req, res) => {
+  const envId = parseInt(req.params.env_id)
+  validateEnvId(envId)
+  const tickerId = parseInt(req.params.ticker_id)
+  validateTickerId(tickerId)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
+
+  const detail = await crudTraders.getTickerDetail(envId, tickerId)
+  return res.status(200).send(detail)
 })
 
 // ------------------------------------------------------------ Post --
