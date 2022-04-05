@@ -80,7 +80,7 @@ const calcTraderPerformance = async (
   const holdingSellPercent = pattern.holdingSellPercent / 100
   const cashMaxPercent = pattern.cashMaxPercent / 100
 
-  const latestDate = await tickerDailyModel.getLatestDate()
+  const latestDate = await dailyTickersModel.getLatestDate()
   console.info(`Checking ${trader.id}`)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
