@@ -4,6 +4,7 @@ export const NAV = {
   SETTING: '/setting',
   TRADERS: '/traders',
   BEHAVIORS: '/behaviors',
+  TICKERS: '/tickers',
   DASHBOARD: '/dashboard',
   NOT_FOUND: '/404',
 }
