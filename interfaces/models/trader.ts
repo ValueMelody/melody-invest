@@ -34,17 +34,17 @@ export interface Create {
 export interface Update {
   accessCode?: string;
   isActive?: boolean;
-  rebalancedAt?: string;
-  totalValue?: number;
-  estimatedAt?: string;
-  startedAt?: string ;
-  totalDays?: number;
-  yearlyPercentNumber?: number;
-  grossPercentNumber?: number;
-  pastYearPercentNumber?: number;
-  pastQuarterPercentNumber?: number;
-  pastMonthPercentNumber?: number;
-  pastWeekPercentNumber?: number;
+  rebalancedAt?: string | null;
+  totalValue?: number | null;
+  estimatedAt?: string | null;
+  startedAt?: string | null;
+  totalDays?: number | null;
+  yearlyPercentNumber?: number | null;
+  grossPercentNumber?: number | null;
+  pastYearPercentNumber?: number | null;
+  pastQuarterPercentNumber?: number | null;
+  pastMonthPercentNumber?: number | null;
+  pastWeekPercentNumber?: number | null;
 }
 
 export interface Tops {

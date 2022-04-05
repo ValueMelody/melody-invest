@@ -6,7 +6,7 @@ import * as interfaces from '@shared/interfaces'
 const useStyles = createUseStyles(({
   label: {
     alignSelf: 'flex-start',
-    marginBottom: '0.5rem !important',
+    margin: '0.25rem 0.125rem !important',
   },
 }))
 

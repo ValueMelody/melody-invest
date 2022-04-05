@@ -4,6 +4,7 @@ import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerDailyModel from '../models/tickerDaily'
+import * as tickerHolderModel from '../models/tickerHolder'
 import * as dailyTickersModel from '../models/dailyTickers'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
@@ -31,12 +32,47 @@ const getHoldingValue = (
   }, holding.totalCash)
 }
 
-const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
-  const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
+const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.Record> => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await tickerHolderModel.destroyTraderTickers(traderId, transaction)
+    await traderHoldingModel.destroyTraderHoldings(traderId, transaction)
+    const updated = await traderModel.update(traderId, {
+      totalValue: null,
+      totalDays: null,
+      startedAt: null,
+      rebalancedAt: null,
+      estimatedAt: null,
+      grossPercentNumber: null,
+      yearlyPercentNumber: null,
+      pastYearPercentNumber: null,
+      pastQuarterPercentNumber: null,
+      pastMonthPercentNumber: null,
+      pastWeekPercentNumber: null,
+    }, transaction)
+
+    await transaction.commit()
+
+    return updated
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+const calcTraderPerformance = async (
+  targetTrader: interfaces.traderModel.Record,
+  forceRecheck: boolean,
+) => {
+  const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
   if (!pattern) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
 
-  const env = await traderEnvModel.getByPK(trader.traderEnvId)
+  const env = await traderEnvModel.getByPK(targetTrader.traderEnvId)
   if (!env) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
+
+  const trader = forceRecheck
+    ? await cleanupTrader(targetTrader.id)
+    : targetTrader
 
   const tickerMinPercent = pattern.tickerMinPercent / 100
   const tickerMaxPercent = pattern.tickerMaxPercent / 100
@@ -324,6 +360,13 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
       return
     }
 
+    await tickerHolderModel.destroyTraderTickers(trader.id, transaction)
+    await runTool.asyncForEach(holding.holdings, async (
+      holding: interfaces.traderHoldingModel.Holding,
+    ) => {
+      await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, transaction)
+    })
+
     const latestDailys = await tickerDailyModel.getAllLatestByDate(latestDate)
     const totalValue = getHoldingValue(holding, latestDailys)
     const initialValue = marketLogic.getInitialCash()
@@ -367,11 +410,11 @@ const calcTraderPerformance = async (trader: interfaces.traderModel.Record) => {
   }
 }
 
-export const calcAllTradersPerformance = async () => {
+export const calcAllTradersPerformance = async (forceRecheck: boolean) => {
   const traders = await traderModel.getActives()
 
   await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-    await calcTraderPerformance(trader)
+    await calcTraderPerformance(trader, forceRecheck)
   })
 }
 

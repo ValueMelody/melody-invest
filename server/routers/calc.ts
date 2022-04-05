@@ -56,7 +56,9 @@ calcRouter.get('/indicators/monthly', async (req, res) => {
 })
 
 calcRouter.get('/traders/performance', async (req, res) => {
-  const result = await calcTraders.calcAllTradersPerformance()
+  const forceRecheck = req.query.forceRecheck === 'true'
+
+  const result = await calcTraders.calcAllTradersPerformance(forceRecheck)
 
   return res.status(200).send({ result })
 })
