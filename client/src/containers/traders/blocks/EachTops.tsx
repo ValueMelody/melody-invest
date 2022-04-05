@@ -62,7 +62,7 @@ const EachTops = ({
     <>
       <div className={classes.card}>
         <h4 className={classes.subTitle}>
-          {localeTool.t('bestReturn.yearlyTitle')}
+          {localeTool.t('bestReturn.yearlyTitle')}:
         </h4>
         <ProfileCard
           profile={getTraderProfile(bestOverall)}

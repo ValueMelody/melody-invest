@@ -53,8 +53,9 @@
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
     "tradeBehaviors.otherBehaviors": "Other Behaviors",
+    "tradeBehaviors.topProfiles": "Top Profiles use this behavior from {{name}} Environment",
 
-    "bestReturn.yearlyTitle": "Best Return in Annual",
+    "bestReturn.yearlyTitle": "Best Return Annually",
     "bestReturn.pastYearTitle": "Best Return in One Year",
     "bestReturn.pastQuarterTitle": "Best Return in One Quarter",
     "bestReturn.pastMonthTitle": "Best Return in One Month",
@@ -90,6 +91,7 @@
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet",
+    "traderEnv.topProfiles": "Top Profiles from this Environment",
 
     "traderEnvName.default" : "Default",
     "traderEnvName.topTech" : "Top Tech",

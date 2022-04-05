@@ -1,4 +1,3 @@
-import { Segment } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
@@ -53,7 +52,7 @@ const TopProfileList = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <Segment className={classes.container}>
+    <section className={classes.container}>
       <h2 className={classes.title}>{title}</h2>
       <section className={classNames('row-start', classes.section)} >
         {traderIds.map((traderId) => (
@@ -66,7 +65,7 @@ const TopProfileList = ({
           </div>
         ))}
       </section>
-    </Segment>
+    </section>
   )
 }
 

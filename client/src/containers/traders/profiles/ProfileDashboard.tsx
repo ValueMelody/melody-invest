@@ -1,6 +1,6 @@
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
-import { Button, Icon } from 'semantic-ui-react'
+import { Button, Icon, Header } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useUserState from '../../../states/useUserState'
@@ -72,7 +72,11 @@ const ProfileDashboard = () => {
     <div className={classNames('row-between', classes.container)}>
       <div className={classes.left}>
         <div className={classNames('row-between', classes.header)}>
-          <h2>{localeTool.t('dashboard.watchedProfiles')}:</h2>
+          <Header
+            as='h3'
+            icon='star'
+            content={localeTool.t('dashboard.watchedProfiles')}
+          />
           <Button
             icon
             labelPosition='left'
@@ -93,7 +97,11 @@ const ProfileDashboard = () => {
         ))}
       </div>
       <div className={classes.right}>
-        <h2>{localeTool.t('dashboard.watchedEnvs')}:</h2>
+        <Header
+          as='h3'
+          icon='star'
+          content={localeTool.t('dashboard.watchedEnvs')}
+        />
         {traderEnvIds.map((envId) => (
           <TraderEnvCard
             key={envId}
