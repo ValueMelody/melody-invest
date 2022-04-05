@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Header } from 'semantic-ui-react'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
-import * as routerEnum from '../../../enums/router'
+import * as routerTool from '../../../tools/router'
 import * as themeEnum from '../../../enums/theme'
 import EachTops from '../blocks/EachTops'
 import BehaviorLabel from '../elements/BehaviorLabel'
@@ -64,7 +64,7 @@ const BehaviorDetail = () => {
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    if (!validBehavior) navigate(routerEnum.NAV.NOT_FOUND)
+    if (!validBehavior) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -77,7 +77,7 @@ const BehaviorDetail = () => {
   // ------------------------------------------------------------ Handler --
 
   const handleClickEnv = (traderEnvId: number) => {
-    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${traderEnvId}`
+    const url = routerTool.behaviorDetailRoute(traderEnvId, validBehavior!)
     navigate(url)
   }
 

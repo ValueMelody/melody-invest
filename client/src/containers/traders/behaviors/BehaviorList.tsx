@@ -4,9 +4,9 @@ import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import { useNavigate } from 'react-router-dom'
 import { Input } from 'semantic-ui-react'
-import * as routerEnum from '../../../enums/router'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
+import * as routerTool from '../../../tools/router'
 import BehaviorLabel from '../elements/BehaviorLabel'
 
 const useStyles = createUseStyles(({
@@ -45,7 +45,7 @@ const BehaviorList = () => {
   // ------------------------------------------------------------ Handler --
 
   const handleClickLabel = (behavior: interfaces.traderPatternModel.Behavior) => {
-    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/1`
+    const url = routerTool.behaviorDetailRoute(1, behavior)
     navigate(url)
   }
 

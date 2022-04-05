@@ -4,7 +4,7 @@ import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import { useNavigate } from 'react-router-dom'
 import * as themeEnum from '../../../enums/theme'
-import * as routerEnum from '../../../enums/router'
+import * as routerTool from '../../../tools/router'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = createUseStyles({
@@ -36,7 +36,7 @@ const PatternBehaviors = ({
 
   // ------------------------------------------------------------ Handler --
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
-    const url = `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${envId}`
+    const url = routerTool.behaviorDetailRoute(envId, behavior)
     navigate(url)
   }
 

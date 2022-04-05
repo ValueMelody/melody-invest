@@ -5,9 +5,9 @@ import classNames from 'classnames'
 import { Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
-import * as routerEnum from '../../../enums/router'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
 import WatchButton from '../elements/WatchButton'
@@ -67,7 +67,7 @@ const EnvDetail = () => {
     if (!envId) return
     const result = await deleteWatchedEnv(envId)
     if (result) {
-      const link = `${routerEnum.NAV.DASHBOARD}`
+      const link = routerTool.dashboardRoute()
       navigate(link)
     }
   }
@@ -75,7 +75,7 @@ const EnvDetail = () => {
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    if (!envId) navigate(routerEnum.NAV.NOT_FOUND)
+    if (!envId) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

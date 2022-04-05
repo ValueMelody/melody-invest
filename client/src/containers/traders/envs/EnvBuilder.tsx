@@ -6,7 +6,7 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../../tools/locale'
-import * as routerEnum from '../../../enums/router'
+import * as routerTool from '../../../tools/router'
 import RequiredLabel from '../../elements/RequiredLabel'
 import useTickerState from '../../../states/useTickerState'
 import useTraderState from '../../../states/useTraderState'
@@ -93,7 +93,7 @@ const EnvBuilder = () => {
     e.preventDefault()
     const result = await createTraderEnv(envName, startDate, tickerIds)
     if (result) {
-      const link = `${routerEnum.NAV.DASHBOARD}`
+      const link = routerTool.dashboardRoute()
       navigate(link)
     }
   }

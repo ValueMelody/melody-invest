@@ -6,7 +6,7 @@ import * as interfaces from '@shared/interfaces'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import * as localeTool from '../../../tools/locale'
-import * as routerEnum from '../../../enums/router'
+import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import ProfileCard from '../blocks/ProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
@@ -47,20 +47,20 @@ const ProfileDashboard = () => {
   // ------------------------------------------------------------ Handler --
 
   const handleClickBuildProfile = () => {
-    navigate(`${routerEnum.NAV.TRADERS}/profiles/build`)
+    navigate(routerTool.profileBuildRoute())
   }
 
   const handleClickAddEnv = () => {
-    navigate(`${routerEnum.NAV.TRADERS}/envs/build`)
+    navigate(routerTool.envBuildRoute())
   }
 
   const handleClickRow = (trader: interfaces.traderModel.Record) => {
-    const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
+    const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
   }
 
   const handleClickEnv = (envId: number) => {
-    const link = `${routerEnum.NAV.TRADERS}/envs/${envId}`
+    const link = routerTool.envDetailRoute(envId)
     navigate(link)
   }
 

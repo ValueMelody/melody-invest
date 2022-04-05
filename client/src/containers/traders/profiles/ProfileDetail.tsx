@@ -5,8 +5,8 @@ import classNames from 'classnames'
 import { Button, Divider, Label, Segment, Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
-import * as routerEnum from '../../../enums/router'
 import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import * as parseTool from '../../../tools/parse'
 import ProfileCard from '../blocks/ProfileCard'
 import ValueDiffer from '../elements/ValueDiffer'
@@ -64,7 +64,7 @@ const ProfileDetail = () => {
 
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
-    if (!hasValidParam) navigate(routerEnum.NAV.NOT_FOUND)
+    if (!hasValidParam) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -85,7 +85,7 @@ const ProfileDetail = () => {
   const handleClickShowAll = () => setShowAllHoldings(true)
 
   const handleClickEnv = (traderId: number, accessCode: string) => {
-    const link = `${routerEnum.NAV.TRADERS}/profiles/${traderId}/${accessCode}`
+    const link = routerTool.profileDetailRoute(traderId, accessCode)
     navigate(link)
   }
 
