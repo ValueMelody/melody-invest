@@ -2,7 +2,9 @@ import { useState, ChangeEvent } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import { Input } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
 import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import useTickerState from '../../../states/useTickerState'
 import TickerLabel from '../elements/TickerLabel'
 
@@ -25,6 +27,7 @@ const isSearchedTicker = (
 
 const TickerList = () => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
   const [searchText, setSearchText] = useState('')
@@ -35,7 +38,9 @@ const TickerList = () => {
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClickLabel = (tickerId: number) => {
+  const handleClickTicker = (tickerId: number) => {
+    const url = routerTool.tickerDetailRoute(1, tickerId)
+    navigate(url)
   }
 
   const handleChangeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,12 +60,12 @@ const TickerList = () => {
         />
       </header>
       <section className={classes.section}>
-        <h2>{localeTool.t('tradeBehaviors.buyBehaviors')}</h2>
         {availableTickers.map((ticker) => (
           <TickerLabel
+            color='grey'
             key={ticker.id}
             ticker={ticker}
-            onClick={handleClickLabel}
+            onClick={handleClickTicker}
           />
         ))}
       </section>

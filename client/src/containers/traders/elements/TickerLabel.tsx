@@ -1,4 +1,4 @@
-import { Label } from 'semantic-ui-react'
+import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
@@ -13,9 +13,11 @@ const useStyles = createUseStyles(({
 const TickerLabel = ({
   ticker,
   onClick,
+  color,
 }: {
   ticker: interfaces.tickerModel.Identity | null;
   onClick?: (tickerId: number) => void;
+  color: SemanticCOLORS;
 }) => {
   const classes = useStyles()
 
@@ -32,7 +34,7 @@ const TickerLabel = ({
 
   return (
     <Label
-      color='blue'
+      color={color}
       className={classNames(classes.label, {
         'click-cursor': !!onClick,
       })}

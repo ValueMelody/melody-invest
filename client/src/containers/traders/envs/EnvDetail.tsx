@@ -91,6 +91,14 @@ const EnvDetail = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [envId, topProfiles])
 
+  // ------------------------------------------------------------ Handler --
+
+  const handleClickTicker = (tickerId: number) => {
+    if (!envId) return
+    const url = routerTool.tickerDetailRoute(envId, tickerId)
+    navigate(url)
+  }
+
   // ------------------------------------------------------------ Interface --
 
   if (!traderEnv || !topProfiles) return null
@@ -105,8 +113,10 @@ const EnvDetail = () => {
         <div className={classes.tickers}>
           {traderEnv.tickerIds && traderEnv.tickerIds.map((tickerId) => (
             <TickerLabel
+              color='blue'
               key={tickerId}
               ticker={getTickerIdentity(tickerId)}
+              onClick={handleClickTicker}
             />
           ))}
         </div>

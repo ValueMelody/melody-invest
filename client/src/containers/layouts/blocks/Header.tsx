@@ -53,6 +53,12 @@ const Header = () => {
             {localeTool.t('tradeBehaviors.title')}
           </Label>
         </Link>
+        <Link to={routerTool.tickerListRoute()}>
+          <Label className={classes.label}>
+            <Icon name='ticket' className={classes.icon} />
+            {localeTool.t('availableTickers.title')}
+          </Label>
+        </Link>
       </nav>
       <nav>
         {isLoggedInUser && (

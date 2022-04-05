@@ -4,6 +4,10 @@ export const tickerListRoute = (): string => {
   return routerEnum.NAV.TICKERS
 }
 
+export const tickerDetailRoute = (envId: number, tickerId: number): string => {
+  return `${routerEnum.NAV.TICKERS}/${tickerId}/envs/${envId}`
+}
+
 export const behaviorDetailRoute = (envId: number, behavior: string): string => {
   return `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${envId}`
 }
