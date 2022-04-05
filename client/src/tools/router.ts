@@ -1,11 +1,19 @@
 import * as routerEnum from '../enums/router'
 
+export const tickerListRoute = (): string => {
+  return routerEnum.NAV.TICKERS
+}
+
+export const tickerDetailRoute = (envId: number, tickerId: number): string => {
+  return `${routerEnum.NAV.TICKERS}/${tickerId}/envs/${envId}`
+}
+
 export const behaviorDetailRoute = (envId: number, behavior: string): string => {
-  return `${routerEnum.NAV.TRADERS}/behaviors/${behavior}/envs/${envId}`
+  return `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${envId}`
 }
 
 export const behaviorListRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/behaviors`
+  return routerEnum.NAV.BEHAVIORS
 }
 
 export const profileDetailRoute = (id: number, accessCode: string): string => {

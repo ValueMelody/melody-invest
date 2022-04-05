@@ -19,8 +19,8 @@ const isSearchedBehavior = (
   behavior: interfaces.traderPatternModel.Behavior,
   searchText: string,
 ): boolean => {
-  if (!behavior) return true
   const search = searchText.trim().toLowerCase()
+  if (!search) return true
   if (behavior.toLowerCase().includes(search)) return true
   if (parseTool.behaviorTitle(behavior).toLowerCase().includes(search)) return true
   if (parseTool.behaviorDesc(behavior).toLowerCase().includes(search)) return true

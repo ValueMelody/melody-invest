@@ -96,6 +96,8 @@
     "traderEnvName.default" : "Default",
     "traderEnvName.topTech" : "Top Tech",
 
+    "availableTickers.title": "Available Stocks",
+
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",
     "gain.pastQuarter": "One Quarter",

@@ -11,6 +11,8 @@ import BehaviorList from './traders/behaviors/BehaviorList'
 import BehaviorDetail from './traders/behaviors/BehaviorDetail'
 import EnvBuilder from './traders/envs/EnvBuilder'
 import EnvDetail from './traders/envs/EnvDetail'
+import TickerList from './traders/tickers/TickerList'
+import TickerDetail from './traders/tickers/TickerDetail'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -39,12 +41,20 @@ const Router = () => {
             element={<EnvDetail />}
           />
           <Route
-            path={`${routerEnum.NAV.TRADERS}/behaviors`}
+            path={routerEnum.NAV.BEHAVIORS}
             element={<BehaviorList />}
           />
           <Route
-            path={`${routerEnum.NAV.TRADERS}/behaviors/:behavior/envs/:envId`}
+            path={`${routerEnum.NAV.BEHAVIORS}/:behavior/envs/:envId`}
             element={<BehaviorDetail />}
+          />
+          <Route
+            path={routerEnum.NAV.TICKERS}
+            element={<TickerList />}
+          />
+          <Route
+            path={`${routerEnum.NAV.TICKERS}/:tickerId/envs/:envId`}
+            element={<TickerDetail />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}
