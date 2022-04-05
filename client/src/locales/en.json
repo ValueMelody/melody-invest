@@ -97,6 +97,7 @@
     "traderEnvName.topTech" : "Top Tech",
 
     "availableTickers.title": "Available Stocks",
+    "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
 
     "gain.yearly": "Annual Return",
     "gain.pastYear": "One Year",

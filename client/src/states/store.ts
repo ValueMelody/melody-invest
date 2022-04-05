@@ -31,6 +31,8 @@ const useStore = () => {
 
   const [behaviorDetails, setBehaviorDetails] = useState<context.BehaviorDetails>({})
 
+  const [tickerDetails, setTickerDetails] = useState<context.TickerDetails>({})
+
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
   }
@@ -89,6 +91,8 @@ const useStore = () => {
     setProfileDetails,
     behaviorDetails,
     setBehaviorDetails,
+    tickerDetails,
+    setTickerDetails,
   }
 }
 

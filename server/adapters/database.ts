@@ -26,6 +26,7 @@ interface Find {
   limit?: number;
   select?: string[];
   leftJoin?: Join;
+  join?: Join;
   groupBy?: string[];
   groupByRaw?: string;
   max?: string;
@@ -73,6 +74,7 @@ const find = async ({
   limit,
   select = ['*'],
   leftJoin,
+  join,
   groupBy,
   max,
   distinct,
@@ -88,6 +90,8 @@ const find = async ({
   if (distinctOn) query.distinctOn(distinctOn)
 
   if (leftJoin) query.leftJoin(leftJoin.joinTable, leftJoin.foreignKey, leftJoin.joinKey)
+
+  if (join) query.join(join.joinTable, join.foreignKey, join.joinKey)
 
   if (conditions) {
     conditions.forEach((condition, index) => {

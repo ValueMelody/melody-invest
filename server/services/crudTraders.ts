@@ -47,7 +47,9 @@ export const getProfileDetail = async (
   }
 }
 
-export const verifyUserToTraderEnv = async (userId: number, traderEnvId: number) => {
+export const verifyUserToTraderEnv = async (
+  userId: number, traderEnvId: number,
+) => {
   const env = await traderEnvModel.getByPK(traderEnvId)
   if (!env) throw errorEnum.DEFAULT.NOT_FOUND
 
@@ -72,7 +74,7 @@ export const getTopProfiles = async (
 ): Promise<interfaces.traderRes.TopProfiles> => {
   const each = traderEnvId ? 1 : 3
 
-  const tops = await traderModel.getTops(each, traderEnvId)
+  const tops = await traderModel.getTops(each, { envId: traderEnvId })
   const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
 
   return {
@@ -88,7 +90,27 @@ export const getBehaviorDetail = async (
   envId: number,
   behavior: interfaces.traderPatternModel.Behavior,
 ): Promise<interfaces.traderRes.BehaviorDetail> => {
-  const tops = await traderModel.getTops(1, envId, behavior)
+  const tops = await traderModel.getTops(1, { envId, behavior })
+  const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
+
+  const topProfiles = {
+    yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastYear: tops.pastYear.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastQuarter: tops.pastQuarter.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastMonth: tops.pastMonth.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    pastWeek: tops.pastWeek.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+  }
+
+  return {
+    topProfiles,
+  }
+}
+
+export const getTickerDetail = async (
+  envId: number,
+  tickerId: number,
+): Promise<interfaces.traderRes.TickerDetail> => {
+  const tops = await traderModel.getTops(1, { envId, tickerId })
   const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
 
   const topProfiles = {

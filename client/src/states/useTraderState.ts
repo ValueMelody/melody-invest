@@ -36,6 +36,13 @@ const useTraderState = () => {
     return store.behaviorDetails[`${traderEnvId}-${behavior}`]
   }
 
+  const getTickerDetail = (
+    traderEnvId: number | null, tickerId: number | null,
+  ) => {
+    if (!traderEnvId || !tickerId) return null
+    return store.tickerDetails[`${traderEnvId}-${tickerId}`]
+  }
+
   // ------------------------------------------------------------ Store --
 
   const storeTopProfiles = (envId: number, topProfiles: interfaces.traderRes.TopProfiles) => {
@@ -64,7 +71,7 @@ const useTraderState = () => {
     }))
   }
 
-  const storeTraderbehavior = (
+  const storeBehaviorDetail = (
     envId: number,
     behavior: interfaces.traderPatternModel.Behavior,
     behaviorDetail: interfaces.traderRes.BehaviorDetail,
@@ -89,6 +96,34 @@ const useTraderState = () => {
     store.setBehaviorDetails((resources) => ({
       ...resources,
       [`${envId}-${behavior}`]: { tops },
+    }))
+  }
+
+  const storeTickerDetail = (
+    envId: number,
+    tickerId: number,
+    tickerDetail: interfaces.traderRes.TickerDetail,
+  ) => {
+    const { topProfiles } = tickerDetail
+    const profiles = [
+      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
+      ...topProfiles.pastMonth, ...topProfiles.pastWeek,
+    ]
+    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
+      return { ...traderProfiles, [profile.trader.id]: profile }
+    }, {})
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+
+    const tops = {
+      yearly: topProfiles.yearly.map((profile) => profile.trader.id),
+      pastYear: topProfiles.pastYear.map((profile) => profile.trader.id),
+      pastQuarter: topProfiles.pastQuarter.map((profile) => profile.trader.id),
+      pastMonth: topProfiles.pastMonth.map((profile) => profile.trader.id),
+      pastWeek: topProfiles.pastWeek.map((profile) => profile.trader.id),
+    }
+    store.setTickerDetails((resources) => ({
+      ...resources,
+      [`${envId}-${tickerId}`]: { tops },
     }))
   }
 
@@ -182,7 +217,22 @@ const useTraderState = () => {
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderbehavior(traderEnvId, behavior, detail)
+      storeBehaviorDetail(traderEnvId, behavior, detail)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const fetchTickerDetail = async (
+    traderEnvId: number, tickerId: number,
+  ) => {
+    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}/tickers/${tickerId}`
+    store.startLoading()
+    try {
+      const detail = await requestAdapter.sendGetRequest(endpoint)
+      storeTickerDetail(traderEnvId, tickerId, detail)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -303,9 +353,11 @@ const useTraderState = () => {
     getTraderEnv,
     getProfileDetail,
     getBehaviorDetail,
+    getTickerDetail,
     fetchTraderProfile,
     fetchProfileDetail,
     fetchBehaviorDetail,
+    fetchTickerDetail,
     fetchTraderEnv,
     fetchTopProfiles,
     createTraderProfile,
