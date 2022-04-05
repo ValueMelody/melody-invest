@@ -2,10 +2,12 @@ import { useEffect } from 'react'
 import { createUseStyles } from 'react-jss'
 import { useParams, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
+import { Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
 import * as routerEnum from '../../../enums/router'
 import * as themeEnum from '../../../enums/theme'
+import * as localeTool from '../../../tools/locale'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
 import WatchButton from '../elements/WatchButton'
@@ -31,6 +33,9 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
     width: 'calc(100% - 24rem)',
     minWidth: '38rem',
     alignItems: 'flex-start',
+  },
+  rightTitle: {
+    marginLeft: '0.5rem !important',
   },
 }))
 
@@ -105,21 +110,31 @@ const EnvDetail = () => {
             />
           ))}
         </div>
-        <div className={classNames('row-around', classes.watch)}>
-          <WatchButton
-            isWatched={true}
-            onToggle={handleUnwatch}
-          />
-        </div>
+        {!traderEnv.isSystem && (
+          <div className={classNames('row-around', classes.watch)}>
+            <WatchButton
+              isWatched={true}
+              onToggle={handleUnwatch}
+            />
+          </div>
+        )}
       </aside>
-      <section className={classNames('row-start', classes.right)}>
-        <EachTops
-          bestOverall={bestOverall}
-          bestPastYear={bestPastYear}
-          bestPastQuarter={bestPastQuarter}
-          bestPastMonth={bestPastMonth}
-          bestPastWeek={bestPastWeek}
+      <section className={classNames('column-start', classes.right)}>
+        <Header
+          as='h3'
+          icon='star'
+          content={localeTool.t('traderEnv.topProfiles')}
+          className={classes.rightTitle}
         />
+        <section className={'row-start'}>
+          <EachTops
+            bestOverall={bestOverall}
+            bestPastYear={bestPastYear}
+            bestPastQuarter={bestPastQuarter}
+            bestPastMonth={bestPastMonth}
+            bestPastWeek={bestPastWeek}
+          />
+        </section>
       </section>
     </section>
   )

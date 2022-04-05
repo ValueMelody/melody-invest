@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
-import { Button, Divider, Label, Segment } from 'semantic-ui-react'
+import { Button, Divider, Label, Segment, Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
 import * as routerEnum from '../../../enums/router'
@@ -115,7 +115,11 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <h2>{localeTool.t('profile.history')}</h2>
+        <Header
+          as='h3'
+          icon='history'
+          content={localeTool.t('profile.history')}
+        />
         {!displayedHoldings.length && (
           <Segment>{localeTool.t('profile.noResultYet')}</Segment>
         )}
