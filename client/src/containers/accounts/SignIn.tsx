@@ -3,10 +3,10 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import { Input, Button, Checkbox } from 'semantic-ui-react'
 import * as localeTool from '../../tools/locale'
+import * as routerTool from '../../tools/router'
 import RequiredLabel from '../elements/RequiredLabel'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
-import * as routerEnum from '../../enums/router'
 import useAccountInterface from './hooks/useAccountInterface'
 import usePublicGuard from '../hooks/usePublicGuard'
 
@@ -51,7 +51,7 @@ const SignIn = () => {
       return
     }
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)
-      .then(() => navigate(routerEnum.NAV.DASHBOARD))
+      .then(() => navigate(routerTool.dashboardRoute()))
   }
 
   // ------------------------------------------------------------ Interface --

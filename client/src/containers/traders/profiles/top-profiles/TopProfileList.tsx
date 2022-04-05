@@ -2,7 +2,7 @@ import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import * as routerEnum from '../../../../enums/router'
+import * as routerTool from '../../../../tools/router'
 import useTraderState from '../../../../states/useTraderState'
 import ProfileCard from '../../blocks/ProfileCard'
 import { FocusType } from '../../elements/TraderPerformance'
@@ -45,7 +45,7 @@ const TopProfileList = ({
   const handleClick = (
     trader: interfaces.traderModel.Record,
   ) => {
-    const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
+    const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
   }
 

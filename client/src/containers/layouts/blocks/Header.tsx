@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Icon, Label } from 'semantic-ui-react'
-import * as routerEnum from '../../../enums/router'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import useUserState from '../../../states/useUserState'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
@@ -41,13 +41,13 @@ const Header = () => {
   return (
     <header className={classNames('row-between', classes.header)}>
       <nav>
-        <Link to={`${routerEnum.NAV.TRADERS}/profiles/tops`}>
+        <Link to={routerTool.topProfilesRoute()}>
           <Label className={classes.label}>
             <Icon name='chart line' className={classes.icon} />
             {localeTool.t('topProfiles.title')}
           </Label>
         </Link>
-        <Link to={`${routerEnum.NAV.BEHAVIORS}`}>
+        <Link to={routerTool.behaviorListRoute()}>
           <Label className={classes.label}>
             <Icon name='certificate' className={classes.icon} />
             {localeTool.t('tradeBehaviors.title')}
@@ -56,14 +56,14 @@ const Header = () => {
       </nav>
       <nav>
         {isLoggedInUser && (
-          <Link to={routerEnum.NAV.DASHBOARD}>
+          <Link to={routerTool.dashboardRoute()}>
             <Label className={classes.label}>
               <Icon name='table' className={classes.icon} />
               {localeTool.t('dashboard.title')}
             </Label>
           </Link>
         )}
-        <Link to={isLoggedInUser ? routerEnum.NAV.SETTING : routerEnum.NAV.SIGN_IN}>
+        <Link to={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}>
           <Label className={classes.label}>
             <Icon name='user circle' />
           </Label>

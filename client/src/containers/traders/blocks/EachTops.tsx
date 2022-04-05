@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import ProfileCard from './ProfileCard'
 import useTraderState from '../../../states/useTraderState'
 import * as localeTool from '../../../tools/locale'
-import * as routerEnum from '../../../enums/router'
+import * as routerTool from '../../../tools/router'
 
 const useStyles = createUseStyles(({
   card: {
@@ -44,7 +44,7 @@ const EachTops = ({
   // ------------------------------------------------------------ Handler --
 
   const handleClickCard = (trader: interfaces.traderModel.Record) => {
-    const link = `${routerEnum.NAV.TRADERS}/profiles/${trader.id}/${trader.accessCode}`
+    const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
   }
 

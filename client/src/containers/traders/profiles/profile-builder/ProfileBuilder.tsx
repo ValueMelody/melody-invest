@@ -5,7 +5,7 @@ import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from '../../../../tools/locale'
-import * as routerEnum from '../../../../enums/router'
+import * as routerTool from '../../../../tools/router'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from '../../elements/BehaviorEditor'
@@ -202,7 +202,7 @@ const ProfileBuilder = () => {
       }), defaultValues)
     const result = await createTraderProfile(selectedTraderEnvId, traderPattern)
     if (result) {
-      const link = `${routerEnum.NAV.TRADERS}/profiles/${result.traderId}/${result.accessCode}`
+      const link = routerTool.profileDetailRoute(result.traderId, result.accessCode)
       navigate(link)
     }
   }
