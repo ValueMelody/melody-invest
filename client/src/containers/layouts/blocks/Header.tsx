@@ -47,6 +47,12 @@ const Header = () => {
             {localeTool.t('topProfiles.title')}
           </Label>
         </Link>
+        <Link to={routerTool.topCombosRoute()}>
+          <Label className={classes.label}>
+            <Icon name='boxes' className={classes.icon} />
+            {localeTool.t('topCombos.title')}
+          </Label>
+        </Link>
         <Link to={routerTool.behaviorListRoute()}>
           <Label className={classes.label}>
             <Icon name='certificate' className={classes.icon} />

@@ -17,7 +17,7 @@ interface TickerIdentities {
   [tickerId: number]: interfaces.tickerModel.Identity;
 }
 
-interface TopProfiles {
+interface TopProfileIds {
   yearly: number[];
   pastYear: number[];
   pastQuarter: number[];
@@ -25,12 +25,11 @@ interface TopProfiles {
   pastWeek: number[];
 }
 
-interface EnvTopProfiles {
-  [traderEnvId: number]: TopProfiles
+export interface TopProfiles {
+  [traderEnvId: number]: TopProfileIds
 }
 
 export interface Resources {
-  envTopProfiles: EnvTopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
   userTraderEnvIds: number[];
@@ -51,7 +50,7 @@ export interface ProfileDetails {
 }
 
 export interface BehaviorDetail {
-  tops: TopProfiles;
+  tops: TopProfileIds;
 }
 
 export interface BehaviorDetails {
@@ -59,7 +58,7 @@ export interface BehaviorDetails {
 }
 
 export interface TickerDetail {
-  tops: TopProfiles;
+  tops: TopProfileIds;
 }
 
 export interface TickerDetails {
@@ -87,6 +86,8 @@ export interface Context {
   setBehaviorDetails: Dispatch<React.SetStateAction<BehaviorDetails>>;
   tickerDetails: TickerDetails;
   setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
+  topProfiles: TopProfiles;
+  setTopProfiles: Dispatch<React.SetStateAction<TopProfiles>>;
 }
 
 // @ts-ignore

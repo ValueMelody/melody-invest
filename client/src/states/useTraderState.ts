@@ -11,7 +11,7 @@ const useTraderState = () => {
 
   const getTopProfiles = (envId: number | null) => {
     if (envId === null) return null
-    return store.resources.envTopProfiles ? store.resources.envTopProfiles[envId] : null
+    return store.topProfiles[envId] || null
   }
 
   const getTraderProfile = (traderId: number | null) => {
@@ -62,12 +62,9 @@ const useTraderState = () => {
       pastMonth: topProfiles.pastMonth.map((profile) => profile.trader.id),
       pastWeek: topProfiles.pastWeek.map((profile) => profile.trader.id),
     }
-    store.setResources((resources) => ({
-      ...resources,
-      envTopProfiles: {
-        ...resources.envTopProfiles,
-        [envId]: tops,
-      },
+    store.setTopProfiles((topProfiles) => ({
+      ...topProfiles,
+      [envId]: tops,
     }))
   }
 

@@ -15,7 +15,6 @@ const useStore = () => {
   })
 
   const [resources, setResources] = useState<context.Resources>({
-    envTopProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
     userTraderEnvIds: [],
@@ -32,6 +31,8 @@ const useStore = () => {
   const [behaviorDetails, setBehaviorDetails] = useState<context.BehaviorDetails>({})
 
   const [tickerDetails, setTickerDetails] = useState<context.TickerDetails>({})
+
+  const [topProfiles, setTopProfiles] = useState<context.TopProfiles>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
@@ -93,6 +94,8 @@ const useStore = () => {
     setBehaviorDetails,
     tickerDetails,
     setTickerDetails,
+    topProfiles,
+    setTopProfiles,
   }
 }
 
