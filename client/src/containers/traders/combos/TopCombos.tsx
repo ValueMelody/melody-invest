@@ -26,7 +26,6 @@ const TopCombos = () => {
   const user = getUser()
   const systemCombos = user.userTraderCombos.filter((combo) => combo.isSysten)
   const firstCombo = systemCombos[0]
-  console.log(firstCombo)
 
   // ------------------------------------------------------------ Interface --
 
