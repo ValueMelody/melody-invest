@@ -46,9 +46,8 @@ export const behaviorDesc = (behavior: interfaces.traderPatternModel.Behavior) =
 }
 
 export const traderEnvName = (
-  traderEnv: interfaces.traderEnvModel.Record | null,
+  traderEnv: interfaces.traderEnvModel.Record,
 ) => {
-  if (!traderEnv) return ''
   if (!traderEnv.isSystem) return traderEnv.name
   return traderEnv.name ? localeTool.t(`traderEnvName.${traderEnv.name}`) : ''
 }
@@ -60,6 +59,14 @@ export const traderEnvStartDate = (traderEnv: interfaces.traderEnvModel.Record) 
 export const traderEnvTickers = (traderEnv: interfaces.traderEnvModel.Record) => {
   if (!traderEnv.tickerIds) return localeTool.t('traderEnv.allTickers')
   return localeTool.t('traderEnv.selectedTickers', { num: traderEnv.tickerIds.length })
+}
+
+export const traderComboName = (
+  traderCombo: interfaces.traderComboModel.Identity,
+) => {
+  return traderCombo.isSysten
+    ? localeTool.t(traderCombo.name)
+    : traderCombo.name
 }
 
 export const holdingValue = (value: number | null): string | null => {
