@@ -27,14 +27,15 @@ export const getTraderProfile = async (
 }
 
 export const getProfileDetail = async (
-  id: number, accessCode: string,
+  id: number, accessCode: string, envIds: number[],
 ): Promise<interfaces.traderRes.ProfileDetail> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
 
   const holdings = await traderHoldingModel.getAll(trader.id)
   const traders = await traderModel.getByPattern(trader.traderPatternId)
-  const profileEnvs = traders.map((trader) => ({
+  const filterredTraders = traders.filter((trader) => envIds.includes(trader.traderEnvId))
+  const profileEnvs = filterredTraders.map((trader) => ({
     traderId: trader.id,
     traderEnvId: trader.traderEnvId,
     traderPatternId: trader.traderPatternId,
@@ -57,6 +58,16 @@ export const verifyUserToTraderEnv = async (
     const envFollower = await traderEnvFollowerModel.getByUK(userId, traderEnvId)
     if (!envFollower) throw errorEnum.DEFAULT.NOT_FOUND
   }
+}
+
+export const getUserTraderEnvIds = async (
+  userId: number | null,
+): Promise<number[]> => {
+  const userEnvs = userId ? await traderEnvFollowerModel.getUserFollowed(userId) : []
+  const userEnvIds = userEnvs.map((env) => env.traderEnvId)
+  const systemEnvs = await traderEnvModel.getSystemDefined()
+  const systemEnvIds = systemEnvs.map((env) => env.id)
+  return [...userEnvIds, ...systemEnvIds]
 }
 
 const getTopProfilesRelatedPatterns = async (

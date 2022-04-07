@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
+import useUserState from '../../../states/useUserState'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -47,12 +48,14 @@ const EnvDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTraderEnv, getTopProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
+    getTopProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
+  const { getUser } = useUserState()
 
+  const user = getUser()
   const envId = params.envId ? parseInt(params.envId) : null
-  const traderEnv = getTraderEnv(envId)
+  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const topProfiles = getTopProfiles(envId)
 
   const bestOverall = topProfiles?.yearly[0] || null
@@ -80,8 +83,8 @@ const EnvDetail = () => {
   }, [])
 
   useEffect(() => {
-    if (traderEnv) return
-    fetchTraderEnv(envId!)
+    if (!envId || traderEnv) return
+    fetchTraderEnv(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderEnv])
 

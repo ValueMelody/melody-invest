@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as commonEnum from '../enums/common'
 import * as tickerModel from '../models/ticker'
 import * as traderEnvModel from '../models/traderEnv'
 
@@ -16,5 +17,6 @@ export const getDefaults = async (): Promise<interfaces.systemRes.Defaults> => {
   return {
     tickerIdentities,
     traderEnvs: systemTraderEnvs,
+    traderCombos: commonEnum.SYSTEM_COMBOS,
   }
 }

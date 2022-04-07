@@ -49,6 +49,11 @@
 
     "topProfiles.title": "Top Profiles",
 
+    "topCombos.title": "Top Combos",
+
+    "systemCombo.-1": "Top 100 Performancers",
+    "systemCombo.-2": "Top 30 Performancers",
+
     "tradeBehaviors.title": "Available Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",

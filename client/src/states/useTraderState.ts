@@ -9,9 +9,14 @@ const useTraderState = () => {
 
   // ------------------------------------------------------------ Get --
 
+  const getComboDetail = (envId: number | null) => {
+    if (envId === null) return null
+    return store.comboDetails[envId]
+  }
+
   const getTopProfiles = (envId: number | null) => {
     if (envId === null) return null
-    return store.resources.envTopProfiles ? store.resources.envTopProfiles[envId] : null
+    return store.topProfiles[envId] || null
   }
 
   const getTraderProfile = (traderId: number | null) => {
@@ -22,11 +27,6 @@ const useTraderState = () => {
   const getProfileDetail = (traderId: number | null) => {
     if (!traderId) return null
     return store.profileDetails[traderId] || null
-  }
-
-  const getTraderEnv = (traderEnvId: number | null) => {
-    if (!traderEnvId) return null
-    return store.traderEnvs[traderEnvId] || null
   }
 
   const getBehaviorDetail = (
@@ -62,12 +62,9 @@ const useTraderState = () => {
       pastMonth: topProfiles.pastMonth.map((profile) => profile.trader.id),
       pastWeek: topProfiles.pastWeek.map((profile) => profile.trader.id),
     }
-    store.setResources((resources) => ({
-      ...resources,
-      envTopProfiles: {
-        ...resources.envTopProfiles,
-        [envId]: tops,
-      },
+    store.setTopProfiles((topProfiles) => ({
+      ...topProfiles,
+      [envId]: tops,
     }))
   }
 
@@ -132,10 +129,10 @@ const useTraderState = () => {
   }
 
   const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
-    store.setTraderEnvs((envs) => ({ ...envs, [env.id]: env }))
-    if (!env.isSystem) {
-      const userTraderEnvIds = [...store.resources.userTraderEnvIds, env.id]
-      store.setResources((resources) => ({ ...resources, userTraderEnvIds }))
+    const isSame = store.resources.userTraderEnvs.some((traderEnv) => traderEnv.id === env.id)
+    if (!isSame) {
+      const userTraderEnvs = [...store.resources.userTraderEnvs, env]
+      store.setResources((resources) => ({ ...resources, userTraderEnvs }))
     }
   }
 
@@ -162,9 +159,9 @@ const useTraderState = () => {
   }
 
   const removeWatchedEnv = (traderEnvId: number) => {
-    const traderEnvIds = store.resources.userTraderEnvIds
-    const remainingTraderEnvIds = traderEnvIds.filter((id) => id !== traderEnvId)
-    store.setResources((resources) => ({ ...resources, userTraderEnvIds: remainingTraderEnvIds }))
+    const traderEnvs = store.resources.userTraderEnvs
+    const remainingTraderEnvs = traderEnvs.filter((env) => env.id !== traderEnvId)
+    store.setResources((resources) => ({ ...resources, userTraderEnvs: remainingTraderEnvs }))
   }
 
   // ------------------------------------------------------------ fetch --
@@ -350,10 +347,10 @@ const useTraderState = () => {
   return {
     getTopProfiles,
     getTraderProfile,
-    getTraderEnv,
     getProfileDetail,
     getBehaviorDetail,
     getTickerDetail,
+    getComboDetail,
     fetchTraderProfile,
     fetchProfileDetail,
     fetchBehaviorDetail,

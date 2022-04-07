@@ -39,10 +39,10 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { getUser } = useUserState()
-  const { getTraderProfile, getTraderEnv } = useTraderState()
+  const { getTraderProfile } = useTraderState()
 
   const user = getUser()
-  const traderEnvIds = [...user.userTraderEnvIds].reverse()
+  const traderEnvs = [...user.userTraderEnvs].reverse()
 
   // ------------------------------------------------------------ Handler --
 
@@ -102,10 +102,10 @@ const ProfileDashboard = () => {
           icon='star'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        {traderEnvIds.map((envId) => (
+        {traderEnvs.map((env) => (
           <TraderEnvCard
-            key={envId}
-            traderEnv={getTraderEnv(envId)}
+            key={env.id}
+            traderEnv={env}
             isActive={false}
             onClick={handleClickEnv}
           />

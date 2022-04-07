@@ -17,7 +17,7 @@ interface TickerIdentities {
   [tickerId: number]: interfaces.tickerModel.Identity;
 }
 
-interface TopProfiles {
+interface TopProfileIds {
   yearly: number[];
   pastYear: number[];
   pastQuarter: number[];
@@ -25,21 +25,17 @@ interface TopProfiles {
   pastWeek: number[];
 }
 
-interface EnvTopProfiles {
-  [traderEnvId: number]: TopProfiles
+export interface TopProfiles {
+  [traderEnvId: number]: TopProfileIds
 }
 
 export interface Resources {
-  envTopProfiles: EnvTopProfiles | null;
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
-  userTraderEnvIds: number[];
+  userTraderEnvs: interfaces.traderEnvModel.Record[];
+  userTraderCombos: interfaces.traderComboModel.Identity[];
   userType: number;
   userEmail: string,
-}
-
-export interface TraderEnvs {
-  [traderEnvId: number]: interfaces.traderEnvModel.Record;
 }
 
 export interface TraderProfiles {
@@ -51,7 +47,7 @@ export interface ProfileDetails {
 }
 
 export interface BehaviorDetail {
-  tops: TopProfiles;
+  tops: TopProfileIds;
 }
 
 export interface BehaviorDetails {
@@ -59,11 +55,19 @@ export interface BehaviorDetails {
 }
 
 export interface TickerDetail {
-  tops: TopProfiles;
+  tops: TopProfileIds;
 }
 
 export interface TickerDetails {
-  [key: string]: TickerDetail
+  [key: string]: TickerDetail;
+}
+
+export interface ComboDetail {
+
+}
+
+export interface ComboDetails {
+  [comboId: number]: ComboDetail;
 }
 
 export interface Context {
@@ -77,8 +81,6 @@ export interface Context {
   showRequestError: (message: string) => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
-  traderEnvs: TraderEnvs;
-  setTraderEnvs: Dispatch<React.SetStateAction<TraderEnvs>>;
   traderProfiles: TraderProfiles;
   setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
   profileDetails: ProfileDetails;
@@ -87,6 +89,10 @@ export interface Context {
   setBehaviorDetails: Dispatch<React.SetStateAction<BehaviorDetails>>;
   tickerDetails: TickerDetails;
   setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
+  topProfiles: TopProfiles;
+  setTopProfiles: Dispatch<React.SetStateAction<TopProfiles>>;
+  comboDetails: ComboDetails;
+  setComboDetails: Dispatch<React.SetStateAction<ComboDetails>>;
 }
 
 // @ts-ignore

@@ -15,15 +15,13 @@ const useStore = () => {
   })
 
   const [resources, setResources] = useState<context.Resources>({
-    envTopProfiles: null,
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
-    userTraderEnvIds: [],
+    userTraderEnvs: [],
+    userTraderCombos: [],
     userType: currentUserType,
     userEmail: '',
   })
-
-  const [traderEnvs, setTraderEnvs] = useState<context.TraderEnvs>({})
 
   const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
 
@@ -32,6 +30,10 @@ const useStore = () => {
   const [behaviorDetails, setBehaviorDetails] = useState<context.BehaviorDetails>({})
 
   const [tickerDetails, setTickerDetails] = useState<context.TickerDetails>({})
+
+  const [topProfiles, setTopProfiles] = useState<context.TopProfiles>({})
+
+  const [comboDetails, setComboDetails] = useState<context.ComboDetails>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
@@ -83,8 +85,6 @@ const useStore = () => {
     showRequestError,
     resources,
     setResources,
-    traderEnvs,
-    setTraderEnvs,
     traderProfiles,
     setTraderProfiles,
     profileDetails,
@@ -93,6 +93,10 @@ const useStore = () => {
     setBehaviorDetails,
     tickerDetails,
     setTickerDetails,
+    topProfiles,
+    setTopProfiles,
+    comboDetails,
+    setComboDetails,
   }
 }
 

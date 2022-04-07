@@ -13,7 +13,7 @@ const useUserState = () => {
   const getUser = () => {
     return {
       userTraderIds: store.resources.userTraderIds,
-      userTraderEnvIds: store.resources.userTraderEnvIds,
+      userTraderEnvs: store.resources.userTraderEnvs,
       userType: store.resources.userType,
       userEmail: store.resources.userEmail,
     }
@@ -32,23 +32,17 @@ const useUserState = () => {
   const storeUserOverall = (overall: interfaces.userRes.UserOverall) => {
     const { traderProfiles: profiles, traderEnvs: envs, email } = overall
     const traderIds = profiles.map((profile) => profile.trader.id)
-    const envIds = envs.map((env) => env.id)
 
     const traderProfiles = profiles.reduce((traderProfiles, profile) => {
       return { ...traderProfiles, [profile.trader.id]: profile }
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
 
-    const traderEnvs = envs.reduce((envs, env) => {
-      return { ...envs, [env.id]: env }
-    }, {})
-    store.setTraderEnvs((envs) => ({ ...envs, ...traderEnvs }))
-
     store.setResources((resources) => ({
       ...resources,
       userEmail: email,
       userTraderIds: traderIds,
-      userTraderEnvIds: [...resources.userTraderEnvIds, ...envIds],
+      userTraderEnvs: [...resources.userTraderEnvs, ...envs],
     }))
   }
 

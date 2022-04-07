@@ -5,6 +5,7 @@ import classNames from 'classnames'
 import { Button, Divider, Label, Segment, Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
+import useUserState from '../../../states/useUserState'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import * as parseTool from '../../../tools/parse'
@@ -42,20 +43,22 @@ const ProfileDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTraderProfile, getTraderEnv, getProfileDetail,
-    fetchTraderProfile, fetchProfileDetail,
+    getTraderProfile, getProfileDetail, fetchTraderProfile, fetchProfileDetail,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
+  const { getUser } = useUserState()
 
   const [showAllHoldings, setShowAllHoldings] = useState(false)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
+  const user = getUser()
 
   const traderProfile = getTraderProfile(traderId)
   const profileDetail = getProfileDetail(traderId)
 
-  const traderEnv = traderProfile?.trader && getTraderEnv(traderProfile.trader.traderEnvId)
+  const envId = traderProfile?.trader?.traderEnvId || null
+  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
@@ -102,7 +105,9 @@ const ProfileDetail = () => {
         <div className={classes.envContainer}>
           <h4>{localeTool.t('common.envs')}:</h4>
           {profileEnvs.map((profileEnv) => {
-            const traderEnv = getTraderEnv(profileEnv.traderEnvId)!
+            const traderEnv = user.userTraderEnvs.find((env) => env.id === profileEnv.traderEnvId)
+            if (!traderEnv) return null
+
             return (
               <TraderEnvCard
                 key={profileEnv.traderEnvId}

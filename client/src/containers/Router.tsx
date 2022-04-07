@@ -13,6 +13,7 @@ import EnvBuilder from './traders/envs/EnvBuilder'
 import EnvDetail from './traders/envs/EnvDetail'
 import TickerList from './traders/tickers/TickerList'
 import TickerDetail from './traders/tickers/TickerDetail'
+import TopCombos from './traders/combos/TopCombos'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -55,6 +56,10 @@ const Router = () => {
           <Route
             path={`${routerEnum.NAV.TICKERS}/:tickerId/envs/:envId`}
             element={<TickerDetail />}
+          />
+          <Route
+            path={`${routerEnum.NAV.TRADERS}/combos/tops`}
+            element={<TopCombos />}
           />
           <Route
             path={routerEnum.NAV.DASHBOARD}
