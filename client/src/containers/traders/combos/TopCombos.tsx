@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import useUserState from '../../../states/useUserState'
 import TraderComboCard from '../elements/TraderComboCard'
+import HoldingCard from '../blocks/HoldingCard'
 
 const useStyles = createUseStyles(({
   container: {
@@ -24,12 +25,23 @@ const TopCombos = () => {
   const { getUser } = useUserState()
   const user = getUser()
   const systemCombos = user.userTraderCombos.filter((combo) => combo.isSysten)
+  const firstCombo = systemCombos[0]
+  console.log(firstCombo)
 
   // ------------------------------------------------------------ Interface --
+
+  if (!systemCombos.length) return null
 
   return (
     <section className={classNames('row-between', classes.container)}>
       <section className={classes.left}>
+        {firstCombo.holdingDetails.map((detail, index) => (
+          <HoldingCard
+            key={detail.date}
+            holding={detail}
+            previousHolding={index + 1 < firstCombo.holdingDetails.length ? firstCombo.holdingDetails[index + 1] : null}
+          />
+        ))}
       </section>
       <section className={classes.right}>
         {systemCombos.map((combo) => {

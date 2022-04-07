@@ -33,7 +33,7 @@ export interface Resources {
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
   userTraderEnvs: interfaces.traderEnvModel.Record[];
-  userTraderCombos: interfaces.traderComboModel.Identity[];
+  userTraderCombos: interfaces.traderComboModel.Detail[];
   userType: number;
   userEmail: string,
 }

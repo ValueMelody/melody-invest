@@ -26,6 +26,19 @@ export const getLatest = async (
   return record ? convertToRecord(record) : null
 }
 
+export const getAllByTraderIds = async (
+  traderIds: number[],
+): Promise<interfaces.traderHoldingModel.Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER_HOLDING,
+    conditions: [
+      { key: 'traderId', value: traderIds, type: 'IN' },
+    ],
+    orderBy: [{ column: 'date', order: 'asc' }],
+  })
+  return records.map((raw) => convertToRecord(raw))
+}
+
 export const getAll = async (
   traderId: number,
 ): Promise<interfaces.traderHoldingModel.Record[]> => {

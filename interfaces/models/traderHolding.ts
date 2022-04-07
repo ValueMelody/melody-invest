@@ -5,27 +5,27 @@ export interface Holding {
   value: number;
 }
 
-interface Common {
+export interface Detail {
+  date: string;
+  totalValue: number;
+  totalCash: number;
+  holdings: Holding[];
+}
+
+export interface Record extends Detail {
+  id: string;
+  traderId: number;
+}
+
+export interface Raw {
   id: string;
   traderId: number;
   date: string;
   holdings: Holding[];
-}
-
-export interface Record extends Common {
-  totalValue: number;
-  totalCash: number;
-}
-
-export interface Raw extends Common {
   totalValue: string;
   totalCash: string;
 }
 
-export interface Create {
+export interface Create extends Detail {
   traderId: number;
-  date: string;
-  totalValue: number;
-  totalCash: number;
-  holdings: Holding[];
 }
