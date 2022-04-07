@@ -4,6 +4,7 @@ import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
 import * as localeTool from '../tools/locale'
+import * as parseTool from '../tools/parse'
 import * as routerEnum from '../enums/router'
 
 const useUserState = () => {
@@ -14,6 +15,7 @@ const useUserState = () => {
     return {
       userTraderIds: store.resources.userTraderIds,
       userTraderEnvs: store.resources.userTraderEnvs,
+      userTraderCombos: store.resources.userTraderCombos,
       userType: store.resources.userType,
       userEmail: store.resources.userEmail,
     }
@@ -31,19 +33,25 @@ const useUserState = () => {
 
   const storeUserOverall = (overall: interfaces.userRes.UserOverall) => {
     const { traderProfiles: profiles, traderEnvs: envs, email } = overall
+
     const traderIds = profiles.map((profile) => profile.trader.id)
 
-    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
-      return { ...traderProfiles, [profile.trader.id]: profile }
-    }, {})
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    const parsedEnvs = envs.map((env) => ({
+      ...env,
+      name: parseTool.traderEnvName(env),
+    }))
 
     store.setResources((resources) => ({
       ...resources,
       userEmail: email,
       userTraderIds: traderIds,
-      userTraderEnvs: [...resources.userTraderEnvs, ...envs],
+      userTraderEnvs: [...resources.userTraderEnvs, ...parsedEnvs],
     }))
+
+    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
+      return { ...traderProfiles, [profile.trader.id]: profile }
+    }, {})
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
   }
 
   // ------------------------------------------------------------ Fetch --

@@ -53,7 +53,6 @@ const BehaviorDetail = () => {
   const behaviorDetail = getBehaviorDetail(envId, validBehavior)
   const topProfiles = behaviorDetail?.tops
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
-  const traderEnvName = parseTool.traderEnvName(traderEnv)
 
   const bestOverall = topProfiles?.yearly[0] || null
   const bestPastYear = topProfiles?.pastYear[0] || null
@@ -83,7 +82,7 @@ const BehaviorDetail = () => {
 
   // ------------------------------------------------------------ Interface --
 
-  if (!validBehavior) return null
+  if (!validBehavior || !traderEnv) return null
 
   return (
     <section className={classNames('row-between', classes.main)}>
@@ -97,7 +96,7 @@ const BehaviorDetail = () => {
         <Header
           as='h3'
           icon='star'
-          content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnvName })}
+          content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.name })}
           className={classes.leftTitle}
         />
         <section className='row-start'>

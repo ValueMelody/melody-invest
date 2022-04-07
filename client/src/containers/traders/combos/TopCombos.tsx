@@ -1,6 +1,50 @@
+import classNames from 'classnames'
+import { createUseStyles } from 'react-jss'
+import useUserState from '../../../states/useUserState'
+import TraderComboCard from '../elements/TraderComboCard'
+
+const useStyles = createUseStyles(({
+  container: {
+    alignItems: 'flex-start',
+  },
+  left: {
+    width: 'calc(100% - 32rem)',
+    minWidth: '28rem',
+  },
+  right: {
+    width: '28rem',
+  },
+}))
+
 const TopCombos = () => {
+  const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
+  const { getUser } = useUserState()
+  const user = getUser()
+  const systemCombos = user.userTraderCombos.filter((combo) => combo.isSysten)
+
+  // ------------------------------------------------------------ Interface --
+
   return (
-    <div>123</div>
+    <section className={classNames('row-between', classes.container)}>
+      <section className={classes.left}>
+      </section>
+      <section className={classes.right}>
+        {systemCombos.map((combo) => {
+          const env = user.userTraderEnvs.find((env) => env.id === combo.traderEnvId) || null
+          return (
+            <TraderComboCard
+              key={combo.id}
+              traderCombo={combo}
+              traderEnv={env}
+              isActive={false}
+            />
+          )
+        })}
+      </section>
+    </section>
   )
 }
 

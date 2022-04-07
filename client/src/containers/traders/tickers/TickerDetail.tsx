@@ -10,7 +10,6 @@ import TickerLabel from '../elements/TickerLabel'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import * as routerTool from '../../../tools/router'
 import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
 import * as themeEnum from '../../../enums/theme'
 import EachTops from '../blocks/EachTops'
 
@@ -58,7 +57,6 @@ const TickerDetail = () => {
   const tickerDetail = getTickerDetail(envId, tickerId)
   const topProfiles = tickerDetail?.tops
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
-  const traderEnvName = parseTool.traderEnvName(traderEnv)
 
   const bestOverall = topProfiles?.yearly[0] || null
   const bestPastYear = topProfiles?.pastYear[0] || null
@@ -89,7 +87,7 @@ const TickerDetail = () => {
 
   // ------------------------------------------------------------ Interface --
 
-  if (!tickerIdentity) return null
+  if (!tickerIdentity || !traderEnv) return null
 
   return (
     <section className={classNames('row-between', classes.main)}>
@@ -103,7 +101,7 @@ const TickerDetail = () => {
         <Header
           as='h3'
           icon='star'
-          content={localeTool.t('availableTickers.topProfiles', { name: traderEnvName })}
+          content={localeTool.t('availableTickers.topProfiles', { name: traderEnv.name })}
           className={classes.leftTitle}
         />
         <section className='row-start'>

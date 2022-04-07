@@ -2,7 +2,6 @@ import { Label } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
 
 const useStyles = createUseStyles(({
   label: {
@@ -19,16 +18,11 @@ const PatternLabel = ({
 }) => {
   const classes = useStyles()
 
-  // ------------------------------------------------------------ State --
-
-  const envNameLocale = parseTool.traderEnvName(traderEnv)
-  const envLabel = envNameLocale ? `- ${envNameLocale}` : ''
-
   // ------------------------------------------------------------ Interface --
 
   return (
     <Label color='blue' className={classes.label}>
-      {localeTool.t('common.pattern')} #{patternId} {envLabel}
+      {localeTool.t('common.pattern')} #{patternId} - {traderEnv.name}
     </Label>
   )
 }

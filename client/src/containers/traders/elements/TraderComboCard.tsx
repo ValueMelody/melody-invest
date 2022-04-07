@@ -1,10 +1,8 @@
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
-import { Card, Label } from 'semantic-ui-react'
+import { Card } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   container: {
@@ -15,53 +13,49 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   },
 }))
 
-const TraderEnvCard = ({
+const TraderComboCard = ({
+  traderCombo,
   traderEnv,
   isActive,
   onClick,
 }: {
+  traderCombo: interfaces.traderComboModel.Identity | null;
   traderEnv: interfaces.traderEnvModel.Record | null;
   isActive: boolean;
-  onClick?: (envId: number) => void;
+  onClick?: (comboId: number) => void;
 }) => {
   const classes = useStyles()
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClickEnv = () => {
-    if (!traderEnv || !onClick) return
-    onClick(traderEnv.id)
+  const handleClickCombo = () => {
+    if (!traderCombo || !onClick) return
+    onClick(traderCombo.id)
   }
 
   // ------------------------------------------------------------ Interface --
 
-  if (!traderEnv) return null
+  if (!traderCombo || !traderEnv) return null
 
   return (
     <Card
       className={classNames(classes.container, {
         [classes.isActive]: isActive,
       })}
-      onClick={handleClickEnv}
+      onClick={handleClickCombo}
     >
       <Card.Content>
         <Card.Header
           content={(
             <div className='row-between'>
-              {traderEnv.name}
-              {traderEnv.isSystem && (
-                <Label title={localeTool.t('traderEnv.systemDesc')}>
-                  {localeTool.t('common.system')}
-                </Label>
-              )}
+              {traderCombo.name}
             </div>
           )}
         />
-        <Card.Meta content={parseTool.traderEnvStartDate(traderEnv)} />
-        <Card.Description content={parseTool.traderEnvTickers(traderEnv)} />
+        <Card.Description content={traderEnv.name} />
       </Card.Content>
     </Card>
   )
 }
 
-export default TraderEnvCard
+export default TraderComboCard
