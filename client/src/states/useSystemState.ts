@@ -10,20 +10,24 @@ const useSystemState = () => {
   // ------------------------------------------------------------ store --
 
   const storeSystemDefaults = (systemDefaults: interfaces.systemRes.Defaults) => {
-    const traderEnvs = systemDefaults.traderEnvs.reduce((envs, env) => {
-      return { ...envs, [env.id]: env }
-    }, {})
-    store.setTraderEnvs((envs) => ({ ...envs, ...traderEnvs }))
-
-    const userTraderEnvIds = [
-      ...store.resources.userTraderEnvIds,
-      ...systemDefaults.traderEnvs.map((env) => env.id),
+    const userTraderEnvs = [
+      ...store.resources.userTraderEnvs,
+      ...systemDefaults.traderEnvs,
+    ]
+    const userTraderCombos = [
+      ...store.resources.userTraderCombos,
+      ...systemDefaults.traderCombos,
     ]
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,
       [identity.id]: identity,
     }), {})
-    store.setResources((resources) => ({ ...resources, userTraderEnvIds, tickerIdentities }))
+    store.setResources((resources) => ({
+      ...resources,
+      userTraderEnvs,
+      userTraderCombos,
+      tickerIdentities,
+    }))
   }
 
   // ------------------------------------------------------------ fetch --

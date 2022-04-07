@@ -58,14 +58,22 @@ tradersRouter.get('/profiles/:id/:access_code', async (req, res) => {
   return res.status(200).send(trader)
 })
 
-tradersRouter.get('/profiles/:id/:access_code/detail', async (req, res) => {
-  const id = parseInt(req.params.id)
-  const accessCode: string = req.params.access_code
-  validateGetProfileParams(id, accessCode)
+tradersRouter.get(
+  '/profiles/:id/:access_code/detail',
+  authMiddleware.guestOrUser,
+  async (req, res) => {
+    const id = parseInt(req.params.id)
+    const accessCode: string = req.params.access_code
+    validateGetProfileParams(id, accessCode)
 
-  const details = await crudTraders.getProfileDetail(id, accessCode)
-  return res.status(200).send(details)
-})
+    const auth: interfaces.reqs.Auth | null = req.body.auth
+    const userId = auth?.id || null
+    const userEnvIds = await crudTraders.getUserTraderEnvIds(userId)
+
+    const details = await crudTraders.getProfileDetail(id, accessCode, userEnvIds)
+    return res.status(200).send(details)
+  },
+)
 
 tradersRouter.get('/envs/tops', async (req, res) => {
   const tops = await crudTraders.getTopProfiles()

@@ -40,7 +40,7 @@ const ProfileCard = ({
   // ------------------------------------------------------------ State --
 
   const { getUser } = useUserState()
-  const { getTraderEnv, createWatchedProfile, deleteWatchedProfile } = useTraderState()
+  const { createWatchedProfile, deleteWatchedProfile } = useTraderState()
   const { addMessage } = useCommonState()
 
   const user = getUser()
@@ -50,7 +50,7 @@ const ProfileCard = ({
   const traderEnvId = trader?.traderEnvId || null
   const traderId = trader?.id || null
 
-  const traderEnv = getTraderEnv(traderEnvId)
+  const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
 
   // ------------------------------------------------------------ Handler --

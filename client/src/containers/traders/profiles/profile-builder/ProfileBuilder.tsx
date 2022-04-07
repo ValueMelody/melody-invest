@@ -54,7 +54,7 @@ const ProfileBuilder = () => {
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const { getUser } = useUserState()
-  const { createTraderProfile, getTraderEnv } = useTraderState()
+  const { createTraderProfile } = useTraderState()
   const user = getUser()
 
   const BUY_GROUPS = [
@@ -340,11 +340,11 @@ const ProfileBuilder = () => {
       </Segment.Group>
       <h4>{localeTool.t('common.envs')}:</h4>
       <div className='row-start'>
-        {user.userTraderEnvIds.map((traderEnvId) => (
+        {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnvId}
-            traderEnv={getTraderEnv(traderEnvId)}
-            isActive={traderEnvId === selectedTraderEnvId}
+            key={traderEnv.id}
+            traderEnv={traderEnv}
+            isActive={traderEnv.id === selectedTraderEnvId}
             onClick={handleSelectEnv}
           />
         ))}

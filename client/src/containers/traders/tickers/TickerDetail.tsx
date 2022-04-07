@@ -45,7 +45,7 @@ const TickerDetail = () => {
   // ------------------------------------------------------------ State --
 
   const { getTickerIdentities } = useTickerState()
-  const { getTraderEnv, getTickerDetail, fetchTickerDetail } = useTraderState()
+  const { getTickerDetail, fetchTickerDetail } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
 
@@ -57,7 +57,7 @@ const TickerDetail = () => {
 
   const tickerDetail = getTickerDetail(envId, tickerId)
   const topProfiles = tickerDetail?.tops
-  const traderEnv = getTraderEnv(envId)
+  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const traderEnvName = parseTool.traderEnvName(traderEnv)
 
   const bestOverall = topProfiles?.yearly[0] || null
@@ -117,11 +117,11 @@ const TickerDetail = () => {
         </section>
       </section>
       <aside className={classes.right}>
-        {user.userTraderEnvIds.map((traderEnvId) => (
+        {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnvId}
-            traderEnv={getTraderEnv(traderEnvId)}
-            isActive={envId === traderEnvId}
+            key={traderEnv.id}
+            traderEnv={traderEnv}
+            isActive={envId === traderEnv.id}
             onClick={handleClickEnv}
           />
         ))}

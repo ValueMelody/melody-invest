@@ -32,13 +32,10 @@ export interface TopProfiles {
 export interface Resources {
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
-  userTraderEnvIds: number[];
+  userTraderEnvs: interfaces.traderEnvModel.Record[];
+  userTraderCombos: interfaces.traderComboModel.Identity[];
   userType: number;
   userEmail: string,
-}
-
-export interface TraderEnvs {
-  [traderEnvId: number]: interfaces.traderEnvModel.Record;
 }
 
 export interface TraderProfiles {
@@ -62,7 +59,15 @@ export interface TickerDetail {
 }
 
 export interface TickerDetails {
-  [key: string]: TickerDetail
+  [key: string]: TickerDetail;
+}
+
+export interface ComboDetail {
+
+}
+
+export interface ComboDetails {
+  [comboId: number]: ComboDetail;
 }
 
 export interface Context {
@@ -76,8 +81,6 @@ export interface Context {
   showRequestError: (message: string) => void;
   resources: Resources;
   setResources: Dispatch<React.SetStateAction<Resources>>;
-  traderEnvs: TraderEnvs;
-  setTraderEnvs: Dispatch<React.SetStateAction<TraderEnvs>>;
   traderProfiles: TraderProfiles;
   setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
   profileDetails: ProfileDetails;
@@ -88,6 +91,8 @@ export interface Context {
   setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
   topProfiles: TopProfiles;
   setTopProfiles: Dispatch<React.SetStateAction<TopProfiles>>;
+  comboDetails: ComboDetails;
+  setComboDetails: Dispatch<React.SetStateAction<ComboDetails>>;
 }
 
 // @ts-ignore
