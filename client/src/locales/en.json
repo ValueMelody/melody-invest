@@ -97,9 +97,8 @@
     "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet",
     "traderEnv.topProfiles": "Top Profiles from this Environment",
-
-    "traderEnvName.default" : "Default",
-    "traderEnvName.topTech" : "Top Tech",
+    "traderEnv.default" : "Default",
+    "traderEnv.topTech" : "Top Tech",
 
     "availableTickers.title": "Available Stocks",
     "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
