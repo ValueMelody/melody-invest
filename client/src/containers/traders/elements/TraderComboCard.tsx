@@ -19,7 +19,7 @@ const TraderComboCard = ({
   isActive,
   onClick,
 }: {
-  traderCombo: interfaces.traderComboModel.Identity | null;
+  traderCombo: interfaces.traderComboModel.Detail | null;
   traderEnv: interfaces.traderEnvModel.Record | null;
   isActive: boolean;
   onClick?: (comboId: number) => void;

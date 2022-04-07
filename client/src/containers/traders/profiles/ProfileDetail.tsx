@@ -2,16 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
-import { Button, Divider, Label, Segment, Header } from 'semantic-ui-react'
+import { Button, Segment, Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
-import useTickerState from '../../../states/useTickerState'
 import useUserState from '../../../states/useUserState'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import * as parseTool from '../../../tools/parse'
 import ProfileCard from '../blocks/ProfileCard'
-import ValueDiffer from '../elements/ValueDiffer'
-import HoldingShare from '../elements/HoldingShare'
+import HoldingCard from '../blocks/HoldingCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 
 const useStyles = createUseStyles(({
@@ -24,10 +21,6 @@ const useStyles = createUseStyles(({
   holdings: {
     width: 'calc(100% - 32rem)',
     minWidth: '38rem',
-  },
-  value: {
-    marginLeft: '2rem !important',
-    marginRight: '1rem !important',
   },
   envContainer: {
     paddingLeft: '1rem !important',
@@ -45,7 +38,6 @@ const ProfileDetail = () => {
   const {
     getTraderProfile, getProfileDetail, fetchTraderProfile, fetchProfileDetail,
   } = useTraderState()
-  const { getTickerIdentity } = useTickerState()
   const { getUser } = useUserState()
 
   const [showAllHoldings, setShowAllHoldings] = useState(false)
@@ -129,43 +121,11 @@ const ProfileDetail = () => {
           <Segment>{localeTool.t('profile.noResultYet')}</Segment>
         )}
         {displayedHoldings.map((holding, index) => (
-          <Segment key={holding.id}>
-            <div className='row-start'>
-              <Label>
-                {localeTool.t('common.date')}: {holding.date}
-              </Label>
-              {holding.totalValue !== null && (
-                <h5 className={classes.value}>
-                  <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
-                  {parseTool.holdingValue(holding.totalValue)}
-                </h5>
-              )}
-              {index + 1 < holdings.length && (
-                <ValueDiffer
-                  currentValue={holding.totalValue}
-                  previousValue={holdings[index + 1].totalValue}
-                />
-              )}
-              {holding.totalCash !== null && (
-                <h5>
-                  <b>{localeTool.t('common.cash')}:</b>&nbsp;
-                  {parseTool.holdingValue(holding.totalCash)}
-                </h5>
-              )}
-            </div>
-            <Divider />
-            {holding.holdings.map((tickerHolding) => {
-              const identity = getTickerIdentity(tickerHolding.tickerId)
-              return (
-                <HoldingShare
-                  key={tickerHolding.tickerId}
-                  tickerIdentity={identity}
-                  tickerHolding={tickerHolding}
-                  previousHoldings={holdings[index + 1]?.holdings}
-                />
-              )
-            })}
-          </Segment>
+          <HoldingCard
+            key={holding.id}
+            holding={holding}
+            previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
+          />
         ))}
         {!showAllHoldings && displayedHoldings.length !== holdings.length && (
           <div className='row-around'>

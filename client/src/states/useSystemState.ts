@@ -46,6 +46,7 @@ const useSystemState = () => {
     store.startLoading()
     try {
       const defaults = await requestAdapter.sendGetRequest(endpoint)
+      console.log(defaults.traderCombos)
       storeSystemDefaults(defaults)
     } catch (e: any) {
       store.showRequestError(e?.message)

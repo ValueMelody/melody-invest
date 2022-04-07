@@ -84,6 +84,23 @@ interface TopOptions {
   tickerId?: number;
 }
 
+export const getTopPerformancers = async (
+  envId: number,
+  total: number,
+  type: 'yearlyPercentNumber',
+): Promise<interfaces.traderModel.Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER,
+    conditions: [
+      { key: 'traderEnvId', value: envId },
+      { key: type, value: null, type: 'IS NOT' },
+    ],
+    orderBy: [{ column: type, order: 'desc' }],
+    limit: total,
+  })
+  return records.map((record) => convertToRecord(record))
+}
+
 export const getTops = async (
   each: number,
   options?: TopOptions,

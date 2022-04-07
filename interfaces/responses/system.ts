@@ -4,6 +4,6 @@ import * as tickerModel from '../models/ticker'
 
 export interface Defaults {
   traderEnvs: traderEnvModel.Record[];
-  traderCombos: traderComboModel.Identity[];
+  traderCombos: traderComboModel.Detail[];
   tickerIdentities: tickerModel.Identity[];
 }
