@@ -4,14 +4,11 @@ import { Loader } from 'semantic-ui-react'
 import Router from './containers/Router'
 import { context } from './states/context'
 import useStore from './states/store'
-import * as localTool from './tools/locale'
 import * as themeEnum from './enums/theme'
 
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 import 'react-datepicker/dist/react-datepicker.css'
-
-localTool.init()
 
 const App = () => {
   const store = useStore()
