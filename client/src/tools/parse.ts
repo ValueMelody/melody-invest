@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as localeTool from './locale'
 
 export const dbPercentNumber = (value: number | null): string => {
@@ -70,7 +71,7 @@ export const traderComboName = (
 
 export const holdingValue = (value: number | null): string | null => {
   if (value === null) return null
-  const realValue = value / 100
+  const realValue = value / constants.trader.initial.PRICE_PADDING
   return Intl
     ? new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(realValue)
     : (realValue).toFixed(2)

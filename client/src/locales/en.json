@@ -4,7 +4,7 @@
     "common.date": "Date",
     "common.cash": "Cash",
     "common.totalValue": "Total Value",
-    "common.showAll": "Show All",
+    "common.showMore": "Show More",
     "common.shares": "shares",
     "common.email": "Email",
     "common.password": "Password",
@@ -53,6 +53,9 @@
 
     "systemCombo.default10": "Top 10 Performancers",
     "systemCombo.bigTech10": "Top 10 Performancers",
+
+    "holdingCard.sinceLast": "Since Last",
+    "holdingCard.sinceStart": "Since start",
 
     "tradeBehaviors.title": "Available Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",

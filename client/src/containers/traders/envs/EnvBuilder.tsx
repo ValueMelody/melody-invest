@@ -39,7 +39,7 @@ const getDateFromString = (date: PlainDate): Date => {
   return new Date(date.year, date.month - 1, date.day)
 }
 
-const initialDate = parseDateString(constants.time.initialDate)
+const initialDate = parseDateString(constants.trader.initial.DATE)
 const minDate = getDateFromString(initialDate)
 
 const EnvBuilder = () => {
@@ -51,7 +51,7 @@ const EnvBuilder = () => {
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
 
-  const [startDate, setStartDate] = useState(constants.time.initialDate)
+  const [startDate, setStartDate] = useState(constants.trader.initial.DATE)
   const [tickerIds, setTickerIds] = useState<number[] | null>(null)
   const [envName, setEnvName] = useState('')
 

@@ -1,9 +1,10 @@
 import { Label } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
+import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
 import * as themeEnum from '../../../enums/theme'
-import classNames from 'classnames'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   ticker: {
@@ -24,10 +25,12 @@ const HoldingShare = ({
   tickerHolding,
   tickerIdentity,
   previousHoldings,
+  totalValue,
 }: {
   tickerHolding: interfaces.traderHoldingModel.Holding;
   tickerIdentity: interfaces.tickerModel.Identity | null;
   previousHoldings?: interfaces.traderHoldingModel.Holding[];
+  totalValue: number;
 }) => {
   const classes = useStyles()
 
@@ -36,7 +39,7 @@ const HoldingShare = ({
   const previousHolding = previousHoldings?.find((previous) => previous.tickerId === tickerHolding.tickerId)
   const currentShares = Math.floor(tickerHolding.shares * tickerHolding.splitMultiplier)
   const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
-  const shareDiffer = previousShares ? (currentShares - previousShares) / tickerHolding.splitMultiplier : null
+  const shareDiffer = previousShares ? currentShares - previousShares : null
 
   // ------------------------------------------------------------ Interface --
 
@@ -47,7 +50,8 @@ const HoldingShare = ({
       title={tickerIdentity?.name}
       className={classes.ticker}
     >
-      {tickerIdentity?.symbol}: {currentShares} {localeTool.t('common.shares')}
+      {tickerIdentity?.symbol}&nbsp;
+      {parseTool.floatToPercent(tickerHolding.value / totalValue)}&nbsp;
       {!!shareDiffer && (
         <span
           className={classNames(classes.differ, {
@@ -55,7 +59,7 @@ const HoldingShare = ({
             [classes.decreaseColor]: shareDiffer < 0,
           })}
         >
-          {shareDiffer > 0 ? '+' : '-'} {Math.abs(Number(shareDiffer.toFixed(0)))}
+          {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
         </span>
       )}
     </Label>

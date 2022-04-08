@@ -1,9 +1,9 @@
-import * as time from './time'
+import * as trader from './trader'
 import * as behavior from './behavior'
 import * as behaviorValue from './behaviorValue'
 
 export {
-  time,
+  trader,
   behavior,
   behaviorValue,
 }

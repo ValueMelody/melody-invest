@@ -1,10 +1,9 @@
 import * as interfaces from '@shared/interfaces'
-
-const PRICE_PADDING = 100
+import * as constants from '@shared/constants'
 
 export const convertToIntPrice = (price: string): number => {
   const value = parseFloat(price)
-  return Math.floor(value * PRICE_PADDING)
+  return Math.floor(value * constants.trader.initial.PRICE_PADDING)
 }
 
 export const getSplitMultiplier = (
@@ -17,7 +16,7 @@ export const getSplitMultiplier = (
 }
 
 export const getInitialCash = (): number => {
-  return 100000 * PRICE_PADDING
+  return constants.trader.initial.CASH
 }
 
 export const isMatchedQuarter = (

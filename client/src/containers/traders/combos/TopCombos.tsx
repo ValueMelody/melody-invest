@@ -1,5 +1,6 @@
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
+import * as constants from '@shared/constants'
 import useUserState from '../../../states/useUserState'
 import TraderComboCard from '../elements/TraderComboCard'
 import HoldingCard from '../blocks/HoldingCard'
@@ -39,6 +40,7 @@ const TopCombos = () => {
             key={detail.date}
             holding={detail}
             previousHolding={index + 1 < firstCombo.holdingDetails.length ? firstCombo.holdingDetails[index + 1] : null}
+            initialValue={constants.trader.initial.CASH * 10}
           />
         ))}
       </section>
