@@ -5,9 +5,13 @@ import * as routerTool from '../../tools/router'
 
 const usePrivateGuard = () => {
   const navigate = useNavigate()
-  const { getUser } = useUserState()
 
+  // ------------------------------------------------------------ state --
+
+  const { getUser } = useUserState()
   const user = getUser()
+
+  // ------------------------------------------------------------ effect --
 
   useEffect(() => {
     if (!user.userType) navigate(routerTool.signInRoute())

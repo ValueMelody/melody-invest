@@ -83,7 +83,7 @@ const getTopProfilesRelatedPatterns = async (
 export const getTopProfiles = async (
   traderEnvId?: number,
 ): Promise<interfaces.traderRes.TopProfiles> => {
-  const each = traderEnvId ? 1 : 3
+  const each = traderEnvId ? 1 : 5
 
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
   const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
