@@ -1,6 +1,7 @@
 import { createUseStyles } from 'react-jss'
+import * as themeEnum from '../../enums/theme'
 
-const useStyles = createUseStyles(({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',
@@ -17,9 +18,11 @@ const useStyles = createUseStyles(({
   main: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
     width: 'calc(100% - 28rem)',
     minWidth: '26rem',
+  },
+  activeCard: {
+    border: `3px solid ${theme.PRIMARY_COLOR} !important`,
   },
 }))
 

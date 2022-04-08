@@ -58,6 +58,7 @@
     "holdingCard.sinceStart": "Since start",
 
     "tradeBehaviors.title": "Available Behaviors",
+    "tradeBehaviors.type": "Type of Trade Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
     "tradeBehaviors.otherBehaviors": "Other Behaviors",
