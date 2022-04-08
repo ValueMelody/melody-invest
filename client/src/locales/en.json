@@ -63,6 +63,7 @@
     "tradeBehaviors.otherBehaviors": "Other Behaviors",
     "tradeBehaviors.topProfiles": "Top Profiles use this behavior from {{name}} Environment",
 
+    "bestReturn.type": "Type of Top Profiles",
     "bestReturn.yearlyTitle": "Best Return Annually",
     "bestReturn.pastYearTitle": "Best Return in One Year",
     "bestReturn.pastQuarterTitle": "Best Return in One Quarter",

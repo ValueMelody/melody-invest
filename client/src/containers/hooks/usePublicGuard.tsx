@@ -5,9 +5,13 @@ import * as routerTool from '../../tools/router'
 
 const usePublicGuard = () => {
   const navigate = useNavigate()
-  const { getUser } = useUserState()
 
+  // ------------------------------------------------------------ state --
+
+  const { getUser } = useUserState()
   const user = getUser()
+
+  // ------------------------------------------------------------ effect --
 
   useEffect(() => {
     if (user.userType) navigate(routerTool.settingRoute())
