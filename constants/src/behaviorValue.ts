@@ -1,4 +1,4 @@
-import { day } from './time'
+import { day } from './trader'
 
 export const preference = {
   HIGHER_PRICE: 1,

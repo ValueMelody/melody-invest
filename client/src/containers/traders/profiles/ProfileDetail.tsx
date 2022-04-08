@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
 import { Button, Segment, Header } from 'semantic-ui-react'
+import * as constants from '@shared/constants'
 import useTraderState from '../../../states/useTraderState'
 import useUserState from '../../../states/useUserState'
 import * as localeTool from '../../../tools/locale'
@@ -20,7 +21,7 @@ const useStyles = createUseStyles(({
   },
   holdings: {
     width: 'calc(100% - 32rem)',
-    minWidth: '38rem',
+    minWidth: '28rem',
   },
   envContainer: {
     paddingLeft: '1rem !important',
@@ -40,7 +41,7 @@ const ProfileDetail = () => {
   } = useTraderState()
   const { getUser } = useUserState()
 
-  const [showAllHoldings, setShowAllHoldings] = useState(false)
+  const [showHoldingTotal, setShowHoldingTotal] = useState(5)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
@@ -53,7 +54,7 @@ const ProfileDetail = () => {
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
-  const displayedHoldings = holdings.slice(0, showAllHoldings ? holdings.length : 5)
+  const displayedHoldings = holdings.slice(0, showHoldingTotal)
 
   // ------------------------------------------------------------ Effect --
 
@@ -77,7 +78,9 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClickShowAll = () => setShowAllHoldings(true)
+  const handleClickShowMore = () => {
+    setShowHoldingTotal(showHoldingTotal + 10)
+  }
 
   const handleClickEnv = (traderId: number, accessCode: string) => {
     const link = routerTool.profileDetailRoute(traderId, accessCode)
@@ -125,12 +128,13 @@ const ProfileDetail = () => {
             key={holding.id}
             holding={holding}
             previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
+            initialValue={constants.trader.initial.CASH}
           />
         ))}
-        {!showAllHoldings && displayedHoldings.length !== holdings.length && (
+        {showHoldingTotal < holdings.length && (
           <div className='row-around'>
-            <Button onClick={handleClickShowAll}>
-              {localeTool.t('common.showAll')}
+            <Button onClick={handleClickShowMore}>
+              {localeTool.t('common.showMore')}
             </Button>
           </div>
         )}
