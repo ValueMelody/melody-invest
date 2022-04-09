@@ -1,17 +1,13 @@
-import { useState, ChangeEvent } from 'react'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import { useNavigate } from 'react-router-dom'
-import { Input, Card } from 'semantic-ui-react'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import * as routerTool from '../../../tools/router'
 import BehaviorLabel from '../elements/BehaviorLabel'
 import usePageStyles from '../../hooks/usePageStyles'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   header: {
     marginBottom: '1rem',
   },
@@ -32,12 +28,12 @@ const isSearchedBehavior = (
 const BehaviorList = () => {
   const classes = useStyles()
   const { classes: pageClasses } = usePageStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
-  const [searchText, setSearchText] = useState('')
-  const [focusedType, setFocusedType] = useState('buyBehaviors')
+  const [searchText, setSearchText] = vendorTool.react.useState('')
+  const [focusedType, setFocusedType] = vendorTool.react.useState('buyBehaviors')
 
   const buyBehaviors = constants.behavior.buyBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
   const sellBehaviors = constants.behavior.sellBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
@@ -62,7 +58,9 @@ const BehaviorList = () => {
     navigate(url)
   }
 
-  const handleChangeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSearchText = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSearchText(e.target.value)
   }
 
@@ -78,7 +76,7 @@ const BehaviorList = () => {
     <section className={pageClasses.root}>
       <section className={pageClasses.main}>
         <header className={classes.header}>
-          <Input
+          <vendorTool.ui.Input
             icon='search'
             placeholder={localeTool.t('common.search')}
             value={searchText}
@@ -99,9 +97,9 @@ const BehaviorList = () => {
       <aside className={pageClasses.aside}>
       <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
         {focusOptions.map((option) => (
-          <Card
+          <vendorTool.ui.Card
             key={option.type}
-            className={classNames({
+            className={vendorTool.classNames({
               [pageClasses.activeCard]: option.type === focusedType,
             })}
             header={option.title}

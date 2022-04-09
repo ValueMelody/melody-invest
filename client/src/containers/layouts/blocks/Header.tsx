@@ -1,13 +1,12 @@
-import { Link } from 'react-router-dom'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
-import { Icon, Label } from 'semantic-ui-react'
 import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import useUserState from '../../../states/useUserState'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   header: {
     height: '3rem',
     position: 'fixed',
@@ -39,47 +38,47 @@ const Header = () => {
   // ------------------------------------------------------------ Interface --
 
   return (
-    <header className={classNames('row-between', classes.header)}>
+    <header className={vendorTool.classNames('row-between', classes.header)}>
       <nav>
-        <Link to={routerTool.topProfilesRoute()}>
-          <Label className={classes.label}>
-            <Icon name='chart line' className={classes.icon} />
+        <vendorTool.router.Link to={routerTool.topProfilesRoute()}>
+          <vendorTool.ui.Label className={classes.label}>
+            <vendorTool.ui.Icon name='chart line' className={classes.icon} />
             {localeTool.t('topProfiles.title')}
-          </Label>
-        </Link>
-        <Link to={routerTool.topCombosRoute()}>
-          <Label className={classes.label}>
-            <Icon name='boxes' className={classes.icon} />
+          </vendorTool.ui.Label>
+        </vendorTool.router.Link>
+        <vendorTool.router.Link to={routerTool.topCombosRoute()}>
+          <vendorTool.ui.Label className={classes.label}>
+            <vendorTool.ui.Icon name='boxes' className={classes.icon} />
             {localeTool.t('topCombos.title')}
-          </Label>
-        </Link>
-        <Link to={routerTool.behaviorListRoute()}>
-          <Label className={classes.label}>
-            <Icon name='certificate' className={classes.icon} />
+          </vendorTool.ui.Label>
+        </vendorTool.router.Link>
+        <vendorTool.router.Link to={routerTool.behaviorListRoute()}>
+          <vendorTool.ui.Label className={classes.label}>
+            <vendorTool.ui.Icon name='certificate' className={classes.icon} />
             {localeTool.t('tradeBehaviors.title')}
-          </Label>
-        </Link>
-        <Link to={routerTool.tickerListRoute()}>
-          <Label className={classes.label}>
-            <Icon name='ticket' className={classes.icon} />
+          </vendorTool.ui.Label>
+        </vendorTool.router.Link>
+        <vendorTool.router.Link to={routerTool.tickerListRoute()}>
+          <vendorTool.ui.Label className={classes.label}>
+            <vendorTool.ui.Icon name='ticket' className={classes.icon} />
             {localeTool.t('availableTickers.title')}
-          </Label>
-        </Link>
+          </vendorTool.ui.Label>
+        </vendorTool.router.Link>
       </nav>
       <nav>
         {isLoggedInUser && (
-          <Link to={routerTool.dashboardRoute()}>
-            <Label className={classes.label}>
-              <Icon name='table' className={classes.icon} />
+          <vendorTool.router.Link to={routerTool.dashboardRoute()}>
+            <vendorTool.ui.Label className={classes.label}>
+              <vendorTool.ui.Icon name='table' className={classes.icon} />
               {localeTool.t('dashboard.title')}
-            </Label>
-          </Link>
+            </vendorTool.ui.Label>
+          </vendorTool.router.Link>
         )}
-        <Link to={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}>
-          <Label className={classes.label}>
-            <Icon name='user circle' />
-          </Label>
-        </Link>
+        <vendorTool.router.Link to={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}>
+          <vendorTool.ui.Label className={classes.label}>
+            <vendorTool.ui.Icon name='user circle' />
+          </vendorTool.ui.Label>
+        </vendorTool.router.Link>
       </nav>
     </header>
   )

@@ -1,12 +1,8 @@
-import { useState } from 'react'
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import { useNavigate } from 'react-router-dom'
-import { Header } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import TraderComboCard from '../elements/TraderComboCard'
@@ -14,7 +10,9 @@ import HoldingCard from '../blocks/HoldingCard'
 import ProfileCard from '../blocks/ProfileCard'
 import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   container: {
     alignItems: 'flex-start',
   },
@@ -38,11 +36,11 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 
 const TopCombos = () => {
   const classes = useStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
-  const [focusedComboId, setFocusedComboId] = useState(-1)
+  const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
   const { getTraderProfile } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
@@ -66,7 +64,7 @@ const TopCombos = () => {
 
   return (
     <section className='column-start'>
-      <header className={classNames('row-start', classes.header)}>
+      <header className={vendorTool.classNames('row-start', classes.header)}>
         {systemCombos.map((combo) => {
           const env = user.userTraderEnvs.find((env) => env.id === combo.identity.traderEnvId) || null
           return (
@@ -80,9 +78,9 @@ const TopCombos = () => {
           )
         })}
       </header>
-      <section className={classNames('row-between', classes.container)}>
+      <section className={vendorTool.classNames('row-between', classes.container)}>
         <section className={classes.left}>
-          <Header
+          <vendorTool.ui.Header
             as='h3'
             icon='history'
             content={localeTool.t('topCombos.history')}
@@ -101,7 +99,7 @@ const TopCombos = () => {
           ))}
         </section>
         <section className={classes.right}>
-          <Header
+          <vendorTool.ui.Header
             as='h3'
             icon='star'
             content={localeTool.t('topCombos.profiles')}

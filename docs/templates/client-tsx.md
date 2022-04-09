@@ -1,10 +1,10 @@
 Organize router files based on this template
 /client/src/containers
 ```
-import { useState, useEffect } from 'react'
+import * as vendorTool from '../tools/vendor
 
 const Template = () => {
-  const classes = useStyles()
+  const classes = vendorTool.react.useStyles()
 
   // ------------------------------------------------------------ State --
 
@@ -14,7 +14,7 @@ const Template = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     fetchSomething()
   }, [])
 

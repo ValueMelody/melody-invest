@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import * as vendorTool from '../tools/vendor'
 import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
@@ -18,68 +18,68 @@ import * as routerEnum from '../enums/router'
 
 const Router = () => {
   return (
-    <BrowserRouter>
+    <vendorTool.router.BrowserRouter>
       <Layout>
-        <Routes>
-          <Route
+        <vendorTool.router.Routes>
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/profiles/tops`}
             element={<TopProfiles />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/profiles/:traderId/:accessCode`}
             element={<ProfileDetail />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/profiles/build`}
             element={<ProfileBuilder />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/envs/build`}
             element={<EnvBuilder />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/envs/:envId`}
             element={<EnvDetail />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.BEHAVIORS}
             element={<BehaviorList />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.BEHAVIORS}/:behavior/envs/:envId`}
             element={<BehaviorDetail />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.TICKERS}
             element={<TickerList />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TICKERS}/:tickerId/envs/:envId`}
             element={<TickerDetail />}
           />
-          <Route
+          <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/combos/tops`}
             element={<TopCombos />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.DASHBOARD}
             element={<ProfileDashboard />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.SETTING}
             element={<Setting />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.SIGN_IN}
             element={<SignIn />}
           />
-          <Route
+          <vendorTool.router.Route
             path={routerEnum.NAV.SIGN_UP}
             element={<SignUp />}
           />
-        </Routes>
+        </vendorTool.router.Routes>
       </Layout>
-    </BrowserRouter>
+    </vendorTool.router.BrowserRouter>
   )
 }
 

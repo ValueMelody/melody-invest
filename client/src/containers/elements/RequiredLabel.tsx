@@ -1,6 +1,6 @@
-import { createUseStyles } from 'react-jss'
+import * as vendorTool from '../../tools/vendor'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   required: {
     color: 'red',
   },

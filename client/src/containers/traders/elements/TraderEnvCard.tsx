@@ -1,12 +1,12 @@
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import { Card, Label } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   container: {
     margin: '1rem 0.75rem 1rem 0 !important',
   },
@@ -38,29 +38,33 @@ const TraderEnvCard = ({
   if (!traderEnv) return null
 
   return (
-    <Card
-      className={classNames(classes.container, {
+    <vendorTool.ui.Card
+      className={vendorTool.classNames(classes.container, {
         [classes.isActive]: isActive,
       })}
       onClick={handleClickEnv}
     >
-      <Card.Content>
-        <Card.Header
+      <vendorTool.ui.Card.Content>
+        <vendorTool.ui.Card.Header
           content={(
             <div className='row-between'>
               <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
               {traderEnv.isSystem && (
-                <Label title={localeTool.t('traderEnv.systemDesc')}>
+                <vendorTool.ui.Label title={localeTool.t('traderEnv.systemDesc')}>
                   {localeTool.t('common.system')}
-                </Label>
+                </vendorTool.ui.Label>
               )}
             </div>
           )}
         />
-        <Card.Meta content={parseTool.traderEnvStartDate(traderEnv)} />
-        <Card.Description content={parseTool.traderEnvTickers(traderEnv)} />
-      </Card.Content>
-    </Card>
+        <vendorTool.ui.Card.Meta
+          content={parseTool.traderEnvStartDate(traderEnv)}
+        />
+        <vendorTool.ui.Card.Description
+          content={parseTool.traderEnvTickers(traderEnv)}
+        />
+      </vendorTool.ui.Card.Content>
+    </vendorTool.ui.Card>
   )
 }
 

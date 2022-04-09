@@ -1,7 +1,9 @@
-import { createUseStyles } from 'react-jss'
+import * as vendorTool from '../../tools/vendor'
 import * as themeEnum from '../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   root: {
     display: 'flex',
     flexDirection: 'row',

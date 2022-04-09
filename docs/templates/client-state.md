@@ -1,10 +1,10 @@
 Organize state files based on this template
 /client/src/states
 ```
-import { useContext } from 'react'
+import * as vendorTool from '../tools/vendor
 
 const useTemplateState = () => {
-  const store: Context = useContext(context)
+  const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ Get --
 

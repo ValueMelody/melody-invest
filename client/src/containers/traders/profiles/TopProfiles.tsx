@@ -1,23 +1,20 @@
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
-import { Card } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 import * as commonEnum from '../../../enums/common'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import ProfileCard from '../blocks/ProfileCard'
 
 const TopProfiles = () => {
   const { classes: pageClasses } = usePageStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const { getTopProfiles, fetchTopProfiles, getTraderProfile } = useTraderState()
-  const [focusType, setFocusType] = useState('YEARLY')
+  const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
   const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
 
@@ -53,7 +50,7 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (topProfiles) return
     fetchTopProfiles(commonEnum.OVERALL_ENV_ID)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,9 +91,9 @@ const TopProfiles = () => {
       <aside className={pageClasses.aside}>
         <h2>{localeTool.t('bestReturn.type')}:</h2>
         {topOptions.map((option) => (
-          <Card
+          <vendorTool.ui.Card
             key={option.type}
-            className={classNames({
+            className={vendorTool.classNames({
               [pageClasses.activeCard]: option.type === focusType,
             })}
             header={option.title}

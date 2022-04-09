@@ -1,12 +1,10 @@
-import { useEffect, FunctionComponent } from 'react'
-import { createUseStyles } from 'react-jss'
-import { Message, Icon } from 'semantic-ui-react'
+import * as vendorTool from '../../tools/vendor'
 import Header from './blocks/Header'
 import useCommonState from '../../states/useCommonState'
 import useSystemState from '../../states/useSystemState'
 import useUserState from '../../states/useUserState'
 
-const useStyles = createUseStyles({
+const useStyles = vendorTool.jss.createUseStyles({
   main: {
     paddingTop: '4.5rem',
     paddingLeft: '1.5rem',
@@ -20,7 +18,7 @@ const useStyles = createUseStyles({
   },
 })
 
-const Layout: FunctionComponent = ({
+const Layout: vendorTool.react.FunctionComponent = ({
   children,
 }) => {
   const classes = useStyles()
@@ -35,12 +33,12 @@ const Layout: FunctionComponent = ({
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     fetchSystemDefaults()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (!user.userType) return
     fetchUserOverall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -58,7 +56,7 @@ const Layout: FunctionComponent = ({
       {!!messages.length && (
         <div className={classes.messages}>
           {messages.map((message) => (
-            <Message
+            <vendorTool.ui.Message
               key={message.id}
               info={message.type === 'info'}
               success={message.type === 'success'}
@@ -66,11 +64,16 @@ const Layout: FunctionComponent = ({
               warning={message.type === 'warning'}
             >
               <div>
-                <Message.Header>{message.title}</Message.Header>
+                <vendorTool.ui.Message.Header>
+                  {message.title}
+                </vendorTool.ui.Message.Header>
                 {message.desc && <p>{message.desc}</p>}
               </div>
-              <Icon name='close' onClick={() => handleRemoveMessage(message.id)} />
-            </Message>
+              <vendorTool.ui.Icon
+                name='close'
+                onClick={() => handleRemoveMessage(message.id)}
+              />
+            </vendorTool.ui.Message>
           ))}
         </div>
       )}

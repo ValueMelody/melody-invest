@@ -1,12 +1,12 @@
-import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 import * as parseTool from '../tools/parse'
+import * as vendorTool from '../tools/vendor'
 
 const useSystemState = () => {
-  const store: Context = useContext(context)
+  const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ store --
 

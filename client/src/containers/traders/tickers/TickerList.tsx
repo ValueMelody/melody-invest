@@ -1,14 +1,11 @@
-import { useState, ChangeEvent } from 'react'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
-import { Input } from 'semantic-ui-react'
-import { useNavigate } from 'react-router-dom'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import useTickerState from '../../../states/useTickerState'
 import TickerLabel from '../elements/TickerLabel'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   section: {
     marginBottom: '1rem',
   },
@@ -27,10 +24,10 @@ const isSearchedTicker = (
 
 const TickerList = () => {
   const classes = useStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
-  const [searchText, setSearchText] = useState('')
+  const [searchText, setSearchText] = vendorTool.react.useState('')
 
   const { getTickerIdentities } = useTickerState()
   const tickers = getTickerIdentities()
@@ -44,7 +41,9 @@ const TickerList = () => {
     navigate(url)
   }
 
-  const handleChangeSearchText = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeSearchText = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setSearchText(e.target.value)
   }
 
@@ -53,7 +52,7 @@ const TickerList = () => {
   return (
     <>
       <header className={classes.section}>
-        <Input
+        <vendorTool.ui.Input
           icon='search'
           placeholder={localeTool.t('common.search')}
           value={searchText}

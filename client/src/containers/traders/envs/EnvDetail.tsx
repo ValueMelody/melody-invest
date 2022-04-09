@@ -1,12 +1,8 @@
-import { useEffect } from 'react'
-import { createUseStyles } from 'react-jss'
-import { useParams, useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
-import { Header } from 'semantic-ui-react'
 import useTraderState from '../../../states/useTraderState'
 import useTickerState from '../../../states/useTickerState'
 import useUserState from '../../../states/useUserState'
 import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import TraderEnvCard from '../elements/TraderEnvCard'
@@ -15,7 +11,9 @@ import WatchButton from '../elements/WatchButton'
 import EachTops from '../blocks/EachTops'
 import usePageStyles from '../../hooks/usePageStyles'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   tickers: {
     width: 290,
     paddingBottom: '1rem',
@@ -33,8 +31,8 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 const EnvDetail = () => {
   const classes = useStyles()
   const { classes: pageClasses } = usePageStyles()
-  const params = useParams()
-  const navigate = useNavigate()
+  const params = vendorTool.router.useParams()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -68,18 +66,18 @@ const EnvDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (!envId) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (!envId || traderEnv) return
     fetchTraderEnv(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderEnv])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (!envId || topProfiles) return
     fetchTopProfiles(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -115,7 +113,7 @@ const EnvDetail = () => {
           ))}
         </div>
         {!traderEnv.isSystem && (
-          <div className={classNames('row-around', classes.watch)}>
+          <div className={vendorTool.classNames('row-around', classes.watch)}>
             <WatchButton
               isWatched={true}
               onToggle={handleUnwatch}
@@ -124,7 +122,7 @@ const EnvDetail = () => {
         )}
       </aside>
       <section className={pageClasses.main}>
-        <Header
+        <vendorTool.ui.Header
           as='h3'
           icon='star'
           content={localeTool.t('traderEnv.topProfiles')}

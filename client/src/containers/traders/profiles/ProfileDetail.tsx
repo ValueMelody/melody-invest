@@ -1,18 +1,14 @@
-import { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
-import { Button, Segment, Header } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
 import useTraderState from '../../../states/useTraderState'
 import useUserState from '../../../states/useUserState'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import ProfileCard from '../blocks/ProfileCard'
 import HoldingCard from '../blocks/HoldingCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   container: {
     alignItems: 'flex-start',
   },
@@ -30,8 +26,8 @@ const useStyles = createUseStyles(({
 }))
 
 const ProfileDetail = () => {
-  const params = useParams()
-  const navigate = useNavigate()
+  const params = vendorTool.router.useParams()
+  const navigate = vendorTool.router.useNavigate()
   const classes = useStyles()
 
   // ------------------------------------------------------------ State --
@@ -41,7 +37,7 @@ const ProfileDetail = () => {
   } = useTraderState()
   const { getUser } = useUserState()
 
-  const [showHoldingTotal, setShowHoldingTotal] = useState(5)
+  const [showHoldingTotal, setShowHoldingTotal] = vendorTool.react.useState(5)
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
@@ -58,19 +54,19 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (traderProfile || !traderId || !accessCode) return
     fetchTraderProfile(traderId, accessCode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [traderProfile])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (profileDetail || !traderId || !accessCode) return
     fetchProfileDetail(traderId, accessCode)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -92,7 +88,7 @@ const ProfileDetail = () => {
   if (!traderProfile || !profileDetail || !traderEnv) return null
 
   return (
-    <div className={classNames('row-between', classes.container)}>
+    <div className={vendorTool.classNames('row-between', classes.container)}>
       <div className={classes.left}>
         <ProfileCard
           profile={traderProfile}
@@ -115,13 +111,15 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <Header
+        <vendorTool.ui.Header
           as='h3'
           icon='history'
           content={localeTool.t('profile.history')}
         />
         {!displayedHoldings.length && (
-          <Segment>{localeTool.t('profile.noResultYet')}</Segment>
+          <vendorTool.ui.Segment>
+            {localeTool.t('profile.noResultYet')}
+          </vendorTool.ui.Segment>
         )}
         {displayedHoldings.map((holding, index) => (
           <HoldingCard
@@ -133,9 +131,9 @@ const ProfileDetail = () => {
         ))}
         {showHoldingTotal < holdings.length && (
           <div className='row-around'>
-            <Button onClick={handleClickShowMore}>
+            <vendorTool.ui.Button onClick={handleClickShowMore}>
               {localeTool.t('profile.showMoreHistory')}
-            </Button>
+            </vendorTool.ui.Button>
           </div>
         )}
       </div>

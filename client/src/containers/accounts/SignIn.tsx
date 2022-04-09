@@ -1,7 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
-import { useNavigate } from 'react-router-dom'
-import { Input, Button, Checkbox } from 'semantic-ui-react'
+import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
 import RequiredLabel from '../elements/RequiredLabel'
@@ -11,7 +8,7 @@ import useAccountInterface from './hooks/useAccountInterface'
 import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignIn = () => {
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -21,18 +18,22 @@ const SignIn = () => {
   const { clearMessages, addMessage } = useCommonState()
   const { createUserToken } = useUserState()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [shouldRemember, setShouldRemember] = useState(false)
+  const [email, setEmail] = vendorTool.react.useState('')
+  const [password, setPassword] = vendorTool.react.useState('')
+  const [shouldRemember, setShouldRemember] = vendorTool.react.useState(false)
 
   // ------------------------------------------------------------ Handler --
 
-  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEmail = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setEmail(e.target.value)
     clearMessages()
   }
 
-  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setPassword(e.target.value)
     clearMessages()
   }
@@ -41,7 +42,9 @@ const SignIn = () => {
     setShouldRemember(!shouldRemember)
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: vendorTool.react.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
     const parsedPassword = password.trim()
@@ -57,40 +60,40 @@ const SignIn = () => {
   // ------------------------------------------------------------ Interface --
 
   return (
-    <div className={classNames(classes.container, 'column-center')}>
+    <div className={vendorTool.classNames(classes.container, 'column-center')}>
       <h2 className={classes.title}>{localeTool.t('signIn.title')}</h2>
       <form onSubmit={handleSubmit}>
-        <div className={classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <vendorTool.ui.Input
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <Input
+          <vendorTool.ui.Input
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
         <div className={classes.row}>
-          <Checkbox
+          <vendorTool.ui.Checkbox
             label={localeTool.t('signIn.remember')}
             checked={shouldRemember}
             onChange={handleToggleRemember}
           />
         </div>
         <div className='row-around'>
-          <Button
+          <vendorTool.ui.Button
             type='submit'
             color='blue'
             disabled={!email || !password}
           >
             {localeTool.t('signIn.button')}
-          </Button>
+          </vendorTool.ui.Button>
         </div>
       </form>
     </div>

@@ -1,9 +1,7 @@
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
-import { Icon } from 'semantic-ui-react'
+import * as vendorTool from '../../../../tools/vendor'
 import * as localeTool from '../../../../tools/locale'
 
-const useStyles = createUseStyles({
+const useStyles = vendorTool.jss.createUseStyles({
   segmentHeader: {
     marginBottom: '1rem',
   },
@@ -48,14 +46,14 @@ const ProfileBuilderHeader = ({
   return (
     <header
       onClick={handleToggleBuyBehaviors}
-      className={classNames('row-start', 'click-cursor', {
+      className={vendorTool.classNames('row-start', 'click-cursor', {
         [classes.segmentHeader]: isExtended,
       })}
     >
       <h3 className={classes.segmentTitle}>
         {title}
       </h3>
-      <Icon
+      <vendorTool.ui.Icon
         size='large'
         color='blue'
         name={isExtended ? 'caret down' : 'caret right'}
@@ -63,7 +61,7 @@ const ProfileBuilderHeader = ({
       <h5 className={classes.count}>
         {localeTool.t('common.numSelected', { num: activeCount })}
       </h5>
-      {isValid && <Icon name='checkmark' color='green' />}
+      {isValid && <vendorTool.ui.Icon name='checkmark' color='green' />}
       {!isValid && <h5 className={classes.invalidMessage}>* {invalidMessage}</h5>}
     </header>
   )

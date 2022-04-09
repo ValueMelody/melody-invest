@@ -1,9 +1,7 @@
-import { Segment } from 'semantic-ui-react'
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
+import * as vendorTool from '../../../tools/vendor'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
@@ -12,7 +10,9 @@ import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',
     minWidth: '28rem',
@@ -81,14 +81,14 @@ const ProfileCard = ({
   if (!trader || !pattern || !traderEnv) return null
 
   return (
-    <Segment
-      className={classNames('row-around', classes.pattern, {
+    <vendorTool.ui.Segment
+      className={vendorTool.classNames('row-around', classes.pattern, {
         'click-cursor': !!onClick,
       })}
       onClick={handleClick}
       padded
     >
-      <header className={classNames('row-between', classes.header)}>
+      <header className={vendorTool.classNames('row-between', classes.header)}>
         <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
         {!!user.userTraderIds && (
           <WatchButton
@@ -102,7 +102,7 @@ const ProfileCard = ({
         <TraderPerformance trader={trader} focusType={focusType} />
         <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
       </div>
-    </Segment>
+    </vendorTool.ui.Segment>
   )
 }
 

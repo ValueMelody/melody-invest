@@ -1,7 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
-import { Input, Button, Segment } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
+import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
@@ -9,7 +6,7 @@ import RequiredLabel from '../elements/RequiredLabel'
 import useAccountInterface from './hooks/useAccountInterface'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   email: {
     marginBottom: '2rem !important',
   },
@@ -29,30 +26,38 @@ const Setting = () => {
   const { getUser, updateUserPassword } = useUserState()
   const { addMessage, clearMessages } = useCommonState()
 
-  const [currentPassword, setCurrentPassword] = useState('')
-  const [newPassword, setNewPassword] = useState('')
-  const [retypePassword, setRetypePassword] = useState('')
+  const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
+  const [newPassword, setNewPassword] = vendorTool.react.useState('')
+  const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
 
   const user = getUser()
 
   // ------------------------------------------------------------ Handler --
 
-  const handleChangeCurrentPassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeCurrentPassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setCurrentPassword(e.target.value)
     clearMessages()
   }
 
-  const handleChangeNewPassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeNewPassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setNewPassword(e.target.value)
     clearMessages()
   }
 
-  const handleChangeRetypePassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRetypePassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setRetypePassword(e.target.value)
     clearMessages()
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: vendorTool.react.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault()
     const parsedCurrentPassword = currentPassword.trim()
     const parsedNewPassword = newPassword.trim()
@@ -72,48 +77,48 @@ const Setting = () => {
   // ------------------------------------------------------------ Interface --
 
   return (
-    <div className={classNames(accountClasses.container, 'column-center')}>
+    <div className={vendorTool.classNames(accountClasses.container, 'column-center')}>
       <h2 className={accountClasses.title}>{localeTool.t('setting.title')}</h2>
       <h3 className={classes.email}>
         {localeTool.t('common.email')}: {user.userEmail}
       </h3>
-      <Segment className={classes.container}>
+      <vendorTool.ui.Segment className={classes.container}>
         <form onSubmit={handleSubmit}>
-          <div className={classNames('row-between', accountClasses.row)}>
+          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
             <RequiredLabel title={localeTool.t('common.currentPassword')} />
-            <Input
+            <vendorTool.ui.Input
               type='password'
               value={currentPassword}
               onChange={handleChangeCurrentPassword}
             />
           </div>
-          <div className={classNames('row-between', accountClasses.row)}>
+          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
             <RequiredLabel title={localeTool.t('common.newPassword')} />
-            <Input
+            <vendorTool.ui.Input
               type='password'
               value={newPassword}
               onChange={handleChangeNewPassword}
             />
           </div>
-          <div className={classNames('row-between', accountClasses.row)}>
+          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
             <RequiredLabel title={localeTool.t('common.retypePassword')} />
-            <Input
+            <vendorTool.ui.Input
               type='password'
               value={retypePassword}
               onChange={handleChangeRetypePassword}
             />
           </div>
           <div className='row-around'>
-            <Button
+            <vendorTool.ui.Button
               type='submit'
               color='blue'
               disabled={!currentPassword || !newPassword || !retypePassword}
             >
               {localeTool.t('setting.changePassword')}
-            </Button>
+            </vendorTool.ui.Button>
           </div>
         </form>
-      </Segment>
+      </vendorTool.ui.Segment>
     </div>
   )
 }

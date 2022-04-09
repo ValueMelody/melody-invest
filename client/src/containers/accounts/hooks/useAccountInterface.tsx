@@ -1,8 +1,7 @@
-import { createUseStyles } from 'react-jss'
-import PasswordValidator from 'password-validator'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   container: {
     height: '80vh',
   },
@@ -18,7 +17,7 @@ const useStyles = createUseStyles(({
 const useAccountInterface = () => {
   const classes = useStyles()
 
-  const passwordSchema = new PasswordValidator()
+  const passwordSchema = new vendorTool.PasswordValidator()
   passwordSchema
     .has().min(10, localeTool.t('error.password.requireMin', { num: 10 }))
     .has().uppercase(1, localeTool.t('error.password.requireUpper'))

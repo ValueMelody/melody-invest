@@ -1,9 +1,5 @@
 import * as constants from '@shared/constants'
-import { useEffect } from 'react'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
-import { useParams, useNavigate } from 'react-router-dom'
-import { Header } from 'semantic-ui-react'
+import * as vendorTool from '../../../tools/vendor'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -15,7 +11,9 @@ import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   desc: {
     marginLeft: '1rem !important',
   },
@@ -29,8 +27,8 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 }))
 
 const BehaviorDetail = () => {
-  const params = useParams()
-  const navigate = useNavigate()
+  const params = vendorTool.router.useParams()
+  const navigate = vendorTool.router.useNavigate()
   const classes = useStyles()
   const { classes: pageClasses } = usePageStyles()
 
@@ -54,12 +52,12 @@ const BehaviorDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  useEffect(() => {
+  vendorTool.react.useEffect(() => {
     if (behaviorDetail || !validBehavior || !envId) return
     fetchBehaviorDetail(envId, validBehavior)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -79,13 +77,13 @@ const BehaviorDetail = () => {
   return (
     <section className={pageClasses.root}>
       <section className={pageClasses.main}>
-        <header className={classNames('row-start', classes.header)}>
+        <header className={vendorTool.classNames('row-start', classes.header)}>
           <BehaviorLabel behavior={validBehavior} color='blue' />
           <h4 className={classes.desc}>
             {parseTool.behaviorDesc(validBehavior)}
           </h4>
         </header>
-        <Header
+        <vendorTool.ui.Header
           as='h3'
           icon='star'
           content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.name })}
