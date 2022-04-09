@@ -99,7 +99,7 @@ const ProfileDashboard = () => {
       <div className={classes.right}>
         <Header
           as='h3'
-          icon='star'
+          icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
         {traderEnvs.map((env) => (

@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { createUseStyles } from 'react-jss'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import { Card } from 'semantic-ui-react'
@@ -7,35 +6,18 @@ import * as interfaces from '@shared/interfaces'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 import * as commonEnum from '../../../enums/common'
-import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import ProfileCard from '../blocks/ProfileCard'
-import { FocusType } from '../elements/TraderPerformance'
-
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
-  cards: {
-    width: '100%',
-    alignItems: 'flex-start',
-  },
-  card: {
-    width: '28rem',
-    margin: '0 1rem',
-  },
-  isActive: {
-    border: `3px solid ${theme.PRIMARY_COLOR} !important`,
-  },
-}))
 
 const TopProfiles = () => {
-  const classes = useStyles()
   const { classes: pageClasses } = usePageStyles()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const { getTopProfiles, fetchTopProfiles, getTraderProfile } = useTraderState()
-  const [focusType, setFocusType] = useState<FocusType>('YEARLY')
+  const [focusType, setFocusType] = useState('YEARLY')
 
   const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
 
@@ -77,6 +59,8 @@ const TopProfiles = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topProfiles])
 
+  // ------------------------------------------------------------ Handler --
+
   const handleClickProfile = (
     trader: interfaces.traderModel.Record,
   ) => {
@@ -84,7 +68,7 @@ const TopProfiles = () => {
     navigate(link)
   }
 
-  const handleClickOption = (type: FocusType) => {
+  const handleClickOption = (type: string) => {
     setFocusType(type)
   }
 
@@ -95,9 +79,9 @@ const TopProfiles = () => {
   return (
     <section className={pageClasses.root}>
       <section className={pageClasses.main}>
-        <section className={classNames('row-start', classes.cards)}>
+        <section className='row-start'>
           {focusedTop.traders.map((traderId) => (
-            <div key={traderId} className={classes.card}>
+            <div key={traderId}>
               <ProfileCard
                 profile={getTraderProfile(traderId)}
                 onClick={handleClickProfile}
@@ -113,7 +97,7 @@ const TopProfiles = () => {
           <Card
             key={option.type}
             className={classNames({
-              [classes.isActive]: option.type === focusType,
+              [pageClasses.activeCard]: option.type === focusType,
             })}
             header={option.title}
             onClick={() => handleClickOption(option.type)}

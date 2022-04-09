@@ -22,7 +22,7 @@ const PatternLabel = ({
 
   return (
     <Label color='blue' className={classes.label}>
-      {localeTool.t('common.pattern')} #{patternId} - {traderEnv.name}
+      {localeTool.t('common.profile')} #{patternId} - {traderEnv.name}
     </Label>
   )
 }

@@ -1,16 +1,18 @@
 import { useState, ChangeEvent } from 'react'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
+import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { useNavigate } from 'react-router-dom'
-import { Input } from 'semantic-ui-react'
+import { Input, Card } from 'semantic-ui-react'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import * as routerTool from '../../../tools/router'
 import BehaviorLabel from '../elements/BehaviorLabel'
+import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = createUseStyles(({
-  section: {
+  header: {
     marginBottom: '1rem',
   },
 }))
@@ -29,10 +31,13 @@ const isSearchedBehavior = (
 
 const BehaviorList = () => {
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
+
   const [searchText, setSearchText] = useState('')
+  const [focusedType, setFocusedType] = useState('buyBehaviors')
 
   const buyBehaviors = constants.behavior.buyBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
   const sellBehaviors = constants.behavior.sellBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
@@ -41,6 +46,14 @@ const BehaviorList = () => {
     ...constants.behavior.allocateBehaviors,
     ...constants.behavior.frequencyBehaviors,
   ].filter((behavior) => isSearchedBehavior(behavior, searchText))
+
+  const focusOptions = [
+    { type: 'buyBehaviors', title: localeTool.t('tradeBehaviors.buyBehaviors'), behaviors: buyBehaviors },
+    { type: 'sellBehaviors', title: localeTool.t('tradeBehaviors.sellBehaviors'), behaviors: sellBehaviors },
+    { type: 'otherBehaviors', title: localeTool.t('tradeBehaviors.otherBehaviors'), behaviors: otherBehaviors },
+  ]
+
+  const focusedOption = focusOptions.find((option) => option.type === focusedType)
 
   // ------------------------------------------------------------ Handler --
 
@@ -53,52 +66,50 @@ const BehaviorList = () => {
     setSearchText(e.target.value)
   }
 
+  const handleClickOption = (type: string) => {
+    setFocusedType(type)
+  }
+
   // ------------------------------------------------------------ Interface --
 
+  if (!focusedOption) return null
+
   return (
-    <>
-      <header className={classes.section}>
-        <Input
-          icon='search'
-          placeholder={localeTool.t('common.search')}
-          value={searchText}
-          onChange={handleChangeSearchText}
-        />
-      </header>
-      <section className={classes.section}>
-        <h2>{localeTool.t('tradeBehaviors.buyBehaviors')}</h2>
-        {buyBehaviors.map((behavior) => (
-          <BehaviorLabel
-            key={behavior}
-            behavior={behavior}
-            color='grey'
-            onClick={handleClickLabel}
+    <section className={pageClasses.root}>
+      <section className={pageClasses.main}>
+        <header className={classes.header}>
+          <Input
+            icon='search'
+            placeholder={localeTool.t('common.search')}
+            value={searchText}
+            onChange={handleChangeSearchText}
+          />
+        </header>
+        <section>
+          {focusedOption.behaviors.map((behavior) => (
+            <BehaviorLabel
+              key={behavior}
+              behavior={behavior}
+              color='grey'
+              onClick={handleClickLabel}
+            />
+          ))}
+        </section>
+      </section>
+      <aside className={pageClasses.aside}>
+      <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
+        {focusOptions.map((option) => (
+          <Card
+            key={option.type}
+            className={classNames({
+              [pageClasses.activeCard]: option.type === focusedType,
+            })}
+            header={option.title}
+            onClick={() => handleClickOption(option.type)}
           />
         ))}
-      </section>
-      <section className={classes.section}>
-        <h2>{localeTool.t('tradeBehaviors.sellBehaviors')}</h2>
-        {sellBehaviors.map((behavior) => (
-          <BehaviorLabel
-            key={behavior}
-            behavior={behavior}
-            color='grey'
-            onClick={handleClickLabel}
-          />
-        ))}
-      </section>
-      <section className={classes.section}>
-        <h2>{localeTool.t('tradeBehaviors.otherBehaviors')}</h2>
-        {otherBehaviors.map((behavior) => (
-          <BehaviorLabel
-            key={behavior}
-            behavior={behavior}
-            color='grey'
-            onClick={handleClickLabel}
-          />
-        ))}
-      </section>
-    </>
+      </aside>
+    </section>
   )
 }
 

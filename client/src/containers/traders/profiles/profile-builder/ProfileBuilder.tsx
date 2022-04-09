@@ -338,7 +338,7 @@ const ProfileBuilder = () => {
           )}
         </Segment>
       </Segment.Group>
-      <h4>{localeTool.t('common.envs')}:</h4>
+      <h4>{localeTool.t('common.environments')}:</h4>
       <div className='row-start'>
         {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard

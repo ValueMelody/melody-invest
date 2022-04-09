@@ -13,11 +13,9 @@ import BehaviorLabel from '../elements/BehaviorLabel'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
+import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
-  main: {
-    alignItems: 'flex-start',
-  },
   desc: {
     marginLeft: '1rem !important',
   },
@@ -25,15 +23,8 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
     borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
     paddingBottom: '1.5rem',
   },
-  left: {
-    width: 'calc(100% - 32rem)',
-    minWidth: '28rem',
-  },
   leftTitle: {
     margin: '2rem 0 1rem 0.5rem !important',
-  },
-  right: {
-    width: '28rem',
   },
 }))
 
@@ -41,6 +32,7 @@ const BehaviorDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
 
   // ------------------------------------------------------------ State --
   const { getUser } = useUserState()
@@ -85,8 +77,8 @@ const BehaviorDetail = () => {
   if (!validBehavior || !traderEnv) return null
 
   return (
-    <section className={classNames('row-between', classes.main)}>
-      <section className={classes.left}>
+    <section className={pageClasses.root}>
+      <section className={pageClasses.main}>
         <header className={classNames('row-start', classes.header)}>
           <BehaviorLabel behavior={validBehavior} color='blue' />
           <h4 className={classes.desc}>
@@ -109,7 +101,7 @@ const BehaviorDetail = () => {
           />
         </section>
       </section>
-      <aside className={classes.right}>
+      <aside className={pageClasses.aside}>
         {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.id}

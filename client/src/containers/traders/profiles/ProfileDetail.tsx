@@ -98,7 +98,7 @@ const ProfileDetail = () => {
           profile={traderProfile}
         />
         <div className={classes.envContainer}>
-          <h4>{localeTool.t('common.envs')}:</h4>
+          <h4>{localeTool.t('common.environments')}:</h4>
           {profileEnvs.map((profileEnv) => {
             const traderEnv = user.userTraderEnvs.find((env) => env.id === profileEnv.traderEnvId)
             if (!traderEnv) return null

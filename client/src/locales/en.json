@@ -1,6 +1,6 @@
 {
   "translation": {
-    "common.pattern": "Pattern",
+    "common.profile": "Profile",
     "common.date": "Date",
     "common.cash": "Cash",
     "common.totalValue": "Total Value",
@@ -16,7 +16,8 @@
     "common.build": "Build",
     "common.new": "New",
     "common.numSelected": "{{num}} selected",
-    "common.envs": "Environments",
+    "common.environments": "Environments",
+    "common.env": "Env",
     "common.system": "System",
     "common.search": "Search",
     "common.never": "Never",
@@ -58,6 +59,7 @@
     "holdingCard.sinceStart": "Since start",
 
     "tradeBehaviors.title": "Available Behaviors",
+    "tradeBehaviors.type": "Type of Trade Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
     "tradeBehaviors.otherBehaviors": "Other Behaviors",
@@ -100,7 +102,7 @@
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet",
-    "traderEnv.topProfiles": "Top Profiles from this Environment",
+    "traderEnv.topProfiles": "Top Profiles from this environment",
     "traderEnv.default" : "Default",
     "traderEnv.topTech" : "Top Tech",
 
