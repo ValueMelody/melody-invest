@@ -42,7 +42,6 @@ const ProfileDashboard = () => {
   const { getTraderProfile } = useTraderState()
 
   const user = getUser()
-  const traderEnvs = [...user.userTraderEnvs].reverse()
 
   // ------------------------------------------------------------ Handler --
 
@@ -102,7 +101,7 @@ const ProfileDashboard = () => {
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        {traderEnvs.map((env) => (
+        {user.userTraderEnvs.map((env) => (
           <TraderEnvCard
             key={env.id}
             traderEnv={env}

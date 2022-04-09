@@ -24,19 +24,19 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 const HoldingShare = ({
   tickerHolding,
   tickerIdentity,
-  previousHoldings,
+  previousDetail,
   totalValue,
 }: {
   tickerHolding: interfaces.traderHoldingModel.Holding;
   tickerIdentity: interfaces.tickerModel.Identity | null;
-  previousHoldings?: interfaces.traderHoldingModel.Holding[];
+  previousDetail: interfaces.traderHoldingModel.Detail | null;
   totalValue: number;
 }) => {
   const classes = useStyles()
 
   // ------------------------------------------------------------ State --
 
-  const previousHolding = previousHoldings?.find((previous) => previous.tickerId === tickerHolding.tickerId)
+  const previousHolding = previousDetail?.holdings.find((previous) => previous.tickerId === tickerHolding.tickerId)
   const currentShares = Math.floor(tickerHolding.shares * tickerHolding.splitMultiplier)
   const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
   const shareDiffer = previousShares ? currentShares - previousShares : null
@@ -60,6 +60,13 @@ const HoldingShare = ({
           })}
         >
           {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
+        </span>
+      )}
+      {!!previousDetail && !previousHolding && (
+        <span
+          className={classNames(classes.differ, classes.increaseColor)}
+        >
+          {localeTool.t('common.new')}
         </span>
       )}
     </Label>

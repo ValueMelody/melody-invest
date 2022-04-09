@@ -3,6 +3,13 @@ import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
 
+const convertToPublic = (
+  record: interfaces.traderPatternModel.Record,
+): interfaces.traderPatternModel.Public => {
+  const { hashCode, ...patternPublic } = record
+  return patternPublic
+}
+
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
@@ -37,6 +44,15 @@ export const getByUK = async (
     ],
   })
   return pattern
+}
+
+export const getPublicByTraders = async (
+  traders: interfaces.traderModel.Record[],
+) => {
+  const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
+  const patterns = await getInPKs(relatedPatternIds)
+  const publics = patterns.map(convertToPublic)
+  return publics
 }
 
 export const getAll = async (): Promise<interfaces.traderPatternModel.Record[]> => {

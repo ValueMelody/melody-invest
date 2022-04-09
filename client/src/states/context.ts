@@ -29,11 +29,17 @@ export interface TopProfiles {
   [traderEnvId: number]: TopProfileIds
 }
 
+export interface ComboDetail {
+  identity: interfaces.traderComboModel.Identity;
+  holdings: interfaces.traderHoldingModel.Detail[];
+  traderIds: number[]
+}
+
 export interface Resources {
   tickerIdentities: TickerIdentities | null;
   userTraderIds: number[] | null;
   userTraderEnvs: interfaces.traderEnvModel.Record[];
-  userTraderCombos: interfaces.traderComboModel.Detail[];
+  userTraderCombos: ComboDetail[];
   userType: number;
   userEmail: string,
 }
@@ -62,14 +68,6 @@ export interface TickerDetails {
   [key: string]: TickerDetail;
 }
 
-export interface ComboDetail {
-
-}
-
-export interface ComboDetails {
-  [comboId: number]: ComboDetail;
-}
-
 export interface Context {
   common: Common;
   startLoading: () => void;
@@ -91,8 +89,6 @@ export interface Context {
   setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
   topProfiles: TopProfiles;
   setTopProfiles: Dispatch<React.SetStateAction<TopProfiles>>;
-  comboDetails: ComboDetails;
-  setComboDetails: Dispatch<React.SetStateAction<ComboDetails>>;
 }
 
 // @ts-ignore

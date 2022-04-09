@@ -1,7 +1,8 @@
-import { Segment, Label, Divider } from 'semantic-ui-react'
-import * as interfaces from '@shared/interfaces'
+import { useState } from 'react'
+import { Segment, Label, Divider, Button } from 'semantic-ui-react'
 import { createUseStyles } from 'react-jss'
 import classNames from 'classnames'
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import ValueDiffer from '../elements/ValueDiffer'
@@ -35,7 +36,15 @@ const HoldingCard = ({
   // ------------------------------------------------------------ State --
 
   const { getTickerIdentity } = useTickerState()
+  const [showAllHoldings, setShowAllHoldings] = useState(false)
   const orderedHoldings = holding.holdings.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
+  const displayedHoldings = showAllHoldings ? orderedHoldings : orderedHoldings.slice(0, 10)
+
+  // ------------------------------------------------------------ Handler --
+
+  const handleClickShowMore = () => {
+    setShowAllHoldings(true)
+  }
 
   // ------------------------------------------------------------ Interface --
 
@@ -75,7 +84,7 @@ const HoldingCard = ({
         </div>
       </div>
       <Divider />
-      {orderedHoldings.map((tickerHolding) => {
+      {displayedHoldings.map((tickerHolding) => {
         const identity = getTickerIdentity(tickerHolding.tickerId)
         return (
           <HoldingShare
@@ -83,10 +92,17 @@ const HoldingCard = ({
             tickerIdentity={identity}
             totalValue={holding.totalValue}
             tickerHolding={tickerHolding}
-            previousHoldings={previousHolding?.holdings}
+            previousDetail={previousHolding}
           />
         )
       })}
+      {!showAllHoldings && orderedHoldings.length > 10 && (
+        <div className='row-around'>
+          <Button onClick={handleClickShowMore}>
+            {localeTool.t('profile.showAllHoldings')}
+          </Button>
+        </div>
+      )}
     </Segment>
   )
 }

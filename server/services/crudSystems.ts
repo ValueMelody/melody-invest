@@ -4,52 +4,56 @@ import * as errorEnum from '../enums/error'
 import * as tickerModel from '../models/ticker'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
+import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as runTool from '../tools/run'
+import * as presentTool from '../tools/present'
 import * as marketLogic from '../logics/market'
 import * as traderLogic from '../logics/trader'
 
 const getSystemTopTraderCombo = async (
-  envId: number,
+  combo: interfaces.traderComboModel.Identity,
   total: number,
-): Promise<interfaces.traderHoldingModel.Detail[]> => {
-  const topTraders = await traderModel.getTopPerformancers(envId, total, 'yearlyPercentNumber')
+): Promise<interfaces.traderRes.ComboDetail> => {
+  const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
+  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
+  const profiles = topTraders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns))
+
   const traderIds = topTraders.map((trader) => trader.id)
+
   const holdings = await traderHoldingModel.getAllByTraderIds(traderIds)
   const holdingsByTraders = traderLogic.groupHoldingRecordsByTraders(holdings)
   const holdingsByDates = traderLogic.gatherTraderHoldingRecordsByDate(
     traderIds, holdings, holdingsByTraders,
   )
 
-  const aggregatedHoldingDetails = Object.keys(holdingsByDates)
+  const aggregatedHoldings = Object.keys(holdingsByDates)
     .map((date) => traderLogic.mergeHoldingsByDate(
       date,
       holdingsByDates[date],
       marketLogic.getInitialCash(),
     ))
-  const sortedDetails = aggregatedHoldingDetails.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
-  return sortedDetails
+  const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
+  return {
+    identity: combo,
+    profiles,
+    holdings: sortedHoldings.slice(0, 20),
+  }
 }
 
-const getSystemTraderCombos = async (): Promise<interfaces.traderComboModel.Detail[]> => {
+const getSystemTraderCombos = async (): Promise<interfaces.traderRes.ComboDetail[]> => {
   const combos = commonEnum.SYSTEM_COMBOS
   const comboDetails = await runTool.asyncMap(combos, async (
     combo: interfaces.traderComboModel.Identity,
   ) => {
     switch (combo.name) {
       case 'systemCombo.default10': {
-        const holdingDetails = await getSystemTopTraderCombo(combo.traderEnvId, 10)
-        return {
-          ...combo,
-          holdingDetails: holdingDetails.slice(0, 5),
-        }
+        const comboProfile = await getSystemTopTraderCombo(combo, 10)
+        return comboProfile
       }
       case 'systemCombo.bigTech10': {
-        const holdingDetails = await getSystemTopTraderCombo(combo.traderEnvId, 10)
-        return {
-          ...combo,
-          holdingDetails: holdingDetails.slice(0, 5),
-        }
+        const comboProfile = await getSystemTopTraderCombo(combo, 10)
+        return comboProfile
       }
       default:
         throw errorEnum.DEFAULT.FORBIDDEN
