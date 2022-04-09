@@ -1,8 +1,8 @@
-import { useContext } from 'react'
 import { context, Context } from './context'
+import * as vendorTool from '../tools/vendor'
 
 const useCommonState = () => {
-  const store: Context = useContext(context)
+  const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ export --
 

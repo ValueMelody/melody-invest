@@ -1,9 +1,9 @@
-import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from './context'
+import * as vendorTool from '../tools/vendor'
 
 const useTickerState = () => {
-  const store: Context = useContext(context)
+  const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ Get --
 

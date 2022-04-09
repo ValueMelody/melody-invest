@@ -1,13 +1,11 @@
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import { useNavigate } from 'react-router-dom'
 import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from '../../../tools/vendor'
 import * as routerTool from '../../../tools/router'
 import BehaviorLabel from './BehaviorLabel'
 
-const useStyles = createUseStyles({
+const useStyles = vendorTool.jss.createUseStyles({
   container: {
     marginTop: '1rem',
   },
@@ -21,7 +19,7 @@ const PatternBehaviors = ({
   envId: number;
 }) => {
   const classes = useStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -43,7 +41,7 @@ const PatternBehaviors = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <div className={classNames('row-start', classes.container)}>
+    <div className={vendorTool.classNames('row-start', classes.container)}>
       {activeBuyBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}

@@ -1,17 +1,12 @@
-import { useState, SyntheticEvent, ChangeEvent, FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import DatePicker from 'react-datepicker'
-import { Input, Checkbox, Dropdown, DropdownProps, Button } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
 import * as constants from '@shared/constants'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import RequiredLabel from '../../elements/RequiredLabel'
 import useTickerState from '../../../states/useTickerState'
 import useTraderState from '../../../states/useTraderState'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   row: {
     width: 400,
     marginBottom: '2rem',
@@ -44,16 +39,16 @@ const minDate = getDateFromString(initialDate)
 
 const EnvBuilder = () => {
   const classes = useStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
 
-  const [startDate, setStartDate] = useState(constants.trader.initial.DATE)
-  const [tickerIds, setTickerIds] = useState<number[] | null>(null)
-  const [envName, setEnvName] = useState('')
+  const [startDate, setStartDate] = vendorTool.react.useState(constants.trader.initial.DATE)
+  const [tickerIds, setTickerIds] = vendorTool.react.useState<number[] | null>(null)
+  const [envName, setEnvName] = vendorTool.react.useState('')
 
   const hasValidName = !!envName.trim()
   const hasValidTickers = !tickerIds || !!tickerIds.length
@@ -80,16 +75,23 @@ const EnvBuilder = () => {
     setTickerIds(tickerIds ? null : [])
   }
 
-  const handleSelectTickers = (e: SyntheticEvent, data: DropdownProps) => {
+  const handleSelectTickers = (
+    e: vendorTool.react.SyntheticEvent,
+    data: vendorTool.ui.DropdownProps,
+  ) => {
     const values = Array.isArray(data.value) ? data.value : []
     setTickerIds(values.map((value) => Number(value)))
   }
 
-  const handleChangeName = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeName = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setEnvName(e.target.value)
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: vendorTool.react.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault()
     const result = await createTraderEnv(envName, startDate, tickerIds)
     if (result) {
@@ -102,39 +104,43 @@ const EnvBuilder = () => {
 
   return (
     <section className='column-center'>
-      <header className={classNames('row-around', classes.row)}>
+      <header className={vendorTool.classNames('row-around', classes.row)}>
         <h2>{localeTool.t('envBuilder.title')}</h2>
       </header>
       <section
-        className={classNames('row-between', classes.row)}
+        className={vendorTool.classNames('row-between', classes.row)}
         title={localeTool.t('envBuilder.startDateDesc')}
       >
         <h5><b>{localeTool.t('envBuilder.startDate')}:</b></h5>
         <div>
-          <DatePicker
+          <vendorTool.DatePicker
             minDate={minDate}
             selected={selectedDate}
             onChange={handleChangeStartDate}
             dateFormat='yyyy-MM-dd'
-            customInput={<Input />}
+            customInput={<vendorTool.ui.Input />}
             showYearDropdown
           />
         </div>
       </section>
       <section
-        className={classNames('row-between', classes.row)}
+        className={vendorTool.classNames('row-between', classes.row)}
         title={localeTool.t('traderEnv.allTickers')}
       >
         <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
-        <Checkbox toggle checked={!tickerIds} onChange={handleToggleAllTickers} />
+        <vendorTool.ui.Checkbox
+          toggle
+          checked={!tickerIds}
+          onChange={handleToggleAllTickers}
+        />
       </section>
       {tickerIds && (
         <section
-          className={classNames('row-between', classes.row)}
+          className={vendorTool.classNames('row-between', classes.row)}
           title={localeTool.t('envBuilder.targetTickersDesc')}
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
-          <Dropdown
+          <vendorTool.ui.Dropdown
             className={classes.dropdown}
             multiple
             search
@@ -145,20 +151,23 @@ const EnvBuilder = () => {
           />
         </section>
       )}
-      <section className={classNames('row-between', classes.row)}>
+      <section className={vendorTool.classNames('row-between', classes.row)}>
         <RequiredLabel title={localeTool.t('envBuilder.name')} />
-        <Input value={envName} onChange={handleChangeName} />
+        <vendorTool.ui.Input
+          value={envName}
+          onChange={handleChangeName}
+        />
       </section>
       <form onSubmit={handleSubmit}>
         <div className='row-around'>
-          <Button
+          <vendorTool.ui.Button
             type='submit'
             color='blue'
             className={classes.confirmButton}
             disabled={!hasValidName || !hasValidTickers}
           >
             {localeTool.t('envBuilder.confirm')}
-          </Button>
+          </vendorTool.ui.Button>
         </div>
       </form>
     </section>

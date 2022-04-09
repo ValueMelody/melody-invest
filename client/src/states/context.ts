@@ -1,5 +1,5 @@
-import React, { createContext, Dispatch } from 'react'
 import * as interfaces from '@shared/interfaces'
+import * as vendorTool from '../tools/vendor'
 
 export interface Message {
   id: number;
@@ -78,20 +78,20 @@ export interface Context {
   clearMessages: () => void;
   showRequestError: (message: string) => void;
   resources: Resources;
-  setResources: Dispatch<React.SetStateAction<Resources>>;
+  setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;
-  setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
+  setTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TraderProfiles>>;
   profileDetails: ProfileDetails;
-  setProfileDetails: Dispatch<React.SetStateAction<ProfileDetails>>;
+  setProfileDetails: vendorTool.react.Dispatch<React.SetStateAction<ProfileDetails>>;
   behaviorDetails: BehaviorDetails;
-  setBehaviorDetails: Dispatch<React.SetStateAction<BehaviorDetails>>;
+  setBehaviorDetails: vendorTool.react.Dispatch<React.SetStateAction<BehaviorDetails>>;
   tickerDetails: TickerDetails;
-  setTickerDetails: Dispatch<React.SetStateAction<TickerDetails>>;
+  setTickerDetails: vendorTool.react.Dispatch<React.SetStateAction<TickerDetails>>;
   topProfiles: TopProfiles;
-  setTopProfiles: Dispatch<React.SetStateAction<TopProfiles>>;
+  setTopProfiles: vendorTool.react.Dispatch<React.SetStateAction<TopProfiles>>;
 }
 
 // @ts-ignore
-const store: React.Context<Context> = createContext({})
+const store: React.Context<Context> = vendorTool.react.createContext({})
 
 export const context = store

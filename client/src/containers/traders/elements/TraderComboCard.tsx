@@ -1,11 +1,11 @@
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import { Card } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   container: {
     margin: '1rem 0.75rem 1rem 0 !important',
   },
@@ -39,25 +39,25 @@ const TraderComboCard = ({
   if (!traderCombo || !traderEnv) return null
 
   return (
-    <Card
-      className={classNames(classes.container, {
+    <vendorTool.ui.Card
+      className={vendorTool.classNames(classes.container, {
         [classes.isActive]: isActive,
       })}
       onClick={handleClickCombo}
     >
-      <Card.Content>
-        <Card.Header
+      <vendorTool.ui.Card.Content>
+        <vendorTool.ui.Card.Header
           content={(
             <div className='row-between'>
               {traderCombo.name}
             </div>
           )}
         />
-        <Card.Description
+        <vendorTool.ui.Card.Description
           content={`${localeTool.t('common.env')}: ${traderEnv.name}`}
         />
-      </Card.Content>
-    </Card>
+      </vendorTool.ui.Card.Content>
+    </vendorTool.ui.Card>
   )
 }
 

@@ -1,6 +1,4 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
-import { Button, Input, Checkbox } from 'semantic-ui-react'
+import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
@@ -17,24 +15,30 @@ const SignUp = () => {
   const { addMessage, clearMessages } = useCommonState()
   const { createUser } = useUserState()
 
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [retypePassword, setRetypePassword] = useState('')
-  const [isConfirmed, setIsConfirmed] = useState(false)
+  const [email, setEmail] = vendorTool.react.useState('')
+  const [password, setPassword] = vendorTool.react.useState('')
+  const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
+  const [isConfirmed, setIsConfirmed] = vendorTool.react.useState(false)
 
   // ------------------------------------------------------------ Handler --
 
-  const handleChangeEmail = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEmail = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setEmail(e.target.value)
     clearMessages()
   }
 
-  const handleChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setPassword(e.target.value)
     clearMessages()
   }
 
-  const handleChangeRetypePassword = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRetypePassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
     setRetypePassword(e.target.value)
     clearMessages()
   }
@@ -43,7 +47,9 @@ const SignUp = () => {
     setIsConfirmed(!isConfirmed)
   }
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (
+    e: vendorTool.react.FormEvent<HTMLFormElement>,
+  ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
     const parsedPassword = password.trim()
@@ -61,48 +67,48 @@ const SignUp = () => {
   // ------------------------------------------------------------ Interface --
 
   return (
-    <div className={classNames(classes.container, 'column-center')}>
+    <div className={vendorTool.classNames(classes.container, 'column-center')}>
       <h2 className={classes.title}>{localeTool.t('signUp.title')}</h2>
       <form onSubmit={handleSubmit}>
-        <div className={classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <vendorTool.ui.Input
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <Input
+          <vendorTool.ui.Input
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
-        <div className={classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
-          <Input
+          <vendorTool.ui.Input
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
         </div>
         <div className={classes.row}>
-          <Checkbox
+          <vendorTool.ui.Checkbox
             label={localeTool.t('signUp.terms')}
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
         </div>
         <div className='row-around'>
-          <Button
+          <vendorTool.ui.Button
             type='submit'
             color='blue'
             disabled={!email || !password || !retypePassword || !isConfirmed}
           >
             {localeTool.t('signUp.button')}
-          </Button>
+          </vendorTool.ui.Button>
         </div>
       </form>
     </div>

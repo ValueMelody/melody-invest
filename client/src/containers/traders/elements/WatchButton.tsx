@@ -1,9 +1,7 @@
-import { MouseEvent } from 'react'
-import { Button, Icon } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   action: {
     marginTop: '0.5rem !important',
     marginRight: '0.5rem !important',
@@ -22,7 +20,7 @@ const WatchButton = ({
 
   // ------------------------------------------------------------ Handler --
 
-  const handleToggle = (e: MouseEvent) => {
+  const handleToggle = (e: vendorTool.react.MouseEvent) => {
     e.stopPropagation()
     onToggle()
   }
@@ -30,10 +28,13 @@ const WatchButton = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <Button className={classes.action} onClick={handleToggle}>
-      <Icon name='eye' />
+    <vendorTool.ui.Button
+      className={classes.action}
+      onClick={handleToggle}
+    >
+      <vendorTool.ui.Icon name='eye' />
       {localeTool.t(isWatched ? 'common.unwatch' : 'common.watch')}
-    </Button>
+    </vendorTool.ui.Button>
   )
 }
 

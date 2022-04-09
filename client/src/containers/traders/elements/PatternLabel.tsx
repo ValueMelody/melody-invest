@@ -1,9 +1,8 @@
-import { Label } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
 import * as interfaces from '@shared/interfaces'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   label: {
     alignSelf: 'flex-start',
   },
@@ -21,9 +20,9 @@ const PatternLabel = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <Label color='blue' className={classes.label}>
+    <vendorTool.ui.Label color='blue' className={classes.label}>
       {localeTool.t('common.profile')} #{patternId} - {traderEnv.name}
-    </Label>
+    </vendorTool.ui.Label>
   )
 }
 

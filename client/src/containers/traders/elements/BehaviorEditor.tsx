@@ -1,15 +1,14 @@
-import { SyntheticEvent } from 'react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
-import { Dropdown, DropdownProps } from 'semantic-ui-react'
+import * as vendorTool from '../../../tools/vendor'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
 import BehaviorLabel from './BehaviorLabel'
 import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   container: {
     margin: '1rem',
     paddingLeft: '1rem',
@@ -50,7 +49,10 @@ const BehaviorEditor = ({
 
   const handleClick = () => onClick(behavior)
 
-  const handleSelect = (e: SyntheticEvent, data: DropdownProps) => {
+  const handleSelect = (
+    e: vendorTool.react.SyntheticEvent,
+    data: vendorTool.ui.DropdownProps,
+  ) => {
     const value = data.value === '' ? null : Number(data.value)
     onSelect(behavior, value)
   }
@@ -69,7 +71,7 @@ const BehaviorEditor = ({
   }
 
   return (
-    <div className={classNames('column-start', classes.container)}>
+    <div className={vendorTool.classNames('column-start', classes.container)}>
       <div className='row-start'>
         <BehaviorLabel
           behavior={behavior}
@@ -80,7 +82,7 @@ const BehaviorEditor = ({
           {parseTool.behaviorDesc(behavior)}
         </h5>
       </div>
-      <Dropdown
+      <vendorTool.ui.Dropdown
         selection
         clearable
         className={classes.select}

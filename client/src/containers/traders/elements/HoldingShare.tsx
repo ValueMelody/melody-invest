@@ -1,12 +1,12 @@
-import { Label } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
-import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: themeEnum.Theme,
+) => ({
   ticker: {
     margin: '0.5rem !important',
   },
@@ -44,7 +44,7 @@ const HoldingShare = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <Label
+    <vendorTool.ui.Label
       basic
       key={tickerHolding.tickerId}
       title={tickerIdentity?.name}
@@ -54,7 +54,7 @@ const HoldingShare = ({
       {parseTool.floatToPercent(tickerHolding.value / totalValue)}&nbsp;
       {!!shareDiffer && (
         <span
-          className={classNames(classes.differ, {
+          className={vendorTool.classNames(classes.differ, {
             [classes.increaseColor]: shareDiffer > 0,
             [classes.decreaseColor]: shareDiffer < 0,
           })}
@@ -64,12 +64,12 @@ const HoldingShare = ({
       )}
       {!!previousDetail && !previousHolding && (
         <span
-          className={classNames(classes.differ, classes.increaseColor)}
+          className={vendorTool.classNames(classes.differ, classes.increaseColor)}
         >
           {localeTool.t('common.new')}
         </span>
       )}
-    </Label>
+    </vendorTool.ui.Label>
   )
 }
 

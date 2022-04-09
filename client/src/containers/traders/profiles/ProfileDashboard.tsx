@@ -1,17 +1,14 @@
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import { Button, Icon, Header } from 'semantic-ui-react'
-import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
+import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import ProfileCard from '../blocks/ProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 
-const useStyles = createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles(({
   container: {
     alignItems: 'flex-start',
   },
@@ -32,7 +29,7 @@ const useStyles = createUseStyles(({
 
 const ProfileDashboard = () => {
   const classes = useStyles()
-  const navigate = useNavigate()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -68,24 +65,24 @@ const ProfileDashboard = () => {
   if (!user.userTraderIds) return null
 
   return (
-    <div className={classNames('row-between', classes.container)}>
+    <div className={vendorTool.classNames('row-between', classes.container)}>
       <div className={classes.left}>
-        <div className={classNames('row-between', classes.header)}>
-          <Header
+        <div className={vendorTool.classNames('row-between', classes.header)}>
+          <vendorTool.ui.Header
             as='h3'
             icon='star'
             content={localeTool.t('dashboard.watchedProfiles')}
           />
-          <Button
+          <vendorTool.ui.Button
             icon
             labelPosition='left'
             color='blue'
             onClick={handleClickBuildProfile}
             title={localeTool.t('dashboard.buildDesc')}
           >
-            <Icon name='cogs' />
+            <vendorTool.ui.Icon name='cogs' />
             {localeTool.t('common.build')}
-          </Button>
+          </vendorTool.ui.Button>
         </div>
         {user.userTraderIds.map((traderId) => (
           <ProfileCard
@@ -96,7 +93,7 @@ const ProfileDashboard = () => {
         ))}
       </div>
       <div className={classes.right}>
-        <Header
+        <vendorTool.ui.Header
           as='h3'
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
@@ -109,17 +106,17 @@ const ProfileDashboard = () => {
             onClick={handleClickEnv}
           />
         ))}
-        <div className={classNames('row-center', classes.card)}>
-          <Button
+        <div className={vendorTool.classNames('row-center', classes.card)}>
+          <vendorTool.ui.Button
             icon
             labelPosition='left'
             color='blue'
             onClick={handleClickAddEnv}
             title={localeTool.t('dashboard.newDesc')}
           >
-            <Icon name='plus' />
+            <vendorTool.ui.Icon name='plus' />
             {localeTool.t('common.new')}
-          </Button>
+          </vendorTool.ui.Button>
         </div>
       </div>
     </div>

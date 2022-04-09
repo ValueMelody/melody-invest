@@ -1,5 +1,5 @@
-import { useState } from 'react'
 import * as context from './context'
+import * as vendorTool from '../tools/vendor'
 import * as storageAdapter from '../adapters/storage'
 import * as requestAdapter from '../adapters/request'
 
@@ -9,12 +9,12 @@ const jwtToken = storageAdapter.get(storageAdapter.KEYS.JWT_TOKEN)
 if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
 const useStore = () => {
-  const [common, setCommon] = useState<context.Common>({
+  const [common, setCommon] = vendorTool.react.useState<context.Common>({
     isLoading: false,
     messages: [],
   })
 
-  const [resources, setResources] = useState<context.Resources>({
+  const [resources, setResources] = vendorTool.react.useState<context.Resources>({
     tickerIdentities: null,
     userTraderIds: currentUserType ? null : [],
     userTraderEnvs: [],
@@ -23,15 +23,15 @@ const useStore = () => {
     userEmail: '',
   })
 
-  const [traderProfiles, setTraderProfiles] = useState<context.TraderProfiles>({})
+  const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})
 
-  const [profileDetails, setProfileDetails] = useState<context.ProfileDetails>({})
+  const [profileDetails, setProfileDetails] = vendorTool.react.useState<context.ProfileDetails>({})
 
-  const [behaviorDetails, setBehaviorDetails] = useState<context.BehaviorDetails>({})
+  const [behaviorDetails, setBehaviorDetails] = vendorTool.react.useState<context.BehaviorDetails>({})
 
-  const [tickerDetails, setTickerDetails] = useState<context.TickerDetails>({})
+  const [tickerDetails, setTickerDetails] = vendorTool.react.useState<context.TickerDetails>({})
 
-  const [topProfiles, setTopProfiles] = useState<context.TopProfiles>({})
+  const [topProfiles, setTopProfiles] = vendorTool.react.useState<context.TopProfiles>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
