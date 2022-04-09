@@ -1,6 +1,7 @@
 import * as traderModel from '../models/trader'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
+import * as traderComboModel from '../models/traderCombo'
 
 export interface TraderProfile {
   trader: traderModel.Record,
@@ -33,4 +34,10 @@ export interface BehaviorDetail {
 
 export interface TickerDetail {
   topProfiles: TopProfiles;
+}
+
+export interface ComboDetail {
+  identity: traderComboModel.Identity;
+  holdings: traderHoldingModel.Detail[];
+  profiles: TraderProfile[];
 }

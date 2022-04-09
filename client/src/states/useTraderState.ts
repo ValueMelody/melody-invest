@@ -9,11 +9,6 @@ const useTraderState = () => {
 
   // ------------------------------------------------------------ Get --
 
-  const getComboDetail = (envId: number | null) => {
-    if (envId === null) return null
-    return store.comboDetails[envId]
-  }
-
   const getTopProfiles = (envId: number | null) => {
     if (envId === null) return null
     return store.topProfiles[envId] || null
@@ -350,7 +345,6 @@ const useTraderState = () => {
     getProfileDetail,
     getBehaviorDetail,
     getTickerDetail,
-    getComboDetail,
     fetchTraderProfile,
     fetchProfileDetail,
     fetchBehaviorDetail,

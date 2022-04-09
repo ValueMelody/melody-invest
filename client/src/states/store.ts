@@ -33,8 +33,6 @@ const useStore = () => {
 
   const [topProfiles, setTopProfiles] = useState<context.TopProfiles>({})
 
-  const [comboDetails, setComboDetails] = useState<context.ComboDetails>({})
-
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
   }
@@ -95,8 +93,6 @@ const useStore = () => {
     setTickerDetails,
     topProfiles,
     setTopProfiles,
-    comboDetails,
-    setComboDetails,
   }
 }
 

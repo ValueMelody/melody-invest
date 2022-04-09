@@ -1,11 +1,20 @@
+import { useState } from 'react'
 import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
+import { useNavigate } from 'react-router-dom'
+import { Header } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
+import * as interfaces from '@shared/interfaces'
 import useUserState from '../../../states/useUserState'
+import useTraderState from '../../../states/useTraderState'
+import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import TraderComboCard from '../elements/TraderComboCard'
 import HoldingCard from '../blocks/HoldingCard'
+import ProfileCard from '../blocks/ProfileCard'
+import * as themeEnum from '../../../enums/theme'
 
-const useStyles = createUseStyles(({
+const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   container: {
     alignItems: 'flex-start',
   },
@@ -16,46 +25,96 @@ const useStyles = createUseStyles(({
   right: {
     width: '28rem',
   },
+  header: {
+    width: '100%',
+    borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
+    paddingBottom: '1.5rem',
+    marginBottom: '2rem',
+  },
+  asideTitle: {
+    marginBottom: '1rem !important',
+  },
 }))
 
 const TopCombos = () => {
   const classes = useStyles()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
+  const [focusedComboId, setFocusedComboId] = useState(-1)
+  const { getTraderProfile } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const systemCombos = user.userTraderCombos.filter((combo) => combo.isSysten)
-  const firstCombo = systemCombos[0]
+  const systemCombos = user.userTraderCombos.filter((combo) => combo.identity.isSysten)
+  const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
+
+  // ------------------------------------------------------------ Handler --
+
+  const handleClickCombo = (comboId: number) => {
+    setFocusedComboId(comboId)
+  }
+
+  const handleClickProfile = (trader: interfaces.traderModel.Record) => {
+    const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
+    navigate(link)
+  }
 
   // ------------------------------------------------------------ Interface --
 
-  if (!systemCombos.length) return null
+  if (!focusedCombo) return null
 
   return (
-    <section className={classNames('row-between', classes.container)}>
-      <section className={classes.left}>
-        {firstCombo.holdingDetails.map((detail, index) => (
-          <HoldingCard
-            key={detail.date}
-            holding={detail}
-            previousHolding={index + 1 < firstCombo.holdingDetails.length ? firstCombo.holdingDetails[index + 1] : null}
-            initialValue={constants.trader.initial.CASH * 10}
-          />
-        ))}
-      </section>
-      <section className={classes.right}>
+    <section className='column-start'>
+      <header className={classNames('row-start', classes.header)}>
         {systemCombos.map((combo) => {
-          const env = user.userTraderEnvs.find((env) => env.id === combo.traderEnvId) || null
+          const env = user.userTraderEnvs.find((env) => env.id === combo.identity.traderEnvId) || null
           return (
             <TraderComboCard
-              key={combo.id}
-              traderCombo={combo}
+              key={combo.identity.id}
+              traderCombo={combo.identity}
               traderEnv={env}
-              isActive={false}
+              isActive={combo.identity.id === focusedComboId}
+              onClick={handleClickCombo}
             />
           )
         })}
+      </header>
+      <section className={classNames('row-between', classes.container)}>
+        <section className={classes.left}>
+          <Header
+            as='h3'
+            icon='history'
+            content={localeTool.t('topCombos.history')}
+          />
+          {focusedCombo.holdings.map((detail, index) => (
+            <HoldingCard
+              key={detail.date}
+              holding={detail}
+              previousHolding={
+                index < focusedCombo.holdings.length - 1
+                  ? focusedCombo.holdings[index + 1]
+                  : null
+              }
+              initialValue={constants.trader.initial.CASH * 10}
+            />
+          ))}
+        </section>
+        <section className={classes.right}>
+          <Header
+            as='h3'
+            icon='star'
+            content={localeTool.t('topCombos.profiles')}
+            className={classes.asideTitle}
+          />
+          {focusedCombo.traderIds.map((traderId) => (
+            <ProfileCard
+              key={traderId}
+              profile={getTraderProfile(traderId)}
+              onClick={handleClickProfile}
+            />
+          ))}
+        </section>
       </section>
     </section>
   )

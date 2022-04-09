@@ -4,7 +4,6 @@
     "common.date": "Date",
     "common.cash": "Cash",
     "common.totalValue": "Total Value",
-    "common.showMore": "Show More",
     "common.shares": "shares",
     "common.email": "Email",
     "common.password": "Password",
@@ -51,9 +50,11 @@
     "topProfiles.title": "Top Profiles",
 
     "topCombos.title": "Top Combos",
+    "topCombos.profiles": "Included Profiles",
+    "topCombos.history": "Recent Holding History",
 
-    "systemCombo.default10": "Top 10 Performancers",
-    "systemCombo.bigTech10": "Top 10 Performancers",
+    "systemCombo.default10": "Combination of Top10 Profiles",
+    "systemCombo.bigTech10": "Combination of Top10 Profiles",
 
     "holdingCard.sinceLast": "Since Last",
     "holdingCard.sinceStart": "Since start",
@@ -73,6 +74,8 @@
     "bestReturn.pastWeekTitle": "Best Return in One Week",
 
     "profile.history": "Holding History",
+    "profile.showAllHoldings": "Show All Holdings",
+    "profile.showMoreHistory": "Show More History",
     "profile.noResultYet": "There's no result generated for this profile yet",
     "profile.value.increased": "Total value increased compare to previous",
     "profile.value.decreased": "Total value decreased compare to previous",

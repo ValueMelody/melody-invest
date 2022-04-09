@@ -134,7 +134,7 @@ const ProfileDetail = () => {
         {showHoldingTotal < holdings.length && (
           <div className='row-around'>
             <Button onClick={handleClickShowMore}>
-              {localeTool.t('common.showMore')}
+              {localeTool.t('profile.showMoreHistory')}
             </Button>
           </div>
         )}

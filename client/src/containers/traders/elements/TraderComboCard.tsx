@@ -2,6 +2,7 @@ import classNames from 'classnames'
 import { createUseStyles } from 'react-jss'
 import { Card } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
+import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
@@ -19,7 +20,7 @@ const TraderComboCard = ({
   isActive,
   onClick,
 }: {
-  traderCombo: interfaces.traderComboModel.Detail | null;
+  traderCombo: interfaces.traderComboModel.Identity | null;
   traderEnv: interfaces.traderEnvModel.Record | null;
   isActive: boolean;
   onClick?: (comboId: number) => void;
@@ -52,7 +53,9 @@ const TraderComboCard = ({
             </div>
           )}
         />
-        <Card.Description content={traderEnv.name} />
+        <Card.Description
+          content={`${localeTool.t('common.env')}: ${traderEnv.name}`}
+        />
       </Card.Content>
     </Card>
   )

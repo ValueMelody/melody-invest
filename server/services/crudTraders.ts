@@ -70,23 +70,14 @@ export const getUserTraderEnvIds = async (
   return [...userEnvIds, ...systemEnvIds]
 }
 
-const getTopProfilesRelatedPatterns = async (
-  tops: interfaces.traderModel.Tops,
-): Promise<interfaces.traderPatternModel.Public[]> => {
-  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
-  const relatedPatternIds = topTraders.map((trader) => trader.traderPatternId)
-  const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
-  const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
-  return relatedPatterns
-}
-
 export const getTopProfiles = async (
   traderEnvId?: number,
 ): Promise<interfaces.traderRes.TopProfiles> => {
   const each = traderEnvId ? 1 : 5
 
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
-  const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
+  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
+  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
 
   return {
     yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
@@ -102,7 +93,8 @@ export const getBehaviorDetail = async (
   behavior: interfaces.traderPatternModel.Behavior,
 ): Promise<interfaces.traderRes.BehaviorDetail> => {
   const tops = await traderModel.getTops(1, { envId, behavior })
-  const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
+  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
+  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
 
   const topProfiles = {
     yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
@@ -122,7 +114,8 @@ export const getTickerDetail = async (
   tickerId: number,
 ): Promise<interfaces.traderRes.TickerDetail> => {
   const tops = await traderModel.getTops(1, { envId, tickerId })
-  const relatedPatterns = await getTopProfilesRelatedPatterns(tops)
+  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
+  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
 
   const topProfiles = {
     yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
