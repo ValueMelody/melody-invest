@@ -13,14 +13,9 @@ import TraderEnvCard from '../elements/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
 import WatchButton from '../elements/WatchButton'
 import EachTops from '../blocks/EachTops'
+import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
-  container: {
-    alignItems: 'flex-start',
-  },
-  left: {
-    width: '24rem',
-  },
   tickers: {
     width: 290,
     paddingBottom: '1rem',
@@ -30,11 +25,6 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
   watch: {
     width: 290,
   },
-  right: {
-    width: 'calc(100% - 24rem)',
-    minWidth: '38rem',
-    alignItems: 'flex-start',
-  },
   rightTitle: {
     marginLeft: '0.5rem !important',
   },
@@ -42,6 +32,7 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
 
 const EnvDetail = () => {
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
   const params = useParams()
   const navigate = useNavigate()
 
@@ -107,8 +98,8 @@ const EnvDetail = () => {
   if (!traderEnv || !topProfiles) return null
 
   return (
-    <section className={classNames('row-between', classes.container)}>
-      <aside className={classes.left}>
+    <section className={pageClasses.root}>
+      <aside className={pageClasses.aside}>
         <TraderEnvCard
           traderEnv={traderEnv}
           isActive={false}
@@ -132,7 +123,7 @@ const EnvDetail = () => {
           </div>
         )}
       </aside>
-      <section className={classNames('column-start', classes.right)}>
+      <section className={pageClasses.main}>
         <Header
           as='h3'
           icon='star'

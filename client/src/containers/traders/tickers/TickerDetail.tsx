@@ -12,11 +12,9 @@ import * as routerTool from '../../../tools/router'
 import * as localeTool from '../../../tools/locale'
 import * as themeEnum from '../../../enums/theme'
 import EachTops from '../blocks/EachTops'
+import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
-  main: {
-    alignItems: 'flex-start',
-  },
   desc: {
     marginLeft: '1rem !important',
   },
@@ -24,21 +22,15 @@ const useStyles = createUseStyles((theme: themeEnum.Theme) => ({
     borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
     paddingBottom: '1.5rem',
   },
-  left: {
-    width: 'calc(100% - 32rem)',
-    minWidth: '28rem',
-  },
   leftTitle: {
     margin: '2rem 0 1rem 0.5rem !important',
-  },
-  right: {
-    width: '28rem',
   },
 }))
 
 const TickerDetail = () => {
   const params = useParams()
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
@@ -90,8 +82,8 @@ const TickerDetail = () => {
   if (!tickerIdentity || !traderEnv) return null
 
   return (
-    <section className={classNames('row-between', classes.main)}>
-      <section className={classes.left}>
+    <section className={pageClasses.root}>
+      <section className={pageClasses.main}>
         <header className={classNames('row-start', classes.header)}>
           <TickerLabel ticker={tickerIdentity} color='grey' />
           <h4 className={classes.desc}>
@@ -114,7 +106,7 @@ const TickerDetail = () => {
           />
         </section>
       </section>
-      <aside className={classes.right}>
+      <aside className={pageClasses.aside}>
         {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.id}

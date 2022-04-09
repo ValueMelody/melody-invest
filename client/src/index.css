@@ -109,3 +109,7 @@ h4, h5, h6 {
 #root button {
   font-size: 12px;
 }
+
+#root .header > .icon {
+  font-size: 18px;
+}

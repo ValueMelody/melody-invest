@@ -48,7 +48,7 @@ const TraderEnvCard = ({
         <Card.Header
           content={(
             <div className='row-between'>
-              {traderEnv.name}
+              <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
               {traderEnv.isSystem && (
                 <Label title={localeTool.t('traderEnv.systemDesc')}>
                   {localeTool.t('common.system')}

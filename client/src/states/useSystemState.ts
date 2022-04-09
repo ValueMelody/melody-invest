@@ -15,27 +15,25 @@ const useSystemState = () => {
       ...env,
       name: parseTool.traderEnvName(env),
     }))
-    const userTraderEnvs = [
-      ...store.resources.userTraderEnvs,
-      ...parsedEnvs,
-    ]
     const parsedCombos = systemDefaults.traderCombos.map((combo) => ({
       ...combo,
       name: parseTool.traderComboName(combo),
     }))
-    const userTraderCombos = [
-      ...store.resources.userTraderCombos,
-      ...parsedCombos,
-    ]
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,
       [identity.id]: identity,
     }), {})
     store.setResources((resources) => ({
       ...resources,
-      userTraderEnvs,
-      userTraderCombos,
       tickerIdentities,
+      userTraderEnvs: [
+        ...resources.userTraderEnvs,
+        ...parsedEnvs,
+      ],
+      userTraderCombos: [
+        ...resources.userTraderCombos,
+        ...parsedCombos,
+      ],
     }))
   }
 
