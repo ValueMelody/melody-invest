@@ -4,7 +4,7 @@ interface Common {
   traderPatternId: number;
   accessCode: string;
   isActive: boolean;
-  rebalancedAt: string;
+  rebalancedAt: string | null;
   estimatedAt: string | null;
   startedAt: string | null;
   totalDays: number | null;

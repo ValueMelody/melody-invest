@@ -7,7 +7,6 @@ import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as runTool from '../tools/run'
-import * as presentTool from '../tools/present'
 import * as marketLogic from '../logics/market'
 import * as traderLogic from '../logics/trader'
 
@@ -17,7 +16,7 @@ const getSystemTopTraderCombo = async (
 ): Promise<interfaces.traderRes.ComboDetail> => {
   const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
   const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
-  const profiles = topTraders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns))
+  const profiles = topTraders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns))
 
   const traderIds = topTraders.map((trader) => trader.id)
 
