@@ -13,7 +13,7 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getTopProfiles, fetchTopProfiles, getTraderProfile } = useTraderState()
+  const { getTopProfiles, getProfileDetail, fetchTopProfiles } = useTraderState()
   const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
   const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
@@ -80,7 +80,7 @@ const TopProfiles = () => {
           {focusedTop.traders.map((traderId) => (
             <div key={traderId}>
               <ProfileCard
-                profile={getTraderProfile(traderId)}
+                profile={getProfileDetail(traderId)}
                 onClick={handleClickProfile}
                 focusType={focusType}
               />

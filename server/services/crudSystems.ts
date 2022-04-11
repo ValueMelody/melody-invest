@@ -35,7 +35,10 @@ const getSystemTopTraderCombo = async (
     ))
   const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
   return {
-    identity: combo,
+    identity: {
+      ...combo,
+      traderIds,
+    },
     profiles,
     holdings: sortedHoldings.slice(0, 20),
   }

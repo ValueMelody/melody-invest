@@ -99,6 +99,8 @@
     "comboBuilder.minTraderRequired": "At least 2 profiles required",
     "comboBuilder.noEnoughProfiles": "Please add at lease 2 profiles to your watch list for this environment first!",
 
+    "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
+
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",
     "envBuilder.startDateDesc": "Profiles in this env will only start trading after the selected start date",

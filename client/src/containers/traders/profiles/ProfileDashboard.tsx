@@ -7,6 +7,7 @@ import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import ProfileCard from '../blocks/ProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
+import TraderComboCard from '../elements/TraderComboCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -38,9 +39,11 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { getUser } = useUserState()
-  const { getTraderProfile } = useTraderState()
+  const { getProfileDetail } = useTraderState()
 
   const user = getUser()
+  const combos = user.userTraderCombos
+  const userCombos = combos.filter((combo) => !combo.identity.isSystem)
 
   // ------------------------------------------------------------ Handler --
 
@@ -93,7 +96,7 @@ const ProfileDashboard = () => {
         {user.userTraderIds.map((traderId) => (
           <ProfileCard
             key={traderId}
-            profile={getTraderProfile(traderId)}
+            profile={getProfileDetail(traderId)}
             onClick={handleClickRow}
           />
         ))}
@@ -127,9 +130,19 @@ const ProfileDashboard = () => {
         <vendorTool.ui.Header
           as='h3'
           icon='boxes'
-          content={localeTool.t('dashboard.watchedEnvs')}
+          content={localeTool.t('dashboard.watchedCombos')}
         />
         <section className={vendorTool.classNames('row-center', classes.card)}>
+          {userCombos.map((combo) => {
+            const env = user.userTraderEnvs.find((env) => env.id === combo.identity.traderEnvId) || null
+            return (
+              <TraderComboCard
+                key={combo.identity.id}
+                traderCombo={combo.identity}
+                traderEnv={env}
+              />
+            )
+          })}
           <vendorTool.ui.Button
             icon
             labelPosition='left'

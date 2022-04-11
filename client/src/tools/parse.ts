@@ -65,8 +65,14 @@ export const traderEnvTickers = (traderEnv: interfaces.traderEnvModel.Record) =>
 export const traderComboName = (
   traderCombo: interfaces.traderComboModel.Identity,
 ) => {
-  if (!traderCombo.isSysten) return traderCombo.name
+  if (!traderCombo.isSystem) return traderCombo.name
   return traderCombo.name ? localeTool.t(traderCombo.name) : ''
+}
+
+export const traderComboTraders = (
+  traderCombo: interfaces.traderComboModel.Identity,
+) => {
+  return localeTool.t('traderCombo.selectedTraders', { num: traderCombo.traderIds.length })
 }
 
 export const holdingValue = (value: number | null): string | null => {

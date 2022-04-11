@@ -6,12 +6,16 @@ import * as traderEnvModel from '../models/traderEnv'
 import * as traderEnvFollowerModel from '../models/traderEnvFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderFollowerModel from '../models/traderFollower'
+import * as traderComboModel from '../models/traderCombo'
+import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
 import * as presentTool from '../tools/present'
 import * as errorEnum from '../enums/error'
 import * as userEnum from '../enums/user'
 
-export const getUserOverall = async (userId: number): Promise<interfaces.userRes.UserOverall> => {
+export const getUserOverall = async (
+  userId: number,
+): Promise<interfaces.userRes.UserOverall> => {
   const user = await userModel.getByPK(userId)
 
   if (!user) throw errorEnum.CUSTOM.USER_NOT_FOUND
@@ -28,12 +32,28 @@ export const getUserOverall = async (userId: number): Promise<interfaces.userRes
   const envs = await traderEnvModel.getInPKs(envIds)
   const traderEnvs = envs.map((env) => {
     const matchedEnvFollower = envFollowers.find((envFollower) => envFollower.traderEnvId === env.id)
-    return { ...env, name: matchedEnvFollower?.name || '' }
+    return {
+      ...env,
+      name: matchedEnvFollower?.name || '',
+    }
+  })
+
+  const comboFollowers = await traderComboFollowerModel.getUserFollowed(userId)
+  const comboIds = comboFollowers.map((comboFollower) => comboFollower.traderComboId)
+  const combos = await traderComboModel.getInPKs(comboIds)
+  const traderCombos = combos.map((combo) => {
+    const matchedComboFollower = comboFollowers.find((comboFollower) => comboFollower.traderComboId === combo.id)
+    return {
+      ...combo,
+      isSystem: false,
+      name: matchedComboFollower?.name || '',
+    }
   })
 
   return {
     traderProfiles: traders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
     traderEnvs,
+    traderCombos,
     email: user.email,
   }
 }

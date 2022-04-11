@@ -16,7 +16,7 @@ export interface TopProfiles {
   pastWeek: TraderProfile[];
 }
 
-interface ProfileEnv {
+export interface ProfileEnv {
   traderEnvId: number;
   traderId: number;
   traderPatternId: number;

@@ -23,8 +23,6 @@ const useStore = () => {
     userEmail: '',
   })
 
-  const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})
-
   const [profileDetails, setProfileDetails] = vendorTool.react.useState<context.ProfileDetails>({})
 
   const [behaviorDetails, setBehaviorDetails] = vendorTool.react.useState<context.BehaviorDetails>({})
@@ -83,8 +81,6 @@ const useStore = () => {
     showRequestError,
     resources,
     setResources,
-    traderProfiles,
-    setTraderProfiles,
     profileDetails,
     setProfileDetails,
     behaviorDetails,

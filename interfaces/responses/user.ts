@@ -1,4 +1,5 @@
 import * as traderEnv from '../models/traderEnv'
+import * as traderCombo from '../models/traderCombo'
 import * as traderRes from './trader'
 
 export interface UserToken {
@@ -10,5 +11,6 @@ export interface UserToken {
 export interface UserOverall {
   traderProfiles: traderRes.TraderProfile[];
   traderEnvs: traderEnv.Record[];
+  traderCombos: traderCombo.Identity[];
   email: string;
 }

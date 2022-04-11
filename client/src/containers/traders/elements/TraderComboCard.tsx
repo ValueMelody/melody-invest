@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
+import * as parseTool from '../../../tools/parse'
 import * as themeEnum from '../../../enums/theme'
 
 const useStyles = vendorTool.jss.createUseStyles((
@@ -22,7 +23,7 @@ const TraderComboCard = ({
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
   traderEnv: interfaces.traderEnvModel.Record | null;
-  isActive: boolean;
+  isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
   const classes = useStyles()
@@ -41,7 +42,7 @@ const TraderComboCard = ({
   return (
     <vendorTool.ui.Card
       className={vendorTool.classNames(classes.container, {
-        [classes.isActive]: isActive,
+        [classes.isActive]: !!isActive,
       })}
       onClick={handleClickCombo}
     >
@@ -53,8 +54,11 @@ const TraderComboCard = ({
             </div>
           )}
         />
-        <vendorTool.ui.Card.Description
+        <vendorTool.ui.Card.Meta
           content={`${localeTool.t('common.env')}: ${traderEnv.name}`}
+        />
+        <vendorTool.ui.Card.Description
+          content={parseTool.traderComboTraders(traderCombo)}
         />
       </vendorTool.ui.Card.Content>
     </vendorTool.ui.Card>

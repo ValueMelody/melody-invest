@@ -24,6 +24,18 @@ export const getByUK = async (
   return combo ? convertToRecord(combo) : null
 }
 
+export const getInPKs = async (
+  ids: number[],
+): Promise<interfaces.traderComboModel.Record[]> => {
+  const combos = await databaseAdapter.findAll({
+    tableName: tableEnum.NAME.TRADER_COMBO,
+    conditions: [
+      { key: 'id', value: ids, type: 'IN' },
+    ],
+  })
+  return combos.map((combo) => convertToRecord(combo))
+}
+
 export const create = async (
   values: interfaces.traderComboModel.Create,
   transaction: Knex.Transaction,
