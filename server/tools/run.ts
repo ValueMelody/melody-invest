@@ -22,11 +22,3 @@ export const asyncMap = async (items: any[], mapFunc: Function) => {
   }
   return results
 }
-
-export const asyncReduce = async (items: any[], reduceFunc: Function) => {
-  let results: any[] = []
-  for (const item of items) {
-    results = await reduceFunc(results, item)
-  }
-  return results
-}
