@@ -122,3 +122,11 @@ export const mergeHoldingsByDate = (
     }
   }, initialDetail)
 }
+
+export const presentTraderProfile = (
+  trader: interfaces.traderModel.Record,
+  patterns: interfaces.traderPatternModel.Public[],
+): interfaces.traderRes.TraderProfile => {
+  const matchedPattern = patterns.find((pattern) => pattern.id === trader.traderPatternId)!
+  return { trader, pattern: matchedPattern }
+}

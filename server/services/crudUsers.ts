@@ -9,9 +9,9 @@ import * as traderFollowerModel from '../models/traderFollower'
 import * as traderComboModel from '../models/traderCombo'
 import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
-import * as presentTool from '../tools/present'
 import * as errorEnum from '../enums/error'
 import * as userEnum from '../enums/user'
+import * as traderLogic from '../logics/trader'
 
 export const getUserOverall = async (
   userId: number,
@@ -51,7 +51,7 @@ export const getUserOverall = async (
   })
 
   return {
-    traderProfiles: traders.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
+    traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
     traderEnvs,
     traderCombos,
     email: user.email,

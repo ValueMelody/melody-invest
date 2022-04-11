@@ -9,8 +9,8 @@ import * as traderComboModel from '../models/traderCombo'
 import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
-import * as presentTool from '../tools/present'
 import * as generateTool from '../tools/generate'
+import * as traderLogic from '../logics/trader'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
@@ -73,22 +73,29 @@ export const getUserTraderEnvIds = async (
   return [...userEnvIds, ...systemEnvIds]
 }
 
+const buildTraderTopProfiles = async (
+  tops: interfaces.traderModel.Tops,
+): Promise<interfaces.traderRes.TopProfiles> => {
+  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
+  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
+  return {
+    yearly: tops.yearly.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+    pastYear: tops.pastYear.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+    pastQuarter: tops.pastQuarter.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+    pastMonth: tops.pastMonth.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+    pastWeek: tops.pastWeek.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+  }
+}
+
 export const getTopProfiles = async (
   traderEnvId?: number,
 ): Promise<interfaces.traderRes.TopProfiles> => {
   const each = traderEnvId ? 1 : 5
 
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
-  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
-  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
+  const topProfiles = await buildTraderTopProfiles(tops)
 
-  return {
-    yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastYear: tops.pastYear.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastQuarter: tops.pastQuarter.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastMonth: tops.pastMonth.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastWeek: tops.pastWeek.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-  }
+  return topProfiles
 }
 
 export const getBehaviorDetail = async (
@@ -96,16 +103,7 @@ export const getBehaviorDetail = async (
   behavior: interfaces.traderPatternModel.Behavior,
 ): Promise<interfaces.traderRes.BehaviorDetail> => {
   const tops = await traderModel.getTops(1, { envId, behavior })
-  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
-  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
-
-  const topProfiles = {
-    yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastYear: tops.pastYear.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastQuarter: tops.pastQuarter.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastMonth: tops.pastMonth.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastWeek: tops.pastWeek.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-  }
+  const topProfiles = await buildTraderTopProfiles(tops)
 
   return {
     topProfiles,
@@ -117,16 +115,7 @@ export const getTickerDetail = async (
   tickerId: number,
 ): Promise<interfaces.traderRes.TickerDetail> => {
   const tops = await traderModel.getTops(1, { envId, tickerId })
-  const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
-  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
-
-  const topProfiles = {
-    yearly: tops.yearly.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastYear: tops.pastYear.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastQuarter: tops.pastQuarter.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastMonth: tops.pastMonth.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-    pastWeek: tops.pastWeek.map((trader) => presentTool.combineTraderAndPattern(trader, relatedPatterns)),
-  }
+  const topProfiles = await buildTraderTopProfiles(tops)
 
   return {
     topProfiles,

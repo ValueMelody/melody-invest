@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import * as trader from './trader'
 
 const HOLDING_1 = {
@@ -169,5 +170,63 @@ test('could merge holdings by date', () => {
         value: 90000,
       },
     ],
+  })
+})
+
+const TRADER_1 = {
+  id: 1,
+  traderEnvId: 1,
+  traderPatternId: 1,
+  accessCode: '123',
+  isActive: true,
+  rebalancedAt: null,
+  estimatedAt: null,
+  startedAt: null,
+  totalDays: null,
+  yearlyPercentNumber: null,
+  grossPercentNumber: null,
+  pastYearPercentNumber: null,
+  pastQuarterPercentNumber: null,
+  pastMonthPercentNumber: null,
+  pastWeekPercentNumber: null,
+  totalValue: null,
+}
+
+const TRADER_2 = {
+  id: 2,
+  traderEnvId: 1,
+  traderPatternId: 2,
+  accessCode: '123',
+  isActive: true,
+  rebalancedAt: null,
+  estimatedAt: null,
+  startedAt: null,
+  totalDays: null,
+  yearlyPercentNumber: null,
+  grossPercentNumber: null,
+  pastYearPercentNumber: null,
+  pastQuarterPercentNumber: null,
+  pastMonthPercentNumber: null,
+  pastWeekPercentNumber: null,
+  totalValue: null,
+}
+
+const TRADER_PATTERNS: interfaces.traderPatternModel.Public[] = [
+  // @ts-ignore
+  { id: 1 },
+  // @ts-ignore
+  { id: 2 },
+  // @ts-ignore
+  { id: 3 },
+]
+
+test('could present traderProfile', () => {
+  expect(trader.presentTraderProfile(TRADER_1, TRADER_PATTERNS)).toStrictEqual({
+    trader: TRADER_1,
+    pattern: TRADER_PATTERNS[0],
+  })
+  expect(trader.presentTraderProfile(TRADER_2, TRADER_PATTERNS)).toStrictEqual({
+    trader: TRADER_2,
+    pattern: TRADER_PATTERNS[1],
   })
 })
