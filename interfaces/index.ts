@@ -11,6 +11,7 @@ import * as traderPatternModel from './models/traderPattern'
 import * as traderHoldingModel from './models/traderHolding'
 import * as traderFollowerModel from './models/traderFollower'
 import * as traderComboModel from './models/traderCombo'
+import * as traderComboFollowerModel from './models/traderComboFollower'
 import * as indicatorMonthlyModel from './models/indicatorMonthly'
 import * as indicatorQuarterlyModel from './models/indicatorQuarterly'
 import * as indicatorYearlyModel from './models/indicatorYearly'
@@ -36,6 +37,7 @@ export {
   traderHoldingModel,
   traderFollowerModel,
   traderComboModel,
+  traderComboFollowerModel,
   indicatorMonthlyModel,
   indicatorQuarterlyModel,
   indicatorYearlyModel,

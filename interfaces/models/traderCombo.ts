@@ -1,6 +1,21 @@
-export interface Identity {
+export interface Record {
   id: number;
-  name: string;
   traderEnvId: number;
+  traderIds: number[];
+}
+
+export interface Identity extends Record {
+  name: string;
   isSysten: boolean;
+}
+
+export interface Raw {
+  id: number;
+  traderEnvId: number;
+  traderIds: string;
+}
+
+export interface Create {
+  traderEnvId: number;
+  traderIds: string;
 }

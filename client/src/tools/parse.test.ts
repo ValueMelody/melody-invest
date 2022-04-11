@@ -101,16 +101,16 @@ test('could parse trader env start date', () => {
 
 test('could parse trader env name', () => {
   expect(parseTool.traderComboName({
-    id: 1, isSysten: true, name: 'systemCombo.-1', traderEnvId: 1,
+    id: 1, isSysten: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
   })).toBe(localeTool.t('systemCombo.-1'))
   expect(parseTool.traderComboName({
-    id: 1, isSysten: true, name: '', traderEnvId: 1,
+    id: 1, isSysten: true, name: '', traderEnvId: 1, traderIds: [],
   })).toBe('')
   expect(parseTool.traderComboName({
-    id: 1, isSysten: false, name: 'test1', traderEnvId: 1,
+    id: 1, isSysten: false, name: 'test1', traderEnvId: 1, traderIds: [],
   })).toBe('test1')
   expect(parseTool.traderComboName({
-    id: 1, isSysten: false, name: 'test2', traderEnvId: 1,
+    id: 1, isSysten: false, name: 'test2', traderEnvId: 1, traderIds: [],
   })).toBe('test2')
 })
 

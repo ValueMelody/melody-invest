@@ -5,9 +5,12 @@ import * as traderEnvFollowerModel from '../models/traderEnvFollower'
 import * as traderFollowerModel from '../models/traderFollower'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
+import * as traderComboModel from '../models/traderCombo'
+import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 import * as presentTool from '../tools/present'
+import * as generateTool from '../tools/generate'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
@@ -206,7 +209,7 @@ export const createTraderEnv = async (
   startDate: string,
   tickerIds: number[] | null,
 ): Promise<interfaces.traderEnvModel.Record> => {
-  const tickerIdsAsString = tickerIds ? tickerIds.sort((a, b) => a - b).join(',') : null
+  const tickerIdsAsString = generateTool.idArrayToIdString(tickerIds)
   const transaction = await databaseAdapter.createTransaction()
   try {
     const env = await traderEnvModel.createIfEmpty({
@@ -225,6 +228,33 @@ export const createTraderEnv = async (
     await transaction.commit()
 
     return { ...env, name: relation.name }
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const createTraderCombo = async (
+  userId: number,
+  name: string,
+  traderEnvId: number,
+  traderIds: number[],
+): Promise<interfaces.traderComboModel.Identity> => {
+  const traderIdsAsString = generateTool.idArrayToIdString(traderIds) || ''
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const combo = await traderComboModel.createIfEmpty({
+      traderEnvId,
+      traderIds: traderIdsAsString,
+    }, transaction)
+
+    const relation = await traderComboFollowerModel.createIfEmpty({
+      userId, traderComboId: combo.id, name,
+    }, transaction)
+    await transaction.commit()
+
+    return { ...combo, name: relation.name, isSystem: false }
   } catch (error) {
     await transaction.rollback()
     throw error
