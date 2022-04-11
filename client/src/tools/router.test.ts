@@ -27,6 +27,10 @@ test('could get correct url for profile build route', () => {
   expect(routerTool.profileBuildRoute()).toBe('/traders/profiles/build')
 })
 
+test('could get correct url for combo build route', () => {
+  expect(routerTool.comboBuildRoute()).toBe('/traders/combos/build')
+})
+
 test('could get correct url for top combos route', () => {
   expect(routerTool.topCombosRoute()).toBe('/traders/combos/tops')
 })

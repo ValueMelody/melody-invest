@@ -12,14 +12,15 @@
     "common.newPassword": "New Password",
     "common.watch": "Watch",
     "common.unwatch": "Unwatch",
-    "common.build": "Build",
     "common.new": "New",
     "common.numSelected": "{{num}} selected",
     "common.environments": "Environments",
+    "common.selectEnvironment": "Select an Environment",
     "common.env": "Env",
     "common.system": "System",
     "common.search": "Search",
     "common.never": "Never",
+    "common.confirmAndWatch": "Confirm and Start Watch",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -44,8 +45,10 @@
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",
     "dashboard.watchedEnvs": "Watched Environments",
-    "dashboard.buildDesc": "Build a new profile",
-    "dashboard.newDesc": "Build a new environment",
+    "dashboard.watchedCombos": "Watched Combos",
+    "dashboard.newProfileDesc": "Build a new profile",
+    "dashboard.newEnvDesc": "Build a new environment",
+    "dashboard.newComboDesc": "Build a new combo",
 
     "topProfiles.title": "Top Profiles",
 
@@ -89,7 +92,12 @@
     "profileBuilder.allocateBehaviors": "Stock Allocation",
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
     "profileBuilder.select": "Select a behavior",
-    "profileBuilder.confirm": "Confirm and start watch",
+
+    "comboBuilder.title": "Combo Builder",
+    "comboBuilder.name": "Combo Name",
+    "comboBuilder.selectProfiles": "Select Profiles for your combo",
+    "comboBuilder.minTraderRequired": "At least 2 profiles required",
+    "comboBuilder.noEnoughProfiles": "Please add at lease 2 profiles to your watch list for this environment first!",
 
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",
@@ -98,7 +106,6 @@
     "envBuilder.targetTickers": "Target Stocks",
     "envBuilder.targetTickersDesc": "Only trade selected stocks",
     "envBuilder.name": "Environment Name",
-    "envBuilder.confirm": "Confirm and start watch",
 
     "traderEnv.startAt": "Start from {{date}}",
     "traderEnv.allTickers": "Trade based on all stocks available",

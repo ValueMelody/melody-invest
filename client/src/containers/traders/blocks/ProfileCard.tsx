@@ -24,16 +24,23 @@ const useStyles = vendorTool.jss.createUseStyles((
   body: {
     padding: '1rem',
   },
+  active: {
+    border: `2px solid ${theme.PRIMARY_COLOR} !important`,
+  },
 }))
 
 const ProfileCard = ({
   profile,
   focusType,
+  isActive,
   onClick,
+  simple,
 }: {
   profile: interfaces.traderRes.TraderProfile | null;
   focusType?: FocusType;
+  isActive?: boolean,
   onClick?: (record: interfaces.traderModel.Record) => void;
+  simple?: boolean;
 }) => {
   const classes = useStyles()
 
@@ -84,13 +91,14 @@ const ProfileCard = ({
     <vendorTool.ui.Segment
       className={vendorTool.classNames('row-around', classes.pattern, {
         'click-cursor': !!onClick,
+        [classes.active]: !!isActive,
       })}
       onClick={handleClick}
       padded
     >
       <header className={vendorTool.classNames('row-between', classes.header)}>
         <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
-        {!!user.userTraderIds && (
+        {!!user.userTraderIds && !simple && (
           <WatchButton
             isWatched={isWatched}
             onToggle={handleToggleWatch}
@@ -100,7 +108,9 @@ const ProfileCard = ({
 
       <div className={classes.body}>
         <TraderPerformance trader={trader} focusType={focusType} />
-        <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
+        {!simple && (
+          <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
+        )}
       </div>
     </vendorTool.ui.Segment>
   )

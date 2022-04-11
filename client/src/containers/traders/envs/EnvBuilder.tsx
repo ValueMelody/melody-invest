@@ -166,7 +166,7 @@ const EnvBuilder = () => {
             className={classes.confirmButton}
             disabled={!hasValidName || !hasValidTickers}
           >
-            {localeTool.t('envBuilder.confirm')}
+            {localeTool.t('common.confirmAndWatch')}
           </vendorTool.ui.Button>
         </div>
       </form>

@@ -24,6 +24,8 @@ const useStyles = vendorTool.jss.createUseStyles(({
   },
   card: {
     width: 290,
+    marginBottom: '3rem',
+    paddingTop: '1rem',
   },
 }))
 
@@ -42,12 +44,16 @@ const ProfileDashboard = () => {
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClickBuildProfile = () => {
+  const handleClickAddProfile = () => {
     navigate(routerTool.profileBuildRoute())
   }
 
   const handleClickAddEnv = () => {
     navigate(routerTool.envBuildRoute())
+  }
+
+  const handleClickAddCombo = () => {
+    navigate(routerTool.comboBuildRoute())
   }
 
   const handleClickRow = (trader: interfaces.traderModel.Record) => {
@@ -65,9 +71,9 @@ const ProfileDashboard = () => {
   if (!user.userTraderIds) return null
 
   return (
-    <div className={vendorTool.classNames('row-between', classes.container)}>
-      <div className={classes.left}>
-        <div className={vendorTool.classNames('row-between', classes.header)}>
+    <section className={vendorTool.classNames('row-between', classes.container)}>
+      <section className={classes.left}>
+        <header className={vendorTool.classNames('row-between', classes.header)}>
           <vendorTool.ui.Header
             as='h3'
             icon='star'
@@ -77,13 +83,13 @@ const ProfileDashboard = () => {
             icon
             labelPosition='left'
             color='blue'
-            onClick={handleClickBuildProfile}
-            title={localeTool.t('dashboard.buildDesc')}
+            onClick={handleClickAddProfile}
+            title={localeTool.t('dashboard.newProfileDesc')}
           >
-            <vendorTool.ui.Icon name='cogs' />
-            {localeTool.t('common.build')}
+            <vendorTool.ui.Icon name='plus' />
+            {localeTool.t('common.new')}
           </vendorTool.ui.Button>
-        </div>
+        </header>
         {user.userTraderIds.map((traderId) => (
           <ProfileCard
             key={traderId}
@@ -91,8 +97,8 @@ const ProfileDashboard = () => {
             onClick={handleClickRow}
           />
         ))}
-      </div>
-      <div className={classes.right}>
+      </section>
+      <aside className={classes.right}>
         <vendorTool.ui.Header
           as='h3'
           icon='bookmark'
@@ -106,20 +112,37 @@ const ProfileDashboard = () => {
             onClick={handleClickEnv}
           />
         ))}
-        <div className={vendorTool.classNames('row-center', classes.card)}>
+        <section className={vendorTool.classNames('row-center', classes.card)}>
           <vendorTool.ui.Button
             icon
             labelPosition='left'
             color='blue'
             onClick={handleClickAddEnv}
-            title={localeTool.t('dashboard.newDesc')}
+            title={localeTool.t('dashboard.newEnvDesc')}
           >
             <vendorTool.ui.Icon name='plus' />
             {localeTool.t('common.new')}
           </vendorTool.ui.Button>
-        </div>
-      </div>
-    </div>
+        </section>
+        <vendorTool.ui.Header
+          as='h3'
+          icon='boxes'
+          content={localeTool.t('dashboard.watchedEnvs')}
+        />
+        <section className={vendorTool.classNames('row-center', classes.card)}>
+          <vendorTool.ui.Button
+            icon
+            labelPosition='left'
+            color='blue'
+            onClick={handleClickAddCombo}
+            title={localeTool.t('dashboard.newComboDesc')}
+          >
+            <vendorTool.ui.Icon name='plus' />
+            {localeTool.t('common.new')}
+          </vendorTool.ui.Button>
+        </section>
+      </aside>
+    </section>
   )
 }
 

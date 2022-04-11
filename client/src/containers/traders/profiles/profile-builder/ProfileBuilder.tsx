@@ -337,7 +337,7 @@ const ProfileBuilder = () => {
           )}
         </vendorTool.ui.Segment>
       </vendorTool.ui.Segment.Group>
-      <h4>{localeTool.t('common.environments')}:</h4>
+      <h4>{localeTool.t('common.selectEnvironment')}:</h4>
       <div className='row-start'>
         {user.userTraderEnvs.map((traderEnv) => (
           <TraderEnvCard
@@ -362,7 +362,7 @@ const ProfileBuilder = () => {
               !isValidPreferenceBehavior
             }
           >
-            {localeTool.t('profileBuilder.confirm')}
+            {localeTool.t('common.confirmAndWatch')}
           </vendorTool.ui.Button>
         </div>
       </form>
