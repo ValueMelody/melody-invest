@@ -8,3 +8,9 @@ export interface TraderEnvCreation {
   startDate: string;
   tickerIds: number[] | null;
 }
+
+export interface TraderComboCreation {
+  name: string;
+  traderEnvId: number;
+  traderIds: number[];
+}

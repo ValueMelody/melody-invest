@@ -24,10 +24,4 @@ interface Update {
   value: string;
 }
 
-const convertToRecord = (raw: Raw): Record => {
-  return {
-    id: raw.id,
-    value: parseFloat(raw.value)
-  }
-}
 ```

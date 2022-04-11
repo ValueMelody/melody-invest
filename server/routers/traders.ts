@@ -29,6 +29,12 @@ const validateCreateEnvParams = (name: string, startDate: string, tickerIds: num
   if (hasWrongId) throw errorEnum.DEFAULT.FORBIDDEN
 }
 
+const validateCreateComboParams = (name: string, traderEnvId: number, traderIds: number[]) => {
+  if (!name || !traderEnvId || !Array.isArray(traderIds) || traderIds.length < 2) throw errorEnum.CUSTOM.PARAMS_MISSING
+  const hasWrongId = traderIds.some((id) => typeof id !== 'number')
+  if (hasWrongId) throw errorEnum.DEFAULT.FORBIDDEN
+}
+
 const validateTraderId = (traderId: number) => {
   if (!traderId) throw errorEnum.DEFAULT.FORBIDDEN
 }
@@ -161,6 +167,20 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
     auth.id, parsedName, startDate, tickerIds,
   )
   return res.status(201).send(traderEnv)
+})
+
+tradersRouter.post('/combos', authMiddleware.normalUser, async (req, res) => {
+  const { name, traderEnvId, traderIds }: interfaces.reqs.TraderComboCreation = req.body
+  const parsedName = name?.trim()
+  validateCreateComboParams(parsedName, traderEnvId, traderIds)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.verifyUserToTraderEnv(auth.id, traderEnvId)
+
+  const traderCombo = await crudTraders.createTraderCombo(
+    auth.id, parsedName, traderEnvId, traderIds,
+  )
+  return res.status(201).send(traderCombo)
 })
 
 // ------------------------------------------------------------ Delete --
