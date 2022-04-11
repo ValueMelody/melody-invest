@@ -14,6 +14,7 @@ import EnvDetail from './traders/envs/EnvDetail'
 import TickerList from './traders/tickers/TickerList'
 import TickerDetail from './traders/tickers/TickerDetail'
 import TopCombos from './traders/combos/TopCombos'
+import ComboBuilder from './traders/combos/ComboBuilder'
 import * as routerEnum from '../enums/router'
 
 const Router = () => {
@@ -60,6 +61,10 @@ const Router = () => {
           <vendorTool.router.Route
             path={`${routerEnum.NAV.TRADERS}/combos/tops`}
             element={<TopCombos />}
+          />
+          <vendorTool.router.Route
+            path={`${routerEnum.NAV.TRADERS}/combos/build`}
+            element={<ComboBuilder />}
           />
           <vendorTool.router.Route
             path={routerEnum.NAV.DASHBOARD}

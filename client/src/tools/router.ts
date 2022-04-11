@@ -32,6 +32,10 @@ export const envBuildRoute = (): string => {
   return `${routerEnum.NAV.TRADERS}/envs/build`
 }
 
+export const comboBuildRoute = (): string => {
+  return `${routerEnum.NAV.TRADERS}/combos/build`
+}
+
 export const dashboardRoute = (): string => {
   return routerEnum.NAV.DASHBOARD
 }
