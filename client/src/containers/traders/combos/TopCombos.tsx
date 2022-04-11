@@ -41,10 +41,10 @@ const TopCombos = () => {
   // ------------------------------------------------------------ State --
 
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
-  const { getTraderProfile } = useTraderState()
+  const { getProfileDetail } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const systemCombos = user.userTraderCombos.filter((combo) => combo.identity.isSysten)
+  const systemCombos = user.userTraderCombos.filter((combo) => combo.identity.isSystem)
   const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
 
   // ------------------------------------------------------------ Handler --
@@ -60,7 +60,7 @@ const TopCombos = () => {
 
   // ------------------------------------------------------------ Interface --
 
-  if (!focusedCombo) return null
+  if (!focusedCombo || !focusedCombo.holdings) return null
 
   return (
     <section className='column-start'>
@@ -90,7 +90,7 @@ const TopCombos = () => {
               key={detail.date}
               holding={detail}
               previousHolding={
-                index < focusedCombo.holdings.length - 1
+                focusedCombo.holdings && index < focusedCombo.holdings.length - 1
                   ? focusedCombo.holdings[index + 1]
                   : null
               }
@@ -105,10 +105,10 @@ const TopCombos = () => {
             content={localeTool.t('topCombos.profiles')}
             className={classes.asideTitle}
           />
-          {focusedCombo.traderIds.map((traderId) => (
+          {focusedCombo.identity.traderIds.map((traderId) => (
             <ProfileCard
               key={traderId}
-              profile={getTraderProfile(traderId)}
+              profile={getProfileDetail(traderId)}
               onClick={handleClickProfile}
             />
           ))}

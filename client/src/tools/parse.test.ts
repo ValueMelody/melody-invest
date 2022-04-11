@@ -99,19 +99,28 @@ test('could parse trader env start date', () => {
   })).toBe(localeTool.t('traderEnv.selectedTickers', { num: 5 }))
 })
 
-test('could parse trader env name', () => {
+test('could parse trader combo name', () => {
   expect(parseTool.traderComboName({
-    id: 1, isSysten: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
+    id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
   })).toBe(localeTool.t('systemCombo.-1'))
   expect(parseTool.traderComboName({
-    id: 1, isSysten: true, name: '', traderEnvId: 1, traderIds: [],
+    id: 1, isSystem: true, name: '', traderEnvId: 1, traderIds: [],
   })).toBe('')
   expect(parseTool.traderComboName({
-    id: 1, isSysten: false, name: 'test1', traderEnvId: 1, traderIds: [],
+    id: 1, isSystem: false, name: 'test1', traderEnvId: 1, traderIds: [],
   })).toBe('test1')
   expect(parseTool.traderComboName({
-    id: 1, isSysten: false, name: 'test2', traderEnvId: 1, traderIds: [],
+    id: 1, isSystem: false, name: 'test2', traderEnvId: 1, traderIds: [],
   })).toBe('test2')
+})
+
+test('could parse trader combo selected traders', () => {
+  expect(parseTool.traderComboTraders({
+    id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
+  })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 0 }))
+  expect(parseTool.traderComboTraders({
+    id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [1, 2],
+  })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 2 }))
 })
 
 test('could parse holding value', () => {

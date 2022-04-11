@@ -14,11 +14,6 @@ const useTraderState = () => {
     return store.topProfiles[envId] || null
   }
 
-  const getTraderProfile = (traderId: number | null) => {
-    if (!traderId) return null
-    return store.traderProfiles[traderId] || null
-  }
-
   const getProfileDetail = (traderId: number | null) => {
     if (!traderId) return null
     return store.profileDetails[traderId] || null
@@ -40,15 +35,29 @@ const useTraderState = () => {
 
   // ------------------------------------------------------------ Store --
 
+  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
+    store.setProfileDetails((profiles) => ({
+      ...profiles,
+      [profile.trader.id]: {
+        ...profile,
+      },
+    }))
+  }
+
+  const storeTraderProfiles = (profiles: interfaces.traderRes.TraderProfile[]) => {
+    const traderProfiles = profiles.reduce((traderProfiles, profile) => ({
+      ...traderProfiles,
+      [profile.trader.id]: { ...profile },
+    }), {})
+    store.setProfileDetails((profiles) => ({ ...profiles, ...traderProfiles }))
+  }
+
   const storeTopProfiles = (envId: number, topProfiles: interfaces.traderRes.TopProfiles) => {
     const profiles = [
       ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
       ...topProfiles.pastMonth, ...topProfiles.pastWeek,
     ]
-    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
-      return { ...traderProfiles, [profile.trader.id]: profile }
-    }, {})
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    storeTraderProfiles(profiles)
 
     const tops = {
       yearly: topProfiles.yearly.map((profile) => profile.trader.id),
@@ -73,10 +82,7 @@ const useTraderState = () => {
       ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
       ...topProfiles.pastMonth, ...topProfiles.pastWeek,
     ]
-    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
-      return { ...traderProfiles, [profile.trader.id]: profile }
-    }, {})
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    storeTraderProfiles(profiles)
 
     const tops = {
       yearly: topProfiles.yearly.map((profile) => profile.trader.id),
@@ -101,10 +107,7 @@ const useTraderState = () => {
       ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
       ...topProfiles.pastMonth, ...topProfiles.pastWeek,
     ]
-    const traderProfiles = profiles.reduce((traderProfiles, profile) => {
-      return { ...traderProfiles, [profile.trader.id]: profile }
-    }, {})
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+    storeTraderProfiles(profiles)
 
     const tops = {
       yearly: topProfiles.yearly.map((profile) => profile.trader.id),
@@ -119,15 +122,23 @@ const useTraderState = () => {
     }))
   }
 
-  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
-    store.setTraderProfiles((profiles) => ({ ...profiles, [profile.trader.id]: profile }))
-  }
-
   const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
     const isSame = store.resources.userTraderEnvs.some((traderEnv) => traderEnv.id === env.id)
     if (!isSame) {
-      const userTraderEnvs = [...store.resources.userTraderEnvs, env]
-      store.setResources((resources) => ({ ...resources, userTraderEnvs }))
+      store.setResources((resources) => ({
+        ...resources,
+        userTraderEnvs: [...resources.userTraderEnvs, env],
+      }))
+    }
+  }
+
+  const storeTraderCombo = (combo: interfaces.traderComboModel.Identity) => {
+    const isSame = store.resources.userTraderCombos.some((traderCombo) => traderCombo.identity.id === combo.id)
+    if (!isSame) {
+      store.setResources((resources) => ({
+        ...resources,
+        userTraderCombos: [...resources.userTraderCombos, { identity: combo }],
+      }))
     }
   }
 
@@ -142,7 +153,16 @@ const useTraderState = () => {
     traderId: number,
     detail: interfaces.traderRes.ProfileDetail,
   ) => {
-    store.setProfileDetails((details) => ({ ...details, [traderId]: detail }))
+    if (!store.profileDetails[traderId]) return
+    store.setProfileDetails((details) => (
+      {
+        ...details,
+        [traderId]: {
+          ...details[traderId],
+          ...detail,
+        },
+      }
+    ))
   }
 
   // ------------------------------------------------------------ Remove --
@@ -307,6 +327,29 @@ const useTraderState = () => {
     }
   }
 
+  const createTraderCombo = async (
+    name: string,
+    traderEnvId: number,
+    traderIds: number[],
+  ) => {
+    const endpoint = `${routerEnum.API.TRADERS}/combos`
+    store.startLoading()
+    const reqs: interfaces.reqs.TraderComboCreation = {
+      name, traderEnvId, traderIds,
+    }
+    try {
+      const combo: interfaces.traderComboModel.Identity = await requestAdapter.sendPostRequest(
+        endpoint, reqs,
+      )
+      storeTraderCombo(combo)
+      return combo.id
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   // ------------------------------------------------------------ export --
 
   const deleteWatchedProfile = async (traderId: number) => {
@@ -341,7 +384,6 @@ const useTraderState = () => {
 
   return {
     getTopProfiles,
-    getTraderProfile,
     getProfileDetail,
     getBehaviorDetail,
     getTickerDetail,
@@ -353,6 +395,7 @@ const useTraderState = () => {
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,
+    createTraderCombo,
     createWatchedProfile,
     deleteWatchedProfile,
     deleteWatchedEnv,

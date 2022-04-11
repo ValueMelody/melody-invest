@@ -14,14 +14,14 @@ const useSystemState = () => {
     const comboProfiles = systemDefaults.traderCombos.reduce((allProfiles, combo) => {
       const profiles = combo.profiles.reduce((containedProfiles, profile) => ({
         ...containedProfiles,
-        [profile.trader.id]: profile,
+        [profile.trader.id]: { ...profile },
       }), {})
       return {
         ...allProfiles,
         ...profiles,
       }
     }, {})
-    store.setTraderProfiles((details) => ({ ...details, ...comboProfiles }))
+    store.setProfileDetails((details) => ({ ...details, ...comboProfiles }))
 
     const parsedEnvs = systemDefaults.traderEnvs.map((env) => ({
       ...env,
@@ -33,7 +33,6 @@ const useSystemState = () => {
         name: parseTool.traderComboName(combo.identity),
       },
       holdings: combo.holdings,
-      traderIds: combo.profiles.map((profile) => profile.trader.id),
     }))
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,

@@ -36,7 +36,7 @@ const EachTops = ({
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderProfile } = useTraderState()
+  const { getProfileDetail } = useTraderState()
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
 
   // ------------------------------------------------------------ Handler --
@@ -63,7 +63,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.yearlyTitle')}:
         </h4>
         <ProfileCard
-          profile={getTraderProfile(bestOverall)}
+          profile={getProfileDetail(bestOverall)}
           onClick={handleClickCard}
         />
       </div>
@@ -72,7 +72,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastYearTitle')}:
         </h4>
         <ProfileCard
-          profile={getTraderProfile(bestPastYear)}
+          profile={getProfileDetail(bestPastYear)}
           onClick={handleClickCard}
         />
       </div>
@@ -81,7 +81,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastQuarterTitle')}:
         </h4>
         <ProfileCard
-          profile={getTraderProfile(bestPastQuarter)}
+          profile={getProfileDetail(bestPastQuarter)}
           onClick={handleClickCard}
         />
       </div>
@@ -90,7 +90,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastMonthTitle')}:
         </h4>
         <ProfileCard
-          profile={getTraderProfile(bestPastMonth)}
+          profile={getProfileDetail(bestPastMonth)}
           onClick={handleClickCard}
         />
       </div>
@@ -99,7 +99,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastWeekTitle')}:
         </h4>
         <ProfileCard
-          profile={getTraderProfile(bestPastWeek)}
+          profile={getProfileDetail(bestPastWeek)}
           onClick={handleClickCard}
         />
       </div>

@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
+import * as routerTool from '../../../tools/router'
 import * as commonEnum from '../../../enums/common'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
@@ -27,6 +28,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const ComboBuilder = () => {
   const classes = useStyles()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -34,10 +36,10 @@ const ComboBuilder = () => {
   const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
   const [envName, setEnvName] = vendorTool.react.useState('')
 
-  const { getTraderProfile } = useTraderState()
+  const { getProfileDetail, createTraderCombo } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const profiles = user.userTraderIds?.map((traderId) => getTraderProfile(traderId)) || []
+  const profiles = user.userTraderIds?.map((traderId) => getProfileDetail(traderId)) || []
   const filteredProfiles = profiles.filter((profile) => profile?.trader.traderEnvId === envId)
 
   const hasValidName = !!envName.trim()
@@ -65,7 +67,15 @@ const ComboBuilder = () => {
     setEnvName(e.target.value)
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async (
+    e: vendorTool.react.FormEvent<HTMLFormElement>,
+  ) => {
+    e.preventDefault()
+    const result = await createTraderCombo(envName, envId, selectedTraderIds)
+    if (result) {
+      const link = routerTool.dashboardRoute()
+      navigate(link)
+    }
   }
 
   // ------------------------------------------------------------ Interface --

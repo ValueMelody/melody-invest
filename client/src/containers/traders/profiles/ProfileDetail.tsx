@@ -33,7 +33,7 @@ const ProfileDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTraderProfile, getProfileDetail, fetchTraderProfile, fetchProfileDetail,
+    getProfileDetail, fetchTraderProfile, fetchProfileDetail,
   } = useTraderState()
   const { getUser } = useUserState()
 
@@ -43,10 +43,9 @@ const ProfileDetail = () => {
   const accessCode = params?.accessCode || null
   const user = getUser()
 
-  const traderProfile = getTraderProfile(traderId)
   const profileDetail = getProfileDetail(traderId)
 
-  const envId = traderProfile?.trader?.traderEnvId || null
+  const envId = profileDetail?.trader?.traderEnvId || null
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
@@ -61,14 +60,12 @@ const ProfileDetail = () => {
   }, [])
 
   vendorTool.react.useEffect(() => {
-    if (traderProfile || !traderId || !accessCode) return
-    fetchTraderProfile(traderId, accessCode)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [traderProfile])
-
-  vendorTool.react.useEffect(() => {
-    if (profileDetail || !traderId || !accessCode) return
-    fetchProfileDetail(traderId, accessCode)
+    if (!traderId || !accessCode) return
+    if (!profileDetail) {
+      fetchTraderProfile(traderId, accessCode)
+    } else if (profileDetail && !profileDetail.holdings) {
+      fetchProfileDetail(traderId, accessCode)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [profileDetail])
 
@@ -85,13 +82,13 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ Interface --
 
-  if (!traderProfile || !profileDetail || !traderEnv) return null
+  if (!profileDetail || !profileDetail || !traderEnv) return null
 
   return (
     <div className={vendorTool.classNames('row-between', classes.container)}>
       <div className={classes.left}>
         <ProfileCard
-          profile={traderProfile}
+          profile={profileDetail}
         />
         <div className={classes.envContainer}>
           <h4>{localeTool.t('common.environments')}:</h4>
@@ -103,7 +100,7 @@ const ProfileDetail = () => {
               <TraderEnvCard
                 key={profileEnv.traderEnvId}
                 traderEnv={traderEnv}
-                isActive={traderProfile.trader.traderEnvId === profileEnv.traderEnvId}
+                isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
                 onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
               />
             )
