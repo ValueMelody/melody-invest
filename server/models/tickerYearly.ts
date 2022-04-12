@@ -32,6 +32,20 @@ export const getLatest = async (
   return tickerYearly ? convertToRecord(tickerYearly) : null
 }
 
+export const getRawByUK = async (
+  tickerId: number,
+  year: string,
+): Promise<interfaces.tickerYearlyModel.Raw | null> => {
+  const tickerYearly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAME.TICKER_YEARLY,
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+      { key: 'year', value: year },
+    ],
+  })
+  return tickerYearly || null
+}
+
 export const getByUK = async (
   tickerId: number,
   year: string,
