@@ -7,9 +7,9 @@ test('could sleep by seconds', async () => {
   expect(end.getTime() - start.getTime()).toBeGreaterThanOrEqual(500)
 
   const start1 = new Date()
-  await run.sleep(1)
+  await run.sleep(0.2)
   const end1 = new Date()
-  expect(end1.getTime() - start1.getTime()).toBeGreaterThanOrEqual(1000)
+  expect(end1.getTime() - start1.getTime()).toBeGreaterThanOrEqual(200)
 })
 
 test('could loop by async forEach', async () => {

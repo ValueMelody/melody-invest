@@ -4,4 +4,5 @@ module.exports = {
   testEnvironment: 'node',
   coverageReporters: [],
   collectCoverageFrom: ['./client/**/*.{ts,tsx}', './server/**/*.{ts,tsx}'],
+  setupFiles: ['dotenv/config'],
 }
