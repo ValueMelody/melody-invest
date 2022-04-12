@@ -18,6 +18,20 @@ const convertToRecord = (
   costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
 })
 
+export const getRawByUK = async (
+  tickerId: number,
+  quarter: string,
+): Promise<interfaces.tickerQuarterlyModel.Raw | null> => {
+  const tickerQuarterly = await databaseAdapter.findOne({
+    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+      { key: 'quarter', value: quarter },
+    ],
+  })
+  return tickerQuarterly || null
+}
+
 export const getByUK = async (
   tickerId: number,
   quarter: string,

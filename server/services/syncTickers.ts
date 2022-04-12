@@ -115,7 +115,7 @@ export const syncEarnings = async (
     const endYear = dateTool.getCurrentYear()
     const allYears = dateTool.getYearsInRange(startYear, endYear)
 
-    const relatedYearly: interfaces.tickerYearlyModel.Record[] = []
+    const relatedYears: string[] = []
     await runTool.asyncForEach(allYears, async (year: string) => {
       const matchedEarning = annualEarnings.find((earning) => {
         return year === earning.fiscalDateEnding.substring(0, 4)
@@ -132,19 +132,19 @@ export const syncEarnings = async (
         eps,
       }
 
-      const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
+      const currentRecord = await tickerYearlyModel.getRawByUK(ticker.id, year)
 
       if (!currentRecord) {
         const createdRecord = await tickerYearlyModel.create({
           tickerId: ticker.id,
           ...yearlyEPS,
         }, transaction)
-        relatedYearly.push(createdRecord)
+        relatedYears.push(createdRecord.year)
       } else if (currentRecord && currentRecord.eps !== yearlyEPS.eps) {
         const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyEPS, transaction)
-        relatedYearly.push(updatedRecord)
+        relatedYears.push(updatedRecord.year)
       } else if (forceRecheck) {
-        relatedYearly.push(currentRecord)
+        relatedYears.push(currentRecord.year)
       }
     })
 
@@ -162,7 +162,7 @@ export const syncEarnings = async (
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
-    const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
+    const relatedQuarters: string[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedEarning = quarterlyEarnings.find((earning) => {
         return marketLogic.isMatchedQuarter(quarter, earning.fiscalDateEnding)
@@ -187,34 +187,33 @@ export const syncEarnings = async (
         epsSurprisePercent,
       }
 
-      const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
-
+      const currentRecord = await tickerQuarterlyModel.getRawByUK(ticker.id, quarter)
       if (!currentRecord) {
         const createdRecord = await tickerQuarterlyModel.create({
           tickerId: ticker.id,
           ...quarterlyEPS,
         }, transaction)
-        relatedQuarterly.push(createdRecord)
+        relatedQuarters.push(createdRecord.quarter)
       } else if (currentRecord && (
         currentRecord.eps !== quarterlyEPS.eps ||
         currentRecord.estimatedEPS !== quarterlyEPS.estimatedEPS ||
         currentRecord.epsSurprisePercent !== quarterlyEPS.epsSurprisePercent
       )) {
         const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS, transaction)
-        relatedQuarterly.push(updatedRecord)
+        relatedQuarters.push(updatedRecord.quarter)
       } else if (forceRecheck) {
-        relatedQuarterly.push(currentRecord)
+        relatedQuarters.push(currentRecord.quarter)
       }
     })
 
     const newTickerInfo: interfaces.tickerModel.Update = {}
-    if (relatedYearly.length) {
-      newTickerInfo.lastEPSYear = relatedYearly[relatedYearly.length - 1].year
-      if (!ticker.firstEPSYear || forceRecheck) newTickerInfo.firstEPSYear = relatedYearly[0].year
+    if (relatedYears.length) {
+      newTickerInfo.lastEPSYear = relatedYears[relatedYears.length - 1]
+      if (!ticker.firstEPSYear || forceRecheck) newTickerInfo.firstEPSYear = relatedYears[0]
     }
-    if (relatedQuarterly.length) {
-      newTickerInfo.lastEPSQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-      if (!ticker.firstEPSQuarter || forceRecheck) newTickerInfo.firstEPSQuarter = relatedQuarterly[0].quarter
+    if (relatedQuarters.length) {
+      newTickerInfo.lastEPSQuarter = relatedQuarters[relatedQuarters.length - 1]
+      if (!ticker.firstEPSQuarter || forceRecheck) newTickerInfo.firstEPSQuarter = relatedQuarters[0]
     }
 
     if (Object.keys(newTickerInfo).length) await tickerModel.update(ticker.id, newTickerInfo, transaction)
@@ -269,7 +268,7 @@ export const syncIncomes = async (
     const endYear = dateTool.getCurrentYear()
     const allYears = dateTool.getYearsInRange(startYear, endYear)
 
-    const relatedYearly: interfaces.tickerYearlyModel.Record[] = []
+    const relatedYears: string[] = []
     await runTool.asyncForEach(allYears, async (year: string) => {
       const matchedIncome = annualIncomes.find((income) => {
         return year === income.fiscalDateEnding.substring(0, 4)
@@ -286,14 +285,13 @@ export const syncIncomes = async (
         year, ebitda, netIncome, grossProfit, totalRevenue, costOfRevenue,
       }
 
-      const currentRecord = await tickerYearlyModel.getByUK(ticker.id, year)
-
+      const currentRecord = await tickerYearlyModel.getRawByUK(ticker.id, year)
       if (!currentRecord) {
         const createdRecord = await tickerYearlyModel.create({
           tickerId: ticker.id,
           ...yearlyIncome,
         }, transaction)
-        relatedYearly.push(createdRecord)
+        relatedYears.push(createdRecord.year)
       } else if (currentRecord && (
         currentRecord.ebitda !== yearlyIncome.ebitda ||
         currentRecord.netIncome !== yearlyIncome.netIncome ||
@@ -302,9 +300,9 @@ export const syncIncomes = async (
         currentRecord.costOfRevenue !== yearlyIncome.costOfRevenue
       )) {
         const updatedRecord = await tickerYearlyModel.update(currentRecord.id, yearlyIncome, transaction)
-        relatedYearly.push(updatedRecord)
+        relatedYears.push(updatedRecord.year)
       } else if (forceRecheck) {
-        relatedYearly.push(currentRecord)
+        relatedYears.push(currentRecord.year)
       }
     })
 
@@ -322,7 +320,7 @@ export const syncIncomes = async (
     const endQuarter = dateTool.getCurrentQuater()
     const allQuarters = dateTool.getQuartersInRange(startQuarter, endQuarter)
 
-    const relatedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
+    const relatedQuarters: string[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedIncome = quarterlyIncomes.find((income) => {
         return marketLogic.isMatchedQuarter(quarter, income.fiscalDateEnding)
@@ -339,14 +337,13 @@ export const syncIncomes = async (
         quarter, ebitda, netIncome, grossProfit, totalRevenue, costOfRevenue,
       }
 
-      const currentRecord = await tickerQuarterlyModel.getByUK(ticker.id, quarter)
-
+      const currentRecord = await tickerQuarterlyModel.getRawByUK(ticker.id, quarter)
       if (!currentRecord) {
         const createdRecord = await tickerQuarterlyModel.create({
           tickerId: ticker.id,
           ...quarterlyEPS,
         }, transaction)
-        relatedQuarterly.push(createdRecord)
+        relatedQuarters.push(createdRecord.quarter)
       } else if (currentRecord && (
         currentRecord.ebitda !== quarterlyEPS.ebitda ||
         currentRecord.netIncome !== quarterlyEPS.netIncome ||
@@ -355,20 +352,20 @@ export const syncIncomes = async (
         currentRecord.costOfRevenue !== quarterlyEPS.costOfRevenue
       )) {
         const updatedRecord = await tickerQuarterlyModel.update(currentRecord.id, quarterlyEPS, transaction)
-        relatedQuarterly.push(updatedRecord)
+        relatedQuarters.push(updatedRecord.quarter)
       } else if (forceRecheck) {
-        relatedQuarterly.push(currentRecord)
+        relatedQuarters.push(currentRecord.quarter)
       }
     })
 
     const newTickerInfo: interfaces.tickerModel.Update = {}
-    if (relatedYearly.length) {
-      newTickerInfo.lastIncomeYear = relatedYearly[relatedYearly.length - 1].year
-      if (!ticker.firstIncomeYear || forceRecheck) newTickerInfo.firstIncomeYear = relatedYearly[0].year
+    if (relatedYears.length) {
+      newTickerInfo.lastIncomeYear = relatedYears[relatedYears.length - 1]
+      if (!ticker.firstIncomeYear || forceRecheck) newTickerInfo.firstIncomeYear = relatedYears[0]
     }
-    if (relatedQuarterly.length) {
-      newTickerInfo.lastIncomeQuarter = relatedQuarterly[relatedQuarterly.length - 1].quarter
-      if (!ticker.firstIncomeQuarter || forceRecheck) newTickerInfo.firstIncomeQuarter = relatedQuarterly[0].quarter
+    if (relatedQuarters.length) {
+      newTickerInfo.lastIncomeQuarter = relatedQuarters[relatedQuarters.length - 1]
+      if (!ticker.firstIncomeQuarter || forceRecheck) newTickerInfo.firstIncomeQuarter = relatedQuarters[0]
     }
 
     if (Object.keys(newTickerInfo).length) await tickerModel.update(ticker.id, newTickerInfo, transaction)

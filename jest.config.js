@@ -3,4 +3,5 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   coverageReporters: [],
+  collectCoverageFrom: ['./client/**/*.{ts,tsx}', './server/**/*.{ts,tsx}'],
 }
