@@ -12,6 +12,18 @@ const convertToRecord = (
   }
 }
 
+export const getByPK = async (
+  id: number,
+): Promise<interfaces.traderComboModel.Record | null> => {
+  const combo = await databaseAdapter.findOne({
+    tableName: tableEnum.NAME.TRADER_COMBO,
+    conditions: [
+      { key: 'id', value: id },
+    ],
+  })
+  return combo ? convertToRecord(combo) : null
+}
+
 export const getByUK = async (
   traderIds: string,
 ): Promise<interfaces.traderComboModel.Record | null> => {

@@ -37,7 +37,6 @@ export interface TickerDetail {
 }
 
 export interface ComboDetail {
-  identity: traderComboModel.Identity;
   holdings: traderHoldingModel.Detail[];
   profiles: TraderProfile[];
 }

@@ -36,6 +36,10 @@ export const comboBuildRoute = (): string => {
   return `${routerEnum.NAV.TRADERS}/combos/build`
 }
 
+export const comboDetailRoute = (id: number): string => {
+  return `${routerEnum.NAV.TRADERS}/combos/${id}`
+}
+
 export const dashboardRoute = (): string => {
   return routerEnum.NAV.DASHBOARD
 }

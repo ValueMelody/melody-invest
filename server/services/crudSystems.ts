@@ -4,46 +4,27 @@ import * as errorEnum from '../enums/error'
 import * as tickerModel from '../models/ticker'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
-import * as traderPatternModel from '../models/traderPattern'
-import * as traderHoldingModel from '../models/traderHolding'
 import * as runTool from '../tools/run'
-import * as marketLogic from '../logics/market'
-import * as traderLogic from '../logics/trader'
+import buildComboDetail from './shared/buildComboDetail'
 
 const getSystemTopTraderCombo = async (
   combo: interfaces.traderComboModel.Identity,
   total: number,
-): Promise<interfaces.traderRes.ComboDetail> => {
+): Promise<interfaces.systemRes.ComboDetail> => {
   const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
-  const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
-  const profiles = topTraders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns))
+  const comboDetail = await buildComboDetail(topTraders)
 
-  const traderIds = topTraders.map((trader) => trader.id)
-
-  const holdings = await traderHoldingModel.getAllByTraderIds(traderIds)
-  const holdingsByTraders = traderLogic.groupHoldingRecordsByTraders(holdings)
-  const holdingsByDates = traderLogic.gatherTraderHoldingRecordsByDate(
-    traderIds, holdings, holdingsByTraders,
-  )
-
-  const aggregatedHoldings = Object.keys(holdingsByDates)
-    .map((date) => traderLogic.mergeHoldingsByDate(
-      date,
-      holdingsByDates[date],
-      marketLogic.getInitialCash(),
-    ))
-  const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
   return {
     identity: {
       ...combo,
-      traderIds,
+      traderIds: comboDetail.traderIds,
     },
-    profiles,
-    holdings: sortedHoldings.slice(0, 20),
+    profiles: comboDetail.profiles,
+    holdings: comboDetail.holdings.slice(0, 20),
   }
 }
 
-const getSystemTraderCombos = async (): Promise<interfaces.traderRes.ComboDetail[]> => {
+const getSystemTraderCombos = async (): Promise<interfaces.systemRes.ComboDetail[]> => {
   const combos = commonEnum.SYSTEM_COMBOS
   const comboDetails = await runTool.asyncMap(combos, async (
     combo: interfaces.traderComboModel.Identity,

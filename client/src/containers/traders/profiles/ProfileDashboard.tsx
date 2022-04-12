@@ -5,23 +5,14 @@ import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
+import usePageStyles from '../../hooks/usePageStyles'
 import ProfileCard from '../blocks/ProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TraderComboCard from '../elements/TraderComboCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
-  container: {
-    alignItems: 'flex-start',
-  },
   header: {
     marginBottom: '1rem',
-  },
-  left: {
-    width: 'calc(100% - 32rem)',
-    minWidth: '28rem',
-  },
-  right: {
-    width: '28rem',
   },
   card: {
     width: 290,
@@ -32,6 +23,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const ProfileDashboard = () => {
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
@@ -69,13 +61,18 @@ const ProfileDashboard = () => {
     navigate(link)
   }
 
+  const handleClickCombo = (comboId: number) => {
+    const link = routerTool.comboDetailRoute(comboId)
+    navigate(link)
+  }
+
   // ------------------------------------------------------------ Interface --
 
   if (!user.userTraderIds) return null
 
   return (
-    <section className={vendorTool.classNames('row-between', classes.container)}>
-      <section className={classes.left}>
+    <section className={pageClasses.root}>
+      <section className={pageClasses.main}>
         <header className={vendorTool.classNames('row-between', classes.header)}>
           <vendorTool.ui.Header
             as='h3'
@@ -101,7 +98,7 @@ const ProfileDashboard = () => {
           />
         ))}
       </section>
-      <aside className={classes.right}>
+      <aside className={pageClasses.aside}>
         <vendorTool.ui.Header
           as='h3'
           icon='bookmark'
@@ -140,6 +137,7 @@ const ProfileDashboard = () => {
                 key={combo.identity.id}
                 traderCombo={combo.identity}
                 traderEnv={env}
+                onClick={handleClickCombo}
               />
             )
           })}

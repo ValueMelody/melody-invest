@@ -8,6 +8,7 @@ import useTraderState from '../../../states/useTraderState'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import RequiredLabel from '../../elements/RequiredLabel'
 import ProfileCard from '../blocks/ProfileCard'
+import usePrivateGuard from '../../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
@@ -27,6 +28,8 @@ const useStyles = vendorTool.jss.createUseStyles(({
 }))
 
 const ComboBuilder = () => {
+  usePrivateGuard()
+
   const classes = useStyles()
   const navigate = vendorTool.router.useNavigate()
 

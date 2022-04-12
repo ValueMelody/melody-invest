@@ -9,6 +9,7 @@ import TraderComboCard from '../elements/TraderComboCard'
 import HoldingCard from '../blocks/HoldingCard'
 import ProfileCard from '../blocks/ProfileCard'
 import * as themeEnum from '../../../enums/theme'
+import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: themeEnum.Theme,
@@ -36,6 +37,7 @@ const useStyles = vendorTool.jss.createUseStyles((
 
 const TopCombos = () => {
   const classes = useStyles()
+  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
@@ -78,8 +80,8 @@ const TopCombos = () => {
           )
         })}
       </header>
-      <section className={vendorTool.classNames('row-between', classes.container)}>
-        <section className={classes.left}>
+      <section className={pageClasses.root}>
+        <section className={pageClasses.main}>
           <vendorTool.ui.Header
             as='h3'
             icon='history'
@@ -98,11 +100,11 @@ const TopCombos = () => {
             />
           ))}
         </section>
-        <section className={classes.right}>
+        <section className={pageClasses.aside}>
           <vendorTool.ui.Header
             as='h3'
             icon='star'
-            content={localeTool.t('topCombos.profiles')}
+            content={localeTool.t('common.includedProfiles')}
             className={classes.asideTitle}
           />
           {focusedCombo.identity.traderIds.map((traderId) => (

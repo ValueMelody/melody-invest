@@ -19,6 +19,10 @@ const validateGetEnvParams = (id: number) => {
   if (!id) throw errorEnum.CUSTOM.PARAMS_MISSING
 }
 
+const validateGetComboParams = (id: number) => {
+  if (!id) throw errorEnum.CUSTOM.PARAMS_MISSING
+}
+
 const validateCreateProfileParams = (traderId: number, traderPattern: interfaces.traderPatternModel.Create) => {
   if (!traderId || !traderPattern) throw errorEnum.CUSTOM.PARAMS_MISSING
 }
@@ -80,6 +84,17 @@ tradersRouter.get(
     return res.status(200).send(details)
   },
 )
+
+tradersRouter.get('/combos/:id', authMiddleware.normalUser, async (req, res) => {
+  const comboId = parseInt(req.params.id)
+  validateGetComboParams(comboId)
+
+  const auth: interfaces.reqs.Auth = req.body.auth
+  await crudTraders.verifyUserToTraderCombo(auth.id, comboId)
+
+  const comboDetail = await crudTraders.getComboDetail(comboId)
+  return res.status(200).send(comboDetail)
+})
 
 tradersRouter.get('/envs/tops', async (req, res) => {
   const tops = await crudTraders.getTopProfiles()

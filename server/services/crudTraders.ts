@@ -11,6 +11,7 @@ import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 import * as generateTool from '../tools/generate'
 import * as traderLogic from '../logics/trader'
+import buildComboDetail from './shared/buildComboDetail'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
@@ -61,6 +62,13 @@ export const verifyUserToTraderEnv = async (
     const envFollower = await traderEnvFollowerModel.getByUK(userId, traderEnvId)
     if (!envFollower) throw errorEnum.DEFAULT.NOT_FOUND
   }
+}
+
+export const verifyUserToTraderCombo = async (
+  userId: number, traderComboId: number,
+) => {
+  const relation = await traderComboFollowerModel.getByUK(userId, traderComboId)
+  if (!relation) throw errorEnum.DEFAULT.NOT_FOUND
 }
 
 export const getUserTraderEnvIds = async (
@@ -190,6 +198,20 @@ export const getTraderEnv = async (
   const name = envFollower && !env.isSystem ? envFollower.name : env.name
 
   return { ...env, name }
+}
+
+export const getComboDetail = async (
+  comboId: number,
+): Promise<interfaces.traderRes.ComboDetail> => {
+  const combo = await traderComboModel.getByPK(comboId)
+  if (!combo) throw errorEnum.DEFAULT.NOT_FOUND
+
+  const traders = await traderModel.getInPKs(combo.traderIds)
+  const comboDetail = await buildComboDetail(traders)
+  return {
+    profiles: comboDetail.profiles,
+    holdings: comboDetail.holdings,
+  }
 }
 
 export const createTraderEnv = async (

@@ -17,10 +17,13 @@
     "common.environments": "Environments",
     "common.selectEnvironment": "Select an Environment",
     "common.env": "Env",
+    "common.combo": "Combo",
     "common.system": "System",
     "common.search": "Search",
     "common.never": "Never",
     "common.confirmAndWatch": "Confirm and Start Watch",
+    "common.includedProfiles": "Included Profiles",
+    "common.showMoreHistory": "Show More History",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -53,11 +56,10 @@
     "topProfiles.title": "Top Profiles",
 
     "topCombos.title": "Top Combos",
-    "topCombos.profiles": "Included Profiles",
     "topCombos.history": "Recent Holding History",
 
-    "systemCombo.default10": "Combination of Top10 Profiles",
-    "systemCombo.bigTech10": "Combination of Top10 Profiles",
+    "systemCombo.default10": "Top10 Combined",
+    "systemCombo.bigTech10": "Top10 Combined",
 
     "holdingCard.sinceLast": "Since Last",
     "holdingCard.sinceStart": "Since start",
@@ -78,7 +80,6 @@
 
     "profile.history": "Holding History",
     "profile.showAllHoldings": "Show All Holdings",
-    "profile.showMoreHistory": "Show More History",
     "profile.noResultYet": "There's no result generated for this profile yet",
     "profile.value.increased": "Total value increased compare to previous",
     "profile.value.decreased": "Total value decreased compare to previous",
@@ -100,6 +101,8 @@
     "comboBuilder.noEnoughProfiles": "Please add at lease 2 profiles to your watch list for this environment first!",
 
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
+    "traderCombo.history": "Holding History",
+    "traderCombo.noResultYet": "There's no result generated for this combo yet",
 
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",
@@ -121,7 +124,7 @@
     "availableTickers.title": "Available Stocks",
     "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
 
-    "gain.yearly": "Annual Return",
+    "gain.yearly": "Annual",
     "gain.pastYear": "One Year",
     "gain.pastQuarter": "One Quarter",
     "gain.pastMonth": "One Month",
