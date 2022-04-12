@@ -165,6 +165,31 @@ const useTraderState = () => {
     ))
   }
 
+  const storeComboDetail = (
+    id: number,
+    comboDetail: interfaces.traderRes.ComboDetail,
+  ) => {
+    const profiles = comboDetail.profiles.reduce((containedProfiles, profile) => ({
+      ...containedProfiles,
+      [profile.trader.id]: { ...profile },
+    }), {})
+    store.setProfileDetails((details) => ({ ...details, ...profiles }))
+
+    store.setResources((resource) => {
+      const combos = resource.userTraderCombos.map((combo) => {
+        if (combo.identity.id !== id) return combo
+        return {
+          ...combo,
+          holdings: comboDetail.holdings,
+        }
+      })
+      return {
+        ...resource,
+        userTraderCombos: combos,
+      }
+    })
+  }
+
   // ------------------------------------------------------------ Remove --
 
   const removeWatchedProfile = (traderId: number) => {
@@ -258,6 +283,19 @@ const useTraderState = () => {
     try {
       const env = await requestAdapter.sendGetRequest(endpoint)
       storeTraderEnv(env)
+    } catch (e: any) {
+      store.showRequestError(e?.message)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const fetchTraderCombo = async (id: number) => {
+    const endpoint = `${routerEnum.API.TRADERS}/combos/${id}`
+    store.startLoading()
+    try {
+      const detail = await requestAdapter.sendGetRequest(endpoint)
+      storeComboDetail(id, detail)
     } catch (e: any) {
       store.showRequestError(e?.message)
     } finally {
@@ -392,6 +430,7 @@ const useTraderState = () => {
     fetchBehaviorDetail,
     fetchTickerDetail,
     fetchTraderEnv,
+    fetchTraderCombo,
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,

@@ -7,7 +7,7 @@ const useStyles = vendorTool.jss.createUseStyles((
   root: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
+    justifyContent: 'space-between',
     alignItems: 'flex-start',
     flexWrap: 'wrap',
   },

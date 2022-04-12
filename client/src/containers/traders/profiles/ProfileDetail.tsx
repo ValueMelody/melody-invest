@@ -7,6 +7,7 @@ import * as routerTool from '../../../tools/router'
 import ProfileCard from '../blocks/ProfileCard'
 import HoldingCard from '../blocks/HoldingCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
+import useShowMore from '../../hooks/useShowMore'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -37,7 +38,7 @@ const ProfileDetail = () => {
   } = useTraderState()
   const { getUser } = useUserState()
 
-  const [showHoldingTotal, setShowHoldingTotal] = vendorTool.react.useState(5)
+  const { displayedTotal, renderShowMoreButton } = useShowMore()
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
@@ -49,7 +50,7 @@ const ProfileDetail = () => {
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
-  const displayedHoldings = holdings.slice(0, showHoldingTotal)
+  const displayedHoldings = holdings.slice(0, displayedTotal)
 
   // ------------------------------------------------------------ Effect --
 
@@ -70,10 +71,6 @@ const ProfileDetail = () => {
   }, [profileDetail])
 
   // ------------------------------------------------------------ Handler --
-
-  const handleClickShowMore = () => {
-    setShowHoldingTotal(showHoldingTotal + 10)
-  }
 
   const handleClickEnv = (traderId: number, accessCode: string) => {
     const link = routerTool.profileDetailRoute(traderId, accessCode)
@@ -126,13 +123,7 @@ const ProfileDetail = () => {
             initialValue={constants.trader.initial.CASH}
           />
         ))}
-        {showHoldingTotal < holdings.length && (
-          <div className='row-around'>
-            <vendorTool.ui.Button onClick={handleClickShowMore}>
-              {localeTool.t('profile.showMoreHistory')}
-            </vendorTool.ui.Button>
-          </div>
-        )}
+        {displayedTotal < holdings.length && renderShowMoreButton()}
       </div>
     </div>
   )

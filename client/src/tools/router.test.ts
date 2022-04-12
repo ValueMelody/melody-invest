@@ -31,6 +31,11 @@ test('could get correct url for combo build route', () => {
   expect(routerTool.comboBuildRoute()).toBe('/traders/combos/build')
 })
 
+test('could get correct url for combo detail route', () => {
+  expect(routerTool.comboDetailRoute(1)).toBe('/traders/combos/1')
+  expect(routerTool.comboDetailRoute(2)).toBe('/traders/combos/2')
+})
+
 test('could get correct url for top combos route', () => {
   expect(routerTool.topCombosRoute()).toBe('/traders/combos/tops')
 })

@@ -50,7 +50,7 @@ const TraderComboCard = ({
         <vendorTool.ui.Card.Header
           content={(
             <div className='row-between'>
-              {traderCombo.name}
+              <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
             </div>
           )}
         />

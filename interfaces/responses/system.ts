@@ -1,9 +1,17 @@
 import * as traderEnvModel from '../models/traderEnv'
 import * as tickerModel from '../models/ticker'
+import * as traderComboModel from '../models/traderCombo'
+import * as traderHoldingModel from '../models/traderHolding'
 import * as traderRes from './trader'
+
+export interface ComboDetail {
+  identity: traderComboModel.Identity;
+  holdings: traderHoldingModel.Detail[];
+  profiles: traderRes.TraderProfile[];
+}
 
 export interface Defaults {
   traderEnvs: traderEnvModel.Record[];
-  traderCombos: traderRes.ComboDetail[];
+  traderCombos: ComboDetail[];
   tickerIdentities: tickerModel.Identity[];
 }

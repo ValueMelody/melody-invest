@@ -15,7 +15,7 @@ const useStyles = vendorTool.jss.createUseStyles((
 ) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',
-    minWidth: '28rem',
+    minWidth: '26rem',
     padding: '0 !important',
   },
   header: {
