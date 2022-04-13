@@ -51,12 +51,17 @@ export const pickOneNumber = (first: number, second: number): number => {
   return value === 1 ? first : second
 }
 
-export const getChangePercent = (value: number, compareValue: number): number => {
+export const getChangePercent = (
+  value: number,
+  compareValue: number,
+): number => {
   const differ = value - compareValue
   return Math.floor(differ * 10000 / compareValue)
 }
 
-export const idArrayToIdString = (ids: number[] | null): string | null => {
+export const joinNumbersToString = (
+  ids: number[] | null,
+): string | null => {
   if (!ids) return null
   return ids.sort((a, b) => a - b).join(',')
 }
