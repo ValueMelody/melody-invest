@@ -53,7 +53,48 @@ test('could generate activation code', async () => {
 test('could encode jwt', async () => {
   const first = generate.encodeJWT({ id: 1, email: 'abc' }, '12h')
   const second = generate.encodeJWT({ id: 1, email: 'abc' }, '30d')
+  const third = generate.encodeJWT({ id: 2, email: 'abc' }, '30d')
   expect(first.length).toBeTruthy()
   expect(second.length).toBeTruthy()
+  expect(third.length).toBeTruthy()
   expect(first).not.toEqual(second)
+  expect(second).not.toEqual(third)
+  expect(third).not.toEqual(first)
+})
+
+test('could decode jwt', async () => {
+  const jwt = generate.encodeJWT({ id: 1, email: 'abc' }, '12h')
+  const result = generate.decodeJWT(jwt)
+  expect(result?.id).toBe(1)
+  expect(result?.email).toBe('abc')
+})
+
+test('could pick number in range', async () => {
+  const num1 = generate.pickNumberInRange(1, 2)
+  expect(num1).toBeGreaterThanOrEqual(1)
+  expect(num1).toBeLessThanOrEqual(2)
+  const num2 = generate.pickNumberInRange(3, 5)
+  expect(num2).toBeGreaterThanOrEqual(3)
+  expect(num2).toBeLessThanOrEqual(5)
+})
+
+test('could pick one number', async () => {
+  const num1 = generate.pickOneNumber(1, 2)
+  expect(num1).toBeGreaterThanOrEqual(1)
+  expect(num1).toBeLessThanOrEqual(2)
+  const num2 = generate.pickOneNumber(3, 5)
+  expect(num2).toBeGreaterThanOrEqual(3)
+  expect(num2).toBeLessThanOrEqual(5)
+})
+
+test('could get changed percent', async () => {
+  expect(generate.getChangePercent(100, 10)).toBe(90000)
+  expect(generate.getChangePercent(90, 100)).toBe(-1000)
+})
+
+test('could join numbers as string', async () => {
+  expect(generate.joinNumbersToString(null)).toBe(null)
+  expect(generate.joinNumbersToString([1, 2, 3, 4, 5])).toBe('1,2,3,4,5')
+  expect(generate.joinNumbersToString([5, 4, 3])).toBe('3,4,5')
+  expect(generate.joinNumbersToString([3, 1, 2])).toBe('1,2,3')
 })
