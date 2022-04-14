@@ -64,6 +64,20 @@
     "holdingCard.sinceLast": "Since Last",
     "holdingCard.sinceStart": "Since start",
 
+    "tickerList.categories": "Stock Categories",
+
+    "tickerCategory.tech": "Technology",
+    "tickerCategory.consumerCyclical": "Consumer Cyclical",
+    "tickerCategory.communication": "Communication Services",
+    "tickerCategory.consumerDefensive": "Consumer Defensive",
+    "tickerCategory.financial": "Financial Services",
+    "tickerCategory.health": "Healthcare",
+    "tickerCategory.industry": "Industrials",
+    "tickerCategory.energy": "Energy",
+    "tickerCategory.utility": "Utilities",
+    "tickerCategory.material": "Basic Materials",
+    "tickerCategory.realEstate": "Real Estate",
+
     "tradeBehaviors.title": "Available Behaviors",
     "tradeBehaviors.type": "Type of Trade Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",

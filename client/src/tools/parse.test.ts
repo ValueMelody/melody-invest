@@ -41,6 +41,13 @@ test('could parse behavior title', () => {
   expect(parseTool.behaviorTitle('priceYearlyDecreaseSell')).toBe(localeTool.t('behaviorTitle.priceYearlyDecreaseSell'))
 })
 
+test('could parse category name', () => {
+  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.tech' }))
+    .toBe(localeTool.t('tickerCategory.tech'))
+  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.utility' }))
+    .toBe(localeTool.t('tickerCategory.utility'))
+})
+
 test('could parse behavior desc', () => {
   expect(parseTool.behaviorDesc('tickerMaxPercent')).toBe(localeTool.t('behaviorDesc.tickerMaxPercent'))
   expect(parseTool.behaviorDesc('tradeFrequency')).toBe(localeTool.t('behaviorDesc.tradeFrequency'))

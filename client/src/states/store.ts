@@ -15,7 +15,8 @@ const useStore = () => {
   })
 
   const [resources, setResources] = vendorTool.react.useState<context.Resources>({
-    tickerIdentities: null,
+    tickerIdentities: {},
+    tickerCategories: {},
     userTraderIds: currentUserType ? null : [],
     userTraderEnvs: [],
     userTraderCombos: [],

@@ -38,40 +38,54 @@ export const behaviorValue = (
   return value
 }
 
-export const behaviorTitle = (behavior: interfaces.traderPatternModel.Behavior) => {
+export const behaviorTitle = (
+  behavior: interfaces.traderPatternModel.Behavior,
+): string => {
   return localeTool.t(`behaviorTitle.${behavior}`)
 }
 
-export const behaviorDesc = (behavior: interfaces.traderPatternModel.Behavior) => {
+export const behaviorDesc = (
+  behavior: interfaces.traderPatternModel.Behavior,
+): string => {
   return localeTool.t(`behaviorDesc.${behavior}`)
+}
+
+export const tickerCategoryName = (
+  tickerCategory: interfaces.tickerCategoryModel.Record,
+): string => {
+  return localeTool.t(tickerCategory.name)
 }
 
 export const traderEnvName = (
   traderEnv: interfaces.traderEnvModel.Record,
-) => {
+): string | null => {
   if (!traderEnv.isSystem) return traderEnv.name
   return traderEnv.name ? localeTool.t(traderEnv.name) : ''
 }
 
-export const traderEnvStartDate = (traderEnv: interfaces.traderEnvModel.Record) => {
+export const traderEnvStartDate = (
+  traderEnv: interfaces.traderEnvModel.Record,
+): string => {
   return localeTool.t('traderEnv.startAt', { date: traderEnv.startDate })
 }
 
-export const traderEnvTickers = (traderEnv: interfaces.traderEnvModel.Record) => {
+export const traderEnvTickers = (
+  traderEnv: interfaces.traderEnvModel.Record,
+): string => {
   if (!traderEnv.tickerIds) return localeTool.t('traderEnv.allTickers')
   return localeTool.t('traderEnv.selectedTickers', { num: traderEnv.tickerIds.length })
 }
 
 export const traderComboName = (
   traderCombo: interfaces.traderComboModel.Identity,
-) => {
+): string => {
   if (!traderCombo.isSystem) return traderCombo.name
   return traderCombo.name ? localeTool.t(traderCombo.name) : ''
 }
 
 export const traderComboTraders = (
   traderCombo: interfaces.traderComboModel.Identity,
-) => {
+): string => {
   return localeTool.t('traderCombo.selectedTraders', { num: traderCombo.traderIds.length })
 }
 

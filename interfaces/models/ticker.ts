@@ -3,6 +3,7 @@ export interface Identity {
   symbol: string;
   region: string;
   name: string;
+  tickerCategoryId: number | null;
 }
 
 export interface Record extends Identity {

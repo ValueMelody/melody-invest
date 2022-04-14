@@ -38,9 +38,23 @@ const useSystemState = () => {
       ...identities,
       [identity.id]: identity,
     }), {})
+    const tickerCategories = systemDefaults.tickerCategories.reduce((categories, category) => ({
+      ...categories,
+      [category.id]: {
+        ...category,
+        name: parseTool.tickerCategoryName(category),
+      },
+    }), {})
     store.setResources((resources) => ({
       ...resources,
-      tickerIdentities,
+      tickerIdentities: {
+        ...resources.tickerIdentities,
+        ...tickerIdentities,
+      },
+      tickerCategories: {
+        ...resources.tickerCategories,
+        ...tickerCategories,
+      },
       userTraderEnvs: [
         ...resources.userTraderEnvs,
         ...parsedEnvs,
