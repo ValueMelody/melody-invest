@@ -42,9 +42,9 @@ test('could parse behavior title', () => {
 })
 
 test('could parse category name', () => {
-  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.tech'}))
+  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.tech' }))
     .toBe(localeTool.t('tickerCategory.tech'))
-  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.utility'}))
+  expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.utility' }))
     .toBe(localeTool.t('tickerCategory.utility'))
 })
 
