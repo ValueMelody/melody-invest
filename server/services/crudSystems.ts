@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as commonEnum from '../enums/common'
 import * as errorEnum from '../enums/error'
 import * as tickerModel from '../models/ticker'
+import * as tickerCategoryModel from '../models/tickerCategory'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
 import * as runTool from '../tools/run'
@@ -55,13 +56,17 @@ export const getDefaults = async (): Promise<interfaces.systemRes.Defaults> => {
     name: ticker.name,
     region: ticker.region,
     symbol: ticker.symbol,
+    tickerCategoryId: ticker.tickerCategoryId,
   }))
 
   const combos = await getSystemTraderCombos()
+
+  const categories = await tickerCategoryModel.getAll()
 
   return {
     tickerIdentities,
     traderEnvs: systemTraderEnvs,
     traderCombos: combos,
+    tickerCategories: categories,
   }
 }

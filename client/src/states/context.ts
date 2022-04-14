@@ -13,10 +13,6 @@ export interface Common {
   messages: Message[];
 }
 
-interface TickerIdentities {
-  [tickerId: number]: interfaces.tickerModel.Identity;
-}
-
 interface TopProfileIds {
   yearly: number[];
   pastYear: number[];
@@ -35,7 +31,12 @@ export interface ComboDetail {
 }
 
 export interface Resources {
-  tickerIdentities: TickerIdentities | null;
+  tickerIdentities: {
+    [tickerId: number]: interfaces.tickerModel.Identity;
+  };
+  tickerCategories: {
+    [categoryId: number]: interfaces.tickerCategoryModel.Record;
+  };
   userTraderIds: number[] | null;
   userTraderEnvs: interfaces.traderEnvModel.Record[];
   userTraderCombos: ComboDetail[];

@@ -4,6 +4,7 @@ import * as tickerDailyModel from './models/tickerDaily'
 import * as tickerQuarterlyModel from './models/tickerQuarterly'
 import * as tickerYearlyModel from './models/tickerYearly'
 import * as tickerHolderModel from './models/tickerHolder'
+import * as tickerCategoryModel from './models/tickerCategory'
 import * as traderModel from './models/trader'
 import * as traderEnvModel from './models/traderEnv'
 import * as traderEnvFollowerModel from './models/traderEnvFollower'
@@ -30,6 +31,7 @@ export {
   tickerQuarterlyModel,
   tickerYearlyModel,
   tickerHolderModel,
+  tickerCategoryModel,
   traderModel,
   traderEnvModel,
   traderEnvFollowerModel,

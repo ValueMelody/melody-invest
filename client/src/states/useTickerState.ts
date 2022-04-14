@@ -10,13 +10,25 @@ const useTickerState = () => {
   const getTickerIdentity = (
     tickerId: number,
   ): interfaces.tickerModel.Identity | null => {
-    const identities = store.resources.tickerIdentities || {}
-    if (!identities[tickerId]) return null
-    return identities[tickerId]
+    const identities = store.resources.tickerIdentities
+    return identities[tickerId] || null
   }
 
   const getTickerIdentities = (): interfaces.tickerModel.Identity[] => {
-    return Object.values(store.resources.tickerIdentities || {})
+    const tickers = Object.values(store.resources.tickerIdentities)
+    return tickers.sort((prev, curr) => curr.symbol > prev.symbol ? -1 : 1)
+  }
+
+  const getTickerCategory = (
+    categoryId: number,
+  ): interfaces.tickerCategoryModel.Record | null => {
+    const categories = store.resources.tickerCategories
+    return categories[categoryId] || null
+  }
+
+  const getTickerCategories = (): interfaces.tickerCategoryModel.Record[] => {
+    const categories = Object.values(store.resources.tickerCategories)
+    return categories.sort((prev, curr) => curr.id > prev.id ? -1 : 1)
   }
 
   // ------------------------------------------------------------ export --
@@ -24,6 +36,8 @@ const useTickerState = () => {
   return {
     getTickerIdentity,
     getTickerIdentities,
+    getTickerCategory,
+    getTickerCategories,
   }
 }
 

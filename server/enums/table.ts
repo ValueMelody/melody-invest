@@ -5,6 +5,7 @@ export const NAME = {
   TICKER_YEARLY: 'ticker_yearly',
   TICKER_QUARTERLY: 'ticker_quarterly',
   TICKER_HOLDER: 'ticker_holder',
+  TICKER_CATEGORY: 'ticker_category',
   INDICATOR_YEARLY: 'indicator_yearly',
   INDICATOR_QUARTERLY: 'indicator_quarterly',
   INDICATOR_MONTHLY: 'indicator_monthly',
