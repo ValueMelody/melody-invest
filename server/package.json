@@ -4,6 +4,7 @@
   "scripts": {
     "start": "ts-node-dev ./index.ts",
     "start-check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
+    "tsc": "tsc",
     "build": "tsc --build --clean && tsc --build --force",
     "migrate": "knex migrate:latest",
     "lint": "eslint ./ --ext .ts",
