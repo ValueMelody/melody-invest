@@ -11,6 +11,7 @@ import * as runTool from '../tools/run'
 import * as generateTool from '../tools/generate'
 import * as patternLogic from '../logics/pattern'
 import * as marketLogic from '../logics/market'
+import * as transactionLogic from '../logics/transaction'
 import * as errorEnums from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 
@@ -74,8 +75,8 @@ const calcTraderPerformance = async (
     ? await cleanupTrader(targetTrader.id)
     : targetTrader
 
-  const tickerMinPercent = pattern.tickerMinPercent / 100
-  const tickerMaxPercent = pattern.tickerMaxPercent / 100
+  const tickerMinPercent = pattern.tickerMinPercent
+  const tickerMaxPercent = pattern.tickerMaxPercent
   const holdingBuyPercent = pattern.holdingBuyPercent / 100
   const holdingSellPercent = pattern.holdingSellPercent / 100
   const cashMaxPercent = pattern.cashMaxPercent / 100
@@ -108,89 +109,29 @@ const calcTraderPerformance = async (
       const totalCash = holding ? holding.totalCash : marketLogic.getInitialCash()
       const holdings = holding ? holding.holdings : []
 
-      const detailsBeforeUpdate: HoldingDetails = {
-        totalValue: totalCash, totalCash, holdings: [],
-      }
-      const detailsAfterUpdate = holdings.reduce((details, holding) => {
-        const matched = availableTargets[holding.tickerId]
-        const matchedDaily = matched?.daily
-        const holdingValue = matchedDaily
-          ? holding.shares * matchedDaily.closePrice * matchedDaily.splitMultiplier
-          : holding.value
-        const value = Math.floor(holdingValue)
-        const splitMultiplier = matchedDaily?.splitMultiplier || holding.splitMultiplier
-        const updatedHolding = {
-          tickerId: holding.tickerId,
-          shares: holding.shares,
-          value,
-          splitMultiplier,
-        }
-        return {
-          totalValue: details.totalValue + value,
-          totalCash: details.totalCash,
-          holdings: [...details.holdings, updatedHolding],
-        }
-      }, detailsBeforeUpdate)
-
-      let hasTransaction = false
+      const detailsAfterUpdate = transactionLogic.detailsFromCashAndHoldings(
+        totalCash, holdings, availableTargets,
+      )
 
       const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent
 
-      const shouldRebalance = pattern.rebalanceFrequency &&
+      const shouldRebalance =
+        !!pattern.rebalanceFrequency &&
         dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
-      const detailsBeforeRebalance: HoldingDetails = {
-        totalValue: detailsAfterUpdate.totalValue,
-        totalCash: detailsAfterUpdate.totalCash,
-        holdings: [],
-      }
-      const detailsAfterRebalance = detailsAfterUpdate.holdings.reduce((details, holding) => {
-        const matched = availableTargets[holding.tickerId]
-        const matchedDaily = matched?.daily
-        const holdingPercent = holding.value / details.totalValue
-        const isMoreThanMaxPercent = matchedDaily && holdingPercent > tickerMaxPercent
-        const isLessThanMinPercent = matchedDaily && holdingPercent < tickerMinPercent
 
-        if (shouldRebalance && isLessThanMinPercent) {
-          const cashAfterSell = details.totalCash + holding.value
-          if (cashAfterSell <= maxCashValue) {
-            hasTransaction = true
-            return {
-              totalValue: details.totalValue,
-              totalCash: cashAfterSell,
-              holdings: details.holdings.filter((hold) => hold.tickerId !== holding.tickerId),
-            }
-          }
-        }
+      const {
+        holdingDetails: detailsAfterRebalance,
+        hasTransaction: hasRebalanceTransaction,
+      } = transactionLogic.detailsAfterRebalance(
+        shouldRebalance,
+        detailsAfterUpdate,
+        availableTargets,
+        tickerMinPercent,
+        tickerMaxPercent,
+        maxCashValue,
+      )
 
-        if (shouldRebalance && isMoreThanMaxPercent) {
-          const sellPercent = holdingPercent - tickerMaxPercent
-          const sellValue = details.totalValue * sellPercent
-          const dailyFinalPrice = Math.floor(matchedDaily.closePrice * matchedDaily.splitMultiplier)
-          const sharesSold = Math.ceil(sellValue / dailyFinalPrice)
-          const sharesLeft = holding.shares - sharesSold
-          const cashAfterSell = details.totalCash + sharesSold * dailyFinalPrice
-          if (sharesLeft && cashAfterSell <= maxCashValue) {
-            hasTransaction = true
-            const holdingAfterSell = {
-              tickerId: holding.tickerId,
-              shares: sharesLeft,
-              value: Math.floor(sharesLeft * dailyFinalPrice),
-              splitMultiplier: matchedDaily.splitMultiplier,
-            }
-            return {
-              totalValue: details.totalValue,
-              totalCash: cashAfterSell,
-              holdings: [...details.holdings, holdingAfterSell],
-            }
-          }
-        }
-
-        return {
-          totalValue: details.totalValue,
-          totalCash: details.totalCash,
-          holdings: [...details.holdings, holding],
-        }
-      }, detailsBeforeRebalance)
+      let hasTransaction = hasRebalanceTransaction
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
       const sellTickerIds = Object.values(availableTargets)
