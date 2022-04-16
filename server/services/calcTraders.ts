@@ -78,7 +78,7 @@ const calcTraderPerformance = async (
 
   const tickerMinPercent = pattern.tickerMinPercent
   const tickerMaxPercent = pattern.tickerMaxPercent
-  const holdingBuyPercent = pattern.holdingBuyPercent / 100
+  const holdingBuyPercent = pattern.holdingBuyPercent
   const holdingSellPercent = pattern.holdingSellPercent
   const cashMaxPercent = pattern.cashMaxPercent
 
@@ -114,12 +114,11 @@ const calcTraderPerformance = async (
         totalCash, holdings, availableTargets,
       )
 
-      const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent / 100
-
       const shouldRebalance =
         !!pattern.rebalanceFrequency &&
         dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
 
+      const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent / 100
       const {
         holdingDetails: detailsAfterRebalance,
         hasTransaction: hasRebalanceTransaction,
@@ -133,9 +132,10 @@ const calcTraderPerformance = async (
       )
 
       const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
-      const sellTickerIds = evaluationLogic.getTickersSellOrdering(
+      const sellTickerEvaluations = evaluationLogic.getTickerSellEaluations(
         holdingTickerIds, pattern, availableTargets,
       )
+      const sellTickerIds = sellTickerEvaluations.map((sellTickerEvaluation) => sellTickerEvaluation.tickerId)
 
       const {
         holdingDetails: detailsAfterSell,
@@ -149,75 +149,31 @@ const calcTraderPerformance = async (
         maxCashValue,
       )
 
-      let hasTransaction = hasRebalanceTransaction || hasSellTransaction
+      const buyTickerEvaluations = evaluationLogic.getTickerBuyEaluations(
+        Object.keys(availableTargets).map((id) => parseInt(id)),
+        pattern,
+        availableTargets,
+      )
+      const buyTickerIds = buyTickerEvaluations.map((evaluation) => evaluation.tickerId)
 
-      const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent
+      const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent / 100
+      const {
+        holdingDetails: detailsAfterBuy,
+        hasTransaction: hasBuyTransaction,
+      } = transactionLogic.detailsAfterBuy(
+        detailsAfterSell,
+        buyTickerIds,
+        availableTargets,
+        maxBuyAmount,
+        tickerMaxPercent,
+      )
 
-      const buyTargets: interfaces.dailyTickersModel.DailyTicker[] = Object.values(availableTargets)
-        .filter(({ daily, quarterly, yearly, info }) => {
-          const preferValue = patternLogic.getTickerPreferValue(
-            pattern.buyPreference, daily, quarterly, yearly,
-          )
-          if (preferValue === null) return false
-
-          return !!patternLogic.getPriceMovementBuyWeights(pattern, info)
-        })
-        .sort((first, second) => {
-          const firstWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, first.info,
-          )
-          const secondWeight = patternLogic.getPriceMovementBuyWeights(
-            pattern, second.info,
-          )
-          if (firstWeight > secondWeight) return -1
-          if (firstWeight < secondWeight) return 1
-
-          const firstPreferValue = patternLogic.getTickerPreferValue(
-            pattern.buyPreference, first.daily, first.quarterly, first.yearly,
-          )
-          const secondPreferValue = patternLogic.getTickerPreferValue(
-            pattern.buyPreference, second.daily, second.quarterly, second.yearly,
-          )
-          return firstPreferValue! >= secondPreferValue! ? -1 : 1
-        })
-
-      const detailsAfterBuy = buyTargets.reduce((details, { daily }) => {
-        const maxCashToUse = details.totalCash < maxBuyAmount ? details.totalCash : maxBuyAmount
-        const sharePrice = Math.floor(daily.closePrice * daily.splitMultiplier)
-        const sharesBought = Math.floor(maxCashToUse / sharePrice)
-        if (!sharesBought) return details
-
-        const holdingIndex = details.holdings.findIndex((holding) => holding.tickerId === daily.tickerId)
-        const isNewHolding = holdingIndex === -1
-        const sharesAfterBuy = isNewHolding ? sharesBought : sharesBought + details.holdings[holdingIndex].shares
-        const valueAfterBuy = sharesAfterBuy * sharePrice
-        const percentAfterBuy = valueAfterBuy / details.totalValue
-        const isLessThanMaxPercent = percentAfterBuy < tickerMaxPercent
-        if (!isLessThanMaxPercent) return details
-
-        hasTransaction = true
-
-        const holdingDetail = {
-          tickerId: daily.tickerId,
-          shares: sharesAfterBuy,
-          value: valueAfterBuy,
-          splitMultiplier: daily.splitMultiplier,
-        }
-        const holdings = isNewHolding
-          ? [...details.holdings, holdingDetail]
-          : details.holdings.map((holding, index) => index === holdingIndex ? holdingDetail : holding)
-        return {
-          totalValue: details.totalValue,
-          totalCash: details.totalCash - sharePrice * sharesBought,
-          holdings,
-        }
-      }, detailsAfterSell)
-
-      if (shouldRebalance) {
+      if (shouldRebalance && hasRebalanceTransaction) {
         rebalancedAt = tradeDate
         hasRebalanced = true
       }
 
+      const hasTransaction = hasRebalanceTransaction || hasSellTransaction || hasBuyTransaction
       if (hasTransaction) {
         if (!startedAt) startedAt = tradeDate
         holding = await traderHoldingModel.create({

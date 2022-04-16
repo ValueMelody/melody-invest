@@ -104,6 +104,11 @@ export const refreshHoldingsForMoreThanMaxPercernt = (
   }
 }
 
+interface DetailsAndTransaction {
+  holdingDetails: HoldingDetails;
+    hasTransaction: boolean;
+}
+
 export const detailsAfterRebalance = (
   shouldRebalance: boolean,
   currentDetails: HoldingDetails,
@@ -111,10 +116,7 @@ export const detailsAfterRebalance = (
   tickerMinPercent: number,
   tickerMaxPercent: number,
   maxCashValue: number,
-): {
-  holdingDetails: HoldingDetails;
-  hasTransaction: boolean;
-} => {
+): DetailsAndTransaction => {
   if (!shouldRebalance) {
     return {
       holdingDetails: currentDetails,
@@ -200,7 +202,7 @@ export const detailsAfterSell = (
   holdingSellPercent: number,
   tickerMinPercent: number,
   maxCashValue: number,
-) => {
+): DetailsAndTransaction => {
   let hasTransaction = false
   const holdingDetails = sellTickerIds.reduce((details, tickerId) => {
     const matchedDaily = dailyTickers[tickerId].daily
@@ -224,5 +226,80 @@ export const detailsAfterSell = (
   return {
     hasTransaction,
     holdingDetails,
+  }
+}
+
+export const refreshHoldingsForBuy = (
+  holdingDetails: HoldingDetails,
+  holdingForBuy: interfaces.traderHoldingModel.Holding,
+  tickerDaily: interfaces.tickerDailyModel.Record,
+  maxBuyAmount: number,
+  tickerMaxPercent: number,
+): HoldingDetails | null => {
+  const isNewHolding = !holdingForBuy.shares
+  const maxCashToUse = holdingDetails.totalCash < maxBuyAmount
+    ? holdingDetails.totalCash
+    : maxBuyAmount
+  const sharesBought = Math.floor(maxCashToUse / tickerDaily.closePrice)
+  if (!sharesBought) return null
+
+  const baseSharesBought = sharesBought / tickerDaily.splitMultiplier
+  const adjustedPrice = tickerDaily.closePrice * tickerDaily.splitMultiplier
+  const valueBought = baseSharesBought * adjustedPrice
+
+  const sharesAfterBuy = baseSharesBought + holdingForBuy.shares
+  const valueAfterBuy = sharesAfterBuy * adjustedPrice
+  const percentAfterBuy = (valueAfterBuy / holdingDetails.totalValue) * 100
+  const isLessThanMaxPercent = percentAfterBuy < tickerMaxPercent
+  if (!isLessThanMaxPercent) return null
+
+  const holdingDetail = {
+    tickerId: holdingForBuy.tickerId,
+    shares: sharesAfterBuy,
+    value: valueAfterBuy,
+    splitMultiplier: tickerDaily.splitMultiplier,
+  }
+
+  const holdings = isNewHolding
+    ? [...holdingDetails.holdings, holdingDetail]
+    : holdingDetails.holdings.map((hold) => hold.tickerId === holdingForBuy.tickerId ? holdingDetail : hold)
+  return {
+    totalValue: holdingDetails.totalValue,
+    totalCash: holdingDetails.totalCash - valueBought,
+    holdings,
+  }
+}
+
+export const detailsAfterBuy = (
+  currentDetails: HoldingDetails,
+  buyTickerIds: number[],
+  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  maxBuyAmount: number,
+  tickerMaxPercent: number,
+): DetailsAndTransaction => {
+  let hasTransaction = false
+  const holdingDetails = buyTickerIds.reduce((details, tickerId) => {
+    const matchedDaily = dailyTickers[tickerId].daily
+    if (!matchedDaily) return details
+
+    const holding = currentDetails.holdings.find((holding) => holding.tickerId === tickerId)
+      || { tickerId, shares: 0, splitMultiplier: 0, value: 0 }
+
+    const refreshed = refreshHoldingsForBuy(
+      details,
+      holding,
+      matchedDaily,
+      maxBuyAmount,
+      tickerMaxPercent,
+    )
+    if (!refreshed) return details
+
+    hasTransaction = true
+    return refreshed
+  }, currentDetails)
+
+  return {
+    holdingDetails,
+    hasTransaction,
   }
 }
