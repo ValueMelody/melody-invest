@@ -282,8 +282,8 @@ export const detailsAfterBuy = (
     const matchedDaily = dailyTickers[tickerId].daily
     if (!matchedDaily) return details
 
-    const holding = currentDetails.holdings.find((holding) => holding.tickerId === tickerId)
-      || { tickerId, shares: 0, splitMultiplier: 0, value: 0 }
+    const holding = currentDetails.holdings.find((holding) => holding.tickerId === tickerId) ||
+      { tickerId, shares: 0, splitMultiplier: 0, value: 0 }
 
     const refreshed = refreshHoldingsForBuy(
       details,
