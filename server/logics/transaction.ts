@@ -71,6 +71,8 @@ export const refreshHoldingsForMoreThanMaxPercernt = (
   maxCashValue: number,
   tickerDaily: interfaces.tickerDailyModel.Record,
 ): HoldingDetails | null => {
+  if (!tickerDaily) return null
+
   const isMoreThanMaxPercent = holdingPercent > tickerMaxPercent
   if (!isMoreThanMaxPercent) return null
 
@@ -149,5 +151,78 @@ export const detailsAfterRebalance = (
   return {
     hasTransaction,
     holdingDetails: details,
+  }
+}
+
+export const refreshHoldingsForSell = (
+  holdingDetails: HoldingDetails,
+  holdingForSell: interfaces.traderHoldingModel.Holding,
+  tickerDaily: interfaces.tickerDailyModel.Record,
+  holdingSellPercent: number,
+  tickerMinPercent: number,
+  maxCashValue: number,
+): HoldingDetails | null => {
+  const sharesSold = Math.floor(holdingForSell.shares * tickerDaily.splitMultiplier * holdingSellPercent / 100)
+  const baseSharesShold = sharesSold / tickerDaily.splitMultiplier
+  if (holdingForSell.shares < baseSharesShold) return null
+
+  const valueSold = baseSharesShold * tickerDaily.splitMultiplier * tickerDaily.closePrice
+  const percentAfterSell = (holdingForSell.value - valueSold) / holdingDetails.totalValue
+  if (percentAfterSell * 100 < tickerMinPercent) return null
+
+  const cashAfterSell = holdingDetails.totalCash + valueSold
+  if (cashAfterSell > maxCashValue) return null
+
+  const sharesAfterSell = holdingForSell.shares - baseSharesShold
+  const valueAfterSell = sharesAfterSell * tickerDaily.closePrice * tickerDaily.splitMultiplier
+  const holdingDetail = {
+    tickerId: holdingForSell.tickerId,
+    shares: sharesAfterSell,
+    value: valueAfterSell,
+    splitMultiplier: tickerDaily.splitMultiplier,
+  }
+
+  const holdings = sharesAfterSell
+    ? holdingDetails.holdings.map((hold) => hold.tickerId === holdingForSell.tickerId ? holdingDetail : hold)
+    : holdingDetails.holdings.filter((hold) => hold.tickerId !== holdingForSell.tickerId)
+
+  return {
+    totalValue: holdingDetails.totalValue,
+    totalCash: cashAfterSell,
+    holdings,
+  }
+}
+
+export const detailsAfterSell = (
+  currentDetails: HoldingDetails,
+  sellTickerIds: number[],
+  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  holdingSellPercent: number,
+  tickerMinPercent: number,
+  maxCashValue: number,
+) => {
+  let hasTransaction = false
+  const holdingDetails = sellTickerIds.reduce((details, tickerId) => {
+    const matchedDaily = dailyTickers[tickerId].daily
+    const holding = currentDetails.holdings.find((holding) => holding.tickerId === tickerId)
+    if (!matchedDaily || !holding) return details
+
+    const refreshed = refreshHoldingsForSell(
+      currentDetails,
+      holding,
+      matchedDaily,
+      holdingSellPercent,
+      tickerMinPercent,
+      maxCashValue,
+    )
+    if (!refreshed) return details
+
+    hasTransaction = true
+    return refreshed
+  }, currentDetails)
+
+  return {
+    hasTransaction,
+    holdingDetails,
   }
 }
