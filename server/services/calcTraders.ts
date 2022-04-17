@@ -3,7 +3,6 @@ import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
-import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerHolderModel from '../models/tickerHolder'
 import * as dailyTickersModel from '../models/dailyTickers'
 import * as dateTool from '../tools/date'
@@ -13,26 +12,9 @@ import * as patternLogic from '../logics/pattern'
 import * as marketLogic from '../logics/market'
 import * as transactionLogic from '../logics/transaction'
 import * as evaluationLogic from '../logics/evaluation'
+import * as holdingLogic from '../logics/holding'
 import * as errorEnums from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
-
-interface HoldingDetails {
-  totalCash: number,
-  totalValue: number,
-  holdings: interfaces.traderHoldingModel.Holding[]
-}
-
-const getHoldingValue = (
-  holding: HoldingDetails,
-  dailys: interfaces.tickerDailyModel.Record[],
-): number => {
-  return holding.holdings.reduce((total, holding) => {
-    const matchedDaily = dailys.find((daily) => daily.tickerId === holding.tickerId)
-    if (!matchedDaily) return total
-    const combined = total + matchedDaily.closePrice * matchedDaily.splitMultiplier * holding.shares
-    return Math.floor(combined)
-  }, holding.totalCash)
-}
 
 const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.Record> => {
   const transaction = await databaseAdapter.createTransaction()
@@ -100,7 +82,7 @@ const calcTraderPerformance = async (
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
       const dailyTickers = await dailyTickersModel.getByUK(tradeDate)
-      if (!dailyTickers) {
+      if (!dailyTickers || !dailyTickers.tickers) {
         tradeDate = nextDate
         continue
       }
@@ -203,27 +185,52 @@ const calcTraderPerformance = async (
       await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, transaction)
     })
 
-    const latestDailys = await tickerDailyModel.getAllLatestByDate(latestDate)
-    const totalValue = getHoldingValue(holding, latestDailys)
+    const latestPrices = await dailyTickersModel.getByUK(latestDate)
+    const totalValue = holdingLogic.getHoldingTotalValue(holding, latestPrices!.tickerPrices)
     const initialValue = marketLogic.getInitialCash()
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
 
     const pastWeek = dateTool.getPreviousDate(latestDate, 7)
-    const pastWeekDailys = await tickerDailyModel.getAllLatestByDate(pastWeek)
-    const pastWeekValue = getHoldingValue(holding, pastWeekDailys)
+    const pastWeekPrices = await dailyTickersModel.getByUK(pastWeek)
+    const pastWeekHolding = await traderHoldingModel.getLatestByDate(trader.id, pastWeek)
+    const pastWeekValue = pastWeekPrices && pastWeekHolding
+      ? holdingLogic.getHoldingTotalValue(pastWeekHolding, pastWeekPrices.tickerPrices)
+      : null
 
     const pastMonth = dateTool.getPreviousDate(latestDate, 30)
-    const pastMonthDailys = await tickerDailyModel.getAllLatestByDate(pastMonth)
-    const pastMonthValue = getHoldingValue(holding, pastMonthDailys)
+    const pastMonthPrices = await dailyTickersModel.getByUK(pastMonth)
+    const pastMonthHolding = await traderHoldingModel.getLatestByDate(trader.id, pastMonth)
+    const pastMonthValue = pastMonthPrices && pastMonthHolding
+      ? holdingLogic.getHoldingTotalValue(pastMonthHolding, pastMonthPrices.tickerPrices)
+      : null
 
     const pastQuarter = dateTool.getPreviousDate(latestDate, 91)
-    const pastQuarterDailys = await tickerDailyModel.getAllLatestByDate(pastQuarter)
-    const pastQuarterValue = getHoldingValue(holding, pastQuarterDailys)
+    const pastQuarterPrices = await dailyTickersModel.getByUK(pastQuarter)
+    const pastQuarterHolding = await traderHoldingModel.getLatestByDate(trader.id, pastQuarter)
+    const pastQuarterValue = pastQuarterPrices && pastQuarterHolding
+      ? holdingLogic.getHoldingTotalValue(holding, pastQuarterPrices.tickerPrices)
+      : null
 
     const pastYear = dateTool.getPreviousDate(latestDate, 365)
-    const pastYearDailys = await tickerDailyModel.getAllLatestByDate(pastYear)
-    const pastYearValue = getHoldingValue(holding, pastYearDailys)
+    const pastYearPrices = await dailyTickersModel.getByUK(pastYear)
+    const pastYearHolding = await traderHoldingModel.getLatestByDate(trader.id, pastYear)
+    const pastYearValue = pastYearPrices && pastYearHolding
+      ? holdingLogic.getHoldingTotalValue(holding, pastYearPrices.tickerPrices)
+      : null
+
+    const pastYearPercentNumber = pastYearValue
+      ? generateTool.getChangePercent(totalValue, pastYearValue)
+      : null
+    const pastQuarterPercentNumber = pastQuarterValue
+      ? generateTool.getChangePercent(totalValue, pastQuarterValue)
+      : null
+    const pastMonthPercentNumber = pastMonthValue
+      ? generateTool.getChangePercent(totalValue, pastMonthValue)
+      : null
+    const pastWeekPercentNumber = pastWeekValue
+      ? generateTool.getChangePercent(totalValue, pastWeekValue)
+      : null
 
     await traderModel.update(trader.id, {
       totalValue,
@@ -233,10 +240,10 @@ const calcTraderPerformance = async (
       totalDays,
       grossPercentNumber: Math.floor(grossPercent),
       yearlyPercentNumber: Math.floor(grossPercent * 365 / totalDays),
-      pastYearPercentNumber: generateTool.getChangePercent(totalValue, pastYearValue),
-      pastQuarterPercentNumber: generateTool.getChangePercent(totalValue, pastQuarterValue),
-      pastMonthPercentNumber: generateTool.getChangePercent(totalValue, pastMonthValue),
-      pastWeekPercentNumber: generateTool.getChangePercent(totalValue, pastWeekValue),
+      pastYearPercentNumber,
+      pastQuarterPercentNumber,
+      pastMonthPercentNumber,
+      pastWeekPercentNumber,
     }, transaction)
 
     await transaction.commit()

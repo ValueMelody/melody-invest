@@ -26,16 +26,27 @@ export interface DailyTicker {
 }
 
 export interface DailyTickers {
-  [tickerId: number ]: DailyTicker
+  [tickerId: number]: DailyTicker
+}
+
+export interface TickerPrices {
+  [tickerId: number]: number;
 }
 
 export interface Record {
   id: number;
   date: string;
   tickers: DailyTickers;
+  tickerPrices: TickerPrices;
 }
 
 export interface Create {
   date: string;
   tickers: DailyTickers;
+  tickerPrices: TickerPrices;
+}
+
+export interface Update {
+  tickers: DailyTickers;
+  tickerPrices: TickerPrices;
 }

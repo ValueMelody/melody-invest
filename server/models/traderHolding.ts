@@ -26,6 +26,21 @@ export const getLatest = async (
   return record ? convertToRecord(record) : null
 }
 
+export const getLatestByDate = async (
+  traderId: number,
+  date: string,
+): Promise<interfaces.traderHoldingModel.Record | null> => {
+  const record = await databaseAdapter.findOne({
+    tableName: tableEnum.NAME.TRADER_HOLDING,
+    conditions: [
+      { key: 'traderId', value: traderId },
+      { key: 'date', value: date, type: '<=' },
+    ],
+    orderBy: [{ column: 'date', order: 'desc' }],
+  })
+  return record ? convertToRecord(record) : null
+}
+
 export const getAllByTraderIds = async (
   traderIds: number[],
 ): Promise<interfaces.traderHoldingModel.Record[]> => {
@@ -61,8 +76,8 @@ export const create = async (
     values: {
       traderId: values.traderId,
       date: values.date,
-      totalValue: String(values.totalValue),
-      totalCash: String(values.totalCash),
+      totalValue: values.totalValue.toFixed(2),
+      totalCash: values.totalCash.toFixed(2),
       holdings: JSON.stringify(values.holdings),
     },
     transaction,
