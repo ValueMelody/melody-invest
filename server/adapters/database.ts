@@ -112,6 +112,8 @@ const find = async ({
 
   if (limit) query.limit(limit)
 
+  // console.info(query.toSQL().toNative())
+
   const records = await query
   return records
 }

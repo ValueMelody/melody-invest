@@ -426,58 +426,68 @@ export const buildTickerInfo = (
   }
 }
 
-export const calcDailyAvailableTickers = async () => {
+const buildDailyTickers = async (
+  targetDate: string,
+): Promise<interfaces.dailyTickersModel.DailyTickers | null> => {
+  const dailyTargets = await tickerDailyModel.getByDate(targetDate)
+  if (!dailyTargets.length) return null
+
+  const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate)
+  const initialQuarterlys: Quarterlys = {}
+  const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
+    ...quarterlys,
+    [quarterly.tickerId]: quarterly,
+  }), initialQuarterlys)
+
+  const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate)
+  const initialYearlys: Yearlys = {}
+  const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
+    ...yearlys,
+    [yearly.tickerId]: yearly,
+  }), initialYearlys)
+
+  const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
+  const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
+  const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
+
+  const initialDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
+  return dailyTargets.reduce((tickers, daily) => {
+    const quarterly = quarterlys[daily.tickerId] || null
+    const yearly = yearlys[daily.tickerId] || null
+    const info = buildTickerInfo(
+      daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+    )
+    return {
+      ...tickers,
+      [daily.tickerId]: { info, daily, quarterly, yearly },
+    }
+  }, initialDailyTickers)
+}
+
+export const calcDailyAvailableTickers = async (
+  forceRecheck: boolean,
+) => {
   const lastPriceDate = await tickerDailyModel.getLatestDate()
-  const lastCalculatedDate = await dailyTickersModel.getLatestDate()
+  const lastCalculatedDate = forceRecheck
+    ? dateTool.getInitialDate()
+    : await dailyTickersModel.getLatestDate()
 
   let targetDate = dateTool.getNextDate(lastCalculatedDate)
-  if (lastPriceDate < targetDate) return
+  if (!forceRecheck && lastPriceDate < targetDate) return
 
   while (targetDate <= lastPriceDate) {
     console.info(`Checking ${targetDate}`)
-
     const nextDate = dateTool.getNextDate(targetDate)
-    const dailyTargets = await tickerDailyModel.getByDate(targetDate)
-    if (!dailyTargets.length) {
+
+    const dailyTickers = await buildDailyTickers(targetDate)
+    if (!dailyTickers) {
       targetDate = nextDate
       continue
     }
 
-    const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate)
-    const initialQuarterlys: Quarterlys = {}
-    const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
-      ...quarterlys,
-      [quarterly.tickerId]: quarterly,
-    }), initialQuarterlys)
-
-    const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate)
-    const initialYearlys: Yearlys = {}
-    const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
-      ...yearlys,
-      [yearly.tickerId]: yearly,
-    }), initialYearlys)
-
-    const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
-    const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
-    const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
-
-    const initialDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
-    const dailyTickers = dailyTargets.reduce((tickers, daily) => {
-      const quarterly = quarterlys[daily.tickerId] || null
-      const yearly = yearlys[daily.tickerId] || null
-      const info = buildTickerInfo(
-        daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-      )
-      return {
-        ...tickers,
-        [daily.tickerId]: { info, daily, quarterly, yearly },
-      }
-    }, initialDailyTickers)
-
     const transaction = await databaseAdapter.createTransaction()
     try {
-      await dailyTickersModel.create({
-        date: targetDate,
+      await dailyTickersModel.upsert(targetDate, {
         tickers: dailyTickers,
       }, transaction)
       await transaction.commit()

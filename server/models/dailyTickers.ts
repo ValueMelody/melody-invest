@@ -25,12 +25,41 @@ export const getByUK = async (
 }
 
 export const create = async (
-  values: interfaces.dailyTickersModel.Create, transaction: Knex.Transaction,
+  values: interfaces.dailyTickersModel.Create,
+  transaction: Knex.Transaction,
 ): Promise<interfaces.dailyTickersModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: tableEnum.NAME.DAILY_TICKERS,
     values,
     transaction,
   })
+  return newRecord
+}
+
+export const update = async (
+  dailyTickersId: number,
+  values: interfaces.dailyTickersModel.Update,
+  transaction: Knex.Transaction,
+): Promise<interfaces.dailyTickersModel.Record> => {
+  const updated = await databaseAdapter.update({
+    tableName: tableEnum.NAME.DAILY_TICKERS,
+    values,
+    conditions: [
+      { key: 'id', value: dailyTickersId },
+    ],
+    transaction,
+  })
+  return updated[0]
+}
+
+export const upsert = async (
+  date: string,
+  values: interfaces.dailyTickersModel.Update,
+  transaction: Knex.Transaction,
+): Promise<interfaces.dailyTickersModel.Record> => {
+  const record = await getByUK(date)
+  const newRecord = record
+    ? await update(record.id, values, transaction)
+    : await create({ ...values, date }, transaction)
   return newRecord
 }

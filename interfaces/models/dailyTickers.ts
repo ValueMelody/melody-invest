@@ -26,7 +26,7 @@ export interface DailyTicker {
 }
 
 export interface DailyTickers {
-  [tickerId: number ]: DailyTicker
+  [tickerId: number]: DailyTicker
 }
 
 export interface Record {
@@ -37,5 +37,9 @@ export interface Record {
 
 export interface Create {
   date: string;
+  tickers: DailyTickers;
+}
+
+export interface Update {
   tickers: DailyTickers;
 }

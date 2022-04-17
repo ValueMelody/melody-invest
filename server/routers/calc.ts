@@ -26,7 +26,8 @@ calcRouter.get('/tickers/quarterly_financial', async (req, res) => {
 })
 
 calcRouter.get('/tickers/daily_available', async (req, res) => {
-  await calcTickers.calcDailyAvailableTickers()
+  const forceRecheck = req.query.forceRecheck === 'true'
+  await calcTickers.calcDailyAvailableTickers(forceRecheck)
 
   return res.status(200).send({ success: true })
 })
