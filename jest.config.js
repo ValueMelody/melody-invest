@@ -3,6 +3,10 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   coverageReporters: [],
-  collectCoverageFrom: ['./client/**/*.{ts,tsx}', './server/**/*.{ts,tsx}'],
+  collectCoverageFrom: [
+    './client/**/*.{ts,tsx}',
+    './server/**/*.{ts,tsx}',
+    './constants/**/*.{ts,tsx}'
+  ],
   setupFiles: ['dotenv/config'],
 }

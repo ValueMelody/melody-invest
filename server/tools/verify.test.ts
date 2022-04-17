@@ -1,6 +1,6 @@
 import * as verify from './verify'
 
-test('could test email', async () => {
+test('could test email', () => {
   expect(verify.isEmail('a@email.com')).toBeTruthy()
   expect(verify.isEmail('abc@outlook.com')).toBeTruthy()
   expect(verify.isEmail('abc@outlook')).toBeFalsy()

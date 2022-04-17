@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as price from './price'
 
-test('could get getSplitMultiplier', async () => {
+test('could get getSplitMultiplier', () => {
   // @ts-ignore
   const DAILY: interfaces.tickerDailyModel.Record = {
     splitMultiplier: 5.2,
@@ -12,7 +12,7 @@ test('could get getSplitMultiplier', async () => {
   expect(price.getSplitMultiplier('1.23', null).toFixed(2)).toEqual('1.23')
 })
 
-test('could convert to padding price', async () => {
+test('could convert to padding price', () => {
   expect(price.convertToPaddingPrice('1.11')).toEqual(111)
   expect(price.convertToPaddingPrice('1.111')).toEqual(111)
   expect(price.convertToPaddingPrice('1.23')).toEqual(123)
