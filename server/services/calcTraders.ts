@@ -4,6 +4,7 @@ import * as traderEnvModel from '../models/traderEnv'
 import * as traderPatternModel from '../models/traderPattern'
 import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerHolderModel from '../models/tickerHolder'
+import * as tickerDailyModel from '../models/tickerDaily'
 import * as dailyTickersModel from '../models/dailyTickers'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
@@ -68,16 +69,17 @@ const calcTraderPerformance = async (
   console.info(`Checking ${trader.id}`)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
+  let holding = await traderHoldingModel.getLatest(trader.id)
+  let tradeDate = holding
+    ? dateTool.getNextDate(holding.date, pattern.tradeFrequency)
+    : env.startDate
+  let rebalancedAt = trader.rebalancedAt || tradeDate
+  let startedAt = trader.startedAt
+  let hasRebalanced = false
+  let hasCreatedAnyRecord = false
+
   const transaction = await databaseAdapter.createTransaction()
   try {
-    let holding = await traderHoldingModel.getLatest(trader.id)
-    let tradeDate = holding
-      ? dateTool.getNextDate(holding.date, pattern.tradeFrequency)
-      : env.startDate
-    let rebalancedAt = trader.rebalancedAt || tradeDate
-    let startedAt = trader.startedAt
-    let hasRebalanced = false
-
     while (tradeDate <= latestDate) {
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
@@ -157,6 +159,7 @@ const calcTraderPerformance = async (
 
       const hasTransaction = hasRebalanceTransaction || hasSellTransaction || hasBuyTransaction
       if (hasTransaction) {
+        hasCreatedAnyRecord = true
         if (!startedAt) startedAt = tradeDate
         holding = await traderHoldingModel.create({
           traderId: trader.id,
@@ -170,53 +173,59 @@ const calcTraderPerformance = async (
       tradeDate = nextDate
     }
 
+    if (hasCreatedAnyRecord) await transaction.commit()
+  } catch (error) {
+    if (hasCreatedAnyRecord) await transaction.rollback()
+    throw error
+  }
+
+  const traderTransaction = await databaseAdapter.createTransaction()
+  try {
     if (!holding) {
-      if (trader.estimatedAt !== latestDate) {
-        await traderModel.update(trader.id, { estimatedAt: latestDate }, transaction)
-        await transaction.commit()
-      }
+      await traderModel.update(trader.id, { estimatedAt: latestDate }, traderTransaction)
+      await traderTransaction.commit()
       return
     }
 
-    await tickerHolderModel.destroyTraderTickers(trader.id, transaction)
+    await tickerHolderModel.destroyTraderTickers(trader.id, traderTransaction)
     await runTool.asyncForEach(holding.holdings, async (
       holding: interfaces.traderHoldingModel.Holding,
     ) => {
-      await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, transaction)
+      await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, traderTransaction)
     })
 
-    const latestPrices = await dailyTickersModel.getByUK(latestDate)
-    const totalValue = holdingLogic.getHoldingTotalValue(holding, latestPrices!.tickerPrices)
+    const dailyPrices = await tickerDailyModel.getAllLatestByDate(latestDate)
+    const totalValue = holdingLogic.getHoldingTotalValue(holding, dailyPrices)
     const initialValue = marketLogic.getInitialCash()
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
 
     const pastWeek = dateTool.getPreviousDate(latestDate, 7)
-    const pastWeekPrices = await dailyTickersModel.getByUK(pastWeek)
+    const pastWeekPrices = await tickerDailyModel.getAllLatestByDate(pastWeek)
     const pastWeekHolding = await traderHoldingModel.getLatestByDate(trader.id, pastWeek)
-    const pastWeekValue = pastWeekPrices && pastWeekHolding
-      ? holdingLogic.getHoldingTotalValue(pastWeekHolding, pastWeekPrices.tickerPrices)
+    const pastWeekValue = pastWeekHolding
+      ? holdingLogic.getHoldingTotalValue(pastWeekHolding, pastWeekPrices)
       : null
 
     const pastMonth = dateTool.getPreviousDate(latestDate, 30)
-    const pastMonthPrices = await dailyTickersModel.getByUK(pastMonth)
+    const pastMonthPrices = await tickerDailyModel.getAllLatestByDate(pastMonth)
     const pastMonthHolding = await traderHoldingModel.getLatestByDate(trader.id, pastMonth)
-    const pastMonthValue = pastMonthPrices && pastMonthHolding
-      ? holdingLogic.getHoldingTotalValue(pastMonthHolding, pastMonthPrices.tickerPrices)
+    const pastMonthValue = pastMonthHolding
+      ? holdingLogic.getHoldingTotalValue(pastMonthHolding, pastMonthPrices)
       : null
 
     const pastQuarter = dateTool.getPreviousDate(latestDate, 91)
-    const pastQuarterPrices = await dailyTickersModel.getByUK(pastQuarter)
+    const pastQuarterPrices = await tickerDailyModel.getAllLatestByDate(pastQuarter)
     const pastQuarterHolding = await traderHoldingModel.getLatestByDate(trader.id, pastQuarter)
-    const pastQuarterValue = pastQuarterPrices && pastQuarterHolding
-      ? holdingLogic.getHoldingTotalValue(holding, pastQuarterPrices.tickerPrices)
+    const pastQuarterValue = pastQuarterHolding
+      ? holdingLogic.getHoldingTotalValue(pastQuarterHolding, pastQuarterPrices)
       : null
 
     const pastYear = dateTool.getPreviousDate(latestDate, 365)
-    const pastYearPrices = await dailyTickersModel.getByUK(pastYear)
+    const pastYearPrices = await tickerDailyModel.getAllLatestByDate(pastYear)
     const pastYearHolding = await traderHoldingModel.getLatestByDate(trader.id, pastYear)
-    const pastYearValue = pastYearPrices && pastYearHolding
-      ? holdingLogic.getHoldingTotalValue(holding, pastYearPrices.tickerPrices)
+    const pastYearValue = pastYearHolding
+      ? holdingLogic.getHoldingTotalValue(pastYearHolding, pastYearPrices)
       : null
 
     const pastYearPercentNumber = pastYearValue
@@ -244,11 +253,11 @@ const calcTraderPerformance = async (
       pastQuarterPercentNumber,
       pastMonthPercentNumber,
       pastWeekPercentNumber,
-    }, transaction)
+    }, traderTransaction)
 
-    await transaction.commit()
+    await traderTransaction.commit()
   } catch (error) {
-    await transaction.rollback()
+    await traderTransaction.rollback()
     throw error
   }
 }

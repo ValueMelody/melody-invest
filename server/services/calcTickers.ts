@@ -482,18 +482,10 @@ export const calcDailyAvailableTickers = async (
     const dailyTickers = await buildDailyTickers(targetDate)
     if (!dailyTickers) continue
 
-    const bestMatchedTickerDailys = await tickerDailyModel.getAllLatestByDate(targetDate)
-    const intitialPrices: interfaces.dailyTickersModel.TickerPrices = {}
-    const tickerPrices = bestMatchedTickerDailys.reduce((tickerPrices, tickerDaily) => ({
-      ...tickerPrices,
-      [tickerDaily.tickerId]: tickerDaily.closePrice * tickerDaily.splitMultiplier,
-    }), intitialPrices)
-
     const transaction = await databaseAdapter.createTransaction()
     try {
       await dailyTickersModel.upsert(targetDate, {
         tickers: dailyTickers,
-        tickerPrices,
       }, transaction)
       await transaction.commit()
     } catch (error) {

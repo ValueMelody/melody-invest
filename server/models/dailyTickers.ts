@@ -24,19 +24,6 @@ export const getByUK = async (
   return record
 }
 
-export const getNearest = async (
-  date: string,
-): Promise<interfaces.dailyTickersModel.Record | null> => {
-  const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.DAILY_TICKERS,
-    conditions: [
-      { key: 'date', value: date, type: '<=' },
-    ],
-    orderBy: [{ column: 'date', order: 'desc' }],
-  })
-  return record
-}
-
 export const create = async (
   values: interfaces.dailyTickersModel.Create,
   transaction: Knex.Transaction,
