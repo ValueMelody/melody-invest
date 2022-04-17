@@ -2,7 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as traderPatternModel from '../../models/traderPattern'
 import * as traderHoldingModel from '../../models/traderHolding'
 import * as traderLogic from '../../logics/trader'
-import * as marketLogic from '../../logics/market'
+import * as holdingLogic from '../../logics/holding'
 
 const buildComboDetail = async (
   traders: interfaces.traderModel.Record[],
@@ -25,7 +25,7 @@ const buildComboDetail = async (
     .map((date) => traderLogic.mergeHoldingsByDate(
       date,
       holdingsByDates[date],
-      marketLogic.getInitialCash(),
+      holdingLogic.getInitialCash(),
     ))
   const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
   return {

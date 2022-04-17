@@ -156,3 +156,21 @@ export const getDurationCount = (startDate: string, endDate: string): number => 
   const differ = moment.duration(end.diff(start)).asDays()
   return Math.floor(differ)
 }
+
+export const isNearbyQuarter = (
+  fiscalDate: string,
+  quarter: string,
+): boolean => {
+  const fiscalQuarter = fiscalDate.substring(0, 7)
+  const [fiscalYear, fiscalMonth] = fiscalQuarter.split('-')
+  const [year, month] = quarter.split('-')
+  if (fiscalMonth === '01' && month === '12') {
+    return parseInt(year) + 1 === parseInt(fiscalYear)
+  }
+
+  if (year !== fiscalYear) return false
+  if (month === fiscalMonth) return true
+  if (parseInt(month) + 1 === parseInt(fiscalMonth)) return true
+  if (parseInt(month) - 1 === parseInt(fiscalMonth)) return true
+  return false
+}

@@ -10,7 +10,6 @@ import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
 import * as generateTool from '../tools/generate'
 import * as patternLogic from '../logics/pattern'
-import * as marketLogic from '../logics/market'
 import * as transactionLogic from '../logics/transaction'
 import * as evaluationLogic from '../logics/evaluation'
 import * as holdingLogic from '../logics/holding'
@@ -91,7 +90,7 @@ const calcTraderPerformance = async (
 
       const availableTargets = dailyTickers.tickers
 
-      const totalCash = holding ? holding.totalCash : marketLogic.getInitialCash()
+      const totalCash = holding ? holding.totalCash : holdingLogic.getInitialCash()
       const holdings = holding ? holding.holdings : []
 
       const detailsAfterUpdate = transactionLogic.detailsFromCashAndHoldings(
@@ -196,7 +195,7 @@ const calcTraderPerformance = async (
 
     const dailyPrices = await tickerDailyModel.getAllLatestByDate(latestDate)
     const totalValue = holdingLogic.getHoldingTotalValue(holding, dailyPrices)
-    const initialValue = marketLogic.getInitialCash()
+    const initialValue = holdingLogic.getInitialCash()
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
 

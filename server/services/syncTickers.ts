@@ -3,7 +3,7 @@ import * as errorEnum from '../enums/error'
 import * as marketAdapter from '../adapters/market'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
-import * as marketLogic from '../logics/market'
+import * as priceLogic from '../logics/price'
 import * as tickerModel from '../models/ticker'
 import * as tickerDailyModel from '../models/tickerDaily'
 import * as tickerYearlyModel from '../models/tickerYearly'
@@ -46,7 +46,7 @@ export const syncPrices = async (
       const dividendAmount: string = dailyData['7. dividend amount']
       const splitCoefficient: string = dailyData['8. split coefficient']
 
-      const splitMultiplier = marketLogic.getSplitMultiplier(
+      const splitMultiplier = priceLogic.getSplitMultiplier(
         splitCoefficient,
         previousRecord,
       )
@@ -55,7 +55,7 @@ export const syncPrices = async (
         tickerId: ticker.id,
         date,
         volume,
-        closePrice: marketLogic.convertToIntPrice(closePrice),
+        closePrice: priceLogic.convertToPaddingPrice(closePrice),
         splitMultiplier: splitMultiplier.toFixed(5),
         dividendAmount,
       }, transaction)
@@ -165,7 +165,7 @@ export const syncEarnings = async (
     const relatedQuarters: string[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedEarning = quarterlyEarnings.find((earning) => {
-        return marketLogic.isMatchedQuarter(quarter, earning.fiscalDateEnding)
+        return dateTool.isNearbyQuarter(earning.fiscalDateEnding, quarter)
       })
       if (!matchedEarning) return
 
@@ -323,7 +323,7 @@ export const syncIncomes = async (
     const relatedQuarters: string[] = []
     await runTool.asyncForEach(allQuarters, async (quarter: string) => {
       const matchedIncome = quarterlyIncomes.find((income) => {
-        return marketLogic.isMatchedQuarter(quarter, income.fiscalDateEnding)
+        return dateTool.isNearbyQuarter(income.fiscalDateEnding, quarter)
       })
       if (!matchedIncome) return
 
