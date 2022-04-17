@@ -168,3 +168,29 @@ test('could get duration count', async () => {
   expect(date.getDurationCount('2022-01-31', '2022-03-01')).toEqual(29)
   expect(() => date.getQuartersInRange('2000-06-02', '2000-06-01')).toThrowError()
 })
+
+test('could check if it is nearby quarter', async () => {
+  expect(date.isNearbyQuarter('2022-01-31', '2022-03')).toEqual(false)
+  expect(date.isNearbyQuarter('2022-02-01', '2022-03')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-03-15', '2022-03')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-04-30', '2022-03')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-05-01', '2022-03')).toEqual(false)
+
+  expect(date.isNearbyQuarter('2022-04-31', '2022-06')).toEqual(false)
+  expect(date.isNearbyQuarter('2022-05-01', '2022-06')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-06-15', '2022-06')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-07-31', '2022-06')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-08-01', '2022-06')).toEqual(false)
+
+  expect(date.isNearbyQuarter('2022-07-31', '2022-09')).toEqual(false)
+  expect(date.isNearbyQuarter('2022-08-01', '2022-09')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-09-15', '2022-09')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-10-31', '2022-09')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-11-01', '2022-09')).toEqual(false)
+
+  expect(date.isNearbyQuarter('2022-10-31', '2022-12')).toEqual(false)
+  expect(date.isNearbyQuarter('2022-11-01', '2022-12')).toEqual(true)
+  expect(date.isNearbyQuarter('2022-12-15', '2022-12')).toEqual(true)
+  expect(date.isNearbyQuarter('2023-01-31', '2022-12')).toEqual(true)
+  expect(date.isNearbyQuarter('2023-02-01', '2022-12')).toEqual(false)
+})

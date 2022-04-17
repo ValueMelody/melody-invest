@@ -8,8 +8,10 @@ export const day = {
   YEAR: 320,
 }
 
+const PRICE_PADDING = 100
+
 export const initial = {
   DATE: '2001-01-01',
-  PRICE_PADDING: 100,
-  CASH: 100000 * 100,
+  PRICE_PADDING,
+  CASH: 100000 * PRICE_PADDING,
 }
