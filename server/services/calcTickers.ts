@@ -480,7 +480,10 @@ export const calcDailyAvailableTickers = async (
     const nextDate = dateTool.getNextDate(targetDate)
 
     const dailyTickers = await buildDailyTickers(targetDate)
-    if (!dailyTickers) continue
+    if (!dailyTickers) {
+      targetDate = nextDate
+      continue
+    }
 
     const transaction = await databaseAdapter.createTransaction()
     try {
