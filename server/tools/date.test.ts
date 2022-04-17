@@ -1,22 +1,22 @@
 import * as date from './date'
 
-test('could get initial date', async () => {
+test('could get initial date', () => {
   expect(date.getInitialDate()).toEqual('2001-01-01')
 })
 
-test('could get initial year', async () => {
+test('could get initial year', () => {
   expect(date.getInitialYear()).toEqual('2001')
 })
 
-test('could get initial quarter', async () => {
+test('could get initial quarter', () => {
   expect(date.getInitialQuarter()).toEqual('2001-03')
 })
 
-test('could get initial month', async () => {
+test('could get initial month', () => {
   expect(date.getInitialMonth()).toEqual('2001-01')
 })
 
-test('could get current date', async () => {
+test('could get current date', () => {
   const today = new Date()
   const year = today.getFullYear()
   const month = (today.getMonth() + 1).toString()
@@ -25,17 +25,17 @@ test('could get current date', async () => {
   expect(date.getCurrentDate()).toEqual(`${year}-${parsedMonth}-${day}`)
 })
 
-test('could get current year', async () => {
+test('could get current year', () => {
   const today = new Date()
   expect(date.getCurrentYear()).toEqual(today.getFullYear().toString())
 })
 
-test('could get year by date', async () => {
+test('could get year by date', () => {
   expect(date.getYearByDate('1999-01-01')).toEqual('1999')
   expect(date.getYearByDate('2000-01-01')).toEqual('2000')
 })
 
-test('could get quarter by date', async () => {
+test('could get quarter by date', () => {
   expect(date.getQuarterByDate('1999-01-01')).toEqual('1999-03')
   expect(date.getQuarterByDate('2000-03-31')).toEqual('2000-03')
   expect(date.getQuarterByDate('2000-04-01')).toEqual('2000-06')
@@ -46,7 +46,7 @@ test('could get quarter by date', async () => {
   expect(date.getQuarterByDate('2002-12-31')).toEqual('2002-12')
 })
 
-test('could get current quarter', async () => {
+test('could get current quarter', () => {
   const today = date.getCurrentDate()
   const [year, month] = today.split('-').map((value) => parseInt(value))
   let quarter = null
@@ -62,7 +62,7 @@ test('could get current quarter', async () => {
   expect(date.getCurrentQuater()).toEqual(`${year}-${quarter}`)
 })
 
-test('could get previous date', async () => {
+test('could get previous date', () => {
   expect(date.getPreviousDate('2000-01-01')).toEqual('1999-12-31')
   expect(date.getPreviousDate('2001-01-05', 2)).toEqual('2001-01-03')
   expect(date.getPreviousDate('2001-01-05', 3)).toEqual('2001-01-02')
@@ -71,7 +71,7 @@ test('could get previous date', async () => {
   expect(() => date.getPreviousDate('2000-01-01', -1)).toThrowError()
 })
 
-test('could get next date', async () => {
+test('could get next date', () => {
   expect(date.getNextDate('1999-12-31')).toEqual('2000-01-01')
   expect(date.getNextDate('2001-01-01', 2)).toEqual('2001-01-03')
   expect(date.getNextDate('2001-01-01', 3)).toEqual('2001-01-04')
@@ -80,7 +80,7 @@ test('could get next date', async () => {
   expect(() => date.getNextDate('2000-01-01', -1)).toThrowError()
 })
 
-test('could get previous year', async () => {
+test('could get previous year', () => {
   expect(date.getPreviousYear('2000')).toEqual('1999')
   expect(date.getPreviousYear('2001')).toEqual('2000')
   expect(date.getPreviousYear('2001', 2)).toEqual('1999')
@@ -88,7 +88,7 @@ test('could get previous year', async () => {
   expect(() => date.getPreviousYear('2000-01-01', -1)).toThrowError()
 })
 
-test('could get next year', async () => {
+test('could get next year', () => {
   expect(date.getNextYear('1999')).toEqual('2000')
   expect(date.getNextYear('2001')).toEqual('2002')
   expect(date.getNextYear('2001', 2)).toEqual('2003')
@@ -96,7 +96,7 @@ test('could get next year', async () => {
   expect(() => date.getNextYear('2000-01-01', -1)).toThrowError()
 })
 
-test('could get previous quarter', async () => {
+test('could get previous quarter', () => {
   expect(date.getPreviousQuarter('2001-03')).toEqual('2000-12')
   expect(date.getPreviousQuarter('2001-06')).toEqual('2001-03')
   expect(date.getPreviousQuarter('2002-09')).toEqual('2002-06')
@@ -108,7 +108,7 @@ test('could get previous quarter', async () => {
   expect(() => date.getPreviousQuarter('2000-01-01', -1)).toThrowError()
 })
 
-test('could get next quarter', async () => {
+test('could get next quarter', () => {
   expect(date.getNextQuarter('1999-12')).toEqual('2000-03')
   expect(date.getNextQuarter('2001-03')).toEqual('2001-06')
   expect(date.getNextQuarter('2001-06')).toEqual('2001-09')
@@ -121,7 +121,7 @@ test('could get next quarter', async () => {
   expect(() => date.getNextQuarter('2000-01-01', -1)).toThrowError()
 })
 
-test('could get days in range', async () => {
+test('could get days in range', () => {
   expect(date.getDaysInRange('2001-03-01', '2001-03-02'))
     .toEqual(['2001-03-01', '2001-03-02'])
   expect(date.getDaysInRange('2001-03-01', '2001-03-03'))
@@ -131,14 +131,14 @@ test('could get days in range', async () => {
   expect(() => date.getDaysInRange('2000-01-02', '2000-01-01')).toThrowError()
 })
 
-test('could get years in range', async () => {
+test('could get years in range', () => {
   expect(date.getYearsInRange('2001', '2002')).toEqual(['2001', '2002'])
   expect(date.getYearsInRange('2001', '2003')).toEqual(['2001', '2002', '2003'])
   expect(date.getYearsInRange('1999', '2002')).toEqual(['1999', '2000', '2001', '2002'])
   expect(() => date.getDaysInRange('2001', '2000')).toThrowError()
 })
 
-test('could get quarters in range', async () => {
+test('could get quarters in range', () => {
   expect(date.getQuartersInRange('2001-03', '2001-06'))
     .toEqual(['2001-03', '2001-06'])
   expect(date.getQuartersInRange('2001-03', '2001-09'))
@@ -150,7 +150,7 @@ test('could get quarters in range', async () => {
   expect(() => date.getQuartersInRange('2000-06', '2000-03')).toThrowError()
 })
 
-test('could get day number', async () => {
+test('could get day number', () => {
   expect(date.getDayNumber('2022-01-31')).toEqual(1)
   expect(date.getDayNumber('2022-02-01')).toEqual(2)
   expect(date.getDayNumber('2022-02-02')).toEqual(3)
@@ -161,7 +161,7 @@ test('could get day number', async () => {
   expect(date.getDayNumber('2022-02-07')).toEqual(1)
 })
 
-test('could get duration count', async () => {
+test('could get duration count', () => {
   expect(date.getDurationCount('2022-01-31', '2022-02-01')).toEqual(1)
   expect(date.getDurationCount('2022-01-31', '2022-02-02')).toEqual(2)
   expect(date.getDurationCount('2022-01-31', '2022-02-11')).toEqual(11)
@@ -169,7 +169,7 @@ test('could get duration count', async () => {
   expect(() => date.getQuartersInRange('2000-06-02', '2000-06-01')).toThrowError()
 })
 
-test('could check if it is nearby quarter', async () => {
+test('could check if it is nearby quarter', () => {
   expect(date.isNearbyQuarter('2022-01-31', '2022-03')).toEqual(false)
   expect(date.isNearbyQuarter('2022-02-01', '2022-03')).toEqual(true)
   expect(date.isNearbyQuarter('2022-03-15', '2022-03')).toEqual(true)
