@@ -91,14 +91,17 @@ const TopProfiles = () => {
       <aside className={pageClasses.aside}>
         <h2>{localeTool.t('bestReturn.type')}:</h2>
         {topOptions.map((option) => (
-          <vendorTool.ui.Card
+          <vendorTool.ui.Label
+            basic
             key={option.type}
             className={vendorTool.classNames({
               [pageClasses.activeCard]: option.type === focusType,
             })}
-            header={option.title}
+            pointing='left'
             onClick={() => handleClickOption(option.type)}
-          />
+          >
+            {option.title}
+          </vendorTool.ui.Label>
         ))}
       </aside>
     </section>
