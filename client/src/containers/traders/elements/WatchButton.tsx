@@ -29,10 +29,12 @@ const WatchButton = ({
 
   return (
     <vendorTool.ui.Button
+      data-testid='watchButton'
       className={classes.action}
+      color={isWatched ? 'grey' : 'blue'}
       onClick={handleToggle}
     >
-      <vendorTool.ui.Icon name='eye' />
+      <vendorTool.ui.Icon name={isWatched ? 'eye slash' : 'eye'} />
       {localeTool.t(isWatched ? 'common.unwatch' : 'common.watch')}
     </vendorTool.ui.Button>
   )

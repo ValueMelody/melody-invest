@@ -13,7 +13,7 @@ test('could load and display as expected', async () => {
   render(
     <VariationList options={options} activeValue={2} />,
   )
-  const container = screen.getByTestId('variationlist')
+  const container = screen.getByTestId('variationList')
   expect(container).toBeTruthy()
   expect(container.childNodes.length).toBe(3)
 
