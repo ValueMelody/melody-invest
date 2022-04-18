@@ -5,12 +5,17 @@ type Value = string | number
 interface Option {
   value: Value;
   label: string;
-  onClick: (value: Value) => {};
+  onClick: (value?: Value) => void;
 }
 
 const useStyles = vendorTool.jss.createUseStyles(({
+  label: {
+    marginTop: '1rem !important',
+    width: '100%',
+    minWidth: 160,
+  },
   active: {
-    border: '1px solid black',
+    marginLeft: '0 !important',
   },
 }))
 
@@ -26,7 +31,7 @@ const VariationList = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <section className='column-start'>
+    <section data-testid='variationlist' className='column-start'>
       {options.map((option) => {
         const handleClick = () => {
           option.onClick(option.value)
@@ -34,12 +39,13 @@ const VariationList = ({
 
         return (
           <vendorTool.ui.Label
-            basic
             key={option.value}
-            className={vendorTool.classNames({
-              [classes.active]: option.value === activeValue,
-            })}
-            pointing='left'
+            className={vendorTool.classNames(
+              classes.label,
+              'click-cursor',
+              { [classes.active]: option.value === activeValue })}
+            pointing={option.value === activeValue ? 'left' : undefined}
+            color={option.value === activeValue ? 'blue' : undefined}
             onClick={handleClick}
           >
             {option.label}

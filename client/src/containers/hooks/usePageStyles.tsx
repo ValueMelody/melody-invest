@@ -20,7 +20,7 @@ const useStyles = vendorTool.jss.createUseStyles((
   main: {
     display: 'flex',
     flexDirection: 'column',
-    width: 'calc(100% - 28rem)',
+    width: 'calc(100% - 30rem)',
     minWidth: '26rem',
   },
   activeCard: {

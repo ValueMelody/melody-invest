@@ -14,16 +14,6 @@ import usePageStyles from '../../hooks/usePageStyles'
 const useStyles = vendorTool.jss.createUseStyles((
   theme: themeEnum.Theme,
 ) => ({
-  container: {
-    alignItems: 'flex-start',
-  },
-  left: {
-    width: 'calc(100% - 32rem)',
-    minWidth: '28rem',
-  },
-  right: {
-    width: '28rem',
-  },
   header: {
     width: '100%',
     borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,

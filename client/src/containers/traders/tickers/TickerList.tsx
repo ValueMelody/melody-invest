@@ -5,14 +5,12 @@ import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import useTickerState from '../../../states/useTickerState'
 import TickerLabel from '../elements/TickerLabel'
+import VariationList from '../elements/VariationList'
 import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
   section: {
     marginBottom: '1rem',
-  },
-  isActive: {
-    border: `3px solid ${theme.PRIMARY_COLOR} !important`,
   },
 }))
 
@@ -47,6 +45,11 @@ const TickerList = () => {
   })
 
   const categories = getTickerCategories()
+  const categoryOptions = categories.map((category) => ({
+    label: category.name,
+    value: category.id,
+    onClick: () => setSelectedCategory(category.id),
+  }))
 
   // ------------------------------------------------------------ Handler --
 
@@ -59,10 +62,6 @@ const TickerList = () => {
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchText(e.target.value)
-  }
-
-  const handleClickCategory = (id: number) => {
-    setSelectedCategory(id)
   }
 
   // ------------------------------------------------------------ Interface --
@@ -91,16 +90,10 @@ const TickerList = () => {
       </section>
       <aside className={pageClasses.aside}>
         <h3>{localeTool.t('tickerList.categories')}:</h3>
-        {categories.map((category) => (
-          <vendorTool.ui.Card
-            key={category.id}
-            className={vendorTool.classNames({
-              [classes.isActive]: category.id === selectedCategory,
-            })}
-            onClick={() => handleClickCategory(category.id)}
-            header={category.name}
-          />
-        ))}
+        <VariationList
+          options={categoryOptions}
+          activeValue={selectedCategory}
+        />
       </aside>
     </section>
   )
