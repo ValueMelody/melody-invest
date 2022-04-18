@@ -31,7 +31,7 @@ const VariationList = ({
   // ------------------------------------------------------------ Interface --
 
   return (
-    <section data-testid='variationlist' className='column-start'>
+    <section data-testid='variationList' className='column-start'>
       {options.map((option) => {
         const handleClick = () => {
           option.onClick(option.value)
