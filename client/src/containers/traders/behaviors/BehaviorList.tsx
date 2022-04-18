@@ -5,6 +5,7 @@ import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import * as routerTool from '../../../tools/router'
 import BehaviorLabel from '../elements/BehaviorLabel'
+import VariationList from '../elements/VariationList'
 import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = vendorTool.jss.createUseStyles(({
@@ -44,12 +45,27 @@ const BehaviorList = () => {
   ].filter((behavior) => isSearchedBehavior(behavior, searchText))
 
   const focusOptions = [
-    { type: 'buyBehaviors', title: localeTool.t('tradeBehaviors.buyBehaviors'), behaviors: buyBehaviors },
-    { type: 'sellBehaviors', title: localeTool.t('tradeBehaviors.sellBehaviors'), behaviors: sellBehaviors },
-    { type: 'otherBehaviors', title: localeTool.t('tradeBehaviors.otherBehaviors'), behaviors: otherBehaviors },
+    {
+      value: 'buyBehaviors',
+      label: localeTool.t('tradeBehaviors.buyBehaviors'),
+      behaviors: buyBehaviors,
+      onClick: () => setFocusedType('buyBehaviors'),
+    },
+    {
+      value: 'sellBehaviors',
+      label: localeTool.t('tradeBehaviors.sellBehaviors'),
+      behaviors: sellBehaviors,
+      onClick: () => setFocusedType('sellBehaviors'),
+    },
+    {
+      value: 'otherBehaviors',
+      label: localeTool.t('tradeBehaviors.otherBehaviors'),
+      behaviors: otherBehaviors,
+      onClick: () => setFocusedType('otherBehaviors'),
+    },
   ]
 
-  const focusedOption = focusOptions.find((option) => option.type === focusedType)
+  const focusedOption = focusOptions.find((option) => option.value === focusedType)
 
   // ------------------------------------------------------------ Handler --
 
@@ -62,10 +78,6 @@ const BehaviorList = () => {
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchText(e.target.value)
-  }
-
-  const handleClickOption = (type: string) => {
-    setFocusedType(type)
   }
 
   // ------------------------------------------------------------ Interface --
@@ -95,17 +107,11 @@ const BehaviorList = () => {
         </section>
       </section>
       <aside className={pageClasses.aside}>
-      <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
-        {focusOptions.map((option) => (
-          <vendorTool.ui.Card
-            key={option.type}
-            className={vendorTool.classNames({
-              [pageClasses.activeCard]: option.type === focusedType,
-            })}
-            header={option.title}
-            onClick={() => handleClickOption(option.type)}
-          />
-        ))}
+        <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
+        <VariationList
+          options={focusOptions}
+          activeValue={focusedType}
+        />
       </aside>
     </section>
   )

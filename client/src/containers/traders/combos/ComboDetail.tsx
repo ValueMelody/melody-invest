@@ -3,6 +3,7 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
+import * as themeEnum from '../../../enums/theme'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
@@ -12,7 +13,13 @@ import HoldingCard from '../blocks/HoldingCard'
 import ProfileCard from '../blocks/ProfileCard'
 import TraderComboCard from '../elements/TraderComboCard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
+  combo: {
+    width: '100%',
+    borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
+    marginBottom: '2rem',
+    paddingBottom: '2rem',
+  },
   asideTitle: {
     marginBottom: '1rem !important',
   },
@@ -66,10 +73,13 @@ const ComboDetail = () => {
   return (
     <section className={pageClasses.root}>
       <aside className={pageClasses.aside}>
-        <TraderComboCard
-          traderCombo={matchedCombo.identity}
-          traderEnv={matchedEnv}
-        />
+        <div className={vendorTool.classNames(classes.combo, 'row-around')}>
+          <TraderComboCard
+            traderCombo={matchedCombo.identity}
+            traderEnv={matchedEnv}
+            isActive
+          />
+        </div>
         <vendorTool.ui.Header
           as='h3'
           icon='star'
