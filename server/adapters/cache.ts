@@ -1,4 +1,5 @@
 import Redis from 'ioredis'
+import ms from 'ms'
 
 let _cache: Redis.Redis | null = null
 
@@ -14,14 +15,18 @@ const getConnection = (): Redis.Redis => {
   return _cache!
 }
 
-export const get = async (key: string) => {
+export const get = async (key: string): Promise<string | null> => {
   const cache = getConnection()
-  return cache.get(key)
+  const stored = await cache.get(key)
+  return stored || null
 }
 
 export const set = async (
-  key: string, value: string,
+  key: string,
+  value: string,
+  age: '1d',
 ) => {
   const cache = getConnection()
-  return cache.set(key, value)
+  const cacheAge = ms(age) / 1000
+  return cache.set(key, value, 'EX', cacheAge)
 }

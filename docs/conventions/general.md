@@ -1,3 +1,16 @@
+## prefer null over undefined
+```
+// Good
+const find = (value: number | null): number | null => {
+  return nums.find((num) => num === value) || null
+}
+
+// Bad
+const find = (value?: number) number | undefined => {
+  return nums.find((num) => num === value)
+}
+```
+
 ## use console.info for console.log that need to stay in the code base
 
 ```

@@ -33,6 +33,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
       pastQuarterPercentNumber: null,
       pastMonthPercentNumber: null,
       pastWeekPercentNumber: null,
+      oneYearTrends: null,
     }, transaction)
 
     await transaction.commit()
@@ -193,14 +194,14 @@ const calcTraderPerformance = async (
       await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, traderTransaction)
     })
 
-    const dailyPrices = await tickerDailyModel.getAllLatestByDate(latestDate)
+    const dailyPrices = await tickerDailyModel.getNearestPricesByDate(latestDate)
     const totalValue = holdingLogic.getHoldingTotalValue(holding, dailyPrices)
     const initialValue = holdingLogic.getInitialCash()
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
 
     const pastWeek = dateTool.getPreviousDate(latestDate, 7)
-    const pastWeekPrices = await tickerDailyModel.getAllLatestByDate(pastWeek)
+    const pastWeekPrices = await tickerDailyModel.getNearestPricesByDate(pastWeek)
     const pastWeekHolding = await traderHoldingModel.getLatestByDate(trader.id, pastWeek)
     const pastWeekValue = pastWeekHolding
       ? holdingLogic.getHoldingTotalValue(pastWeekHolding, pastWeekPrices)
@@ -209,9 +210,9 @@ const calcTraderPerformance = async (
     const twelveMonths = generateTool.getNumbersInRange(1, 12)
     const pastMonthPercentNumbers = await runTool.asyncMap(twelveMonths, async (month: number) => {
       const date = dateTool.getPreviousDate(latestDate, month * 30)
-      const prices = await tickerDailyModel.getAllLatestByDate(date)
+      const prices = await tickerDailyModel.getNearestPricesByDate(date)
       const holding = await traderHoldingModel.getLatestByDate(trader.id, date)
-      const value = prices && holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
+      const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
       const percentNumber = value ? generateTool.getChangePercent(totalValue, value) : null
       return percentNumber
     })
