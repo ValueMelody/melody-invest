@@ -42,6 +42,15 @@ export const decodeJWT = (token: string): interfaces.reqs.Auth | null => {
   return { id, email }
 }
 
+export const getNumbersInRange = (min: number, max: number): number[] => {
+  if (min >= max) throw new Error('min max less than max')
+  const arr = []
+  for (let i = min; i <= max; i++) {
+    arr.push(i)
+  }
+  return arr
+}
+
 export const pickNumberInRange = (min: number, max: number): number => {
   return Math.floor(Math.random() * (max + 1 - min)) + min
 }
@@ -59,9 +68,8 @@ export const getChangePercent = (
   return Math.floor(differ * 10000 / compareValue)
 }
 
-export const joinNumbersToString = (
-  ids: number[] | null,
-): string | null => {
-  if (!ids) return null
+export const sortNumsToString = (
+  ids: number[],
+): string => {
   return ids.sort((a, b) => a - b).join(',')
 }

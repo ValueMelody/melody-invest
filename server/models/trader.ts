@@ -9,6 +9,7 @@ const convertToRecord = (
 ): interfaces.traderModel.Record => ({
   ...raw,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
+  oneYearTrends: raw?.oneYearTrends?.split(',').map((val) => parseInt(val) || null) || null,
 })
 
 export const getByPK = async (
