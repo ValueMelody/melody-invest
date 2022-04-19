@@ -220,7 +220,9 @@ export const createTraderEnv = async (
   startDate: string,
   tickerIds: number[] | null,
 ): Promise<interfaces.traderEnvModel.Record> => {
-  const tickerIdsAsString = generateTool.joinNumbersToString(tickerIds)
+  const tickerIdsAsString = tickerIds
+    ? generateTool.sortNumsToString(tickerIds)
+    : null
   const transaction = await databaseAdapter.createTransaction()
   try {
     const env = await traderEnvModel.createIfEmpty({
@@ -251,7 +253,7 @@ export const createTraderCombo = async (
   traderEnvId: number,
   traderIds: number[],
 ): Promise<interfaces.traderComboModel.Identity> => {
-  const traderIdsAsString = generateTool.joinNumbersToString(traderIds) || ''
+  const traderIdsAsString = generateTool.sortNumsToString(traderIds)
 
   const transaction = await databaseAdapter.createTransaction()
   try {

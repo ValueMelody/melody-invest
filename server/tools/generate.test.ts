@@ -87,14 +87,19 @@ test('could pick one number', () => {
   expect(num2).toBeLessThanOrEqual(5)
 })
 
+test('could get numbers in range', () => {
+  expect(generate.getNumbersInRange(1, 2)).toStrictEqual([1, 2])
+  expect(generate.getNumbersInRange(1, 5)).toStrictEqual([1, 2, 3, 4, 5])
+  expect(() => generate.getNumbersInRange(1, 1)).toThrowError()
+})
+
 test('could get changed percent', () => {
   expect(generate.getChangePercent(100, 10)).toBe(90000)
   expect(generate.getChangePercent(90, 100)).toBe(-1000)
 })
 
-test('could join numbers as string', () => {
-  expect(generate.joinNumbersToString(null)).toBe(null)
-  expect(generate.joinNumbersToString([1, 2, 3, 4, 5])).toBe('1,2,3,4,5')
-  expect(generate.joinNumbersToString([5, 4, 3])).toBe('3,4,5')
-  expect(generate.joinNumbersToString([3, 1, 2])).toBe('1,2,3')
+test('could sort numbers to string', () => {
+  expect(generate.sortNumsToString([1, 2, 3, 4, 5])).toBe('1,2,3,4,5')
+  expect(generate.sortNumsToString([5, 4, 3])).toBe('3,4,5')
+  expect(generate.sortNumsToString([3, 1, 2])).toBe('1,2,3')
 })

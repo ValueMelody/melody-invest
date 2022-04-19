@@ -62,3 +62,7 @@ export interface Update {
   priceYearlyIncrease?: number | null;
   priceYearlyDecrease?: number | null;
 }
+
+export interface TickerPrices {
+  [tickerId: number]: number
+}

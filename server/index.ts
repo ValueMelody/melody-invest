@@ -2,7 +2,7 @@ import express, { Response, Request, NextFunction } from 'express'
 import 'express-async-errors'
 import cors from 'cors'
 import { initConnection as initDatabase } from './adapters/database'
-// import { initConnection as initCache } from './adapters/cache'
+import { initConnection as initCache } from './adapters/cache'
 import syncRouter from './routers/sync'
 import calcRouter from './routers/calc'
 import systemRouter from './routers/system'
@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 initDatabase()
-// initCache()
+initCache()
 
 app.use('/sync', syncRouter)
 app.use('/calc', calcRouter)

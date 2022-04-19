@@ -2,6 +2,8 @@ import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
 import * as tableEnum from '../enums/table'
 import * as databaseAdapter from '../adapters/database'
+import * as cacheAdapter from '../adapters/cache'
+import * as cacheTool from '../tools/cache'
 import * as dateTool from '../tools/date'
 
 const convertToRecord = (
@@ -62,10 +64,14 @@ export const getAll = async (
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
-export const getAllLatestByDate = async (
+export const getNearestPricesByDate = async (
   date: string,
-): Promise<interfaces.tickerDailyModel.Record[]> => {
-  const latestTickerDailys = await databaseAdapter.findAll({
+): Promise<interfaces.tickerDailyModel.TickerPrices> => {
+  const cacheKey = cacheTool.generateTickerPricesKey(date)
+  const cached = await cacheAdapter.get(cacheKey)
+  if (cached) return JSON.parse(cached)
+
+  const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
     tableName: tableEnum.NAME.TICKER_DAILY,
     orderBy: [{ column: 'tickerId', order: 'asc' }, { column: 'date', order: 'desc' }],
     groupBy: [
@@ -77,7 +83,16 @@ export const getAllLatestByDate = async (
     ],
     distinctOn: 'tickerId',
   })
-  return latestTickerDailys.map((daily) => convertToRecord(daily))
+  const initialPrices: interfaces.tickerDailyModel.TickerPrices = {}
+  const tickerPrices = latestTickerDailys.reduce((prices, raw) => {
+    const price = parseFloat(raw.splitMultiplier) * raw.closePrice
+    return {
+      ...prices,
+      [raw.tickerId]: price,
+    }
+  }, initialPrices)
+  await cacheAdapter.set(cacheKey, JSON.stringify(tickerPrices), '1d')
+  return tickerPrices
 }
 
 export const getByDate = async (

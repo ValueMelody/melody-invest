@@ -33,6 +33,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
       pastQuarterPercentNumber: null,
       pastMonthPercentNumber: null,
       pastWeekPercentNumber: null,
+      oneYearTrends: null,
     }, transaction)
 
     await transaction.commit()
@@ -193,52 +194,37 @@ const calcTraderPerformance = async (
       await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, traderTransaction)
     })
 
-    const dailyPrices = await tickerDailyModel.getAllLatestByDate(latestDate)
+    const dailyPrices = await tickerDailyModel.getNearestPricesByDate(latestDate)
     const totalValue = holdingLogic.getHoldingTotalValue(holding, dailyPrices)
     const initialValue = holdingLogic.getInitialCash()
     const totalDays = dateTool.getDurationCount(startedAt!, latestDate)
     const grossPercent = generateTool.getChangePercent(totalValue, initialValue)
 
     const pastWeek = dateTool.getPreviousDate(latestDate, 7)
-    const pastWeekPrices = await tickerDailyModel.getAllLatestByDate(pastWeek)
+    const pastWeekPrices = await tickerDailyModel.getNearestPricesByDate(pastWeek)
     const pastWeekHolding = await traderHoldingModel.getLatestByDate(trader.id, pastWeek)
     const pastWeekValue = pastWeekHolding
       ? holdingLogic.getHoldingTotalValue(pastWeekHolding, pastWeekPrices)
       : null
 
-    const pastMonth = dateTool.getPreviousDate(latestDate, 30)
-    const pastMonthPrices = await tickerDailyModel.getAllLatestByDate(pastMonth)
-    const pastMonthHolding = await traderHoldingModel.getLatestByDate(trader.id, pastMonth)
-    const pastMonthValue = pastMonthHolding
-      ? holdingLogic.getHoldingTotalValue(pastMonthHolding, pastMonthPrices)
-      : null
+    const twelveMonths = generateTool.getNumbersInRange(1, 12)
+    const pastMonthPercentNumbers = await runTool.asyncMap(twelveMonths, async (month: number) => {
+      const date = dateTool.getPreviousDate(latestDate, month * 30)
+      const prices = await tickerDailyModel.getNearestPricesByDate(date)
+      const holding = await traderHoldingModel.getLatestByDate(trader.id, date)
+      const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
+      const percentNumber = value ? generateTool.getChangePercent(totalValue, value) : null
+      return percentNumber
+    })
 
-    const pastQuarter = dateTool.getPreviousDate(latestDate, 91)
-    const pastQuarterPrices = await tickerDailyModel.getAllLatestByDate(pastQuarter)
-    const pastQuarterHolding = await traderHoldingModel.getLatestByDate(trader.id, pastQuarter)
-    const pastQuarterValue = pastQuarterHolding
-      ? holdingLogic.getHoldingTotalValue(pastQuarterHolding, pastQuarterPrices)
-      : null
-
-    const pastYear = dateTool.getPreviousDate(latestDate, 365)
-    const pastYearPrices = await tickerDailyModel.getAllLatestByDate(pastYear)
-    const pastYearHolding = await traderHoldingModel.getLatestByDate(trader.id, pastYear)
-    const pastYearValue = pastYearHolding
-      ? holdingLogic.getHoldingTotalValue(pastYearHolding, pastYearPrices)
-      : null
-
-    const pastYearPercentNumber = pastYearValue
-      ? generateTool.getChangePercent(totalValue, pastYearValue)
-      : null
-    const pastQuarterPercentNumber = pastQuarterValue
-      ? generateTool.getChangePercent(totalValue, pastQuarterValue)
-      : null
-    const pastMonthPercentNumber = pastMonthValue
-      ? generateTool.getChangePercent(totalValue, pastMonthValue)
-      : null
     const pastWeekPercentNumber = pastWeekValue
       ? generateTool.getChangePercent(totalValue, pastWeekValue)
       : null
+    const pastMonthPercentNumber = pastMonthPercentNumbers[0]
+    const pastQuarterPercentNumber = pastMonthPercentNumbers[2]
+    const pastYearPercentNumber = pastMonthPercentNumbers[11]
+
+    const oneYearTrends = pastMonthPercentNumbers.join(',')
 
     await traderModel.update(trader.id, {
       totalValue,
@@ -252,6 +238,7 @@ const calcTraderPerformance = async (
       pastQuarterPercentNumber,
       pastMonthPercentNumber,
       pastWeekPercentNumber,
+      oneYearTrends,
     }, traderTransaction)
 
     await traderTransaction.commit()

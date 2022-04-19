@@ -18,10 +18,12 @@ interface Common {
 
 export interface Record extends Common {
   totalValue: number | null;
+  oneYearTrends: (number | null)[] | null;
 }
 
 export interface Raw extends Common {
   totalValue: string | null;
+  oneYearTrends: string | null;
 }
 
 export interface Create {
@@ -45,6 +47,7 @@ export interface Update {
   pastQuarterPercentNumber?: number | null;
   pastMonthPercentNumber?: number | null;
   pastWeekPercentNumber?: number | null;
+  oneYearTrends?: string | null;
 }
 
 export interface Tops {
