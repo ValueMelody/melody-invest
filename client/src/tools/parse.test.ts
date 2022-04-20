@@ -106,6 +106,11 @@ test('could parse trader env start date', () => {
   })).toBe(localeTool.t('traderEnv.selectedTickers', { num: 5 }))
 })
 
+test('could parse profile name', () => {
+  expect(parseTool.profileName(1)).toBe(`${localeTool.t('common.profile')} #1`)
+  expect(parseTool.profileName(2)).toBe(`${localeTool.t('common.profile')} #2`)
+})
+
 test('could parse trader combo name', () => {
   expect(parseTool.traderComboName({
     id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],

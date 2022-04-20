@@ -76,6 +76,12 @@ export const traderEnvTickers = (
   return localeTool.t('traderEnv.selectedTickers', { num: traderEnv.tickerIds.length })
 }
 
+export const profileName = (
+  traderPatternId: number,
+): string => {
+  return `${localeTool.t('common.profile')} #${traderPatternId}`
+}
+
 export const traderComboName = (
   traderCombo: interfaces.traderComboModel.Identity,
 ): string => {

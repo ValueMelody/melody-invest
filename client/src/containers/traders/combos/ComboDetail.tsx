@@ -10,7 +10,7 @@ import usePageStyles from '../../hooks/usePageStyles'
 import useShowMore from '../../hooks/useShowMore'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import HoldingCard from '../blocks/HoldingCard'
-import ProfileCard from '../blocks/ProfileCard'
+import ComboProfiles from '../elements/ComboProfiles'
 import TraderComboCard from '../elements/TraderComboCard'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
@@ -52,6 +52,12 @@ const ComboDetail = () => {
   const holdings = matchedCombo?.holdings || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
+  const profilesWithEnvs = matchedCombo?.identity.traderIds.map((traderId) => {
+    const profile = getProfileDetail(traderId)
+    const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
+    return { profile, env }
+  }) || []
+
   // ------------------------------------------------------------ Effect --
 
   vendorTool.react.useEffect(() => {
@@ -82,17 +88,14 @@ const ComboDetail = () => {
         </div>
         <vendorTool.ui.Header
           as='h3'
-          icon='star'
-          content={localeTool.t('common.includedProfiles')}
+          icon='pie chart'
+          content={localeTool.t('traderCombo.profileWeights')}
           className={classes.asideTitle}
         />
-        {matchedCombo.identity.traderIds.map((traderId) => (
-          <ProfileCard
-            key={traderId}
-            profile={getProfileDetail(traderId)}
-            onClick={handleClickProfile}
-          />
-        ))}
+        <ComboProfiles
+          profilesWithEnvs={profilesWithEnvs}
+          onClickProfile={handleClickProfile}
+        />
       </aside>
       <section className={pageClasses.main}>
         <vendorTool.ui.Header

@@ -17,12 +17,12 @@
     "common.environments": "Environments",
     "common.selectEnvironment": "Select an Environment",
     "common.env": "Env",
+    "common.weight": "Weight",
     "common.combo": "Combo",
     "common.system": "System",
     "common.search": "Search",
     "common.never": "Never",
     "common.confirmAndWatch": "Confirm and Start Watch",
-    "common.includedProfiles": "Included Profiles",
     "common.showMoreHistory": "Show More History",
 
     "error.password.requireSame": "Retype password doesn't match password!",
@@ -119,6 +119,7 @@
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
     "traderCombo.history": "Holding History",
     "traderCombo.noResultYet": "There's no result generated for this combo yet",
+    "traderCombo.profileWeights": "Profile Weights",
 
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",
