@@ -41,7 +41,7 @@ const HoldingShare = ({
   const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
   const shareDiffer = previousShares ? currentShares - previousShares : null
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <vendorTool.ui.Label

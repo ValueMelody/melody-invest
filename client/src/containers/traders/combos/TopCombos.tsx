@@ -7,6 +7,7 @@ import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import TraderComboCard from '../elements/TraderComboCard'
 import ComboProfiles from '../elements/ComboProfiles'
+import ProfileValue from '../elements/ProfileValue'
 import HoldingCard from '../blocks/HoldingCard'
 import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
@@ -20,7 +21,10 @@ const useStyles = vendorTool.jss.createUseStyles((
     paddingBottom: '1.5rem',
     marginBottom: '1rem',
   },
-  asideTitle: {
+  portionTitle: {
+    marginTop: '2rem !important',
+  },
+  valueTitle: {
     marginBottom: '1rem !important',
   },
 }))
@@ -56,7 +60,7 @@ const TopCombos = () => {
     navigate(link)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!focusedCombo || !focusedCombo.holdings) return null
 
@@ -99,9 +103,25 @@ const TopCombos = () => {
         <section className={pageClasses.aside}>
           <vendorTool.ui.Header
             as='h3'
+            icon='star'
+            content={localeTool.t('traderCombo.includedProfiles')}
+            className={classes.valueTitle}
+          />
+          <div className='column-center'>
+            {profilesWithEnvs.map((profileWithEnv) => (
+              <ProfileValue
+                key={profileWithEnv.profile?.trader.id}
+                trader={profileWithEnv.profile?.trader || null}
+                env={profileWithEnv.env || null}
+                onClick={handleClickProfile}
+              />
+            ))}
+          </div>
+          <vendorTool.ui.Header
+            as='h3'
             icon='pie chart'
             content={localeTool.t('traderCombo.profilePortion')}
-            className={classes.asideTitle}
+            className={classes.portionTitle}
           />
           <ComboProfiles
             profilesWithEnvs={profilesWithEnvs}

@@ -28,7 +28,7 @@ const VariationList = ({
 }) => {
   const classes = useStyles()
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <section data-testid='variationList' className='column-start'>

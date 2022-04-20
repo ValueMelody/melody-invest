@@ -64,7 +64,7 @@ const SignUp = () => {
     await createUser(parsedEmail, parsedPassword, isConfirmed)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <div className={vendorTool.classNames(classes.container, 'column-center')}>

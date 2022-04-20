@@ -71,7 +71,7 @@ const TopProfiles = () => {
     navigate(link)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!topProfiles || !focusedTop) return null
 

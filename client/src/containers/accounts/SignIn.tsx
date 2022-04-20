@@ -57,7 +57,7 @@ const SignIn = () => {
       .then(() => navigate(routerTool.dashboardRoute()))
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <div className={vendorTool.classNames(classes.container, 'column-center')}>

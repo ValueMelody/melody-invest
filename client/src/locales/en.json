@@ -24,6 +24,8 @@
     "common.never": "Never",
     "common.confirmAndWatch": "Confirm and Start Watch",
     "common.showMoreHistory": "Show More History",
+    "common.sinceLast": "Since Last",
+    "common.sinceStart": "Since start",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -60,9 +62,6 @@
 
     "systemCombo.default10": "Top10 Combined",
     "systemCombo.bigTech10": "Top10 Combined",
-
-    "holdingCard.sinceLast": "Since Last",
-    "holdingCard.sinceStart": "Since start",
 
     "tickerList.categories": "Stock Categories",
 
@@ -120,6 +119,7 @@
     "traderCombo.history": "Holding History",
     "traderCombo.noResultYet": "There's no result generated for this combo yet",
     "traderCombo.profilePortion": "Profile Portion",
+    "traderCombo.includedProfiles": "Included Profiles",
 
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",

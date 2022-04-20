@@ -47,7 +47,7 @@ const ProfileBuilderGroup = ({
     onSelectValue(behavior, value)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <vendorTool.ui.Segment secondary className={classes.segment}>

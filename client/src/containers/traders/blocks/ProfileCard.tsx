@@ -6,7 +6,7 @@ import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
 import TrendChart from '../elements/TrendChart'
-import ProfileIdentity from '../elements/ProfileIdentity'
+import ProfileLabel from '../elements/ProfileLabel'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
@@ -27,6 +27,12 @@ const useStyles = vendorTool.jss.createUseStyles((
   },
   active: {
     border: `2px solid ${theme.PRIMARY_COLOR} !important`,
+  },
+  label: {
+    alignSelf: 'flex-start',
+  },
+  desc: {
+    marginLeft: '1rem !important',
   },
 }))
 
@@ -88,7 +94,7 @@ const ProfileCard = ({
     }
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!trader || !pattern || !traderEnv) return null
 
@@ -104,10 +110,16 @@ const ProfileCard = ({
       <header
         className={vendorTool.classNames('row-between', classes.header)}
       >
-        <ProfileIdentity
-          trader={trader}
-          traderEnv={traderEnv}
-        />
+        <div className={vendorTool.classNames('row-start', classes.label)}>
+          <ProfileLabel
+            color='blue'
+            trader={trader}
+            traderEnv={traderEnv}
+          />
+          <h5 className={classes.desc}>
+            {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
+          </h5>
+        </div>
         {!!user.userTraderIds && !simple && (
           <WatchButton
             isWatched={isWatched}

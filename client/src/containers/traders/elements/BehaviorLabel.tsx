@@ -36,7 +36,7 @@ const BehaviorLabel = ({
     onClick(behavior)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <vendorTool.ui.Label

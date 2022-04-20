@@ -38,7 +38,7 @@ const PatternBehaviors = ({
     navigate(url)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <div className={vendorTool.classNames('row-start', classes.container)}>

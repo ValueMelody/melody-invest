@@ -35,7 +35,7 @@ const TraderComboCard = ({
     onClick(traderCombo.id)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!traderCombo || !traderEnv) return null
 

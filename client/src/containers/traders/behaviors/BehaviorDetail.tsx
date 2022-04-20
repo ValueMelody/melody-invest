@@ -70,7 +70,7 @@ const BehaviorDetail = () => {
     navigate(url)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!validBehavior || !traderEnv) return null
 

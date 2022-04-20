@@ -38,7 +38,7 @@ const ActiveShape = ({
     ? `${localeTool.t('common.weight')}: ${parseTool.floatToPercent(percent)}`
     : ''
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <g>
@@ -93,7 +93,7 @@ const WeightChart = ({
     onMouseEnter(index)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!data.length) return null
 

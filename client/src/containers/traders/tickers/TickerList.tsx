@@ -64,7 +64,7 @@ const TickerList = () => {
     setSearchText(e.target.value)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <section className={pageClasses.root}>
