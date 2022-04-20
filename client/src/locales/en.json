@@ -119,7 +119,7 @@
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
     "traderCombo.history": "Holding History",
     "traderCombo.noResultYet": "There's no result generated for this combo yet",
-    "traderCombo.profileWeights": "Profile Weights",
+    "traderCombo.profilePortion": "Profile Portion",
 
     "envBuilder.title": "Environment Builder",
     "envBuilder.startDate": "Trade Start Date",
