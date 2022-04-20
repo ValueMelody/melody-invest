@@ -6,8 +6,8 @@ import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import TraderComboCard from '../elements/TraderComboCard'
+import ComboProfiles from '../elements/ComboProfiles'
 import HoldingCard from '../blocks/HoldingCard'
-import ProfileCard from '../blocks/ProfileCard'
 import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
 
@@ -18,7 +18,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     width: '100%',
     borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
     paddingBottom: '1.5rem',
-    marginBottom: '2rem',
+    marginBottom: '1rem',
   },
   asideTitle: {
     marginBottom: '1rem !important',
@@ -38,6 +38,12 @@ const TopCombos = () => {
   const user = getUser()
   const systemCombos = user.userTraderCombos.filter((combo) => combo.identity.isSystem)
   const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
+
+  const profilesWithEnvs = focusedCombo?.identity.traderIds.map((traderId) => {
+    const profile = getProfileDetail(traderId)
+    const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
+    return { profile, env }
+  }) || []
 
   // ------------------------------------------------------------ Handler --
 
@@ -93,17 +99,14 @@ const TopCombos = () => {
         <section className={pageClasses.aside}>
           <vendorTool.ui.Header
             as='h3'
-            icon='star'
-            content={localeTool.t('common.includedProfiles')}
+            icon='pie chart'
+            content={localeTool.t('traderCombo.profilePortion')}
             className={classes.asideTitle}
           />
-          {focusedCombo.identity.traderIds.map((traderId) => (
-            <ProfileCard
-              key={traderId}
-              profile={getProfileDetail(traderId)}
-              onClick={handleClickProfile}
-            />
-          ))}
+          <ComboProfiles
+            profilesWithEnvs={profilesWithEnvs}
+            onClickProfile={handleClickProfile}
+          />
         </section>
       </section>
     </section>

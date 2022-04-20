@@ -11,6 +11,8 @@ const TrendChart = ({
 }: {
   data: DataPoint[];
 }) => {
+  // ------------------------------------------------------------ Interface --
+
   if (!data.length) return null
 
   return (
