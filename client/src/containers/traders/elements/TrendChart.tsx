@@ -25,7 +25,7 @@ const TrendChart = ({
       <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
         <vendorTool.chart.Label
           orientation='bottom'
-          value={`${localeTool.t('profile.oneYearTrends')}`}
+          value={`${localeTool.t('profile.daysTrends', { num: 30 * data.length })}`}
           offset={0}
           position='insideBottomRight'
         />

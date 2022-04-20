@@ -93,7 +93,7 @@
     "bestReturn.pastWeekTitle": "Best Return in 7 days",
 
     "profile.estimatedAt": "Refreshed at: {{date}}",
-    "profile.oneYearTrends": "360 days trends",
+    "profile.daysTrends": "{{num}} days trends",
     "profile.history": "Holding History",
     "profile.showAllHoldings": "Show All Holdings",
     "profile.noResultYet": "There's no result generated for this profile yet",
