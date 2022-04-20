@@ -5,7 +5,7 @@ import * as vendorTool from '../../../tools/vendor'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
-import PatternLabel from '../elements/PatternLabel'
+import TrendChart from '../elements/TrendChart'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
@@ -15,11 +15,17 @@ const useStyles = vendorTool.jss.createUseStyles((
 ) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',
-    minWidth: '26rem',
+    minWidth: '24rem',
     padding: '0 !important',
   },
   header: {
     width: '100%',
+  },
+  labelGroup: {
+    alignSelf: 'flex-start',
+  },
+  label: {
+    marginRight: '1rem !important',
   },
   body: {
     padding: '1rem',
@@ -60,6 +66,10 @@ const ProfileCard = ({
   const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
 
+  const trendData = trader?.oneYearTrends
+    ? trader.oneYearTrends.map((value, index) => ({ label: `${index}`, value }))
+    : []
+
   // ------------------------------------------------------------ Handler --
 
   const handleClick = () => {
@@ -96,8 +106,17 @@ const ProfileCard = ({
       onClick={handleClick}
       padded
     >
-      <header className={vendorTool.classNames('row-between', classes.header)}>
-        <PatternLabel patternId={trader.traderPatternId} traderEnv={traderEnv} />
+      <header
+        className={vendorTool.classNames('row-between', classes.header)}
+      >
+        <div className={vendorTool.classNames('row-start', classes.labelGroup)}>
+          <vendorTool.ui.Label color='blue' className={classes.label}>
+            {localeTool.t('common.profile')} #{trader.traderPatternId} - {traderEnv.name}
+          </vendorTool.ui.Label>
+          <h5>
+            {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
+          </h5>
+        </div>
         {!!user.userTraderIds && !simple && (
           <WatchButton
             isWatched={isWatched}
@@ -107,7 +126,10 @@ const ProfileCard = ({
       </header>
 
       <div className={classes.body}>
-        <TraderPerformance trader={trader} focusType={focusType} />
+        <section className='row-around'>
+          <TraderPerformance trader={trader} focusType={focusType} />
+          <TrendChart data={trendData} />
+        </section>
         {!simple && (
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
         )}

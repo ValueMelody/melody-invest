@@ -7,9 +7,11 @@ import * as ui from 'semantic-ui-react'
 import DatePicker from 'react-datepicker'
 import PasswordValidator from 'password-validator'
 import request from 'axios'
+import * as chart from 'recharts'
 
 export {
   classNames,
+  chart,
   dom,
   jss,
   ui,

@@ -224,7 +224,9 @@ const calcTraderPerformance = async (
     const pastQuarterPercentNumber = pastMonthPercentNumbers[2]
     const pastYearPercentNumber = pastMonthPercentNumbers[11]
 
-    const oneYearTrends = pastMonthPercentNumbers.join(',')
+    const oneYearTrends = pastMonthPercentNumbers
+      .filter((num) => num !== null)
+      .join(',')
 
     await traderModel.update(trader.id, {
       totalValue,

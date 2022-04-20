@@ -25,3 +25,6 @@ const handleClick = (e, id) => {}
 const handleClick = (e) => (id) => {}
 <Button onClick={handleClick(id)} />
 ```
+
+## block component vs element component
+If a component import any state hooks, then it's a block, otherwise, it is an element

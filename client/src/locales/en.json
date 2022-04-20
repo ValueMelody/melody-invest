@@ -87,11 +87,13 @@
 
     "bestReturn.type": "Type of Top Profiles",
     "bestReturn.yearlyTitle": "Best Return Annually",
-    "bestReturn.pastYearTitle": "Best Return in One Year",
-    "bestReturn.pastQuarterTitle": "Best Return in One Quarter",
-    "bestReturn.pastMonthTitle": "Best Return in One Month",
-    "bestReturn.pastWeekTitle": "Best Return in One Week",
+    "bestReturn.pastYearTitle": "Best Return in 360 days",
+    "bestReturn.pastQuarterTitle": "Best Return in 90 days",
+    "bestReturn.pastMonthTitle": "Best Return in 30 days",
+    "bestReturn.pastWeekTitle": "Best Return in 7 days",
 
+    "profile.estimatedAt": "Refreshed at: {{date}}",
+    "profile.daysTrends": "{{num}} days trends",
     "profile.history": "Holding History",
     "profile.showAllHoldings": "Show All Holdings",
     "profile.noResultYet": "There's no result generated for this profile yet",
@@ -139,10 +141,10 @@
     "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
 
     "gain.yearly": "Annual",
-    "gain.pastYear": "One Year",
-    "gain.pastQuarter": "One Quarter",
-    "gain.pastMonth": "One Month",
-    "gain.pastWeek": "One Week",
+    "gain.pastYear": "360 days",
+    "gain.pastQuarter": "90 days",
+    "gain.pastMonth": "30 days",
+    "gain.pastWeek": "7 days",
 
     "behaviorGroup.priceIncreaseBuyBehaviors": "Buy when stock price increased continuously",
     "behaviorGroup.priceDecreaseBuyBehaviors": "Buy when stock price decreased continuously",
