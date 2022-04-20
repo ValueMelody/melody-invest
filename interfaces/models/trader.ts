@@ -18,7 +18,7 @@ interface Common {
 
 export interface Record extends Common {
   totalValue: number | null;
-  oneYearTrends: (number | null)[] | null;
+  oneYearTrends: number[] | null;
 }
 
 export interface Raw extends Common {

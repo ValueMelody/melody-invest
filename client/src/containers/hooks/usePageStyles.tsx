@@ -12,7 +12,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     flexWrap: 'wrap',
   },
   aside: {
-    width: '26rem',
+    width: '24rem',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -20,8 +20,8 @@ const useStyles = vendorTool.jss.createUseStyles((
   main: {
     display: 'flex',
     flexDirection: 'column',
-    width: 'calc(100% - 30rem)',
-    minWidth: '26rem',
+    width: 'calc(100% - 28rem)',
+    minWidth: '24rem',
   },
   activeCard: {
     border: `3px solid ${theme.PRIMARY_COLOR} !important`,
