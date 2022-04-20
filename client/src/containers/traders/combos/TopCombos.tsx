@@ -100,7 +100,7 @@ const TopCombos = () => {
           <vendorTool.ui.Header
             as='h3'
             icon='pie chart'
-            content={localeTool.t('traderCombo.profileWeights')}
+            content={localeTool.t('traderCombo.profilePortion')}
             className={classes.asideTitle}
           />
           <ComboProfiles
