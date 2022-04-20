@@ -57,7 +57,7 @@ const BehaviorEditor = ({
     onSelect(behavior, value)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!isEditing) {
     return (

@@ -43,7 +43,7 @@ const HoldingCard = ({
     setShowAllHoldings(true)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <vendorTool.ui.Segment className={classes.container}>
@@ -68,16 +68,16 @@ const HoldingCard = ({
         <div className={vendorTool.classNames('row-start', classes.differRow)}>
           {previousHolding && (
             <ValueDiffer
-              title={localeTool.t('holdingCard.sinceLast')}
+              title={localeTool.t('common.sinceLast')}
               currentValue={holding.totalValue}
               compareValue={previousHolding.totalValue}
             />
           )}
           <ValueDiffer
-              title={localeTool.t('holdingCard.sinceStart')}
-              currentValue={holding.totalValue}
-              compareValue={initialValue}
-            />
+            title={localeTool.t('common.sinceStart')}
+            currentValue={holding.totalValue}
+            compareValue={initialValue}
+          />
         </div>
       </div>
       <vendorTool.ui.Divider />

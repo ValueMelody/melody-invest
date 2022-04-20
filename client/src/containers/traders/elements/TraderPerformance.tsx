@@ -35,7 +35,7 @@ const TraderPerformance = ({
   const classes = useStyles()
   const gainCellClass = vendorTool.classNames('column-center', classes.gainCell)
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!trader.estimatedAt) {
     return (

@@ -33,7 +33,7 @@ const TraderEnvCard = ({
     onClick(traderEnv.id)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!traderEnv) return null
 

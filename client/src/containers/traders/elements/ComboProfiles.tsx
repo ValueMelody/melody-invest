@@ -48,7 +48,7 @@ const ComboProfiles = ({
     onClickProfile(trader)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <section className='column-center'>

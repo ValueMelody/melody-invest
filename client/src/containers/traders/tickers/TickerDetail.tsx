@@ -75,7 +75,7 @@ const TickerDetail = () => {
     navigate(url)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!tickerIdentity || !traderEnv) return null
 

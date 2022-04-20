@@ -48,7 +48,7 @@ const Layout: vendorTool.react.FunctionComponent = ({
 
   const handleRemoveMessage = (id: number) => removeMessage(id)
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <>

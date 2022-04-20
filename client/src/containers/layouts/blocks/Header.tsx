@@ -35,7 +35,7 @@ const Header = () => {
   const user = getUser()
   const isLoggedInUser = !!user.userType
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <header className={vendorTool.classNames('row-between', classes.header)}>

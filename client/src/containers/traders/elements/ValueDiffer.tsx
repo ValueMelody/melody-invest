@@ -31,13 +31,13 @@ const ValueDiffer = ({
   const differ = (currentValue - compareValue) / compareValue
   const isPositive = differ > 0
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!differ) return null
 
   return (
     <div className={vendorTool.classNames('row-start', classes.container)}>
-      <h5>{title}:</h5>
+      {title && <h5>{title}:</h5>}
       <vendorTool.ui.Label
         className={classes.label}
         color={isPositive ? themeEnum.theme.INCREASE_COLOR : themeEnum.theme.DECREASE_COLOR}

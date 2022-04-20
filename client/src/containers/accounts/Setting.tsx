@@ -74,7 +74,7 @@ const Setting = () => {
     updateUserPassword(parsedCurrentPassword, parsedNewPassword)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   return (
     <div className={vendorTool.classNames(accountClasses.container, 'column-center')}>

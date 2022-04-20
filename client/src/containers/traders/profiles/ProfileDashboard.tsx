@@ -66,7 +66,7 @@ const ProfileDashboard = () => {
     navigate(link)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!user.userTraderIds) return null
 

@@ -80,7 +80,7 @@ const BehaviorList = () => {
     setSearchText(e.target.value)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!focusedOption) return null
 

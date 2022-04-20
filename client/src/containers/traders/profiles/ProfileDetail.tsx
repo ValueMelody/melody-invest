@@ -77,7 +77,7 @@ const ProfileDetail = () => {
     navigate(link)
   }
 
-  // ------------------------------------------------------------ Interface --
+  // ------------------------------------------------------------ UI --
 
   if (!profileDetail || !profileDetail || !traderEnv) return null
 
