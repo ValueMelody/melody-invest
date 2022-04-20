@@ -21,6 +21,9 @@ const useStyles = vendorTool.jss.createUseStyles((
   header: {
     width: '100%',
   },
+  labelGroup: {
+    alignSelf: 'flex-start',
+  },
   label: {
     marginRight: '1rem !important',
   },
@@ -106,7 +109,7 @@ const ProfileCard = ({
       <header
         className={vendorTool.classNames('row-between', classes.header)}
       >
-        <div className='row-start'>
+        <div className={vendorTool.classNames('row-start', classes.labelGroup)}>
           <vendorTool.ui.Label color='blue' className={classes.label}>
             {localeTool.t('common.profile')} #{trader.traderPatternId} - {traderEnv.name}
           </vendorTool.ui.Label>
