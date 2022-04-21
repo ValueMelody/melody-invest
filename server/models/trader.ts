@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as generateTool from '../tools/generate'
+
+const TableName = adapterEnum.DatabaseTable.Trader
 
 const convertToRecord = (
   raw: interfaces.traderModel.Raw,
@@ -16,7 +18,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -29,7 +31,7 @@ export const getByUK = async (
   patternId: number,
 ): Promise<interfaces.traderModel.Record | null> => {
   const trader = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'traderEnvId', value: envId },
       { key: 'traderPatternId', value: patternId },
@@ -40,7 +42,7 @@ export const getByUK = async (
 
 export const getActives = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'isActive', value: true },
     ],
@@ -52,7 +54,7 @@ export const getByPattern = async (
   traderPatternId: number,
 ): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'traderPatternId', value: traderPatternId },
     ],
@@ -62,7 +64,7 @@ export const getByPattern = async (
 
 export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
   })
   return traders.map((trader) => convertToRecord(trader))
 }
@@ -71,7 +73,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],
@@ -91,7 +93,7 @@ export const getTopPerformancers = async (
   type: 'yearlyPercentNumber',
 ): Promise<interfaces.traderModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     conditions: [
       { key: 'traderEnvId', value: envId },
       { key: type, value: null, type: 'IS NOT' },
@@ -113,29 +115,29 @@ export const getTops = async (
 
   if (options?.behavior) {
     conditions.push({
-      key: `${tableEnum.NAME.TRADER_PATTERN}.${options.behavior}`, value: null, type: 'IS NOT',
+      key: `${adapterEnum.DatabaseTable.TraderPattern}.${options.behavior}`, value: null, type: 'IS NOT',
     })
     join = {
-      joinTable: tableEnum.NAME.TRADER_PATTERN,
-      foreignKey: `${tableEnum.NAME.TRADER}.traderPatternId`,
-      joinKey: `${tableEnum.NAME.TRADER_PATTERN}.id`,
+      joinTable: adapterEnum.DatabaseTable.TraderPattern,
+      foreignKey: `${TableName}.traderPatternId`,
+      joinKey: `${adapterEnum.DatabaseTable.TraderPattern}.id`,
     }
   }
 
   if (options?.tickerId) {
     conditions.push({
-      key: `${tableEnum.NAME.TICKER_HOLDER}.tickerId`, value: options.tickerId,
+      key: `${adapterEnum.DatabaseTable.TickerHolder}.tickerId`, value: options.tickerId,
     })
     join = {
-      joinTable: tableEnum.NAME.TICKER_HOLDER,
-      foreignKey: `${tableEnum.NAME.TRADER}.id`,
-      joinKey: `${tableEnum.NAME.TICKER_HOLDER}.traderId`,
+      joinTable: adapterEnum.DatabaseTable.TickerHolder,
+      foreignKey: `${TableName}.id`,
+      joinKey: `${adapterEnum.DatabaseTable.TickerHolder}.traderId`,
     }
   }
 
   const topYearly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
-    select: [`${tableEnum.NAME.TRADER}.*`],
+    tableName: TableName,
+    select: [`${TableName}.*`],
     conditions: [
       ...conditions,
       { key: 'yearlyPercentNumber', value: null, type: 'IS NOT' },
@@ -146,8 +148,8 @@ export const getTops = async (
   })
 
   const topPastYear = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
-    select: [`${tableEnum.NAME.TRADER}.*`],
+    tableName: TableName,
+    select: [`${TableName}.*`],
     conditions: [
       ...conditions,
       { key: 'pastYearPercentNumber', value: null, type: 'IS NOT' },
@@ -158,8 +160,8 @@ export const getTops = async (
   })
 
   const topPastQuarter = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
-    select: [`${tableEnum.NAME.TRADER}.*`],
+    tableName: TableName,
+    select: [`${TableName}.*`],
     conditions: [
       ...conditions,
       { key: 'pastQuarterPercentNumber', value: null, type: 'IS NOT' },
@@ -170,8 +172,8 @@ export const getTops = async (
   })
 
   const topPastMonth = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
-    select: [`${tableEnum.NAME.TRADER}.*`],
+    tableName: TableName,
+    select: [`${TableName}.*`],
     conditions: [
       ...conditions,
       { key: 'pastMonthPercentNumber', value: null, type: 'IS NOT' },
@@ -182,8 +184,8 @@ export const getTops = async (
   })
 
   const topPastWeek = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER,
-    select: [`${tableEnum.NAME.TRADER}.*`],
+    tableName: TableName,
+    select: [`${TableName}.*`],
     conditions: [
       ...conditions,
       { key: 'pastWeekPercentNumber', value: null, type: 'IS NOT' },
@@ -206,7 +208,7 @@ export const create = async (
   values: interfaces.traderModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -229,7 +231,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderModel.Record> => {
   const updatedTraders = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TRADER,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: traderId },

@@ -9,15 +9,15 @@ import * as marketEnum from '../enums/market'
 import * as databaseAdapter from '../adapters/database'
 
 type MonthlyIndicatorType =
-  typeof marketEnum.TYPES.FUNDS_RATE |
-  typeof marketEnum.TYPES.TREASURY_YIELD |
-  typeof marketEnum.TYPES.CPI |
-  typeof marketEnum.TYPES.INFLATION_EXPECTATION |
-  typeof marketEnum.TYPES.CONSUMER_SENTIMENT |
-  typeof marketEnum.TYPES.RETAIL_SALES |
-  typeof marketEnum.TYPES.DURABLE_GOODS |
-  typeof marketEnum.TYPES.UNEMPLOYMENT_RATE |
-  typeof marketEnum.TYPES.NONFARM_PAYROLL
+  typeof marketEnum.Type.FundsRate |
+  typeof marketEnum.Type.TreasuryYield |
+  typeof marketEnum.Type.CPI |
+  typeof marketEnum.Type.InflationExpectation |
+  typeof marketEnum.Type.ConsumerSentiment |
+  typeof marketEnum.Type.RetailSales |
+  typeof marketEnum.Type.DurableGoods |
+  typeof marketEnum.Type.UnemploymentRate |
+  typeof marketEnum.Type.NonfarmPayroll
 
 interface MonthlyIndicatorOptions {
   isTenYearsTreasury?: boolean;
@@ -34,45 +34,45 @@ export const syncMonthly = async (
   let indicatorKey: interfaces.indicatorMonthlyModel.IndicatorKey
 
   switch (type) {
-    case marketEnum.TYPES.UNEMPLOYMENT_RATE:
+    case marketEnum.Type.UnemploymentRate:
       indicatorResult = await marketAdapter.getUnemploymentRate()
       indicatorKey = 'unemploymentRate'
       break
-    case marketEnum.TYPES.FUNDS_RATE:
+    case marketEnum.Type.FundsRate:
       indicatorResult = await marketAdapter.getFundsRate()
       indicatorKey = 'fundsRate'
       break
-    case marketEnum.TYPES.TREASURY_YIELD: {
+    case marketEnum.Type.TreasuryYield: {
       const isTenYears = options?.isTenYearsTreasury
       const isThirtyYears = options?.isThirtyYearsTreasury || !isTenYears
       const queryKey = isThirtyYears
-        ? marketEnum.TREASURY_TYPE.THIRTY_YEARS
-        : marketEnum.TREASURY_TYPE.TEN_YEARS
+        ? marketEnum.TreasuryType.ThirtyYears
+        : marketEnum.TreasuryType.TenYears
       indicatorResult = await marketAdapter.getTreasuryYield(queryKey)
       indicatorKey = isThirtyYears ? 'thirtyYearsTreasury' : 'tenYearsTreasury'
       break
     }
-    case marketEnum.TYPES.CPI:
+    case marketEnum.Type.CPI:
       indicatorResult = await marketAdapter.getCPI()
       indicatorKey = 'cpi'
       break
-    case marketEnum.TYPES.INFLATION_EXPECTATION:
+    case marketEnum.Type.InflationExpectation:
       indicatorResult = await marketAdapter.getInflationExpectation()
       indicatorKey = 'inflationExpectation'
       break
-    case marketEnum.TYPES.CONSUMER_SENTIMENT:
+    case marketEnum.Type.ConsumerSentiment:
       indicatorResult = await marketAdapter.getConsumerSentiment()
       indicatorKey = 'consumerSentiment'
       break
-    case marketEnum.TYPES.RETAIL_SALES:
+    case marketEnum.Type.RetailSales:
       indicatorResult = await marketAdapter.getRetailSales()
       indicatorKey = 'retailSales'
       break
-    case marketEnum.TYPES.DURABLE_GOODS:
+    case marketEnum.Type.DurableGoods:
       indicatorResult = await marketAdapter.getDurableGoods()
       indicatorKey = 'durableGoods'
       break
-    case marketEnum.TYPES.NONFARM_PAYROLL:
+    case marketEnum.Type.NonfarmPayroll:
     default:
       indicatorResult = await marketAdapter.getNonfarmPayroll()
       indicatorKey = 'nonfarmPayroll'
@@ -105,7 +105,7 @@ export const syncMonthly = async (
   }
 }
 
-type QuarterlyIndicatorType = typeof marketEnum.TYPES.GDP
+type QuarterlyIndicatorType = typeof marketEnum.Type.GDP
 
 export const syncQuarterly = async (
   type: QuarterlyIndicatorType,
@@ -116,9 +116,9 @@ export const syncQuarterly = async (
   let indicatorKey: interfaces.indicatorQuarterlyModel.IndicatorKey
 
   switch (type) {
-    case marketEnum.TYPES.GDP:
+    case marketEnum.Type.GDP:
     default:
-      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.QUARTERLY)
+      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDPInterval.Quarterly)
       indicatorKey = 'realGDP'
       break
   }
@@ -164,8 +164,8 @@ export const syncQuarterly = async (
 }
 
 type YearlyIndicatorType =
-  typeof marketEnum.TYPES.INFLATION |
-  typeof marketEnum.TYPES.GDP
+  typeof marketEnum.Type.Inflation |
+  typeof marketEnum.Type.GDP
 interface YearlyIndicatorOptions {
   valueLength?: number;
 }
@@ -180,11 +180,11 @@ export const syncYearly = async (
   let indicatorKey: interfaces.indicatorYearlyModel.IndicatorKey
 
   switch (type) {
-    case marketEnum.TYPES.GDP:
-      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDP_INTERVAL.YEARLY)
+    case marketEnum.Type.GDP:
+      indicatorResult = await marketAdapter.getRealGDP(marketEnum.GDPInterval.Yearly)
       indicatorKey = 'realGDP'
       break
-    case marketEnum.TYPES.INFLATION:
+    case marketEnum.Type.Inflation:
     default:
       indicatorResult = await marketAdapter.getInflation()
       indicatorKey = 'inflation'

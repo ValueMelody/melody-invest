@@ -1,10 +1,12 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as cacheAdapter from '../adapters/cache'
 import * as cacheTool from '../tools/cache'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.TickerDaily
 
 const convertToRecord = (
   raw: interfaces.tickerDailyModel.Raw,
@@ -19,7 +21,7 @@ export const getByUK = async (
   date: string,
 ): Promise<interfaces.tickerDailyModel.Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'date', value: date },
@@ -33,7 +35,7 @@ export const getPreviousOne = async (
   date: string,
 ): Promise<interfaces.tickerDailyModel.Record | null> => {
   const tickerDaily = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'date', type: '<', value: date },
@@ -45,7 +47,7 @@ export const getPreviousOne = async (
 
 export const getLatestDate = async (): Promise<string> => {
   const tickerDaily = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     orderBy: [{ column: 'date', order: 'desc' }],
   })
   return tickerDaily ? tickerDaily.date : dateTool.getInitialDate()
@@ -55,7 +57,7 @@ export const getAll = async (
   tickerId: number,
 ): Promise<interfaces.tickerDailyModel.Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
@@ -72,11 +74,11 @@ export const getNearestPricesByDate = async (
   if (cached) return JSON.parse(cached)
 
   const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     orderBy: [{ column: 'tickerId', order: 'asc' }, { column: 'date', order: 'desc' }],
     groupBy: [
-      `${tableEnum.NAME.TICKER_DAILY}.id`,
-      `${tableEnum.NAME.TICKER_DAILY}.tickerId`,
+      `${TableName}.id`,
+      `${TableName}.tickerId`,
     ],
     conditions: [
       { key: 'date', value: date, type: '<=' },
@@ -99,7 +101,7 @@ export const getByDate = async (
   date: string,
 ): Promise<interfaces.tickerDailyModel.Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     conditions: [{ key: 'date', value: date }],
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
@@ -109,7 +111,7 @@ export const create = async (
   values: interfaces.tickerDailyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.tickerDailyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -122,7 +124,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerDailyModel.Record> => {
   const updatedDaily = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TICKER_DAILY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: tickerDailyId },

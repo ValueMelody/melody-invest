@@ -97,7 +97,7 @@ export const traderComboTraders = (
 
 export const holdingValue = (value: number | null): string | null => {
   if (value === null) return null
-  const realValue = value / constants.trader.initial.PRICE_PADDING
+  const realValue = value / constants.Trader.Initial.PricePadding
   return Intl
     ? new Intl.NumberFormat('en', { style: 'currency', currency: 'USD' }).format(realValue)
     : (realValue).toFixed(2)

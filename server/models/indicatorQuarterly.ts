@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.IndicatorQuarterly
 
 const convertToRecord = (
   raw: interfaces.indicatorQuarterlyModel.Raw,
@@ -17,7 +19,7 @@ export const getByUK = async (
   quarter: string,
 ): Promise<interfaces.indicatorQuarterlyModel.Record | null> => {
   const quarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'quarter', value: quarter },
     ],
@@ -33,7 +35,7 @@ export const getPublishedByDate = async (
   const previousQuarter = dateTool.getPreviousQuarter(quarter)
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'quarter', value: previousQuarter },
     ],
@@ -45,7 +47,7 @@ export const getAll = async (): Promise<
   interfaces.indicatorQuarterlyModel.Record[]
 > => {
   const quarterly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
+    tableName: TableName,
     orderBy: [{ column: 'quarter', order: 'asc' }],
   })
   return quarterly.map((raw) => convertToRecord(raw))
@@ -55,7 +57,7 @@ export const create = async (
   values: interfaces.indicatorQuarterlyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorQuarterlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -68,7 +70,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorQuarterlyModel.Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAME.INDICATOR_QUARTERLY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: indicatorQuarterlyId },

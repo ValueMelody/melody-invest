@@ -57,97 +57,97 @@ const ProfileBuilder = () => {
   const BUY_GROUPS = [
     {
       title: `* ${localeTool.t('behaviorGroup.priceIncreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseBuyBehaviors,
+      behaviors: constants.Behavior.PriceIncreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.priceDecreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.priceDecreaseBuyBehaviors,
+      behaviors: constants.Behavior.PriceDecreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.financialImproveBuyBehaviors')}`,
-      behaviors: constants.behavior.financialImproveBuyBehaviors,
+      behaviors: constants.Behavior.FinancialImproveBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.financialWorsenBuyBehaviors')}`,
-      behaviors: constants.behavior.financialWorsenBuyBehaviors,
+      behaviors: constants.Behavior.FinancialWorsenBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.indicatorIncreaseBuyBehaviors,
+      behaviors: constants.Behavior.IndicatorIncreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorDecreaseBuyBehaviors')}`,
-      behaviors: constants.behavior.indicatorDecreaseBuyBehaviors,
+      behaviors: constants.Behavior.IndicatorDecreaseBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyImproveBuyBehaviors')}`,
-      behaviors: constants.behavior.economyImproveBuyBehaviors,
+      behaviors: constants.Behavior.EconomyImproveBuyBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyWorsenBuyBehaviors')}`,
-      behaviors: constants.behavior.economyWorsenBuyBehaviors,
+      behaviors: constants.Behavior.EconomyWorsenBuyBehaviors,
     },
   ]
 
   const SELL_GROUPS = [
     {
       title: `* ${localeTool.t('behaviorGroup.priceIncreaseSellBehaviors')}`,
-      behaviors: constants.behavior.priceIncreaseSellBehaviors,
+      behaviors: constants.Behavior.PriceIncreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.priceDecreaseSellBehaviors')}`,
-      behaviors: constants.behavior.priceDecreaseSellBehaviors,
+      behaviors: constants.Behavior.PriceDecreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.financialImproveSellBehaviors')}`,
-      behaviors: constants.behavior.financialImproveSellBehaviors,
+      behaviors: constants.Behavior.FinancialImproveSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.financialWorsenSellBehaviors')}`,
-      behaviors: constants.behavior.financialWorsenSellBehaviors,
+      behaviors: constants.Behavior.FinancialWorsenSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseSellBehaviors')}`,
-      behaviors: constants.behavior.indicatorIncreaseSellBehaviors,
+      behaviors: constants.Behavior.IndicatorIncreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.indicatorDecreaseSellBehaviors')}`,
-      behaviors: constants.behavior.indicatorDecreaseSellBehaviors,
+      behaviors: constants.Behavior.IndicatorDecreaseSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyImproveSellBehaviors')}`,
-      behaviors: constants.behavior.economyImproveSellBehaviors,
+      behaviors: constants.Behavior.EconomyImproveSellBehaviors,
     },
     {
       title: `* ${localeTool.t('behaviorGroup.economyWorsenSellBehaviors')}`,
-      behaviors: constants.behavior.economyWorsenSellBehaviors,
+      behaviors: constants.Behavior.EconomyWorsenSellBehaviors,
     },
   ]
 
   const activeBuyBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.buyBehaviors, behaviorValues,
+    constants.Behavior.BuyBehaviors, behaviorValues,
   )
   const isValidBuyBehavior = activeBuyBehaviorCount >= 1
 
   const activeSellBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.sellBehaviors, behaviorValues,
+    constants.Behavior.SellBehaviors, behaviorValues,
   )
   const isValidSellBehavior = activeSellBehaviorCount >= 1
 
   const activePreferenceBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.preferenceBehaviors, behaviorValues,
+    constants.Behavior.PreferenceBehaviors, behaviorValues,
   )
-  const isValidPreferenceBehavior = activePreferenceBehaviorCount === constants.behavior.preferenceBehaviors.length
+  const isValidPreferenceBehavior = activePreferenceBehaviorCount === constants.Behavior.PreferenceBehaviors.length
 
   const activeAllocateBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.allocateBehaviors, behaviorValues,
+    constants.Behavior.AllocateBehaviors, behaviorValues,
   )
-  const isValidAllocateBehavior = activeAllocateBehaviorCount === constants.behavior.allocateBehaviors.length
+  const isValidAllocateBehavior = activeAllocateBehaviorCount === constants.Behavior.AllocateBehaviors.length
 
   const activeFrequencyBehaviorCount = getActiveBehaviorCount(
-    constants.behavior.frequencyBehaviors, behaviorValues,
+    constants.Behavior.FrequencyBehaviors, behaviorValues,
   )
-  const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.behavior.frequencyBehaviors.length
+  const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.Behavior.FrequencyBehaviors.length
 
   // ------------------------------------------------------------ Handler --
 
@@ -192,7 +192,7 @@ const ProfileBuilder = () => {
     // @ts-ignore
     const defaultValues: interfaces.traderPatternModel.Create = { hashCode: '' }
     const traderPattern = constants
-      .behavior.behaviors.reduce((
+      .Behavior.Behaviors.reduce((
         values: interfaces.traderPatternModel.Create,
         behavior: interfaces.traderPatternModel.Behavior,
       ) => ({
@@ -275,7 +275,7 @@ const ProfileBuilder = () => {
           />
           {isPreferenceBehaviorsExtended && (
             <vendorTool.ui.Segment secondary>
-              {constants.behavior.preferenceBehaviors.map((behavior) => (
+              {constants.Behavior.PreferenceBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
@@ -299,7 +299,7 @@ const ProfileBuilder = () => {
           />
           {isAllocateBehaviorsExtended && (
             <vendorTool.ui.Segment secondary>
-              {constants.behavior.allocateBehaviors.map((behavior) => (
+              {constants.Behavior.AllocateBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
@@ -323,7 +323,7 @@ const ProfileBuilder = () => {
           />
           {isFrequencyBehaviorsExtended && (
             <vendorTool.ui.Segment secondary>
-              {constants.behavior.frequencyBehaviors.map((behavior) => (
+              {constants.Behavior.FrequencyBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}

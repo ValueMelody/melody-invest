@@ -36,12 +36,12 @@ const BehaviorList = () => {
   const [searchText, setSearchText] = vendorTool.react.useState('')
   const [focusedType, setFocusedType] = vendorTool.react.useState('buyBehaviors')
 
-  const buyBehaviors = constants.behavior.buyBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
-  const sellBehaviors = constants.behavior.sellBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
+  const buyBehaviors = constants.Behavior.BuyBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
+  const sellBehaviors = constants.Behavior.SellBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
   const otherBehaviors = [
-    ...constants.behavior.preferenceBehaviors,
-    ...constants.behavior.allocateBehaviors,
-    ...constants.behavior.frequencyBehaviors,
+    ...constants.Behavior.PreferenceBehaviors,
+    ...constants.Behavior.AllocateBehaviors,
+    ...constants.Behavior.FrequencyBehaviors,
   ].filter((behavior) => isSearchedBehavior(behavior, searchText))
 
   const focusOptions = [

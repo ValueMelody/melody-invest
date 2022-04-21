@@ -1,7 +1,9 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.Ticker
 
 export const getByUK = async (
   region: string,
@@ -11,7 +13,7 @@ export const getByUK = async (
   const tickerSymbol = symbol.toUpperCase()
 
   const ticker = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER,
+    tableName: TableName,
     conditions: [
       { key: 'region', value: tickerRegion },
       { key: 'symbol', value: tickerSymbol },
@@ -22,7 +24,7 @@ export const getByUK = async (
 
 export const getAll = async (): Promise<interfaces.tickerModel.Record[]> => {
   const tickers = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER,
+    tableName: TableName,
   })
   return tickers
 }
@@ -33,7 +35,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerModel.Record> => {
   const updatedTicker = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TICKER,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: tickerId },

@@ -1,41 +1,26 @@
-const PRICES: 'TIME_SERIES_DAILY_ADJUSTED' = 'TIME_SERIES_DAILY_ADJUSTED'
-const EARNINGS: 'EARNINGS' = 'EARNINGS'
-const INCOMES: 'INCOME_STATEMENT' = 'INCOME_STATEMENT'
-const GDP: 'REAL_GDP' = 'REAL_GDP'
-const FUNDS_RATE: 'FEDERAL_FUNDS_RATE' = 'FEDERAL_FUNDS_RATE'
-const TREASURY_YIELD: 'TREASURY_YIELD' = 'TREASURY_YIELD'
-const CPI: 'CPI' = 'CPI'
-const INFLATION: 'INFLATION' = 'INFLATION'
-const INFLATION_EXPECTATION: 'INFLATION_EXPECTATION' = 'INFLATION_EXPECTATION'
-const CONSUMER_SENTIMENT: 'CONSUMER_SENTIMENT' = 'CONSUMER_SENTIMENT'
-const RETAIL_SALES: 'RETAIL_SALES' = 'RETAIL_SALES'
-const DURABLE_GOODS: 'DURABLES' = 'DURABLES'
-const UNEMPLOYMENT_RATE: 'UNEMPLOYMENT' = 'UNEMPLOYMENT'
-const NONFARM_PAYROLL: 'NONFARM_PAYROLL' = 'NONFARM_PAYROLL'
+export const Type = Object.freeze({
+  Prices: 'TIME_SERIES_DAILY_ADJUSTED',
+  Earnings: 'EARNINGS',
+  Incomes: 'INCOME_STATEMENT',
+  GDP: 'REAL_GDP',
+  FundsRate: 'FEDERAL_FUNDS_RATE',
+  TreasuryYield: 'TREASURY_YIELD',
+  CPI: 'CPI',
+  Inflation: 'INFLATION',
+  InflationExpectation: 'INFLATION_EXPECTATION',
+  ConsumerSentiment: 'CONSUMER_SENTIMENT',
+  RetailSales: 'RETAIL_SALES',
+  DurableGoods: 'DURABLES',
+  UnemploymentRate: 'UNEMPLOYMENT',
+  NonfarmPayroll: 'NONFARM_PAYROLL',
+})
 
-export const TYPES = {
-  PRICES,
-  EARNINGS,
-  INCOMES,
-  GDP,
-  FUNDS_RATE,
-  TREASURY_YIELD,
-  CPI,
-  INFLATION,
-  INFLATION_EXPECTATION,
-  CONSUMER_SENTIMENT,
-  RETAIL_SALES,
-  DURABLE_GOODS,
-  UNEMPLOYMENT_RATE,
-  NONFARM_PAYROLL,
-}
+export const GDPInterval = Object.freeze({
+  Yearly: 'annual',
+  Quarterly: 'quarterly',
+})
 
-export const GDP_INTERVAL = {
-  YEARLY: 'annual',
-  QUARTERLY: 'quarterly',
-}
-
-export const TREASURY_TYPE = {
-  TEN_YEARS: '10year',
-  THIRTY_YEARS: '30year',
-}
+export const TreasuryType = Object.freeze({
+  TenYears: '10year',
+  ThirtyYears: '30year',
+})

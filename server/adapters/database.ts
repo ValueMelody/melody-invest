@@ -1,6 +1,6 @@
 import knex, { Knex } from 'knex'
 import * as errorEnum from '../enums/error'
-import * as connectionEnum from '../enums/connect'
+import * as adapterEnum from '../enums/adapter'
 
 interface OrderBy {
   column: string;
@@ -57,8 +57,8 @@ let _db: Knex | null = null
 
 export const initConnection = () => {
   _db = knex({
-    client: connectionEnum.databaseClient,
-    connection: connectionEnum.databaseConfig,
+    client: adapterEnum.DatabaseConfig.Client,
+    connection: adapterEnum.DatabaseConfig.Connection,
   })
 }
 
@@ -147,7 +147,7 @@ export const create = async ({
     .clone()
     .insert(values)
     .returning('*')
-  if (!record || record?.length !== 1) throw errorEnum.CUSTOM.DB_CREATE_FAILED
+  if (!record || record?.length !== 1) throw errorEnum.Custom.CreationFailed
   return record[0]
 }
 
@@ -176,7 +176,7 @@ export const update = async ({
 
   const records = await query
 
-  if (!records || records.length === 0) throw errorEnum.CUSTOM.DB_UPDATE_FAILED
+  if (!records || records.length === 0) throw errorEnum.Custom.UpdationFailed
   return records
 }
 

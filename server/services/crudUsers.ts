@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
 import * as traderModel from '../models/trader'
@@ -10,7 +11,6 @@ import * as traderComboModel from '../models/traderCombo'
 import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
 import * as errorEnum from '../enums/error'
-import * as userEnum from '../enums/user'
 import * as traderLogic from '../logics/trader'
 
 export const getUserOverall = async (
@@ -18,7 +18,7 @@ export const getUserOverall = async (
 ): Promise<interfaces.userRes.UserOverall> => {
   const user = await userModel.getByPK(userId)
 
-  if (!user) throw errorEnum.CUSTOM.USER_NOT_FOUND
+  if (!user) throw errorEnum.Custom.UserNotFound
 
   const userTraders = await traderFollowerModel.getUserFollowed(userId)
   const traderIds = userTraders.map((userTrader) => userTrader.traderId)
@@ -78,7 +78,7 @@ export const createUser = async (
         password: generateTool.buildEncryptedPassword(password),
         activationCode: generateTool.buildActivationCode(),
         activationSentAt: new Date(),
-        type: userEnum.TYPE.NORMAL,
+        type: constants.User.Type.Normal,
       }, transaction)
     }
 
@@ -96,8 +96,8 @@ export const createUserToken = async (
 ): Promise<interfaces.userRes.UserToken> => {
   const encryptedPassword = generateTool.buildEncryptedPassword(password)
   const user = await userModel.getByUK(email)
-  if (!user || user.password !== encryptedPassword) throw errorEnum.CUSTOM.USER_NOT_FOUND
-  if (user.activationCode) throw errorEnum.CUSTOM.USER_NOT_ACTIVATED
+  if (!user || user.password !== encryptedPassword) throw errorEnum.Custom.UserNotFound
+  if (user.activationCode) throw errorEnum.Custom.UserNotActivated
 
   const expiresIn = remember ? '30d' : '12h'
   const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
@@ -108,9 +108,9 @@ export const updatePassword = async (
   userId: number, currentPassword: string, newPassword: string,
 ) => {
   const user = await userModel.getByPK(userId)
-  if (!user) throw errorEnum.CUSTOM.USER_NOT_FOUND
+  if (!user) throw errorEnum.Custom.UserNotFound
   const encryptedCurrentPassword = generateTool.buildEncryptedPassword(currentPassword)
-  if (user.password !== encryptedCurrentPassword) throw errorEnum.CUSTOM.USER_NOT_FOUND
+  if (user.password !== encryptedCurrentPassword) throw errorEnum.Custom.UserNotFound
   const encryptedNewPassword = generateTool.buildEncryptedPassword(newPassword)
 
   const transaction = await databaseAdapter.createTransaction()

@@ -46,25 +46,25 @@ const TICKER_YEARLY_2: interfaces.tickerYearlyModel.Record = {
 
 test('could get ticker prefer value for price', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_PRICE,
+    constants.BehaviorValue.Preference.HigherPrice,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_PRICE,
+    constants.BehaviorValue.Preference.HigherPrice,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(10)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_PRICE,
+    constants.BehaviorValue.Preference.LowerPrice,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_PRICE,
+    constants.BehaviorValue.Preference.LowerPrice,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
@@ -73,37 +73,37 @@ test('could get ticker prefer value for price', () => {
 
 test('could get ticker prefer value for quarter eps', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.HigherQuarterEPS,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(20000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.HigherQuarterEPS,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(2000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.LowerQuarterEPS,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(20000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.LowerQuarterEPS,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(2000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.HigherQuarterEPS,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EPS,
+    constants.BehaviorValue.Preference.LowerQuarterEPS,
     TICKER_DAILY_1,
     null,
     null,
@@ -112,37 +112,37 @@ test('could get ticker prefer value for quarter eps', () => {
 
 test('could get ticker prefer value for quarter ebitda', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.HigherQuarterEBITDA,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(300)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.HigherQuarterEBITDA,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(30)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.LowerQuarterEBITDA,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(300)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.LowerQuarterEBITDA,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(30)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.HigherQuarterEBITDA,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_EBITDA,
+    constants.BehaviorValue.Preference.LowerQuarterEBITDA,
     TICKER_DAILY_1,
     null,
     null,
@@ -151,37 +151,37 @@ test('could get ticker prefer value for quarter ebitda', () => {
 
 test('could get ticker prefer value for quarter income', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.HigherQuarterIncome,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     null,
   )).toEqual(40000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.HigherQuarterIncome,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(4000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.LowerQuarterIncome,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     null,
   )).toEqual(40000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.LowerQuarterIncome,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(4000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.HigherQuarterIncome,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_INCOME,
+    constants.BehaviorValue.Preference.LowerQuarterIncome,
     TICKER_DAILY_1,
     null,
     TICKER_YEARLY_1,
@@ -190,37 +190,37 @@ test('could get ticker prefer value for quarter income', () => {
 
 test('could get ticker prefer value for quarter grossProfit', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.HigherQuarterProfit,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     null,
   )).toEqual(50)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.HigherQuarterProfit,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(5)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.LowerQuarterProfit,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     null,
   )).toEqual(50)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.LowerQuarterProfit,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(5)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.HigherQuarterProfit,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_PROFIT,
+    constants.BehaviorValue.Preference.LowerQuarterProfit,
     TICKER_DAILY_1,
     null,
     TICKER_YEARLY_1,
@@ -229,37 +229,37 @@ test('could get ticker prefer value for quarter grossProfit', () => {
 
 test('could get ticker prefer value for quarter totalRevenue', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.HigherQuarterRevenue,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     null,
   )).toEqual(600)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.HigherQuarterRevenue,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(60)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.LowerQuarterRevenue,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(600)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.LowerQuarterRevenue,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     null,
   )).toEqual(60)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.HigherQuarterRevenue,
     TICKER_DAILY_2,
     null,
     TICKER_YEARLY_1,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_QUARTER_REVENUE,
+    constants.BehaviorValue.Preference.LowerQuarterRevenue,
     TICKER_DAILY_1,
     null,
     null,
@@ -268,37 +268,37 @@ test('could get ticker prefer value for quarter totalRevenue', () => {
 
 test('could get ticker prefer value for yearly eps', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EPS,
+    constants.BehaviorValue.Preference.HigherYearEPS,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(7000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EPS,
+    constants.BehaviorValue.Preference.HigherYearEPS,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(700)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EPS,
+    constants.BehaviorValue.Preference.LowerYearEPS,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(7000)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EPS,
+    constants.BehaviorValue.Preference.LowerYearEPS,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(700)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EPS,
+    constants.BehaviorValue.Preference.HigherYearEPS,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EPS,
+    constants.BehaviorValue.Preference.LowerYearEPS,
     TICKER_DAILY_1,
     null,
     null,
@@ -307,37 +307,37 @@ test('could get ticker prefer value for yearly eps', () => {
 
 test('could get ticker prefer value for yearly ebitda', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.HigherYearEBITDA,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(800)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.HigherYearEBITDA,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(80)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.LowerYearEBITDA,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(800)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.LowerYearEBITDA,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(80)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.HigherYearEBITDA,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_EBITDA,
+    constants.BehaviorValue.Preference.LowerYearEBITDA,
     TICKER_DAILY_1,
     null,
     null,
@@ -346,37 +346,37 @@ test('could get ticker prefer value for yearly ebitda', () => {
 
 test('could get ticker prefer value for yearly netIncome', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.HigherYearIncome,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(90)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.HigherYearIncome,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(9)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.LowerYearIncome,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(90)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.LowerYearIncome,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(9)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.HigherYearIncome,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_INCOME,
+    constants.BehaviorValue.Preference.LowerYearIncome,
     TICKER_DAILY_1,
     null,
     null,
@@ -385,37 +385,37 @@ test('could get ticker prefer value for yearly netIncome', () => {
 
 test('could get ticker prefer value for yearly grossProfit', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.HigherYearProfit,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.HigherYearProfit,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(10)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.LowerYearProfit,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.LowerYearProfit,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(10)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.HigherYearProfit,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_PROFIT,
+    constants.BehaviorValue.Preference.LowerYearProfit,
     TICKER_DAILY_1,
     null,
     null,
@@ -424,37 +424,37 @@ test('could get ticker prefer value for yearly grossProfit', () => {
 
 test('could get ticker prefer value for yearly totalRevenue', () => {
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.HigherYearRevenue,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(1100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.HigherYearRevenue,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(110)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.LowerYearRevenue,
     TICKER_DAILY_1,
     TICKER_QUARTERLY_1,
     TICKER_YEARLY_1,
   )).toEqual(1100)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.LowerYearRevenue,
     TICKER_DAILY_2,
     TICKER_QUARTERLY_2,
     TICKER_YEARLY_2,
   )).toEqual(110)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.HIGHER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.HigherYearRevenue,
     TICKER_DAILY_2,
     null,
     null,
   )).toEqual(null)
   expect(evaluation.getTickerPreferValue(
-    constants.behaviorValue.preference.LOWER_YEAR_REVENUE,
+    constants.BehaviorValue.Preference.LowerYearRevenue,
     TICKER_DAILY_1,
     null,
     null,

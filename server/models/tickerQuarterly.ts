@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.TickerQuarterly
 
 const convertToRecord = (
   raw: interfaces.tickerQuarterlyModel.Raw,
@@ -23,7 +25,7 @@ export const getRawByUK = async (
   quarter: string,
 ): Promise<interfaces.tickerQuarterlyModel.Raw | null> => {
   const tickerQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'quarter', value: quarter },
@@ -37,7 +39,7 @@ export const getByUK = async (
   quarter: string,
 ): Promise<interfaces.tickerQuarterlyModel.Record | null> => {
   const tickerQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'quarter', value: quarter },
@@ -55,7 +57,7 @@ export const getLatest = async (
     ? [...pkCondition, ...conditions]
     : pkCondition
   const tickerQuarterly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     conditions: whereConditions,
     orderBy: [{ column: 'quarter', order: 'desc' }],
   })
@@ -66,7 +68,7 @@ export const getAll = async (
   tickerId: number,
 ): Promise<interfaces.tickerQuarterlyModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
@@ -82,7 +84,7 @@ export const getPublishedByDate = async (
   const previousQuarter = dateTool.getPreviousQuarter(currentQuarter)
 
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     conditions: [
       { key: 'earningReportDate', value: date, type: '<' },
       { key: 'quarter', value: previousQuarter, type: '>=' },
@@ -97,7 +99,7 @@ export const create = async (
   values: interfaces.tickerQuarterlyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.tickerQuarterlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -110,7 +112,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerQuarterlyModel.Record> => {
   const updatedQuarterly = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TICKER_QUARTERLY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: tickerQuarterlyId },

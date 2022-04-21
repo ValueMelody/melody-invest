@@ -30,7 +30,7 @@ app.use('/traders', tradersRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error(err)
-  const internalError = errorEnum.DEFAULT.INTERNAL_SERVER_ERROR
+  const internalError = errorEnum.Default.InternalServerError
   res.status(err?.code || internalError.code).send({
     message: err?.message || internalError.message,
   })

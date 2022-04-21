@@ -20,5 +20,5 @@ export const getHoldingTotalValue = (
 }
 
 export const getInitialCash = (): number => {
-  return constants.trader.initial.CASH
+  return constants.Trader.Initial.Cash
 }

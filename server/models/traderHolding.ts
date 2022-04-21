@@ -1,7 +1,9 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TraderHolding
 
 const convertToRecord = (
   raw: interfaces.traderHoldingModel.Raw,
@@ -17,7 +19,7 @@ export const getLatest = async (
   traderId: number,
 ): Promise<interfaces.traderHoldingModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderId },
     ],
@@ -31,7 +33,7 @@ export const getLatestByDate = async (
   date: string,
 ): Promise<interfaces.traderHoldingModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderId },
       { key: 'date', value: date, type: '<=' },
@@ -45,7 +47,7 @@ export const getAllByTraderIds = async (
   traderIds: number[],
 ): Promise<interfaces.traderHoldingModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderIds, type: 'IN' },
     ],
@@ -58,7 +60,7 @@ export const getAll = async (
   traderId: number,
 ): Promise<interfaces.traderHoldingModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderId },
     ],
@@ -72,7 +74,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderHoldingModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     values: {
       traderId: values.traderId,
       date: values.date,
@@ -90,7 +92,7 @@ export const destroyTraderHoldings = async (
   transaction: Knex.Transaction,
 ) => {
   await databaseAdapter.destroy({
-    tableName: tableEnum.NAME.TRADER_HOLDING,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderId },
     ],

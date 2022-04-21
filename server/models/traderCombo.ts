@@ -1,7 +1,9 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TraderCombo
 
 const convertToRecord = (
   raw: interfaces.traderComboModel.Raw,
@@ -16,7 +18,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderComboModel.Record | null> => {
   const combo = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_COMBO,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -28,7 +30,7 @@ export const getByUK = async (
   traderIds: string,
 ): Promise<interfaces.traderComboModel.Record | null> => {
   const combo = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_COMBO,
+    tableName: TableName,
     conditions: [
       { key: 'traderIds', value: traderIds },
     ],
@@ -40,7 +42,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderComboModel.Record[]> => {
   const combos = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_COMBO,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],
@@ -53,7 +55,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderComboModel.Record> => {
   const env = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER_COMBO,
+    tableName: TableName,
     values,
     transaction,
   })

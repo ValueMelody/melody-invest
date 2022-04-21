@@ -1,13 +1,15 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.User
 
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.userModel.Record | null> => {
   const user = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.USER,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -19,7 +21,7 @@ export const getByUK = async (
   email: string,
 ): Promise<interfaces.userModel.Record | null> => {
   const user = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.USER,
+    tableName: TableName,
     conditions: [
       { key: 'email', value: email },
     ],
@@ -32,7 +34,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.userModel.Record> => {
   const createdUser = await databaseAdapter.create({
-    tableName: tableEnum.NAME.USER,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -45,7 +47,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.userModel.Record> => {
   const updatedUser = await databaseAdapter.update({
-    tableName: tableEnum.NAME.USER,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: userId },

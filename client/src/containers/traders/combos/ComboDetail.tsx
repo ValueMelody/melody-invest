@@ -134,7 +134,7 @@ const ComboDetail = () => {
                 ? matchedCombo.holdings[index + 1]
                 : null
             }
-            initialValue={constants.trader.initial.CASH * matchedCombo.identity.traderIds.length}
+            initialValue={constants.Trader.Initial.Cash * matchedCombo.identity.traderIds.length}
           />
         ))}
         {displayedTotal < holdings.length && renderShowMoreButton()}

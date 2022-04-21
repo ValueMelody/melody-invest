@@ -96,7 +96,7 @@ const TopCombos = () => {
                   ? focusedCombo.holdings[index + 1]
                   : null
               }
-              initialValue={constants.trader.initial.CASH * 10}
+              initialValue={constants.Trader.Initial.Cash * 10}
             />
           ))}
         </section>

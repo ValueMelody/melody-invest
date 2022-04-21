@@ -12,48 +12,48 @@ export default tradersRouter
 
 const validateGetProfileParams = (id: number, accessCode: string) => {
   const hasValidParam = id && accessCode && accessCode.length === 16
-  if (!hasValidParam) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
+  if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
 }
 
 const validateGetEnvParams = (id: number) => {
-  if (!id) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!id) throw errorEnum.Custom.MissingParams
 }
 
 const validateGetComboParams = (id: number) => {
-  if (!id) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!id) throw errorEnum.Custom.MissingParams
 }
 
 const validateCreateProfileParams = (traderId: number, traderPattern: interfaces.traderPatternModel.Create) => {
-  if (!traderId || !traderPattern) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!traderId || !traderPattern) throw errorEnum.Custom.MissingParams
 }
 
 const validateCreateEnvParams = (name: string, startDate: string, tickerIds: number[] | null) => {
-  if (!name || startDate?.length !== 10) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!name || startDate?.length !== 10) throw errorEnum.Custom.MissingParams
   const hasWrongId = tickerIds && tickerIds.some((id) => typeof id !== 'number')
-  if (hasWrongId) throw errorEnum.DEFAULT.FORBIDDEN
+  if (hasWrongId) throw errorEnum.Default.Forbidden
 }
 
 const validateCreateComboParams = (name: string, traderEnvId: number, traderIds: number[]) => {
-  if (!name || !traderEnvId || !Array.isArray(traderIds) || traderIds.length < 2) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!name || !traderEnvId || !Array.isArray(traderIds) || traderIds.length < 2) throw errorEnum.Custom.MissingParams
   const hasWrongId = traderIds.some((id) => typeof id !== 'number')
-  if (hasWrongId) throw errorEnum.DEFAULT.FORBIDDEN
+  if (hasWrongId) throw errorEnum.Default.Forbidden
 }
 
 const validateTraderId = (traderId: number) => {
-  if (!traderId) throw errorEnum.DEFAULT.FORBIDDEN
+  if (!traderId) throw errorEnum.Default.Forbidden
 }
 
 const validateEnvId = (envId: number) => {
-  if (!envId) throw errorEnum.DEFAULT.FORBIDDEN
+  if (!envId) throw errorEnum.Default.Forbidden
 }
 
 const validateTickerId = (tickerId: number) => {
-  if (!tickerId) throw errorEnum.DEFAULT.FORBIDDEN
+  if (!tickerId) throw errorEnum.Default.Forbidden
 }
 
 const validateBehavior = (behavior: string): interfaces.traderPatternModel.Behavior => {
-  const matched = constants.behavior.behaviors.find((name) => name === behavior)
-  if (!matched) throw errorEnum.DEFAULT.FORBIDDEN
+  const matched = constants.Behavior.Behaviors.find((name) => name === behavior)
+  if (!matched) throw errorEnum.Default.Forbidden
   return matched
 }
 

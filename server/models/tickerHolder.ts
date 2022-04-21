@@ -1,14 +1,16 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TickerHolder
 
 export const create = async (
   values: interfaces.tickerHolderModel.Create,
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerHolderModel.Record> => {
   const result = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TICKER_HOLDER,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -20,7 +22,7 @@ export const destroyTraderTickers = async (
   transaction: Knex.Transaction,
 ) => {
   await databaseAdapter.destroy({
-    tableName: tableEnum.NAME.TICKER_HOLDER,
+    tableName: TableName,
     conditions: [
       { key: 'traderId', value: traderId },
     ],

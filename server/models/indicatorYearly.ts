@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.IndicatorYearly
 
 const convertToRecord = (
   raw: interfaces.indicatorYearlyModel.Raw,
@@ -17,7 +19,7 @@ export const getByUK = async (
   year: string,
 ): Promise<interfaces.indicatorYearlyModel.Record | null> => {
   const yearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'year', value: year },
     ],
@@ -29,7 +31,7 @@ export const getAll = async (): Promise<
   interfaces.indicatorYearlyModel.Record[]
 > => {
   const yearly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.INDICATOR_YEARLY,
+    tableName: TableName,
     orderBy: [{ column: 'year', order: 'asc' }],
   })
   return yearly.map((raw) => convertToRecord(raw))
@@ -44,7 +46,7 @@ export const getPublishedByDate = async (date: string) => {
   const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'year', value: targetYear },
     ],
@@ -56,7 +58,7 @@ export const create = async (
   values: interfaces.indicatorYearlyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorYearlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.INDICATOR_YEARLY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -69,7 +71,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorYearlyModel.Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAME.INDICATOR_YEARLY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: indicatorYearlyId },

@@ -6,19 +6,19 @@ const QUARTER_FORMAT = 'yyyy-MM'
 const YEAR_FORMAT = 'yyyy'
 
 export const getInitialDate = (): string => {
-  return constants.trader.initial.DATE
+  return constants.Trader.Initial.Date
 }
 
 export const getInitialYear = (): string => {
-  return constants.trader.initial.DATE.substring(0, 4)
+  return constants.Trader.Initial.Date.substring(0, 4)
 }
 
 export const getInitialQuarter = (): string => {
-  return `${constants.trader.initial.DATE.substring(0, 4)}-03`
+  return `${constants.Trader.Initial.Date.substring(0, 4)}-03`
 }
 
 export const getInitialMonth = (): string => {
-  return constants.trader.initial.DATE.substring(0, 7)
+  return constants.Trader.Initial.Date.substring(0, 7)
 }
 
 export const getCurrentDate = (): string => {
