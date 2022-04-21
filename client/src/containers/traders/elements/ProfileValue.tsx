@@ -44,8 +44,8 @@ const ProfileValue = ({
       />
       <ValueDiffer
         title=''
-        currentValue={trader.totalValue || constants.trader.initial.CASH}
-        compareValue={constants.trader.initial.CASH}
+        currentValue={trader.totalValue || constants.Trader.Initial.Cash}
+        compareValue={constants.Trader.Initial.Cash}
       />
     </div>
   )

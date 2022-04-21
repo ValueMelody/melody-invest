@@ -39,7 +39,7 @@ const BehaviorDetail = () => {
 
   const behavior = params.behavior || null
   const envId = params.envId ? parseInt(params.envId) : 1
-  const validBehavior = constants.behavior.behaviors.find((value) => value === behavior) || null
+  const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior) || null
   const behaviorDetail = getBehaviorDetail(envId, validBehavior)
   const topProfiles = behaviorDetail?.tops
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null

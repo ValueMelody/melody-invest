@@ -12,5 +12,5 @@ export const getSplitMultiplier = (
 
 export const convertToPaddingPrice = (price: string): number => {
   const value = parseFloat(price)
-  return Math.floor(value * constants.trader.initial.PRICE_PADDING)
+  return Math.floor(value * constants.Trader.Initial.PricePadding)
 }

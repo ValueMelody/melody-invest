@@ -1,9 +1,11 @@
-import * as trader from './trader'
-import * as behavior from './behavior'
-import * as behaviorValue from './behaviorValue'
+import * as Trader from './trader'
+import * as Behavior from './behavior'
+import * as BehaviorValue from './behaviorValue'
+import * as User from './user'
 
 export {
-  trader,
-  behavior,
-  behaviorValue,
+  Trader,
+  Behavior,
+  BehaviorValue,
+  User,
 }

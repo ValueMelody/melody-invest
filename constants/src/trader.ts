@@ -1,17 +1,17 @@
-export const day = {
-  WEEK: 5,
-  HALF_MONTH: 10,
-  MONTH: 20,
-  HALF_QUARTER: 40,
-  QUARTER: 80,
-  HALF_YEAR: 160,
-  YEAR: 320,
+export const Day = {
+  Week: 5,
+  HalfMonth: 10,
+  Month: 20,
+  HalfQuarter: 40,
+  Quarter: 80,
+  HalfYear: 160,
+  Year: 320,
 }
 
-const PRICE_PADDING = 100
+const PricePadding = 100
 
-export const initial = {
-  DATE: '2001-01-01',
-  PRICE_PADDING,
-  CASH: 100000 * PRICE_PADDING,
+export const Initial = {
+  Date: '2001-01-01',
+  PricePadding,
+  Cash: 100000 * PricePadding,
 }

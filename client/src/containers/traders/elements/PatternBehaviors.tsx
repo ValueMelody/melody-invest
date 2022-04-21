@@ -24,13 +24,13 @@ const PatternBehaviors = ({
   // ------------------------------------------------------------ State --
 
   const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
-    ...constants.behavior.allocateBehaviors,
-    ...constants.behavior.frequencyBehaviors,
-    ...constants.behavior.preferenceBehaviors,
+    ...constants.Behavior.AllocateBehaviors,
+    ...constants.Behavior.FrequencyBehaviors,
+    ...constants.Behavior.PreferenceBehaviors,
   ]
 
-  const activeBuyBehaviors = constants.behavior.buyBehaviors.filter((key) => pattern[key] !== null)
-  const activeSellBehaviors = constants.behavior.sellBehaviors.filter((key) => pattern[key] !== null)
+  const activeBuyBehaviors = constants.Behavior.BuyBehaviors.filter((key) => pattern[key] !== null)
+  const activeSellBehaviors = constants.Behavior.SellBehaviors.filter((key) => pattern[key] !== null)
 
   // ------------------------------------------------------------ Handler --
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {

@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.TickerYearly
 
 const convertToRecord = (
   raw: interfaces.tickerYearlyModel.Raw,
@@ -25,7 +27,7 @@ export const getLatest = async (
     ? [...pkCondition, ...conditions]
     : pkCondition
   const tickerYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     conditions: whereConditions,
     orderBy: [{ column: 'year', order: 'desc' }],
   })
@@ -37,7 +39,7 @@ export const getRawByUK = async (
   year: string,
 ): Promise<interfaces.tickerYearlyModel.Raw | null> => {
   const tickerYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'year', value: year },
@@ -51,7 +53,7 @@ export const getByUK = async (
   year: string,
 ): Promise<interfaces.tickerYearlyModel.Record | null> => {
   const tickerYearly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
       { key: 'year', value: year },
@@ -64,7 +66,7 @@ export const getAll = async (
   tickerId: number,
 ): Promise<interfaces.tickerYearlyModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'tickerId', value: tickerId },
     ],
@@ -84,7 +86,7 @@ export const getPublishedByDate = async (
   const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
 
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     conditions: [
       { key: 'year', value: targetYear },
     ],
@@ -97,7 +99,7 @@ export const create = async (
   values: interfaces.tickerYearlyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.tickerYearlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -110,7 +112,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.tickerYearlyModel.Record> => {
   const updatedYearly = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TICKER_YEARLY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: tickerYearlyId },

@@ -1,5 +1,4 @@
 import * as interfaces from '@shared/interfaces'
-import * as commonEnum from '../enums/common'
 import * as errorEnum from '../enums/error'
 import * as tickerModel from '../models/ticker'
 import * as tickerCategoryModel from '../models/tickerCategory'
@@ -25,9 +24,25 @@ const getSystemTopTraderCombo = async (
   }
 }
 
+const SystemCombos: interfaces.traderComboModel.Identity[] = [
+  {
+    id: -1,
+    name: 'systemCombo.default10',
+    isSystem: true,
+    traderEnvId: 1,
+    traderIds: [],
+  },
+  {
+    id: -2,
+    name: 'systemCombo.bigTech10',
+    isSystem: true,
+    traderEnvId: 2,
+    traderIds: [],
+  },
+]
+
 const getSystemTraderCombos = async (): Promise<interfaces.systemRes.ComboDetail[]> => {
-  const combos = commonEnum.SYSTEM_COMBOS
-  const comboDetails = await runTool.asyncMap(combos, async (
+  const comboDetails = await runTool.asyncMap(SystemCombos, async (
     combo: interfaces.traderComboModel.Identity,
   ) => {
     switch (combo.name) {
@@ -40,7 +55,7 @@ const getSystemTraderCombos = async (): Promise<interfaces.systemRes.ComboDetail
         return comboProfile
       }
       default:
-        throw errorEnum.DEFAULT.FORBIDDEN
+        throw errorEnum.Default.Forbidden
     }
   })
 

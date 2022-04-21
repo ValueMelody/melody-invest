@@ -1,14 +1,16 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TraderFollower
 
 export const getByUK = async (
   userId: number,
   traderId: number,
 ): Promise<interfaces.traderFollowerModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_FOLLOWER,
+    tableName: TableName,
     conditions: [
       { key: 'userId', value: userId },
       { key: 'traderId', value: traderId },
@@ -22,7 +24,7 @@ export const getUserFollowed = async (
   userId: number,
 ): Promise<interfaces.traderFollowerModel.Record[]> => {
   const records = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_FOLLOWER,
+    tableName: TableName,
     conditions: [
       { key: 'userId', value: userId },
     ],
@@ -36,7 +38,7 @@ export const create = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderFollowerModel.Record> => {
   const record = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER_FOLLOWER,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -49,7 +51,7 @@ export const destroy = async (
   transaction: Knex.Transaction,
 ) => {
   await databaseAdapter.destroy({
-    tableName: tableEnum.NAME.TRADER_FOLLOWER,
+    tableName: TableName,
     conditions: [
       { key: 'userId', value: userId },
       { key: 'traderId', value: traderId },

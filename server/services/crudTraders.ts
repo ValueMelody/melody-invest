@@ -17,10 +17,10 @@ export const getTraderProfile = async (
   id: number, accessCode: string,
 ): Promise<interfaces.traderRes.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
-  if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
+  if (!trader || trader.accessCode !== accessCode) throw errorEnum.Custom.WrongAccessCode
 
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
-  if (!pattern) throw errorEnum.CUSTOM.FOREIGN_RECORD_MISSING
+  if (!pattern) throw errorEnum.Custom.RecordNotFound
 
   const { hashCode, ...patternPublic } = pattern
 
@@ -34,7 +34,7 @@ export const getProfileDetail = async (
   id: number, accessCode: string, envIds: number[],
 ): Promise<interfaces.traderRes.ProfileDetail> => {
   const trader = await traderModel.getByPK(id)
-  if (!trader || trader.accessCode !== accessCode) throw errorEnum.CUSTOM.ACCESS_CODE_MISMATCH
+  if (!trader || trader.accessCode !== accessCode) throw errorEnum.Custom.WrongAccessCode
 
   const holdings = await traderHoldingModel.getAll(trader.id)
   const traders = await traderModel.getByPattern(trader.traderPatternId)
@@ -56,11 +56,11 @@ export const verifyUserToTraderEnv = async (
   userId: number, traderEnvId: number,
 ) => {
   const env = await traderEnvModel.getByPK(traderEnvId)
-  if (!env) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!env) throw errorEnum.Default.NotFound
 
   if (!env.isSystem) {
     const envFollower = await traderEnvFollowerModel.getByUK(userId, traderEnvId)
-    if (!envFollower) throw errorEnum.DEFAULT.NOT_FOUND
+    if (!envFollower) throw errorEnum.Default.NotFound
   }
 }
 
@@ -68,7 +68,7 @@ export const verifyUserToTraderCombo = async (
   userId: number, traderComboId: number,
 ) => {
   const relation = await traderComboFollowerModel.getByUK(userId, traderComboId)
-  if (!relation) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!relation) throw errorEnum.Default.NotFound
 }
 
 export const getUserTraderEnvIds = async (
@@ -190,10 +190,10 @@ export const getTraderEnv = async (
   userId: number, envId: number,
 ): Promise<interfaces.traderEnvModel.Record> => {
   const env = await traderEnvModel.getByPK(envId)
-  if (!env) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!env) throw errorEnum.Default.NotFound
 
   const envFollower = await traderEnvFollowerModel.getByUK(userId, envId)
-  if (!envFollower && !env.isSystem) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!envFollower && !env.isSystem) throw errorEnum.Default.NotFound
 
   const name = envFollower && !env.isSystem ? envFollower.name : env.name
 
@@ -204,7 +204,7 @@ export const getComboDetail = async (
   comboId: number,
 ): Promise<interfaces.traderRes.ComboDetail> => {
   const combo = await traderComboModel.getByPK(comboId)
-  if (!combo) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!combo) throw errorEnum.Default.NotFound
 
   const traders = await traderModel.getInPKs(combo.traderIds)
   const comboDetail = await buildComboDetail(traders)

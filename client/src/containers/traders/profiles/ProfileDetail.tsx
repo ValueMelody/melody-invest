@@ -120,7 +120,7 @@ const ProfileDetail = () => {
             key={holding.id}
             holding={holding}
             previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
-            initialValue={constants.trader.initial.CASH}
+            initialValue={constants.Trader.Initial.Cash}
           />
         ))}
         {displayedTotal < holdings.length && renderShowMoreButton()}

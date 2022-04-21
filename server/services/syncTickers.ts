@@ -15,7 +15,7 @@ export const syncPrices = async (
   symbol: string,
 ) => {
   const ticker = await tickerModel.getByUK(region, symbol)
-  if (!ticker) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!ticker) throw errorEnum.Default.NotFound
 
   const tickerData = await marketAdapter.getTickerPrices(symbol)
   const metaData = tickerData['Meta Data']
@@ -95,7 +95,7 @@ export const syncEarnings = async (
   forceRecheck: boolean = false,
 ) => {
   const ticker = await tickerModel.getByUK(region, symbol)
-  if (!ticker) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!ticker) throw errorEnum.Default.NotFound
 
   const tickerData = await marketAdapter.getTickerEarnings(symbol)
 
@@ -248,7 +248,7 @@ export const syncIncomes = async (
   forceRecheck: boolean = false,
 ) => {
   const ticker = await tickerModel.getByUK(region, symbol)
-  if (!ticker) throw errorEnum.DEFAULT.NOT_FOUND
+  if (!ticker) throw errorEnum.Default.NotFound
 
   const tickerData = await marketAdapter.getTickerIncomes(symbol)
 

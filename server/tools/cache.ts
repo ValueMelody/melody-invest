@@ -1,5 +1,5 @@
-import * as cacheEnum from '../enums/cache'
+import * as adapterEnum from '../enums/adapter'
 
 export const generateTickerPricesKey = (date: string): string => {
-  return `${cacheEnum.BASE_KEY.TICKER_PRICES}{${date}}`
+  return `${adapterEnum.CacheKey.TickerPrices}{${date}}`
 }

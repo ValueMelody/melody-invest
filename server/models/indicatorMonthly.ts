@@ -1,8 +1,10 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
 import * as dateTool from '../tools/date'
+
+const TableName = adapterEnum.DatabaseTable.IndicatorMonthly
 
 const convertToRecord = (
   raw: interfaces.indicatorMonthlyModel.Raw,
@@ -24,7 +26,7 @@ export const getByUK = async (
   month: string,
 ): Promise<interfaces.indicatorMonthlyModel.Record | null> => {
   const monthly = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
+    tableName: TableName,
     conditions: [
       { key: 'month', value: month },
     ],
@@ -36,7 +38,7 @@ export const getAll = async (): Promise<
   interfaces.indicatorMonthlyModel.Record[]
 > => {
   const monthly = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
+    tableName: TableName,
     orderBy: [{ column: 'month', order: 'asc' }],
   })
   return monthly.map((raw) => convertToRecord(raw))
@@ -49,7 +51,7 @@ export const getPublishedByDate = async (
   const month = estimatedDate.substring(0, 7)
 
   const raw = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
+    tableName: TableName,
     conditions: [
       { key: 'month', value: month },
     ],
@@ -61,7 +63,7 @@ export const create = async (
   values: interfaces.indicatorMonthlyModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorMonthlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
-    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -74,7 +76,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.indicatorMonthlyModel.Record> => {
   const updated = await databaseAdapter.update({
-    tableName: tableEnum.NAME.INDICATOR_MONTHLY,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: indicatorMonthlyId },

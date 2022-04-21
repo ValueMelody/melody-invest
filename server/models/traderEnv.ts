@@ -1,7 +1,9 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TraderEnv
 
 const convertToRecord = (
   raw: interfaces.traderEnvModel.Raw,
@@ -12,7 +14,7 @@ const convertToRecord = (
 
 export const getAll = async (): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
   })
   return envs.map((env) => convertToRecord(env))
 }
@@ -21,7 +23,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderEnvModel.Record | null> => {
   const env = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -34,7 +36,7 @@ export const getByUK = async (
   tickerIds: string | null,
 ): Promise<interfaces.traderEnvModel.Record | null> => {
   const env = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
     conditions: [
       { key: 'startDate', value: startDate },
       { key: 'tickerIds', value: tickerIds || null, type: tickerIds ? '=' : 'IS' },
@@ -47,7 +49,7 @@ export const create = async (
   values: interfaces.traderEnvModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderEnvModel.Record> => {
   const env = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -64,7 +66,7 @@ export const createIfEmpty = async (
 
 export const getSystemDefined = async (): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
     conditions: [
       { key: 'isSystem', value: true },
     ],
@@ -76,7 +78,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_ENV,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],

@@ -12,7 +12,7 @@ export const getTickerPrices = async (
   symbol: string,
 ) => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.PRICES,
+    function: marketEnum.Type.Prices,
     symbol: symbol.toUpperCase(),
     outputsize: 'full',
     apikey: process.env.MARKET_KEY,
@@ -45,7 +45,7 @@ export const getTickerEarnings = async (
   symbol: string,
 ): Promise<TickerEarnings> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.EARNINGS,
+    function: marketEnum.Type.Earnings,
     symbol: symbol.toUpperCase(),
     apikey: process.env.MARKET_KEY,
   })
@@ -74,7 +74,7 @@ export const getTickerIncomes = async (
   symbol: string,
 ): Promise<TickerIncomes> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.INCOMES,
+    function: marketEnum.Type.Incomes,
     symbol: symbol.toUpperCase(),
     apikey: process.env.MARKET_KEY,
   })
@@ -96,7 +96,7 @@ export const getRealGDP = async (
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.GDP,
+    function: marketEnum.Type.GDP,
     interval: interval,
     apikey: process.env.MARKET_KEY,
   })
@@ -110,7 +110,7 @@ export const getFundsRate = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.FUNDS_RATE,
+    function: marketEnum.Type.FundsRate,
     interval: 'monthly',
     apikey: process.env.MARKET_KEY,
   })
@@ -124,7 +124,7 @@ export const getCPI = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.CPI,
+    function: marketEnum.Type.CPI,
     interval: 'monthly',
     apikey: process.env.MARKET_KEY,
   })
@@ -140,7 +140,7 @@ export const getTreasuryYield = async (
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.TREASURY_YIELD,
+    function: marketEnum.Type.TreasuryYield,
     interval: 'monthly',
     maturity: type,
     apikey: process.env.MARKET_KEY,
@@ -155,7 +155,7 @@ export const getInflation = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.INFLATION,
+    function: marketEnum.Type.Inflation,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -168,7 +168,7 @@ export const getInflationExpectation = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.INFLATION_EXPECTATION,
+    function: marketEnum.Type.InflationExpectation,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -181,7 +181,7 @@ export const getConsumerSentiment = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.CONSUMER_SENTIMENT,
+    function: marketEnum.Type.ConsumerSentiment,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -194,7 +194,7 @@ export const getRetailSales = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.RETAIL_SALES,
+    function: marketEnum.Type.RetailSales,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -207,7 +207,7 @@ export const getDurableGoods = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.DURABLE_GOODS,
+    function: marketEnum.Type.DurableGoods,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -220,7 +220,7 @@ export const getUnemploymentRate = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.UNEMPLOYMENT_RATE,
+    function: marketEnum.Type.UnemploymentRate,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`
@@ -233,7 +233,7 @@ export const getNonfarmPayroll = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
   const queryParams = qs.stringify({
-    function: marketEnum.TYPES.NONFARM_PAYROLL,
+    function: marketEnum.Type.NonfarmPayroll,
     apikey: process.env.MARKET_KEY,
   })
   const url = `${BASE_URL}?${queryParams}`

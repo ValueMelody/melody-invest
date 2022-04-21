@@ -50,10 +50,10 @@ const calcTraderPerformance = async (
   forceRecheck: boolean,
 ) => {
   const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
-  if (!pattern) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
+  if (!pattern) throw errorEnums.Custom.RecordNotFound
 
   const env = await traderEnvModel.getByPK(targetTrader.traderEnvId)
-  if (!env) throw errorEnums.CUSTOM.FOREIGN_RECORD_MISSING
+  if (!env) throw errorEnums.Custom.RecordNotFound
 
   const trader = forceRecheck
     ? await cleanupTrader(targetTrader.id)

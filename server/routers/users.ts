@@ -11,15 +11,15 @@ export default usersRouter
 // ------------------------------------------------------------ Validate --
 
 const validateEmail = (email: string) => {
-  if (!email) throw errorEnum.CUSTOM.PARAMS_MISSING
-  if (email.length > 100) throw errorEnum.CUSTOM.EMAIL_TOO_LONG
+  if (!email) throw errorEnum.Custom.MissingParams
+  if (email.length > 100) throw errorEnum.Custom.EmailTooLong
   const isEmail = verifyTool.isEmail(email)
-  if (!isEmail) throw errorEnum.CUSTOM.EMAIL_WRONG_FORMAT
+  if (!isEmail) throw errorEnum.Custom.EmailWrongFormat
 }
 
 const validatePassword = (password: string) => {
-  if (!password) throw errorEnum.CUSTOM.PARAMS_MISSING
-  if (password.length < 10) throw errorEnum.CUSTOM.PASSWORD_TOO_SHORT
+  if (!password) throw errorEnum.Custom.MissingParams
+  if (password.length < 10) throw errorEnum.Custom.PasswordTooShort
 }
 
 // ------------------------------------------------------------ Get --
@@ -49,7 +49,7 @@ usersRouter.post('/', async (req, res) => {
   const password = req.body.password?.trim()
   const isConfirmed = req.body.isConfirmed
 
-  if (!isConfirmed) throw errorEnum.CUSTOM.PARAMS_MISSING
+  if (!isConfirmed) throw errorEnum.Custom.MissingParams
   validateEmail(email)
   validatePassword(password)
 

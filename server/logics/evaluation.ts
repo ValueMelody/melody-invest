@@ -2,44 +2,44 @@ import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 
 export const getTickerPreferValue = (
-  preference: number,
+  Preference: number,
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
 ): number | null => {
-  switch (preference) {
-    case constants.behaviorValue.preference.HIGHER_PRICE:
-    case constants.behaviorValue.preference.LOWER_PRICE:
+  switch (Preference) {
+    case constants.BehaviorValue.Preference.HigherPrice:
+    case constants.BehaviorValue.Preference.LowerPrice:
       return tickerDaily.closePrice
-    case constants.behaviorValue.preference.HIGHER_QUARTER_EPS:
-    case constants.behaviorValue.preference.LOWER_QUARTER_EPS:
+    case constants.BehaviorValue.Preference.HigherQuarterEPS:
+    case constants.BehaviorValue.Preference.LowerQuarterEPS:
       return tickerQuarterly ? tickerQuarterly.eps : null
-    case constants.behaviorValue.preference.HIGHER_QUARTER_EBITDA:
-    case constants.behaviorValue.preference.LOWER_QUARTER_EBITDA:
+    case constants.BehaviorValue.Preference.HigherQuarterEBITDA:
+    case constants.BehaviorValue.Preference.LowerQuarterEBITDA:
       return tickerQuarterly ? tickerQuarterly.ebitda : null
-    case constants.behaviorValue.preference.HIGHER_QUARTER_INCOME:
-    case constants.behaviorValue.preference.LOWER_QUARTER_INCOME:
+    case constants.BehaviorValue.Preference.HigherQuarterIncome:
+    case constants.BehaviorValue.Preference.LowerQuarterIncome:
       return tickerQuarterly ? tickerQuarterly.netIncome : null
-    case constants.behaviorValue.preference.HIGHER_QUARTER_PROFIT:
-    case constants.behaviorValue.preference.LOWER_QUARTER_PROFIT:
+    case constants.BehaviorValue.Preference.HigherQuarterProfit:
+    case constants.BehaviorValue.Preference.LowerQuarterProfit:
       return tickerQuarterly ? tickerQuarterly.grossProfit : null
-    case constants.behaviorValue.preference.HIGHER_QUARTER_REVENUE:
-    case constants.behaviorValue.preference.LOWER_QUARTER_REVENUE:
+    case constants.BehaviorValue.Preference.HigherQuarterRevenue:
+    case constants.BehaviorValue.Preference.LowerQuarterRevenue:
       return tickerQuarterly ? tickerQuarterly.totalRevenue : null
-    case constants.behaviorValue.preference.HIGHER_YEAR_EPS:
-    case constants.behaviorValue.preference.LOWER_YEAR_EPS:
+    case constants.BehaviorValue.Preference.HigherYearEPS:
+    case constants.BehaviorValue.Preference.LowerYearEPS:
       return tickerYearly ? tickerYearly.eps : null
-    case constants.behaviorValue.preference.HIGHER_YEAR_EBITDA:
-    case constants.behaviorValue.preference.LOWER_YEAR_EBITDA:
+    case constants.BehaviorValue.Preference.HigherYearEBITDA:
+    case constants.BehaviorValue.Preference.LowerYearEBITDA:
       return tickerYearly ? tickerYearly.ebitda : null
-    case constants.behaviorValue.preference.HIGHER_YEAR_INCOME:
-    case constants.behaviorValue.preference.LOWER_YEAR_INCOME:
+    case constants.BehaviorValue.Preference.HigherYearIncome:
+    case constants.BehaviorValue.Preference.LowerYearIncome:
       return tickerYearly ? tickerYearly.netIncome : null
-    case constants.behaviorValue.preference.HIGHER_YEAR_PROFIT:
-    case constants.behaviorValue.preference.LOWER_YEAR_PROFIT:
+    case constants.BehaviorValue.Preference.HigherYearProfit:
+    case constants.BehaviorValue.Preference.LowerYearProfit:
       return tickerYearly ? tickerYearly.grossProfit : null
-    case constants.behaviorValue.preference.HIGHER_YEAR_REVENUE:
-    case constants.behaviorValue.preference.LOWER_YEAR_REVENUE:
+    case constants.BehaviorValue.Preference.HigherYearRevenue:
+    case constants.BehaviorValue.Preference.LowerYearRevenue:
       return tickerYearly ? tickerYearly.totalRevenue : null
     default:
       return null

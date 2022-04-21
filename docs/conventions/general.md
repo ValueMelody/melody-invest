@@ -59,3 +59,17 @@ import * as localeTool from '../tools/locale'
 import * as commonEnum form '../enums/common'
 import * as parseTool from '../tools/parse'
 ```
+
+## use Pascal case for constant, and use enum or object.freeze for constant in object
+
+```
+// Good
+enum BaseKey = {
+  TickerPrices: 'tickerPrices',
+}
+
+// Bad
+const BASE_KEY = {
+  TICKER_PRICES: 'tickerPrices',
+}
+```

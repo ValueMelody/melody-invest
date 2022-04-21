@@ -1,59 +1,59 @@
 import * as behavior from './behavior'
 
 test('contain Buy Behaviors', () => {
-  expect(behavior.priceIncreaseBuyBehaviors).toBeDefined()
-  expect(behavior.priceDecreaseBuyBehaviors).toBeDefined()
-  expect(behavior.financialImproveBuyBehaviors).toBeDefined()
-  expect(behavior.financialWorsenBuyBehaviors).toBeDefined()
-  expect(behavior.indicatorIncreaseBuyBehaviors).toBeDefined()
-  expect(behavior.indicatorDecreaseBuyBehaviors).toBeDefined()
-  expect(behavior.economyImproveBuyBehaviors).toBeDefined()
-  expect(behavior.economyWorsenBuyBehaviors).toBeDefined()
-  expect(behavior.buyBehaviors).toStrictEqual([
-    ...behavior.priceIncreaseBuyBehaviors,
-    ...behavior.priceDecreaseBuyBehaviors,
-    ...behavior.financialImproveBuyBehaviors,
-    ...behavior.financialWorsenBuyBehaviors,
-    ...behavior.indicatorIncreaseBuyBehaviors,
-    ...behavior.indicatorDecreaseBuyBehaviors,
-    ...behavior.economyImproveBuyBehaviors,
-    ...behavior.economyWorsenBuyBehaviors,
+  expect(behavior.PriceIncreaseBuyBehaviors.length).toBe(5)
+  expect(behavior.PriceDecreaseBuyBehaviors.length).toBe(5)
+  expect(behavior.FinancialImproveBuyBehaviors.length).toBe(7)
+  expect(behavior.FinancialWorsenBuyBehaviors.length).toBe(7)
+  expect(behavior.IndicatorIncreaseBuyBehaviors.length).toBe(11)
+  expect(behavior.IndicatorDecreaseBuyBehaviors.length).toBe(11)
+  expect(behavior.EconomyImproveBuyBehaviors.length).toBe(3)
+  expect(behavior.EconomyWorsenBuyBehaviors.length).toBe(3)
+  expect(behavior.BuyBehaviors).toStrictEqual([
+    ...behavior.PriceIncreaseBuyBehaviors,
+    ...behavior.PriceDecreaseBuyBehaviors,
+    ...behavior.FinancialImproveBuyBehaviors,
+    ...behavior.FinancialWorsenBuyBehaviors,
+    ...behavior.IndicatorIncreaseBuyBehaviors,
+    ...behavior.IndicatorDecreaseBuyBehaviors,
+    ...behavior.EconomyImproveBuyBehaviors,
+    ...behavior.EconomyWorsenBuyBehaviors,
   ])
 })
 
 test('contain Sell Behaviors', () => {
-  expect(behavior.priceIncreaseSellBehaviors).toBeDefined()
-  expect(behavior.priceDecreaseSellBehaviors).toBeDefined()
-  expect(behavior.financialImproveSellBehaviors).toBeDefined()
-  expect(behavior.financialWorsenSellBehaviors).toBeDefined()
-  expect(behavior.indicatorIncreaseSellBehaviors).toBeDefined()
-  expect(behavior.indicatorDecreaseSellBehaviors).toBeDefined()
-  expect(behavior.economyImproveSellBehaviors).toBeDefined()
-  expect(behavior.economyWorsenSellBehaviors).toBeDefined()
-  expect(behavior.sellBehaviors).toStrictEqual([
-    ...behavior.priceIncreaseSellBehaviors,
-    ...behavior.priceDecreaseSellBehaviors,
-    ...behavior.financialImproveSellBehaviors,
-    ...behavior.financialWorsenSellBehaviors,
-    ...behavior.indicatorIncreaseSellBehaviors,
-    ...behavior.indicatorDecreaseSellBehaviors,
-    ...behavior.economyImproveSellBehaviors,
-    ...behavior.economyWorsenSellBehaviors,
+  expect(behavior.PriceIncreaseSellBehaviors.length).toBe(5)
+  expect(behavior.PriceDecreaseSellBehaviors.length).toBe(5)
+  expect(behavior.FinancialImproveSellBehaviors.length).toBe(7)
+  expect(behavior.FinancialWorsenSellBehaviors.length).toBe(7)
+  expect(behavior.IndicatorIncreaseSellBehaviors.length).toBe(11)
+  expect(behavior.IndicatorDecreaseSellBehaviors.length).toBe(11)
+  expect(behavior.EconomyImproveSellBehaviors.length).toBe(3)
+  expect(behavior.EconomyWorsenSellBehaviors.length).toBe(3)
+  expect(behavior.SellBehaviors).toStrictEqual([
+    ...behavior.PriceIncreaseSellBehaviors,
+    ...behavior.PriceDecreaseSellBehaviors,
+    ...behavior.FinancialImproveSellBehaviors,
+    ...behavior.FinancialWorsenSellBehaviors,
+    ...behavior.IndicatorIncreaseSellBehaviors,
+    ...behavior.IndicatorDecreaseSellBehaviors,
+    ...behavior.EconomyImproveSellBehaviors,
+    ...behavior.EconomyWorsenSellBehaviors,
   ])
 })
 
 test('contain Other Behaviors', () => {
-  expect(behavior.allocateBehaviors).toBeDefined()
-  expect(behavior.frequencyBehaviors).toBeDefined()
-  expect(behavior.preferenceBehaviors).toBeDefined()
+  expect(behavior.AllocateBehaviors.length).toBe(5)
+  expect(behavior.FrequencyBehaviors.length).toBe(2)
+  expect(behavior.PreferenceBehaviors.length).toBe(2)
 })
 
 test('contain All Behaviors', () => {
-  expect(behavior.behaviors).toStrictEqual([
-    ...behavior.buyBehaviors,
-    ...behavior.sellBehaviors,
-    ...behavior.allocateBehaviors,
-    ...behavior.frequencyBehaviors,
-    ...behavior.preferenceBehaviors,
+  expect(behavior.Behaviors).toStrictEqual([
+    ...behavior.BuyBehaviors,
+    ...behavior.SellBehaviors,
+    ...behavior.AllocateBehaviors,
+    ...behavior.FrequencyBehaviors,
+    ...behavior.PreferenceBehaviors,
   ])
 })

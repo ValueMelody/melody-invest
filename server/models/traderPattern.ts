@@ -1,7 +1,9 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TraderPattern
 
 const convertToPublic = (
   record: interfaces.traderPatternModel.Record,
@@ -14,7 +16,7 @@ export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
@@ -26,7 +28,7 @@ export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderPatternModel.Record[]> => {
   const patterns = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
     conditions: [
       { key: 'id', value: ids, type: 'IN' },
     ],
@@ -38,7 +40,7 @@ export const getByUK = async (
   hashCode: string,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
   const pattern = await databaseAdapter.findOne({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
     conditions: [
       { key: 'hashCode', value: hashCode },
     ],
@@ -57,7 +59,7 @@ export const getPublicByTraders = async (
 
 export const getAll = async (): Promise<interfaces.traderPatternModel.Record[]> => {
   const patterns = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
   })
   return patterns
 }
@@ -66,7 +68,7 @@ export const create = async (
   values: interfaces.traderPatternModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
   const pattern = await databaseAdapter.create({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
     values,
     transaction,
   })
@@ -87,7 +89,7 @@ export const update = async (
   transaction: Knex.Transaction,
 ): Promise<interfaces.traderPatternModel.Record> => {
   const patterns = await databaseAdapter.update({
-    tableName: tableEnum.NAME.TRADER_PATTERN,
+    tableName: TableName,
     values,
     conditions: [
       { key: 'id', value: id },

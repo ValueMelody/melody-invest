@@ -3,8 +3,8 @@ import * as constants from '@shared/constants'
 import * as generateTool from '../tools/generate'
 
 const BEHAVIOR_GROUPS: interfaces.traderPatternModel.Behavior[][] = [
-  constants.behavior.buyBehaviors,
-  constants.behavior.sellBehaviors,
+  constants.Behavior.BuyBehaviors,
+  constants.Behavior.SellBehaviors,
   ['cashMaxPercent'],
   ['tickerMinPercent'],
   ['tickerMaxPercent'],
@@ -209,12 +209,12 @@ export const generatePatternChild = (
   })
 
   if (shouldMutate) {
-    const potentialKeys = Object.keys(constants.behaviorValue.options) as Array<
-      keyof typeof constants.behaviorValue.options
+    const potentialKeys = Object.keys(constants.BehaviorValue.options) as Array<
+      keyof typeof constants.BehaviorValue.options
     >
     const keyIndex = generateTool.pickNumberInRange(0, potentialKeys.length - 1)
     const behaviorKey = potentialKeys[keyIndex]
-    const potentialValues = constants.behaviorValue.options[behaviorKey]
+    const potentialValues = constants.BehaviorValue.options[behaviorKey]
     const valueIndex = generateTool.pickNumberInRange(0, potentialValues.length - 1)
     const behaviorValue = potentialValues[valueIndex]
     newChild[behaviorKey] = behaviorValue

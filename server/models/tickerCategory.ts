@@ -1,6 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import * as tableEnum from '../enums/table'
+import * as adapterEnum from '../enums/adapter'
 import * as databaseAdapter from '../adapters/database'
+
+const TableName = adapterEnum.DatabaseTable.TickerCategory
 
 const convertToRecord = (
   raw: interfaces.tickerCategoryModel.Raw,
@@ -13,7 +15,7 @@ const convertToRecord = (
 
 export const getAll = async (): Promise<interfaces.tickerCategoryModel.Record[]> => {
   const categories = await databaseAdapter.findAll({
-    tableName: tableEnum.NAME.TICKER_CATEGORY,
+    tableName: TableName,
   })
   return categories.map(convertToRecord)
 }
