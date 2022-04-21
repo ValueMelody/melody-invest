@@ -1,13 +1,13 @@
-export enum Nav {
-  SignUp = '/sign-up',
-  SignIn = '/sign-in',
-  Setting = '/setting',
-  Traders = '/traders',
-  Behaviors = '/behaviors',
-  Tickers = '/tickers',
-  Dashboard = '/dashboard',
-  NotFound = '/404',
-}
+export const Nav = Object.freeze({
+  SignUp: '/sign-up',
+  SignIn: '/sign-in',
+  Setting: '/setting',
+  Traders: '/traders',
+  Behaviors: '/behaviors',
+  Tickers: '/tickers',
+  Dashboard: '/dashboard',
+  NotFound: '/404',
+}) 
 
 const base = `${process.env.REACT_APP_SERVER_TYPE}://${process.env.REACT_APP_SERVER_HOST}`
 

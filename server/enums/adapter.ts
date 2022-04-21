@@ -13,28 +13,28 @@ export const DatabaseConfig = Object.freeze({
   },
 })
 
-export enum DatabaseTable {
-  User = 'user',
-  Ticker = 'ticker',
-  TickerDaily = 'ticker_daily',
-  TickerYearly = 'ticker_yearly',
-  TickerQuarterly = 'ticker_quarterly',
-  TickerHolder = 'ticker_holder',
-  TickerCategory = 'ticker_category',
-  IndicatorYearly = 'indicator_yearly',
-  IndicatorQuarterly = 'indicator_quarterly',
-  IndicatorMonthly = 'indicator_monthly',
-  Trader = 'trader',
-  TraderEnv = 'trader_env',
-  TraderEnvFollower = 'trader_env_follower',
-  TraderHolding = 'trader_holding',
-  TraderPattern = 'trader_pattern',
-  TraderFollower = 'trader_follower',
-  TraderCombo = 'trader_combo',
-  TraderComboFollower = 'trader_combo_follower',
-  DailyTickers = 'daily_tickers',
-}
+export const DatabaseTable = Object.freeze({
+  User: 'user',
+  Ticker: 'ticker',
+  TickerDaily: 'ticker_daily',
+  TickerYearly: 'ticker_yearly',
+  TickerQuarterly: 'ticker_quarterly',
+  TickerHolder: 'ticker_holder',
+  TickerCategory: 'ticker_category',
+  IndicatorYearly: 'indicator_yearly',
+  IndicatorQuarterly: 'indicator_quarterly',
+  IndicatorMonthly: 'indicator_monthly',
+  Trader: 'trader',
+  TraderEnv: 'trader_env',
+  TraderEnvFollower: 'trader_env_follower',
+  TraderHolding: 'trader_holding',
+  TraderPattern: 'trader_pattern',
+  TraderFollower: 'trader_follower',
+  TraderCombo: 'trader_combo',
+  TraderComboFollower: 'trader_combo_follower',
+  DailyTickers: 'daily_tickers',
+})
 
-export const CacheKey = {
+export const CacheKey = Object.freeze({
   TickerPrices: 'tickerPrices',
-}
+})

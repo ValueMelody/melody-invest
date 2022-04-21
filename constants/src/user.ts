@@ -1,3 +1,3 @@
-export enum Type {
-  Normal = 1,
-}
+export const Type = Object.freeze({
+  Normal: 1,
+})
