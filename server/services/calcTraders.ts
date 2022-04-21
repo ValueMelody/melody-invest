@@ -208,24 +208,30 @@ const calcTraderPerformance = async (
       : null
 
     const twelveMonths = generateTool.getNumbersInRange(1, 12)
-    const pastMonthPercentNumbers = await runTool.asyncMap(twelveMonths, async (month: number) => {
+    const pastMonthValues = await runTool.asyncMap(twelveMonths, async (month: number) => {
       const date = dateTool.getPreviousDate(latestDate, month * 30)
       const prices = await tickerDailyModel.getNearestPricesByDate(date)
       const holding = await traderHoldingModel.getLatestByDate(trader.id, date)
       const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
-      const percentNumber = value ? generateTool.getChangePercent(totalValue, value) : null
-      return percentNumber
+      return value
     })
 
     const pastWeekPercentNumber = pastWeekValue
       ? generateTool.getChangePercent(totalValue, pastWeekValue)
       : null
-    const pastMonthPercentNumber = pastMonthPercentNumbers[0]
-    const pastQuarterPercentNumber = pastMonthPercentNumbers[2]
-    const pastYearPercentNumber = pastMonthPercentNumbers[11]
+    const pastMonthPercentNumber = pastMonthValues[0]
+      ? generateTool.getChangePercent(totalValue, pastMonthValues[0])
+      : null
+    const pastQuarterPercentNumber = pastMonthValues[2]
+      ? generateTool.getChangePercent(totalValue, pastMonthValues[2])
+      : null
+    const pastYearPercentNumber = pastMonthValues[11]
+      ? generateTool.getChangePercent(totalValue, pastMonthValues[11])
+      : null
 
-    const oneYearTrends = pastMonthPercentNumbers
+    const oneYearTrends = pastMonthValues
       .filter((num) => num !== null)
+      .reverse()
       .join(',')
 
     await traderModel.update(trader.id, {

@@ -67,8 +67,11 @@ const ProfileCard = ({
   const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
 
-  const trendData = trader?.oneYearTrends
-    ? trader.oneYearTrends.map((value, index) => ({ label: `${index}`, value }))
+  const trendData = trader?.oneYearTrends && trader?.totalValue
+    ? [
+        ...trader.oneYearTrends.map((value, index) => ({ label: `${index}`, value })),
+        { label: '13', value: trader.totalValue },
+      ]
     : []
 
   // ------------------------------------------------------------ Handler --
