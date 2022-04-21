@@ -69,7 +69,7 @@ const ProfileCard = ({
 
   const trendData = trader?.oneYearTrends && trader?.totalValue
     ? [
-        ...trader.oneYearTrends.map((value, index) => ({ label: `${index}`, value })),
+        ...trader.oneYearTrends.map((value, index) => ({ label: `${index + 1}`, value })),
         { label: '13', value: trader.totalValue },
       ]
     : []
