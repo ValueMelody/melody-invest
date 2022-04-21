@@ -12,7 +12,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     position: 'fixed',
     top: 0,
     width: '100%',
-    backgroundColor: theme.PRIMARY_COLOR,
+    backgroundColor: theme.PrimaryColor,
     paddingLeft: '1rem',
     paddingRight: '1rem',
     zIndex: 1000,

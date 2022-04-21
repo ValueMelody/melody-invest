@@ -1,65 +1,65 @@
 import * as routerEnum from '../enums/router'
 
 export const tickerListRoute = (): string => {
-  return routerEnum.NAV.TICKERS
+  return routerEnum.Nav.Tickers
 }
 
 export const tickerDetailRoute = (envId: number, tickerId: number): string => {
-  return `${routerEnum.NAV.TICKERS}/${tickerId}/envs/${envId}`
+  return `${routerEnum.Nav.Tickers}/${tickerId}/envs/${envId}`
 }
 
 export const behaviorDetailRoute = (envId: number, behavior: string): string => {
-  return `${routerEnum.NAV.BEHAVIORS}/${behavior}/envs/${envId}`
+  return `${routerEnum.Nav.Behaviors}/${behavior}/envs/${envId}`
 }
 
 export const behaviorListRoute = (): string => {
-  return routerEnum.NAV.BEHAVIORS
+  return routerEnum.Nav.Behaviors
 }
 
 export const profileDetailRoute = (id: number, accessCode: string): string => {
-  return `${routerEnum.NAV.TRADERS}/profiles/${id}/${accessCode}`
+  return `${routerEnum.Nav.Traders}/profiles/${id}/${accessCode}`
 }
 
 export const profileBuildRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/profiles/build`
+  return `${routerEnum.Nav.Traders}/profiles/build`
 }
 
 export const envDetailRoute = (id: number): string => {
-  return `${routerEnum.NAV.TRADERS}/envs/${id}`
+  return `${routerEnum.Nav.Traders}/envs/${id}`
 }
 
 export const envBuildRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/envs/build`
+  return `${routerEnum.Nav.Traders}/envs/build`
 }
 
 export const comboBuildRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/combos/build`
+  return `${routerEnum.Nav.Traders}/combos/build`
 }
 
 export const comboDetailRoute = (id: number): string => {
-  return `${routerEnum.NAV.TRADERS}/combos/${id}`
+  return `${routerEnum.Nav.Traders}/combos/${id}`
 }
 
 export const dashboardRoute = (): string => {
-  return routerEnum.NAV.DASHBOARD
+  return routerEnum.Nav.Dashboard
 }
 
 export const topProfilesRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/profiles/tops`
+  return `${routerEnum.Nav.Traders}/profiles/tops`
 }
 
 export const topCombosRoute = (): string => {
-  return `${routerEnum.NAV.TRADERS}/combos/tops`
+  return `${routerEnum.Nav.Traders}/combos/tops`
 }
 
 export const signInRoute = (): string => {
-  return routerEnum.NAV.SIGN_IN
+  return routerEnum.Nav.SignIn
 }
 
 export const settingRoute = (): string => {
-  return routerEnum.NAV.SETTING
+  return routerEnum.Nav.Setting
 }
 
 export const notFoundRoute = (): string => {
-  return routerEnum.NAV.NOT_FOUND
+  return routerEnum.Nav.NotFound
 }

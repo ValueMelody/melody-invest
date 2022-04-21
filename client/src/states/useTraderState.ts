@@ -207,7 +207,7 @@ const useTraderState = () => {
   // ------------------------------------------------------------ fetch --
 
   const fetchTraderProfile = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles/${id}/${accessCode}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}`
     store.startLoading()
     try {
       const profile = await requestAdapter.sendGetRequest(endpoint)
@@ -221,8 +221,8 @@ const useTraderState = () => {
 
   const fetchTopProfiles = async (envId: number) => {
     const endpoint = envId
-      ? `${routerEnum.API.TRADERS}/envs/${envId}/tops`
-      : `${routerEnum.API.TRADERS}/envs/tops`
+      ? `${routerEnum.Endpoint.Traders}/envs/${envId}/tops`
+      : `${routerEnum.Endpoint.Traders}/envs/tops`
     store.startLoading()
     try {
       const tops = await requestAdapter.sendGetRequest(endpoint)
@@ -235,7 +235,7 @@ const useTraderState = () => {
   }
 
   const fetchProfileDetail = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles/${id}/${accessCode}/detail`
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}/detail`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -250,7 +250,7 @@ const useTraderState = () => {
   const fetchBehaviorDetail = async (
     traderEnvId: number, behavior: interfaces.traderPatternModel.Behavior,
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}/behaviors/${behavior}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}/behaviors/${behavior}`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -265,7 +265,7 @@ const useTraderState = () => {
   const fetchTickerDetail = async (
     traderEnvId: number, tickerId: number,
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}/tickers/${tickerId}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}/tickers/${tickerId}`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -278,7 +278,7 @@ const useTraderState = () => {
   }
 
   const fetchTraderEnv = async (id: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs/${id}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${id}`
     store.startLoading()
     try {
       const env = await requestAdapter.sendGetRequest(endpoint)
@@ -291,7 +291,7 @@ const useTraderState = () => {
   }
 
   const fetchTraderCombo = async (id: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/combos/${id}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${id}`
     store.startLoading()
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
@@ -309,7 +309,7 @@ const useTraderState = () => {
     traderEnvId: number,
     traderPattern: interfaces.traderPatternModel.Create,
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles`
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles`
     store.startLoading()
     try {
       const profile: interfaces.traderRes.TraderProfile = await requestAdapter.sendPostRequest(
@@ -330,7 +330,7 @@ const useTraderState = () => {
   }
 
   const createWatchedProfile = async (traderId: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles/${traderId}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
     store.startLoading()
     try {
       await requestAdapter.sendPostRequest(endpoint)
@@ -347,7 +347,7 @@ const useTraderState = () => {
     startDate: string,
     tickerIds: number[] | null,
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs`
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs`
     store.startLoading()
     const reqs: interfaces.reqs.TraderEnvCreation = {
       name, startDate, tickerIds,
@@ -370,7 +370,7 @@ const useTraderState = () => {
     traderEnvId: number,
     traderIds: number[],
   ) => {
-    const endpoint = `${routerEnum.API.TRADERS}/combos`
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos`
     store.startLoading()
     const reqs: interfaces.reqs.TraderComboCreation = {
       name, traderEnvId, traderIds,
@@ -391,7 +391,7 @@ const useTraderState = () => {
   // ------------------------------------------------------------ export --
 
   const deleteWatchedProfile = async (traderId: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/profiles/${traderId}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
     store.startLoading()
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
@@ -405,7 +405,7 @@ const useTraderState = () => {
   }
 
   const deleteWatchedEnv = async (traderEnvId: number) => {
-    const endpoint = `${routerEnum.API.TRADERS}/envs/${traderEnvId}`
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}`
     store.startLoading()
     try {
       await requestAdapter.sendDeleteRequest(endpoint)

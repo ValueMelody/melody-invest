@@ -47,7 +47,7 @@ const PatternBehaviors = ({
           key={behavior}
           behavior={behavior}
           value={pattern[behavior]}
-          color={themeEnum.theme.INCREASE_COLOR}
+          color={themeEnum.theme.IncreaseColor}
           onClick={handleClickBehavior}
         />
       ))}
@@ -56,7 +56,7 @@ const PatternBehaviors = ({
           key={behavior}
           behavior={behavior}
           value={pattern[behavior]}
-          color={themeEnum.theme.DECREASE_COLOR}
+          color={themeEnum.theme.DecreaseColor}
           onClick={handleClickBehavior}
         />
       ))}

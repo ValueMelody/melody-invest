@@ -35,7 +35,7 @@ const ComboBuilder = () => {
 
   // ------------------------------------------------------------ State --
 
-  const [envId, setEnvId] = vendorTool.react.useState(commonEnum.DEFAULT_ENV_ID)
+  const [envId, setEnvId] = vendorTool.react.useState(commonEnum.Config.DefaultEnvId)
   const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
   const [envName, setEnvName] = vendorTool.react.useState('')
 

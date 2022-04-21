@@ -11,7 +11,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     margin: '1rem 0.75rem 1rem 0 !important',
   },
   isActive: {
-    border: `3px solid ${theme.PRIMARY_COLOR} !important`,
+    border: `3px solid ${theme.PrimaryColor} !important`,
   },
 }))
 

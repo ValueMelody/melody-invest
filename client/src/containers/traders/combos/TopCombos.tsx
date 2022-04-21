@@ -17,7 +17,7 @@ const useStyles = vendorTool.jss.createUseStyles((
 ) => ({
   header: {
     width: '100%',
-    borderBottom: `3px solid ${theme.PRIMARY_COLOR}`,
+    borderBottom: `3px solid ${theme.PrimaryColor}`,
     paddingBottom: '1.5rem',
     marginBottom: '1rem',
   },

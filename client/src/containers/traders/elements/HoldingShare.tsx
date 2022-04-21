@@ -14,10 +14,10 @@ const useStyles = vendorTool.jss.createUseStyles((
     marginLeft: '0.5rem',
   },
   increaseColor: {
-    color: theme.INCREASE_COLOR,
+    color: theme.IncreaseColor,
   },
   decreaseColor: {
-    color: theme.DECREASE_COLOR,
+    color: theme.DecreaseColor,
   },
 }))
 

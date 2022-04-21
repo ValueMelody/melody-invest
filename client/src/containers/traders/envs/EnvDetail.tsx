@@ -18,7 +18,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     width: 290,
     paddingBottom: '1rem',
     marginBottom: '1rem',
-    borderBottom: `1px solid ${theme.PRIMARY_COLOR}`,
+    borderBottom: `1px solid ${theme.PrimaryColor}`,
   },
   watch: {
     width: 290,

@@ -1,18 +1,18 @@
-export const NAV = {
-  SIGN_UP: '/sign-up',
-  SIGN_IN: '/sign-in',
-  SETTING: '/setting',
-  TRADERS: '/traders',
-  BEHAVIORS: '/behaviors',
-  TICKERS: '/tickers',
-  DASHBOARD: '/dashboard',
-  NOT_FOUND: '/404',
+export enum Nav {
+  SignUp = '/sign-up',
+  SignIn = '/sign-in',
+  Setting = '/setting',
+  Traders = '/traders',
+  Behaviors = '/behaviors',
+  Tickers = '/tickers',
+  Dashboard = '/dashboard',
+  NotFound = '/404',
 }
 
 const base = `${process.env.REACT_APP_SERVER_TYPE}://${process.env.REACT_APP_SERVER_HOST}`
 
-export const API = {
-  SYSTEMS: `${base}/system`,
-  USERS: `${base}/users`,
-  TRADERS: `${base}/traders`,
-}
+export const Endpoint = Object.freeze({
+  Systems: `${base}/system`,
+  Users: `${base}/users`,
+  Traders: `${base}/traders`,
+})

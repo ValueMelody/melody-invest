@@ -12,7 +12,7 @@ const useStyles = vendorTool.jss.createUseStyles((
   container: {
     margin: '1rem',
     paddingLeft: '1rem',
-    borderLeft: `2px solid ${theme.SECONDARY_COLOR}`,
+    borderLeft: `2px solid ${theme.SecondaryColor}`,
   },
   desc: {
     margin: '0 0.5rem !important',
