@@ -69,7 +69,7 @@ const useSystemState = () => {
   // ------------------------------------------------------------ fetch --
 
   const fetchSystemDefaults = async () => {
-    const endpoint = `${routerEnum.API.SYSTEMS}/defaults`
+    const endpoint = `${routerEnum.Endpoint.Systems}/defaults`
     store.startLoading()
     try {
       const defaults = await requestAdapter.sendGetRequest(endpoint)

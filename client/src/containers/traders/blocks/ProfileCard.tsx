@@ -26,7 +26,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     padding: '1rem',
   },
   active: {
-    border: `2px solid ${theme.PRIMARY_COLOR} !important`,
+    border: `2px solid ${theme.PrimaryColor} !important`,
   },
   label: {
     alignSelf: 'flex-start',

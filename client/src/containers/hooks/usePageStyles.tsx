@@ -24,7 +24,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     minWidth: '24rem',
   },
   activeCard: {
-    border: `3px solid ${theme.PRIMARY_COLOR} !important`,
+    border: `3px solid ${theme.PrimaryColor} !important`,
   },
 }))
 

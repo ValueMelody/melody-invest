@@ -66,7 +66,7 @@ const useUserState = () => {
   // ------------------------------------------------------------ Fetch --
 
   const fetchUserOverall = async () => {
-    const endpoint = `${routerEnum.API.USERS}/overall`
+    const endpoint = `${routerEnum.Endpoint.Users}/overall`
     store.startLoading()
     try {
       const overall = await requestAdapter.sendGetRequest(endpoint)
@@ -81,7 +81,7 @@ const useUserState = () => {
   // ------------------------------------------------------------ Create --
 
   const createUser = async (email: string, password: string, isConfirmed: boolean) => {
-    const endpoint = `${routerEnum.API.USERS}`
+    const endpoint = `${routerEnum.Endpoint.Users}`
     store.startLoading()
     try {
       const user = await requestAdapter.sendPostRequest(endpoint, {
@@ -98,7 +98,7 @@ const useUserState = () => {
   }
 
   const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {
-    const endpoint = `${routerEnum.API.USERS}/token`
+    const endpoint = `${routerEnum.Endpoint.Users}/token`
     store.startLoading()
     try {
       const userToken = await requestAdapter.sendPostRequest(endpoint, {
@@ -120,7 +120,7 @@ const useUserState = () => {
     currentPassword: string,
     newPassword: string,
   ) => {
-    const endpoint = `${routerEnum.API.USERS}/password`
+    const endpoint = `${routerEnum.Endpoint.Users}/password`
     store.startLoading()
     try {
       await requestAdapter.sendPutRequest(endpoint, {

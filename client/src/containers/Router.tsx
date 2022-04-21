@@ -24,67 +24,67 @@ const Router = () => {
       <Layout>
         <vendorTool.router.Routes>
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/profiles/tops`}
+            path={`${routerEnum.Nav.Traders}/profiles/tops`}
             element={<TopProfiles />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/profiles/:traderId/:accessCode`}
+            path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}
             element={<ProfileDetail />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/profiles/build`}
+            path={`${routerEnum.Nav.Traders}/profiles/build`}
             element={<ProfileBuilder />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/envs/build`}
+            path={`${routerEnum.Nav.Traders}/envs/build`}
             element={<EnvBuilder />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/envs/:envId`}
+            path={`${routerEnum.Nav.Traders}/envs/:envId`}
             element={<EnvDetail />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.BEHAVIORS}
+            path={routerEnum.Nav.Behaviors}
             element={<BehaviorList />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.BEHAVIORS}/:behavior/envs/:envId`}
+            path={`${routerEnum.Nav.Behaviors}/:behavior/envs/:envId`}
             element={<BehaviorDetail />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.TICKERS}
+            path={routerEnum.Nav.Tickers}
             element={<TickerList />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TICKERS}/:tickerId/envs/:envId`}
+            path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
             element={<TickerDetail />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/combos/:comboId`}
+            path={`${routerEnum.Nav.Traders}/combos/:comboId`}
             element={<ComboDetail />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/combos/tops`}
+            path={`${routerEnum.Nav.Traders}/combos/tops`}
             element={<TopCombos />}
           />
           <vendorTool.router.Route
-            path={`${routerEnum.NAV.TRADERS}/combos/build`}
+            path={`${routerEnum.Nav.Traders}/combos/build`}
             element={<ComboBuilder />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.DASHBOARD}
+            path={routerEnum.Nav.Dashboard}
             element={<ProfileDashboard />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.SETTING}
+            path={routerEnum.Nav.Setting}
             element={<Setting />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.SIGN_IN}
+            path={routerEnum.Nav.SignIn}
             element={<SignIn />}
           />
           <vendorTool.router.Route
-            path={routerEnum.NAV.SIGN_UP}
+            path={routerEnum.Nav.SignUp}
             element={<SignUp />}
           />
         </vendorTool.router.Routes>

@@ -110,14 +110,14 @@ const WeightChart = ({
         data={data}
         innerRadius={60}
         outerRadius={80}
-        fill={themeEnum.BASIC.PRIMARY_COLOR}
+        fill={themeEnum.Basic.PrimaryColor}
         isAnimationActive={false}
       >
         {data.map((entry, index) => (
           <vendorTool.chart.Cell
             key={entry.value}
             fill={
-              index === activeIndex ? themeEnum.BASIC.PRIMARY_COLOR : themeEnum.BASIC.SECONDARY_COLOR
+              index === activeIndex ? themeEnum.Basic.PrimaryColor : themeEnum.Basic.SecondaryColor
             }
           />
         ))}

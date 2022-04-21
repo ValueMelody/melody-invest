@@ -11,7 +11,7 @@ const useStyles = vendorTool.jss.createUseStyles((
     padding: '0.5rem !important',
   },
   focusCell: {
-    border: `1px solid ${theme.PRIMARY_COLOR}`,
+    border: `1px solid ${theme.PrimaryColor}`,
   },
 }))
 

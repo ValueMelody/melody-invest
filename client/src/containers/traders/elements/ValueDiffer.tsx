@@ -40,7 +40,7 @@ const ValueDiffer = ({
       {title && <h5>{title}:</h5>}
       <vendorTool.ui.Label
         className={classes.label}
-        color={isPositive ? themeEnum.theme.INCREASE_COLOR : themeEnum.theme.DECREASE_COLOR}
+        color={isPositive ? themeEnum.theme.IncreaseColor : themeEnum.theme.DecreaseColor}
         title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
       >
         {parseTool.floatToPercent(differ)}

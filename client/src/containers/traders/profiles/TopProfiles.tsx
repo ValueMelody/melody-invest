@@ -17,7 +17,7 @@ const TopProfiles = () => {
   const { getTopProfiles, getProfileDetail, fetchTopProfiles } = useTraderState()
   const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
-  const topProfiles = getTopProfiles(commonEnum.OVERALL_ENV_ID)
+  const topProfiles = getTopProfiles(commonEnum.Config.OverallEnvId)
 
   const topOptions = [
     {
@@ -58,7 +58,7 @@ const TopProfiles = () => {
 
   vendorTool.react.useEffect(() => {
     if (topProfiles) return
-    fetchTopProfiles(commonEnum.OVERALL_ENV_ID)
+    fetchTopProfiles(commonEnum.Config.OverallEnvId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topProfiles])
 
