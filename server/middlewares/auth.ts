@@ -7,8 +7,12 @@ const getAuth = (req: Request): interfaces.reqs.Auth | null => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
   if (!token) return null
-  const auth = generateTool.decodeJWT(token)
-  return auth
+  try {
+    const auth = generateTool.decodeJWT(token)
+    return auth
+  } catch (e) {
+    throw errorEnum.Default.Unauthorized
+  }
 }
 
 export const guestOrUser = (req: Request, res: Response, next: NextFunction) => {

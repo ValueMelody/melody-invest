@@ -23,4 +23,9 @@ const App = () => {
   )
 }
 
-vendorTool.dom.render(<App />, document.getElementById('root'))
+vendorTool.dom.render(
+  <vendorTool.router.BrowserRouter>
+    <App />
+  </vendorTool.router.BrowserRouter>,
+  document.getElementById('root'),
+)

@@ -1,14 +1,18 @@
 import * as context from './context'
 import * as vendorTool from '../tools/vendor'
+import * as localeTool from '../tools/locale'
+import * as routerTool from '../tools/router'
 import * as storageAdapter from '../adapters/storage'
 import * as requestAdapter from '../adapters/request'
 
-const userType = storageAdapter.get(storageAdapter.KEYS.USER_TYPE)
+const userType = storageAdapter.get(storageAdapter.Key.UserType)
 const currentUserType = userType ? parseInt(userType) : 0
-const jwtToken = storageAdapter.get(storageAdapter.KEYS.JWT_TOKEN)
+const jwtToken = storageAdapter.get(storageAdapter.Key.JWTToken)
 if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
 const useStore = () => {
+  const navigate = vendorTool.router.useNavigate()
+
   const [common, setCommon] = vendorTool.react.useState<context.Common>({
     isLoading: false,
     messages: [],
@@ -62,13 +66,25 @@ const useStore = () => {
     setCommon((state) => ({ ...state, messages: [] }))
   }
 
-  const showRequestError = (message?: string) => {
-    if (!message) return
-    addMessage({
-      id: Math.random(),
-      title: message,
-      type: 'error',
-    })
+  const showRequestError = (err: any) => {
+    const message = err?.message || ''
+    if (message) {
+      addMessage({
+        id: Math.random(),
+        title: message,
+        type: 'error',
+      })
+    }
+    if (message === localeTool.t('error.401')) {
+      setResources((resources) => ({
+        ...resources,
+        userType: 0,
+      }))
+      storageAdapter.remove(storageAdapter.Key.JWTToken)
+      storageAdapter.remove(storageAdapter.Key.UserType)
+      const url = routerTool.signInRoute()
+      navigate(url)
+    }
   }
 
   return {

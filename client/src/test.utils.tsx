@@ -22,10 +22,20 @@ const WithProviders: vendorTool.react.FC = ({ children }) => {
   )
 }
 
+const Base: vendorTool.react.FC = ({ children }) => {
+  return (
+    <vendorTool.router.BrowserRouter>
+      <WithProviders>
+        {children}
+      </WithProviders>
+    </vendorTool.router.BrowserRouter>
+  )
+}
+
 export const render = (
   ui: vendorTool.react.ReactElement,
   options?: Omit<RenderOptions, 'wrapper'>,
-) => defaultRender(ui, { wrapper: WithProviders, ...options })
+) => defaultRender(ui, { wrapper: Base, ...options })
 
 export {
   screen, fireEvent,

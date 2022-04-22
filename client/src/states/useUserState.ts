@@ -25,8 +25,8 @@ const useUserState = () => {
   const storeUserToken = (userToken: interfaces.userRes.UserToken) => {
     const { jwtToken, userType } = userToken
     requestAdapter.setJWTToken(jwtToken)
-    storageAdapter.set(storageAdapter.KEYS.JWT_TOKEN, jwtToken)
-    storageAdapter.set(storageAdapter.KEYS.USER_TYPE, userType.toString())
+    storageAdapter.set(storageAdapter.Key.JWTToken, jwtToken)
+    storageAdapter.set(storageAdapter.Key.UserType, userType.toString())
     store.loadUserType(userType)
   }
 
@@ -71,8 +71,8 @@ const useUserState = () => {
     try {
       const overall = await requestAdapter.sendGetRequest(endpoint)
       storeUserOverall(overall)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -90,8 +90,8 @@ const useUserState = () => {
         isConfirmed,
       })
       return user
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -107,8 +107,8 @@ const useUserState = () => {
         remember: shouldRemember,
       })
       storeUserToken(userToken)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -127,8 +127,8 @@ const useUserState = () => {
         currentPassword, newPassword,
       })
       store.addMessage({ id: Math.random(), type: 'success', title: localeTool.t('setting.passwordUpdated') })
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
