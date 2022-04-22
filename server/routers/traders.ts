@@ -96,11 +96,6 @@ tradersRouter.get('/combos/:id', authMiddleware.normalUser, async (req, res) => 
   return res.status(200).send(comboDetail)
 })
 
-tradersRouter.get('/envs/tops', async (req, res) => {
-  const tops = await crudTraders.getTopProfiles()
-  return res.status(200).send(tops)
-})
-
 tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
   const envId = parseInt(req.params.id)
 

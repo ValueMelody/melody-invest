@@ -14,53 +14,45 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getTopProfiles, getTraderProfile, fetchTopProfiles } = useTraderState()
+  const { getTopTraderProfiles, getTraderProfile } = useTraderState()
   const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
-  const topProfiles = getTopProfiles(commonEnum.Config.OverallEnvId)
+  const topTraderProfiles = getTopTraderProfiles(commonEnum.Config.OverallEnvId)
 
   const topOptions = [
     {
       value: 'YEARLY',
       label: localeTool.t('bestReturn.yearlyTitle'),
-      traders: topProfiles?.yearly || [],
+      traders: topTraderProfiles?.yearly || [],
       onClick: () => setFocusType('YEARLY'),
     },
     {
       value: 'PAST_YEAR',
       label: localeTool.t('bestReturn.pastYearTitle'),
-      traders: topProfiles?.pastYear || [],
+      traders: topTraderProfiles?.pastYear || [],
       onClick: () => setFocusType('PAST_YEAR'),
     },
     {
       value: 'PAST_QUARTER',
       label: localeTool.t('bestReturn.pastQuarterTitle'),
-      traders: topProfiles?.pastQuarter || [],
+      traders: topTraderProfiles?.pastQuarter || [],
       onClick: () => setFocusType('PAST_QUARTER'),
     },
     {
       value: 'PAST_MONTH',
       label: localeTool.t('bestReturn.pastMonthTitle'),
-      traders: topProfiles?.pastMonth || [],
+      traders: topTraderProfiles?.pastMonth || [],
       onClick: () => setFocusType('PAST_MONTH'),
     },
     {
       value: 'PAST_WEEK',
       label: localeTool.t('bestReturn.pastWeekTitle'),
-      traders: topProfiles?.pastWeek || [],
+      traders: topTraderProfiles?.pastWeek || [],
       onClick: () => setFocusType('PAST_WEEK'),
     },
   ]
 
   const focusedTop = topOptions.find((option) => option.value === focusType)
-
-  // ------------------------------------------------------------ Effect --
-
-  vendorTool.react.useEffect(() => {
-    if (topProfiles) return
-    fetchTopProfiles(commonEnum.Config.OverallEnvId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topProfiles])
 
   // ------------------------------------------------------------ Handler --
 
@@ -73,7 +65,7 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!topProfiles || !focusedTop) return null
+  if (!topTraderProfiles || !focusedTop) return null
 
   return (
     <section className={pageClasses.root}>

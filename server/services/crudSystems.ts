@@ -5,6 +5,7 @@ import * as tickerCategoryModel from '../models/tickerCategory'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
 import * as runTool from '../tools/run'
+import buildTopTraderProfiles from './shared/buildTopTraderProfiles'
 import buildComboDetail from './shared/buildComboDetail'
 
 const getSystemTopTraderCombo = async (
@@ -81,10 +82,14 @@ export const getDefaults = async (): Promise<
 
   const categories = await tickerCategoryModel.getAll()
 
+  const topTraders = await traderModel.getTops(5)
+  const topTraderProfiles = await buildTopTraderProfiles(topTraders)
+
   return {
     tickerIdentities,
     traderEnvs: systemTraderEnvs,
     comboProfiles: combos,
     tickerCategories: categories,
+    topTraderProfiles,
   }
 }
