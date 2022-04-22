@@ -9,6 +9,8 @@ export interface ComboDetail {
   identity: traderComboModel.Identity;
   holdings: traderHoldingModel.Detail[];
   profiles: traderRes.TraderProfile[];
+  oneYearTrends: number[];
+  totalValue: number | null;
 }
 
 export interface Defaults {

@@ -34,6 +34,7 @@
     "error.password.requireSymbol": "Password must include at least 1 symbol!",
     "error.guest": "Please login first!",
     "error.500": "Something went wrong, please try again later",
+    "error.401": "Authentication expired, please login again",
 
     "setting.title": "User Account",
     "setting.changePassword": "Change Password",

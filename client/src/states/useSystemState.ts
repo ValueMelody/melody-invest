@@ -74,8 +74,8 @@ const useSystemState = () => {
     try {
       const defaults = await requestAdapter.sendGetRequest(endpoint)
       storeSystemDefaults(defaults)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }

@@ -52,8 +52,14 @@ interface Error {
 }
 
 const handleRequestError = (error: Error) => {
-  const code = error?.response?.status
-  const message = error?.response?.data.message
-  const errorMessage = code === 500 ? localeTool.t('error.500') : message
-  throw new Error(errorMessage)
+  const code = error?.response?.status || 500
+  const message = error?.response?.data.message || ''
+  switch (code) {
+    case 500:
+      throw new Error(localeTool.t('error.500'))
+    case 401:
+      throw new Error(localeTool.t('error.401'))
+    default:
+      throw new Error(message)
+  }
 }

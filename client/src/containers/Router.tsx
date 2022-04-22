@@ -20,76 +20,74 @@ import * as routerEnum from '../enums/router'
 
 const Router = () => {
   return (
-    <vendorTool.router.BrowserRouter>
-      <Layout>
-        <vendorTool.router.Routes>
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/profiles/tops`}
-            element={<TopProfiles />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}
-            element={<ProfileDetail />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/profiles/build`}
-            element={<ProfileBuilder />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/envs/build`}
-            element={<EnvBuilder />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/envs/:envId`}
-            element={<EnvDetail />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.Behaviors}
-            element={<BehaviorList />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Behaviors}/:behavior/envs/:envId`}
-            element={<BehaviorDetail />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.Tickers}
-            element={<TickerList />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
-            element={<TickerDetail />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/combos/:comboId`}
-            element={<ComboDetail />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/combos/tops`}
-            element={<TopCombos />}
-          />
-          <vendorTool.router.Route
-            path={`${routerEnum.Nav.Traders}/combos/build`}
-            element={<ComboBuilder />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.Dashboard}
-            element={<ProfileDashboard />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.Setting}
-            element={<Setting />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.SignIn}
-            element={<SignIn />}
-          />
-          <vendorTool.router.Route
-            path={routerEnum.Nav.SignUp}
-            element={<SignUp />}
-          />
-        </vendorTool.router.Routes>
-      </Layout>
-    </vendorTool.router.BrowserRouter>
+    <Layout>
+      <vendorTool.router.Routes>
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/profiles/tops`}
+          element={<TopProfiles />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}
+          element={<ProfileDetail />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/profiles/build`}
+          element={<ProfileBuilder />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/envs/build`}
+          element={<EnvBuilder />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/envs/:envId`}
+          element={<EnvDetail />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Behaviors}
+          element={<BehaviorList />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Behaviors}/:behavior/envs/:envId`}
+          element={<BehaviorDetail />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Tickers}
+          element={<TickerList />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
+          element={<TickerDetail />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/combos/:comboId`}
+          element={<ComboDetail />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/combos/tops`}
+          element={<TopCombos />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Traders}/combos/build`}
+          element={<ComboBuilder />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Dashboard}
+          element={<ProfileDashboard />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Setting}
+          element={<Setting />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.SignIn}
+          element={<SignIn />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.SignUp}
+          element={<SignUp />}
+        />
+      </vendorTool.router.Routes>
+    </Layout>
   )
 }
 

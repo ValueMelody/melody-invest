@@ -21,6 +21,8 @@ const getSystemTopTraderCombo = async (
     },
     profiles: comboDetail.profiles,
     holdings: comboDetail.holdings.slice(0, 20),
+    oneYearTrends: comboDetail.oneYearTrends,
+    totalValue: comboDetail.totalValue,
   }
 }
 

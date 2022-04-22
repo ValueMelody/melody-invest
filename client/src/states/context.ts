@@ -77,7 +77,7 @@ export interface Context {
   addMessage: (message: Message) => void;
   removeMessage: (id: number) => void;
   clearMessages: () => void;
-  showRequestError: (message: string) => void;
+  showRequestError: (err: any) => void;
   resources: Resources;
   setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
   profileDetails: ProfileDetails;

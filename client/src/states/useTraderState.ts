@@ -212,8 +212,8 @@ const useTraderState = () => {
     try {
       const profile = await requestAdapter.sendGetRequest(endpoint)
       storeTraderProfile(profile)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -227,8 +227,8 @@ const useTraderState = () => {
     try {
       const tops = await requestAdapter.sendGetRequest(endpoint)
       storeTopProfiles(envId, tops)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -240,8 +240,8 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeProfileDetail(id, detail)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -255,8 +255,8 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeBehaviorDetail(traderEnvId, behavior, detail)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -270,8 +270,8 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeTickerDetail(traderEnvId, tickerId, detail)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -283,8 +283,8 @@ const useTraderState = () => {
     try {
       const env = await requestAdapter.sendGetRequest(endpoint)
       storeTraderEnv(env)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -296,8 +296,8 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeComboDetail(id, detail)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -322,8 +322,8 @@ const useTraderState = () => {
         traderId: profile.trader.id,
         accessCode: profile.trader.accessCode,
       }
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -335,8 +335,8 @@ const useTraderState = () => {
     try {
       await requestAdapter.sendPostRequest(endpoint)
       storeWatchedProfile(traderId)
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -358,8 +358,8 @@ const useTraderState = () => {
       )
       storeTraderEnv(env)
       return env.id
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -381,8 +381,8 @@ const useTraderState = () => {
       )
       storeTraderCombo(combo)
       return combo.id
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -397,8 +397,8 @@ const useTraderState = () => {
       await requestAdapter.sendDeleteRequest(endpoint)
       removeWatchedProfile(traderId)
       return true
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
@@ -411,8 +411,8 @@ const useTraderState = () => {
       await requestAdapter.sendDeleteRequest(endpoint)
       removeWatchedEnv(traderEnvId)
       return true
-    } catch (e: any) {
-      store.showRequestError(e?.message)
+    } catch (e) {
+      store.showRequestError(e)
     } finally {
       store.stopLoading()
     }
