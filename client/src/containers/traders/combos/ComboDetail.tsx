@@ -10,6 +10,7 @@ import usePageStyles from '../../hooks/usePageStyles'
 import useShowMore from '../../hooks/useShowMore'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import HoldingCard from '../blocks/HoldingCard'
+import ComboStats from '../blocks/ComboStats'
 import ComboProfiles from '../elements/ComboProfiles'
 import TraderComboCard from '../elements/TraderComboCard'
 import ProfileValue from '../elements/ProfileValue'
@@ -115,6 +116,7 @@ const ComboDetail = () => {
         />
       </aside>
       <section className={pageClasses.main}>
+        <ComboStats combo={matchedCombo} />
         <vendorTool.ui.Header
           as='h3'
           icon='history'

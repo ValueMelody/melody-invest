@@ -28,6 +28,8 @@ export interface TopProfiles {
 export interface ComboDetail {
   identity: interfaces.traderComboModel.Identity;
   holdings?: interfaces.traderHoldingModel.Detail[];
+  oneYearTrends?: number[];
+  totalValue?: number | null;
 }
 
 export interface Resources {

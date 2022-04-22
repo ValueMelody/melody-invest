@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as vendorTool from '../../../tools/vendor'
+import * as parseTool from '../../../tools/parse'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
@@ -67,11 +68,8 @@ const ProfileCard = ({
   const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
 
-  const trendData = trader?.oneYearTrends && trader?.totalValue
-    ? [
-        ...trader.oneYearTrends.map((value, index) => ({ label: `${index + 1}`, value })),
-        { label: '13', value: trader.totalValue },
-      ]
+  const trendData = trader
+    ? parseTool.chartTrends(trader.oneYearTrends, trader.totalValue)
     : []
 
   // ------------------------------------------------------------ Handler --

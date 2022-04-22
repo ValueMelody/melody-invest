@@ -1,22 +1,30 @@
+import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
-
-interface DataPoint {
-  label: string;
-  value: number;
-}
 
 const TrendChart = ({
   data,
 }: {
-  data: DataPoint[];
+  data: interfaces.common.Option[];
 }) => {
   // ------------------------------------------------------------ UI --
 
-  if (!data.length) return null
+  const stats = data.length
+    ? data.reduce((stats, option) => {
+      const min = stats.min < option.value ? stats.min : option.value
+      const max = stats.max > option.value ? stats.max : option.value
+      return { min, max }
+    }, { min: data[0].value, max: data[0].value })
+    : null
+
+  if (!data.length || !stats) return null
 
   return (
-    <vendorTool.chart.AreaChart width={280} height={80} data={data}>
+    <vendorTool.chart.AreaChart
+      data={data}
+      width={280}
+      height={80}
+    >
       <vendorTool.chart.Area
         type='monotone'
         dataKey='value'
@@ -24,10 +32,18 @@ const TrendChart = ({
         strokeWidth={2}
         isAnimationActive={false}
       />
+      <vendorTool.chart.YAxis
+        type='number'
+        domain={[stats.min, stats.max]}
+        axisLine={false}
+        tick={false}
+        width={0}
+      />
+
       <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
         <vendorTool.chart.Label
           orientation='bottom'
-          value={`${localeTool.t('profile.daysTrends', { num: 30 * data.length })}`}
+          value={`${localeTool.t('profile.daysTrends', { num: 30 * (data.length - 1) })}`}
           offset={0}
           position='insideBottomRight'
         />

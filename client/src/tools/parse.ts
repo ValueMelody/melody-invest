@@ -106,3 +106,14 @@ export const holdingValue = (value: number | null): string | null => {
 export const floatToPercent = (value: number): string => {
   return `${(value * 100).toFixed(2)}%`
 }
+
+export const chartTrends = (
+  trends: number[] | null,
+  totalValue: number | null,
+): interfaces.common.Option[] => {
+  if (!trends || !trends.length || !totalValue) return []
+  return [
+    ...trends.map((value, index) => ({ label: `${index + 1}`, value })),
+    { label: `${trends.length + 1}`, value: totalValue },
+  ]
+}
