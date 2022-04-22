@@ -26,8 +26,8 @@
     "common.showMoreHistory": "Show More History",
     "common.sinceLast": "Since Last",
     "common.sinceStart": "Since start",
-    "common.daysTrends": "{{num}} days trends",
-    "common.yearsTrends": "{{num}} years trends",
+    "common.daysTrends": "{{num}} Days Trends",
+    "common.yearsTrends": "{{num}} Years Trends",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
