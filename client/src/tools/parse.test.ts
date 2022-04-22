@@ -150,3 +150,15 @@ test('could parse float to percent', () => {
   expect(parseTool.floatToPercent(0.112233)).toBe('11.22%')
   expect(parseTool.floatToPercent(0.112253)).toBe('11.23%')
 })
+
+test('could parse chart trends', () => {
+  expect(parseTool.chartTrends([1, 2, 3], null)).toStrictEqual([])
+  expect(parseTool.chartTrends(null, 100)).toStrictEqual([])
+  expect(parseTool.chartTrends([], 100)).toStrictEqual([])
+  expect(parseTool.chartTrends([1, 2, 3], 4)).toStrictEqual([
+    { label: '1', value: 1 }, { label: '2', value: 2 }, { label: '3', value: 3 }, { label: '4', value: 4 },
+  ])
+  expect(parseTool.chartTrends([3, 2, 1], 4)).toStrictEqual([
+    { label: '1', value: 3 }, { label: '2', value: 2 }, { label: '3', value: 1 }, { label: '4', value: 4 },
+  ])
+})

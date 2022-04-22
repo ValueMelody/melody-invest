@@ -47,7 +47,7 @@ const useTraderState = () => {
   const storeTraderProfiles = (profiles: interfaces.traderRes.TraderProfile[]) => {
     const traderProfiles = profiles.reduce((traderProfiles, profile) => ({
       ...traderProfiles,
-      [profile.trader.id]: { ...profile },
+      [profile.trader.id]: profile,
     }), {})
     store.setProfileDetails((profiles) => ({ ...profiles, ...traderProfiles }))
   }
@@ -181,6 +181,8 @@ const useTraderState = () => {
         return {
           ...combo,
           holdings: comboDetail.holdings,
+          oneYearTrends: comboDetail.oneYearTrends,
+          totalValue: comboDetail.totalValue,
         }
       })
       return {

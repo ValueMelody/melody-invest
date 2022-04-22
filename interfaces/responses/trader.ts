@@ -38,4 +38,6 @@ export interface TickerDetail {
 export interface ComboDetail {
   holdings: traderHoldingModel.Detail[];
   profiles: TraderProfile[];
+  oneYearTrends: number[];
+  totalValue: number | null;
 }

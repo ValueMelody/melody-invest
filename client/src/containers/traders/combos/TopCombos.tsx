@@ -9,6 +9,7 @@ import TraderComboCard from '../elements/TraderComboCard'
 import ComboProfiles from '../elements/ComboProfiles'
 import ProfileValue from '../elements/ProfileValue'
 import HoldingCard from '../blocks/HoldingCard'
+import ComboStats from '../blocks/ComboStats'
 import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
 
@@ -82,6 +83,7 @@ const TopCombos = () => {
       </header>
       <section className={pageClasses.root}>
         <section className={pageClasses.main}>
+          <ComboStats combo={focusedCombo} />
           <vendorTool.ui.Header
             as='h3'
             icon='history'

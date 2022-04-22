@@ -211,6 +211,8 @@ export const getComboDetail = async (
   return {
     profiles: comboDetail.profiles,
     holdings: comboDetail.holdings,
+    oneYearTrends: comboDetail.oneYearTrends,
+    totalValue: comboDetail.totalValue,
   }
 }
 
