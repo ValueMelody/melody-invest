@@ -34,7 +34,7 @@ const useStore = () => {
 
   const [tickerDetails, setTickerDetails] = vendorTool.react.useState<context.TickerDetails>({})
 
-  const [topProfiles, setTopProfiles] = vendorTool.react.useState<context.TopProfiles>({})
+  const [topTraderProfiles, setTopTraderProfiles] = vendorTool.react.useState<context.TopTraderProfiles>({})
 
   const loadUserType = (type: number) => {
     setCommon((state) => ({ ...state, userType: type }))
@@ -104,8 +104,8 @@ const useStore = () => {
     setBehaviorDetails,
     tickerDetails,
     setTickerDetails,
-    topProfiles,
-    setTopProfiles,
+    topTraderProfiles,
+    setTopTraderProfiles,
   }
 }
 

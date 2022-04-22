@@ -41,14 +41,14 @@ const BehaviorDetail = () => {
   const envId = params.envId ? parseInt(params.envId) : 1
   const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior) || null
   const behaviorDetail = getBehaviorDetail(envId, validBehavior)
-  const topProfiles = behaviorDetail?.tops
+  const topTraderProfiles = behaviorDetail?.tops
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
 
-  const bestOverall = topProfiles?.yearly[0] || null
-  const bestPastYear = topProfiles?.pastYear[0] || null
-  const bestPastQuarter = topProfiles?.pastQuarter[0] || null
-  const bestPastMonth = topProfiles?.pastMonth[0] || null
-  const bestPastWeek = topProfiles?.pastWeek[0] || null
+  const bestOverall = topTraderProfiles?.yearly[0] || null
+  const bestPastYear = topTraderProfiles?.pastYear[0] || null
+  const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
+  const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
+  const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
 
   // ------------------------------------------------------------ Effect --
 

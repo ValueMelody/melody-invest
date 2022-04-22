@@ -13,7 +13,7 @@ export interface Common {
   messages: Message[];
 }
 
-interface TopProfileIds {
+interface TopTraderProfileIds {
   yearly: number[];
   pastYear: number[];
   pastQuarter: number[];
@@ -21,8 +21,8 @@ interface TopProfileIds {
   pastWeek: number[];
 }
 
-export interface TopProfiles {
-  [traderEnvId: number]: TopProfileIds
+export interface TopTraderProfiles {
+  [traderEnvId: number]: TopTraderProfileIds
 }
 
 export interface ComboProfile {
@@ -54,7 +54,7 @@ export interface TraderProfiles {
 }
 
 export interface BehaviorDetail {
-  tops: TopProfileIds;
+  tops: TopTraderProfileIds;
 }
 
 export interface BehaviorDetails {
@@ -62,7 +62,7 @@ export interface BehaviorDetails {
 }
 
 export interface TickerDetail {
-  tops: TopProfileIds;
+  tops: TopTraderProfileIds;
 }
 
 export interface TickerDetails {
@@ -86,8 +86,8 @@ export interface Context {
   setBehaviorDetails: vendorTool.react.Dispatch<React.SetStateAction<BehaviorDetails>>;
   tickerDetails: TickerDetails;
   setTickerDetails: vendorTool.react.Dispatch<React.SetStateAction<TickerDetails>>;
-  topProfiles: TopProfiles;
-  setTopProfiles: vendorTool.react.Dispatch<React.SetStateAction<TopProfiles>>;
+  topTraderProfiles: TopTraderProfiles;
+  setTopTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TopTraderProfiles>>;
 }
 
 // @ts-ignore

@@ -96,10 +96,9 @@ const buildTraderTopProfiles = async (
 }
 
 export const getTopProfiles = async (
-  traderEnvId?: number,
+  traderEnvId: number,
 ): Promise<interfaces.traderRes.TopProfiles> => {
-  const each = traderEnvId ? 1 : 5
-
+  const each = 1
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
   const topProfiles = await buildTraderTopProfiles(tops)
 

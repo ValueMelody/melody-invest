@@ -24,9 +24,18 @@ export interface ComboProfile {
   detail: ComboDetail;
 }
 
+export interface TopTraderProfiles {
+  yearly: TraderProfile[];
+  pastYear: TraderProfile[];
+  pastQuarter: TraderProfile[];
+  pastMonth: TraderProfile[];
+  pastWeek: TraderProfile[];
+}
+
 export interface SystemDefaults {
   comboProfiles: ComboProfile[];
   traderEnvs: traderEnvModel.Record[];
   tickerIdentities: tickerModel.Identity[];
   tickerCategories: tickerCategoryModel.Record[];
+  topTraderProfiles: TopTraderProfiles;
 }

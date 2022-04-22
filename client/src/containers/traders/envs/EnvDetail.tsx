@@ -37,7 +37,7 @@ const EnvDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTopProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
+    getTopTraderProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
   const { getUser } = useUserState()
@@ -45,13 +45,13 @@ const EnvDetail = () => {
   const user = getUser()
   const envId = params.envId ? parseInt(params.envId) : null
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
-  const topProfiles = getTopProfiles(envId)
+  const topTraderProfiles = getTopTraderProfiles(envId)
 
-  const bestOverall = topProfiles?.yearly[0] || null
-  const bestPastYear = topProfiles?.pastYear[0] || null
-  const bestPastQuarter = topProfiles?.pastQuarter[0] || null
-  const bestPastMonth = topProfiles?.pastMonth[0] || null
-  const bestPastWeek = topProfiles?.pastWeek[0] || null
+  const bestOverall = topTraderProfiles?.yearly[0] || null
+  const bestPastYear = topTraderProfiles?.pastYear[0] || null
+  const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
+  const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
+  const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
 
   // ------------------------------------------------------------ Handler --
 
@@ -78,10 +78,10 @@ const EnvDetail = () => {
   }, [traderEnv])
 
   vendorTool.react.useEffect(() => {
-    if (!envId || topProfiles) return
+    if (!envId || topTraderProfiles) return
     fetchTopProfiles(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [envId, topProfiles])
+  }, [envId, topTraderProfiles])
 
   // ------------------------------------------------------------ Handler --
 
@@ -93,7 +93,7 @@ const EnvDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!traderEnv || !topProfiles) return null
+  if (!traderEnv || !topTraderProfiles) return null
 
   return (
     <section className={pageClasses.root}>

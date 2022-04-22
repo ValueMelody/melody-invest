@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import { context, Context, TraderProfiles } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
+import * as commonEnum from '../enums/common'
 import * as parseTool from '../tools/parse'
 import * as vendorTool from '../tools/vendor'
 
@@ -17,6 +18,33 @@ const useRequest = () => {
       ...containedProfiles,
       [traderProfile.trader.id]: traderProfile,
     }), {})
+  }
+
+  const storeTopTraderProfiles = (
+    envId: number,
+    topTraderProfiles: interfaces.responses.TopTraderProfiles,
+  ) => {
+    const allTraderProfiles = [
+      ...topTraderProfiles.yearly,
+      ...topTraderProfiles.pastYear,
+      ...topTraderProfiles.pastQuarter,
+      ...topTraderProfiles.pastMonth,
+      ...topTraderProfiles.pastWeek,
+    ]
+    const traderProfiles = groupTraderProfilesForStore(allTraderProfiles)
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+
+    const tops = {
+      yearly: topTraderProfiles.yearly.map((profile) => profile.trader.id),
+      pastYear: topTraderProfiles.pastYear.map((profile) => profile.trader.id),
+      pastQuarter: topTraderProfiles.pastQuarter.map((profile) => profile.trader.id),
+      pastMonth: topTraderProfiles.pastMonth.map((profile) => profile.trader.id),
+      pastWeek: topTraderProfiles.pastWeek.map((profile) => profile.trader.id),
+    }
+    store.setTopTraderProfiles((topTraderProfiles) => ({
+      ...topTraderProfiles,
+      [envId]: tops,
+    }))
   }
 
   const storeComboDetail = (
@@ -52,6 +80,8 @@ const useRequest = () => {
       }
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...comboTraderProfiles }))
+
+    storeTopTraderProfiles(commonEnum.Config.OverallEnvId, systemDefaults.topTraderProfiles)
 
     const parsedEnvs = systemDefaults.traderEnvs.map((env) => ({
       ...env,
