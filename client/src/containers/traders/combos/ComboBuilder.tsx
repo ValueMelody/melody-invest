@@ -39,10 +39,10 @@ const ComboBuilder = () => {
   const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
   const [envName, setEnvName] = vendorTool.react.useState('')
 
-  const { getProfileDetail, createTraderCombo } = useTraderState()
+  const { getTraderProfile, createTraderCombo } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const profiles = user.userTraderIds?.map((traderId) => getProfileDetail(traderId)) || []
+  const profiles = user.userTraderIds?.map((traderId) => getTraderProfile(traderId)) || []
   const filteredProfiles = profiles.filter((profile) => profile?.trader.traderEnvId === envId)
 
   const hasValidName = !!envName.trim()

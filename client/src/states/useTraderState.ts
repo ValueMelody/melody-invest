@@ -14,9 +14,9 @@ const useTraderState = () => {
     return store.topProfiles[envId] || null
   }
 
-  const getProfileDetail = (traderId: number | null) => {
+  const getTraderProfile = (traderId: number | null) => {
     if (!traderId) return null
-    return store.profileDetails[traderId] || null
+    return store.traderProfiles[traderId] || null
   }
 
   const getBehaviorDetail = (
@@ -36,7 +36,7 @@ const useTraderState = () => {
   // ------------------------------------------------------------ Store --
 
   const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
-    store.setProfileDetails((profiles) => ({
+    store.setTraderProfiles((profiles) => ({
       ...profiles,
       [profile.trader.id]: {
         ...profile,
@@ -49,7 +49,7 @@ const useTraderState = () => {
       ...traderProfiles,
       [profile.trader.id]: profile,
     }), {})
-    store.setProfileDetails((profiles) => ({ ...profiles, ...traderProfiles }))
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
   }
 
   const storeTopProfiles = (envId: number, topProfiles: interfaces.traderRes.TopProfiles) => {
@@ -132,12 +132,12 @@ const useTraderState = () => {
     }
   }
 
-  const storeTraderCombo = (combo: interfaces.traderComboModel.Identity) => {
-    const isSame = store.resources.userTraderCombos.some((traderCombo) => traderCombo.identity.id === combo.id)
+  const storeComboIdentity = (combo: interfaces.traderComboModel.Identity) => {
+    const isSame = store.resources.comboProfiles.some((traderCombo) => traderCombo.identity.id === combo.id)
     if (!isSame) {
       store.setResources((resources) => ({
         ...resources,
-        userTraderCombos: [...resources.userTraderCombos, { identity: combo }],
+        comboProfiles: [...resources.comboProfiles, { identity: combo }],
       }))
     }
   }
@@ -153,8 +153,8 @@ const useTraderState = () => {
     traderId: number,
     detail: interfaces.traderRes.ProfileDetail,
   ) => {
-    if (!store.profileDetails[traderId]) return
-    store.setProfileDetails((details) => (
+    if (!store.traderProfiles[traderId]) return
+    store.setTraderProfiles((details) => (
       {
         ...details,
         [traderId]: {
@@ -163,33 +163,6 @@ const useTraderState = () => {
         },
       }
     ))
-  }
-
-  const storeComboDetail = (
-    id: number,
-    comboDetail: interfaces.traderRes.ComboDetail,
-  ) => {
-    const profiles = comboDetail.profiles.reduce((containedProfiles, profile) => ({
-      ...containedProfiles,
-      [profile.trader.id]: { ...profile },
-    }), {})
-    store.setProfileDetails((details) => ({ ...details, ...profiles }))
-
-    store.setResources((resource) => {
-      const combos = resource.userTraderCombos.map((combo) => {
-        if (combo.identity.id !== id) return combo
-        return {
-          ...combo,
-          holdings: comboDetail.holdings,
-          oneYearTrends: comboDetail.oneYearTrends,
-          totalValue: comboDetail.totalValue,
-        }
-      })
-      return {
-        ...resource,
-        userTraderCombos: combos,
-      }
-    })
   }
 
   // ------------------------------------------------------------ Remove --
@@ -292,19 +265,6 @@ const useTraderState = () => {
     }
   }
 
-  const fetchTraderCombo = async (id: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${id}`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeComboDetail(id, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   // ------------------------------------------------------------ create --
 
   const createTraderProfile = async (
@@ -381,7 +341,7 @@ const useTraderState = () => {
       const combo: interfaces.traderComboModel.Identity = await requestAdapter.sendPostRequest(
         endpoint, reqs,
       )
-      storeTraderCombo(combo)
+      storeComboIdentity(combo)
       return combo.id
     } catch (e) {
       store.showRequestError(e)
@@ -424,7 +384,7 @@ const useTraderState = () => {
 
   return {
     getTopProfiles,
-    getProfileDetail,
+    getTraderProfile,
     getBehaviorDetail,
     getTickerDetail,
     fetchTraderProfile,
@@ -432,7 +392,6 @@ const useTraderState = () => {
     fetchBehaviorDetail,
     fetchTickerDetail,
     fetchTraderEnv,
-    fetchTraderCombo,
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,

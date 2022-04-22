@@ -34,7 +34,7 @@ const ProfileDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getProfileDetail, fetchTraderProfile, fetchProfileDetail,
+    getTraderProfile, fetchTraderProfile, fetchProfileDetail,
   } = useTraderState()
   const { getUser } = useUserState()
 
@@ -44,7 +44,7 @@ const ProfileDetail = () => {
   const accessCode = params?.accessCode || null
   const user = getUser()
 
-  const profileDetail = getProfileDetail(traderId)
+  const profileDetail = getTraderProfile(traderId)
 
   const envId = profileDetail?.trader?.traderEnvId || null
   const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null

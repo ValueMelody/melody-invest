@@ -38,17 +38,19 @@ const TopCombos = () => {
   // ------------------------------------------------------------ State --
 
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
-  const { getProfileDetail } = useTraderState()
+  const { getTraderProfile } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const systemCombos = user.userTraderCombos.filter((combo) => combo.identity.isSystem)
+  const systemCombos = user.comboProfiles.filter((combo) => combo.identity.isSystem)
   const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
 
   const profilesWithEnvs = focusedCombo?.identity.traderIds.map((traderId) => {
-    const profile = getProfileDetail(traderId)
+    const profile = getTraderProfile(traderId)
     const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
     return { profile, env }
   }) || []
+
+  const comboHoldings = focusedCombo?.detail?.holdings || []
 
   // ------------------------------------------------------------ Handler --
 
@@ -63,7 +65,7 @@ const TopCombos = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!focusedCombo || !focusedCombo.holdings) return null
+  if (!focusedCombo || !focusedCombo.detail) return null
 
   return (
     <section className='column-start'>
@@ -89,15 +91,11 @@ const TopCombos = () => {
             icon='history'
             content={localeTool.t('topCombos.history')}
           />
-          {focusedCombo.holdings.map((detail, index) => (
+          {comboHoldings.map((detail, index) => (
             <HoldingCard
               key={detail.date}
               holding={detail}
-              previousHolding={
-                focusedCombo.holdings && index < focusedCombo.holdings.length - 1
-                  ? focusedCombo.holdings[index + 1]
-                  : null
-              }
+              previousHolding={index < comboHoldings.length - 1 ? comboHoldings[index + 1] : null}
               initialValue={constants.Trader.Initial.Cash * 10}
             />
           ))}

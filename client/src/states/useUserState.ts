@@ -14,7 +14,7 @@ const useUserState = () => {
     return {
       userTraderIds: store.resources.userTraderIds,
       userTraderEnvs: store.resources.userTraderEnvs,
-      userTraderCombos: store.resources.userTraderCombos,
+      comboProfiles: store.resources.comboProfiles,
       userType: store.resources.userType,
       userEmail: store.resources.userEmail,
     }
@@ -49,7 +49,7 @@ const useUserState = () => {
       userEmail: email,
       userTraderIds: traderIds,
       userTraderEnvs: [...resources.userTraderEnvs, ...envs],
-      userTraderCombos: [...resources.userTraderCombos, ...traderCombos],
+      comboProfiles: [...resources.comboProfiles, ...traderCombos],
     }))
 
     const traderProfiles = profiles.reduce((traderProfiles, profile) => {
@@ -60,7 +60,7 @@ const useUserState = () => {
         },
       }
     }, {})
-    store.setProfileDetails((profiles) => ({ ...profiles, ...traderProfiles }))
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
   }
 
   // ------------------------------------------------------------ Fetch --

@@ -4,6 +4,7 @@ import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import * as themeEnum from '../../../enums/theme'
+import useRequest from '../../../states/useRequest'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
@@ -45,17 +46,18 @@ const ComboDetail = () => {
   const { getUser } = useUserState()
   const user = getUser()
 
-  const { fetchTraderCombo, getProfileDetail } = useTraderState()
+  const { getTraderProfile } = useTraderState()
+  const { fetchComboDetail } = useRequest()
 
   const comboId = params.comboId ? parseInt(params.comboId) : null
-  const matchedCombo = user.userTraderCombos.find((combo) => combo.identity.id === comboId)
+  const matchedCombo = user.comboProfiles.find((combo) => combo.identity.id === comboId)
   const matchedEnv = user.userTraderEnvs.find((env) => env.id === matchedCombo?.identity.traderEnvId)
 
-  const holdings = matchedCombo?.holdings || []
+  const holdings = matchedCombo?.detail?.holdings || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
   const profilesWithEnvs = matchedCombo?.identity.traderIds.map((traderId) => {
-    const profile = getProfileDetail(traderId)
+    const profile = getTraderProfile(traderId)
     const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
     return { profile, env }
   }) || []
@@ -63,8 +65,8 @@ const ComboDetail = () => {
   // ------------------------------------------------------------ Effect --
 
   vendorTool.react.useEffect(() => {
-    if (!matchedCombo || matchedCombo.holdings) return
-    fetchTraderCombo(matchedCombo.identity.id)
+    if (!matchedCombo || matchedCombo?.detail) return
+    fetchComboDetail(matchedCombo.identity.id)
   }, [matchedCombo])
 
   // ------------------------------------------------------------ Handler --
@@ -131,11 +133,7 @@ const ComboDetail = () => {
           <HoldingCard
             key={detail.date}
             holding={detail}
-            previousHolding={
-              matchedCombo.holdings && index < matchedCombo.holdings.length - 1
-                ? matchedCombo.holdings[index + 1]
-                : null
-            }
+            previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
             initialValue={constants.Trader.Initial.Cash * matchedCombo.identity.traderIds.length}
           />
         ))}

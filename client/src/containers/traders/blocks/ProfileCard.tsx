@@ -132,7 +132,12 @@ const ProfileCard = ({
       <div className={classes.body}>
         <section className='row-around'>
           <TraderPerformance trader={trader} focusType={focusType} />
-          {!simple && <TrendChart data={trendData} />}
+          {!simple && (
+            <TrendChart
+              data={trendData}
+              title={`${localeTool.t('common.daysTrends', { num: 30 * (trendData.length - 1) })}`}
+            />
+          )}
         </section>
         {!simple && (
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />

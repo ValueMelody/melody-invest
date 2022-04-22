@@ -1,11 +1,12 @@
 import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
 
 const TrendChart = ({
   data,
+  title,
 }: {
   data: interfaces.common.Option[];
+  title: string;
 }) => {
   // ------------------------------------------------------------ UI --
 
@@ -43,7 +44,7 @@ const TrendChart = ({
       <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
         <vendorTool.chart.Label
           orientation='bottom'
-          value={`${localeTool.t('profile.daysTrends', { num: 30 * (data.length - 1) })}`}
+          value={title}
           offset={0}
           position='insideBottomRight'
         />
