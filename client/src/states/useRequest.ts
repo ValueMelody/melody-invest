@@ -1,38 +1,68 @@
 import * as interfaces from '@shared/interfaces'
-import { context, Context } from './context'
+import { context, Context, TraderProfiles } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as routerEnum from '../enums/router'
 import * as parseTool from '../tools/parse'
 import * as vendorTool from '../tools/vendor'
 
-const useSystemState = () => {
+const useRequest = () => {
   const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ store --
 
-  const storeSystemDefaults = (systemDefaults: interfaces.systemRes.Defaults) => {
-    const comboProfiles = systemDefaults.traderCombos.reduce((allProfiles, combo) => {
-      const profiles = combo.profiles.reduce((containedProfiles, profile) => ({
-        ...containedProfiles,
-        [profile.trader.id]: { ...profile },
-      }), {})
+  const groupTraderProfilesForStore = (
+    traderProfiles: interfaces.responses.TraderProfile[],
+  ): TraderProfiles => {
+    return traderProfiles.reduce((containedProfiles, traderProfile) => ({
+      ...containedProfiles,
+      [traderProfile.trader.id]: traderProfile,
+    }), {})
+  }
+
+  const storeComboDetail = (
+    id: number,
+    comboDetail: interfaces.responses.ComboDetail,
+  ) => {
+    const traderProfiles = groupTraderProfilesForStore(comboDetail.profiles)
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+
+    store.setResources((resource) => {
+      const combos = resource.comboProfiles.map((combo) => {
+        if (combo.identity.id !== id) return combo
+        return {
+          ...combo,
+          detail: comboDetail,
+        }
+      })
       return {
-        ...allProfiles,
-        ...profiles,
+        ...resource,
+        comboProfiles: combos,
+      }
+    })
+  }
+
+  const storeSystemDefaults = (
+    systemDefaults: interfaces.responses.SystemDefaults,
+  ) => {
+    const comboTraderProfiles = systemDefaults.comboProfiles.reduce((allTraderProfiles, combo) => {
+      const traderProfiles = groupTraderProfilesForStore(combo.detail.profiles)
+      return {
+        ...allTraderProfiles,
+        ...traderProfiles,
       }
     }, {})
-    store.setProfileDetails((details) => ({ ...details, ...comboProfiles }))
+    store.setTraderProfiles((profiles) => ({ ...profiles, ...comboTraderProfiles }))
 
     const parsedEnvs = systemDefaults.traderEnvs.map((env) => ({
       ...env,
       name: parseTool.traderEnvName(env),
     }))
-    const parsedCombos = systemDefaults.traderCombos.map((combo) => ({
+    const parsedCombos = systemDefaults.comboProfiles.map((combo) => ({
+      ...combo,
       identity: {
         ...combo.identity,
         name: parseTool.traderComboName(combo.identity),
       },
-      holdings: combo.holdings,
     }))
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,
@@ -59,8 +89,8 @@ const useSystemState = () => {
         ...resources.userTraderEnvs,
         ...parsedEnvs,
       ],
-      userTraderCombos: [
-        ...resources.userTraderCombos,
+      comboProfiles: [
+        ...resources.comboProfiles,
         ...parsedCombos,
       ],
     }))
@@ -81,11 +111,25 @@ const useSystemState = () => {
     }
   }
 
+  const fetchComboDetail = async (id: number) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${id}`
+    store.startLoading()
+    try {
+      const detail = await requestAdapter.sendGetRequest(endpoint)
+      storeComboDetail(id, detail)
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   // ------------------------------------------------------------ export --
 
   return {
     fetchSystemDefaults,
+    fetchComboDetail,
   }
 }
 
-export default useSystemState
+export default useRequest

@@ -34,10 +34,3 @@ export interface BehaviorDetail {
 export interface TickerDetail {
   topProfiles: TopProfiles;
 }
-
-export interface ComboDetail {
-  holdings: traderHoldingModel.Detail[];
-  profiles: TraderProfile[];
-  oneYearTrends: number[];
-  totalValue: number | null;
-}

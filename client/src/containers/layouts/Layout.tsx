@@ -1,7 +1,7 @@
 import * as vendorTool from '../../tools/vendor'
 import Header from './blocks/Header'
+import useRequest from '../../states/useRequest'
 import useCommonState from '../../states/useCommonState'
-import useSystemState from '../../states/useSystemState'
 import useUserState from '../../states/useUserState'
 
 const useStyles = vendorTool.jss.createUseStyles({
@@ -27,7 +27,7 @@ const Layout: vendorTool.react.FunctionComponent = ({
 
   const { messages, removeMessage } = useCommonState()
   const { getUser, fetchUserOverall } = useUserState()
-  const { fetchSystemDefaults } = useSystemState()
+  const { fetchSystemDefaults } = useRequest()
 
   const user = getUser()
 

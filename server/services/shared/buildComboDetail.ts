@@ -9,14 +9,35 @@ import * as generateTool from '../../tools/generate'
 import * as dateTool from '../../tools/date'
 import * as runTool from '../../tools/run'
 
+const calHoldingValueByDate = async (
+  date: string,
+  holdings: interfaces.traderHoldingModel.Detail[],
+): Promise<number | null> => {
+  const prices = await tickerDailyModel.getNearestPricesByDate(date)
+  const holding = holdings.find((holding) => holding.date <= date)
+  const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
+  return value
+}
+
+const calTrendValues = async (
+  dates: string[],
+  holdings: interfaces.traderHoldingModel.Detail[],
+) => {
+  const values = await runTool.asyncMap(
+    dates,
+    async (date: string) => await calHoldingValueByDate(date, holdings),
+  )
+  const trends = values
+    .filter((num) => num !== null)
+    .reverse()
+  return trends
+}
+
 const buildComboDetail = async (
   traders: interfaces.traderModel.Record[],
 ): Promise<{
   traderIds: number[];
-  profiles: interfaces.traderRes.TraderProfile[];
-  holdings: interfaces.traderHoldingModel.Detail[];
-  totalValue: number | null;
-  oneYearTrends: number[];
+  detail: interfaces.responses.ComboDetail;
 }> => {
   const relatedPatterns = await traderPatternModel.getPublicByTraders(traders)
   const profiles = traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns))
@@ -45,22 +66,22 @@ const buildComboDetail = async (
   const twelveMonths = generateTool
     .getNumbersInRange(1, 12)
     .map((month) => dateTool.getPreviousDate(latestDate, month * 30))
-  const oneYearValue = await runTool.asyncMap(twelveMonths, async (date: string) => {
-    const prices = await tickerDailyModel.getNearestPricesByDate(date)
-    const holding = sortedHoldings.find((holding) => holding.date <= date)
-    const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
-    return value
-  })
-  const oneYearTrends = oneYearValue
-    .filter((num) => num !== null)
-    .reverse()
+  const oneYearTrends = await calTrendValues(twelveMonths, sortedHoldings)
+
+  const tenYears = generateTool
+    .getNumbersInRange(1, 10)
+    .map((year) => dateTool.getPreviousDate(latestDate, year * 365))
+  const oneDecadeTrends = await calTrendValues(tenYears, sortedHoldings)
 
   return {
     traderIds,
-    profiles,
-    holdings: sortedHoldings,
-    oneYearTrends,
-    totalValue,
+    detail: {
+      profiles,
+      holdings: sortedHoldings.slice(0, 20),
+      totalValue,
+      oneYearTrends,
+      oneDecadeTrends,
+    },
   }
 }
 

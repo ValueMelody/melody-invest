@@ -202,18 +202,13 @@ export const getTraderEnv = async (
 
 export const getComboDetail = async (
   comboId: number,
-): Promise<interfaces.traderRes.ComboDetail> => {
+): Promise<interfaces.responses.ComboDetail> => {
   const combo = await traderComboModel.getByPK(comboId)
   if (!combo) throw errorEnum.Default.NotFound
 
   const traders = await traderModel.getInPKs(combo.traderIds)
   const comboDetail = await buildComboDetail(traders)
-  return {
-    profiles: comboDetail.profiles,
-    holdings: comboDetail.holdings,
-    oneYearTrends: comboDetail.oneYearTrends,
-    totalValue: comboDetail.totalValue,
-  }
+  return comboDetail.detail
 }
 
 export const createTraderEnv = async (

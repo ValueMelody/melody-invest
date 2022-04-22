@@ -25,11 +25,9 @@ export interface TopProfiles {
   [traderEnvId: number]: TopProfileIds
 }
 
-export interface ComboDetail {
+export interface ComboProfile {
   identity: interfaces.traderComboModel.Identity;
-  holdings?: interfaces.traderHoldingModel.Detail[];
-  oneYearTrends?: number[];
-  totalValue?: number | null;
+  detail?: interfaces.responses.ComboDetail
 }
 
 export interface Resources {
@@ -41,12 +39,12 @@ export interface Resources {
   };
   userTraderIds: number[] | null;
   userTraderEnvs: interfaces.traderEnvModel.Record[];
-  userTraderCombos: ComboDetail[];
+  comboProfiles: ComboProfile[];
   userType: number;
   userEmail: string,
 }
 
-export interface ProfileDetails {
+export interface TraderProfiles {
   [traderId: number]: {
     trader: interfaces.traderModel.Record;
     pattern: interfaces.traderPatternModel.Public;
@@ -82,8 +80,8 @@ export interface Context {
   showRequestError: (err: any) => void;
   resources: Resources;
   setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
-  profileDetails: ProfileDetails;
-  setProfileDetails: vendorTool.react.Dispatch<React.SetStateAction<ProfileDetails>>;
+  traderProfiles: TraderProfiles;
+  setTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TraderProfiles>>;
   behaviorDetails: BehaviorDetails;
   setBehaviorDetails: vendorTool.react.Dispatch<React.SetStateAction<BehaviorDetails>>;
   tickerDetails: TickerDetails;

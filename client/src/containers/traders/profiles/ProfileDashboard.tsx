@@ -31,10 +31,10 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { getUser } = useUserState()
-  const { getProfileDetail } = useTraderState()
+  const { getTraderProfile } = useTraderState()
 
   const user = getUser()
-  const combos = user.userTraderCombos
+  const combos = user.comboProfiles
   const userCombos = combos.filter((combo) => !combo.identity.isSystem)
 
   // ------------------------------------------------------------ Handler --
@@ -93,7 +93,7 @@ const ProfileDashboard = () => {
         {user.userTraderIds.map((traderId) => (
           <ProfileCard
             key={traderId}
-            profile={getProfileDetail(traderId)}
+            profile={getTraderProfile(traderId)}
             onClick={handleClickRow}
           />
         ))}

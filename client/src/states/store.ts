@@ -23,12 +23,12 @@ const useStore = () => {
     tickerCategories: {},
     userTraderIds: currentUserType ? null : [],
     userTraderEnvs: [],
-    userTraderCombos: [],
+    comboProfiles: [],
     userType: currentUserType,
     userEmail: '',
   })
 
-  const [profileDetails, setProfileDetails] = vendorTool.react.useState<context.ProfileDetails>({})
+  const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})
 
   const [behaviorDetails, setBehaviorDetails] = vendorTool.react.useState<context.BehaviorDetails>({})
 
@@ -98,8 +98,8 @@ const useStore = () => {
     showRequestError,
     resources,
     setResources,
-    profileDetails,
-    setProfileDetails,
+    traderProfiles,
+    setTraderProfiles,
     behaviorDetails,
     setBehaviorDetails,
     tickerDetails,
