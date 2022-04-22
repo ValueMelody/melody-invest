@@ -76,7 +76,7 @@ tradersRouter.get(
     const accessCode: string = req.params.access_code
     validateGetProfileParams(id, accessCode)
 
-    const auth: interfaces.reqs.Auth | null = req.body.auth
+    const auth: interfaces.request.Auth | null = req.body.auth
     const userId = auth?.id || null
     const userEnvIds = await crudTraders.getUserTraderEnvIds(userId)
 
@@ -89,7 +89,7 @@ tradersRouter.get('/combos/:id', authMiddleware.normalUser, async (req, res) => 
   const comboId = parseInt(req.params.id)
   validateGetComboParams(comboId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderCombo(auth.id, comboId)
 
   const comboDetail = await crudTraders.getComboDetail(comboId)
@@ -101,7 +101,7 @@ tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
 
   validateGetEnvParams(envId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
 
   const env = await crudTraders.getTraderEnv(auth.id, envId)
   return res.status(200).send(env)
@@ -111,7 +111,7 @@ tradersRouter.get('/envs/:id/tops', authMiddleware.normalUser, async (req, res) 
   const envId = parseInt(req.params.id)
   validateEnvId(envId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
   const tops = await crudTraders.getTopProfiles(envId)
@@ -124,7 +124,7 @@ tradersRouter.get('/envs/:env_id/behaviors/:behavior', authMiddleware.normalUser
   const behavior = req.params.behavior
   const matchedBahavior = validateBehavior(behavior)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
   const detail = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
@@ -137,7 +137,7 @@ tradersRouter.get('/envs/:env_id/tickers/:ticker_id', authMiddleware.normalUser,
   const tickerId = parseInt(req.params.ticker_id)
   validateTickerId(tickerId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
   const detail = await crudTraders.getTickerDetail(envId, tickerId)
@@ -151,7 +151,7 @@ tradersRouter.post('/profiles', authMiddleware.normalUser, async (req, res) => {
   const traderPattern = req.body.traderPattern
   validateCreateProfileParams(traderEnvId, traderPattern)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
 
   const trader = await crudTraders.createTraderProfile(auth.id, traderEnvId, traderPattern)
   return res.status(201).send(trader)
@@ -161,17 +161,17 @@ tradersRouter.post('/profiles/:trader_id', authMiddleware.normalUser, async (req
   const traderId = parseInt(req.params.trader_id)
   validateTraderId(traderId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.createFollowedTrader(auth.id, traderId)
   return res.status(201).send()
 })
 
 tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
-  const { name, startDate, tickerIds }: interfaces.reqs.TraderEnvCreation = req.body
+  const { name, startDate, tickerIds }: interfaces.request.TraderEnvCreation = req.body
   const parsedName = name?.trim()
   validateCreateEnvParams(parsedName, startDate, tickerIds)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
 
   const traderEnv = await crudTraders.createTraderEnv(
     auth.id, parsedName, startDate, tickerIds,
@@ -180,11 +180,11 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
 })
 
 tradersRouter.post('/combos', authMiddleware.normalUser, async (req, res) => {
-  const { name, traderEnvId, traderIds }: interfaces.reqs.TraderComboCreation = req.body
+  const { name, traderEnvId, traderIds }: interfaces.request.TraderComboCreation = req.body
   const parsedName = name?.trim()
   validateCreateComboParams(parsedName, traderEnvId, traderIds)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, traderEnvId)
 
   const traderCombo = await crudTraders.createTraderCombo(
@@ -199,7 +199,7 @@ tradersRouter.delete('/profiles/:trader_id', authMiddleware.normalUser, async (r
   const traderId = parseInt(req.params.trader_id)
   validateTraderId(traderId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.deleteFollowedProfile(auth.id, traderId)
   return res.status(204).send()
 })
@@ -208,7 +208,7 @@ tradersRouter.delete('/envs/:env_id', authMiddleware.normalUser, async (req, res
   const envId = parseInt(req.params.env_id)
   validateEnvId(envId)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.deleteFollowedEnv(auth.id, envId)
   return res.status(204).send()
 })

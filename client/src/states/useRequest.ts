@@ -12,7 +12,7 @@ const useRequest = () => {
   // ------------------------------------------------------------ store --
 
   const groupTraderProfilesForStore = (
-    traderProfiles: interfaces.responses.TraderProfile[],
+    traderProfiles: interfaces.response.TraderProfile[],
   ): TraderProfiles => {
     return traderProfiles.reduce((containedProfiles, traderProfile) => ({
       ...containedProfiles,
@@ -22,7 +22,7 @@ const useRequest = () => {
 
   const storeTopTraderProfiles = (
     envId: number,
-    topTraderProfiles: interfaces.responses.TopTraderProfiles,
+    topTraderProfiles: interfaces.response.TopTraderProfiles,
   ) => {
     const allTraderProfiles = [
       ...topTraderProfiles.yearly,
@@ -49,7 +49,7 @@ const useRequest = () => {
 
   const storeComboDetail = (
     id: number,
-    comboDetail: interfaces.responses.ComboDetail,
+    comboDetail: interfaces.response.ComboDetail,
   ) => {
     const traderProfiles = groupTraderProfilesForStore(comboDetail.profiles)
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
@@ -70,7 +70,7 @@ const useRequest = () => {
   }
 
   const storeSystemDefaults = (
-    systemDefaults: interfaces.responses.SystemDefaults,
+    systemDefaults: interfaces.response.SystemDefaults,
   ) => {
     const comboTraderProfiles = systemDefaults.comboProfiles.reduce((allTraderProfiles, combo) => {
       const traderProfiles = groupTraderProfilesForStore(combo.detail.profiles)

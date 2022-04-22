@@ -37,7 +37,7 @@ const buildComboDetail = async (
   traders: interfaces.traderModel.Record[],
 ): Promise<{
   traderIds: number[];
-  detail: interfaces.responses.ComboDetail;
+  detail: interfaces.response.ComboDetail;
 }> => {
   const relatedPatterns = await traderPatternModel.getPublicByTraders(traders)
   const profiles = traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns))

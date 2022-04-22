@@ -315,7 +315,7 @@ const useTraderState = () => {
   ) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs`
     store.startLoading()
-    const reqs: interfaces.reqs.TraderEnvCreation = {
+    const reqs: interfaces.request.TraderEnvCreation = {
       name, startDate, tickerIds,
     }
     try {
@@ -338,7 +338,7 @@ const useTraderState = () => {
   ) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos`
     store.startLoading()
-    const reqs: interfaces.reqs.TraderComboCreation = {
+    const reqs: interfaces.request.TraderComboCreation = {
       name, traderEnvId, traderIds,
     }
     try {

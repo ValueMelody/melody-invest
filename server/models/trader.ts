@@ -12,6 +12,7 @@ const convertToRecord = (
   ...raw,
   totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
   oneYearTrends: raw.oneYearTrends?.split(',').map((val) => parseInt(val)) || null,
+  oneDecadeTrends: raw.oneDecadeTrends?.split(',').map((val) => parseInt(val)) || null,
 })
 
 export const getByPK = async (

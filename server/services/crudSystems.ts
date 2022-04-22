@@ -11,7 +11,7 @@ import buildComboDetail from './shared/buildComboDetail'
 const getSystemTopTraderCombo = async (
   combo: interfaces.traderComboModel.Identity,
   total: number,
-): Promise<interfaces.responses.ComboProfile> => {
+): Promise<interfaces.response.ComboProfile> => {
   const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
   const comboDetail = await buildComboDetail(topTraders)
 
@@ -42,7 +42,7 @@ const SystemCombos: interfaces.traderComboModel.Identity[] = [
 ]
 
 const getSystemTraderCombos = async (): Promise<
-  interfaces.responses.ComboProfile[]
+  interfaces.response.ComboProfile[]
 > => {
   const comboProfiles = await runTool.asyncMap(SystemCombos, async (
     combo: interfaces.traderComboModel.Identity,
@@ -65,7 +65,7 @@ const getSystemTraderCombos = async (): Promise<
 }
 
 export const getDefaults = async (): Promise<
-  interfaces.responses.SystemDefaults
+  interfaces.response.SystemDefaults
 > => {
   const systemTraderEnvs = await traderEnvModel.getSystemDefined()
 

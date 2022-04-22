@@ -21,8 +21,8 @@ import * as dailyTickersModel from './models/dailyTickers'
 import * as userRes from './responses/user'
 import * as traderRes from './responses/trader'
 
-import * as responses from './responses'
-import * as reqs from './requests'
+import * as response from './response'
+import * as request from './request'
 import * as common from './common'
 
 export {
@@ -47,7 +47,7 @@ export {
   dailyTickersModel,
   userRes,
   traderRes,
-  responses,
-  reqs,
+  response,
+  request,
   common,
 }

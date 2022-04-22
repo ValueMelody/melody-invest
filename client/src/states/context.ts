@@ -27,7 +27,7 @@ export interface TopTraderProfiles {
 
 export interface ComboProfile {
   identity: interfaces.traderComboModel.Identity;
-  detail?: interfaces.responses.ComboDetail
+  detail?: interfaces.response.ComboDetail
 }
 
 export interface Resources {
