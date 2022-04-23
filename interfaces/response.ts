@@ -17,6 +17,11 @@ export interface ComboDetail {
   oneYearTrends: number[];
   oneDecadeTrends: number[];
   totalValue: number | null;
+  yearlyPercentNumber: number | null;
+  pastWeekPercentNumber: number | null;
+  pastMonthPercentNumber: number | null;
+  pastQuarterPercentNumber: number | null;
+  pastYearPercentNumber: number | null;
 }
 
 export interface ComboProfile {

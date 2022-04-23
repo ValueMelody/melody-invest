@@ -3,10 +3,9 @@ import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as vendorTool from '../../../tools/vendor'
 import PatternBehaviors from '../elements/PatternBehaviors'
-import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
+import ValueChangePanel from '../elements/ValueChangePanel'
 import WatchButton from '../elements/WatchButton'
 import ProfileLabel from '../elements/ProfileLabel'
-import HoldingStats from '../elements/HoldingStats'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
@@ -38,13 +37,11 @@ const useStyles = vendorTool.jss.createUseStyles((
 
 const TraderProfileCard = ({
   profile,
-  focusType,
   isActive,
   onClick,
   simple,
 }: {
   profile: interfaces.traderRes.TraderProfile | null;
-  focusType?: FocusType;
   isActive?: boolean,
   onClick?: (record: interfaces.traderModel.Record) => void;
   simple?: boolean;
@@ -132,16 +129,20 @@ const TraderProfileCard = ({
 
       <div className={classes.body}>
         <section className='row-around'>
-          <TraderPerformance trader={trader} focusType={focusType} />
-          {!simple && (
-            <HoldingStats
-              oneDecadeTrends={trader.oneDecadeTrends}
-              oneYearTrends={trader.oneYearTrends}
-              totalValue={trader.totalValue}
-              activeChartIndex={activeChartIndex}
-              onChangeChart={handleChangeChartIndex}
-            />
-          )}
+          <ValueChangePanel
+            yearlyPercentNumber={trader.yearlyPercentNumber}
+            pastYearPercentNumber={trader.pastYearPercentNumber}
+            pastQuarterPercentNumber={trader.pastQuarterPercentNumber}
+            pastMonthPercentNumber={trader.pastMonthPercentNumber}
+            pastWeekPercentNumber={trader.pastWeekPercentNumber}
+            oneDecadeTrends={trader.oneDecadeTrends}
+            oneYearTrends={trader.oneYearTrends}
+            totalValue={trader.totalValue}
+            activeChartIndex={activeChartIndex}
+            onChangeChart={handleChangeChartIndex}
+            showCharts={!simple}
+            showPercents
+          />
         </section>
         {!simple && (
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />

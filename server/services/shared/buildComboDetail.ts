@@ -19,20 +19,6 @@ const calHoldingValueByDate = async (
   return value
 }
 
-const calTrendValues = async (
-  dates: string[],
-  holdings: interfaces.traderHoldingModel.Detail[],
-) => {
-  const values = await runTool.asyncMap(
-    dates,
-    async (date: string) => await calHoldingValueByDate(date, holdings),
-  )
-  const trends = values
-    .filter((num) => num !== null)
-    .reverse()
-  return trends
-}
-
 const buildComboDetail = async (
   traders: interfaces.traderModel.Record[],
 ): Promise<{
@@ -58,20 +44,46 @@ const buildComboDetail = async (
   const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
 
   const latestDate = await dailyTickersModel.getLatestDate()
-  const prices = await tickerDailyModel.getNearestPricesByDate(latestDate)
-  const totalValue = sortedHoldings.length
-    ? holdingLogic.getHoldingTotalValue(sortedHoldings[0], prices)
-    : null
-
-  const twelveMonths = generateTool
-    .getNumbersInRange(1, 12)
-    .map((month) => dateTool.getPreviousDate(latestDate, month * 30))
-  const oneYearTrends = await calTrendValues(twelveMonths, sortedHoldings)
+  const totalValue = await calHoldingValueByDate(latestDate, sortedHoldings)
 
   const tenYears = generateTool
     .getNumbersInRange(1, 10)
     .map((year) => dateTool.getPreviousDate(latestDate, year * 365))
-  const oneDecadeTrends = await calTrendValues(tenYears, sortedHoldings)
+  const tenYearValues = await runTool.asyncMap(
+    tenYears,
+    async (date: string) => await calHoldingValueByDate(date, sortedHoldings),
+  )
+  const oneDecadeTrends = tenYearValues.filter((num) => num !== null).reverse()
+
+  const twelveMonths = generateTool
+    .getNumbersInRange(1, 12)
+    .map((month) => dateTool.getPreviousDate(latestDate, month * 30))
+  const twelveMonthValues = await runTool.asyncMap(
+    twelveMonths,
+    async (date: string) => await calHoldingValueByDate(date, sortedHoldings),
+  )
+
+  const pastWeekDate = dateTool.getPreviousDate(latestDate, 7)
+  const pastWeekValue = await calHoldingValueByDate(pastWeekDate, sortedHoldings)
+  const pastWeekPercentNumber = totalValue && pastWeekValue
+    ? generateTool.getChangePercent(totalValue, pastWeekValue)
+    : null
+  const pastMonthPercentNumber = totalValue && twelveMonthValues[0]
+    ? generateTool.getChangePercent(totalValue, twelveMonthValues[0])
+    : null
+  const pastQuarterPercentNumber = totalValue && twelveMonthValues[2]
+    ? generateTool.getChangePercent(totalValue, twelveMonthValues[2])
+    : null
+  const pastYearPercentNumber = totalValue && twelveMonthValues[11]
+    ? generateTool.getChangePercent(totalValue, twelveMonthValues[11])
+    : null
+
+  const oneYearTrends = twelveMonthValues.filter((num) => num !== null).reverse()
+
+  const initialValue = holdingLogic.getInitialCash() * traderIds.length
+  const grossPercent = totalValue ? generateTool.getChangePercent(totalValue, initialValue) : null
+  const totalDays = dateTool.getDurationCount(sortedHoldings[sortedHoldings.length - 1].date, latestDate)
+  const yearlyPercentNumber = grossPercent ? Math.floor(grossPercent * 365 / totalDays) : null
 
   return {
     traderIds,
@@ -81,6 +93,11 @@ const buildComboDetail = async (
       totalValue,
       oneYearTrends,
       oneDecadeTrends,
+      yearlyPercentNumber,
+      pastWeekPercentNumber,
+      pastMonthPercentNumber,
+      pastQuarterPercentNumber,
+      pastYearPercentNumber,
     },
   }
 }

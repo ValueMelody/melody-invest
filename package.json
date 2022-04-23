@@ -17,7 +17,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/byn9826/melody-app"
+    "url": "git+https://github.com/ValueMelody/melody-app"
   },
   "scripts": {
     "start": "npm run compile && concurrently \"npm run client:start\" \"npm run server:start\"",
@@ -45,9 +45,6 @@
     "database:restore": "pg_restore -d melody -U admin ~/Dropbox/Temp/melody.bak"
   },
   "devDependencies": {
-    "@types/crypto-js": "^4.0.2",
-    "@types/express": "^4.17.13",
-    "@types/ioredis": "^4.28.3",
     "@types/jest": "^27.4.1",
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.3.1",

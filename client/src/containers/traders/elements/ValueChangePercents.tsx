@@ -1,4 +1,3 @@
-import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
@@ -10,34 +9,34 @@ const useStyles = vendorTool.jss.createUseStyles((
   gainCell: {
     padding: '0.5rem !important',
   },
-  focusCell: {
-    border: `1px solid ${theme.PrimaryColor}`,
-  },
 }))
 
-const FOCUS_TYPE = {
-  YEARLY: 'YEARLY',
-  PAST_YEAR: 'PAST_YEAR',
-  PAST_QUARTER: 'PAST_QUARTER',
-  PAST_MONTH: 'PAST_MONTH',
-  PAST_WEEK: 'PAST_WEEK',
-}
-type FocusTypeKeys = keyof typeof FOCUS_TYPE
-export type FocusType = typeof FOCUS_TYPE[FocusTypeKeys]
-
-const TraderPerformance = ({
-  trader,
-  focusType,
+const ValueChangePercents = ({
+  yearlyPercentNumber,
+  pastYearPercentNumber,
+  pastQuarterPercentNumber,
+  pastMonthPercentNumber,
+  pastWeekPercentNumber,
 }: {
-  trader: interfaces.traderModel.Record;
-  focusType?: FocusType;
+  yearlyPercentNumber: number | null;
+  pastYearPercentNumber: number | null;
+  pastQuarterPercentNumber: number | null;
+  pastMonthPercentNumber: number | null;
+  pastWeekPercentNumber: number | null;
 }) => {
   const classes = useStyles()
   const gainCellClass = vendorTool.classNames('column-center', classes.gainCell)
 
+  const hasValue =
+    yearlyPercentNumber ||
+    pastYearPercentNumber ||
+    pastQuarterPercentNumber ||
+    pastMonthPercentNumber ||
+    pastWeekPercentNumber
+
   // ------------------------------------------------------------ UI --
 
-  if (!trader.estimatedAt) {
+  if (!hasValue) {
     return (
       <vendorTool.ui.Message compact>
         {localeTool.t('profile.noResultYet')}
@@ -47,68 +46,48 @@ const TraderPerformance = ({
 
   return (
     <vendorTool.ui.Menu compact>
-      <vendorTool.ui.Menu.Item
-        className={vendorTool.classNames(gainCellClass, {
-          [classes.focusCell]: focusType === FOCUS_TYPE.YEARLY,
-        })}
-      >
+      <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.yearly')}:
         </vendorTool.ui.Header>
         <vendorTool.ui.Header as='h5'>
-          {parseTool.dbPercentNumber(trader.yearlyPercentNumber)}
+          {parseTool.dbPercentNumber(yearlyPercentNumber)}
         </vendorTool.ui.Header>
       </vendorTool.ui.Menu.Item>
-      <vendorTool.ui.Menu.Item
-        className={vendorTool.classNames(gainCellClass, {
-          [classes.focusCell]: focusType === FOCUS_TYPE.PAST_YEAR,
-        })}
-      >
+      <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.pastYear')}:
         </vendorTool.ui.Header>
         <vendorTool.ui.Header as='h5'>
-          {parseTool.dbPercentNumber(trader.pastYearPercentNumber)}
+          {parseTool.dbPercentNumber(pastYearPercentNumber)}
         </vendorTool.ui.Header>
       </vendorTool.ui.Menu.Item>
-      <vendorTool.ui.Menu.Item
-        className={vendorTool.classNames(gainCellClass, {
-          [classes.focusCell]: focusType === FOCUS_TYPE.PAST_QUARTER,
-        })}
-      >
+      <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.pastQuarter')}:
         </vendorTool.ui.Header>
         <vendorTool.ui.Header as='h5'>
-          {parseTool.dbPercentNumber(trader.pastQuarterPercentNumber)}
+          {parseTool.dbPercentNumber(pastQuarterPercentNumber)}
         </vendorTool.ui.Header>
       </vendorTool.ui.Menu.Item>
-      <vendorTool.ui.Menu.Item
-        className={vendorTool.classNames(gainCellClass, {
-          [classes.focusCell]: focusType === FOCUS_TYPE.PAST_MONTH,
-        })}
-      >
+      <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.pastMonth')}:
         </vendorTool.ui.Header>
         <vendorTool.ui.Header as='h5'>
-          {parseTool.dbPercentNumber(trader.pastMonthPercentNumber)}
+          {parseTool.dbPercentNumber(pastMonthPercentNumber)}
         </vendorTool.ui.Header>
       </vendorTool.ui.Menu.Item>
-      <vendorTool.ui.Menu.Item
-        className={vendorTool.classNames(gainCellClass, {
-          [classes.focusCell]: focusType === FOCUS_TYPE.PAST_WEEK,
-        })}
-      >
+      <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.pastWeek')}:
         </vendorTool.ui.Header>
         <vendorTool.ui.Header as='h5'>
-          {parseTool.dbPercentNumber(trader.pastWeekPercentNumber)}
+          {parseTool.dbPercentNumber(pastWeekPercentNumber)}
         </vendorTool.ui.Header>
       </vendorTool.ui.Menu.Item>
     </vendorTool.ui.Menu>
   )
 }
 
-export default TraderPerformance
+export default ValueChangePercents

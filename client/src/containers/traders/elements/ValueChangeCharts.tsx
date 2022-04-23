@@ -9,7 +9,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
   },
 }))
 
-const HoldingStats = ({
+const ValueChangeCharts = ({
   oneDecadeTrends,
   oneYearTrends,
   totalValue,
@@ -31,7 +31,7 @@ const HoldingStats = ({
   const decadeTrends = parseTool.chartTrends(oneDecadeTrends, totalValue)
   const yearTrends = parseTool.chartTrends(oneYearTrends, totalValue)
 
-  // ------------------------------------------------------------ State --
+  // ------------------------------------------------------------ Handler --
 
   const handleClickDecadeChart = (e: vendorTool.react.SyntheticEvent) => {
     e.stopPropagation()
@@ -72,4 +72,4 @@ const HoldingStats = ({
   )
 }
 
-export default HoldingStats
+export default ValueChangeCharts

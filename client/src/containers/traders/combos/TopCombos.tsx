@@ -10,7 +10,7 @@ import TraderComboCard from '../elements/TraderComboCard'
 import ComboProfiles from '../elements/ComboProfiles'
 import ProfileValue from '../elements/ProfileValue'
 import HoldingCard from '../blocks/HoldingCard'
-import HoldingStats from '../elements/HoldingStats'
+import ValueChangePanel from '../elements/ValueChangePanel'
 import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
 
@@ -95,12 +95,19 @@ const TopCombos = () => {
       </header>
       <section className={pageClasses.root}>
         <section className={pageClasses.main}>
-          <HoldingStats
+          <ValueChangePanel
+            yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
+            pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
+            pastQuarterPercentNumber={focusedCombo?.detail?.pastQuarterPercentNumber || null}
+            pastMonthPercentNumber={focusedCombo?.detail?.pastMonthPercentNumber || null}
+            pastWeekPercentNumber={focusedCombo?.detail?.pastWeekPercentNumber || null}
             oneDecadeTrends={focusedCombo?.detail?.oneDecadeTrends || null}
             oneYearTrends={focusedCombo?.detail?.oneYearTrends || null}
             totalValue={focusedCombo?.detail?.totalValue || null}
             activeChartIndex={activeChartIndex}
             onChangeChart={handleChangeChartIndex}
+            showPercents
+            showCharts
           />
           <vendorTool.ui.Header
             as='h3'
