@@ -4,7 +4,7 @@ import * as traderLogic from '../../logics/trader'
 
 const buildTopTraderProfiles = async (
   tops: interfaces.traderModel.Tops,
-): Promise<interfaces.traderRes.TopProfiles> => {
+): Promise<interfaces.response.TopTraderProfiles> => {
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
   return {

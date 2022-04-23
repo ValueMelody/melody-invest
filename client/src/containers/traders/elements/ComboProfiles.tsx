@@ -6,7 +6,7 @@ import * as localeTool from '../../../tools/locale'
 import TraderProfileCard from '../blocks/TraderProfileCard'
 
 interface ProfileWithEnv {
-  profile: interfaces.traderRes.TraderProfile | null;
+  profile: interfaces.response.TraderProfile | null;
   env: interfaces.traderEnvModel.Record | null;
 }
 

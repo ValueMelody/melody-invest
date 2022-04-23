@@ -22,7 +22,7 @@ const useUserState = () => {
 
   // ------------------------------------------------------------ store --
 
-  const storeUserToken = (userToken: interfaces.userRes.UserToken) => {
+  const storeUserToken = (userToken: interfaces.response.UserToken) => {
     const { jwtToken, userType } = userToken
     requestAdapter.setJWTToken(jwtToken)
     storageAdapter.set(storageAdapter.Key.JWTToken, jwtToken)
@@ -30,7 +30,7 @@ const useUserState = () => {
     store.loadUserType(userType)
   }
 
-  const storeUserOverall = (overall: interfaces.userRes.UserOverall) => {
+  const storeUserOverall = (overall: interfaces.response.UserOverall) => {
     const {
       traderProfiles: profiles,
       traderEnvs: envs,
