@@ -302,6 +302,10 @@ export type CompareSellBehavior =
   'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
   'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
 
+export type MovementBehavior = MovementBuyBehavior | MovementSellBehavior
+
+export type CompareBehavior = CompareBuyBehavior | CompareSellBehavior
+
 export type SellBehavior = MovementSellBehavior | CompareSellBehavior
 
 export type preferenceBehavior = 'buyPreference' | 'sellPreference'
