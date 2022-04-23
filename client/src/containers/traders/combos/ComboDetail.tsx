@@ -12,7 +12,7 @@ import usePageStyles from '../../hooks/usePageStyles'
 import useShowMore from '../../hooks/useShowMore'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import HoldingCard from '../blocks/HoldingCard'
-import HoldingStats from '../elements/HoldingStats'
+import ValueChangePanel from '../elements/ValueChangePanel'
 import ComboProfiles from '../elements/ComboProfiles'
 import TraderComboCard from '../elements/TraderComboCard'
 import ProfileValue from '../elements/ProfileValue'
@@ -43,7 +43,7 @@ const ComboDetail = () => {
   // ------------------------------------------------------------ State --
 
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const chartIndex = getActiveChartIndex()
+  const activeChartIndex = getActiveChartIndex()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -125,12 +125,19 @@ const ComboDetail = () => {
         />
       </aside>
       <section className={pageClasses.main}>
-        <HoldingStats
+        <ValueChangePanel
+          yearlyPercentNumber={matchedCombo?.detail?.yearlyPercentNumber || null}
+          pastYearPercentNumber={matchedCombo?.detail?.pastYearPercentNumber || null}
+          pastQuarterPercentNumber={matchedCombo?.detail?.pastQuarterPercentNumber || null}
+          pastMonthPercentNumber={matchedCombo?.detail?.pastMonthPercentNumber || null}
+          pastWeekPercentNumber={matchedCombo?.detail?.pastWeekPercentNumber || null}
           oneDecadeTrends={matchedCombo?.detail?.oneDecadeTrends || null}
           oneYearTrends={matchedCombo?.detail?.oneYearTrends || null}
           totalValue={matchedCombo?.detail?.totalValue || null}
-          activeChartIndex={chartIndex}
+          activeChartIndex={activeChartIndex}
           onChangeChart={handleChangeChartIndex}
+          showPercents
+          showCharts
         />
         <vendorTool.ui.Header
           as='h3'

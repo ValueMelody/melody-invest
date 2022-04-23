@@ -76,7 +76,6 @@ const TopProfiles = () => {
               <TraderProfileCard
                 profile={getTraderProfile(traderId)}
                 onClick={handleClickProfile}
-                focusType={focusType}
               />
             </div>
           ))}
