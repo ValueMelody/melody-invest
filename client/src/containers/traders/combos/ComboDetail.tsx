@@ -5,13 +5,14 @@ import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import * as themeEnum from '../../../enums/theme'
 import useRequest from '../../../states/useRequest'
+import useCommonState from '../../../states/useCommonState'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 import useShowMore from '../../hooks/useShowMore'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import HoldingCard from '../blocks/HoldingCard'
-import ComboStats from '../blocks/ComboStats'
+import HoldingStats from '../elements/HoldingStats'
 import ComboProfiles from '../elements/ComboProfiles'
 import TraderComboCard from '../elements/TraderComboCard'
 import ProfileValue from '../elements/ProfileValue'
@@ -41,11 +42,13 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { displayedTotal, renderShowMoreButton } = useShowMore()
+  const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
+  const chartIndex = getActiveChartIndex()
 
   const { getUser } = useUserState()
   const user = getUser()
 
+  const { displayedTotal, renderShowMoreButton } = useShowMore()
   const { getTraderProfile } = useTraderState()
   const { fetchComboDetail } = useRequest()
 
@@ -74,6 +77,10 @@ const ComboDetail = () => {
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
+  }
+
+  const handleChangeChartIndex = (index: number) => {
+    setActiveChartIndex(index)
   }
 
   // ------------------------------------------------------------ UI --
@@ -118,7 +125,13 @@ const ComboDetail = () => {
         />
       </aside>
       <section className={pageClasses.main}>
-        <ComboStats combo={matchedCombo} />
+        <HoldingStats
+          oneDecadeTrends={matchedCombo?.detail?.oneDecadeTrends || null}
+          oneYearTrends={matchedCombo?.detail?.oneYearTrends || null}
+          totalValue={matchedCombo?.detail?.totalValue || null}
+          activeChartIndex={chartIndex}
+          onChangeChart={handleChangeChartIndex}
+        />
         <vendorTool.ui.Header
           as='h3'
           icon='history'

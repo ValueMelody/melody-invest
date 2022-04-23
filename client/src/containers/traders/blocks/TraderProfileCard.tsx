@@ -2,12 +2,11 @@ import * as interfaces from '@shared/interfaces'
 import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as vendorTool from '../../../tools/vendor'
-import * as parseTool from '../../../tools/parse'
 import PatternBehaviors from '../elements/PatternBehaviors'
 import TraderPerformance, { FocusType } from '../elements/TraderPerformance'
 import WatchButton from '../elements/WatchButton'
-import TrendChart from '../elements/TrendChart'
 import ProfileLabel from '../elements/ProfileLabel'
+import HoldingStats from '../elements/HoldingStats'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
@@ -37,7 +36,7 @@ const useStyles = vendorTool.jss.createUseStyles((
   },
 }))
 
-const ProfileCard = ({
+const TraderProfileCard = ({
   profile,
   focusType,
   isActive,
@@ -55,10 +54,12 @@ const ProfileCard = ({
   // ------------------------------------------------------------ State --
 
   const { getUser } = useUserState()
-  const { createWatchedProfile, deleteWatchedProfile } = useTraderState()
-  const { addMessage } = useCommonState()
-
   const user = getUser()
+
+  const { createWatchedProfile, deleteWatchedProfile } = useTraderState()
+
+  const { addMessage, getActiveChartIndex, setActiveChartIndex } = useCommonState()
+  const activeChartIndex = getActiveChartIndex()
 
   const trader = profile?.trader || null
   const pattern = profile?.pattern || null
@@ -67,10 +68,6 @@ const ProfileCard = ({
 
   const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
-
-  const trendData = trader
-    ? parseTool.chartTrends(trader.oneYearTrends, trader.totalValue)
-    : []
 
   // ------------------------------------------------------------ Handler --
 
@@ -93,6 +90,10 @@ const ProfileCard = ({
     } else {
       createWatchedProfile(trader.id)
     }
+  }
+
+  const handleChangeChartIndex = (index: number) => {
+    setActiveChartIndex(index)
   }
 
   // ------------------------------------------------------------ UI --
@@ -133,9 +134,12 @@ const ProfileCard = ({
         <section className='row-around'>
           <TraderPerformance trader={trader} focusType={focusType} />
           {!simple && (
-            <TrendChart
-              data={trendData}
-              title={`${localeTool.t('common.daysTrends', { num: 30 * (trendData.length - 1) })}`}
+            <HoldingStats
+              oneDecadeTrends={trader.oneDecadeTrends}
+              oneYearTrends={trader.oneYearTrends}
+              totalValue={trader.totalValue}
+              activeChartIndex={activeChartIndex}
+              onChangeChart={handleChangeChartIndex}
             />
           )}
         </section>
@@ -147,4 +151,4 @@ const ProfileCard = ({
   )
 }
 
-export default ProfileCard
+export default TraderProfileCard

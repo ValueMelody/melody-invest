@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import ProfileCard from './ProfileCard'
+import TraderProfileCard from './TraderProfileCard'
 import useTraderState from '../../../states/useTraderState'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
@@ -62,7 +62,7 @@ const EachTops = ({
         <h4 className={classes.subTitle}>
           {localeTool.t('bestReturn.yearlyTitle')}:
         </h4>
-        <ProfileCard
+        <TraderProfileCard
           profile={getTraderProfile(bestOverall)}
           onClick={handleClickCard}
         />
@@ -71,7 +71,7 @@ const EachTops = ({
         <h4 className={classes.subTitle}>
           {localeTool.t('bestReturn.pastYearTitle')}:
         </h4>
-        <ProfileCard
+        <TraderProfileCard
           profile={getTraderProfile(bestPastYear)}
           onClick={handleClickCard}
         />
@@ -80,7 +80,7 @@ const EachTops = ({
         <h4 className={classes.subTitle}>
           {localeTool.t('bestReturn.pastQuarterTitle')}:
         </h4>
-        <ProfileCard
+        <TraderProfileCard
           profile={getTraderProfile(bestPastQuarter)}
           onClick={handleClickCard}
         />
@@ -89,7 +89,7 @@ const EachTops = ({
         <h4 className={classes.subTitle}>
           {localeTool.t('bestReturn.pastMonthTitle')}:
         </h4>
-        <ProfileCard
+        <TraderProfileCard
           profile={getTraderProfile(bestPastMonth)}
           onClick={handleClickCard}
         />
@@ -98,7 +98,7 @@ const EachTops = ({
         <h4 className={classes.subTitle}>
           {localeTool.t('bestReturn.pastWeekTitle')}:
         </h4>
-        <ProfileCard
+        <TraderProfileCard
           profile={getTraderProfile(bestPastWeek)}
           onClick={handleClickCard}
         />

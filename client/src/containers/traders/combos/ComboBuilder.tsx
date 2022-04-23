@@ -7,7 +7,7 @@ import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import RequiredLabel from '../../elements/RequiredLabel'
-import ProfileCard from '../blocks/ProfileCard'
+import TraderProfileCard from '../blocks/TraderProfileCard'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
@@ -113,7 +113,7 @@ const ComboBuilder = () => {
       )}
       <section className='row-around'>
         {filteredProfiles.map((profile) => (
-          <ProfileCard
+          <TraderProfileCard
             key={profile?.trader.id}
             profile={profile}
             isActive={selectedTraderIds.some((id) => id === profile?.trader.id)}

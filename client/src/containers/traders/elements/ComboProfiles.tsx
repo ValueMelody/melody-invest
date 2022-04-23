@@ -3,7 +3,7 @@ import WeightChart from './WeightChart'
 import * as parseTool from '../../../tools/parse'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
-import ProfileCard from '../blocks/ProfileCard'
+import TraderProfileCard from '../blocks/TraderProfileCard'
 
 interface ProfileWithEnv {
   profile: interfaces.traderRes.TraderProfile | null;
@@ -58,7 +58,7 @@ const ComboProfiles = ({
         data={chartData}
       />
       <section className='column-start'>
-        <ProfileCard
+        <TraderProfileCard
           profile={profilesWithEnvs[activeIndex].profile}
           onClick={handleClickProfile}
         />

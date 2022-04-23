@@ -6,7 +6,7 @@ const TrendChart = ({
   title,
 }: {
   data: interfaces.common.Option[];
-  title: string;
+  title?: string;
 }) => {
   // ------------------------------------------------------------ UI --
 
@@ -18,7 +18,7 @@ const TrendChart = ({
     }, { min: data[0].value, max: data[0].value })
     : null
 
-  if (!data.length || !stats) return null
+  if (data.length <= 1 || !stats) return null
 
   return (
     <vendorTool.chart.AreaChart
@@ -41,14 +41,16 @@ const TrendChart = ({
         width={0}
       />
 
-      <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
-        <vendorTool.chart.Label
-          orientation='bottom'
-          value={title}
-          offset={0}
-          position='insideBottomRight'
-        />
-      </vendorTool.chart.XAxis>
+      {title && (
+        <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
+          <vendorTool.chart.Label
+            orientation='bottom'
+            value={title}
+            offset={0}
+            position='insideBottomRight'
+          />
+        </vendorTool.chart.XAxis>
+      )}
     </vendorTool.chart.AreaChart>
   )
 }

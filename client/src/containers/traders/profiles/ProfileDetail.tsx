@@ -4,7 +4,7 @@ import useUserState from '../../../states/useUserState'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import ProfileCard from '../blocks/ProfileCard'
+import TraderProfileCard from '../blocks/TraderProfileCard'
 import HoldingCard from '../blocks/HoldingCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import useShowMore from '../../hooks/useShowMore'
@@ -84,7 +84,7 @@ const ProfileDetail = () => {
   return (
     <div className={vendorTool.classNames('row-between', classes.container)}>
       <div className={classes.left}>
-        <ProfileCard
+        <TraderProfileCard
           profile={profileDetail}
         />
         <div className={classes.envContainer}>

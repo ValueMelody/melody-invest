@@ -11,6 +11,7 @@ export interface Message {
 export interface Common {
   isLoading: boolean;
   messages: Message[];
+  activeChartIndex: number;
 }
 
 interface TopTraderProfileIds {
@@ -71,6 +72,7 @@ export interface TickerDetails {
 
 export interface Context {
   common: Common;
+  setCommon: vendorTool.react.Dispatch<React.SetStateAction<Common>>;
   startLoading: () => void;
   stopLoading: () => void;
   loadUserType: (type: number) => void;

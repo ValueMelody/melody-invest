@@ -1,5 +1,6 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
+import useCommonState from '../../../states/useCommonState'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import * as vendorTool from '../../../tools/vendor'
@@ -9,7 +10,7 @@ import TraderComboCard from '../elements/TraderComboCard'
 import ComboProfiles from '../elements/ComboProfiles'
 import ProfileValue from '../elements/ProfileValue'
 import HoldingCard from '../blocks/HoldingCard'
-import ComboStats from '../blocks/ComboStats'
+import HoldingStats from '../elements/HoldingStats'
 import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
 
@@ -39,8 +40,13 @@ const TopCombos = () => {
 
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
   const { getTraderProfile } = useTraderState()
+
+  const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
+  const activeChartIndex = getActiveChartIndex()
+
   const { getUser } = useUserState()
   const user = getUser()
+
   const systemCombos = user.comboProfiles.filter((combo) => combo.identity.isSystem)
   const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
 
@@ -61,6 +67,10 @@ const TopCombos = () => {
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
+  }
+
+  const handleChangeChartIndex = (index: number) => {
+    setActiveChartIndex(index)
   }
 
   // ------------------------------------------------------------ UI --
@@ -85,7 +95,13 @@ const TopCombos = () => {
       </header>
       <section className={pageClasses.root}>
         <section className={pageClasses.main}>
-          <ComboStats combo={focusedCombo} />
+          <HoldingStats
+            oneDecadeTrends={focusedCombo?.detail?.oneDecadeTrends || null}
+            oneYearTrends={focusedCombo?.detail?.oneYearTrends || null}
+            totalValue={focusedCombo?.detail?.totalValue || null}
+            activeChartIndex={activeChartIndex}
+            onChangeChart={handleChangeChartIndex}
+          />
           <vendorTool.ui.Header
             as='h3'
             icon='history'
