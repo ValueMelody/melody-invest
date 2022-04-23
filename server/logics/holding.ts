@@ -1,5 +1,4 @@
 import * as interfaces from '@shared/interfaces'
-import * as constants from '@shared/constants'
 
 interface HoldingDetails {
   totalCash: number,

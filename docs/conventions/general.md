@@ -21,7 +21,7 @@ console.info(`Checking something`)
 console.log(`Checking something`)
 ```
 
-## direct export while declare function/variable
+## direct export while declare function/variable (Exclude internel shared modules and React components)
 
 ```
 // Good
@@ -32,6 +32,20 @@ const doingSomthing = () => {}
 exports {
   doingSomething
 }
+```
+
+## use default export for internal shared modules and React components
+
+```
+// Good
+const ReactComponent = () => { return <div /> }
+export default ReactComponent
+const sharedServiceFunction = () => {}
+export default sharedServiceFunction
+
+// Bad
+export const ReactComponent = () => { return <div /> }
+export const sharedServiceFunction = () => {}
 ```
 
 ## use import * as filenameTypeName
