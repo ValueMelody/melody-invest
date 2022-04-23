@@ -1,0 +1,14 @@
+{
+  "name": "Value Melody",
+  "short_name": "Value Melody",
+  "background_color": "#ffffff",
+  "theme_color": "#2185d0",
+  "description": "Explore trading strategies by AI",
+  "icons": [{
+    "src": "favicon.png",
+    "sizes": "32x32",
+    "type": "image/png"
+  }],
+  "start_url": "/",
+  "display": "standalone"
+}
