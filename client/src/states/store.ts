@@ -16,6 +16,7 @@ const useStore = () => {
   const [common, setCommon] = vendorTool.react.useState<context.Common>({
     isLoading: false,
     messages: [],
+    activeChartIndex: 0,
   })
 
   const [resources, setResources] = vendorTool.react.useState<context.Resources>({
@@ -89,6 +90,7 @@ const useStore = () => {
 
   return {
     common,
+    setCommon,
     loadUserType,
     startLoading,
     stopLoading,

@@ -6,7 +6,7 @@ import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import usePageStyles from '../../hooks/usePageStyles'
-import ProfileCard from '../blocks/ProfileCard'
+import TraderProfileCard from '../blocks/TraderProfileCard'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import TraderComboCard from '../elements/TraderComboCard'
 
@@ -91,7 +91,7 @@ const ProfileDashboard = () => {
           </vendorTool.ui.Button>
         </header>
         {user.userTraderIds.map((traderId) => (
-          <ProfileCard
+          <TraderProfileCard
             key={traderId}
             profile={getTraderProfile(traderId)}
             onClick={handleClickRow}

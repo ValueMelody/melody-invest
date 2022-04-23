@@ -201,7 +201,7 @@ export const getTraderEnv = async (
 
 export const getComboDetail = async (
   comboId: number,
-): Promise<interfaces.responses.ComboDetail> => {
+): Promise<interfaces.response.ComboDetail> => {
   const combo = await traderComboModel.getByPK(comboId)
   if (!combo) throw errorEnum.Default.NotFound
 

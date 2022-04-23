@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express'
 import * as errorEnum from '../enums/error'
 import * as generateTool from '../tools/generate'
 
-const getAuth = (req: Request): interfaces.reqs.Auth | null => {
+const getAuth = (req: Request): interfaces.request.Auth | null => {
   const authHeader = req.headers.authorization
   const token = authHeader && authHeader.split(' ')[1]
   if (!token) return null

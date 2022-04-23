@@ -45,6 +45,16 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
   }
 }
 
+const calcHoldingValueByDate = async (
+  traderId: number,
+  date: string,
+): Promise<number | null> => {
+  const prices = await tickerDailyModel.getNearestPricesByDate(date)
+  const holding = await traderHoldingModel.getLatestByDate(traderId, date)
+  const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
+  return value
+}
+
 const calcTraderPerformance = async (
   targetTrader: interfaces.traderModel.Record,
   forceRecheck: boolean,
@@ -210,9 +220,7 @@ const calcTraderPerformance = async (
     const twelveMonths = generateTool.getNumbersInRange(1, 12)
     const pastMonthValues = await runTool.asyncMap(twelveMonths, async (month: number) => {
       const date = dateTool.getPreviousDate(latestDate, month * 30)
-      const prices = await tickerDailyModel.getNearestPricesByDate(date)
-      const holding = await traderHoldingModel.getLatestByDate(trader.id, date)
-      const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
+      const value = await calcHoldingValueByDate(trader.id, date)
       return value
     })
 
@@ -229,10 +237,15 @@ const calcTraderPerformance = async (
       ? generateTool.getChangePercent(totalValue, pastMonthValues[11])
       : null
 
-    const oneYearTrends = pastMonthValues
-      .filter((num) => num !== null)
-      .reverse()
-      .join(',')
+    const oneYearTrends = pastMonthValues.filter((num) => num !== null).reverse().join(',')
+
+    const tenYears = generateTool.getNumbersInRange(1, 10)
+    const tenYearValues = await runTool.asyncMap(tenYears, async (year: number) => {
+      const date = dateTool.getPreviousDate(latestDate, year * 365)
+      const value = await calcHoldingValueByDate(trader.id, date)
+      return value
+    })
+    const oneDecadeTrends = tenYearValues.filter((num) => num !== null).reverse().join(',')
 
     await traderModel.update(trader.id, {
       totalValue,
@@ -247,6 +260,7 @@ const calcTraderPerformance = async (
       pastMonthPercentNumber,
       pastWeekPercentNumber,
       oneYearTrends,
+      oneDecadeTrends,
     }, traderTransaction)
 
     await traderTransaction.commit()

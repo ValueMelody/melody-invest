@@ -5,7 +5,7 @@ import * as commonEnum from '../../../enums/common'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import ProfileCard from '../blocks/ProfileCard'
+import TraderProfileCard from '../blocks/TraderProfileCard'
 import VariationList from '../elements/VariationList'
 
 const TopProfiles = () => {
@@ -73,7 +73,7 @@ const TopProfiles = () => {
         <section className='row-start'>
           {focusedTop.traders.map((traderId) => (
             <div key={traderId}>
-              <ProfileCard
+              <TraderProfileCard
                 profile={getTraderProfile(traderId)}
                 onClick={handleClickProfile}
                 focusType={focusType}

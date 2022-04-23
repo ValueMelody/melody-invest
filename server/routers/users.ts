@@ -25,7 +25,7 @@ const validatePassword = (password: string) => {
 // ------------------------------------------------------------ Get --
 
 usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   const overall = await crudUsers.getUserOverall(auth.id)
   return res.status(200).send(overall)
 })
@@ -66,7 +66,7 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
   validatePassword(currentPassword)
   validatePassword(newPassword)
 
-  const auth: interfaces.reqs.Auth = req.body.auth
+  const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.updatePassword(auth.id, currentPassword, newPassword)
   return res.status(204).send()
 })

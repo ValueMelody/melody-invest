@@ -18,6 +18,7 @@ exports.up = (knex) => {
       table.integer('pastMonthPercentNumber')
       table.integer('pastWeekPercentNumber')
       table.string('oneYearTrends', 160)
+      table.string('oneDecadeTrends', 160)
       table.unique(['traderEnvId', 'traderPatternId'], 'trader_ukey')
       table.foreign('traderEnvId').references('id').inTable('trader_env')
       table.foreign('traderPatternId').references('id').inTable('trader_pattern')
