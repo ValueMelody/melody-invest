@@ -1,5 +1,4 @@
 import * as interfaces from '@shared/interfaces'
-import * as constants from '@shared/constants'
 
 interface HoldingDetails {
   totalCash: number,
@@ -17,8 +16,4 @@ export const getHoldingTotalValue = (
     return total + matchedPrice * holding.shares
   }, holdingDetails.totalCash)
   return Math.floor(totalValue)
-}
-
-export const getInitialCash = (): number => {
-  return constants.Trader.Initial.Cash
 }

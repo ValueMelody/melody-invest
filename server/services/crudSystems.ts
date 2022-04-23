@@ -1,26 +1,48 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as errorEnum from '../enums/error'
 import * as tickerModel from '../models/ticker'
 import * as tickerCategoryModel from '../models/tickerCategory'
 import * as traderModel from '../models/trader'
+import * as dailyTickersModel from '../models/dailyTickers'
 import * as traderEnvModel from '../models/traderEnv'
 import * as runTool from '../tools/run'
 import buildTopTraderProfiles from './shared/buildTopTraderProfiles'
-import buildComboDetail from './shared/buildComboDetail'
+import buildHoldingValueStats from './shared/buildHoldingValueStats'
+import buildComboEntities from './shared/buildComboEntities'
 
 const getSystemTopTraderCombo = async (
   combo: interfaces.traderComboModel.Identity,
   total: number,
 ): Promise<interfaces.response.ComboProfile> => {
   const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
-  const comboDetail = await buildComboDetail(topTraders)
+  const { traderProfiles, holdings } = await buildComboEntities(topTraders)
+  const latestDate = await dailyTickersModel.getLatestDate()
+  const startDate = holdings.length ? holdings[holdings.length - 1].date : latestDate
+  const stats = await buildHoldingValueStats(
+    startDate,
+    latestDate,
+    constants.Trader.Initial.Cash * topTraders.length,
+    holdings,
+  )
 
   return {
     identity: {
       ...combo,
-      traderIds: comboDetail.traderIds,
+      traderIds: topTraders.map((trader) => trader.id),
     },
-    detail: comboDetail.detail,
+    detail: {
+      profiles: traderProfiles,
+      holdings: holdings.slice(0, 20),
+      oneYearTrends: stats.oneYearTrends,
+      oneDecadeTrends: stats.oneDecadeTrends,
+      totalValue: stats.totalValue,
+      yearlyPercentNumber: stats.yearlyPercentNumber,
+      pastWeekPercentNumber: stats.pastWeekPercentNumber,
+      pastMonthPercentNumber: stats.pastMonthPercentNumber,
+      pastQuarterPercentNumber: stats.pastQuarterPercentNumber,
+      pastYearPercentNumber: stats.pastYearPercentNumber,
+    },
   }
 }
 
