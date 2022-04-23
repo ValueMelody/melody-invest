@@ -87,3 +87,19 @@ enum BASE_KEY {
   TICKER_PRICES = 'tickerPrices',
 }
 ```
+
+## Wrap test cases inside describ
+
+```
+// Good
+describe('#functionName', () => {
+  test('could do somthing', () => {
+    expect(functionName()).toBeTruthy()
+  }
+})
+
+// Bad
+test('could do somthing', () => {
+  expect(functionName()).toBeTruthy()
+}
+```

@@ -28,7 +28,7 @@ export const Preference = Object.freeze({
 const ContinuousMovement = [1, 2, 3, 5]
 const PercentChange = [-5, -3, -2, -1, 1, 2, 3, 5]
 
-export const options = {
+export const Options = {
   priceDailyIncreaseBuy: [...ContinuousMovement],
   priceDailyIncreaseSell: [...ContinuousMovement],
   priceDailyDecreaseBuy: [...ContinuousMovement],

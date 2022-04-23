@@ -209,12 +209,12 @@ export const generatePatternChild = (
   })
 
   if (shouldMutate) {
-    const potentialKeys = Object.keys(constants.BehaviorValue.options) as Array<
-      keyof typeof constants.BehaviorValue.options
+    const potentialKeys = Object.keys(constants.BehaviorValue.Options) as Array<
+      keyof typeof constants.BehaviorValue.Options
     >
     const keyIndex = generateTool.pickNumberInRange(0, potentialKeys.length - 1)
     const behaviorKey = potentialKeys[keyIndex]
-    const potentialValues = constants.BehaviorValue.options[behaviorKey]
+    const potentialValues = constants.BehaviorValue.Options[behaviorKey]
     const valueIndex = generateTool.pickNumberInRange(0, potentialValues.length - 1)
     const behaviorValue = potentialValues[valueIndex]
     newChild[behaviorKey] = behaviorValue

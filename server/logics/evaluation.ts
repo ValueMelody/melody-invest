@@ -46,9 +46,55 @@ export const getTickerPreferValue = (
   }
 }
 
-const SELL_MOVEMENT_TRIGGERS: {
-  [key in interfaces.traderPatternModel.MovementSellBehavior]: interfaces.dailyTickersModel.MovementKey
+export const MovementTriggers: {
+  [key in interfaces.traderPatternModel.MovementBehavior]: interfaces.dailyTickersModel.MovementKey
 } = {
+  priceDailyIncreaseBuy: 'priceDailyIncrease',
+  priceDailyDecreaseBuy: 'priceDailyDecrease',
+  priceWeeklyIncreaseBuy: 'priceWeeklyIncrease',
+  priceWeeklyDecreaseBuy: 'priceWeeklyDecrease',
+  priceMonthlyIncreaseBuy: 'priceMonthlyIncrease',
+  priceMonthlyDecreaseBuy: 'priceMonthlyDecrease',
+  priceQuarterlyIncreaseBuy: 'priceQuarterlyIncrease',
+  priceQuarterlyDecreaseBuy: 'priceQuarterlyDecrease',
+  priceYearlyIncreaseBuy: 'priceYearlyIncrease',
+  priceYearlyDecreaseBuy: 'priceYearlyDecrease',
+  epsQuarterlyBeatBuy: 'epsQuarterlyBeat',
+  epsQuarterlyMissBuy: 'epsQuarterlyMiss',
+  profitQuarterlyIncreaseBuy: 'profitQuarterlyIncrease',
+  profitQuarterlyDecreaseBuy: 'profitQuarterlyDecrease',
+  incomeQuarterlyIncreaseBuy: 'incomeQuarterlyIncrease',
+  incomeQuarterlyDecreaseBuy: 'incomeQuarterlyDecrease',
+  revenueQuarterlyIncreaseBuy: 'revenueQuarterlyIncrease',
+  revenueQuarterlyDecreaseBuy: 'revenueQuarterlyDecrease',
+  profitYearlyIncreaseBuy: 'profitYearlyIncrease',
+  profitYearlyDecreaseBuy: 'profitYearlyDecrease',
+  incomeYearlyIncreaseBuy: 'incomeYearlyIncrease',
+  incomeYearlyDecreaseBuy: 'incomeYearlyDecrease',
+  revenueYearlyIncreaseBuy: 'revenueYearlyIncrease',
+  revenueYearlyDecreaseBuy: 'revenueYearlyDecrease',
+  inflationYearlyIncreaseBuy: 'inflationYearlyIncrease',
+  inflationYearlyDecreaseBuy: 'inflationYearlyDecrease',
+  fundsRateMonthlyIncreaseBuy: 'fundsRateMonthlyIncrease',
+  fundsRateMonthlyDecreaseBuy: 'fundsRateMonthlyDecrease',
+  thirtyYearsTreasuryMonthlyIncreaseBuy: 'thirtyYearsTreasuryMonthlyIncrease',
+  thirtyYearsTreasuryMonthlyDecreaseBuy: 'thirtyYearsTreasuryMonthlyDecrease',
+  tenYearsTreasuryMonthlyIncreaseBuy: 'tenYearsTreasuryMonthlyIncrease',
+  tenYearsTreasuryMonthlyDecreaseBuy: 'tenYearsTreasuryMonthlyDecrease',
+  inflationMonthlyIncreaseBuy: 'inflationMonthlyIncrease',
+  inflationMonthlyDecreaseBuy: 'inflationMonthlyDecrease',
+  cpiMonthlyIncreaseBuy: 'cpiMonthlyIncrease',
+  cpiMonthlyDecreaseBuy: 'cpiMonthlyDecrease',
+  consumerSentimentMonthlyIncreaseBuy: 'consumerSentimentMonthlyIncrease',
+  consumerSentimentMonthlyDecreaseBuy: 'consumerSentimentMonthlyDecrease',
+  retailSalesMonthlyIncreaseBuy: 'retailSalesMonthlyIncrease',
+  retailSalesMonthlyDecreaseBuy: 'retailSalesMonthlyDecrease',
+  durableGoodsMonthlyIncreaseBuy: 'durableGoodsMonthlyIncrease',
+  durableGoodsMonthlyDecreaseBuy: 'durableGoodsMonthlyDecrease',
+  unemploymentRateMonthlyIncreaseBuy: 'unemploymentRateMonthlyIncrease',
+  unemploymentRateMonthlyDecreaseBuy: 'unemploymentRateMonthlyDecrease',
+  nonfarmPayrollMonthlyIncreaseBuy: 'nonfarmPayrollMonthlyIncrease',
+  nonfarmPayrollMonthlyDecreaseBuy: 'nonfarmPayrollMonthlyDecrease',
   priceDailyIncreaseSell: 'priceDailyIncrease',
   priceDailyDecreaseSell: 'priceDailyDecrease',
   priceWeeklyIncreaseSell: 'priceWeeklyIncrease',
@@ -97,9 +143,15 @@ const SELL_MOVEMENT_TRIGGERS: {
   nonfarmPayrollMonthlyDecreaseSell: 'nonfarmPayrollMonthlyDecrease',
 }
 
-const SELL_COMPARE_TRIGGERS: {
-  [key in interfaces.traderPatternModel.CompareSellBehavior]: interfaces.dailyTickersModel.CompareKey
+export const CompareTriggers: {
+  [key in interfaces.traderPatternModel.CompareBehavior]: interfaces.dailyTickersModel.CompareKey
 } = {
+  gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
+  gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
+  gdpQuarterlyChangeAboveBuy: 'gdpQuarterlyChangePercent',
+  gdpQuarterlyChangeBelowBuy: 'gdpQuarterlyChangePercent',
+  gdpQuarterlyYoYChangeAboveBuy: 'gdpQuarterlyYoYChangePercent',
+  gdpQuarterlyYoYChangeBelowBuy: 'gdpQuarterlyYoYChangePercent',
   gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
   gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
   gdpQuarterlyChangeAboveSell: 'gdpQuarterlyChangePercent',
@@ -108,147 +160,65 @@ const SELL_COMPARE_TRIGGERS: {
   gdpQuarterlyYoYChangeBelowSell: 'gdpQuarterlyYoYChangePercent',
 }
 
-export const getTickerSellWeight = (
+export const getTickerMovementWeight = (
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
+  tickerKey: interfaces.dailyTickersModel.MovementKey,
+  pattern: interfaces.traderPatternModel.Record,
+  behavior: interfaces.traderPatternModel.MovementBehavior,
+): number => {
+  const tickerValue = tickerInfo[tickerKey]
+  const patternValue = pattern[behavior]
+
+  if (!patternValue) return 1
+  if (!tickerValue || tickerValue < patternValue) return 0
+  return tickerValue - patternValue + 2
+}
+
+export const getTickerCompareWeight = (
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
+  tickerKey: interfaces.dailyTickersModel.CompareKey,
+  pattern: interfaces.traderPatternModel.Record,
+  behavior: interfaces.traderPatternModel.CompareBehavior,
+): number => {
+  const tickerValue = tickerInfo[tickerKey]
+  const patternValue = pattern[behavior]
+
+  if (!patternValue && patternValue !== 0) return 1
+  if (behavior.includes('Above') && tickerValue && tickerValue > patternValue) {
+    return Math.abs(tickerValue - patternValue) + 2
+  }
+
+  if (behavior.includes('Below') && tickerValue && tickerValue < patternValue) {
+    return Math.abs(patternValue - tickerValue) + 2
+  }
+
+  return 0
+}
+
+export const getMovementAndCompareWeights = (
   pattern: interfaces.traderPatternModel.Record,
   tickerInfo: interfaces.dailyTickersModel.TickerInfo,
-): number => {
-  const movementTriggers = Object.keys(SELL_MOVEMENT_TRIGGERS) as Array<keyof typeof SELL_MOVEMENT_TRIGGERS>
-  const compareTriggers = Object.keys(SELL_COMPARE_TRIGGERS) as Array<keyof typeof SELL_COMPARE_TRIGGERS>
-
-  const movementWeights = movementTriggers.reduce((
+  movementBehaviors: interfaces.traderPatternModel.MovementBehavior[],
+  compareTriggers: interfaces.traderPatternModel.CompareBehavior[],
+) => {
+  const movementWeights = movementBehaviors.reduce((
     weights: number, behavior,
   ): number => {
-    const tickerKey = SELL_MOVEMENT_TRIGGERS[behavior]
-    const tickerValue = tickerInfo[tickerKey]
-    const patternValue = pattern[behavior]
-
-    if (!patternValue) return weights
-    if (!tickerValue || tickerValue < patternValue) return 0
-    return weights * (tickerValue - patternValue + 2)
+    const tickerKey = MovementTriggers[behavior]
+    const currentWeight = getTickerMovementWeight(
+      tickerInfo, tickerKey, pattern, behavior,
+    )
+    return weights * currentWeight
   }, 1)
 
   const compareWeights = compareTriggers.reduce((
     weights: number, behavior,
   ): number => {
-    const tickerKey = SELL_COMPARE_TRIGGERS[behavior]
-    const tickerValue = tickerInfo[tickerKey]
-    const patternValue = pattern[behavior]
-
-    if (patternValue === null) return weights
-    if (behavior.includes('Above') && tickerValue && tickerValue > patternValue) {
-      return weights * (tickerValue - patternValue + 2)
-    }
-
-    if (behavior.includes('Below') && tickerValue && tickerValue < patternValue) {
-      return weights * (tickerValue - patternValue + 2)
-    }
-
-    return 0
-  }, 1)
-
-  if (!movementWeights || !compareWeights) return 0
-
-  return movementWeights * compareWeights
-}
-
-const BUY_MOVEMENT_TRIGGERS: {
-  [key in interfaces.traderPatternModel.MovementBuyBehavior]: interfaces.dailyTickersModel.MovementKey
-} = {
-  priceDailyIncreaseBuy: 'priceDailyIncrease',
-  priceDailyDecreaseBuy: 'priceDailyDecrease',
-  priceWeeklyIncreaseBuy: 'priceWeeklyIncrease',
-  priceWeeklyDecreaseBuy: 'priceWeeklyDecrease',
-  priceMonthlyIncreaseBuy: 'priceMonthlyIncrease',
-  priceMonthlyDecreaseBuy: 'priceMonthlyDecrease',
-  priceQuarterlyIncreaseBuy: 'priceQuarterlyIncrease',
-  priceQuarterlyDecreaseBuy: 'priceQuarterlyDecrease',
-  priceYearlyIncreaseBuy: 'priceYearlyIncrease',
-  priceYearlyDecreaseBuy: 'priceYearlyDecrease',
-  epsQuarterlyBeatBuy: 'epsQuarterlyBeat',
-  epsQuarterlyMissBuy: 'epsQuarterlyMiss',
-  profitQuarterlyIncreaseBuy: 'profitQuarterlyIncrease',
-  profitQuarterlyDecreaseBuy: 'profitQuarterlyDecrease',
-  incomeQuarterlyIncreaseBuy: 'incomeQuarterlyIncrease',
-  incomeQuarterlyDecreaseBuy: 'incomeQuarterlyDecrease',
-  revenueQuarterlyIncreaseBuy: 'revenueQuarterlyIncrease',
-  revenueQuarterlyDecreaseBuy: 'revenueQuarterlyDecrease',
-  profitYearlyIncreaseBuy: 'profitYearlyIncrease',
-  profitYearlyDecreaseBuy: 'profitYearlyDecrease',
-  incomeYearlyIncreaseBuy: 'incomeYearlyIncrease',
-  incomeYearlyDecreaseBuy: 'incomeYearlyDecrease',
-  revenueYearlyIncreaseBuy: 'revenueYearlyIncrease',
-  revenueYearlyDecreaseBuy: 'revenueYearlyDecrease',
-  inflationYearlyIncreaseBuy: 'inflationMonthlyIncrease',
-  inflationYearlyDecreaseBuy: 'inflationYearlyDecrease',
-  fundsRateMonthlyIncreaseBuy: 'fundsRateMonthlyIncrease',
-  fundsRateMonthlyDecreaseBuy: 'fundsRateMonthlyDecrease',
-  thirtyYearsTreasuryMonthlyIncreaseBuy: 'thirtyYearsTreasuryMonthlyIncrease',
-  thirtyYearsTreasuryMonthlyDecreaseBuy: 'thirtyYearsTreasuryMonthlyDecrease',
-  tenYearsTreasuryMonthlyIncreaseBuy: 'tenYearsTreasuryMonthlyIncrease',
-  tenYearsTreasuryMonthlyDecreaseBuy: 'tenYearsTreasuryMonthlyDecrease',
-  inflationMonthlyIncreaseBuy: 'inflationMonthlyIncrease',
-  inflationMonthlyDecreaseBuy: 'inflationMonthlyDecrease',
-  cpiMonthlyIncreaseBuy: 'cpiMonthlyIncrease',
-  cpiMonthlyDecreaseBuy: 'cpiMonthlyDecrease',
-  consumerSentimentMonthlyIncreaseBuy: 'consumerSentimentMonthlyIncrease',
-  consumerSentimentMonthlyDecreaseBuy: 'consumerSentimentMonthlyDecrease',
-  retailSalesMonthlyIncreaseBuy: 'retailSalesMonthlyIncrease',
-  retailSalesMonthlyDecreaseBuy: 'retailSalesMonthlyDecrease',
-  durableGoodsMonthlyIncreaseBuy: 'durableGoodsMonthlyIncrease',
-  durableGoodsMonthlyDecreaseBuy: 'durableGoodsMonthlyDecrease',
-  unemploymentRateMonthlyIncreaseBuy: 'unemploymentRateMonthlyIncrease',
-  unemploymentRateMonthlyDecreaseBuy: 'unemploymentRateMonthlyDecrease',
-  nonfarmPayrollMonthlyIncreaseBuy: 'nonfarmPayrollMonthlyIncrease',
-  nonfarmPayrollMonthlyDecreaseBuy: 'nonfarmPayrollMonthlyDecrease',
-}
-
-const BUY_COMPARE_TRIGGERS: {
-  [key in interfaces.traderPatternModel.CompareBuyBehavior]: interfaces.dailyTickersModel.CompareKey
-} = {
-  gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
-  gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
-  gdpQuarterlyChangeAboveBuy: 'gdpQuarterlyChangePercent',
-  gdpQuarterlyChangeBelowBuy: 'gdpQuarterlyChangePercent',
-  gdpQuarterlyYoYChangeAboveBuy: 'gdpQuarterlyChangePercent',
-  gdpQuarterlyYoYChangeBelowBuy: 'gdpQuarterlyChangePercent',
-}
-
-export const getTickerBuyWeight = (
-  pattern: interfaces.traderPatternModel.Record,
-  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
-): number => {
-  const movementTriggers = Object.keys(BUY_MOVEMENT_TRIGGERS) as Array<keyof typeof BUY_MOVEMENT_TRIGGERS>
-  const compareTriggers = Object.keys(BUY_COMPARE_TRIGGERS) as Array<keyof typeof BUY_COMPARE_TRIGGERS>
-
-  const movementWeights = movementTriggers.reduce((
-    weights: number, behavior,
-  ): number => {
-    const tickerKey = BUY_MOVEMENT_TRIGGERS[behavior]
-    const tickerValue = tickerInfo[tickerKey]
-    const patternValue = pattern[behavior]
-
-    if (!patternValue) return weights
-    if (!tickerValue || tickerValue < patternValue) return 0
-    return weights * (tickerValue - patternValue + 2)
-  }, 1)
-
-  const compareWeights = compareTriggers.reduce((
-    weights: number, behavior,
-  ): number => {
-    const tickerKey = BUY_COMPARE_TRIGGERS[behavior]
-    const tickerValue = tickerInfo[tickerKey]
-    const patternValue = pattern[behavior]
-
-    if (patternValue === null) return weights
-    if (behavior.includes('Above') && tickerValue && tickerValue > patternValue) {
-      return weights * (tickerValue - patternValue + 2)
-    }
-
-    if (behavior.includes('Below') && tickerValue && tickerValue < patternValue) {
-      return weights * (tickerValue - patternValue + 2)
-    }
-
-    return 0
+    const tickerKey = CompareTriggers[behavior]
+    const currentWeight = getTickerCompareWeight(
+      tickerInfo, tickerKey, pattern, behavior,
+    )
+    return weights * currentWeight
   }, 1)
 
   if (!movementWeights || !compareWeights) return 0
@@ -262,19 +232,24 @@ interface TickerWithEvaluation {
   weight: number;
 }
 
-const getTickersWithSellEvaluation = (
+export const getTickersWithSellEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
-  dailyTicker: interfaces.dailyTickersModel.DailyTicker,
+  dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
 ): TickerWithEvaluation | null => {
   if (!dailyTicker) return null
 
   const preferValue = getTickerPreferValue(
     pattern.sellPreference, dailyTicker.daily, dailyTicker.quarterly, dailyTicker.yearly,
   )
-  if (preferValue === null) return null
+  if (!preferValue && preferValue !== 0) return null
 
-  const weight = getTickerSellWeight(pattern, dailyTicker.info)
+  const weight = getMovementAndCompareWeights(
+    pattern,
+    dailyTicker.info,
+    constants.Behavior.MovementSellBehaviors,
+    constants.Behavior.CompareSellBehaviors,
+  )
   if (!weight) return null
 
   return {
@@ -282,19 +257,25 @@ const getTickersWithSellEvaluation = (
   }
 }
 
-const getTickersWithBuyEvaluation = (
+export const getTickersWithBuyEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
-  dailyTicker: interfaces.dailyTickersModel.DailyTicker,
+  dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
 ): TickerWithEvaluation | null => {
   if (!dailyTicker) return null
 
   const preferValue = getTickerPreferValue(
     pattern.buyPreference, dailyTicker.daily, dailyTicker.quarterly, dailyTicker.yearly,
   )
-  if (preferValue === null) return null
+  if (!preferValue && preferValue !== 0) return null
 
-  const weight = getTickerBuyWeight(pattern, dailyTicker.info)
+  const weight = getMovementAndCompareWeights(
+    pattern,
+    dailyTicker.info,
+    constants.Behavior.MovementBuyBehaviors,
+    constants.Behavior.CompareBuyBehaviors,
+  )
+
   if (!weight) return null
 
   return {
@@ -302,12 +283,16 @@ const getTickersWithBuyEvaluation = (
   }
 }
 
-const getOrderedTickerEvaluations = (
+export const getOrderedTickerEvaluations = (
   evaluations: TickerWithEvaluation[],
+  preference: number,
 ) => {
   return evaluations.sort((first, second) => {
     if (first.weight > second.weight) return -1
     if (first.weight < second.weight) return 1
+    const preferenceEntry = Object.entries(constants.BehaviorValue.Preference).find((entry) => entry[1] === preference)
+    const key = preferenceEntry ? preferenceEntry[0] : ''
+    if (key.includes('Lower')) return first.preferValue <= second.preferValue ? -1 : 1
     return first.preferValue >= second.preferValue ? -1 : 1
   })
 }
@@ -325,7 +310,7 @@ export const getTickerBuyEaluations = (
     if (!evaluation) return evaluations
     return [...evaluations, evaluation]
   }, emptyEvaluations)
-  const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations)
+  const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.buyPreference)
   return orderedEvaluations
 }
 
@@ -342,6 +327,6 @@ export const getTickerSellEaluations = (
     if (!evaluation) return evaluations
     return [...evaluations, evaluation]
   }, emptyEvaluations)
-  const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations)
+  const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.sellPreference)
   return orderedEvaluations
 }
