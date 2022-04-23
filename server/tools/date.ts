@@ -150,7 +150,7 @@ export const getDayNumber = (date: string): number => {
 }
 
 export const getDurationCount = (startDate: string, endDate: string): number => {
-  if (startDate >= endDate) throw new Error('startDate must earlier than endDate')
+  if (startDate > endDate) throw new Error('startDate must not later than endDate')
   const end = moment(endDate)
   const start = moment(startDate)
   const differ = moment.duration(end.diff(start)).asDays()

@@ -162,6 +162,7 @@ test('could get day number', () => {
 })
 
 test('could get duration count', () => {
+  expect(date.getDurationCount('2022-01-31', '2022-01-31')).toEqual(0)
   expect(date.getDurationCount('2022-01-31', '2022-02-01')).toEqual(1)
   expect(date.getDurationCount('2022-01-31', '2022-02-02')).toEqual(2)
   expect(date.getDurationCount('2022-01-31', '2022-02-11')).toEqual(11)

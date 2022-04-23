@@ -1,6 +1,8 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
+import * as dailyTickersModel from '../models/dailyTickers'
 import * as traderEnvFollowerModel from '../models/traderEnvFollower'
 import * as traderFollowerModel from '../models/traderFollower'
 import * as traderPatternModel from '../models/traderPattern'
@@ -11,7 +13,8 @@ import * as errorEnum from '../enums/error'
 import * as databaseAdapter from '../adapters/database'
 import * as generateTool from '../tools/generate'
 import * as traderLogic from '../logics/trader'
-import buildComboDetail from './shared/buildComboDetail'
+import buildComboEntities from './shared/buildComboEntities'
+import buildHoldingValueStats from './shared/buildHoldingValueStats'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
@@ -206,8 +209,28 @@ export const getComboDetail = async (
   if (!combo) throw errorEnum.Default.NotFound
 
   const traders = await traderModel.getInPKs(combo.traderIds)
-  const comboDetail = await buildComboDetail(traders)
-  return comboDetail.detail
+  const { traderProfiles, holdings } = await buildComboEntities(traders)
+  const latestDate = await dailyTickersModel.getLatestDate()
+  const startDate = holdings.length ? holdings[holdings.length - 1].date : latestDate
+  const stats = await buildHoldingValueStats(
+    startDate,
+    latestDate,
+    constants.Trader.Initial.Cash * traders.length,
+    holdings,
+  )
+
+  return {
+    holdings: holdings.slice(0, 20),
+    profiles: traderProfiles,
+    oneYearTrends: stats.oneYearTrends,
+    oneDecadeTrends: stats.oneDecadeTrends,
+    totalValue: stats.totalValue,
+    yearlyPercentNumber: stats.yearlyPercentNumber,
+    pastWeekPercentNumber: stats.pastWeekPercentNumber,
+    pastMonthPercentNumber: stats.pastMonthPercentNumber,
+    pastQuarterPercentNumber: stats.pastQuarterPercentNumber,
+    pastYearPercentNumber: stats.pastYearPercentNumber,
+  }
 }
 
 export const createTraderEnv = async (

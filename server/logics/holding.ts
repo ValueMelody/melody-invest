@@ -18,7 +18,3 @@ export const getHoldingTotalValue = (
   }, holdingDetails.totalCash)
   return Math.floor(totalValue)
 }
-
-export const getInitialCash = (): number => {
-  return constants.Trader.Initial.Cash
-}
