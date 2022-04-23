@@ -15,7 +15,7 @@ import * as traderLogic from '../logics/trader'
 
 export const getUserOverall = async (
   userId: number,
-): Promise<interfaces.userRes.UserOverall> => {
+): Promise<interfaces.response.UserOverall> => {
   const user = await userModel.getByPK(userId)
 
   if (!user) throw errorEnum.Custom.UserNotFound
@@ -93,7 +93,7 @@ export const createUser = async (
 
 export const createUserToken = async (
   email: string, password: string, remember: boolean,
-): Promise<interfaces.userRes.UserToken> => {
+): Promise<interfaces.response.UserToken> => {
   const encryptedPassword = generateTool.buildEncryptedPassword(password)
   const user = await userModel.getByUK(email)
   if (!user || user.password !== encryptedPassword) throw errorEnum.Custom.UserNotFound

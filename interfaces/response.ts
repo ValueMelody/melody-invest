@@ -44,3 +44,36 @@ export interface SystemDefaults {
   tickerCategories: tickerCategoryModel.Record[];
   topTraderProfiles: TopTraderProfiles;
 }
+
+export interface UserOverall {
+  traderProfiles: TraderProfile[];
+  traderEnvs: traderEnvModel.Record[];
+  traderCombos: traderComboModel.Identity[];
+  email: string;
+}
+
+export interface UserToken {
+  jwtToken: string;
+  expiresIn: '12h' | '30d';
+  userType: number;
+}
+
+export interface ProfileEnv {
+  traderEnvId: number;
+  traderId: number;
+  traderPatternId: number;
+  accessCode: string;
+}
+
+export interface ProfileDetail {
+  profileEnvs: ProfileEnv[];
+  holdings: traderHoldingModel.Record[];
+}
+
+export interface BehaviorDetail {
+  topProfiles: TopTraderProfiles;
+}
+
+export interface TickerDetail {
+  topProfiles: TopTraderProfiles;
+}

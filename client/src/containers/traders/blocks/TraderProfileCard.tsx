@@ -41,7 +41,7 @@ const TraderProfileCard = ({
   onClick,
   simple,
 }: {
-  profile: interfaces.traderRes.TraderProfile | null;
+  profile: interfaces.response.TraderProfile | null;
   isActive?: boolean,
   onClick?: (record: interfaces.traderModel.Record) => void;
   simple?: boolean;

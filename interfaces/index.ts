@@ -18,9 +18,6 @@ import * as indicatorQuarterlyModel from './models/indicatorQuarterly'
 import * as indicatorYearlyModel from './models/indicatorYearly'
 import * as dailyTickersModel from './models/dailyTickers'
 
-import * as userRes from './responses/user'
-import * as traderRes from './responses/trader'
-
 import * as response from './response'
 import * as request from './request'
 import * as common from './common'
@@ -45,8 +42,6 @@ export {
   indicatorQuarterlyModel,
   indicatorYearlyModel,
   dailyTickersModel,
-  userRes,
-  traderRes,
   response,
   request,
   common,

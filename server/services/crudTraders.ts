@@ -18,7 +18,7 @@ import buildHoldingValueStats from './shared/buildHoldingValueStats'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
-): Promise<interfaces.traderRes.TraderProfile> => {
+): Promise<interfaces.response.TraderProfile> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.Custom.WrongAccessCode
 
@@ -35,7 +35,7 @@ export const getTraderProfile = async (
 
 export const getProfileDetail = async (
   id: number, accessCode: string, envIds: number[],
-): Promise<interfaces.traderRes.ProfileDetail> => {
+): Promise<interfaces.response.ProfileDetail> => {
   const trader = await traderModel.getByPK(id)
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.Custom.WrongAccessCode
 
@@ -86,7 +86,7 @@ export const getUserTraderEnvIds = async (
 
 const buildTraderTopProfiles = async (
   tops: interfaces.traderModel.Tops,
-): Promise<interfaces.traderRes.TopProfiles> => {
+): Promise<interfaces.response.TopTraderProfiles> => {
   const topTraders = [...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek]
   const relatedPatterns = await traderPatternModel.getPublicByTraders(topTraders)
   return {
@@ -100,7 +100,7 @@ const buildTraderTopProfiles = async (
 
 export const getTopProfiles = async (
   traderEnvId: number,
-): Promise<interfaces.traderRes.TopProfiles> => {
+): Promise<interfaces.response.TopTraderProfiles> => {
   const each = 1
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
   const topProfiles = await buildTraderTopProfiles(tops)
@@ -111,7 +111,7 @@ export const getTopProfiles = async (
 export const getBehaviorDetail = async (
   envId: number,
   behavior: interfaces.traderPatternModel.Behavior,
-): Promise<interfaces.traderRes.BehaviorDetail> => {
+): Promise<interfaces.response.BehaviorDetail> => {
   const tops = await traderModel.getTops(1, { envId, behavior })
   const topProfiles = await buildTraderTopProfiles(tops)
 
@@ -123,7 +123,7 @@ export const getBehaviorDetail = async (
 export const getTickerDetail = async (
   envId: number,
   tickerId: number,
-): Promise<interfaces.traderRes.TickerDetail> => {
+): Promise<interfaces.response.TickerDetail> => {
   const tops = await traderModel.getTops(1, { envId, tickerId })
   const topProfiles = await buildTraderTopProfiles(tops)
 
@@ -165,7 +165,7 @@ export const createTraderProfile = async (
   userId: number,
   traderEnvId: number,
   traderPattern: interfaces.traderPatternModel.Create,
-): Promise<interfaces.traderRes.TraderProfile> => {
+): Promise<interfaces.response.TraderProfile> => {
   const transaction = await databaseAdapter.createTransaction()
   try {
     const pattern = await traderPatternModel.createIfEmpty(traderPattern, transaction)

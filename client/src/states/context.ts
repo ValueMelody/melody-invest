@@ -49,7 +49,7 @@ export interface TraderProfiles {
   [traderId: number]: {
     trader: interfaces.traderModel.Record;
     pattern: interfaces.traderPatternModel.Public;
-    profileEnvs?: interfaces.traderRes.ProfileEnv[];
+    profileEnvs?: interfaces.response.ProfileEnv[];
     holdings?: interfaces.traderHoldingModel.Record[];
   };
 }

@@ -35,7 +35,7 @@ const useTraderState = () => {
 
   // ------------------------------------------------------------ Store --
 
-  const storeTraderProfile = (profile: interfaces.traderRes.TraderProfile) => {
+  const storeTraderProfile = (profile: interfaces.response.TraderProfile) => {
     store.setTraderProfiles((profiles) => ({
       ...profiles,
       [profile.trader.id]: {
@@ -44,7 +44,7 @@ const useTraderState = () => {
     }))
   }
 
-  const storeTraderProfiles = (profiles: interfaces.traderRes.TraderProfile[]) => {
+  const storeTraderProfiles = (profiles: interfaces.response.TraderProfile[]) => {
     const traderProfiles = profiles.reduce((traderProfiles, profile) => ({
       ...traderProfiles,
       [profile.trader.id]: profile,
@@ -54,7 +54,7 @@ const useTraderState = () => {
 
   const storeTopProfiles = (
     envId: number,
-    topTraderProfiles: interfaces.traderRes.TopProfiles,
+    topTraderProfiles: interfaces.response.TopTraderProfiles,
   ) => {
     const topProfiles = [
       ...topTraderProfiles.yearly,
@@ -81,7 +81,7 @@ const useTraderState = () => {
   const storeBehaviorDetail = (
     envId: number,
     behavior: interfaces.traderPatternModel.Behavior,
-    behaviorDetail: interfaces.traderRes.BehaviorDetail,
+    behaviorDetail: interfaces.response.BehaviorDetail,
   ) => {
     const { topProfiles } = behaviorDetail
     const profiles = [
@@ -106,7 +106,7 @@ const useTraderState = () => {
   const storeTickerDetail = (
     envId: number,
     tickerId: number,
-    tickerDetail: interfaces.traderRes.TickerDetail,
+    tickerDetail: interfaces.response.TickerDetail,
   ) => {
     const { topProfiles } = tickerDetail
     const profiles = [
@@ -157,7 +157,7 @@ const useTraderState = () => {
 
   const storeProfileDetail = (
     traderId: number,
-    detail: interfaces.traderRes.ProfileDetail,
+    detail: interfaces.response.ProfileDetail,
   ) => {
     if (!store.traderProfiles[traderId]) return
     store.setTraderProfiles((details) => (
@@ -278,7 +278,7 @@ const useTraderState = () => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles`
     store.startLoading()
     try {
-      const profile: interfaces.traderRes.TraderProfile = await requestAdapter.sendPostRequest(
+      const profile: interfaces.response.TraderProfile = await requestAdapter.sendPostRequest(
         endpoint, { traderEnvId, traderPattern },
       )
       storeTraderProfile(profile)
