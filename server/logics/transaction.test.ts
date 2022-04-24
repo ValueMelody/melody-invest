@@ -12,7 +12,7 @@ const DAILY_TICKERS: interfaces.dailyTickersModel.DailyTickers = {
   },
 }
 
-const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Holding[] = [
+const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Item[] = [
   { tickerId: 1, shares: 100, splitMultiplier: 100, value: 10000 },
   { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
   { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
@@ -21,7 +21,7 @@ const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Holding[] = [
 const HOLDING_DETAILS: transaction.HoldingDetails = {
   totalCash: 10000,
   totalValue: 140000,
-  holdings: [HOLDING_HOLDINGS[0], HOLDING_HOLDINGS[1], HOLDING_HOLDINGS[2]],
+  items: [HOLDING_HOLDINGS[0], HOLDING_HOLDINGS[1], HOLDING_HOLDINGS[2]],
 }
 
 test('could refresh holding based on daily value', () => {
@@ -50,7 +50,7 @@ test('could update holding details based on daily value', () => {
   )).toEqual({
     totalCash: 15,
     totalValue: 5190015,
-    holdings: [
+    items: [
       { tickerId: 1, shares: 100, splitMultiplier: 1000, value: 5000000 },
       { tickerId: 2, shares: 200, splitMultiplier: 5, value: 100000 },
       { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
@@ -66,7 +66,7 @@ test('could generate empty holding detail', () => {
   )).toEqual({
     totalCash: 1000,
     totalValue: 1000,
-    holdings: [],
+    items: [],
   })
 })
 
@@ -114,7 +114,7 @@ test('could refresh holdings for holding less than ticker min percent', () => {
   )).toEqual({
     totalCash: 20000,
     totalValue: 140000,
-    holdings: [
+    items: [
       { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
       { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
     ],
@@ -172,7 +172,7 @@ test('could refresh holdings for holding greater than ticker max percent', () =>
   )).toEqual({
     totalCash: 11400,
     totalValue: 140000,
-    holdings: [
+    items: [
       { tickerId: 1, shares: 99.972, splitMultiplier: 1000, value: 4998600 },
       { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
       { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
@@ -235,7 +235,7 @@ test('could update holding details after rebalance for min percernt rule', () =>
     holdingDetails: {
       totalCash: 20000,
       totalValue: 140000,
-      holdings: [
+      items: [
         { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
         { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
       ],
@@ -302,7 +302,7 @@ test('could update holding details after rebalance for max percernt rule', () =>
     holdingDetails: {
       totalCash: 10450,
       totalValue: 140000,
-      holdings: [
+      items: [
         { tickerId: 1, shares: 100, splitMultiplier: 100, value: 10000 },
         { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
         { tickerId: 3, shares: 291, splitMultiplier: 1, value: 14550 },
@@ -328,7 +328,7 @@ test('should only trigger min rule if exceel max cash after sell min holding', (
     holdingDetails: {
       totalCash: 20000,
       totalValue: 140000,
-      holdings: [
+      items: [
         { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
         { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
       ],
@@ -353,31 +353,10 @@ test('could update holding details after rebalance for both min and max percernt
     holdingDetails: {
       totalCash: 20450,
       totalValue: 140000,
-      holdings: [
+      items: [
         { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
         { tickerId: 3, shares: 291, splitMultiplier: 1, value: 14550 },
       ],
     },
   })
 })
-
-// const DAILY_TICKERS: interfaces.dailyTickersModel.DailyTickers = {
-//   1: {
-//     // @ts-ignore
-//     daily: { closePrice: 50, splitMultiplier: 1000 },
-//   },
-//   2: {
-//     // @ts-ignore
-//     daily: { closePrice: 100, splitMultiplier: 5 },
-//   },
-// }
-// const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Holding[] = [
-//   { tickerId: 1, shares: 100, splitMultiplier: 100, value: 10000 },
-//   { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
-//   { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
-// ]
-// const HOLDING_DETAILS: transaction.HoldingDetails = {
-//   totalCash: 10000,
-//   totalValue: 140000,
-//   holdings: [HOLDING_HOLDINGS[0], HOLDING_HOLDINGS[1], HOLDING_HOLDINGS[2]],
-// }

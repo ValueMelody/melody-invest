@@ -80,7 +80,7 @@ export const create = async (
       date: values.date,
       totalValue: values.totalValue.toFixed(2),
       totalCash: values.totalCash.toFixed(2),
-      holdings: JSON.stringify(values.holdings),
+      items: JSON.stringify(values.items),
     },
     transaction,
   })

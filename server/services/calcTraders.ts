@@ -92,10 +92,10 @@ const calcTraderPerformance = async (
       const availableTargets = dailyTickers.tickers
 
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
-      const holdings = holding ? holding.holdings : []
+      const items = holding ? holding.items : []
 
       const detailsAfterUpdate = transactionLogic.detailsFromCashAndHoldings(
-        totalCash, holdings, availableTargets,
+        totalCash, items, availableTargets,
       )
 
       const shouldRebalance =
@@ -115,7 +115,7 @@ const calcTraderPerformance = async (
         maxCashValue,
       )
 
-      const holdingTickerIds = detailsAfterRebalance.holdings.map((holding) => holding.tickerId)
+      const holdingTickerIds = detailsAfterRebalance.items.map((item) => item.tickerId)
       const sellTickerEvaluations = evaluationLogic.getTickerSellEaluations(
         holdingTickerIds, pattern, availableTargets,
       )
@@ -166,7 +166,7 @@ const calcTraderPerformance = async (
           date: tradeDate,
           totalValue: detailsAfterBuy.totalValue,
           totalCash: detailsAfterBuy.totalCash,
-          holdings: detailsAfterBuy.holdings,
+          items: detailsAfterBuy.items,
         }, transaction)
       }
 
@@ -188,10 +188,10 @@ const calcTraderPerformance = async (
     }
 
     await tickerHolderModel.destroyTraderTickers(trader.id, traderTransaction)
-    await runTool.asyncForEach(holding.holdings, async (
-      holding: interfaces.traderHoldingModel.Holding,
+    await runTool.asyncForEach(holding.items, async (
+      item: interfaces.traderHoldingModel.Item,
     ) => {
-      await tickerHolderModel.create({ tickerId: holding.tickerId, traderId: trader.id }, traderTransaction)
+      await tickerHolderModel.create({ tickerId: item.tickerId, traderId: trader.id }, traderTransaction)
     })
 
     const holdings = await traderHoldingModel.getAll(trader.id)
