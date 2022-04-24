@@ -94,7 +94,7 @@ const calcTraderPerformance = async (
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
       const items = holding ? holding.items : []
 
-      const detailsAfterUpdate = transactionLogic.detailsFromCashAndHoldings(
+      const detailsAfterUpdate = transactionLogic.detailFromCashAndItems(
         totalCash, items, availableTargets,
       )
 
@@ -104,9 +104,9 @@ const calcTraderPerformance = async (
 
       const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent / 100
       const {
-        holdingDetails: detailsAfterRebalance,
+        holdingDetail: detailAfterRebalance,
         hasTransaction: hasRebalanceTransaction,
-      } = transactionLogic.detailsAfterRebalance(
+      } = transactionLogic.detailAfterRebalance(
         shouldRebalance,
         detailsAfterUpdate,
         availableTargets,
@@ -115,17 +115,17 @@ const calcTraderPerformance = async (
         maxCashValue,
       )
 
-      const holdingTickerIds = detailsAfterRebalance.items.map((item) => item.tickerId)
+      const holdingTickerIds = detailAfterRebalance.items.map((item) => item.tickerId)
       const sellTickerEvaluations = evaluationLogic.getTickerSellEaluations(
         holdingTickerIds, pattern, availableTargets,
       )
       const sellTickerIds = sellTickerEvaluations.map((sellTickerEvaluation) => sellTickerEvaluation.tickerId)
 
       const {
-        holdingDetails: detailsAfterSell,
+        holdingDetail: detailAfterSell,
         hasTransaction: hasSellTransaction,
-      } = transactionLogic.detailsAfterSell(
-        detailsAfterRebalance,
+      } = transactionLogic.detailAfterSell(
+        detailAfterRebalance,
         sellTickerIds,
         availableTargets,
         holdingSellPercent,
@@ -140,12 +140,12 @@ const calcTraderPerformance = async (
       )
       const buyTickerIds = buyTickerEvaluations.map((evaluation) => evaluation.tickerId)
 
-      const maxBuyAmount = detailsAfterSell.totalValue * holdingBuyPercent / 100
+      const maxBuyAmount = detailAfterSell.totalValue * holdingBuyPercent / 100
       const {
-        holdingDetails: detailsAfterBuy,
+        holdingDetail: detailAfterBuy,
         hasTransaction: hasBuyTransaction,
-      } = transactionLogic.detailsAfterBuy(
-        detailsAfterSell,
+      } = transactionLogic.detailAfterBuy(
+        detailAfterSell,
         buyTickerIds,
         availableTargets,
         maxBuyAmount,
@@ -164,9 +164,9 @@ const calcTraderPerformance = async (
         holding = await traderHoldingModel.create({
           traderId: trader.id,
           date: tradeDate,
-          totalValue: detailsAfterBuy.totalValue,
-          totalCash: detailsAfterBuy.totalCash,
-          items: detailsAfterBuy.items,
+          totalValue: detailAfterBuy.totalValue,
+          totalCash: detailAfterBuy.totalCash,
+          items: detailAfterBuy.items,
         }, transaction)
       }
 
