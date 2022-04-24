@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import * as constants from '@shared/constants'
 import * as traderPatternModel from '../../models/traderPattern'
 import * as traderHoldingModel from '../../models/traderHolding'
 import * as traderLogic from '../../logics/trader'
+import * as holdingLogic from '../../logics/holding'
 
 const buildComboEntities = async (
   traders: interfaces.traderModel.Record[],
@@ -15,16 +15,16 @@ const buildComboEntities = async (
 
   const traderIds = traders.map((trader) => trader.id)
   const holdings = await traderHoldingModel.getAllByTraderIds(traderIds)
-  const holdingsByTraders = traderLogic.groupHoldingRecordsByTraders(holdings)
-  const holdingsByDates = traderLogic.gatherTraderHoldingRecordsByDate(
-    traderIds, holdings, holdingsByTraders,
+  const holdingsByTraders = holdingLogic.groupHoldingsByTraders(holdings)
+  const holdingDates = holdings.map((holding) => holding.date)
+  const uniqueDates = Array.from(new Set(holdingDates))
+  const holdingsByDates = holdingLogic.groupTraderHoldingsByDate(
+    uniqueDates, traderIds, holdingsByTraders,
   )
 
   const aggregatedHoldings = Object.keys(holdingsByDates)
-    .map((date) => traderLogic.mergeHoldingsByDate(
-      date,
-      holdingsByDates[date],
-      constants.Trader.Initial.Cash,
+    .map((date) => holdingLogic.mergeTraderHoldingsByDate(
+      date, holdingsByDates[date],
     ))
   const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
 

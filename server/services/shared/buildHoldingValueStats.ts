@@ -7,7 +7,7 @@ import * as generateTool from '../../tools/generate'
 
 const calHoldingValueByDate = async (
   date: string,
-  holdings: interfaces.traderHoldingModel.Detail[],
+  holdings: interfaces.traderHoldingModel.Detail[], // order by date desc required
 ): Promise<number | null> => {
   const prices = await tickerDailyModel.getNearestPricesByDate(date)
   const holding = holdings.find((holding) => holding.date <= date)
