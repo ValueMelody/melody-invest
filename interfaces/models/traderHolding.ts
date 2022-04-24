@@ -1,4 +1,4 @@
-export interface Holding {
+export interface Item {
   tickerId: number;
   shares: number;
   splitMultiplier: number;
@@ -9,7 +9,7 @@ export interface Detail {
   date: string;
   totalValue: number;
   totalCash: number;
-  holdings: Holding[];
+  items: Item[];
 }
 
 export interface Record extends Detail {
@@ -21,7 +21,7 @@ export interface Raw {
   id: string;
   traderId: number;
   date: string;
-  holdings: Holding[];
+  items: Item[];
   totalValue: string;
   totalCash: string;
 }

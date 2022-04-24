@@ -22,12 +22,12 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const HoldingShare = ({
-  tickerHolding,
+  holdingItem,
   tickerIdentity,
   previousDetail,
   totalValue,
 }: {
-  tickerHolding: interfaces.traderHoldingModel.Holding;
+  holdingItem: interfaces.traderHoldingModel.Item;
   tickerIdentity: interfaces.tickerModel.Identity | null;
   previousDetail: interfaces.traderHoldingModel.Detail | null;
   totalValue: number;
@@ -36,9 +36,9 @@ const HoldingShare = ({
 
   // ------------------------------------------------------------ State --
 
-  const previousHolding = previousDetail?.holdings.find((previous) => previous.tickerId === tickerHolding.tickerId)
-  const currentShares = Math.floor(tickerHolding.shares * tickerHolding.splitMultiplier)
-  const previousShares = previousHolding ? Math.floor(previousHolding.shares * previousHolding.splitMultiplier) : null
+  const previousItem = previousDetail?.items.find((previous) => previous.tickerId === holdingItem.tickerId)
+  const currentShares = Math.floor(holdingItem.shares * holdingItem.splitMultiplier)
+  const previousShares = previousItem ? Math.floor(previousItem.shares * previousItem.splitMultiplier) : null
   const shareDiffer = previousShares ? currentShares - previousShares : null
 
   // ------------------------------------------------------------ UI --
@@ -46,12 +46,12 @@ const HoldingShare = ({
   return (
     <vendorTool.ui.Label
       basic
-      key={tickerHolding.tickerId}
+      key={holdingItem.tickerId}
       title={tickerIdentity?.name}
       className={classes.ticker}
     >
       {tickerIdentity?.symbol}&nbsp;
-      {parseTool.floatToPercent(tickerHolding.value / totalValue)}&nbsp;
+      {parseTool.floatToPercent(holdingItem.value / totalValue)}&nbsp;
       {!!shareDiffer && (
         <span
           className={vendorTool.classNames(classes.differ, {
@@ -62,7 +62,7 @@ const HoldingShare = ({
           {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
         </span>
       )}
-      {!!previousDetail && !previousHolding && (
+      {!!previousDetail && !previousItem && (
         <span
           className={vendorTool.classNames(classes.differ, classes.increaseColor)}
         >

@@ -6,7 +6,7 @@ exports.up = (knex) => {
       table.integer('traderId').notNullable()
       table.string('totalValue', 15).notNullable()
       table.string('totalCash', 15).notNullable()
-      table.jsonb('holdings').notNullable()
+      table.jsonb('items').notNullable()
       table.unique(['date', 'traderId'], 'trader_holding_ukey')
       table.foreign('traderId').references('id').inTable('trader')
     })

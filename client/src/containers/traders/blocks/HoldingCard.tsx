@@ -34,8 +34,8 @@ const HoldingCard = ({
 
   const { getTickerIdentity } = useTickerState()
   const [showAllHoldings, setShowAllHoldings] = vendorTool.react.useState(false)
-  const orderedHoldings = holding.holdings.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
-  const displayedHoldings = showAllHoldings ? orderedHoldings : orderedHoldings.slice(0, 10)
+  const orderedHoldingItems = holding.items.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
+  const displayedHoldingItems = showAllHoldings ? orderedHoldingItems : orderedHoldingItems.slice(0, 10)
 
   // ------------------------------------------------------------ Handler --
 
@@ -81,19 +81,19 @@ const HoldingCard = ({
         </div>
       </div>
       <vendorTool.ui.Divider />
-      {displayedHoldings.map((tickerHolding) => {
-        const identity = getTickerIdentity(tickerHolding.tickerId)
+      {displayedHoldingItems.map((holdingItem) => {
+        const identity = getTickerIdentity(holdingItem.tickerId)
         return (
           <HoldingShare
-            key={tickerHolding.tickerId}
+            key={holdingItem.tickerId}
             tickerIdentity={identity}
             totalValue={holding.totalValue}
-            tickerHolding={tickerHolding}
+            holdingItem={holdingItem}
             previousDetail={previousHolding}
           />
         )
       })}
-      {!showAllHoldings && orderedHoldings.length > 10 && (
+      {!showAllHoldings && orderedHoldingItems.length > 10 && (
         <div className='row-around'>
           <vendorTool.ui.Button onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}

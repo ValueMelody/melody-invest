@@ -5,10 +5,10 @@ export const getHoldingTotalValue = (
   holdingDetail: interfaces.traderHoldingModel.Detail,
   tickerPrices: interfaces.tickerDailyModel.TickerPrices,
 ): number => {
-  const totalValue = holdingDetail.holdings.reduce((total, holding) => {
-    const matchedPrice = tickerPrices[holding.tickerId]
+  const totalValue = holdingDetail.items.reduce((total, item) => {
+    const matchedPrice = tickerPrices[item.tickerId]
     if (!matchedPrice) return total
-    return total + matchedPrice * holding.shares
+    return total + matchedPrice * item.shares
   }, holdingDetail.totalCash)
   return Math.floor(totalValue)
 }
@@ -64,11 +64,11 @@ export const groupTraderHoldingsByDate = (
 }
 
 interface HoldingItemsByTickers {
-  [tickerId: number]: interfaces.traderHoldingModel.Holding
+  [tickerId: number]: interfaces.traderHoldingModel.Item
 }
 
 export const groupHoldingItemsByTickers = (
-  items: interfaces.traderHoldingModel.Holding[],
+  items: interfaces.traderHoldingModel.Item[],
 ): HoldingItemsByTickers => {
   const initHoldingsByTickers: HoldingItemsByTickers = {}
   return items.reduce((itemsByTickers, item) => ({
@@ -78,8 +78,8 @@ export const groupHoldingItemsByTickers = (
 }
 
 export const mergeHoldingItems = (
-  firstItem: interfaces.traderHoldingModel.Holding,
-  secondItem: interfaces.traderHoldingModel.Holding,
+  firstItem: interfaces.traderHoldingModel.Item,
+  secondItem: interfaces.traderHoldingModel.Item,
   splitMultiplier: number,
 ) => {
   return {
@@ -93,11 +93,11 @@ export const mergeHoldingItems = (
 export const getMergedHoldingItems = (
   holding: interfaces.traderHoldingModel.Detail,
   secondHolding: interfaces.traderHoldingModel.Detail,
-): interfaces.traderHoldingModel.Holding[] => {
-  const holdingItemsByTickers = groupHoldingItemsByTickers(holding.holdings)
+): interfaces.traderHoldingModel.Item[] => {
+  const holdingItemsByTickers = groupHoldingItemsByTickers(holding.items)
   const shouldUseSecondMultiplier = secondHolding.date > holding.date
 
-  const mergedByTickers = secondHolding.holdings.reduce((mergedTickers, secondHoldingItem) => {
+  const mergedByTickers = secondHolding.items.reduce((mergedTickers, secondHoldingItem) => {
     const matchedHoldingItem = mergedTickers[secondHoldingItem.tickerId]
     if (!matchedHoldingItem) {
       return {
@@ -125,7 +125,7 @@ export const mergeTraderHoldingsByDate = (
     date,
     totalValue: 0,
     totalCash: 0,
-    holdings: [],
+    items: [],
   }
   return traderHoldings.reduce((mergedHolding, holding) => {
     const newCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
@@ -134,7 +134,7 @@ export const mergeTraderHoldingsByDate = (
       ...mergedHolding,
       totalCash: mergedHolding.totalCash + newCash,
       totalValue: mergedHolding.totalValue + newValue,
-      holdings: holding ? getMergedHoldingItems(mergedHolding, holding) : mergedHolding.holdings,
+      items: holding ? getMergedHoldingItems(mergedHolding, holding) : mergedHolding.items,
     }
     return merged
   }, initialDetail)

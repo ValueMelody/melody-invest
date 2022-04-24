@@ -6,7 +6,7 @@ describe('getHoldingTotalValue', () => {
     date: '2001-01-01',
     totalValue: 10000,
     totalCash: 1000,
-    holdings: [
+    items: [
       { tickerId: 1, shares: 100, splitMultiplier: 2, value: 300 },
       { tickerId: 2, shares: 3, splitMultiplier: 20, value: 10 },
       { tickerId: 3, shares: 50, splitMultiplier: 1, value: 220 },
@@ -69,7 +69,7 @@ describe('#groupTraderHoldingsByDate', () => {
 })
 
 describe('#groupHoldingItemsByTickers', () => {
-  const holdingItems: interfaces.traderHoldingModel.Holding[] = [
+  const holdingItems: interfaces.traderHoldingModel.Item[] = [
     // @ts-ignore
     { tickerId: 1, shares: 101 }, { tickerId: 2, shares: 102 }, { tickerId: 3, shares: 103 },
   ]
@@ -102,7 +102,7 @@ describe('#getMergedHoldingItems', () => {
   // @ts-ignore
   const firstHolding: interfaces.traderHoldingModel.Detail = {
     date: '2001-02-03',
-    holdings: [
+    items: [
       { tickerId: 1, shares: 5, value: 100, splitMultiplier: 2 },
       { tickerId: 2, shares: 4, value: 200, splitMultiplier: 3 },
     ],
@@ -110,7 +110,7 @@ describe('#getMergedHoldingItems', () => {
   // @ts-ignore
   const secondHolding: interfaces.traderHoldingModel.Detail = {
     date: '2001-02-04',
-    holdings: [
+    items: [
       { tickerId: 1, shares: 7, value: 33, splitMultiplier: 4 },
     ],
   }
@@ -129,7 +129,7 @@ describe('#mergeTraderHoldingsByDate', () => {
     date: '2001-02-03',
     totalValue: 82,
     totalCash: 12,
-    holdings: [
+    items: [
       { tickerId: 1, value: 25, splitMultiplier: 2, shares: 4 },
       { tickerId: 2, value: 45, splitMultiplier: 3, shares: 5 },
     ],
@@ -139,7 +139,7 @@ describe('#mergeTraderHoldingsByDate', () => {
     date: '2001-02-02',
     totalValue: 43,
     totalCash: 32,
-    holdings: [
+    items: [
       { tickerId: 1, value: 11, splitMultiplier: 1, shares: 3 },
     ],
   }
@@ -151,7 +151,7 @@ describe('#mergeTraderHoldingsByDate', () => {
       date: '2001-02-03',
       totalValue: 10000125,
       totalCash: 10000044,
-      holdings: [
+      items: [
         { tickerId: 1, value: 36, splitMultiplier: 2, shares: 7 },
         { tickerId: 2, value: 45, splitMultiplier: 3, shares: 5 },
       ],
