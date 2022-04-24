@@ -12,7 +12,7 @@ const DAILY_TICKERS: interfaces.dailyTickersModel.DailyTickers = {
   },
 }
 
-const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Holding[] = [
+const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Item[] = [
   { tickerId: 1, shares: 100, splitMultiplier: 100, value: 10000 },
   { tickerId: 2, shares: 200, splitMultiplier: 200, value: 40000 },
   { tickerId: 3, shares: 300, splitMultiplier: 300, value: 90000 },
@@ -21,7 +21,7 @@ const HOLDING_HOLDINGS: interfaces.traderHoldingModel.Holding[] = [
 const HOLDING_DETAILS: transaction.HoldingDetails = {
   totalCash: 10000,
   totalValue: 140000,
-  holdings: [HOLDING_HOLDINGS[0], HOLDING_HOLDINGS[1], HOLDING_HOLDINGS[2]],
+  items: [HOLDING_HOLDINGS[0], HOLDING_HOLDINGS[1], HOLDING_HOLDINGS[2]],
 }
 
 test('could refresh holding based on daily value', () => {
