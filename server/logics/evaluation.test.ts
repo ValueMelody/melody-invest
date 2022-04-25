@@ -467,6 +467,10 @@ describe('#MovementTriggers', () => {
       if (entry[0].includes('Sell')) expect(entry[0]).toEqual(`${entry[1]}Sell`)
     })
   })
+  test('has correct total items', () => {
+    const total = constants.Behavior.MovementBuyBehaviors.length + constants.Behavior.MovementSellBehaviors.length
+    expect(Object.keys(evaluation.MovementTriggers).length).toEqual(total)
+  })
 })
 
 describe('#CompareTriggers', () => {
@@ -483,6 +487,10 @@ entry[0].includes('BelowBuy') || entry[0].includes('BelowSell'),
         .replace('BelowSell', '')
       expect(`${base}Percent`).toBe(entry[1])
     })
+  })
+  test('has correct total items', () => {
+    const total = constants.Behavior.CompareBuyBehaviors.length + constants.Behavior.CompareSellBehaviors.length
+    expect(Object.keys(evaluation.CompareTriggers).length).toEqual(total)
   })
 })
 
