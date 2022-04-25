@@ -11,32 +11,28 @@ import * as tickerQuarterlyModel from '../models/tickerQuarterly'
 import * as databaseAdapter from '../adapters/database'
 
 export const syncPrices = async (
-  region: string,
-  symbol: string,
+  ticker: interfaces.tickerModel.Record,
 ) => {
-  const ticker = await tickerModel.getByUK(region, symbol)
-  if (!ticker) throw errorEnum.Default.NotFound
-
-  const tickerData = await marketAdapter.getTickerPrices(symbol)
+  const tickerData = await marketAdapter.getTickerPrices(ticker.symbol)
   const metaData = tickerData['Meta Data']
-  const lastRefreshed = metaData['3. Last Refreshed'].substring(0, 10)
+  const endDate = metaData['3. Last Refreshed'].substring(0, 10)
 
-  if (lastRefreshed === ticker.lastPriceDate) return
+  if (endDate === ticker.lastPriceDate) return
 
   const allDaysData = tickerData['Time Series (Daily)']
 
   const startDate = ticker.lastPriceDate
     ? dateTool.getNextDate(ticker.lastPriceDate)
     : dateTool.getInitialDate()
-  const endDate = dateTool.getCurrentDate()
 
   const allDates = dateTool.getDaysInRange(startDate, endDate)
   if (!allDates.length) return
 
+  let firstPriceDate: string | null = null
+  let latestRecord = await tickerDailyModel.getPreviousOne(ticker.id, startDate)
+
   const transaction = await databaseAdapter.createTransaction()
   try {
-    let firstPriceDate: string | null = null
-    let previousRecord = await tickerDailyModel.getPreviousOne(ticker.id, allDates[0])
     await runTool.asyncForEach(allDates, async (date: string) => {
       const dailyData = allDaysData[date]
       if (!dailyData) return
@@ -48,10 +44,10 @@ export const syncPrices = async (
 
       const splitMultiplier = priceLogic.getSplitMultiplier(
         splitCoefficient,
-        previousRecord,
+        latestRecord,
       )
 
-      previousRecord = await tickerDailyModel.create({
+      const createdDaily = await tickerDailyModel.create({
         tickerId: ticker.id,
         date,
         volume,
@@ -60,13 +56,16 @@ export const syncPrices = async (
         dividendAmount,
       }, transaction)
 
+      latestRecord = createdDaily
       if (!firstPriceDate) firstPriceDate = date
     })
 
+    if (!firstPriceDate || !latestRecord) return
+
     const newTickerInfo: interfaces.tickerModel.Update = {
-      lastPriceDate: lastRefreshed,
+      lastPriceDate: latestRecord.date,
     }
-    if (!ticker.firstPriceDate && firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
+    if (!ticker.firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
 
     await tickerModel.update(ticker.id, newTickerInfo, transaction)
 
@@ -82,9 +81,9 @@ export const syncAllPrices = async (date: string) => {
   const cooldown = marketAdapter.getCooldownPerMin()
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
-    const isDateSynced = ticker.lastPriceDate && ticker.lastPriceDate >= date
+    const isDateSynced = ticker.lastPriceDate && ticker?.lastPriceDate >= date
     if (isDateSynced) return
-    await syncPrices(ticker.region, ticker.symbol)
+    await syncPrices(ticker)
     await runTool.sleep(cooldown)
   })
 }
