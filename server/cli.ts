@@ -8,12 +8,21 @@ const run = async () => {
   try {
     const taskName = process.argv[2]
 
-    if (!taskEnum.Name) throw new Error('Task does not exist')
     switch (taskName) {
       case taskEnum.Name.syncTickerPrices: {
         await syncTask.syncTickerPrices()
         break
       }
+      case taskEnum.Name.syncTickerEarnings: {
+        await syncTask.syncTickerEarnings()
+        break
+      }
+      case taskEnum.Name.syncTickerIncomes: {
+        await syncTask.syncTickerIncomes()
+        break
+      }
+      default:
+        throw new Error('Task does not exist')
     }
   } catch (e) {
     console.error(`Error occured: ${e}`)
