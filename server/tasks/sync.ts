@@ -17,14 +17,16 @@ export const syncTickerPrices = async () => {
 
 export const syncTickerEarnings = async () => {
   const quarter = process.argv[3] || dateTool.getCurrentQuater()
+  const startTickerId = process.argv[4] ? parseInt(process.argv[4]) : null
   validateQuarterParam(quarter)
   const forceRecheck = process.argv[4] === 'true' || false
-  await syncTickers.syncAllEarnings(quarter, forceRecheck)
+  await syncTickers.syncAllEarnings(quarter, forceRecheck, startTickerId)
 }
 
 export const syncTickerIncomes = async () => {
   const quarter = process.argv[3] || dateTool.getCurrentQuater()
+  const startTickerId = process.argv[4] ? parseInt(process.argv[4]) : null
   validateQuarterParam(quarter)
   const forceRecheck = process.argv[4] === 'true' || false
-  await syncTickers.syncAllIncomes(quarter, forceRecheck)
+  await syncTickers.syncAllIncomes(quarter, forceRecheck, startTickerId)
 }
