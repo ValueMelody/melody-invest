@@ -34,6 +34,18 @@ export const getByUK = async (
   return monthly ? convertToRecord(monthly) : null
 }
 
+export const getRawByUK = async (
+  month: string,
+): Promise<interfaces.indicatorMonthlyModel.Record | null> => {
+  const monthly = await databaseAdapter.findOne({
+    tableName: TableName,
+    conditions: [
+      { key: 'month', value: month },
+    ],
+  })
+  return monthly
+}
+
 export const getAll = async (): Promise<
   interfaces.indicatorMonthlyModel.Record[]
 > => {

@@ -1,4 +1,5 @@
 import * as syncTickers from '../services/syncTickers'
+import * as syncIndicators from '../services/syncIndicators'
 import * as dateTool from '../tools/date'
 
 const validateDateParam = (date: string) => {
@@ -29,4 +30,8 @@ export const syncTickerIncomes = async () => {
   validateQuarterParam(quarter)
   const forceRecheck = process.argv[4] === 'true' || false
   await syncTickers.syncAllIncomes(quarter, forceRecheck, startTickerId)
+}
+
+export const syncMonthlyIndicators = async () => {
+  await syncIndicators.syncAllMonthlyIndicators()
 }

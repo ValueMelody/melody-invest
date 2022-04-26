@@ -1,12 +1,12 @@
 import * as interfaces from '@shared/interfaces'
 import * as marketAdapter from '../adapters/market'
+import * as databaseAdapter from '../adapters/database'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorMonthlyModel from '../models/indicatorMonthly'
 import * as dateTool from '../tools/date'
 import * as runTool from '../tools/run'
 import * as marketEnum from '../enums/market'
-import * as databaseAdapter from '../adapters/database'
 
 type MonthlyIndicatorType =
   typeof marketEnum.Type.FundsRate |
@@ -24,12 +24,10 @@ interface MonthlyIndicatorOptions {
   isThirtyYearsTreasury?: boolean;
 }
 
-export const syncMonthly = async (
+export const syncMonthlyIndicator = async (
   type: MonthlyIndicatorType,
   options?: MonthlyIndicatorOptions,
 ) => {
-  const initMonth = dateTool.getInitialMonth()
-
   let indicatorResult
   let indicatorKey: interfaces.indicatorMonthlyModel.IndicatorKey
 
@@ -79,30 +77,74 @@ export const syncMonthly = async (
       break
   }
 
+  const initMonth = dateTool.getInitialMonth()
+
   const transaction = await databaseAdapter.createTransaction()
+
+  let transactionUsed = false
   try {
     await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
       const month = result.date.substring(0, 7)
       if (month < initMonth) return
 
-      const currentRecord = await indicatorMonthlyModel.getByUK(month)
+      const currentRecord = await indicatorMonthlyModel.getRawByUK(month)
       if (!currentRecord) {
+        transactionUsed = true
         await indicatorMonthlyModel.create({
           month,
           [indicatorKey]: result.value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {
+        transactionUsed = true
         await indicatorMonthlyModel.update(currentRecord.id, {
           [indicatorKey]: result.value,
         }, transaction)
       }
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
   }
+}
+
+export const syncAllMonthlyIndicators = async () => {
+  const normalIndicatorTypes: MonthlyIndicatorType[] = [
+    marketEnum.Type.FundsRate,
+    marketEnum.Type.CPI,
+    marketEnum.Type.InflationExpectation,
+    marketEnum.Type.ConsumerSentiment,
+    marketEnum.Type.DurableGoods,
+    marketEnum.Type.RetailSales,
+    marketEnum.Type.UnemploymentRate,
+    marketEnum.Type.NonfarmPayroll,
+  ]
+
+  const cooldown = marketAdapter.getCooldownPerMin()
+
+  await runTool.asyncForEach(normalIndicatorTypes, async (
+    type: MonthlyIndicatorType,
+  ) => {
+    await syncMonthlyIndicator(type)
+    await runTool.sleep(cooldown)
+  })
+
+  await syncMonthlyIndicator(
+    marketEnum.Type.TreasuryYield,
+    { isThirtyYearsTreasury: true },
+  )
+
+  await runTool.sleep(cooldown)
+
+  await syncMonthlyIndicator(
+    marketEnum.Type.TreasuryYield,
+    { isTenYearsTreasury: true },
+  )
 }
 
 type QuarterlyIndicatorType = typeof marketEnum.Type.GDP

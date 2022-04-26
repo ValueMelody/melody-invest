@@ -21,11 +21,15 @@ const run = async () => {
         await syncTask.syncTickerIncomes()
         break
       }
+      case taskEnum.Name.syncMonthlyIndicators: {
+        await syncTask.syncMonthlyIndicators()
+        break
+      }
       default:
         throw new Error('Task does not exist')
     }
   } catch (e) {
-    console.error(`Error occured: ${e}`)
+    console.error(`Error occured: ${JSON.stringify(e)}`)
   } finally {
     process.exit(0)
   }
