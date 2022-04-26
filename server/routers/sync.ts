@@ -15,9 +15,6 @@ syncRouter.get('/tickers/:type/:region/:symbol', async (req, res) => {
 
   let result
   switch (type) {
-    case 'prices':
-      result = await syncTickers.syncPrices(region, symbol)
-      break
     case 'earnings':
       result = await syncTickers.syncEarnings(region, symbol, forceRecheck)
       break
@@ -33,16 +30,12 @@ syncRouter.get('/tickers/:type/:region/:symbol', async (req, res) => {
 
 syncRouter.get('/batch_tickers/:type', async (req, res) => {
   const type = req.params.type
-  const date = String(req.query.date)
   const quarter = String(req.query.quarter)
   const year = String(req.query.year)
   const forceRecheck = req.query.forceRecheck === 'true'
 
   let result
   switch (type) {
-    case 'prices':
-      result = await syncTickers.syncAllPrices(date)
-      break
     case 'earnings':
       result = await syncTickers.syncAllEarnings(year, quarter, forceRecheck)
       break

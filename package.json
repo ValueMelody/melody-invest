@@ -38,6 +38,7 @@
     "server:lint-fix": "npm run lint-fix --workspace=server",
     "server:tsc": "npm run tsc --workspace=server",
     "server:migrate": "npm run migrate --workspace=server",
+    "syncTickerPrices": "npm run cli-syncTickerPrices --workspace=server",
     "compile": "npm run compile --workspace=constants",
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
