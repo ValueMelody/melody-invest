@@ -2,7 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import * as marketEnum from '../enums/market'
 
-const BASE_URL = 'https://www.alphavantage.co/query'
+const BaseURL = 'https://www.alphavantage.co/query'
 
 export const getCooldownPerMin = (): number => {
   return parseInt(process.env.MARKET_KEY_COOLDOWN!) || 15
@@ -17,7 +17,7 @@ export const getTickerPrices = async (
     outputsize: 'full',
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   return result.data
 }
@@ -49,7 +49,7 @@ export const getTickerEarnings = async (
     symbol: symbol.toUpperCase(),
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
 
   if (result.data.Note) throw result.data
@@ -78,7 +78,7 @@ export const getTickerIncomes = async (
     symbol: symbol.toUpperCase(),
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
 
   if (result.data.Note) throw result.data
@@ -100,7 +100,7 @@ export const getRealGDP = async (
     interval: interval,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -114,7 +114,7 @@ export const getFundsRate = async (): Promise<{
     interval: 'monthly',
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -128,7 +128,7 @@ export const getCPI = async (): Promise<{
     interval: 'monthly',
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -145,7 +145,7 @@ export const getTreasuryYield = async (
     maturity: type,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -158,7 +158,7 @@ export const getInflation = async (): Promise<{
     function: marketEnum.Type.Inflation,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -171,7 +171,7 @@ export const getInflationExpectation = async (): Promise<{
     function: marketEnum.Type.InflationExpectation,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -184,7 +184,7 @@ export const getConsumerSentiment = async (): Promise<{
     function: marketEnum.Type.ConsumerSentiment,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -197,7 +197,7 @@ export const getRetailSales = async (): Promise<{
     function: marketEnum.Type.RetailSales,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -210,7 +210,7 @@ export const getDurableGoods = async (): Promise<{
     function: marketEnum.Type.DurableGoods,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -223,7 +223,7 @@ export const getUnemploymentRate = async (): Promise<{
     function: marketEnum.Type.UnemploymentRate,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -236,7 +236,7 @@ export const getNonfarmPayroll = async (): Promise<{
     function: marketEnum.Type.NonfarmPayroll,
     apikey: process.env.MARKET_KEY,
   })
-  const url = `${BASE_URL}?${queryParams}`
+  const url = `${BaseURL}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
