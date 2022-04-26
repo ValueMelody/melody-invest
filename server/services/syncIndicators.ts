@@ -80,7 +80,6 @@ export const syncMonthlyIndicator = async (
   const initMonth = dateTool.getInitialMonth()
 
   const transaction = await databaseAdapter.createTransaction()
-  console.log(indicatorResult.data)
 
   let transactionUsed = false
   try {
@@ -88,7 +87,7 @@ export const syncMonthlyIndicator = async (
       const month = result.date.substring(0, 7)
       if (month < initMonth) return
 
-      const currentRecord = await indicatorMonthlyModel.getByUK(month)
+      const currentRecord = await indicatorMonthlyModel.getRawByUK(month)
       if (!currentRecord) {
         transactionUsed = true
         await indicatorMonthlyModel.create({
