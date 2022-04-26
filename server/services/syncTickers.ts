@@ -60,16 +60,16 @@ export const syncPrices = async (
       if (!firstPriceDate) firstPriceDate = date
     })
 
-    if (!firstPriceDate || !latestRecord) return
-
-    const newTickerInfo: interfaces.tickerModel.Update = {
-      lastPriceDate: latestRecord.date,
+    if (firstPriceDate && latestRecord) {
+      const newTickerInfo: interfaces.tickerModel.Update = {
+        lastPriceDate: latestRecord.date,
+      }
+      if (!ticker.firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
+      await tickerModel.update(ticker.id, newTickerInfo, transaction)
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
     }
-    if (!ticker.firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
-
-    await tickerModel.update(ticker.id, newTickerInfo, transaction)
-
-    await transaction.commit()
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -237,6 +237,8 @@ export const syncEarnings = async (
     if (Object.keys(newTickerInfo).length) {
       await tickerModel.update(ticker.id, newTickerInfo, transaction)
       await transaction.commit()
+    } else {
+      await transaction.rollback()
     }
   } catch (error) {
     await transaction.rollback()
@@ -247,12 +249,14 @@ export const syncEarnings = async (
 export const syncAllEarnings = async (
   quarter: string,
   forceRecheck: boolean,
+  startTickerId: number | null,
 ) => {
   const year = quarter.substring(0, 4)
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
+    if (startTickerId && ticker.id < startTickerId) return
     console.info(`checking ${ticker.id}`)
     const isYearSynced = ticker.lastEPSYear && ticker.lastEPSYear >= year
     const isQuarterSynced = ticker.lastEPSQuarter && ticker.lastEPSQuarter >= quarter
@@ -410,6 +414,8 @@ export const syncIncomes = async (
     if (Object.keys(newTickerInfo).length) {
       await tickerModel.update(ticker.id, newTickerInfo, transaction)
       await transaction.commit()
+    } else {
+      await transaction.rollback()
     }
   } catch (error) {
     await transaction.rollback()
@@ -419,13 +425,15 @@ export const syncIncomes = async (
 
 export const syncAllIncomes = async (
   quarter: string,
-  forceRecheck: boolean = false,
+  forceRecheck: boolean,
+  startTickerId: number | null,
 ) => {
   const year = quarter.substring(0, 4)
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
+    if (startTickerId && ticker.id < startTickerId) return
     console.info(`checking ${ticker.id}`)
     const isYearSynced = ticker.lastIncomeYear && ticker.lastIncomeYear >= year
     const isQuarterSynced = ticker.lastIncomeQuarter && ticker.lastIncomeQuarter >= quarter
