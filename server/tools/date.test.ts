@@ -128,14 +128,14 @@ test('could get days in range', () => {
     .toEqual(['2001-03-01', '2001-03-02', '2001-03-03'])
   expect(date.getDaysInRange('2001-03-31', '2001-04-03'))
     .toEqual(['2001-03-31', '2001-04-01', '2001-04-02', '2001-04-03'])
-  expect(() => date.getDaysInRange('2000-01-02', '2000-01-01')).toThrowError()
+  expect(date.getDaysInRange('2000-01-02', '2000-01-01').length).toBe(0)
 })
 
 test('could get years in range', () => {
   expect(date.getYearsInRange('2001', '2002')).toEqual(['2001', '2002'])
   expect(date.getYearsInRange('2001', '2003')).toEqual(['2001', '2002', '2003'])
   expect(date.getYearsInRange('1999', '2002')).toEqual(['1999', '2000', '2001', '2002'])
-  expect(() => date.getDaysInRange('2001', '2000')).toThrowError()
+  expect(date.getDaysInRange('2001', '2000').length).toEqual(0)
 })
 
 test('could get quarters in range', () => {
@@ -147,7 +147,7 @@ test('could get quarters in range', () => {
     .toEqual(['2001-03', '2001-06', '2001-09', '2001-12'])
   expect(date.getQuartersInRange('2001-03', '2002-03'))
     .toEqual(['2001-03', '2001-06', '2001-09', '2001-12', '2002-03'])
-  expect(() => date.getQuartersInRange('2000-06', '2000-03')).toThrowError()
+  expect(date.getQuartersInRange('2000-06', '2000-03').length).toEqual(0)
 })
 
 test('could get day number', () => {
@@ -167,7 +167,7 @@ test('could get duration count', () => {
   expect(date.getDurationCount('2022-01-31', '2022-02-02')).toEqual(2)
   expect(date.getDurationCount('2022-01-31', '2022-02-11')).toEqual(11)
   expect(date.getDurationCount('2022-01-31', '2022-03-01')).toEqual(29)
-  expect(() => date.getQuartersInRange('2000-06-02', '2000-06-01')).toThrowError()
+  expect(date.getQuartersInRange('2000-06-02', '2000-06-01').length).toEqual(0)
 })
 
 test('could check if it is nearby quarter', () => {

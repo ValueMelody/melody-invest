@@ -9,7 +9,9 @@
     "migrate": "knex migrate:latest",
     "lint": "eslint ./ --ext .ts",
     "lint-fix": "eslint --fix ./ --ext .ts",
-    "cli-syncTickerPrices": "ts-node cli syncTickerPrices"
+    "cli-syncTickerPrices": "ts-node cli syncTickerPrices",
+    "cli-syncTickerIncomes": "ts-node cli syncTickerIncomes",
+    "cli-syncTickerEarnings": "ts-node cli syncTickerEarnings"
   },
   "dependencies": {
     "@shared/constants": "*",

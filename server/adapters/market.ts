@@ -22,12 +22,12 @@ export const getTickerPrices = async (
   return result.data
 }
 
-interface AnnualEarning {
+export interface AnnualEarning {
   fiscalDateEnding: string;
   reportedEPS: string;
 }
 
-interface quarterlyEarning {
+export interface QuarterlyEarning {
   fiscalDateEnding: string;
   reportedDate: string;
   reportedEPS: string;
@@ -38,7 +38,7 @@ interface quarterlyEarning {
 
 interface TickerEarnings {
   annualEarnings: AnnualEarning[];
-  quarterlyEarnings: quarterlyEarning[];
+  quarterlyEarnings: QuarterlyEarning[];
 }
 
 export const getTickerEarnings = async (
@@ -56,7 +56,7 @@ export const getTickerEarnings = async (
   return result.data
 }
 
-interface Income {
+export interface Income {
   fiscalDateEnding: string;
   grossProfit: string;
   totalRevenue: string;

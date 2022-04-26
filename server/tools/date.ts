@@ -115,7 +115,6 @@ export const getNextQuarter = (
 export const getDaysInRange = (
   startDate: string, endDate: string,
 ): string[] => {
-  if (startDate >= endDate) throw new Error('startDate must earlier than endDate')
   const days = []
   for (let date = startDate; date <= endDate; date = getNextDate(date)) {
     days.push(date)
@@ -126,7 +125,6 @@ export const getDaysInRange = (
 export const getYearsInRange = (
   startYear: string, endYear: string,
 ): string[] => {
-  if (startYear >= endYear) throw new Error('startYear must earlier than endYear')
   const years = []
   for (let year = startYear; year <= endYear; year = getNextYear(year)) {
     years.push(year)
@@ -137,7 +135,6 @@ export const getYearsInRange = (
 export const getQuartersInRange = (
   startQuarter: string, endQuarter: string,
 ): string[] => {
-  if (startQuarter >= endQuarter) throw new Error('startQuarter must earlier than endQuarter')
   const quarters = []
   for (let quarter = startQuarter; quarter <= endQuarter; quarter = getNextQuarter(quarter)) {
     quarters.push(quarter)
