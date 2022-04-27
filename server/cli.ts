@@ -3,6 +3,7 @@ import { initConnection as initCache } from './adapters/cache'
 import * as runTool from './tools/run'
 import * as taskEnum from './enums/task'
 import * as syncTask from './tasks/sync'
+import * as calcTask from './tasks/calc'
 
 const run = async () => {
   try {
@@ -31,6 +32,18 @@ const run = async () => {
       }
       case taskEnum.Name.syncYearlyIndicators: {
         await syncTask.syncYearlyIndicators()
+        break
+      }
+      case taskEnum.Name.calcPriceMovements: {
+        await calcTask.calcPriceMovements()
+        break
+      }
+      case taskEnum.Name.calcFinancialMovements: {
+        await calcTask.calcFinancialMovements()
+        break
+      }
+      case taskEnum.Name.calcIndicatorMovements: {
+        await calcTask.calcIndicatorMovements()
         break
       }
       default:

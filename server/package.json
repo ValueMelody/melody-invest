@@ -9,12 +9,15 @@
     "migrate": "knex migrate:latest",
     "lint": "eslint ./ --ext .ts",
     "lint-fix": "eslint --fix ./ --ext .ts",
-    "cli-syncTickerPrices": "ts-node cli syncTickerPrices",
-    "cli-syncTickerIncomes": "ts-node cli syncTickerIncomes",
-    "cli-syncTickerEarnings": "ts-node cli syncTickerEarnings",
-    "cli-syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators",
-    "cli-syncQuarterlyIndicators": "ts-node cli syncQuarterlyIndicators",
-    "cli-syncYearlyIndicators": "ts-node cli syncYearlyIndicators"
+    "syncTickerPrices": "ts-node cli syncTickerPrices",
+    "syncTickerIncomes": "ts-node cli syncTickerIncomes",
+    "syncTickerEarnings": "ts-node cli syncTickerEarnings",
+    "syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators",
+    "syncQuarterlyIndicators": "ts-node cli syncQuarterlyIndicators",
+    "syncYearlyIndicators": "ts-node cli syncYearlyIndicators",
+    "calcPriceMovements": "ts-node cli calcPriceMovements",
+    "calcFinancialMovements": "ts-node cli calcFinancialMovements",
+    "calcIndicatorMovements": "ts-node cli calcIndicatorMovements"
   },
   "dependencies": {
     "@shared/constants": "*",

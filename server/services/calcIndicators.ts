@@ -10,6 +10,7 @@ export const calcYearly = async () => {
   const indicators = await indicatorYearlyModel.getAll()
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
   try {
     const checkedYearly: interfaces.indicatorYearlyModel.Record[] = []
     await runTool.asyncForEach(indicators, async (
@@ -46,6 +47,7 @@ export const calcYearly = async () => {
 
       let updatedYearly = indicator
       if (hasUpdate) {
+        transactionUsed = true
         updatedYearly = await indicatorYearlyModel.update(indicator.id, {
           inflationYearlyIncrease: inflationIncrease,
           inflationYearlyDecrease: inflationDecrease,
@@ -56,7 +58,11 @@ export const calcYearly = async () => {
       checkedYearly.push(updatedYearly)
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -67,6 +73,7 @@ export const calcQuarterly = async () => {
   const indicators = await indicatorQuarterlyModel.getAll()
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
   try {
     await runTool.asyncForEach(indicators, async (
       indicator: interfaces.indicatorQuarterlyModel.Record, index: number,
@@ -99,6 +106,7 @@ export const calcQuarterly = async () => {
         yoyChangePercent !== indicator.gdpQuarterlyYoYChangePercent
 
       if (hasUpdate) {
+        transactionUsed = true
         await indicatorQuarterlyModel.update(indicator.id, {
           gdpQuarterlyChangePercent: changePercent ? changePercent.toFixed(2) : null,
           gdpQuarterlyYoYChangePercent: yoyChangePercent ? yoyChangePercent.toFixed(2) : null,
@@ -106,7 +114,11 @@ export const calcQuarterly = async () => {
       }
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -117,6 +129,7 @@ export const calcMonthly = async () => {
   const indicators = await indicatorMonthlyModel.getAll()
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
   try {
     const checkedMonthly: interfaces.indicatorMonthlyModel.Record[] = []
     await runTool.asyncForEach(indicators, async (
@@ -286,6 +299,7 @@ export const calcMonthly = async () => {
 
       let updatedIndicator = indicator
       if (hasUpdate) {
+        transactionUsed = true
         updatedIndicator = await indicatorMonthlyModel.update(indicator.id, {
           fundsRateMonthlyIncrease: fundsRateIncrease,
           fundsRateMonthlyDecrease: fundsRateDecrease,
@@ -312,7 +326,11 @@ export const calcMonthly = async () => {
       checkedMonthly.push(updatedIndicator)
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
