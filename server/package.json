@@ -15,7 +15,9 @@
     "syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators",
     "syncQuarterlyIndicators": "ts-node cli syncQuarterlyIndicators",
     "syncYearlyIndicators": "ts-node cli syncYearlyIndicators",
-    "calcPriceMovements": "ts-node cli calcPriceMovements"
+    "calcPriceMovements": "ts-node cli calcPriceMovements",
+    "calcFinancialMovements": "ts-node cli calcFinancialMovements",
+    "calcIndicatorMovements": "ts-node cli calcIndicatorMovements"
   },
   "dependencies": {
     "@shared/constants": "*",

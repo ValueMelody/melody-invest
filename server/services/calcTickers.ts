@@ -208,10 +208,12 @@ export const calcAllTickersPriceMovement = async () => {
 }
 
 const calcTickerQuarterlyFinancial = async (tickerId: number) => {
+  console.info(`checking ${tickerId}`)
   const tickerQuarterlyRecords = await tickerQuarterlyModel.getAll(tickerId)
   if (!tickerQuarterlyRecords.length) return
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
   try {
     const checkedQuarterly: interfaces.tickerQuarterlyModel.Record[] = []
     await runTool.asyncForEach(tickerQuarterlyRecords, async (
@@ -272,6 +274,8 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
         tickerQuarterly.incomeQuarterlyIncrease !== incomeQuarterlyIncrease ||
         tickerQuarterly.incomeQuarterlyDecrease !== incomeQuarterlyDecrease
 
+      if (hasUpdate) transactionUsed = true
+
       const quarterly = hasUpdate
         ? await tickerQuarterlyModel.update(tickerQuarterly.id, {
           epsQuarterlyBeat,
@@ -288,7 +292,11 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
       checkedQuarterly.push(quarterly)
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -303,10 +311,12 @@ export const calcAllTickersQuarterlyFinancial = async () => {
 }
 
 const calcTickerYearlyFinancial = async (tickerId: number) => {
+  console.info(`checking ${tickerId}`)
   const tickerYearlyRecords = await tickerYearlyModel.getAll(tickerId)
   if (!tickerYearlyRecords.length) return
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
   try {
     const checkedYearly: interfaces.tickerYearlyModel.Record[] = []
     await runTool.asyncForEach(tickerYearlyRecords, async (
@@ -355,6 +365,8 @@ const calcTickerYearlyFinancial = async (tickerId: number) => {
         tickerYearly.incomeYearlyIncrease !== incomeYearlyIncrease ||
         tickerYearly.incomeYearlyDecrease !== incomeYearlyDecrease
 
+      if (hasUpdate) transactionUsed = true
+
       const yearly = hasUpdate
         ? await tickerYearlyModel.update(tickerYearly.id, {
           revenueYearlyIncrease,
@@ -369,7 +381,11 @@ const calcTickerYearlyFinancial = async (tickerId: number) => {
       checkedYearly.push(yearly)
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
