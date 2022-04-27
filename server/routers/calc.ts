@@ -2,7 +2,6 @@ import { Router } from 'express'
 import * as calcTickers from '../services/calcTickers'
 import * as calcTraders from '../services/calcTraders'
 import * as calcTraderPatterns from '../services/calcTraderPatterns'
-import * as calcIndicators from '../services/calcIndicators'
 
 const calcRouter = Router()
 export default calcRouter
