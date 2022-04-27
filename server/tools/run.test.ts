@@ -6,7 +6,7 @@ describe('#sleep', () => {
     await run.sleep(0.5)
     const end = new Date()
     expect(500 - end.getTime() + start.getTime()).toBeLessThanOrEqual(1)
-  
+
     const start1 = new Date()
     await run.sleep(0.2)
     const end1 = new Date()
