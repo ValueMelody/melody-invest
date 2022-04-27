@@ -87,7 +87,7 @@ export const syncMonthlyIndicator = async (
       const month = result.date.substring(0, 7)
       if (month < initMonth) return
 
-      const currentRecord = await indicatorMonthlyModel.getRawByUK(month)
+      const currentRecord = await indicatorMonthlyModel.getByUK(month)
       if (!currentRecord) {
         transactionUsed = true
         await indicatorMonthlyModel.create({
@@ -166,6 +166,8 @@ export const syncQuarterly = async (
   }
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
+
   try {
     await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
       const reportAt = result.date.substring(0, 7)
@@ -186,19 +188,25 @@ export const syncQuarterly = async (
 
       const currentRecord = await indicatorQuarterlyModel.getByUK(quarter)
       if (!currentRecord) {
+        transactionUsed = true
         await indicatorQuarterlyModel.create({
           quarter,
           reportMonth: reportAt,
           [indicatorKey]: result.value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {
+        transactionUsed = true
         await indicatorQuarterlyModel.update(currentRecord.id, {
           [indicatorKey]: result.value,
         }, transaction)
       }
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -234,6 +242,8 @@ export const syncYearly = async (
   }
 
   const transaction = await databaseAdapter.createTransaction()
+  let transactionUsed = false
+
   try {
     await runTool.asyncForEach(indicatorResult.data, async (result: any) => {
       const year = result.date.substring(0, 4)
@@ -245,20 +255,36 @@ export const syncYearly = async (
 
       const currentRecord = await indicatorYearlyModel.getByUK(year)
       if (!currentRecord) {
+        transactionUsed = true
         await indicatorYearlyModel.create({
           year,
           [indicatorKey]: value,
         }, transaction)
       } else if (currentRecord && !currentRecord[indicatorKey]) {
+        transactionUsed = true
         await indicatorYearlyModel.update(currentRecord.id, {
           [indicatorKey]: value,
         }, transaction)
       }
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
   }
+}
+
+export const syncAllYearlyIndicators = async () => {
+  const cooldown = marketAdapter.getCooldownPerMin()
+
+  await syncYearly(marketEnum.Type.Inflation, { valueLength: 5 })
+
+  await runTool.sleep(cooldown)
+
+  await syncYearly(marketEnum.Type.GDP)
 }

@@ -3,4 +3,6 @@ export const Name = Object.freeze({
   syncTickerIncomes: 'syncTickerIncomes',
   syncTickerEarnings: 'syncTickerEarnings',
   syncMonthlyIndicators: 'syncMonthlyIndicators',
+  syncQuarterlyIndicators: 'syncQuarterlyIndicators',
+  syncYearlyIndicators: 'syncYearlyIndicators',
 })
