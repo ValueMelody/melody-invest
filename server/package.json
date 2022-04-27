@@ -12,7 +12,9 @@
     "cli-syncTickerPrices": "ts-node cli syncTickerPrices",
     "cli-syncTickerIncomes": "ts-node cli syncTickerIncomes",
     "cli-syncTickerEarnings": "ts-node cli syncTickerEarnings",
-    "cli-syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators"
+    "cli-syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators",
+    "cli-syncQuarterlyIndicators": "ts-node cli syncQuarterlyIndicators",
+    "cli-syncYearlyIndicators": "ts-node cli syncYearlyIndicators"
   },
   "dependencies": {
     "@shared/constants": "*",

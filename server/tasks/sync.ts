@@ -1,6 +1,7 @@
 import * as syncTickers from '../services/syncTickers'
 import * as syncIndicators from '../services/syncIndicators'
 import * as dateTool from '../tools/date'
+import * as marketEnum from '../enums/market'
 
 const validateDateParam = (date: string) => {
   if (!date || date.length !== 10) throw new Error('no date or wrong date provided')
@@ -34,4 +35,12 @@ export const syncTickerIncomes = async () => {
 
 export const syncMonthlyIndicators = async () => {
   await syncIndicators.syncAllMonthlyIndicators()
+}
+
+export const syncQuarterlyIndicators = async () => {
+  await syncIndicators.syncQuarterly(marketEnum.Type.GDP)
+}
+
+export const syncYearlyIndicators = async () => {
+  await syncIndicators.syncAllYearlyIndicators()
 }

@@ -25,6 +25,14 @@ const run = async () => {
         await syncTask.syncMonthlyIndicators()
         break
       }
+      case taskEnum.Name.syncQuarterlyIndicators: {
+        await syncTask.syncQuarterlyIndicators()
+        break
+      }
+      case taskEnum.Name.syncYearlyIndicators: {
+        await syncTask.syncYearlyIndicators()
+        break
+      }
       default:
         throw new Error('Task does not exist')
     }
