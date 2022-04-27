@@ -37,7 +37,7 @@ const EnvDetail = () => {
   // ------------------------------------------------------------ State --
 
   const {
-    getTopTraderProfiles, fetchTraderEnv, fetchTopProfiles, deleteWatchedEnv,
+    getTopTraderProfiles, fetchTopProfiles, deleteWatchedEnv,
   } = useTraderState()
   const { getTickerIdentity } = useTickerState()
   const { getUser } = useUserState()
@@ -70,12 +70,6 @@ const EnvDetail = () => {
     if (!envId) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-
-  vendorTool.react.useEffect(() => {
-    if (!envId || traderEnv) return
-    fetchTraderEnv(envId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [traderEnv])
 
   vendorTool.react.useEffect(() => {
     if (!envId || topTraderProfiles) return

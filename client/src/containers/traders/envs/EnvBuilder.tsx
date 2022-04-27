@@ -8,14 +8,17 @@ import useTraderState from '../../../states/useTraderState'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
-    width: 400,
+    width: 620,
     marginBottom: '2rem',
   },
   confirmButton: {
     marginTop: '2rem !important',
   },
+  input: {
+    width: 420,
+  },
   dropdown: {
-    width: 205,
+    width: 200,
   },
 }))
 
@@ -34,8 +37,23 @@ const getDateFromString = (date: PlainDate): Date => {
   return new Date(date.year, date.month - 1, date.day)
 }
 
+const getMaxYear = () => {
+  const date = new Date()
+  const year = date.getFullYear()
+  return {
+    year: year + 1, month: 6, day: 1,
+  }
+}
+
+const MonthOptions = [
+  { text: '01-01', value: '01-01' },
+  { text: '06-01', value: '06-01' },
+]
+
 const initialDate = parseDateString(constants.Trader.Initial.Date)
 const minDate = getDateFromString(initialDate)
+const maxYear = getMaxYear()
+const maxDate = getDateFromString(maxYear)
 
 const EnvBuilder = () => {
   const classes = useStyles()
@@ -46,7 +64,8 @@ const EnvBuilder = () => {
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
 
-  const [startDate, setStartDate] = vendorTool.react.useState(constants.Trader.Initial.Date)
+  const [startYear, setStartYear] = vendorTool.react.useState(constants.Trader.Initial.Date.substring(0, 4))
+  const [startMonth, setStartMonth] = vendorTool.react.useState('01-01')
   const [tickerIds, setTickerIds] = vendorTool.react.useState<number[] | null>(null)
   const [envName, setEnvName] = vendorTool.react.useState('')
 
@@ -58,17 +77,25 @@ const EnvBuilder = () => {
     key: identity.id,
     text: identity.name,
     value: identity.id,
+    symbol: identity.symbol,
   }))
 
-  const date = parseDateString(startDate)
+  const date = parseDateString(`${startYear}-${startMonth}`)
   const selectedDate = getDateFromString(date)
 
   // ------------------------------------------------------------ Handler --
 
-  const handleChangeStartDate = (date: Date | null) => {
+  const handleChangeStartYear = (date: Date | null) => {
     if (!date) return
-    const selected = date.toISOString().slice(0, 10)
-    setStartDate(selected)
+    const selected = date.toISOString().slice(0, 4)
+    setStartYear(selected)
+  }
+
+  const handleSelectStartMonth = (
+    e: vendorTool.react.SyntheticEvent,
+    data: vendorTool.ui.DropdownProps,
+  ) => {
+    setStartMonth(typeof data.value === 'string' ? data.value : '')
   }
 
   const handleToggleAllTickers = () => {
@@ -93,11 +120,22 @@ const EnvBuilder = () => {
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    const result = await createTraderEnv(envName, startDate, tickerIds)
-    if (result) {
-      const link = routerTool.dashboardRoute()
+    const envId = await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
+    if (envId) {
+      const link = routerTool.envDetailRoute(envId)
       navigate(link)
     }
+  }
+
+  const handleSearch = (
+    options: vendorTool.ui.DropdownItemProps[],
+    value: string,
+  ) => {
+    const formattedValue = value.trim().toUpperCase()
+    return selectableTickers.filter((option) => {
+      const label = option.text.toUpperCase()
+      return label.includes(formattedValue) || option.symbol.includes(formattedValue)
+    })
   }
 
   // ------------------------------------------------------------ UI --
@@ -112,14 +150,25 @@ const EnvBuilder = () => {
         title={localeTool.t('envBuilder.startDateDesc')}
       >
         <h5><b>{localeTool.t('envBuilder.startDate')}:</b></h5>
-        <div>
-          <vendorTool.DatePicker
-            minDate={minDate}
-            selected={selectedDate}
-            onChange={handleChangeStartDate}
-            dateFormat='yyyy-MM-dd'
-            customInput={<vendorTool.ui.Input />}
-            showYearDropdown
+        <div className={vendorTool.classNames('row-between', classes.input)}>
+          <div className={classes.dropdown}>
+            <vendorTool.DatePicker
+              minDate={minDate}
+              maxDate={maxDate}
+              selected={selectedDate}
+              onChange={handleChangeStartYear}
+              showYearPicker
+              dateFormat='yyyy'
+              customInput={<vendorTool.ui.Input />}
+              className={classes.dropdown}
+            />
+          </div>
+          <vendorTool.ui.Dropdown
+            selection
+            className={classes.dropdown}
+            value={startMonth}
+            onChange={handleSelectStartMonth}
+            options={MonthOptions}
           />
         </div>
       </section>
@@ -141,9 +190,9 @@ const EnvBuilder = () => {
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
           <vendorTool.ui.Dropdown
-            className={classes.dropdown}
+            className={classes.input}
             multiple
-            search
+            search={handleSearch}
             selection
             value={tickerIds}
             onChange={handleSelectTickers}
@@ -154,6 +203,7 @@ const EnvBuilder = () => {
       <section className={vendorTool.classNames('row-between', classes.row)}>
         <RequiredLabel title={localeTool.t('envBuilder.name')} />
         <vendorTool.ui.Input
+          className={classes.input}
           value={envName}
           onChange={handleChangeName}
         />
