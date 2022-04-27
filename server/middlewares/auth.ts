@@ -23,7 +23,7 @@ export const guestOrUser = (req: Request, res: Response, next: NextFunction) => 
 
 export const normalUser = (req: Request, res: Response, next: NextFunction) => {
   const auth = getAuth(req)
-  if (!auth) throw errorEnum.Default.Forbidden
+  if (!auth) throw errorEnum.Default.Unauthorized
   req.body.auth = auth
   next()
 }

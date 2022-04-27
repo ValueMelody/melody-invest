@@ -133,7 +133,7 @@ const useTraderState = () => {
     if (!isSame) {
       store.setResources((resources) => ({
         ...resources,
-        userTraderEnvs: [...resources.userTraderEnvs, env],
+        userTraderEnvs: [env, ...resources.userTraderEnvs],
       }))
     }
   }
@@ -249,19 +249,6 @@ const useTraderState = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeTickerDetail(traderEnvId, tickerId, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const fetchTraderEnv = async (id: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${id}`
-    store.startLoading()
-    try {
-      const env = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderEnv(env)
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -395,7 +382,6 @@ const useTraderState = () => {
     fetchProfileDetail,
     fetchBehaviorDetail,
     fetchTickerDetail,
-    fetchTraderEnv,
     fetchTopProfiles,
     createTraderProfile,
     createTraderEnv,

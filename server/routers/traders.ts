@@ -170,7 +170,6 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
   const { name, startDate, tickerIds }: interfaces.request.TraderEnvCreation = req.body
   const parsedName = name?.trim()
   validateCreateEnvParams(parsedName, startDate, tickerIds)
-
   const auth: interfaces.request.Auth = req.body.auth
 
   const traderEnv = await crudTraders.createTraderEnv(
