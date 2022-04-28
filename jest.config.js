@@ -9,4 +9,5 @@ module.exports = {
     './constants/**/*.{ts,tsx}',
   ],
   setupFiles: ['dotenv/config'],
+  globalSetup: './jest.setup.ts',
 }
