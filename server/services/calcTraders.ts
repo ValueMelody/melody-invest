@@ -173,9 +173,13 @@ const calcTraderPerformance = async (
       tradeDate = nextDate
     }
 
-    if (hasCreatedAnyRecord) await transaction.commit()
+    if (hasCreatedAnyRecord) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
-    if (hasCreatedAnyRecord) await transaction.rollback()
+    await transaction.rollback()
     throw error
   }
 
@@ -221,7 +225,7 @@ const calcTraderPerformance = async (
   }
 }
 
-export const calcAllTradersPerformance = async (forceRecheck: boolean) => {
+export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
   const traders = await traderModel.getActives()
 
   await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {

@@ -6,21 +6,6 @@ import * as calcTraderPatterns from '../services/calcTraderPatterns'
 const calcRouter = Router()
 export default calcRouter
 
-calcRouter.get('/tickers/daily_available', async (req, res) => {
-  const forceRecheck = req.query.forceRecheck === 'true'
-  await calcTickers.calcDailyAvailableTickers(forceRecheck)
-
-  return res.status(200).send({ success: true })
-})
-
-calcRouter.get('/traders/performance', async (req, res) => {
-  const forceRecheck = req.query.forceRecheck === 'true'
-
-  const result = await calcTraders.calcAllTradersPerformance(forceRecheck)
-
-  return res.status(200).send({ result })
-})
-
 calcRouter.get('/traders/descendants', async (req, res) => {
   const result = await calcTraders.calcAllEnvDescendants()
 

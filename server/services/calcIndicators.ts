@@ -125,7 +125,7 @@ export const calcQuarterly = async () => {
   }
 }
 
-export const calcMonthly = async () => {
+export const calcMonthly = async (forceRecheck: boolean) => {
   const indicators = await indicatorMonthlyModel.getAll()
 
   const transaction = await databaseAdapter.createTransaction()
@@ -135,7 +135,8 @@ export const calcMonthly = async () => {
     await runTool.asyncForEach(indicators, async (
       indicator: interfaces.indicatorMonthlyModel.Record,
     ) => {
-      const hasValidValues = indicator.fundsRateMonthlyIncrease !== null &&
+      const hasValidValues = !forceRecheck &&
+        indicator.fundsRateMonthlyIncrease !== null &&
         indicator.fundsRateMonthlyDecrease !== null &&
         indicator.thirtyYearsTreasuryMonthlyIncrease !== null &&
         indicator.thirtyYearsTreasuryMonthlyDecrease !== null &&
