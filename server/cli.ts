@@ -46,6 +46,14 @@ const run = async () => {
         await calcTask.calcIndicatorMovements()
         break
       }
+      case taskEnum.Name.calcDailyTickers: {
+        await calcTask.calcDailyTickers()
+        break
+      }
+      case taskEnum.Name.calcTraderPerformances: {
+        await calcTask.calcTraderPerformances()
+        break
+      }
       default:
         throw new Error('Task does not exist')
     }

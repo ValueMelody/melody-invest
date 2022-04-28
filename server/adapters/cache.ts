@@ -30,3 +30,8 @@ export const set = async (
   const cacheAge = ms(age) / 1000
   return cache.set(key, value, 'EX', cacheAge)
 }
+
+export const empty = async () => {
+  const cache = getConnection()
+  await cache.flushall()
+}

@@ -8,4 +8,6 @@ export const Name = Object.freeze({
   calcPriceMovements: 'calcPriceMovements',
   calcFinancialMovements: 'calcFinancialMovements',
   calcIndicatorMovements: 'calcIndicatorMovements',
+  calcDailyTickers: 'calcDailyTickers',
+  calcTraderPerformances: 'calcTraderPerformances',
 })

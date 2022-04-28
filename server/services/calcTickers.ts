@@ -9,6 +9,7 @@ import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
 import * as indicatorYearlyModel from '../models/indicatorYearly'
 import * as dailyTickersModel from '../models/dailyTickers'
 import * as databaseAdapter from '../adapters/database'
+import * as cacheAdapter from '../adapters/cache'
 import * as runTool from '../tools/run'
 import * as dateTool from '../tools/date'
 
@@ -530,5 +531,9 @@ export const calcDailyAvailableTickers = async (
     }
 
     targetDate = nextDate
+  }
+
+  if (forceRecheck) {
+    await cacheAdapter.empty()
   }
 }
