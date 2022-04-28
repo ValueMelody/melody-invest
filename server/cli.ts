@@ -52,6 +52,7 @@ const run = async () => {
       }
       case taskEnum.Name.calcTraderPerformances: {
         await calcTask.calcTraderPerformances()
+        break
       }
       default:
         throw new Error('Task does not exist')
