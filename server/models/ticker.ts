@@ -29,6 +29,18 @@ export const getAll = async (): Promise<interfaces.tickerModel.Record[]> => {
   return tickers
 }
 
+export const create = async (
+  values: interfaces.tickerModel.Create,
+  transaction: Knex.Transaction,
+): Promise<interfaces.tickerModel.Record> => {
+  const ticker = await databaseAdapter.create({
+    tableName: TableName,
+    values,
+    transaction,
+  })
+  return ticker
+}
+
 export const update = async (
   tickerId: number,
   values: interfaces.tickerModel.Update,

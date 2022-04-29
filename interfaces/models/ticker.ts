@@ -6,6 +6,13 @@ export interface Identity {
   tickerCategoryId: number | null;
 }
 
+export interface Create {
+  symbol: string;
+  region: string;
+  name: string;
+  tickerCategoryId: number | null;
+}
+
 export interface Record extends Identity {
   firstPriceDate: string | null;
   lastPriceDate: string | null;

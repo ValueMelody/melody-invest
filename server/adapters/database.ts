@@ -57,6 +57,17 @@ interface Destroy {
 
 let _db: Knex | null = null
 
+export const initTestConnection = (): pgmem.IMemoryDb => {
+  const db = pgmem.newDb()
+  db.public.registerFunction({
+    name: 'gen_random_uuid',
+    returns: DataType.uuid,
+    implementation: () => randomUUID(),
+  })
+  _db = db.adapters.createKnex()
+  return db
+}
+
 export const initConnection = () => {
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,
@@ -64,18 +75,7 @@ export const initConnection = () => {
   })
 }
 
-export const initTestConnection = () => {
-  const testDB = pgmem.newDb()
-  testDB.public.registerFunction({
-    name: 'gen_random_uuid',
-    returns: DataType.uuid,
-    implementation: () => randomUUID(),
-  })
-  _db = testDB.adapters.createKnex()
-}
-
 export const getConnection = (): Knex => {
-  console.log(_db)
   if (!_db) initConnection()
   return _db!
 }
