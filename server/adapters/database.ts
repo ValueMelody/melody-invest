@@ -64,7 +64,7 @@ export const initTestConnection = (): pgmem.IMemoryDb => {
     returns: DataType.uuid,
     implementation: () => randomUUID(),
   })
-  _db = db.adapters.createKnex()
+  _db = db.adapters.createKnex(0)
   return db
 }
 
