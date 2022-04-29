@@ -25,13 +25,13 @@ beforeAll(async () => {
     directory: './server/migrations/test-tables',
     name: 'ticker.js',
   })
-  await connection.migrate.up({
+  await connection.seed.run({
     directory: './server/migrations/test-seeds',
-    name: 'ticker_category.js',
+    specific: 'ticker_category.js',
   })
-  await connection.migrate.up({
+  await connection.seed.run({
     directory: './server/migrations/test-seeds',
-    name: 'ticker.js',
+    specific: 'ticker.js',
   })
 })
 
@@ -88,18 +88,18 @@ describe('#update', () => {
     const info = {
       firstPriceDate: '2001-01-01',
       lastPriceDate: '2002-02-02',
-      firstEPSYear: '2003-03-03',
-      lastEPSYear: '2004-04-04',
+      firstEPSYear: '2003',
+      lastEPSYear: '2004',
       firstEPSQuarter: '2005-03',
       lastEPSQuarter: '2005-06',
-      firstIncomeYear: '2006-06-06',
-      lastIncomeYear: '2005-05-05',
+      firstIncomeYear: '2006',
+      lastIncomeYear: '2005',
       firstIncomeQuarter: '2007-07',
       lastIncomeQuarter: '2008-12',
     }
     const result = await ticker.update(3, info, transaction)
     await transaction.commit()
-    const basic = { symbol: 'GOOG', region: 'US', name: 'Google' }
+    const basic = { symbol: 'GOOG', region: 'US', name: 'Google', tickerCategoryId: null }
     expect(result).toStrictEqual({ id: 3, ...info, ...basic })
     const record = await ticker.getByUK('US', 'GOOG')
     expect(record).toStrictEqual({ id: 3, ...info, ...basic })

@@ -1,4 +1,4 @@
-exports.up = (knex) => {
+exports.seed = (knex) => {
   return knex('ticker_category').insert([
     { name: 'Tec', desc: 'Tech' },
     { name: 'Hardware', desc: 'haredware' },
