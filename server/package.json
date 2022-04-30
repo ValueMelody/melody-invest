@@ -19,7 +19,9 @@
     "calcFinancialMovements": "ts-node cli calcFinancialMovements",
     "calcIndicatorMovements": "ts-node cli calcIndicatorMovements",
     "calcDailyTickers": "ts-node cli calcDailyTickers",
-    "calcTraderPerformances": "ts-node cli calcTraderPerformances"
+    "calcTraderPerformances": "ts-node cli calcTraderPerformances",
+    "calcTraderDescendants": "ts-node cli calcTraderDescendants",
+    "calcTraderAccessHashs": "ts-node cli calcTraderAccessHashs"
   },
   "dependencies": {
     "@shared/constants": "*",

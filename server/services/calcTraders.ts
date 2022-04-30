@@ -7,6 +7,7 @@ import * as traderHoldingModel from '../models/traderHolding'
 import * as tickerHolderModel from '../models/tickerHolder'
 import * as dailyTickersModel from '../models/dailyTickers'
 import * as dateTool from '../tools/date'
+import * as generateTool from '../tools/generate'
 import * as runTool from '../tools/run'
 import * as patternLogic from '../logics/pattern'
 import * as transactionLogic from '../logics/transaction'
@@ -233,13 +234,16 @@ export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
   })
 }
 
-const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel.Record[]) => {
+const calcEnvDescendants = async (
+  envId: number,
+  traders: interfaces.traderModel.Record[],
+) => {
   const couples = patternLogic.groupPatternCouples(traders)
   const patternHashs: string[] = []
 
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const newTraders = await runTool.asyncForEach(couples, async (
+    await runTool.asyncForEach(couples, async (
       couple: interfaces.traderModel.Record[],
     ) => {
       const firstTrader = couple[0]
@@ -250,9 +254,11 @@ const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel
       const secondPattern = await traderPatternModel.getByPK(secondTrader.traderPatternId)
 
       const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
-      const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
-      patternHashs.push(patternOne.hashCode)
-      await traderModel.createOrActive(envId, patternOne.id, transaction)
+      if (!patternHashs.includes(childOne.hashCode)) {
+        const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
+        patternHashs.push(patternOne.hashCode)
+        await traderModel.createOrActive(envId, patternOne.id, transaction)
+      }
 
       const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childTwo.hashCode)) {
@@ -284,7 +290,6 @@ const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel
     })
 
     await transaction.commit()
-    return newTraders
   } catch (error) {
     await transaction.rollback()
     throw error
@@ -294,11 +299,45 @@ const calcEnvDescendants = async (envId: number, traders: interfaces.traderModel
 export const calcAllEnvDescendants = async () => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+    console.info(`checking ${env.id}`)
     const tops = await traderModel.getTops(30, { envId: env.id })
     const topTraders = [
-      ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter, ...tops.pastMonth, ...tops.pastWeek,
+      ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter,
+      ...tops.pastMonth, ...tops.pastWeek,
     ]
-    if (!topTraders.length) return
+    if (topTraders.length <= 30) {
+      const defaultTops = await traderModel.getTops(30, { envId: 1 })
+      topTraders.push(
+        ...defaultTops.yearly,
+        ...defaultTops.pastYear,
+        ...defaultTops.pastQuarter,
+        ...defaultTops.pastMonth,
+        ...defaultTops.pastWeek,
+      )
+    }
     await calcEnvDescendants(env.id, topTraders)
   })
+}
+
+export const calcTraderAccessHashs = async () => {
+  const patterns = await traderPatternModel.getAll()
+  const traders = await traderModel.getAll()
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await runTool.asyncForEach(patterns, async (pattern: interfaces.traderPatternModel.Record) => {
+      const hashCode = patternLogic.getPatternHashCode(pattern)
+      await traderPatternModel.update(pattern.id, { hashCode }, transaction)
+    })
+
+    await runTool.asyncForEach(traders, async (pattern: interfaces.traderModel.Record) => {
+      const accessCode = generateTool.buildAccessHash(16)
+      await traderModel.update(pattern.id, { accessCode }, transaction)
+    })
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }

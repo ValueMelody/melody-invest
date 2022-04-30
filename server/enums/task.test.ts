@@ -13,5 +13,7 @@ describe('#Name', () => {
     expect(task.Name.calcIndicatorMovements).toBeDefined()
     expect(task.Name.calcDailyTickers).toBeDefined()
     expect(task.Name.calcTraderPerformances).toBeDefined()
+    expect(task.Name.calcTraderDescendants).toBeDefined()
+    expect(task.Name.calcTraderAccessHashs).toBeDefined()
   })
 })
