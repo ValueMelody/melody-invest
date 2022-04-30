@@ -3,7 +3,6 @@ import 'express-async-errors'
 import cors from 'cors'
 import { initConnection as initDatabase } from './adapters/database'
 import { initConnection as initCache } from './adapters/cache'
-import calcRouter from './routers/calc'
 import systemRouter from './routers/system'
 import usersRouter from './routers/users'
 import tradersRouter from './routers/traders'
@@ -21,7 +20,6 @@ app.use(express.urlencoded({ extended: true }))
 initDatabase()
 initCache()
 
-app.use('/calc', calcRouter)
 app.use('/system', systemRouter)
 app.use('/users', usersRouter)
 app.use('/traders', tradersRouter)
