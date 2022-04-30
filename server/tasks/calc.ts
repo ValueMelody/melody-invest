@@ -28,3 +28,11 @@ export const calcTraderPerformances = async () => {
   const forceRecheck = process.argv[3] === 'true' || false
   await calcTraders.calcAllTraderPerformances(forceRecheck)
 }
+
+export const calcTraderDescendants = async () => {
+  await calcTraders.calcAllEnvDescendants()
+}
+
+export const calcTraderAccessHashs = async () => {
+  await calcTraders.calcTraderAccessHashs()
+}

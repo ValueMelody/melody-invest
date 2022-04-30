@@ -10,4 +10,6 @@ export const Name = Object.freeze({
   calcIndicatorMovements: 'calcIndicatorMovements',
   calcDailyTickers: 'calcDailyTickers',
   calcTraderPerformances: 'calcTraderPerformances',
+  calcTraderDescendants: 'calcTraderDescendants',
+  calcTraderAccessHashs: 'calcTraderAccessHashs',
 })
