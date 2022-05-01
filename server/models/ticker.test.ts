@@ -79,6 +79,8 @@ describe('#getByUK', () => {
       tickerCategoryId: 1,
       ...emptyProps,
     })
+    const empty = await ticker.getByUK('US', 'RANDOM')
+    expect(empty).toBe(null)
   })
 })
 
