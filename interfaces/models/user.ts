@@ -19,7 +19,7 @@ export interface Create {
 }
 
 export interface Update {
-  activationCode?: string;
-  activationSentAt?: Date;
+  activationCode?: string | null;
+  activationSentAt?: Date | null;
   password?: string;
 }
