@@ -8,5 +8,6 @@ module.exports = {
     './server/**/*.{ts,tsx}',
     './constants/**/*.{ts,tsx}',
   ],
+  testPathIgnorePatterns: ['/dist/'],
   setupFiles: ['dotenv/config'],
 }
