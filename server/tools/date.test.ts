@@ -31,7 +31,8 @@ describe('#getCurrentDate', () => {
     const month = (today.getMonth() + 1).toString()
     const parsedMonth = month.length === 1 ? `0${month}` : month
     const day = today.getDate()
-    expect(date.getCurrentDate()).toEqual(`${year}-${parsedMonth}-${day}`)
+    const dayPadding = day < 10 ? '0' : ''
+    expect(date.getCurrentDate()).toEqual(`${year}-${parsedMonth}-${dayPadding}${day}`)
   })
 })
 
