@@ -131,6 +131,8 @@
     "envBuilder.targetTickers": "Target Stocks",
     "envBuilder.targetTickersDesc": "Only trade selected stocks",
     "envBuilder.name": "Environment Name",
+    "envBuilder.duplicatedName": "You have another environment use the same name.",
+    "envBuilder.duplicatedEnv": "You have another environment use the same setup.",
 
     "traderEnv.startAt": "Start from {{date}}",
     "traderEnv.allTickers": "Trade based on all stocks available",
