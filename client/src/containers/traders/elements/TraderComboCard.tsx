@@ -17,12 +17,10 @@ const useStyles = vendorTool.jss.createUseStyles((
 
 const TraderComboCard = ({
   traderCombo,
-  traderEnv,
   isActive,
   onClick,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
-  traderEnv: interfaces.traderEnvModel.Record | null;
   isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
@@ -37,7 +35,7 @@ const TraderComboCard = ({
 
   // ------------------------------------------------------------ UI --
 
-  if (!traderCombo || !traderEnv) return null
+  if (!traderCombo) return null
 
   return (
     <vendorTool.ui.Card
@@ -53,9 +51,6 @@ const TraderComboCard = ({
               <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
             </div>
           )}
-        />
-        <vendorTool.ui.Card.Meta
-          content={`${localeTool.t('common.env')}: ${traderEnv.name}`}
         />
         <vendorTool.ui.Card.Description
           content={parseTool.traderComboTraders(traderCombo)}

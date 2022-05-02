@@ -320,13 +320,12 @@ const useTraderState = () => {
 
   const createTraderCombo = async (
     name: string,
-    traderEnvId: number,
     traderIds: number[],
   ) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos`
     store.startLoading()
     const reqs: interfaces.request.TraderComboCreation = {
-      name, traderEnvId, traderIds,
+      name, traderIds,
     }
     try {
       const combo: interfaces.traderComboModel.Identity = await requestAdapter.sendPostRequest(

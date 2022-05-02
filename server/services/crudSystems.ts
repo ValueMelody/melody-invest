@@ -12,10 +12,11 @@ import buildHoldingValueStats from './shared/buildHoldingValueStats'
 import buildComboEntities from './shared/buildComboEntities'
 
 const getSystemTopTraderCombo = async (
+  traderEnvId: number,
   combo: interfaces.traderComboModel.Identity,
   total: number,
 ): Promise<interfaces.response.ComboProfile> => {
-  const topTraders = await traderModel.getTopPerformancers(combo.traderEnvId, total, 'yearlyPercentNumber')
+  const topTraders = await traderModel.getTopPerformancers(traderEnvId, total, 'yearlyPercentNumber')
   const { traderProfiles, holdings } = await buildComboEntities(topTraders)
   const latestDate = await dailyTickersModel.getLatestDate()
   const startDate = holdings.length ? holdings[holdings.length - 1].date : latestDate
@@ -49,16 +50,14 @@ const getSystemTopTraderCombo = async (
 const SystemCombos: interfaces.traderComboModel.Identity[] = [
   {
     id: -1,
-    name: 'systemCombo.default10',
+    name: 'systemCombo.default5',
     isSystem: true,
-    traderEnvId: 1,
     traderIds: [],
   },
   {
     id: -2,
-    name: 'systemCombo.bigTech10',
+    name: 'systemCombo.bigTech5',
     isSystem: true,
-    traderEnvId: 2,
     traderIds: [],
   },
 ]
@@ -70,12 +69,12 @@ const getSystemTraderCombos = async (): Promise<
     combo: interfaces.traderComboModel.Identity,
   ) => {
     switch (combo.name) {
-      case 'systemCombo.default10': {
-        const comboProfile = await getSystemTopTraderCombo(combo, 10)
+      case 'systemCombo.default5': {
+        const comboProfile = await getSystemTopTraderCombo(1, combo, 5)
         return comboProfile
       }
-      case 'systemCombo.bigTech10': {
-        const comboProfile = await getSystemTopTraderCombo(combo, 10)
+      case 'systemCombo.bigTech5': {
+        const comboProfile = await getSystemTopTraderCombo(2, combo, 5)
         return comboProfile
       }
       default:

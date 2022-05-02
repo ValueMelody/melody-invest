@@ -80,18 +80,14 @@ const TopCombos = () => {
   return (
     <section className='column-start'>
       <header className={vendorTool.classNames('row-start', classes.header)}>
-        {systemCombos.map((combo) => {
-          const env = user.userTraderEnvs.find((env) => env.id === combo.identity.traderEnvId) || null
-          return (
+        {systemCombos.map((combo) => (
             <TraderComboCard
               key={combo.identity.id}
               traderCombo={combo.identity}
-              traderEnv={env}
               isActive={combo.identity.id === focusedComboId}
               onClick={handleClickCombo}
             />
-          )
-        })}
+        ))}
       </header>
       <section className={pageClasses.root}>
         <section className={pageClasses.main}>

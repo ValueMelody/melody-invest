@@ -130,17 +130,13 @@ const ProfileDashboard = () => {
           content={localeTool.t('dashboard.watchedCombos')}
         />
         <section className={vendorTool.classNames('row-center', classes.card)}>
-          {userCombos.map((combo) => {
-            const env = user.userTraderEnvs.find((env) => env.id === combo.identity.traderEnvId) || null
-            return (
-              <TraderComboCard
-                key={combo.identity.id}
-                traderCombo={combo.identity}
-                traderEnv={env}
-                onClick={handleClickCombo}
-              />
-            )
-          })}
+          {userCombos.map((combo) => (
+            <TraderComboCard
+              key={combo.identity.id}
+              traderCombo={combo.identity}
+              onClick={handleClickCombo}
+            />
+          ))}
           <vendorTool.ui.Button
             icon
             labelPosition='left'

@@ -11,6 +11,5 @@ export interface TraderEnvCreation {
 
 export interface TraderComboCreation {
   name: string;
-  traderEnvId: number;
   traderIds: number[];
 }

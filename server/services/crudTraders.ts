@@ -67,6 +67,16 @@ export const verifyUserToTraderEnv = async (
   }
 }
 
+export const verifyUserToTraderIds = async (
+  userId: number,
+  traderIds: number[],
+) => {
+  const followed = await traderFollowerModel.getUserFollowed(userId)
+  const followedIds = followed.map((follow) => follow.traderId)
+  const allContained = traderIds.every((traderId) => followedIds.includes(traderId))
+  if (!allContained) throw errorEnum.Default.Forbidden
+}
+
 export const verifyUserToTraderCombo = async (
   userId: number, traderComboId: number,
 ) => {
@@ -269,7 +279,6 @@ export const createTraderEnv = async (
 export const createTraderCombo = async (
   userId: number,
   name: string,
-  traderEnvId: number,
   traderIds: number[],
 ): Promise<interfaces.traderComboModel.Identity> => {
   const traderIdsAsString = generateTool.sortNumsToString(traderIds)
@@ -277,7 +286,6 @@ export const createTraderCombo = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     const combo = await traderComboModel.createIfEmpty({
-      traderEnvId,
       traderIds: traderIdsAsString,
     }, transaction)
 
