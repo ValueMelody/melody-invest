@@ -54,7 +54,6 @@ const ComboDetail = () => {
 
   const comboId = params.comboId ? parseInt(params.comboId) : null
   const matchedCombo = user.comboProfiles.find((combo) => combo.identity.id === comboId)
-  const matchedEnv = user.userTraderEnvs.find((env) => env.id === matchedCombo?.identity.traderEnvId)
 
   const holdings = matchedCombo?.detail?.holdings || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
@@ -85,7 +84,7 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!matchedCombo || !matchedEnv) return null
+  if (!matchedCombo) return null
 
   return (
     <section className={pageClasses.root}>
@@ -93,7 +92,6 @@ const ComboDetail = () => {
         <div className={vendorTool.classNames(classes.combo, 'row-around')}>
           <TraderComboCard
             traderCombo={matchedCombo.identity}
-            traderEnv={matchedEnv}
             isActive
           />
         </div>

@@ -138,16 +138,16 @@ describe('#profileName', () => {
 describe('#traderComboName', () => {
   test('could parse trader combo name', () => {
     expect(parseTool.traderComboName({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
+      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [],
     })).toBe(localeTool.t('systemCombo.-1'))
     expect(parseTool.traderComboName({
-      id: 1, isSystem: true, name: '', traderEnvId: 1, traderIds: [],
+      id: 1, isSystem: true, name: '', traderIds: [],
     })).toBe('')
     expect(parseTool.traderComboName({
-      id: 1, isSystem: false, name: 'test1', traderEnvId: 1, traderIds: [],
+      id: 1, isSystem: false, name: 'test1', traderIds: [],
     })).toBe('test1')
     expect(parseTool.traderComboName({
-      id: 1, isSystem: false, name: 'test2', traderEnvId: 1, traderIds: [],
+      id: 1, isSystem: false, name: 'test2', traderIds: [],
     })).toBe('test2')
   })
 })
@@ -155,10 +155,10 @@ describe('#traderComboName', () => {
 describe('#traderComboTraders', () => {
   test('could parse trader combo selected traders', () => {
     expect(parseTool.traderComboTraders({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [],
+      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [],
     })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 0 }))
     expect(parseTool.traderComboTraders({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderEnvId: 1, traderIds: [1, 2],
+      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [1, 2],
     })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 2 }))
   })
 })

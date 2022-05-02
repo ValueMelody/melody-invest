@@ -64,8 +64,8 @@
     "topCombos.title": "Top Combos",
     "topCombos.history": "Recent Holding History",
 
-    "systemCombo.default10": "Top10 Combined",
-    "systemCombo.bigTech10": "Top10 Combined",
+    "systemCombo.default5": "Top 5 in Default Env",
+    "systemCombo.bigTech5": "Top5 in Top Tech Env",
 
     "tickerList.categories": "Stock Categories",
 
@@ -117,6 +117,8 @@
     "comboBuilder.selectProfiles": "Select Profiles for your combo",
     "comboBuilder.minTraderRequired": "At least 2 profiles required",
     "comboBuilder.noEnoughProfiles": "Please add at lease 2 profiles to your watch list for this environment first!",
+    "comboBuilder.duplicatedName": "You have another combo use the same name.",
+    "comboBuilder.duplicatedCombo": "You have another combo use the same setup.",
 
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
     "traderCombo.history": "Holding History",
