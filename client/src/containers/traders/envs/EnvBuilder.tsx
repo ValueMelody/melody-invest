@@ -5,6 +5,7 @@ import * as routerTool from '../../../tools/router'
 import RequiredLabel from '../../elements/RequiredLabel'
 import useTickerState from '../../../states/useTickerState'
 import useTraderState from '../../../states/useTraderState'
+import useUserState from '../../../states/useUserState'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
@@ -63,13 +64,16 @@ const EnvBuilder = () => {
 
   const { getTickerIdentities } = useTickerState()
   const { createTraderEnv } = useTraderState()
+  const { getUser } = useUserState()
+  const user = getUser()
 
-  const [startYear, setStartYear] = vendorTool.react.useState(constants.Trader.Initial.Date.substring(0, 4))
+  const [startYear, setStartYear] = vendorTool.react.useState('')
   const [startMonth, setStartMonth] = vendorTool.react.useState('01-01')
   const [tickerIds, setTickerIds] = vendorTool.react.useState<number[] | null>(null)
   const [envName, setEnvName] = vendorTool.react.useState('')
 
-  const hasValidName = !!envName.trim()
+  const parsedEnvName = envName.trim().toLowerCase()
+  const hasValidName = !!parsedEnvName
   const hasValidTickers = !tickerIds || !!tickerIds.length
 
   const tickerIdentities = getTickerIdentities()
@@ -80,8 +84,18 @@ const EnvBuilder = () => {
     symbol: identity.symbol,
   }))
 
-  const date = parseDateString(`${startYear}-${startMonth}`)
-  const selectedDate = getDateFromString(date)
+  const dateString = `${startYear}-${startMonth}`
+  const date = startYear ? parseDateString(dateString) : null
+  const selectedDate = date ? getDateFromString(date) : null
+
+  const hasDuplicatedName = user.userTraderEnvs.some((env) => env.name?.toLowerCase() === parsedEnvName)
+  const hasDuplicatedEnv = user.userTraderEnvs.some((env) => {
+    const currentIds = env.tickerIds ? env.tickerIds.join(',') : null
+    const buildIds = tickerIds ? tickerIds.join(',') : null
+    return dateString === env.startDate && currentIds === buildIds
+  })
+
+  const couldCreate = hasValidName && hasValidTickers && !hasDuplicatedName && !hasDuplicatedEnv
 
   // ------------------------------------------------------------ Handler --
 
@@ -208,13 +222,23 @@ const EnvBuilder = () => {
           onChange={handleChangeName}
         />
       </section>
+      {hasDuplicatedName && (
+        <vendorTool.ui.Message negative>
+          {localeTool.t('envBuilder.duplicatedName')}
+        </vendorTool.ui.Message>
+      )}
+      {hasDuplicatedEnv && (
+        <vendorTool.ui.Message negative>
+          {localeTool.t('envBuilder.duplicatedEnv')}
+        </vendorTool.ui.Message>
+      )}
       <form onSubmit={handleSubmit}>
         <div className='row-around'>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
             className={classes.confirmButton}
-            disabled={!hasValidName || !hasValidTickers}
+            disabled={!couldCreate}
           >
             {localeTool.t('common.confirmAndWatch')}
           </vendorTool.ui.Button>
