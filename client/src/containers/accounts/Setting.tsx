@@ -1,5 +1,6 @@
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
+import * as routerTool from '../../tools/router'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
@@ -17,13 +18,14 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const Setting = () => {
   const classes = useStyles()
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
   usePrivateGuard()
 
   const { classes: accountClasses, getPasswordError } = useAccountInterface()
-  const { getUser, updateUserPassword } = useUserState()
+  const { getUser, updateUserPassword, removeUserToken } = useUserState()
   const { addMessage, clearMessages } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
@@ -74,6 +76,12 @@ const Setting = () => {
     updateUserPassword(parsedCurrentPassword, parsedNewPassword)
   }
 
+  const handleSignOut = () => {
+    removeUserToken()
+    const url = routerTool.signInRoute()
+    navigate(url)
+  }
+
   // ------------------------------------------------------------ UI --
 
   return (
@@ -119,6 +127,9 @@ const Setting = () => {
           </div>
         </form>
       </vendorTool.ui.Segment>
+      <vendorTool.ui.Button onClick={handleSignOut}>
+        {localeTool.t('setting.signOut')}
+      </vendorTool.ui.Button>
     </div>
   )
 }

@@ -38,7 +38,7 @@ const useStore = () => {
   const [topTraderProfiles, setTopTraderProfiles] = vendorTool.react.useState<context.TopTraderProfiles>({})
 
   const loadUserType = (type: number) => {
-    setCommon((state) => ({ ...state, userType: type }))
+    setResources((state) => ({ ...state, userType: type }))
   }
 
   const startLoading = () => {

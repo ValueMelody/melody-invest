@@ -4,7 +4,11 @@ import * as localeTool from '../tools/locale'
 vendorTool.request.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://127.0.0.1:3100'
 
 export const setJWTToken = (token: string) => {
-  vendorTool.request.defaults.headers.common.Authorization = `Bearer ${token}`
+  if (!token) {
+    vendorTool.request.defaults.headers.common.Authorization = ''
+  } else {
+    vendorTool.request.defaults.headers.common.Authorization = `Bearer ${token}`
+  }
 }
 
 export const sendGetRequest = async (endpoint: string) => {

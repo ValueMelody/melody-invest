@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import { context, Context } from './context'
 import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
@@ -61,6 +62,21 @@ const useUserState = () => {
       }
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
+  }
+
+  // ------------------------------------------------------------ Remove --
+
+  const removeUserToken = () => {
+    store.setResources((resources) => ({
+      ...resources,
+      userType: constants.User.Type.Guest,
+      userTraderIds: [],
+      userTraderEnvs: resources.userTraderEnvs.filter((env) => env.isSystem),
+      comboProfiles: resources.comboProfiles.filter((combo) => combo.identity.isSystem),
+    }))
+    requestAdapter.setJWTToken('')
+    storageAdapter.remove(storageAdapter.Key.JWTToken)
+    storageAdapter.remove(storageAdapter.Key.UserType)
   }
 
   // ------------------------------------------------------------ Fetch --
@@ -137,6 +153,7 @@ const useUserState = () => {
   // ------------------------------------------------------------ export --
 
   return {
+    removeUserToken,
     getUser,
     fetchUserOverall,
     createUser,

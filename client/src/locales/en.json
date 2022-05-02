@@ -34,13 +34,14 @@
     "error.password.requireUpper": "Password must include at least 1 upper case letter!",
     "error.password.requireLower": "Password must include at least 1 lower case letter!",
     "error.password.requireSymbol": "Password must include at least 1 symbol!",
-    "error.guest": "Please login first!",
+    "error.guest": "Please sign in first!",
     "error.500": "Something went wrong, please try again later",
-    "error.401": "Authentication expired, please login again",
+    "error.401": "Authentication expired, please sign in again",
 
     "setting.title": "User Account",
     "setting.changePassword": "Change Password",
     "setting.passwordUpdated": "Password Updated!",
+    "setting.signOut": "Sign Out",
 
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
