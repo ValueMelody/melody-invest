@@ -38,11 +38,9 @@ export interface TopTraderProfiles {
 }
 
 export interface SystemDefaults {
-  comboProfiles: ComboProfile[];
   traderEnvs: traderEnvModel.Record[];
   tickerIdentities: tickerModel.Identity[];
   tickerCategories: tickerCategoryModel.Record[];
-  topTraderProfiles: TopTraderProfiles;
 }
 
 export interface UserOverall {

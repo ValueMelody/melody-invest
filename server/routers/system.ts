@@ -6,6 +6,16 @@ export default systemRouter
 
 // ------------------------------------------------------------ Get --
 
+systemRouter.get('/top-trader-profiles', async (req, res) => {
+  const tops = await crudSystems.getTopTraderProfiles()
+  return res.status(200).send(tops)
+})
+
+systemRouter.get('/top-trader-combos', async (req, res) => {
+  const tops = await crudSystems.getTopTraderCombos()
+  return res.status(200).send(tops)
+})
+
 systemRouter.get('/defaults', async (req, res) => {
   const defaults = await crudSystems.getDefaults()
   return res.status(200).send(defaults)

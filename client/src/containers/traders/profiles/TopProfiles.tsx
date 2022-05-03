@@ -1,5 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import useTraderState from '../../../states/useTraderState'
+import useRequest from '../../../states/useRequest'
 import usePageStyles from '../../hooks/usePageStyles'
 import * as commonEnum from '../../../enums/common'
 import * as vendorTool from '../../../tools/vendor'
@@ -15,6 +16,7 @@ const TopProfiles = () => {
   // ------------------------------------------------------------ State --
 
   const { getTopTraderProfiles, getTraderProfile } = useTraderState()
+  const { fetchSystemTopTraderProfiles } = useRequest()
   const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
   const topTraderProfiles = getTopTraderProfiles(commonEnum.Config.OverallEnvId)
@@ -53,6 +55,14 @@ const TopProfiles = () => {
   ]
 
   const focusedTop = topOptions.find((option) => option.value === focusType)
+
+  // ------------------------------------------------------------ Effect --
+
+  vendorTool.react.useEffect(() => {
+    if (topTraderProfiles) return
+    fetchSystemTopTraderProfiles()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [topTraderProfiles])
 
   // ------------------------------------------------------------ Handler --
 

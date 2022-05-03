@@ -99,18 +99,26 @@ export const getDefaults = async (): Promise<
     tickerCategoryId: ticker.tickerCategoryId,
   }))
 
-  const combos = await getSystemTraderCombos()
-
   const categories = await tickerCategoryModel.getAll()
-
-  const topTraders = await traderModel.getTops(5)
-  const topTraderProfiles = await buildTopTraderProfiles(topTraders)
 
   return {
     tickerIdentities,
     traderEnvs: systemTraderEnvs,
-    comboProfiles: combos,
     tickerCategories: categories,
-    topTraderProfiles,
   }
+}
+
+export const getTopTraderProfiles = async (): Promise<
+  interfaces.response.TopTraderProfiles
+> => {
+  const topTraders = await traderModel.getTops(5)
+  const topTraderProfiles = await buildTopTraderProfiles(topTraders)
+  return topTraderProfiles
+}
+
+export const getTopTraderCombos = async (): Promise<
+  interfaces.response.ComboProfile[]
+> => {
+  const combos = await getSystemTraderCombos()
+  return combos
 }

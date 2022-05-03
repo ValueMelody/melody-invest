@@ -28,6 +28,7 @@
     "common.sinceStart": "Since start",
     "common.daysTrends": "{{num}} Days Trends",
     "common.yearsTrends": "{{num}} Years Trends",
+    "common.noResultYet": "There's no result generated yet",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
