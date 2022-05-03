@@ -90,7 +90,12 @@ const calcTraderPerformance = async (
         continue
       }
 
-      const availableTargets = dailyTickers.tickers
+      const emptyDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
+      const availableTargets = env.tickerIds
+        ? env.tickerIds.reduce((tickers, tickerId) => ({
+          ...tickers, [tickerId]: dailyTickers.tickers[tickerId],
+        }), emptyDailyTickers)
+        : dailyTickers.tickers
 
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
       const items = holding ? holding.items : []
