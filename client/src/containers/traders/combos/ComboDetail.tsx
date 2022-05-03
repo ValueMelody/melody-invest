@@ -84,7 +84,7 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!matchedCombo) return null
+  if (!matchedCombo?.detail) return null
 
   return (
     <section className={pageClasses.root}>

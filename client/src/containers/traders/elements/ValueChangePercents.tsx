@@ -39,7 +39,7 @@ const ValueChangePercents = ({
   if (!hasValue) {
     return (
       <vendorTool.ui.Message compact>
-        {localeTool.t('profile.noResultYet')}
+        {localeTool.t('common.noResultYet')}
       </vendorTool.ui.Message>
     )
   }

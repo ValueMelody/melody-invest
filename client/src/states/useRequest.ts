@@ -69,10 +69,10 @@ const useRequest = () => {
     })
   }
 
-  const storeSystemDefaults = (
-    systemDefaults: interfaces.response.SystemDefaults,
+  const storeTopTraderCombos = (
+    comboProfiles: interfaces.response.ComboProfile[],
   ) => {
-    const comboTraderProfiles = systemDefaults.comboProfiles.reduce((allTraderProfiles, combo) => {
+    const comboTraderProfiles = comboProfiles.reduce((allTraderProfiles, combo) => {
       const traderProfiles = groupTraderProfilesForStore(combo.detail.profiles)
       return {
         ...allTraderProfiles,
@@ -81,18 +81,28 @@ const useRequest = () => {
     }, {})
     store.setTraderProfiles((profiles) => ({ ...profiles, ...comboTraderProfiles }))
 
-    storeTopTraderProfiles(commonEnum.Config.OverallEnvId, systemDefaults.topTraderProfiles)
-
-    const parsedEnvs = systemDefaults.traderEnvs.map((env) => ({
-      ...env,
-      name: parseTool.traderEnvName(env),
-    }))
-    const parsedCombos = systemDefaults.comboProfiles.map((combo) => ({
+    const parsedCombos = comboProfiles.map((combo) => ({
       ...combo,
       identity: {
         ...combo.identity,
         name: parseTool.traderComboName(combo.identity),
       },
+    }))
+    store.setResources((resources) => ({
+      ...resources,
+      comboProfiles: [
+        ...resources.comboProfiles,
+        ...parsedCombos,
+      ],
+    }))
+  }
+
+  const storeSystemDefaults = (
+    systemDefaults: interfaces.response.SystemDefaults,
+  ) => {
+    const parsedEnvs = systemDefaults.traderEnvs.map((env) => ({
+      ...env,
+      name: parseTool.traderEnvName(env),
     }))
     const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
       ...identities,
@@ -119,10 +129,6 @@ const useRequest = () => {
         ...resources.userTraderEnvs,
         ...parsedEnvs,
       ],
-      comboProfiles: [
-        ...resources.comboProfiles,
-        ...parsedCombos,
-      ],
     }))
   }
 
@@ -134,6 +140,32 @@ const useRequest = () => {
     try {
       const defaults = await requestAdapter.sendGetRequest(endpoint)
       storeSystemDefaults(defaults)
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const fetchSystemTopTraderProfiles = async () => {
+    const endpoint = `${routerEnum.Endpoint.Systems}/top-trader-profiles`
+    store.startLoading()
+    try {
+      const topProfiles = await requestAdapter.sendGetRequest(endpoint)
+      storeTopTraderProfiles(commonEnum.Config.OverallEnvId, topProfiles)
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const fetchSystemTopTraderCombos = async () => {
+    const endpoint = `${routerEnum.Endpoint.Systems}/top-trader-combos`
+    store.startLoading()
+    try {
+      const combos = await requestAdapter.sendGetRequest(endpoint)
+      storeTopTraderCombos(combos)
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -158,6 +190,8 @@ const useRequest = () => {
 
   return {
     fetchSystemDefaults,
+    fetchSystemTopTraderProfiles,
+    fetchSystemTopTraderCombos,
     fetchComboDetail,
   }
 }

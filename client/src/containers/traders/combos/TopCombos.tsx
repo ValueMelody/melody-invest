@@ -3,6 +3,7 @@ import * as interfaces from '@shared/interfaces'
 import useCommonState from '../../../states/useCommonState'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
+import useRequest from '../../../states/useRequest'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -41,6 +42,7 @@ const TopCombos = () => {
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
   const { getTraderProfile } = useTraderState()
 
+  const { fetchSystemTopTraderCombos } = useRequest()
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
 
@@ -57,6 +59,14 @@ const TopCombos = () => {
   }) || []
 
   const comboHoldings = focusedCombo?.detail?.holdings || []
+
+  // ------------------------------------------------------------ Effect --
+
+  vendorTool.react.useEffect(() => {
+    if (focusedCombo) return
+    fetchSystemTopTraderCombos()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusedCombo])
 
   // ------------------------------------------------------------ Handler --
 
