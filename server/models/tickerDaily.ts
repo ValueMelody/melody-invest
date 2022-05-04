@@ -75,10 +75,10 @@ export const getNearestPricesByDate = async (
 
   const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
     tableName: TableName,
-    orderBy: [{ column: 'tickerId', order: 'asc' }, { column: 'date', order: 'desc' }],
-    groupBy: [
-      `${TableName}.id`,
-      `${TableName}.tickerId`,
+    select: ['tickerId', 'closePrice', 'splitMultiplier'],
+    orderBy: [
+      { column: 'tickerId', order: 'asc' },
+      { column: 'date', order: 'desc' },
     ],
     conditions: [
       { key: 'date', value: date, type: '<=' },

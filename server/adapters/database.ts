@@ -1,5 +1,5 @@
 import knex, { Knex } from 'knex'
-import pgmem, { DataType } from 'pg-mem'
+import pgMem, { DataType } from 'pg-mem'
 import * as errorEnum from '../enums/error'
 import * as adapterEnum from '../enums/adapter'
 import { randomUUID } from 'crypto'
@@ -57,8 +57,8 @@ interface Destroy {
 
 let _db: Knex | null = null
 
-export const initTestConnection = (): pgmem.IMemoryDb => {
-  const db = pgmem.newDb()
+export const initTestConnection = (): pgMem.IMemoryDb => {
+  const db = pgMem.newDb()
   db.public.registerFunction({
     name: 'gen_random_uuid',
     returns: DataType.uuid,

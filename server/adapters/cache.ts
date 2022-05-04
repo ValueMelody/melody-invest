@@ -1,7 +1,12 @@
 import Redis from 'ioredis'
+import RedisMock from 'ioredis-mock'
 import ms from 'ms'
 
 let _cache: Redis.Redis | null = null
+
+export const initTestConnection = () => {
+  _cache = new RedisMock()
+}
 
 export const initConnection = () => {
   _cache = new Redis({
