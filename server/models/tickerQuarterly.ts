@@ -96,7 +96,8 @@ export const getPublishedByDate = async (
 }
 
 export const create = async (
-  values: interfaces.tickerQuarterlyModel.Create, transaction: Knex.Transaction,
+  values: interfaces.tickerQuarterlyModel.Create,
+  transaction: Knex.Transaction,
 ): Promise<interfaces.tickerQuarterlyModel.Record> => {
   const newRecord = await databaseAdapter.create({
     tableName: TableName,
