@@ -260,7 +260,6 @@ describe('#getPublishedByDate', () => {
     expect(result4[1].id).toBe(4)
 
     const result5 = await tickerQuarterly.getPublishedByDate('2023-03-31')
-    console.log(result5)
     expect(result5.length).toBe(0)
   })
 })
