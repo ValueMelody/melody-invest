@@ -129,3 +129,14 @@ describe('#sortNumsToString', () => {
     expect(generate.sortNumsToString([3, 1, 2])).toBe('1,2,3')
   })
 })
+
+describe('#buildEmail', () => {
+  test('could build email', () => {
+    expect(generate.buildEmail('userActivation')).toContain('<!DOCTYPE html>')
+    expect(generate.buildEmail('userActivation')).toContain('{{{title}}}')
+    expect(generate.buildEmail('userActivation')).toContain('{{{content}}}')
+    expect(generate.buildEmail('userActivation')).toContain('{{{desc}}}')
+    expect(generate.buildEmail('userActivation')).toContain('{{{link}}}')
+    expect(generate.buildEmail('userActivation')).toContain('{{{buttonTitle}}}')
+  })
+})

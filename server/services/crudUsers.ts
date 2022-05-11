@@ -11,6 +11,7 @@ import * as traderComboModel from '../models/traderCombo'
 import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
 import * as errorEnum from '../enums/error'
+import * as emailEnum from '../enums/email'
 import * as traderLogic from '../logics/trader'
 
 export const getUserOverall = async (
@@ -56,6 +57,14 @@ export const getUserOverall = async (
     traderCombos,
     email: user.email,
   }
+}
+
+const generateEmail = async (
+  user: interfaces.userModel.Record,
+) => {
+  const content = generateTool.generateEmail(
+    emailEnum.Type.UserActivation,
+  )
 }
 
 export const createUser = async (

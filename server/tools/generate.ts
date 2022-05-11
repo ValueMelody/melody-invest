@@ -1,8 +1,11 @@
-import * as interfaces from '@shared/interfaces'
+import fs from 'fs'
+import path from 'path'
 import jwt from 'jsonwebtoken'
 import sha256 from 'crypto-js/sha256'
 import sha512 from 'crypto-js/sha512'
 import md5 from 'crypto-js/md5'
+import * as interfaces from '@shared/interfaces'
+import * as emailEnum from '../enums/email'
 
 export const toSHA256 = (content: string): string => {
   return sha256(content).toString()
@@ -72,4 +75,15 @@ export const sortNumsToString = (
   ids: number[],
 ): string => {
   return ids.sort((a, b) => a - b).join(',')
+}
+
+type EmailTypeKey = keyof typeof emailEnum.Type
+type EmailTypeValue = typeof emailEnum.Type[EmailTypeKey]
+
+export const buildEmail = (
+  type: EmailTypeValue,
+): string => {
+  const location = path.resolve(__dirname, `../templates/${type}.html`)
+  const template = fs.readFileSync(location, { encoding: 'utf-8' })
+  return template
 }
