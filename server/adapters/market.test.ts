@@ -1,15 +1,5 @@
 import * as market from './market'
 
-describe('#getEnv', () => {
-  test('could get env', () => {
-    expect(market.getEnv()).toStrictEqual({
-      key: 'demo',
-      cooldownSeconds: 5,
-      baseUrl: 'https://www.alphavantage.co/query',
-    })
-  })
-})
-
 describe('#getCooldownPerMin', () => {
   test('could get cooldown per min', () => {
     expect(market.getCooldownPerMin()).toBe(5)

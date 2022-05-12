@@ -1,23 +1,16 @@
 import Redis from 'ioredis'
 import RedisMock from 'ioredis-mock'
 import ms from 'ms'
+import * as adapterEnum from '../enums/adapter'
 
 let _cache: Redis.Redis | null = null
-
-export const getEnv = () => {
-  return {
-    host: process.env.CACHE_HOST!,
-    port: parseInt(process.env.CACHE_PORT!),
-  }
-}
 
 export const initTestConnection = () => {
   _cache = new RedisMock()
 }
 
 export const initConnection = () => {
-  const env = getEnv()
-  _cache = new Redis(env)
+  _cache = new Redis(adapterEnum.CacheConfig.Connection)
 }
 
 const getConnection = (): Redis.Redis => {

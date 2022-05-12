@@ -8,15 +8,6 @@ afterAll(async () => {
   await cache.empty()
 })
 
-describe('#getEnv', () => {
-  test('could getEnv', () => {
-    expect(cache.getEnv()).toStrictEqual({
-      host: '127.0.0.1',
-      port: 6379,
-    })
-  })
-})
-
 describe('#initConnection', () => {
   test('have defined', () => {
     expect(cache.initConnection).toBeDefined()
