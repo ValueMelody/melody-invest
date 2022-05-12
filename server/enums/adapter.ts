@@ -15,6 +15,7 @@ export const DatabaseConfig = Object.freeze({
 
 export const DatabaseTable = Object.freeze({
   User: 'user',
+  Email: 'email',
   Ticker: 'ticker',
   TickerDaily: 'ticker_daily',
   TickerYearly: 'ticker_yearly',

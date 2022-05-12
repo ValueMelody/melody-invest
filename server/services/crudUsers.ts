@@ -1,7 +1,9 @@
+import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as databaseAdapter from '../adapters/database'
 import * as userModel from '../models/user'
+import * as emailModel from '../models/email'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
 import * as traderEnvFollowerModel from '../models/traderEnvFollower'
@@ -10,6 +12,7 @@ import * as traderFollowerModel from '../models/traderFollower'
 import * as traderComboModel from '../models/traderCombo'
 import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
+import * as localeTool from '../tools/locale'
 import * as errorEnum from '../enums/error'
 import * as emailEnum from '../enums/email'
 import * as traderLogic from '../logics/trader'
@@ -59,12 +62,28 @@ export const getUserOverall = async (
   }
 }
 
-const generateEmail = async (
+export const generateEmail = async (
   user: interfaces.userModel.Record,
+  transaction: Knex.Transaction,
 ) => {
-  const content = generateTool.generateEmail(
-    emailEnum.Type.UserActivation,
+  const link = `${process.env.CLIENT_TYPE}://${process.env.CLIENT_HOST}/activation/${user.activationCode}`
+  const options = [
+    { label: 'title', value: localeTool.getTranslation('activationEmailTitle') },
+    { label: 'content', value: localeTool.getTranslation('activationEmailContent') },
+    { label: 'desc', value: localeTool.getTranslation('activationEmailDesc') },
+    { label: 'link', value: link },
+    { label: 'buttonTitle', value: `${localeTool.getTranslation('activationEmailButtonTitle')}: ${user.email}` },
+  ]
+  const content = generateTool.buildEmail(
+    emailEnum.Type.UserActivation, options,
   )
+  await emailModel.create({
+    sendTo: user.email,
+    sendBy: process.env.EMAIL_SENDER!,
+    content,
+    isActive: true,
+    isSuccess: false,
+  }, transaction)
 }
 
 export const createUser = async (
@@ -79,6 +98,7 @@ export const createUser = async (
         activationCode: generateTool.buildActivationCode(),
         activationSentAt: new Date(),
       }, transaction)
+      await generateEmail(user, transaction)
     }
 
     if (!user) {
@@ -89,6 +109,7 @@ export const createUser = async (
         activationSentAt: new Date(),
         type: constants.User.Type.Normal,
       }, transaction)
+      await generateEmail(user, transaction)
     }
 
     await transaction.commit()

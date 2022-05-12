@@ -131,12 +131,20 @@ describe('#sortNumsToString', () => {
 })
 
 describe('#buildEmail', () => {
-  test('could build email', () => {
-    expect(generate.buildEmail('userActivation')).toContain('<!DOCTYPE html>')
-    expect(generate.buildEmail('userActivation')).toContain('{{{title}}}')
-    expect(generate.buildEmail('userActivation')).toContain('{{{content}}}')
-    expect(generate.buildEmail('userActivation')).toContain('{{{desc}}}')
-    expect(generate.buildEmail('userActivation')).toContain('{{{link}}}')
-    expect(generate.buildEmail('userActivation')).toContain('{{{buttonTitle}}}')
+  test('could build activation email', () => {
+    const activationOptions = [
+      { label: 'title', value: 'some title' },
+      { label: 'content', value: 'some content' },
+      { label: 'desc', value: 'some desc' },
+      { label: 'link', value: 'some link' },
+      { label: 'buttonTitle', value: 'some buttonTitle' },
+    ]
+    const rawActivation = generate.buildEmail('userActivation')
+    const activation = generate.buildEmail('userActivation', activationOptions)
+    activationOptions.forEach((option) => {
+      expect(rawActivation).toContain(`{{{${option.label}}}}`)
+      expect(activation).toContain(option.value)
+      expect(activation).not.toContain(`{{{${option.label}}}}`)
+    })
   })
 })

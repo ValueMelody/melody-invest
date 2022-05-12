@@ -82,8 +82,12 @@ type EmailTypeValue = typeof emailEnum.Type[EmailTypeKey]
 
 export const buildEmail = (
   type: EmailTypeValue,
+  options?: interfaces.common.StringOption[],
 ): string => {
   const location = path.resolve(__dirname, `../templates/${type}.html`)
-  const template = fs.readFileSync(location, { encoding: 'utf-8' })
+  let template = fs.readFileSync(location, { encoding: 'utf-8' })
+  options?.forEach((option) => {
+    template = template.replace(`{{{${option.label}}}}`, option.value)
+  })
   return template
 }
