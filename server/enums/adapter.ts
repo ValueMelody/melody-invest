@@ -5,11 +5,11 @@ dotenv.config()
 export const DatabaseConfig = Object.freeze({
   Client: 'pg',
   Connection: {
-    host: process.env.DB_HOST,
+    host: process.env.DB_HOST!,
     port: parseInt(process.env.DB_PORT!),
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    database: process.env.DB_NAME,
+    user: process.env.DB_USER!,
+    password: process.env.DB_PASS!,
+    database: process.env.DB_NAME!,
   },
 })
 
@@ -36,6 +36,19 @@ export const DatabaseTable = Object.freeze({
   DailyTickers: 'daily_tickers',
 })
 
+export const CacheConfig = Object.freeze({
+  Connection: {
+    host: process.env.CACHE_HOST!,
+    port: parseInt(process.env.CACHE_PORT!),
+  },
+})
+
 export const CacheKey = Object.freeze({
   TickerPrices: 'tickerPrices',
+})
+
+export const MarketConfig = Object.freeze({
+  Key: process.env.MARKET_KEY!,
+  CooldownSeconds: parseInt(process.env.MARKET_KEY_COOLDOWN!),
+  BaseUrl: 'https://www.alphavantage.co/query',
 })

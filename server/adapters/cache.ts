@@ -1,6 +1,7 @@
 import Redis from 'ioredis'
 import RedisMock from 'ioredis-mock'
 import ms from 'ms'
+import * as adapterEnum from '../enums/adapter'
 
 let _cache: Redis.Redis | null = null
 
@@ -9,10 +10,7 @@ export const initTestConnection = () => {
 }
 
 export const initConnection = () => {
-  _cache = new Redis({
-    host: process.env.CACHE_HOST,
-    port: parseInt(process.env.CACHE_PORT!),
-  })
+  _cache = new Redis(adapterEnum.CacheConfig.Connection)
 }
 
 const getConnection = (): Redis.Redis => {
@@ -38,5 +36,5 @@ export const set = async (
 
 export const empty = async () => {
   const cache = getConnection()
-  await cache.flushall()
+  return cache.flushall()
 }
