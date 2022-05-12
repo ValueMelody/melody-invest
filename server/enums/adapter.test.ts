@@ -10,6 +10,7 @@ describe('#DatabaseConfig', () => {
 describe('DatabaseTable', () => {
   test('Have defined database table enums', () => {
     expect(connect.DatabaseTable.User).toBeDefined()
+    expect(connect.DatabaseTable.Email).toBeDefined()
     expect(connect.DatabaseTable.Ticker).toBeDefined()
     expect(connect.DatabaseTable.TickerYearly).toBeDefined()
     expect(connect.DatabaseTable.TickerQuarterly).toBeDefined()
