@@ -2,22 +2,30 @@ import axios from 'axios'
 import qs from 'qs'
 import * as marketEnum from '../enums/market'
 
-const BaseURL = 'https://www.alphavantage.co/query'
+export const getEnv = () => {
+  return {
+    key: process.env.MARKET_KEY!,
+    cooldownSeconds: parseInt(process.env.MARKET_KEY_COOLDOWN!),
+    baseUrl: 'https://www.alphavantage.co/query',
+  }
+}
 
 export const getCooldownPerMin = (): number => {
-  return parseInt(process.env.MARKET_KEY_COOLDOWN!) || 15
+  const env = getEnv()
+  return env.cooldownSeconds || 15
 }
 
 export const getTickerPrices = async (
   symbol: string,
 ) => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.Prices,
     symbol: symbol.toUpperCase(),
     outputsize: 'full',
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   return result.data
 }
@@ -44,12 +52,13 @@ interface TickerEarnings {
 export const getTickerEarnings = async (
   symbol: string,
 ): Promise<TickerEarnings> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.Earnings,
     symbol: symbol.toUpperCase(),
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
 
   if (result.data.Note) throw result.data
@@ -73,12 +82,13 @@ interface TickerIncomes {
 export const getTickerIncomes = async (
   symbol: string,
 ): Promise<TickerIncomes> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.Incomes,
     symbol: symbol.toUpperCase(),
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
 
   if (result.data.Note) throw result.data
@@ -95,12 +105,13 @@ export const getRealGDP = async (
 ): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.GDP,
     interval: interval,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -109,12 +120,13 @@ export const getRealGDP = async (
 export const getFundsRate = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.FundsRate,
     interval: 'monthly',
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -123,12 +135,13 @@ export const getFundsRate = async (): Promise<{
 export const getCPI = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.CPI,
     interval: 'monthly',
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -139,13 +152,14 @@ export const getTreasuryYield = async (
 ): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.TreasuryYield,
     interval: 'monthly',
     maturity: type,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -154,11 +168,12 @@ export const getTreasuryYield = async (
 export const getInflation = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.Inflation,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -167,11 +182,12 @@ export const getInflation = async (): Promise<{
 export const getInflationExpectation = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.InflationExpectation,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -180,11 +196,12 @@ export const getInflationExpectation = async (): Promise<{
 export const getConsumerSentiment = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.ConsumerSentiment,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -193,11 +210,12 @@ export const getConsumerSentiment = async (): Promise<{
 export const getRetailSales = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.RetailSales,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -206,11 +224,12 @@ export const getRetailSales = async (): Promise<{
 export const getDurableGoods = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.DurableGoods,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -219,11 +238,12 @@ export const getDurableGoods = async (): Promise<{
 export const getUnemploymentRate = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.UnemploymentRate,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data
@@ -232,11 +252,12 @@ export const getUnemploymentRate = async (): Promise<{
 export const getNonfarmPayroll = async (): Promise<{
   data: IndicatorDateValue[]
 }> => {
+  const env = getEnv()
   const queryParams = qs.stringify({
     function: marketEnum.Type.NonfarmPayroll,
-    apikey: process.env.MARKET_KEY,
+    apikey: env.key,
   })
-  const url = `${BaseURL}?${queryParams}`
+  const url = `${env.baseUrl}?${queryParams}`
   const result = await axios.get(url)
   if (result.data.Note) throw result.data
   return result.data

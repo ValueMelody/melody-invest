@@ -4,15 +4,20 @@ import ms from 'ms'
 
 let _cache: Redis.Redis | null = null
 
+export const getEnv = () => {
+  return {
+    host: process.env.CACHE_HOST!,
+    port: parseInt(process.env.CACHE_PORT!),
+  }
+}
+
 export const initTestConnection = () => {
   _cache = new RedisMock()
 }
 
 export const initConnection = () => {
-  _cache = new Redis({
-    host: process.env.CACHE_HOST,
-    port: parseInt(process.env.CACHE_PORT!),
-  })
+  const env = getEnv()
+  _cache = new Redis(env)
 }
 
 const getConnection = (): Redis.Redis => {
@@ -38,5 +43,5 @@ export const set = async (
 
 export const empty = async () => {
   const cache = getConnection()
-  await cache.flushall()
+  return cache.flushall()
 }

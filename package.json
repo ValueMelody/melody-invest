@@ -21,9 +21,9 @@
   },
   "scripts": {
     "start": "npm run compile && concurrently \"npm run client:start\" \"npm run server:start\"",
-    "test": "jest",
-    "test-watch": "jest --watch",
-    "test-coverage": "jest --coverage",
+    "test": "DOTENV_CONFIG_PATH=./.env.test jest",
+    "test-watch": "DOTENV_CONFIG_PATH=./.env.test jest --watch",
+    "test-coverage": "DOTENV_CONFIG_PATH=./.env.test jest --coverage",
     "lint": "npm run client:lint && npm run server:lint",
     "lint-fix": "npm run client:lint-fix && npm run server:lint-fix",
     "tsc": "npm run client:tsc && npm run server:tsc",
