@@ -100,3 +100,9 @@ describe('#notFoundRoute', () => {
     expect(routerTool.notFoundRoute()).toBe('/404')
   })
 })
+
+describe('#signUpRoute', () => {
+  test('could get correct url for sign up route', () => {
+    expect(routerTool.signUpRoute()).toBe('/sign-up')
+  })
+})

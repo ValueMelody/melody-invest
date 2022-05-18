@@ -63,3 +63,7 @@ export const settingRoute = (): string => {
 export const notFoundRoute = (): string => {
   return routerEnum.Nav.NotFound
 }
+
+export const signUpRoute = (): string => {
+  return routerEnum.Nav.SignUp
+}
