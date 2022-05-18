@@ -4,7 +4,7 @@ import * as routerTool from '../../tools/router'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
-import useAccountInterface from './hooks/useAccountInterface'
+import useAccountUI from './hooks/useAccountUI'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
@@ -24,7 +24,7 @@ const Setting = () => {
 
   usePrivateGuard()
 
-  const { classes: accountClasses, getPasswordError } = useAccountInterface()
+  const { classes: accountClasses, getPasswordError } = useAccountUI()
   const { getUser, updateUserPassword, removeUserToken } = useUserState()
   const { addMessage, clearMessages } = useCommonState()
 

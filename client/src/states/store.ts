@@ -63,8 +63,16 @@ const useStore = () => {
     })
   }
 
-  const clearMessages = () => {
-    setCommon((state) => ({ ...state, messages: [] }))
+  const clearMessages = (options?: { onlyErrors: boolean }) => {
+    setCommon((state) => ({
+      ...state,
+      messages: state.messages.filter((message) => {
+        if (options?.onlyErrors) {
+          return message.type === 'success'
+        }
+        return false
+      }),
+    }))
   }
 
   const showRequestError = (err: any) => {

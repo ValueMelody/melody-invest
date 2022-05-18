@@ -1,17 +1,19 @@
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
+import * as routerTool from '../../tools/router'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
-import useAccountInterface from './hooks/useAccountInterface'
+import useAccountUI from './hooks/useAccountUI'
 import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignUp = () => {
+  usePublicGuard()
+  const navigate = vendorTool.router.useNavigate()
+
   // ------------------------------------------------------------ State --
 
-  usePublicGuard()
-
-  const { classes, getPasswordError } = useAccountInterface()
+  const { classes, getPasswordError } = useAccountUI()
   const { addMessage, clearMessages } = useCommonState()
   const { createUser } = useUserState()
 
@@ -47,6 +49,10 @@ const SignUp = () => {
     setIsConfirmed(!isConfirmed)
   }
 
+  const handleClickSignIn = () => {
+    navigate(routerTool.signInRoute())
+  }
+
   const handleSubmit = async (
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
@@ -61,7 +67,15 @@ const SignUp = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    await createUser(parsedEmail, parsedPassword, isConfirmed)
+    const result = await createUser(parsedEmail, parsedPassword, isConfirmed)
+    if (result) {
+      navigate(routerTool.signInRoute())
+      addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('common.signUpSuccess'),
+      })
+    }
   }
 
   // ------------------------------------------------------------ UI --
@@ -111,6 +125,13 @@ const SignUp = () => {
           </vendorTool.ui.Button>
         </div>
       </form>
+      <vendorTool.ui.Button
+        className={classes.routerButton}
+        icon='right arrow'
+        labelPosition='right'
+        content={localeTool.t('signUp.toSignIn')}
+        onClick={handleClickSignIn}
+      />
     </div>
   )
 }

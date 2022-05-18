@@ -96,24 +96,33 @@ const useUserState = () => {
 
   // ------------------------------------------------------------ Create --
 
-  const createUser = async (email: string, password: string, isConfirmed: boolean) => {
+  const createUser = async (
+    email: string,
+    password: string,
+    isConfirmed: boolean,
+  ): Promise<boolean> => {
     const endpoint = `${routerEnum.Endpoint.Users}`
     store.startLoading()
     try {
-      const user = await requestAdapter.sendPostRequest(endpoint, {
+      await requestAdapter.sendPostRequest(endpoint, {
         email,
         password,
         isConfirmed,
       })
-      return user
+      return true
     } catch (e) {
       store.showRequestError(e)
+      return false
     } finally {
       store.stopLoading()
     }
   }
 
-  const createUserToken = async (email: string, password: string, shouldRemember: boolean) => {
+  const createUserToken = async (
+    email: string,
+    password: string,
+    shouldRemember: boolean,
+  ): Promise<boolean> => {
     const endpoint = `${routerEnum.Endpoint.Users}/token`
     store.startLoading()
     try {
@@ -123,8 +132,10 @@ const useUserState = () => {
         remember: shouldRemember,
       })
       storeUserToken(userToken)
+      return true
     } catch (e) {
       store.showRequestError(e)
+      return false
     } finally {
       store.stopLoading()
     }

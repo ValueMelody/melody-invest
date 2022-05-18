@@ -29,6 +29,7 @@
     "common.daysTrends": "{{num}} Days Trends",
     "common.yearsTrends": "{{num}} Years Trends",
     "common.noResultYet": "There's no result generated yet",
+    "common.signUpSuccess": "Success! We will send a verification email to you soon",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -47,10 +48,12 @@
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",
     "signUp.terms": "By using valuemelody.com, you are agreeing to our terms and conditions.",
+    "signUp.toSignIn": "Already have an account?",
 
     "signIn.remember": "Remember for one month",
     "signIn.button": "Sign In",
     "signIn.title": "Sign In",
+    "signIn.toSignUp": "Create a new account",
 
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",

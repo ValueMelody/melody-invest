@@ -4,7 +4,7 @@ import * as routerTool from '../../tools/router'
 import RequiredLabel from '../elements/RequiredLabel'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
-import useAccountInterface from './hooks/useAccountInterface'
+import useAccountUI from './hooks/useAccountUI'
 import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignIn = () => {
@@ -14,7 +14,7 @@ const SignIn = () => {
 
   usePublicGuard()
 
-  const { classes, getPasswordError } = useAccountInterface()
+  const { classes, getPasswordError } = useAccountUI()
   const { clearMessages, addMessage } = useCommonState()
   const { createUserToken } = useUserState()
 
@@ -28,18 +28,22 @@ const SignIn = () => {
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(e.target.value)
-    clearMessages()
+    clearMessages({ onlyErrors: true })
   }
 
   const handleChangePassword = (
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setPassword(e.target.value)
-    clearMessages()
+    clearMessages({ onlyErrors: true })
   }
 
   const handleToggleRemember = () => {
     setShouldRemember(!shouldRemember)
+  }
+
+  const handleClickSignUp = async () => {
+    navigate(routerTool.signUpRoute())
   }
 
   const handleSubmit = async (
@@ -53,8 +57,8 @@ const SignIn = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    await createUserToken(parsedEmail, parsedPassword, shouldRemember)
-      .then(() => navigate(routerTool.dashboardRoute()))
+    const result = await createUserToken(parsedEmail, parsedPassword, shouldRemember)
+    if (result) navigate(routerTool.dashboardRoute())
   }
 
   // ------------------------------------------------------------ UI --
@@ -79,7 +83,7 @@ const SignIn = () => {
             onChange={handleChangePassword}
           />
         </div>
-        <div className={classes.row}>
+        <div className={vendorTool.classNames(classes.row, 'row-around')}>
           <vendorTool.ui.Checkbox
             label={localeTool.t('signIn.remember')}
             checked={shouldRemember}
@@ -96,6 +100,13 @@ const SignIn = () => {
           </vendorTool.ui.Button>
         </div>
       </form>
+      <vendorTool.ui.Button
+        className={classes.routerButton}
+        icon='right arrow'
+        labelPosition='right'
+        content={localeTool.t('signIn.toSignUp')}
+        onClick={handleClickSignUp}
+      />
     </div>
   )
 }

@@ -12,9 +12,12 @@ const useStyles = vendorTool.jss.createUseStyles(({
     width: 360,
     marginBottom: '2rem',
   },
+  routerButton: {
+    marginTop: '6rem !important',
+  },
 }))
 
-const useAccountInterface = () => {
+const useAccountUI = () => {
   const classes = useStyles()
 
   const passwordSchema = new vendorTool.PasswordValidator()
@@ -36,4 +39,4 @@ const useAccountInterface = () => {
   }
 }
 
-export default useAccountInterface
+export default useAccountUI
