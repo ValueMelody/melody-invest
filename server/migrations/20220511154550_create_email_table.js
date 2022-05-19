@@ -6,7 +6,7 @@ exports.up = (knex) => {
       table.string('sendBy', 50).notNullable()
       table.text('content').notNullable()
       table.boolean('isActive').notNullable()
-      table.boolean('isSuccess').notNullable()
+      table.smallint('status').notNullable()
       table.timestamp('createdAt').defaultTo(knex.raw('now()')).notNullable()
       table.timestamp('sentAt')
     })

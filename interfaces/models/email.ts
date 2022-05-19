@@ -6,7 +6,7 @@ export interface Record {
   createdAt: Date;
   sentAt: Date | null;
   isActive: boolean;
-  isSuccess: boolean;
+  status: number;
 }
 
 export interface Create {
@@ -14,11 +14,11 @@ export interface Create {
   sendBy: string;
   content: string;
   isActive: boolean;
-  isSuccess: boolean;
+  status: number;
 }
 
 export interface Update {
   isActive?: boolean;
-  isSuccess?: boolean;
+  status?: number;
   sentAt?: Date;
 }

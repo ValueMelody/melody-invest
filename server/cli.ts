@@ -4,6 +4,7 @@ import * as runTool from './tools/run'
 import * as taskEnum from './enums/task'
 import * as syncTask from './tasks/sync'
 import * as calcTask from './tasks/calc'
+import * as emailTask from './tasks/email'
 
 const run = async () => {
   try {
@@ -60,6 +61,10 @@ const run = async () => {
       }
       case taskEnum.Name.calcTraderAccessHashs: {
         await calcTask.calcTraderAccessHashs()
+        break
+      }
+      case taskEnum.Name.sendPendingEmails: {
+        await emailTask.sendPendingEmails()
         break
       }
       default:

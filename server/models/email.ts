@@ -16,3 +16,20 @@ export const create = async (
   })
   return createdEmail
 }
+
+export const batchUpdate = async (
+  values: interfaces.emailModel.Update,
+  conditions: databaseAdapter.Condition[],
+  limit: number,
+  transaction: Knex.Transaction,
+): Promise<interfaces.emailModel.Record[]> => {
+  const updatedEmails = await databaseAdapter.update({
+    tableName: TableName,
+    values,
+    conditions,
+    transaction,
+    limit,
+    orderBy: [{ column: 'id', order: 'asc' }],
+  })
+  return updatedEmails
+}

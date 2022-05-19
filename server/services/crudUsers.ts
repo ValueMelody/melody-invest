@@ -82,7 +82,7 @@ export const generateEmail = async (
     sendBy: process.env.EMAIL_SENDER!,
     content,
     isActive: true,
-    isSuccess: false,
+    status: 0,
   }, transaction)
 }
 
