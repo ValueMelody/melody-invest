@@ -13,7 +13,7 @@ const usePublicGuard = () => {
   // ------------------------------------------------------------ effect --
 
   vendorTool.react.useEffect(() => {
-    if (user.userType) navigate(routerTool.settingRoute())
+    if (user.userType) navigate(routerTool.dashboardRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.userType])
 }

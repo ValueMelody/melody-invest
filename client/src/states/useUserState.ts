@@ -5,10 +5,12 @@ import * as requestAdapter from '../adapters/request'
 import * as storageAdapter from '../adapters/storage'
 import * as vendorTool from '../tools/vendor'
 import * as localeTool from '../tools/locale'
+import * as routerTool from '../tools/router'
 import * as routerEnum from '../enums/router'
 
 const useUserState = () => {
   const store: Context = vendorTool.react.useContext(context)
+  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ Get --
   const getUser = () => {
@@ -100,7 +102,7 @@ const useUserState = () => {
     email: string,
     password: string,
     isConfirmed: boolean,
-  ): Promise<boolean> => {
+  ) => {
     const endpoint = `${routerEnum.Endpoint.Users}`
     store.startLoading()
     try {
@@ -109,10 +111,14 @@ const useUserState = () => {
         password,
         isConfirmed,
       })
-      return true
+      navigate(routerTool.signInRoute())
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('common.signUpSuccess'),
+      })
     } catch (e) {
       store.showRequestError(e)
-      return false
     } finally {
       store.stopLoading()
     }
@@ -122,7 +128,7 @@ const useUserState = () => {
     email: string,
     password: string,
     shouldRemember: boolean,
-  ): Promise<boolean> => {
+  ) => {
     const endpoint = `${routerEnum.Endpoint.Users}/token`
     store.startLoading()
     try {
@@ -135,13 +141,32 @@ const useUserState = () => {
       return true
     } catch (e) {
       store.showRequestError(e)
-      return false
     } finally {
       store.stopLoading()
     }
   }
 
   // ------------------------------------------------------------ Update --
+
+  const activateUser = async (
+    token: string,
+  ) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/activate`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPutRequest(endpoint, { token })
+      navigate(routerTool.signInRoute())
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('common.activationSuccess'),
+      })
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
 
   const updateUserPassword = async (
     currentPassword: string,
@@ -169,6 +194,7 @@ const useUserState = () => {
     fetchUserOverall,
     createUser,
     createUserToken,
+    activateUser,
     updateUserPassword,
   }
 }

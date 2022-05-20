@@ -1,4 +1,5 @@
 import * as vendorTool from '../tools/vendor'
+import Activation from './accounts/Activation'
 import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
@@ -85,6 +86,10 @@ const Router = () => {
         <vendorTool.router.Route
           path={routerEnum.Nav.SignUp}
           element={<SignUp />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Activation}/:code`}
+          element={<Activation />}
         />
       </vendorTool.router.Routes>
     </Layout>

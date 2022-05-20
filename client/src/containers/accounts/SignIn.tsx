@@ -9,10 +9,9 @@ import usePublicGuard from '../hooks/usePublicGuard'
 
 const SignIn = () => {
   const navigate = vendorTool.router.useNavigate()
+  usePublicGuard()
 
   // ------------------------------------------------------------ State --
-
-  usePublicGuard()
 
   const { classes, getPasswordError } = useAccountUI()
   const { clearMessages, addMessage } = useCommonState()
@@ -57,8 +56,7 @@ const SignIn = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    const result = await createUserToken(parsedEmail, parsedPassword, shouldRemember)
-    if (result) navigate(routerTool.dashboardRoute())
+    await createUserToken(parsedEmail, parsedPassword, shouldRemember)
   }
 
   // ------------------------------------------------------------ UI --

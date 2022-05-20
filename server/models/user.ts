@@ -5,6 +5,18 @@ import * as databaseAdapter from '../adapters/database'
 
 const TableName = adapterEnum.DatabaseTable.User
 
+export const getByActivationCode = async (
+  code: string,
+): Promise<interfaces.userModel.Record | null> => {
+  const user = await databaseAdapter.findOne({
+    tableName: TableName,
+    conditions: [
+      { key: 'activationCode', value: code },
+    ],
+  })
+  return user
+}
+
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.userModel.Record | null> => {
