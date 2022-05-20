@@ -139,8 +139,8 @@ describe('#buildEmail', () => {
       { label: 'link', value: 'some link' },
       { label: 'buttonTitle', value: 'some buttonTitle' },
     ]
-    const rawActivation = generate.buildEmail('userActivation')
-    const activation = generate.buildEmail('userActivation', activationOptions)
+    const rawActivation = generate.buildEmailContent('userActivation')
+    const activation = generate.buildEmailContent('userActivation', activationOptions)
     activationOptions.forEach((option) => {
       expect(rawActivation).toContain(`{{{${option.label}}}}`)
       expect(activation).toContain(option.value)

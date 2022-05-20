@@ -47,6 +47,8 @@ interface Update {
   values: object;
   conditions: Condition[];
   transaction: Knex.Transaction;
+  limit?: number;
+  orderBy?: OrderBy[];
 }
 
 interface Destroy {
@@ -169,6 +171,8 @@ export const update = async ({
   values,
   conditions,
   transaction,
+  limit,
+  orderBy,
 }: Update) => {
   const db = getConnection()
   const query = db
@@ -177,6 +181,10 @@ export const update = async ({
     .clone()
     .update(values)
     .returning('*')
+
+  if (limit) query.limit(limit)
+
+  if (orderBy) query.orderBy(orderBy)
 
   conditions.forEach((condition, index) => {
     const { key, type = '=', value } = condition
