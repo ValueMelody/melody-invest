@@ -52,3 +52,10 @@ export const MarketConfig = Object.freeze({
   CooldownSeconds: parseInt(process.env.MARKET_KEY_COOLDOWN!),
   BaseUrl: 'https://www.alphavantage.co/query',
 })
+
+export const MailerConfig = Object.freeze({
+  Host: process.env.EMAIL_HOST!,
+  Port: Number(process.env.EMAIL_PORT!),
+  Email: process.env.EMAIL_SENDER!,
+  Password: process.env.EMAIL_PASS!,
+})

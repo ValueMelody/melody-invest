@@ -80,7 +80,7 @@ export const sortNumsToString = (
 type EmailTypeKey = keyof typeof emailEnum.Type
 type EmailTypeValue = typeof emailEnum.Type[EmailTypeKey]
 
-export const buildEmail = (
+export const buildEmailContent = (
   type: EmailTypeValue,
   options?: interfaces.common.StringOption[],
 ): string => {

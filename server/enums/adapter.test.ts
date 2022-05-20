@@ -61,3 +61,14 @@ describe('#MarketConfig', () => {
     })
   })
 })
+
+describe('#MailerConfig', () => {
+  test('Have defined mailer config enums', () => {
+    expect(adapter.MailerConfig).toStrictEqual({
+      Host: 'smtp-mail.test.com',
+      Port: 587,
+      Email: 'test@test.com',
+      Password: '123',
+    })
+  })
+})

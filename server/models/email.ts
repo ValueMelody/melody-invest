@@ -17,6 +17,22 @@ export const create = async (
   return createdEmail
 }
 
+export const update = async (
+  emailId: string,
+  values: interfaces.emailModel.Update,
+  transaction: Knex.Transaction,
+): Promise<interfaces.emailModel.Record> => {
+  const email = await databaseAdapter.update({
+    tableName: TableName,
+    values,
+    conditions: [
+      { key: 'id', value: emailId },
+    ],
+    transaction,
+  })
+  return email[0]
+}
+
 export const batchUpdate = async (
   values: interfaces.emailModel.Update,
   conditions: databaseAdapter.Condition[],
@@ -29,7 +45,7 @@ export const batchUpdate = async (
     conditions,
     transaction,
     limit,
-    orderBy: [{ column: 'id', order: 'asc' }],
+    orderBy: [{ column: 'createdAt', order: 'asc' }],
   })
   return updatedEmails
 }

@@ -3,6 +3,7 @@
     "activationEmailTitle": "Please verify your ValueMelody.com account",
     "activationEmailContent": "Verify you email address at ValueMelody.com",
     "activationEmailDesc": "To finish setting up your account, please click the button:",
-    "activationEmailButtonTitle": "Verify your email"
+    "activationEmailButtonTitle": "Verify your email",
+    "email.activateUser": "Activate your ValueMelody account"
   }
 }

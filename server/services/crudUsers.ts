@@ -14,6 +14,7 @@ import * as traderComboFollowerModel from '../models/traderComboFollower'
 import * as generateTool from '../tools/generate'
 import * as localeTool from '../tools/locale'
 import * as errorEnum from '../enums/error'
+import * as adapterEnum from '../enums/adapter'
 import * as emailEnum from '../enums/email'
 import * as traderLogic from '../logics/trader'
 
@@ -74,14 +75,14 @@ export const generateEmail = async (
     { label: 'link', value: link },
     { label: 'buttonTitle', value: `${localeTool.getTranslation('activationEmailButtonTitle')}: ${user.email}` },
   ]
-  const content = generateTool.buildEmail(
+  const content = generateTool.buildEmailContent(
     emailEnum.Type.UserActivation, options,
   )
   await emailModel.create({
     sendTo: user.email,
-    sendBy: process.env.EMAIL_SENDER!,
+    sendBy: adapterEnum.MailerConfig.Email,
+    title: localeTool.getTranslation('email.activateUser'),
     content,
-    isActive: true,
     status: 0,
   }, transaction)
 }
