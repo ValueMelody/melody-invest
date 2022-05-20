@@ -1,4 +1,5 @@
 export const Nav = Object.freeze({
+  Activation: '/activation',
   SignUp: '/sign-up',
   SignIn: '/sign-in',
   Setting: '/setting',

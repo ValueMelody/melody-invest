@@ -2,6 +2,7 @@ import * as router from './router'
 
 describe('#Nav', () => {
   test('Have defined nav enums', () => {
+    expect(router.Nav.Activation).toBeDefined()
     expect(router.Nav.SignUp).toBeDefined()
     expect(router.Nav.SignIn).toBeDefined()
     expect(router.Nav.Setting).toBeDefined()

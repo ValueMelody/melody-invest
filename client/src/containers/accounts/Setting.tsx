@@ -1,6 +1,5 @@
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
-import * as routerTool from '../../tools/router'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
@@ -18,7 +17,6 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const Setting = () => {
   const classes = useStyles()
-  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -78,8 +76,6 @@ const Setting = () => {
 
   const handleSignOut = () => {
     removeUserToken()
-    const url = routerTool.signInRoute()
-    navigate(url)
   }
 
   // ------------------------------------------------------------ UI --

@@ -43,6 +43,15 @@ afterAll(async () => {
   await connection.destroy()
 })
 
+describe('#getByActivationCode', () => {
+  test('could get by activationCode', async () => {
+    const result1 = await user.getByActivationCode('xyz')
+    expect(result1).toStrictEqual(record1)
+    const result2 = await user.getByActivationCode('abc')
+    expect(result2).toBe(null)
+  })
+})
+
 describe('#getByPK', () => {
   test('could get by PK', async () => {
     const result1 = await user.getByPK(1)

@@ -30,6 +30,7 @@
     "common.yearsTrends": "{{num}} Years Trends",
     "common.noResultYet": "There's no result generated yet",
     "common.signUpSuccess": "Success! We will send a verification email to you soon",
+    "common.activationSuccess": "You account have been activated!",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",

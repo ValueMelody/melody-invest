@@ -67,15 +67,7 @@ const SignUp = () => {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    const result = await createUser(parsedEmail, parsedPassword, isConfirmed)
-    if (result) {
-      navigate(routerTool.signInRoute())
-      addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('common.signUpSuccess'),
-      })
-    }
+    await createUser(parsedEmail, parsedPassword, isConfirmed)
   }
 
   // ------------------------------------------------------------ UI --

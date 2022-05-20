@@ -83,7 +83,7 @@ export const generateEmail = async (
     sendBy: adapterEnum.MailerConfig.Email,
     title: localeTool.getTranslation('email.activateUser'),
     content,
-    status: 0,
+    status: constants.Email.Status.Pending,
   }, transaction)
 }
 
@@ -123,7 +123,9 @@ export const createUser = async (
 }
 
 export const createUserToken = async (
-  email: string, password: string, remember: boolean,
+  email: string,
+  password: string,
+  remember: boolean,
 ): Promise<interfaces.response.UserToken> => {
   const encryptedPassword = generateTool.buildEncryptedPassword(password)
   const user = await userModel.getByUK(email)
@@ -147,6 +149,25 @@ export const updatePassword = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await userModel.update(userId, { password: encryptedNewPassword }, transaction)
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const activateUser = async (
+  code: string,
+) => {
+  const user = await userModel.getByActivationCode(code)
+  if (!user) return
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await userModel.update(user.id, {
+      activationCode: null,
+    }, transaction)
+    await transaction.commit()
   } catch (error) {
     await transaction.rollback()
     throw error
