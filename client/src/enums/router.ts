@@ -3,6 +3,7 @@ export const Nav = Object.freeze({
   SignUp: '/sign-up',
   SignIn: '/sign-in',
   Setting: '/setting',
+  Forgot: '/forgot-password',
   Traders: '/traders',
   Behaviors: '/behaviors',
   Tickers: '/tickers',

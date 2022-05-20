@@ -3,6 +3,7 @@ import Activation from './accounts/Activation'
 import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
+import Forgot from './accounts/Forgot'
 import Layout from './layouts/Layout'
 import TopProfiles from './traders/profiles/TopProfiles'
 import ProfileDetail from './traders/profiles/ProfileDetail'
@@ -90,6 +91,10 @@ const Router = () => {
         <vendorTool.router.Route
           path={`${routerEnum.Nav.Activation}/:code`}
           element={<Activation />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Forgot}
+          element={<Forgot />}
         />
       </vendorTool.router.Routes>
     </Layout>

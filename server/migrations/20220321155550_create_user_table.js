@@ -7,6 +7,8 @@ exports.up = (knex) => {
       table.timestamp('deletedAt')
       table.timestamp('activationSentAt')
       table.specificType('activationCode', 'CHAR(64)')
+      table.timestamp('resetSentAt')
+      table.specificType('resetCode', 'CHAR(64)')
       table.string('email', 100).notNullable()
       table.specificType('password', 'CHAR(64)').notNullable()
       table.smallint('type').notNullable()

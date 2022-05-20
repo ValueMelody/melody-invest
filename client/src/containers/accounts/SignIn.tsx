@@ -7,9 +7,16 @@ import useUserState from '../../states/useUserState'
 import useAccountUI from './hooks/useAccountUI'
 import usePublicGuard from '../hooks/usePublicGuard'
 
+const useStyles = vendorTool.jss.createUseStyles(({
+  forgotButton: {
+    marginTop: '2rem !important',
+  },
+}))
+
 const SignIn = () => {
-  const navigate = vendorTool.router.useNavigate()
   usePublicGuard()
+  const navigate = vendorTool.router.useNavigate()
+  const pageClasses = useStyles()
 
   // ------------------------------------------------------------ State --
 
@@ -41,8 +48,12 @@ const SignIn = () => {
     setShouldRemember(!shouldRemember)
   }
 
-  const handleClickSignUp = async () => {
+  const handleClickSignUp = () => {
     navigate(routerTool.signUpRoute())
+  }
+
+  const handleClickForgot = () => {
+    navigate(routerTool.forgotRoute())
   }
 
   const handleSubmit = async (
@@ -104,6 +115,13 @@ const SignIn = () => {
         labelPosition='right'
         content={localeTool.t('signIn.toSignUp')}
         onClick={handleClickSignUp}
+      />
+      <vendorTool.ui.Button
+        className={pageClasses.forgotButton}
+        icon='right arrow'
+        labelPosition='right'
+        content={localeTool.t('signIn.toReset')}
+        onClick={handleClickForgot}
       />
     </div>
   )

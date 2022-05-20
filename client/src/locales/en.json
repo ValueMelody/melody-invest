@@ -55,6 +55,7 @@
     "signIn.button": "Sign In",
     "signIn.title": "Sign In",
     "signIn.toSignUp": "Create a new account",
+    "signIn.toReset": "Forgot password?",
 
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",
