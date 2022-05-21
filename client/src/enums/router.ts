@@ -4,6 +4,7 @@ export const Nav = Object.freeze({
   SignIn: '/sign-in',
   Setting: '/setting',
   Forgot: '/forgot-password',
+  Reset: '/reset-password',
   Traders: '/traders',
   Behaviors: '/behaviors',
   Tickers: '/tickers',

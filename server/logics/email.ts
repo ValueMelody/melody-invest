@@ -26,7 +26,7 @@ export const buildResetPasswordEmail = (
   user: interfaces.userModel.Record,
 ): string => {
   const base = `${adapterEnum.HostConfig.ClientType}://${adapterEnum.HostConfig.ClientHost}`
-  const link = `${base}/reset/${user.resetCode}`
+  const link = `${base}/reset-password/${user.resetCode}`
   const options = [
     { label: 'title', value: localeTool.getTranslation('email.resetPasswordTitle') },
     { label: 'content', value: localeTool.getTranslation('email.resetPasswordContent') },

@@ -32,6 +32,8 @@
     "common.signUpSuccess": "Success! We will send a verification email to you soon",
     "common.activationSuccess": "You account have been activated!",
     "common.resetEmailSent": "We will send a password reset email to you soon",
+    "common.backToLogin": "Back to sign in",
+    "common.passwordUpdated": "Password Updated!",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -44,8 +46,10 @@
 
     "setting.title": "User Account",
     "setting.changePassword": "Change Password",
-    "setting.passwordUpdated": "Password Updated!",
     "setting.signOut": "Sign Out",
+
+    "reset.title": "Reset Password",
+    "reset.button": "Confirm Reset",
 
     "signUp.title": "Create an account",
     "signUp.button": "Sign Up",

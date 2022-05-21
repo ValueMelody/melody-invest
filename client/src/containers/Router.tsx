@@ -4,6 +4,7 @@ import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
 import Setting from './accounts/Setting'
 import Forgot from './accounts/Forgot'
+import Reset from './accounts/Reset'
 import Layout from './layouts/Layout'
 import TopProfiles from './traders/profiles/TopProfiles'
 import ProfileDetail from './traders/profiles/ProfileDetail'
@@ -95,6 +96,10 @@ const Router = () => {
         <vendorTool.router.Route
           path={routerEnum.Nav.Forgot}
           element={<Forgot />}
+        />
+        <vendorTool.router.Route
+          path={`${routerEnum.Nav.Reset}/:code`}
+          element={<Reset />}
         />
       </vendorTool.router.Routes>
     </Layout>
