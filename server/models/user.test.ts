@@ -11,6 +11,8 @@ const record1 = {
   deletedAt: null,
   activationSentAt: new Date('2022-01-03'),
   activationCode: 'xyz',
+  resetSentAt: null,
+  resetCode: null,
 }
 
 const record2 = {
@@ -23,6 +25,8 @@ const record2 = {
   deletedAt: null,
   activationSentAt: null,
   activationCode: null,
+  resetSentAt: null,
+  resetCode: null,
 }
 
 beforeAll(async () => {
