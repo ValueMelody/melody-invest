@@ -106,3 +106,9 @@ describe('#signUpRoute', () => {
     expect(routerTool.signUpRoute()).toBe('/sign-up')
   })
 })
+
+describe('#forgotRoute', () => {
+  test('could get correct url for forgot password route', () => {
+    expect(routerTool.forgotRoute()).toBe('/forgot-password')
+  })
+})

@@ -15,8 +15,8 @@ import * as generateTool from '../tools/generate'
 import * as localeTool from '../tools/locale'
 import * as errorEnum from '../enums/error'
 import * as adapterEnum from '../enums/adapter'
-import * as emailEnum from '../enums/email'
 import * as traderLogic from '../logics/trader'
+import * as emailLogic from '../logics/email'
 
 export const getUserOverall = async (
   userId: number,
@@ -63,21 +63,11 @@ export const getUserOverall = async (
   }
 }
 
-export const generateEmail = async (
+export const generateActivationEmail = async (
   user: interfaces.userModel.Record,
   transaction: Knex.Transaction,
 ) => {
-  const link = `${process.env.CLIENT_TYPE}://${process.env.CLIENT_HOST}/activation/${user.activationCode}`
-  const options = [
-    { label: 'title', value: localeTool.getTranslation('activationEmailTitle') },
-    { label: 'content', value: localeTool.getTranslation('activationEmailContent') },
-    { label: 'desc', value: localeTool.getTranslation('activationEmailDesc') },
-    { label: 'link', value: link },
-    { label: 'buttonTitle', value: `${localeTool.getTranslation('activationEmailButtonTitle')}: ${user.email}` },
-  ]
-  const content = generateTool.buildEmailContent(
-    emailEnum.Type.UserActivation, options,
-  )
+  const content = emailLogic.buildActivateUserEmail(user)
   await emailModel.create({
     sendTo: user.email,
     sendBy: adapterEnum.MailerConfig.Email,
@@ -96,21 +86,21 @@ export const createUser = async (
   try {
     if (user && user.activationCode) {
       user = await userModel.update(user.id, {
-        activationCode: generateTool.buildActivationCode(),
+        activationCode: generateTool.buildAccessCode(),
         activationSentAt: new Date(),
       }, transaction)
-      await generateEmail(user, transaction)
+      await generateActivationEmail(user, transaction)
     }
 
     if (!user) {
       user = await userModel.create({
         email,
         password: generateTool.buildEncryptedPassword(password),
-        activationCode: generateTool.buildActivationCode(),
+        activationCode: generateTool.buildAccessCode(),
         activationSentAt: new Date(),
         type: constants.User.Type.Normal,
       }, transaction)
-      await generateEmail(user, transaction)
+      await generateActivationEmail(user, transaction)
     }
 
     await transaction.commit()
@@ -135,6 +125,35 @@ export const createUserToken = async (
   const expiresIn = remember ? '30d' : '12h'
   const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
   return { jwtToken, expiresIn, userType: user.type }
+}
+
+export const generateResetCode = async (
+  email: string,
+) => {
+  const user = await userModel.getByUK(email)
+  if (!user) return
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const updatedUser = await userModel.update(user.id, {
+      resetCode: generateTool.buildAccessCode(),
+      resetSentAt: new Date(),
+    }, transaction)
+
+    const content = emailLogic.buildResetPasswordEmail(updatedUser)
+    await emailModel.create({
+      sendTo: updatedUser.email,
+      sendBy: adapterEnum.MailerConfig.Email,
+      title: localeTool.getTranslation('email.resetPassword'),
+      content,
+      status: constants.Email.Status.Pending,
+    }, transaction)
+
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }
 
 export const updatePassword = async (

@@ -5,6 +5,8 @@ export interface Record {
   deletedAt: Date | null;
   activationCode: string | null;
   activationSentAt: Date | null;
+  resetCode: string | null;
+  resetSentAt: Date | null;
   email: string;
   password: string;
   type: number;
@@ -21,5 +23,7 @@ export interface Create {
 export interface Update {
   activationCode?: string | null;
   activationSentAt?: Date | null;
+  resetCode?: string | null;
+  resetSentAt?: Date | null;
   password?: string;
 }

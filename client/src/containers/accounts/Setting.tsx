@@ -24,7 +24,7 @@ const Setting = () => {
 
   const { classes: accountClasses, getPasswordError } = useAccountUI()
   const { getUser, updateUserPassword, removeUserToken } = useUserState()
-  const { addMessage, clearMessages } = useCommonState()
+  const { addMessage } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
   const [newPassword, setNewPassword] = vendorTool.react.useState('')
@@ -38,21 +38,18 @@ const Setting = () => {
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setCurrentPassword(e.target.value)
-    clearMessages()
   }
 
   const handleChangeNewPassword = (
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setNewPassword(e.target.value)
-    clearMessages()
   }
 
   const handleChangeRetypePassword = (
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setRetypePassword(e.target.value)
-    clearMessages()
   }
 
   const handleSubmit = async (

@@ -6,6 +6,7 @@ describe('#Nav', () => {
     expect(router.Nav.SignUp).toBeDefined()
     expect(router.Nav.SignIn).toBeDefined()
     expect(router.Nav.Setting).toBeDefined()
+    expect(router.Nav.Forgot).toBeDefined()
     expect(router.Nav.Traders).toBeDefined()
     expect(router.Nav.Behaviors).toBeDefined()
     expect(router.Nav.Tickers).toBeDefined()

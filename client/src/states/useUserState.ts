@@ -138,7 +138,26 @@ const useUserState = () => {
         remember: shouldRemember,
       })
       storeUserToken(userToken)
-      return true
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const createResetCode = async (
+    email: string,
+  ) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/reset`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPostRequest(endpoint, { email })
+      navigate(routerTool.signInRoute())
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('common.resetEmailSent'),
+      })
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -194,6 +213,7 @@ const useUserState = () => {
     fetchUserOverall,
     createUser,
     createUserToken,
+    createResetCode,
     activateUser,
     updateUserPassword,
   }

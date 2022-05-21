@@ -67,3 +67,7 @@ export const notFoundRoute = (): string => {
 export const signUpRoute = (): string => {
   return routerEnum.Nav.SignUp
 }
+
+export const forgotRoute = (): string => {
+  return routerEnum.Nav.Forgot
+}

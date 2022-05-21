@@ -61,6 +61,14 @@ usersRouter.post('/', async (req, res) => {
   return res.status(201).send(user)
 })
 
+usersRouter.post('/reset', async (req, res) => {
+  const email = req.body.email?.trim().toLowerCase()
+  validateEmail(email)
+
+  await crudUsers.generateResetCode(email)
+  return res.status(201).send()
+})
+
 // ------------------------------------------------------------ Put --
 
 usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
