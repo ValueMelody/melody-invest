@@ -1,9 +1,15 @@
 {
   "translation": {
-    "activationEmailTitle": "Please verify your ValueMelody.com account",
-    "activationEmailContent": "Verify you email address at ValueMelody.com",
-    "activationEmailDesc": "To finish setting up your account, please click the button:",
-    "activationEmailButtonTitle": "Verify your email",
-    "email.activateUser": "Activate your ValueMelody account"
+    "email.activateUser": "Activate your ValueMelody account",
+    "email.activateUserTitle": "Please verify your ValueMelody.com account",
+    "email.activateUserContent": "Verify you email address at ValueMelody.com",
+    "email.activateUserDesc": "To finish setting up your account, please click the button:",
+    "email.activateUserButton": "Verify your email",
+
+    "email.resetPassword": "Reset your ValueMelody password",
+    "email.resetPasswordTitle": "Reset your ValueMelody.com account password",
+    "email.resetPasswordContent": "Reset you password at ValueMelody.com",
+    "email.resetPasswordDesc": "To reset your password, please click the button:",
+    "email.resetPasswordButton": "Reset your password"
   }
 }

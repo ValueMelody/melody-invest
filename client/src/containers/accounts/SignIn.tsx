@@ -21,7 +21,7 @@ const SignIn = () => {
   // ------------------------------------------------------------ State --
 
   const { classes, getPasswordError } = useAccountUI()
-  const { clearMessages, addMessage } = useCommonState()
+  const { addMessage } = useCommonState()
   const { createUserToken } = useUserState()
 
   const [email, setEmail] = vendorTool.react.useState('')
@@ -34,14 +34,12 @@ const SignIn = () => {
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(e.target.value)
-    clearMessages({ onlyErrors: true })
   }
 
   const handleChangePassword = (
     e: vendorTool.react.ChangeEvent<HTMLInputElement>,
   ) => {
     setPassword(e.target.value)
-    clearMessages({ onlyErrors: true })
   }
 
   const handleToggleRemember = () => {

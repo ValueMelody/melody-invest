@@ -64,6 +64,6 @@ const handleRequestError = (error: Error) => {
     case 401:
       throw new Error(localeTool.t('error.401'))
     default:
-      throw new Error(message)
+      throw new Error(message || localeTool.t('error.500'))
   }
 }

@@ -52,10 +52,10 @@ describe('#buildEncryptedPassword', () => {
   })
 })
 
-describe('#buildActivationCode', () => {
+describe('#buildAccessCode', () => {
   test('could generate activation code', () => {
-    const first = generate.buildActivationCode()
-    const second = generate.buildActivationCode()
+    const first = generate.buildAccessCode()
+    const second = generate.buildAccessCode()
     expect(first.length).toEqual(64)
     expect(second.length).toEqual(64)
     expect(first).not.toEqual(second)

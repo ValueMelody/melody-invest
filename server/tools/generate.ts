@@ -24,7 +24,7 @@ export const buildEncryptedPassword = (password: string): string => {
   return toSHA256(toSHA512(password))
 }
 
-export const buildActivationCode = (): string => {
+export const buildAccessCode = (): string => {
   return toSHA256(Math.random().toString())
 }
 

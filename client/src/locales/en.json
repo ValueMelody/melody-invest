@@ -31,6 +31,7 @@
     "common.noResultYet": "There's no result generated yet",
     "common.signUpSuccess": "Success! We will send a verification email to you soon",
     "common.activationSuccess": "You account have been activated!",
+    "common.resetEmailSent": "We will send a password reset email to you soon",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -56,6 +57,9 @@
     "signIn.title": "Sign In",
     "signIn.toSignUp": "Create a new account",
     "signIn.toReset": "Forgot password?",
+
+    "forgot.title": "Reset Password",
+    "forgot.button": "Send Reset Email",
 
     "dashboard.title": "Dashboard",
     "dashboard.watchedProfiles": "Watched Profiles",

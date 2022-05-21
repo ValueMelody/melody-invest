@@ -72,3 +72,12 @@ describe('#MailerConfig', () => {
     })
   })
 })
+
+describe('#HostConfig', () => {
+  test('Have defined host config enums', () => {
+    expect(adapter.HostConfig).toStrictEqual({
+      ClientHost: '127.0.0.1:3099',
+      ClientType: 'http',
+    })
+  })
+})

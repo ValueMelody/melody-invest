@@ -59,3 +59,8 @@ export const MailerConfig = Object.freeze({
   Email: process.env.EMAIL_SENDER!,
   Password: process.env.EMAIL_PASS!,
 })
+
+export const HostConfig = Object.freeze({
+  ClientHost: process.env.CLIENT_HOST!,
+  ClientType: process.env.CLIENT_TYPE!,
+})

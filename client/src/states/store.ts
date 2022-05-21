@@ -83,6 +83,7 @@ const useStore = () => {
         title: message,
         type: 'error',
       })
+      return
     }
     if (message === localeTool.t('error.401')) {
       setResources((resources) => ({
