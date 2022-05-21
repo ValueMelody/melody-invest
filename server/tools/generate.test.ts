@@ -147,4 +147,20 @@ describe('#buildEmail', () => {
       expect(activation).not.toContain(`{{{${option.label}}}}`)
     })
   })
+  test('could build resetPassword email', () => {
+    const resetOptions = [
+      { label: 'title', value: 'some title' },
+      { label: 'content', value: 'some content' },
+      { label: 'desc', value: 'some desc' },
+      { label: 'link', value: 'some link' },
+      { label: 'buttonTitle', value: 'some buttonTitle' },
+    ]
+    const rawReset = generate.buildEmailContent('passwordReset')
+    const reset = generate.buildEmailContent('passwordReset', resetOptions)
+    resetOptions.forEach((option) => {
+      expect(rawReset).toContain(`{{{${option.label}}}}`)
+      expect(reset).toContain(option.value)
+      expect(reset).not.toContain(`{{{${option.label}}}}`)
+    })
+  })
 })
