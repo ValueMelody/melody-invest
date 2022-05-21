@@ -9,11 +9,13 @@ export const initTestConnection = () => {
   _cache = new RedisMock()
 }
 
+// istanbul ignore next
 export const initConnection = () => {
   _cache = new Redis(adapterEnum.CacheConfig.Connection)
 }
 
 const getConnection = (): Redis.Redis => {
+  // istanbul ignore next
   if (!_cache) initConnection()
   return _cache!
 }
