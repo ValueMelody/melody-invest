@@ -160,7 +160,7 @@ export const sellForHoldingPercent = (
   maxCashValue: number,
 ): interfaces.traderHoldingModel.Detail | null => {
   const sharesSold = Math.floor(itemForSell.shares * tickerDaily.splitMultiplier * holdingSellPercent / 100)
-  const baseSharesShold = sharesSold / tickerDaily.splitMultiplier
+  const baseSharesShold = holdingSellPercent === 100 ? itemForSell.shares : sharesSold / tickerDaily.splitMultiplier
   if (itemForSell.shares < baseSharesShold) return null
 
   const valueSold = baseSharesShold * tickerDaily.splitMultiplier * tickerDaily.closePrice

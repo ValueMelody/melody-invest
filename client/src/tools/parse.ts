@@ -12,14 +12,12 @@ export const dbPercent = (value: number | null): string => {
   return `${value}%`
 }
 
-const patternFrequency = (value: number | null): string => {
-  if (value === null) return ''
+const patternFrequency = (value: number): string => {
   if (value === 0) return localeTool.t('common.never')
   return localeTool.t('behavior.frequency.type', { num: value })
 }
 
-const patternPreference = (value: number | null): string => {
-  if (value === null) return ''
+const patternPreference = (value: number): string => {
   if (value >= 1 && value <= 22) {
     const localeKey = `behavior.preference.type.${value}`
     return localeTool.t(localeKey)

@@ -343,6 +343,35 @@ describe('#create', () => {
     expect(created2).toStrictEqual(result2)
     const record2 = await tickerQuarterly.getByUK(3, '2021-06')
     expect(record2).toStrictEqual(result2)
+
+    const transaction3 = await databaseAdapter.createTransaction()
+    const created3 = await tickerQuarterly.create({
+      tickerId: 3,
+      quarter: '2021-09',
+      earningDate: '2021-09-30',
+      earningReportDate: '2021-10-15',
+      ebitda: '12345',
+    }, transaction3)
+    await transaction3.commit()
+    const result3 = {
+      id: 9,
+      tickerId: 3,
+      quarter: '2021-09',
+      earningDate: '2021-09-30',
+      earningReportDate: '2021-10-15',
+      eps: null,
+      estimatedEPS: null,
+      epsSurprisePercent: null,
+      ebitda: 12345,
+      netIncome: null,
+      grossProfit: null,
+      totalRevenue: null,
+      costOfRevenue: null,
+      ...emptyProps,
+    }
+    expect(created3).toStrictEqual(result3)
+    const record3 = await tickerQuarterly.getByUK(3, '2021-09')
+    expect(record3).toStrictEqual(result3)
   })
 })
 

@@ -2,6 +2,7 @@ import * as tickerDaily from './tickerDaily'
 import * as databaseAdapter from '../adapters/database'
 import * as cacheAdapter from '../adapters/cache'
 import * as cacheTool from '../tools/cache'
+import * as adapterEnum from '../enums/adapter'
 
 beforeAll(async () => {
   databaseAdapter.initTestConnection()
@@ -44,9 +45,13 @@ describe('#getByUK', () => {
     const result1 = await tickerDaily.getByUK(1, '2021-12-31')
     expect(result1?.tickerId).toBe(1)
     expect(result1?.date).toBe('2021-12-31')
+
     const result2 = await tickerDaily.getByUK(3, '2022-01-01')
     expect(result2?.tickerId).toBe(3)
     expect(result2?.date).toBe('2022-01-01')
+
+    const result3 = await tickerDaily.getByUK(4, '2022-01-01')
+    expect(result3).toBeNull()
   })
 })
 
@@ -55,12 +60,17 @@ describe('#getPreviousOne', () => {
     const result1 = await tickerDaily.getPreviousOne(1, '2022-01-06')
     expect(result1?.tickerId).toBe(1)
     expect(result1?.date).toBe('2022-01-04')
+
     const result2 = await tickerDaily.getPreviousOne(1, '2022-01-05')
     expect(result2?.tickerId).toBe(1)
     expect(result2?.date).toBe('2022-01-04')
+
     const result3 = await tickerDaily.getPreviousOne(1, '2022-01-04')
     expect(result3?.tickerId).toBe(1)
     expect(result3?.date).toBe('2022-01-03')
+
+    const result4 = await tickerDaily.getPreviousOne(1, '2021-12-31')
+    expect(result4).toBeNull()
   })
 })
 
@@ -111,6 +121,8 @@ describe('#getNearestPricesByDate', () => {
     expect(result5).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
     const cacheResult3 = await cacheAdapter.get(cacheKey3)
     expect(JSON.parse(cacheResult3!)).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
+    const result5WithCache = await tickerDaily.getNearestPricesByDate('2022-01-03')
+    expect(result5WithCache).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
   })
 })
 
@@ -217,5 +229,18 @@ describe('#update', () => {
     expect(created).toStrictEqual(result)
     const record = await tickerDaily.getByUK(2, '2022-02-02')
     expect(record).toStrictEqual(result)
+  })
+})
+
+describe('#getLatestDate', () => {
+  test('could return initial date if there is no record', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await databaseAdapter.destroy({
+      tableName: adapterEnum.DatabaseTable.TickerDaily,
+      transaction,
+    })
+    await transaction.commit()
+    const result = await tickerDaily.getLatestDate()
+    expect(result).toBe('2001-01-01')
   })
 })

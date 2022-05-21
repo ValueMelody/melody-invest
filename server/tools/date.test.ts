@@ -208,6 +208,7 @@ describe('#getDurationCount', () => {
     expect(date.getDurationCount('2022-01-31', '2022-02-11')).toEqual(11)
     expect(date.getDurationCount('2022-01-31', '2022-03-01')).toEqual(29)
     expect(date.getQuartersInRange('2000-06-02', '2000-06-01').length).toEqual(0)
+    expect(() => date.getDurationCount('2022-03-02', '2022-03-01')).toThrowError()
   })
 })
 

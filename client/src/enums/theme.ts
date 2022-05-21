@@ -12,4 +12,4 @@ export const Basic: Theme = Object.freeze({
   DecreaseColor: 'red',
 })
 
-export const theme = process.env.REACT_APP_THEME === 'basic' ? Basic : Basic
+export const theme = Basic

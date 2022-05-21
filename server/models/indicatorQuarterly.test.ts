@@ -48,6 +48,15 @@ describe('#getByUK', () => {
   })
 })
 
+describe('#getAll', () => {
+  test('could get all', async () => {
+    const results = await indicatorQuarterly.getAll()
+    expect(results.length).toBe(2)
+    expect(results[0]).toStrictEqual(record1)
+    expect(results[1]).toStrictEqual(record2)
+  })
+})
+
 describe('#getPublishedByDate', () => {
   test('could get published by date', async () => {
     const result1 = await indicatorQuarterly.getPublishedByDate('2022-01-30')
@@ -83,6 +92,24 @@ describe('#create', () => {
     expect(created).toStrictEqual(result)
     const record = await indicatorQuarterly.getByUK('2022-06')
     expect(record).toStrictEqual(result)
+
+    const transaction1 = await databaseAdapter.createTransaction()
+    const created1 = await indicatorQuarterly.create({
+      quarter: '2022-09',
+      reportMonth: '2022-10',
+    }, transaction1)
+    await transaction1.commit()
+    const result1 = {
+      id: 4,
+      quarter: '2022-09',
+      reportMonth: '2022-10',
+      realGDP: null,
+      gdpQuarterlyChangePercent: null,
+      gdpQuarterlyYoYChangePercent: null,
+    }
+    expect(created1).toStrictEqual(result1)
+    const record1 = await indicatorQuarterly.getByUK('2022-09')
+    expect(record1).toStrictEqual(result1)
   })
 })
 

@@ -34,6 +34,8 @@ export const getNearestHoldingByDate = (
   date: string,
   holdings: interfaces.traderHoldingModel.Record[], // order by date asc required
 ): interfaces.traderHoldingModel.Record | null => {
+  if (!holdings.length) return null
+
   const holdingIndexAfterDate = holdings.findIndex((holding) => holding.date > date)
   if (holdingIndexAfterDate === 0) return null
   if (holdingIndexAfterDate === -1) return holdings[holdings.length - 1]

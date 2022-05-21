@@ -50,7 +50,7 @@ describe('#getNearestHoldingByDate', () => {
 
 describe('#groupTraderHoldingsByDate', () => {
   const dates = ['2001-01-05', '2001-01-06', '2001-01-07', '2001-01-08']
-  const traderIds = [1, 2]
+  const traderIds = [1, 2, 3]
   const holdingsByTraders: holding.HoldingsByTraders = {
     // @ts-ignore
     1: [{ traderId: 1, date: '2001-01-06' }, { traderId: 1, date: '2001-01-07' }, { traderId: 1, date: '2001-01-08' }],
@@ -60,10 +60,10 @@ describe('#groupTraderHoldingsByDate', () => {
   test('could group correctly', () => {
     expect(holding.groupTraderHoldingsByDate(dates, traderIds, holdingsByTraders))
       .toStrictEqual({
-        '2001-01-05': [null, null],
-        '2001-01-06': [{ traderId: 1, date: '2001-01-06' }, null],
-        '2001-01-07': [{ traderId: 1, date: '2001-01-07' }, { traderId: 2, date: '2001-01-07' }],
-        '2001-01-08': [{ traderId: 1, date: '2001-01-08' }, { traderId: 2, date: '2001-01-07' }],
+        '2001-01-05': [null, null, null],
+        '2001-01-06': [{ traderId: 1, date: '2001-01-06' }, null, null],
+        '2001-01-07': [{ traderId: 1, date: '2001-01-07' }, { traderId: 2, date: '2001-01-07' }, null],
+        '2001-01-08': [{ traderId: 1, date: '2001-01-08' }, { traderId: 2, date: '2001-01-07' }, null],
       })
   })
 })

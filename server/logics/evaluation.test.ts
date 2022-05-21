@@ -65,6 +65,12 @@ describe('#getTickerPreferValue', () => {
       tickerQuarterly2,
       null,
     )).toEqual(10)
+    expect(evaluation.getTickerPreferValue(
+      23,
+      tickerDaily2,
+      tickerQuarterly2,
+      null,
+    )).toBe(null)
   })
 
   test('could get prefer value for quarter eps', () => {
@@ -1022,10 +1028,10 @@ describe('#getOrderedTickerEvaluations', () => {
   test('could sort correctly', () => {
     expect(evaluation.getOrderedTickerEvaluations([
       { tickerId: 1, preferValue: 100, weight: 3 },
-      { tickerId: 1, preferValue: 20, weight: 4 },
+      { tickerId: 1, preferValue: 50, weight: 4 },
       { tickerId: 1, preferValue: 100, weight: 5 },
       { tickerId: 1, preferValue: 200, weight: 3 },
-      { tickerId: 1, preferValue: 50, weight: 4 },
+      { tickerId: 1, preferValue: 20, weight: 4 },
     ], 1)).toStrictEqual([
       { tickerId: 1, preferValue: 100, weight: 5 },
       { tickerId: 1, preferValue: 50, weight: 4 },
@@ -1035,10 +1041,10 @@ describe('#getOrderedTickerEvaluations', () => {
     ])
     expect(evaluation.getOrderedTickerEvaluations([
       { tickerId: 1, preferValue: 100, weight: 3 },
-      { tickerId: 1, preferValue: 20, weight: 4 },
+      { tickerId: 1, preferValue: 50, weight: 4 },
       { tickerId: 1, preferValue: 100, weight: 5 },
       { tickerId: 1, preferValue: 200, weight: 3 },
-      { tickerId: 1, preferValue: 50, weight: 4 },
+      { tickerId: 1, preferValue: 20, weight: 4 },
     ], 2)).toStrictEqual([
       { tickerId: 1, preferValue: 100, weight: 5 },
       { tickerId: 1, preferValue: 20, weight: 4 },
@@ -1046,6 +1052,10 @@ describe('#getOrderedTickerEvaluations', () => {
       { tickerId: 1, preferValue: 100, weight: 3 },
       { tickerId: 1, preferValue: 200, weight: 3 },
     ])
+    expect(() => evaluation.getOrderedTickerEvaluations([
+      { tickerId: 1, preferValue: 100, weight: 3 },
+      { tickerId: 1, preferValue: 20, weight: 4 },
+    ], 23)).toThrowError()
   })
 })
 

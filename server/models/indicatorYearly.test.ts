@@ -97,6 +97,24 @@ describe('#create', () => {
     expect(created).toStrictEqual(result)
     const record = await indicatorYearly.getByUK('2022')
     expect(record).toStrictEqual(result)
+
+    const transaction1 = await databaseAdapter.createTransaction()
+    const created1 = await indicatorYearly.create({
+      year: '2023',
+    }, transaction1)
+    await transaction1.commit()
+    const result1 = {
+      id: 4,
+      year: '2023',
+      realGDP: null,
+      inflation: null,
+      gdpYearlyChangePercent: null,
+      inflationYearlyIncrease: null,
+      inflationYearlyDecrease: null,
+    }
+    expect(created1).toStrictEqual(result1)
+    const record1 = await indicatorYearly.getByUK('2023')
+    expect(record1).toStrictEqual(result1)
   })
 })
 
