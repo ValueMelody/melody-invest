@@ -53,7 +53,7 @@ interface Update {
 
 interface Destroy {
   tableName: string;
-  conditions: Condition[];
+  conditions?: Condition[];
   transaction: Knex.Transaction;
 }
 
@@ -213,7 +213,7 @@ export const destroy = async ({
     .clone()
     .delete()
 
-  conditions.forEach((condition, index) => {
+  conditions?.forEach((condition, index) => {
     const { key, type = '=', value } = condition
     if (index === 0) {
       query.where(key, type, value)

@@ -11,9 +11,6 @@ describe('#Basic', () => {
 
 describe('#theme', () => {
   test('Contain export for theme', () => {
-    expect(theme.theme.PrimaryColor).toBeDefined()
-    expect(theme.theme.SecondaryColor).toBeDefined()
-    expect(theme.theme.IncreaseColor).toBeDefined()
-    expect(theme.theme.DecreaseColor).toBeDefined()
+    expect(theme.theme).toStrictEqual(theme.Basic)
   })
 })

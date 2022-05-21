@@ -343,6 +343,24 @@ describe('#sellForHoldingPercent', () => {
       100000,
     )).toStrictEqual(null)
   })
+  test('could sell all', () => {
+    expect(transaction.sellForHoldingPercent(
+      holding,
+      { tickerId: 2, shares: 200, splitMultiplier: 3, value: 6000 },
+      tickerDaily,
+      100,
+      0,
+      9400,
+    )).toStrictEqual({
+      totalCash: 9400,
+      totalValue: 24000,
+      date: '',
+      items: [
+        { tickerId: 1, shares: 100, splitMultiplier: 12, value: 14400 },
+        { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
+      ],
+    })
+  })
 })
 
 describe('#detailAfterSell', () => {
@@ -633,6 +651,20 @@ describe('#buyForHoldingPercent', () => {
         { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
       ],
     })
+  })
+  test('could buy nothing', () => {
+    // @ts-ignore
+    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 10, splitMultiplier: 1 }
+    expect(transaction.buyForHoldingPercent(
+      {
+        ...holding,
+        totalCash: 9.99,
+      },
+      { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
+      tickerDaily,
+      1200,
+      6,
+    )).toBeNull()
   })
 })
 

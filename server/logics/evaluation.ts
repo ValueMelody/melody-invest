@@ -287,11 +287,12 @@ export const getOrderedTickerEvaluations = (
   evaluations: TickerWithEvaluation[],
   preference: number,
 ) => {
+  const preferenceEntry = Object.entries(constants.BehaviorValue.Preference).find((entry) => entry[1] === preference)
+  if (!preferenceEntry) throw new Error('Wrong preference provided')
+  const key = preferenceEntry[0]
   return evaluations.sort((first, second) => {
     if (first.weight > second.weight) return -1
     if (first.weight < second.weight) return 1
-    const preferenceEntry = Object.entries(constants.BehaviorValue.Preference).find((entry) => entry[1] === preference)
-    const key = preferenceEntry ? preferenceEntry[0] : ''
     if (key.includes('Lower')) return first.preferValue <= second.preferValue ? -1 : 1
     return first.preferValue >= second.preferValue ? -1 : 1
   })

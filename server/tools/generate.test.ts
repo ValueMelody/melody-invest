@@ -83,6 +83,12 @@ describe('#decodeJWT', () => {
     expect(result?.id).toBe(1)
     expect(result?.email).toBe('abc')
   })
+  test('return null if not valid', () => {
+    // @ts-ignore
+    const wrongJwt = generate.encodeJWT({ code: 1, name: 'abc' }, '12h')
+    const result = generate.decodeJWT(wrongJwt)
+    expect(result).toBeNull()
+  })
 })
 
 describe('#pickNumberInRange', () => {
@@ -99,11 +105,15 @@ describe('#pickNumberInRange', () => {
 describe('#pickOneNumber', () => {
   test('could pick one number', () => {
     const num1 = generate.pickOneNumber(1, 2)
-    expect(num1).toBeGreaterThanOrEqual(1)
-    expect(num1).toBeLessThanOrEqual(2)
+    expect([1, 2]).toContain(num1)
     const num2 = generate.pickOneNumber(3, 5)
-    expect(num2).toBeGreaterThanOrEqual(3)
-    expect(num2).toBeLessThanOrEqual(5)
+    expect([3, 5]).toContain(num2)
+    const num3 = generate.pickOneNumber(-1, -2)
+    expect([-1, -2]).toContain(num3)
+    const num4 = generate.pickOneNumber(-1, -3)
+    expect([-1, -3]).toContain(num4)
+    const num5 = generate.pickOneNumber(0, 100)
+    expect([0, 100]).toContain(num5)
   })
 })
 

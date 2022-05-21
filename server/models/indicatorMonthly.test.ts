@@ -159,6 +159,30 @@ describe('#create', () => {
     expect(created).toStrictEqual(record)
     const result = await indicatorMonthly.getByUK('2022-02')
     expect(result).toStrictEqual(record)
+
+    const transaction1 = await databaseAdapter.createTransaction()
+    const created1 = await indicatorMonthly.create({
+      month: '2022-03',
+    }, transaction1)
+    await transaction1.commit()
+    const record1 = {
+      id: 4,
+      month: '2022-03',
+      fundsRate: null,
+      cpi: null,
+      tenYearsTreasury: null,
+      thirtyYearsTreasury: null,
+      inflationExpectation: null,
+      consumerSentiment: null,
+      retailSales: null,
+      durableGoods: null,
+      unemploymentRate: null,
+      nonfarmPayroll: null,
+      ...emptyProps,
+    }
+    expect(created1).toStrictEqual(record1)
+    const result1 = await indicatorMonthly.getByUK('2022-03')
+    expect(result1).toStrictEqual(record1)
   })
 })
 
