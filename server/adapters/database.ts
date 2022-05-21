@@ -70,6 +70,7 @@ export const initTestConnection = (): pgMem.IMemoryDb => {
   return db
 }
 
+// istanbul ignore next
 export const initConnection = () => {
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,
@@ -78,6 +79,7 @@ export const initConnection = () => {
 }
 
 export const getConnection = (): Knex => {
+  // istanbul ignore next
   if (!_db) initConnection()
   return _db!
 }
