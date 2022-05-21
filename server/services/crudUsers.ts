@@ -15,7 +15,6 @@ import * as generateTool from '../tools/generate'
 import * as localeTool from '../tools/locale'
 import * as errorEnum from '../enums/error'
 import * as adapterEnum from '../enums/adapter'
-import * as emailEnum from '../enums/email'
 import * as traderLogic from '../logics/trader'
 import * as emailLogic from '../logics/email'
 
