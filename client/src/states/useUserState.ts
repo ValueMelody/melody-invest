@@ -197,7 +197,31 @@ const useUserState = () => {
       await requestAdapter.sendPutRequest(endpoint, {
         currentPassword, newPassword,
       })
-      store.addMessage({ id: Math.random(), type: 'success', title: localeTool.t('setting.passwordUpdated') })
+      store.addMessage({ id: Math.random(), type: 'success', title: localeTool.t('common.passwordUpdated') })
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  const resetUserPassword = async (
+    email: string,
+    password: string,
+    resetCode: string,
+  ) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/reset`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPutRequest(endpoint, {
+        email, password, resetCode,
+      })
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('common.passwordUpdated'),
+      })
+      navigate(routerTool.signInRoute())
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -216,6 +240,7 @@ const useUserState = () => {
     createResetCode,
     activateUser,
     updateUserPassword,
+    resetUserPassword,
   }
 }
 

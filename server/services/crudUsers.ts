@@ -157,7 +157,9 @@ export const generateResetCode = async (
 }
 
 export const updatePassword = async (
-  userId: number, currentPassword: string, newPassword: string,
+  userId: number,
+  currentPassword: string,
+  newPassword: string,
 ) => {
   const user = await userModel.getByPK(userId)
   if (!user) throw errorEnum.Custom.UserNotFound
@@ -168,6 +170,32 @@ export const updatePassword = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await userModel.update(userId, { password: encryptedNewPassword }, transaction)
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const resetPassword = async (
+  email: string,
+  password: string,
+  resetCode: string,
+) => {
+  const user = await userModel.getByUK(email)
+  if (!user || user.resetCode !== resetCode) return
+
+  const encryptedNewPassword = generateTool.buildEncryptedPassword(password)
+  if (user.password === encryptedNewPassword && user.activationCode === null) return
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await userModel.update(user.id, {
+      password: encryptedNewPassword,
+      resetCode: null,
+      resetSentAt: null,
+      activationCode: null,
+    }, transaction)
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()

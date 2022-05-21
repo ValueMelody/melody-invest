@@ -16,12 +16,11 @@ const useStyles = vendorTool.jss.createUseStyles(({
 }))
 
 const Setting = () => {
-  const classes = useStyles()
+  usePrivateGuard()
 
   // ------------------------------------------------------------ State --
 
-  usePrivateGuard()
-
+  const classes = useStyles()
   const { classes: accountClasses, getPasswordError } = useAccountUI()
   const { getUser, updateUserPassword, removeUserToken } = useUserState()
   const { addMessage } = useCommonState()

@@ -1,32 +1,28 @@
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
-import RequiredLabel from '../elements/RequiredLabel'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import useAccountUI from './hooks/useAccountUI'
+import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
-  forgotButton: {
-    marginTop: '2rem !important',
-  },
-}))
-
-const SignIn = () => {
+const Reset = () => {
   usePublicGuard()
   const navigate = vendorTool.router.useNavigate()
+  const params = vendorTool.router.useParams()
 
   // ------------------------------------------------------------ State --
 
-  const pageClasses = useStyles()
+  const resetCode = params.code
+
   const { classes, getPasswordError } = useAccountUI()
   const { addMessage } = useCommonState()
-  const { createUserToken } = useUserState()
+  const { resetUserPassword } = useUserState()
 
   const [email, setEmail] = vendorTool.react.useState('')
   const [password, setPassword] = vendorTool.react.useState('')
-  const [shouldRemember, setShouldRemember] = vendorTool.react.useState(false)
+  const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
 
   // ------------------------------------------------------------ Handler --
 
@@ -42,37 +38,41 @@ const SignIn = () => {
     setPassword(e.target.value)
   }
 
-  const handleToggleRemember = () => {
-    setShouldRemember(!shouldRemember)
+  const handleChangeRetypePassword = (
+    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRetypePassword(e.target.value)
   }
 
-  const handleClickSignUp = () => {
-    navigate(routerTool.signUpRoute())
-  }
-
-  const handleClickForgot = () => {
-    navigate(routerTool.forgotRoute())
+  const handleClickSignIn = () => {
+    navigate(routerTool.signInRoute())
   }
 
   const handleSubmit = async (
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
+    if (!resetCode) return
     const parsedEmail = email.trim().toLowerCase()
     const parsedPassword = password.trim()
-    const error = getPasswordError(parsedPassword)
+    const parsedRetypePasswod = retypePassword.trim()
+    const error = parsedPassword !== parsedRetypePasswod
+      ? localeTool.t('error.password.requireSame')
+      : getPasswordError(parsedPassword)
     if (error) {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
     }
-    await createUserToken(parsedEmail, parsedPassword, shouldRemember)
+    await resetUserPassword(parsedEmail, parsedPassword, resetCode)
   }
 
   // ------------------------------------------------------------ UI --
 
+  if (!resetCode) return null
+
   return (
     <div className={vendorTool.classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('signIn.title')}</h2>
+      <h2 className={classes.title}>{localeTool.t('reset.title')}</h2>
       <form onSubmit={handleSubmit}>
         <div className={vendorTool.classNames('row-between', classes.row)}>
           <RequiredLabel title={localeTool.t('common.email')} />
@@ -83,27 +83,28 @@ const SignIn = () => {
           />
         </div>
         <div className={vendorTool.classNames('row-between', classes.row)}>
-          <RequiredLabel title={localeTool.t('common.password')} />
+          <RequiredLabel title={localeTool.t('common.newPassword')} />
           <vendorTool.ui.Input
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames(classes.row, 'row-around')}>
-          <vendorTool.ui.Checkbox
-            label={localeTool.t('signIn.remember')}
-            checked={shouldRemember}
-            onChange={handleToggleRemember}
+        <div className={vendorTool.classNames('row-between', classes.row)}>
+          <RequiredLabel title={localeTool.t('common.retypePassword')} />
+          <vendorTool.ui.Input
+            type='password'
+            value={retypePassword}
+            onChange={handleChangeRetypePassword}
           />
         </div>
         <div className='row-around'>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
-            disabled={!email || !password}
+            disabled={!email || !password || !retypePassword}
           >
-            {localeTool.t('signIn.button')}
+            {localeTool.t('reset.button')}
           </vendorTool.ui.Button>
         </div>
       </form>
@@ -111,18 +112,11 @@ const SignIn = () => {
         className={classes.routerButton}
         icon='right arrow'
         labelPosition='right'
-        content={localeTool.t('signIn.toSignUp')}
-        onClick={handleClickSignUp}
-      />
-      <vendorTool.ui.Button
-        className={pageClasses.forgotButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('signIn.toReset')}
-        onClick={handleClickForgot}
+        content={localeTool.t('common.backToLogin')}
+        onClick={handleClickSignIn}
       />
     </div>
   )
 }
 
-export default SignIn
+export default Reset

@@ -112,3 +112,9 @@ describe('#forgotRoute', () => {
     expect(routerTool.forgotRoute()).toBe('/forgot-password')
   })
 })
+
+describe('#resetRoute', () => {
+  test('could get correct url for reset password route', () => {
+    expect(routerTool.resetRoute()).toBe('/reset-password')
+  })
+})

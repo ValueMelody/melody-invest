@@ -71,3 +71,7 @@ export const signUpRoute = (): string => {
 export const forgotRoute = (): string => {
   return routerEnum.Nav.Forgot
 }
+
+export const resetRoute = (): string => {
+  return routerEnum.Nav.Reset
+}

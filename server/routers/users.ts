@@ -22,7 +22,7 @@ const validatePassword = (password: string) => {
   if (password.length < 10) throw errorEnum.Custom.PasswordTooShort
 }
 
-const validateActivationCode = (code: string) => {
+const validateAccessCode = (code: string) => {
   if (!code || code.length !== 64) throw errorEnum.Custom.WrongAccessCode
 }
 
@@ -86,8 +86,20 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
 usersRouter.put('/activate', async (req, res) => {
   const token = req.body.token?.trim()
 
-  validateActivationCode(token)
+  validateAccessCode(token)
 
   await crudUsers.activateUser(token)
+  return res.status(204).send()
+})
+
+usersRouter.put('/reset', async (req, res) => {
+  const email = req.body.email?.trim().toLowerCase()
+  const password = req.body.password?.trim()
+  const resetCode = req.body.resetCode.trim()
+  validateEmail(email)
+  validatePassword(password)
+  validateAccessCode(resetCode)
+
+  await crudUsers.resetPassword(email, password, resetCode)
   return res.status(204).send()
 })
