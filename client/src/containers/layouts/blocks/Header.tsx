@@ -3,6 +3,7 @@ import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import useUserState from '../../../states/useUserState'
+import HeaderLink from '../elements/HeaderLink'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: themeEnum.Theme,
@@ -27,9 +28,9 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const Header = () => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -40,45 +41,39 @@ const Header = () => {
   return (
     <header className={vendorTool.classNames('row-between', classes.header)}>
       <nav>
-        <vendorTool.router.Link to={routerTool.topProfilesRoute()}>
-          <vendorTool.ui.Label className={classes.label}>
-            <vendorTool.ui.Icon name='chart line' className={classes.icon} />
-            {localeTool.t('topProfiles.title')}
-          </vendorTool.ui.Label>
-        </vendorTool.router.Link>
-        <vendorTool.router.Link to={routerTool.topCombosRoute()}>
-          <vendorTool.ui.Label className={classes.label}>
-            <vendorTool.ui.Icon name='boxes' className={classes.icon} />
-            {localeTool.t('topCombos.title')}
-          </vendorTool.ui.Label>
-        </vendorTool.router.Link>
-        <vendorTool.router.Link to={routerTool.behaviorListRoute()}>
-          <vendorTool.ui.Label className={classes.label}>
-            <vendorTool.ui.Icon name='certificate' className={classes.icon} />
-            {localeTool.t('tradeBehaviors.title')}
-          </vendorTool.ui.Label>
-        </vendorTool.router.Link>
-        <vendorTool.router.Link to={routerTool.tickerListRoute()}>
-          <vendorTool.ui.Label className={classes.label}>
-            <vendorTool.ui.Icon name='ticket' className={classes.icon} />
-            {localeTool.t('availableTickers.title')}
-          </vendorTool.ui.Label>
-        </vendorTool.router.Link>
+        <HeaderLink
+          route={routerTool.topProfilesRoute()}
+          title={localeTool.t('topProfiles.title')}
+          icon='chart line'
+        />
+        <HeaderLink
+          route={routerTool.topCombosRoute()}
+          title={localeTool.t('topCombos.title')}
+          icon='boxes'
+        />
+        <HeaderLink
+          route={routerTool.behaviorListRoute()}
+          title={localeTool.t('tradeBehaviors.title')}
+          icon='certificate'
+        />
+        <HeaderLink
+          route={routerTool.tickerListRoute()}
+          title={localeTool.t('availableTickers.title')}
+          icon='ticket'
+        />
       </nav>
       <nav>
         {isLoggedInUser && (
-          <vendorTool.router.Link to={routerTool.dashboardRoute()}>
-            <vendorTool.ui.Label className={classes.label}>
-              <vendorTool.ui.Icon name='table' className={classes.icon} />
-              {localeTool.t('dashboard.title')}
-            </vendorTool.ui.Label>
-          </vendorTool.router.Link>
+          <HeaderLink
+            route={routerTool.dashboardRoute()}
+            title={localeTool.t('dashboard.title')}
+            icon='table'
+          />
         )}
-        <vendorTool.router.Link to={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}>
-          <vendorTool.ui.Label className={classes.label}>
-            <vendorTool.ui.Icon name='user circle' />
-          </vendorTool.ui.Label>
-        </vendorTool.router.Link>
+        <HeaderLink
+          route={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}
+          icon='user circle'
+        />
       </nav>
     </header>
   )

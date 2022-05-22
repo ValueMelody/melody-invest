@@ -34,6 +34,7 @@
     "common.resetEmailSent": "We will send a password reset email to you soon",
     "common.backToLogin": "Back to sign in",
     "common.passwordUpdated": "Password Updated!",
+    "common.contactUs": "Contact",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",

@@ -1,15 +1,21 @@
 import * as vendorTool from '../../tools/vendor'
 import Header from './blocks/Header'
+import Footer from './blocks/Footer'
 import useRequest from '../../states/useRequest'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 
 const useStyles = vendorTool.jss.createUseStyles({
   main: {
-    paddingTop: '4.5rem',
+    paddingTop: '3rem',
+    minHeight: '100vh',
+  },
+  children: {
+    paddingTop: '1.5rem',
     paddingLeft: '1.5rem',
     paddingRight: '1.5rem',
     paddingBottom: '2rem',
+    minHeight: 'calc(100vh - 5.5rem)',
   },
   messages: {
     marginTop: '4rem',
@@ -87,8 +93,11 @@ const Layout: vendorTool.react.FunctionComponent = ({
           ))}
         </div>
       )}
-      <main className={classes.main}>
-        {children}
+      <main className={vendorTool.classNames(classes.main, 'column-center')}>
+        <section className={classes.children}>
+          {children}
+        </section>
+        <Footer />
       </main>
     </>
   )
