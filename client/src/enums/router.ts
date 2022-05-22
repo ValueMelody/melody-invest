@@ -10,6 +10,7 @@ export const Nav = Object.freeze({
   Tickers: '/tickers',
   Dashboard: '/dashboard',
   NotFound: '/404',
+  Pricing: '/pricing',
 })
 
 const base = `${process.env.REACT_APP_SERVER_TYPE}://${process.env.REACT_APP_SERVER_HOST}`

@@ -110,7 +110,7 @@ const SignUp = () => {
             color='blue'
             disabled={!email || !password || !retypePassword || !isConfirmed}
           >
-            {localeTool.t('signUp.button')}
+            {localeTool.t('common.signUp')}
           </vendorTool.ui.Button>
         </div>
       </form>

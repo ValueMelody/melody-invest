@@ -16,6 +16,7 @@ const useStyles = vendorTool.jss.createUseStyles({
     paddingRight: '1.5rem',
     paddingBottom: '2rem',
     minHeight: 'calc(100vh - 5.5rem)',
+    width: '100%',
   },
   messages: {
     marginTop: '4rem',

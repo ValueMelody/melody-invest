@@ -35,6 +35,8 @@
     "common.backToLogin": "Back to sign in",
     "common.passwordUpdated": "Password Updated!",
     "common.contactUs": "Contact",
+    "common.pricing": "Pricing",
+    "common.signUp": "Sign Up",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -45,6 +47,21 @@
     "error.500": "Something went wrong, please try again later",
     "error.401": "Authentication expired, please sign in again",
 
+    "pricing.basic": "Basic",
+    "pricing.basicPrice": "Free",
+    "pricing.basicProfiles": "5 Trader Profiles",
+    "pricing.basicEnvs": "System Defined Trade Envs",
+    "pricing.pro": "Pro",
+    "pricing.proPrice": "$9.99 / Month",
+    "pricing.proProfiles": "30 Trader Profiles",
+    "pricing.proEnvs": "3 Trade Envs",
+    "pricing.proCombos": "3 Trade Combos",
+    "pricing.premium": "Premium",
+    "pricing.premiumPrice": "$19.99 / Month",
+    "pricing.premiumProfiles": "100 Trader Profiles",
+    "pricing.premiumEnvs": "10 Trade Envs",
+    "pricing.premiumCombos": "10 Trade Combos",
+
     "setting.title": "User Account",
     "setting.changePassword": "Change Password",
     "setting.signOut": "Sign Out",
@@ -53,7 +70,6 @@
     "reset.button": "Confirm Reset",
 
     "signUp.title": "Create an account",
-    "signUp.button": "Sign Up",
     "signUp.terms": "By using valuemelody.com, you are agreeing to our terms and conditions.",
     "signUp.toSignIn": "Already have an account?",
 

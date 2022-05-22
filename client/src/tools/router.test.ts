@@ -118,3 +118,9 @@ describe('#resetRoute', () => {
     expect(routerTool.resetRoute()).toBe('/reset-password')
   })
 })
+
+describe('#pricingRoute', () => {
+  test('could get correct url for pricing route', () => {
+    expect(routerTool.pricingRoute()).toBe('/pricing')
+  })
+})
