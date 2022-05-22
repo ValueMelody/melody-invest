@@ -15,7 +15,7 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "max-len": ["error", { "code": 120, "tabWidth": 2 }],
+    "max-len": ["error", { "code": 140, "tabWidth": 2 }],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "arrow-parens": "error",
