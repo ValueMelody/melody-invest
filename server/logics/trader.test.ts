@@ -32,3 +32,18 @@ describe('#presentTraderProfile', () => {
     })
   })
 })
+
+describe('#groupTraderCouples', () => {
+  test('could group trader couples', () => {
+    const traders: interfaces.traderModel.Record[] = [
+      // @ts-ignore
+      { id: 1 }, { id: 2 }, { id: 3 }, { id: 4 }, { id: 5 }, { id: 6 }, { id: 7 },
+    ]
+    expect(trader.groupTraderCouples(traders)).toStrictEqual([
+      [{ id: 1 }, { id: 2 }],
+      [{ id: 3 }, { id: 4 }],
+      [{ id: 5 }, { id: 6 }],
+      [{ id: 7 }],
+    ])
+  })
+})

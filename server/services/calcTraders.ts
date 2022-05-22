@@ -10,6 +10,7 @@ import * as dateTool from '../tools/date'
 import * as generateTool from '../tools/generate'
 import * as runTool from '../tools/run'
 import * as patternLogic from '../logics/pattern'
+import * as traderLogic from '../logics/trader'
 import * as transactionLogic from '../logics/transaction'
 import * as evaluationLogic from '../logics/evaluation'
 import * as errorEnums from '../enums/error'
@@ -243,7 +244,7 @@ const calcEnvDescendants = async (
   envId: number,
   traders: interfaces.traderModel.Record[],
 ) => {
-  const couples = patternLogic.groupPatternCouples(traders)
+  const couples = traderLogic.groupTraderCouples(traders)
   const patternHashs: string[] = []
 
   const transaction = await databaseAdapter.createTransaction()
