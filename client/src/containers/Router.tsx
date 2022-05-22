@@ -1,4 +1,5 @@
 import * as vendorTool from '../tools/vendor'
+import Pricing from './general/Pricing'
 import Activation from './accounts/Activation'
 import SignUp from './accounts/SignUp'
 import SignIn from './accounts/SignIn'
@@ -25,6 +26,10 @@ const Router = () => {
   return (
     <Layout>
       <vendorTool.router.Routes>
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Pricing}
+          element={<Pricing />}
+        />
         <vendorTool.router.Route
           path={`${routerEnum.Nav.Traders}/profiles/tops`}
           element={<TopProfiles />}

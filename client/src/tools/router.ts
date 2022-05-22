@@ -75,3 +75,7 @@ export const forgotRoute = (): string => {
 export const resetRoute = (): string => {
   return routerEnum.Nav.Reset
 }
+
+export const pricingRoute = (): string => {
+  return routerEnum.Nav.Pricing
+}

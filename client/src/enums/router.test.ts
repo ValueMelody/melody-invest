@@ -12,6 +12,7 @@ describe('#Nav', () => {
     expect(router.Nav.Tickers).toBeDefined()
     expect(router.Nav.Dashboard).toBeDefined()
     expect(router.Nav.NotFound).toBeDefined()
+    expect(router.Nav.Pricing).toBeDefined()
   })
 })
 
