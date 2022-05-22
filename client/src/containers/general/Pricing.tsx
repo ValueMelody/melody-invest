@@ -4,8 +4,12 @@ import * as routerTool from '../../tools/router'
 import * as themeEnum from '../../enums/theme'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
-  container: {
+  table: {
     alignItems: 'flex-start',
+    width: '100%',
+  },
+  title: {
+    marginBottom: '2rem !important',
   },
   column: {
     width: '31%',
@@ -103,79 +107,84 @@ const Pricing = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className={vendorTool.classNames('row-around', classes.container)}>
-      <section
-        className={vendorTool.classNames('column-center', classes.column)}
-      >
-        <Header
-          title={localeTool.t('pricing.basic')}
-          className={vendorTool.classNames(classes.basicHeader)}
-        />
-        <Price title={localeTool.t('pricing.basicPrice')} />
-        <Item title={localeTool.t('pricing.basicProfiles')} />
-        <Item title={localeTool.t('pricing.basicEnvs')} />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <div
-          className={vendorTool.classNames(
-            classes.row, classes.highlight, 'row-around',
-          )}
+    <section className='column-start'>
+      <h2 className={classes.title}>
+        {localeTool.t('pricing.title')}:
+      </h2>
+      <section className={vendorTool.classNames('row-between', classes.table)}>
+        <section
+          className={vendorTool.classNames('column-center', classes.column)}
         >
-          <vendorTool.router.Link
-            to={routerTool.signUpRoute()}
-            className={classes.signUp}
+          <Header
+            title={localeTool.t('pricing.basic')}
+            className={vendorTool.classNames(classes.basicHeader)}
+          />
+          <Price title={localeTool.t('pricing.basicPrice')} />
+          <Item title={localeTool.t('pricing.basicProfiles')} />
+          <Item title={localeTool.t('pricing.basicEnvs')} />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <div
+            className={vendorTool.classNames(
+              classes.row, classes.highlight, 'row-around',
+            )}
           >
-            {localeTool.t('common.signUp')}
-          </vendorTool.router.Link>
-        </div>
-      </section>
-      <section
-        className={vendorTool.classNames('column-center', classes.column)}
-      >
-        <Header
-          title={localeTool.t('pricing.pro')}
-          className={classes.proHeader}
-        />
-        <Price title={localeTool.t('pricing.proPrice')} />
-        <Item title={localeTool.t('pricing.proProfiles')} />
-        <Item title={localeTool.t('pricing.proEnvs')} />
-        <Item title={localeTool.t('pricing.proCombos')} />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-      </section>
-      <section
-        className={vendorTool.classNames('column-center', classes.column)}
-      >
-        <Header
-          title={localeTool.t('pricing.premium')}
-          className={classes.premiumHeader}
-        />
-        <Price title={localeTool.t('pricing.premiumPrice')} />
-        <Item title={localeTool.t('pricing.premiumProfiles')} />
-        <Item title={localeTool.t('pricing.premiumEnvs')} />
-        <Item title={localeTool.t('pricing.premiumCombos')} />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
-        <Item title='' />
+            <vendorTool.router.Link
+              to={routerTool.signUpRoute()}
+              className={classes.signUp}
+            >
+              {localeTool.t('common.signUp')}
+            </vendorTool.router.Link>
+          </div>
+        </section>
+        <section
+          className={vendorTool.classNames('column-center', classes.column)}
+        >
+          <Header
+            title={localeTool.t('pricing.pro')}
+            className={classes.proHeader}
+          />
+          <Price title={localeTool.t('pricing.proPrice')} />
+          <Item title={localeTool.t('pricing.proProfiles')} />
+          <Item title={localeTool.t('pricing.proEnvs')} />
+          <Item title={localeTool.t('pricing.proCombos')} />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+        </section>
+        <section
+          className={vendorTool.classNames('column-center', classes.column)}
+        >
+          <Header
+            title={localeTool.t('pricing.premium')}
+            className={classes.premiumHeader}
+          />
+          <Price title={localeTool.t('pricing.premiumPrice')} />
+          <Item title={localeTool.t('pricing.premiumProfiles')} />
+          <Item title={localeTool.t('pricing.premiumEnvs')} />
+          <Item title={localeTool.t('pricing.premiumCombos')} />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+          <Item title='' />
+        </section>
       </section>
     </section>
   )
