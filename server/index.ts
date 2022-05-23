@@ -1,4 +1,5 @@
 import express, { Response, Request, NextFunction } from 'express'
+import compression from 'compression'
 import 'express-async-errors'
 import cors from 'cors'
 import { initConnection as initDatabase } from './adapters/database'
@@ -15,6 +16,7 @@ const port = process.env.SERVER_PORT || 3000
 
 app.use(cors())
 app.use(express.json())
+app.use(compression())
 app.use(express.urlencoded({ extended: true }))
 
 initDatabase()
