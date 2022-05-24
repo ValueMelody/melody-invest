@@ -254,22 +254,31 @@ export const createTraderEnv = async (
     : null
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const env = await traderEnvModel.createIfEmpty({
+    const envResult = await traderEnvModel.createIfEmpty({
       startDate,
       tickerIds: tickerIdsAsString,
       name: null,
       isSystem: false,
       activeTotal: 1000,
     }, transaction)
+    const env = envResult.record
 
-    if (env.isSystem) return env
+    if (env.isSystem) {
+      await transaction.rollback()
+      return env
+    }
 
     const relation = await traderEnvFollowerModel.createIfEmpty({
       userId, traderEnvId: env.id, name,
     }, transaction)
-    await transaction.commit()
 
-    return { ...env, name: relation.name }
+    if (relation.isNew || envResult.isNew) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
+
+    return { ...env, name: relation.record.name }
   } catch (error) {
     await transaction.rollback()
     throw error

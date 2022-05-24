@@ -45,11 +45,17 @@ export const create = async (
 }
 
 export const createIfEmpty = async (
-  values: interfaces.traderEnvFollowerModel.Create, transaction: Knex.Transaction,
-): Promise<interfaces.traderEnvFollowerModel.Record> => {
+  values: interfaces.traderEnvFollowerModel.Create,
+  transaction: Knex.Transaction,
+): Promise<{
+  record: interfaces.traderEnvFollowerModel.Record;
+  isNew: boolean;
+}> => {
   const currentRecord = await getByUK(values.userId, values.traderEnvId)
-  if (currentRecord) return currentRecord
-  return create(values, transaction)
+  if (currentRecord) return { record: currentRecord, isNew: false }
+
+  const created = await create(values, transaction)
+  return { record: created, isNew: true }
 }
 
 export const destroy = async (
