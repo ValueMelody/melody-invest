@@ -109,3 +109,14 @@ describe('#createIfEmpty', () => {
     expect(created).toStrictEqual({ record: detail, isNew: true })
   })
 })
+
+describe('#destroy', () => {
+  test('could destroy', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    const result = await traderEnvFollower.destroy(1, 3, transaction)
+    await transaction.commit()
+    expect(result).toBe(true)
+    const record = await traderEnvFollower.getByUK(1, 3)
+    expect(record).toBe(null)
+  })
+})
