@@ -45,25 +45,6 @@ export const getByUK = async (
   return env ? convertToRecord(env) : null
 }
 
-export const create = async (
-  values: interfaces.traderEnvModel.Create, transaction: Knex.Transaction,
-): Promise<interfaces.traderEnvModel.Record> => {
-  const env = await databaseAdapter.create({
-    tableName: TableName,
-    values,
-    transaction,
-  })
-  return convertToRecord(env)
-}
-
-export const createIfEmpty = async (
-  values: interfaces.traderEnvModel.Create, transaction: Knex.Transaction,
-): Promise<interfaces.traderEnvModel.Record> => {
-  const currentRecord = await getByUK(values.startDate, values.tickerIds)
-  if (currentRecord) return currentRecord
-  return create(values, transaction)
-}
-
 export const getSystemDefined = async (): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
     tableName: TableName,
@@ -84,4 +65,29 @@ export const getInPKs = async (
     ],
   })
   return envs.map((env) => convertToRecord(env))
+}
+
+export const create = async (
+  values: interfaces.traderEnvModel.Create, transaction: Knex.Transaction,
+): Promise<interfaces.traderEnvModel.Record> => {
+  const env = await databaseAdapter.create({
+    tableName: TableName,
+    values,
+    transaction,
+  })
+  return convertToRecord(env)
+}
+
+export const createIfEmpty = async (
+  values: interfaces.traderEnvModel.Create,
+  transaction: Knex.Transaction,
+): Promise<{
+  record: interfaces.traderEnvModel.Record;
+  isNew: boolean;
+}> => {
+  const currentRecord = await getByUK(values.startDate, values.tickerIds)
+  if (currentRecord) return { record: currentRecord, isNew: false }
+
+  const created = await create(values, transaction)
+  return { record: created, isNew: true }
 }

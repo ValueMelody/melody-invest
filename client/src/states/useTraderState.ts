@@ -133,7 +133,7 @@ const useTraderState = () => {
     if (!isSame) {
       store.setResources((resources) => ({
         ...resources,
-        userTraderEnvs: [env, ...resources.userTraderEnvs],
+        userTraderEnvs: [...resources.userTraderEnvs, env],
       }))
     }
   }
