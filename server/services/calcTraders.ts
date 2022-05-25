@@ -262,36 +262,36 @@ const calcEnvDescendants = async (
       const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childOne.hashCode)) {
         const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
-        patternHashs.push(patternOne.hashCode)
-        await traderModel.createOrActive(envId, patternOne.id, transaction)
+        patternHashs.push(patternOne.record.hashCode)
+        await traderModel.createOrActive(envId, patternOne.record.id, transaction)
       }
 
       const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childTwo.hashCode)) {
         const patternTwo = await traderPatternModel.createIfEmpty(childTwo, transaction)
-        patternHashs.push(patternTwo.hashCode)
-        await traderModel.createOrActive(envId, patternTwo.id, transaction)
+        patternHashs.push(patternTwo.record.hashCode)
+        await traderModel.createOrActive(envId, patternTwo.record.id, transaction)
       }
 
       const childThree = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childThree.hashCode)) {
         const patternThree = await traderPatternModel.createIfEmpty(childThree, transaction)
-        patternHashs.push(patternThree.hashCode)
-        await traderModel.createOrActive(envId, patternThree.id, transaction)
+        patternHashs.push(patternThree.record.hashCode)
+        await traderModel.createOrActive(envId, patternThree.record.id, transaction)
       }
 
       const childFour = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childFour.hashCode)) {
         const patternFour = await traderPatternModel.createIfEmpty(childFour, transaction)
-        patternHashs.push(patternFour.hashCode)
-        await traderModel.createOrActive(envId, patternFour.id, transaction)
+        patternHashs.push(patternFour.record.hashCode)
+        await traderModel.createOrActive(envId, patternFour.record.id, transaction)
       }
 
       const childFive = patternLogic.generatePatternChild(firstPattern!, secondPattern!, true)
       if (!patternHashs.includes(childFive.hashCode)) {
         const patternFive = await traderPatternModel.createIfEmpty(childFive, transaction)
-        patternHashs.push(patternFive.hashCode)
-        await traderModel.createOrActive(envId, patternFive.id, transaction)
+        patternHashs.push(patternFive.record.hashCode)
+        await traderModel.createOrActive(envId, patternFive.record.id, transaction)
       }
     })
 
