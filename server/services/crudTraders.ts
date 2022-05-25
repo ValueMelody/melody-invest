@@ -178,7 +178,8 @@ export const createTraderProfile = async (
 ): Promise<interfaces.response.TraderProfile> => {
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const pattern = await traderPatternModel.createIfEmpty(traderPattern, transaction)
+    const patternResult = await traderPatternModel.createIfEmpty(traderPattern, transaction)
+    const pattern = patternResult.record
     const trader = await traderModel.createOrActive(traderEnvId, pattern.id, transaction)
 
     const currentRelation = await traderFollowerModel.getByUK(userId, trader.id)

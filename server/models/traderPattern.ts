@@ -76,11 +76,16 @@ export const create = async (
 }
 
 export const createIfEmpty = async (
-  values: interfaces.traderPatternModel.Create, transaction: Knex.Transaction,
-): Promise<interfaces.traderPatternModel.Record> => {
+  values: interfaces.traderPatternModel.Create,
+  transaction: Knex.Transaction,
+): Promise<{
+  record: interfaces.traderPatternModel.Record;
+  isNew: boolean;
+}> => {
   const currentRecord = await getByUK(values.hashCode)
-  if (currentRecord) return currentRecord
-  return create(values, transaction)
+  if (currentRecord) return { record: currentRecord, isNew: false }
+  const created = await create(values, transaction)
+  return { record: created, isNew: true }
 }
 
 export const update = async (
