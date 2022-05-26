@@ -40,7 +40,7 @@ export const getProfileDetail = async (
   if (!trader || trader.accessCode !== accessCode) throw errorEnum.Custom.WrongAccessCode
 
   const holdings = await traderHoldingModel.getAll(trader.id)
-  const traders = await traderModel.getByPattern(trader.traderPatternId)
+  const traders = await traderModel.getByPatternId(trader.traderPatternId)
   const filterredTraders = traders.filter((trader) => envIds.includes(trader.traderEnvId))
   const profileEnvs = filterredTraders.map((trader) => ({
     traderId: trader.id,
@@ -180,14 +180,19 @@ export const createTraderProfile = async (
   try {
     const patternResult = await traderPatternModel.createIfEmpty(traderPattern, transaction)
     const pattern = patternResult.record
-    const trader = await traderModel.createOrActive(traderEnvId, pattern.id, transaction)
+    const traderResult = await traderModel.createOrActive(traderEnvId, pattern.id, transaction)
+    const trader = traderResult.record
 
     const currentRelation = await traderFollowerModel.getByUK(userId, trader.id)
     if (!currentRelation) {
       await traderFollowerModel.create({ userId, traderId: trader.id }, transaction)
     }
 
-    await transaction.commit()
+    if (patternResult.isNew || traderResult.isEdited || !currentRelation) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
 
     return {
       trader,

@@ -18,13 +18,13 @@ const convertToRecord = (
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderModel.Record | null> => {
-  const pattern = await databaseAdapter.findOne({
+  const trader = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
       { key: 'id', value: id },
     ],
   })
-  return pattern
+  return trader ? convertToRecord(trader) : null
 }
 
 export const getByUK = async (
@@ -41,7 +41,9 @@ export const getByUK = async (
   return trader ? convertToRecord(trader) : null
 }
 
-export const getActives = async (): Promise<interfaces.traderModel.Record[]> => {
+export const getActives = async (): Promise<
+  interfaces.traderModel.Record[]
+> => {
   const traders = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
@@ -51,7 +53,7 @@ export const getActives = async (): Promise<interfaces.traderModel.Record[]> => 
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getByPattern = async (
+export const getByPatternId = async (
   traderPatternId: number,
 ): Promise<interfaces.traderModel.Record[]> => {
   const traders = await databaseAdapter.findAll({
@@ -63,7 +65,9 @@ export const getByPattern = async (
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getAll = async (): Promise<interfaces.traderModel.Record[]> => {
+export const getAll = async (): Promise<
+  interfaces.traderModel.Record[]
+> => {
   const traders = await databaseAdapter.findAll({
     tableName: TableName,
   })
@@ -82,12 +86,6 @@ export const getInPKs = async (
   return traders.map((trader) => convertToRecord(trader))
 }
 
-interface TopOptions {
-  envId?: number;
-  behavior?: interfaces.traderPatternModel.Behavior;
-  tickerId?: number;
-}
-
 export const getTopPerformancers = async (
   envId: number,
   total: number,
@@ -103,6 +101,12 @@ export const getTopPerformancers = async (
     limit: total,
   })
   return records.map((record) => convertToRecord(record))
+}
+
+interface TopOptions {
+  envId?: number;
+  behavior?: interfaces.traderPatternModel.Behavior;
+  tickerId?: number;
 }
 
 export const getTops = async (
@@ -217,13 +221,24 @@ export const create = async (
 }
 
 export const createOrActive = async (
-  traderEnvId: number, traderPatternId: number, transaction: Knex.Transaction,
-): Promise<interfaces.traderModel.Record> => {
+  traderEnvId: number,
+  traderPatternId: number,
+  transaction: Knex.Transaction,
+): Promise<{
+  record: interfaces.traderModel.Record;
+  isEdited: boolean;
+}> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
   const accessCode = generateTool.buildAccessHash(16)
-  if (!currentRecord) return create({ traderEnvId, traderPatternId, isActive: true, accessCode }, transaction)
-  if (currentRecord.isActive) return currentRecord
-  return update(currentRecord.id, { isActive: true }, transaction)
+  if (!currentRecord) {
+    const record = await create({ traderEnvId, traderPatternId, isActive: true, accessCode }, transaction)
+    return { record, isEdited: true }
+  }
+  if (currentRecord.isActive) {
+    return { record: currentRecord, isEdited: false }
+  }
+  const updated = await update(currentRecord.id, { isActive: true }, transaction)
+  return { record: updated, isEdited: true }
 }
 
 export const update = async (
