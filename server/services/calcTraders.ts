@@ -249,6 +249,8 @@ const calcEnvDescendants = async (
 
   const transaction = await databaseAdapter.createTransaction()
   try {
+    let transactionUsed = false
+
     await runTool.asyncForEach(couples, async (
       couple: interfaces.traderModel.Record[],
     ) => {
@@ -263,39 +265,58 @@ const calcEnvDescendants = async (
       if (!patternHashs.includes(childOne.hashCode)) {
         const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
         patternHashs.push(patternOne.record.hashCode)
-        await traderModel.createOrActive(envId, patternOne.record.id, transaction)
+        const traderResult = await traderModel.createOrActive(envId, patternOne.record.id, transaction)
+        if (!transactionUsed) {
+          transactionUsed = patternOne.isNew || traderResult.isEdited
+        }
       }
 
       const childTwo = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childTwo.hashCode)) {
         const patternTwo = await traderPatternModel.createIfEmpty(childTwo, transaction)
         patternHashs.push(patternTwo.record.hashCode)
-        await traderModel.createOrActive(envId, patternTwo.record.id, transaction)
+        const traderResult = await traderModel.createOrActive(envId, patternTwo.record.id, transaction)
+        if (!transactionUsed) {
+          transactionUsed = patternTwo.isNew || traderResult.isEdited
+        }
       }
 
       const childThree = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childThree.hashCode)) {
         const patternThree = await traderPatternModel.createIfEmpty(childThree, transaction)
         patternHashs.push(patternThree.record.hashCode)
-        await traderModel.createOrActive(envId, patternThree.record.id, transaction)
+        const traderResult = await traderModel.createOrActive(envId, patternThree.record.id, transaction)
+        if (!transactionUsed) {
+          transactionUsed = patternThree.isNew || traderResult.isEdited
+        }
       }
 
       const childFour = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childFour.hashCode)) {
         const patternFour = await traderPatternModel.createIfEmpty(childFour, transaction)
         patternHashs.push(patternFour.record.hashCode)
-        await traderModel.createOrActive(envId, patternFour.record.id, transaction)
+        const traderResult = await traderModel.createOrActive(envId, patternFour.record.id, transaction)
+        if (!transactionUsed) {
+          transactionUsed = patternFour.isNew || traderResult.isEdited
+        }
       }
 
       const childFive = patternLogic.generatePatternChild(firstPattern!, secondPattern!, true)
       if (!patternHashs.includes(childFive.hashCode)) {
         const patternFive = await traderPatternModel.createIfEmpty(childFive, transaction)
         patternHashs.push(patternFive.record.hashCode)
-        await traderModel.createOrActive(envId, patternFive.record.id, transaction)
+        const traderResult = await traderModel.createOrActive(envId, patternFive.record.id, transaction)
+        if (!transactionUsed) {
+          transactionUsed = patternFive.isNew || traderResult.isEdited
+        }
       }
     })
 
-    await transaction.commit()
+    if (transactionUsed) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
   } catch (error) {
     await transaction.rollback()
     throw error
