@@ -65,8 +65,20 @@ export const create = async (
 export const createIfEmpty = async (
   values: interfaces.traderComboModel.Create,
   transaction: Knex.Transaction,
-): Promise<interfaces.traderComboModel.Record> => {
+): Promise<{
+  record: interfaces.traderComboModel.Record;
+  isNew: boolean;
+}> => {
   const currentRecord = await getByUK(values.traderIds)
-  if (currentRecord) return currentRecord
-  return create(values, transaction)
+  if (currentRecord) {
+    return {
+      record: currentRecord,
+      isNew: false,
+    }
+  }
+  const created = await create(values, transaction)
+  return {
+    record: created,
+    isNew: true,
+  }
 }
