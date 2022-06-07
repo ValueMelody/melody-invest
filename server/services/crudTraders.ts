@@ -305,11 +305,11 @@ export const createTraderCombo = async (
     }, transaction)
 
     const relation = await traderComboFollowerModel.createIfEmpty({
-      userId, traderComboId: combo.id, name,
+      userId, traderComboId: combo.record.id, name,
     }, transaction)
     await transaction.commit()
 
-    return { ...combo, name: relation.name, isSystem: false }
+    return { ...combo.record, name: relation.name, isSystem: false }
   } catch (error) {
     await transaction.rollback()
     throw error
