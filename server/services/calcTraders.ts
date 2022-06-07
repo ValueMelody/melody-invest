@@ -21,7 +21,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
   const transaction = await databaseAdapter.createTransaction()
   try {
     await tickerHolderModel.destroyTraderTickers(traderId, transaction)
-    await traderHoldingModel.destroyTraderHoldings(traderId, transaction)
+    await traderHoldingModel.destroyAll(traderId, transaction)
     const updated = await traderModel.update(traderId, {
       totalValue: null,
       totalDays: null,
