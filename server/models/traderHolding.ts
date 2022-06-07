@@ -87,7 +87,7 @@ export const create = async (
   return convertToRecord(newRecord)
 }
 
-export const destroyTraderHoldings = async (
+export const destroyAll = async (
   traderId: number,
   transaction: Knex.Transaction,
 ) => {
