@@ -39,3 +39,18 @@ describe('#empty', () => {
     expect(await cache.get('key3')).toBeNull()
   })
 })
+
+describe('#returnBuild', () => {
+  test('could build and return', async () => {
+    const generateFunc = jest.fn(async () => ({ stored: true }))
+    const cacheKey = 'testReturnBuild'
+    const firstCall = await cache.returnBuild(cacheKey, '1d', generateFunc)
+    expect(firstCall).toStrictEqual({ stored: true })
+    const secondCall = await cache.returnBuild(cacheKey, '1d', generateFunc)
+    expect(secondCall).toStrictEqual({ stored: true })
+    const thirdCall = await cache.returnBuild(cacheKey, '1d', generateFunc)
+    expect(thirdCall).toStrictEqual({ stored: true })
+
+    expect(generateFunc).toBeCalledTimes(1)
+  })
+})

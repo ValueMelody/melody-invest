@@ -5,6 +5,8 @@ import * as adapterEnum from '../enums/adapter'
 
 let _cache: Redis.Redis | null = null
 
+type Age = '1d'
+
 export const initTestConnection = () => {
   _cache = new RedisMock()
 }
@@ -29,7 +31,7 @@ export const get = async (key: string): Promise<string | null> => {
 export const set = async (
   key: string,
   value: string,
-  age: '1d',
+  age: Age,
 ) => {
   const cache = getConnection()
   const cacheAge = ms(age) / 1000
@@ -39,4 +41,17 @@ export const set = async (
 export const empty = async () => {
   const cache = getConnection()
   return cache.flushall()
+}
+
+export const returnBuild = async (
+  cacheKey: string,
+  cacheAge: Age,
+  buildFunction: Function,
+) => {
+  const stored = await get(cacheKey)
+  console.log(stored)
+  if (stored) return JSON.parse(stored)
+  const data = await buildFunction()
+  set(cacheKey, JSON.stringify(data), cacheAge)
+  return data
 }
