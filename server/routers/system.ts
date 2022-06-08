@@ -10,7 +10,7 @@ export default systemRouter
 
 systemRouter.get('/top-trader-profiles', async (req, res) => {
   console.log(123)
-  const tops = await cacheAdapter.buildOrReturn(
+  const tops = await cacheAdapter.returnBuild(
     cacheTool.generateSystemEndpointKey('top-trader-profiles'),
     '1d',
     crudSystems.getTopTraderProfiles,
@@ -19,7 +19,7 @@ systemRouter.get('/top-trader-profiles', async (req, res) => {
 })
 
 systemRouter.get('/top-trader-combos', async (req, res) => {
-  const tops = await cacheAdapter.buildOrReturn(
+  const tops = await cacheAdapter.returnBuild(
     cacheTool.generateSystemEndpointKey('top-trader-combos'),
     '1d',
     crudSystems.getTopTraderCombos,
@@ -28,7 +28,7 @@ systemRouter.get('/top-trader-combos', async (req, res) => {
 })
 
 systemRouter.get('/defaults', async (req, res) => {
-  const defaults = await cacheAdapter.buildOrReturn(
+  const defaults = await cacheAdapter.returnBuild(
     cacheTool.generateSystemEndpointKey('defaults'),
     '1d',
     crudSystems.getDefaults,
