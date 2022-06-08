@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import { render, screen, fireEvent } from '../../../test.utils'
+import { render, screen } from '../../../test.utils'
 import ProfileLabel from './ProfileLabel'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
