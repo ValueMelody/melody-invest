@@ -116,7 +116,7 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('pricing.basic')}
+            title={localeTool.t('common.basic')}
             className={vendorTool.classNames(classes.basicHeader)}
           />
           <Price title={localeTool.t('pricing.basicPrice')} />
@@ -147,7 +147,7 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('pricing.pro')}
+            title={localeTool.t('common.pro')}
             className={classes.proHeader}
           />
           <Price title={localeTool.t('pricing.proPrice')} />
@@ -168,7 +168,7 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('pricing.premium')}
+            title={localeTool.t('common.premium')}
             className={classes.premiumHeader}
           />
           <Price title={localeTool.t('pricing.premiumPrice')} />
