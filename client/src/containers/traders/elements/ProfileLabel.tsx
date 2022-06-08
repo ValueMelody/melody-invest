@@ -13,7 +13,7 @@ const ProfileLabel = ({
   traderEnv: interfaces.traderEnvModel.Record;
 }) => {
   return (
-    <vendorTool.ui.Label color={color}>
+    <vendorTool.ui.Label color={color} data-testid='profileLabel'>
       {parseTool.profileName(trader.traderPatternId)} - {traderEnv.name} {localeTool.t('common.env')}
     </vendorTool.ui.Label>
   )

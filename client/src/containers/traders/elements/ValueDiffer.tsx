@@ -36,7 +36,10 @@ const ValueDiffer = ({
   if (!differ) return null
 
   return (
-    <div className={vendorTool.classNames('row-start', classes.container)}>
+    <div
+      data-testid='valueDiffer'
+      className={vendorTool.classNames('row-start', classes.container)}
+    >
       {title && <h5>{title}:</h5>}
       <vendorTool.ui.Label
         className={classes.label}

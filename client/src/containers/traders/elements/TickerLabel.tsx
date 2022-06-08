@@ -32,6 +32,7 @@ const TickerLabel = ({
 
   return (
     <vendorTool.ui.Label
+      data-testid='tickerLabel'
       color={color}
       className={vendorTool.classNames(classes.label, {
         'click-cursor': !!onClick,

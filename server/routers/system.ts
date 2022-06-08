@@ -9,7 +9,6 @@ export default systemRouter
 // ------------------------------------------------------------ Get --
 
 systemRouter.get('/top-trader-profiles', async (req, res) => {
-  console.log(123)
   const tops = await cacheAdapter.returnBuild(
     cacheTool.generateSystemEndpointKey('top-trader-profiles'),
     '1d',

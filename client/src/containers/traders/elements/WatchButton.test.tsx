@@ -3,7 +3,7 @@ import WatchButton from './WatchButton'
 import * as localeTool from '../../../tools/locale'
 
 describe('#WatchButton', () => {
-  test('could render as watched', async () => {
+  test('could render as watched', () => {
     const onClick = jest.fn()
 
     render(
@@ -19,7 +19,7 @@ describe('#WatchButton', () => {
     expect(onClick).toBeCalledTimes(1)
   })
 
-  test('could render as not watched', async () => {
+  test('could render as not watched', () => {
     const onClick = jest.fn()
 
     render(
