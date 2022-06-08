@@ -49,7 +49,6 @@ export const returnBuild = async (
   buildFunction: Function,
 ) => {
   const stored = await get(cacheKey)
-  console.log(stored)
   if (stored) return JSON.parse(stored)
   const data = await buildFunction()
   set(cacheKey, JSON.stringify(data), cacheAge)

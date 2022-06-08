@@ -40,6 +40,7 @@ const BehaviorLabel = ({
 
   return (
     <vendorTool.ui.Label
+      data-testid='behaviorLabel'
       className={vendorTool.classNames(classes.container, {
         'info-cursor': !onClick,
         'click-cursor': !!onClick,
