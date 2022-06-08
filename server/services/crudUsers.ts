@@ -98,7 +98,7 @@ export const createUser = async (
         password: generateTool.buildEncryptedPassword(password),
         activationCode: generateTool.buildAccessCode(),
         activationSentAt: new Date(),
-        type: constants.User.Type.Normal,
+        type: constants.User.Type.Basic,
       }, transaction)
       await generateActivationEmail(user, transaction)
     }

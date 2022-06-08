@@ -1,3 +1,4 @@
+import * as constants from '@shared/constants'
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import useCommonState from '../../states/useCommonState'
@@ -7,11 +8,9 @@ import useAccountUI from './hooks/useAccountUI'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
-  email: {
-    marginBottom: '2rem !important',
-  },
-  container: {
-    padding: '2rem !important',
+  input: {
+    marginTop: '0.5rem',
+    marginBottom: '1rem',
   },
 }))
 
@@ -21,7 +20,7 @@ const Setting = () => {
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
-  const { classes: accountClasses, getPasswordError } = useAccountUI()
+  const { getPasswordError } = useAccountUI()
   const { getUser, updateUserPassword, removeUserToken } = useUserState()
   const { addMessage } = useCommonState()
 
@@ -30,6 +29,33 @@ const Setting = () => {
   const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
 
   const user = getUser()
+
+  const userTypeText = vendorTool.react.useMemo(() => {
+    switch (user.userType) {
+      case constants.User.Type.Premium:
+        return {
+          title: localeTool.t('common.premium'),
+          price: localeTool.t('pricing.premiumPrice'),
+          profiles: localeTool.t('pricing.premiumProfiles'),
+          envs: localeTool.t('pricing.premiumEnvs'),
+        }
+      case constants.User.Type.Pro:
+        return {
+          title: localeTool.t('common.pro'),
+          price: localeTool.t('pricing.proPrice'),
+          profiles: localeTool.t('pricing.proProfiles'),
+          envs: localeTool.t('pricing.proEnvs'),
+        }
+      case constants.User.Type.Basic:
+      default:
+        return {
+          title: localeTool.t('common.basic'),
+          price: localeTool.t('pricing.basicPrice'),
+          profiles: localeTool.t('pricing.basicProfiles'),
+          envs: localeTool.t('pricing.basicEnvs'),
+        }
+    }
+  }, [user.userType])
 
   // ------------------------------------------------------------ Handler --
 
@@ -77,51 +103,92 @@ const Setting = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(accountClasses.container, 'column-center')}>
-      <h2 className={accountClasses.title}>{localeTool.t('setting.title')}</h2>
-      <h3 className={classes.email}>
-        {localeTool.t('common.email')}: {user.userEmail}
-      </h3>
-      <vendorTool.ui.Segment className={classes.container}>
-        <form onSubmit={handleSubmit}>
-          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
-            <RequiredLabel title={localeTool.t('common.currentPassword')} />
-            <vendorTool.ui.Input
-              type='password'
-              value={currentPassword}
-              onChange={handleChangeCurrentPassword}
-            />
-          </div>
-          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
-            <RequiredLabel title={localeTool.t('common.newPassword')} />
-            <vendorTool.ui.Input
-              type='password'
-              value={newPassword}
-              onChange={handleChangeNewPassword}
-            />
-          </div>
-          <div className={vendorTool.classNames('row-between', accountClasses.row)}>
-            <RequiredLabel title={localeTool.t('common.retypePassword')} />
-            <vendorTool.ui.Input
-              type='password'
-              value={retypePassword}
-              onChange={handleChangeRetypePassword}
-            />
-          </div>
-          <div className='row-around'>
-            <vendorTool.ui.Button
-              type='submit'
-              color='blue'
-              disabled={!currentPassword || !newPassword || !retypePassword}
-            >
-              {localeTool.t('setting.changePassword')}
-            </vendorTool.ui.Button>
-          </div>
-        </form>
-      </vendorTool.ui.Segment>
-      <vendorTool.ui.Button onClick={handleSignOut}>
-        {localeTool.t('setting.signOut')}
-      </vendorTool.ui.Button>
+    <div>
+      <vendorTool.ui.CardGroup>
+        <vendorTool.ui.Card>
+          <vendorTool.ui.CardContent>
+            <vendorTool.ui.CardHeader>
+              <h3>{localeTool.t('setting.accountInfo')}</h3>
+            </vendorTool.ui.CardHeader>
+            <vendorTool.ui.CardDescription>
+              <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
+            </vendorTool.ui.CardDescription>
+          </vendorTool.ui.CardContent>
+        </vendorTool.ui.Card>
+        <vendorTool.ui.Card>
+          <vendorTool.ui.CardContent>
+            <vendorTool.ui.CardHeader>
+              <h3>{localeTool.t('setting.accountType')}</h3>
+            </vendorTool.ui.CardHeader>
+            <vendorTool.ui.CardDescription>
+              <h4>
+                {`${userTypeText.title} ${localeTool.t('common.plan')} - ${userTypeText.price}`}
+              </h4>
+              <h5>- {userTypeText.profiles}</h5>
+              <h5>- {userTypeText.envs}</h5>
+            </vendorTool.ui.CardDescription>
+          </vendorTool.ui.CardContent>
+          {user.userType !== constants.User.Type.Premium && (
+            <vendorTool.ui.CardContent extra>
+              <vendorTool.ui.Button color='blue'>
+                {localeTool.t('common.upgrade')}
+              </vendorTool.ui.Button>
+            </vendorTool.ui.CardContent>
+          )}
+        </vendorTool.ui.Card>
+        <vendorTool.ui.Card>
+          <vendorTool.ui.CardContent>
+            <vendorTool.ui.CardHeader>
+              <h3>{localeTool.t('setting.changePassword')}</h3>
+            </vendorTool.ui.CardHeader>
+            <vendorTool.ui.CardDescription>
+              <form onSubmit={handleSubmit}>
+                <RequiredLabel title={localeTool.t('common.currentPassword')} />
+                <vendorTool.ui.Input
+                  type='password'
+                  value={currentPassword}
+                  onChange={handleChangeCurrentPassword}
+                  className={classes.input}
+                />
+                <RequiredLabel title={localeTool.t('common.newPassword')} />
+                <vendorTool.ui.Input
+                  type='password'
+                  value={newPassword}
+                  onChange={handleChangeNewPassword}
+                  className={classes.input}
+                />
+                <RequiredLabel title={localeTool.t('common.retypePassword')} />
+                <vendorTool.ui.Input
+                  type='password'
+                  value={retypePassword}
+                  onChange={handleChangeRetypePassword}
+                  className={classes.input}
+                />
+                <vendorTool.ui.Button
+                  type='submit'
+                  color='blue'
+                  disabled={!currentPassword || !newPassword || !retypePassword}
+                  className={classes.input}
+                >
+                  {localeTool.t('setting.changePassword')}
+                </vendorTool.ui.Button>
+              </form>
+            </vendorTool.ui.CardDescription>
+          </vendorTool.ui.CardContent>
+        </vendorTool.ui.Card>
+        <vendorTool.ui.Card>
+          <vendorTool.ui.CardContent>
+            <vendorTool.ui.CardHeader>
+              <h3>{localeTool.t('setting.accountAction')}</h3>
+            </vendorTool.ui.CardHeader>
+            <vendorTool.ui.CardDescription>
+              <vendorTool.ui.Button onClick={handleSignOut}>
+                {localeTool.t('setting.signOut')}
+              </vendorTool.ui.Button>
+            </vendorTool.ui.CardDescription>
+          </vendorTool.ui.CardContent>
+        </vendorTool.ui.Card>
+      </vendorTool.ui.CardGroup>
     </div>
   )
 }
