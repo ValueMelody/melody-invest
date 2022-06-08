@@ -65,3 +65,13 @@ export const upsert = async (
     : await create({ ...values, date }, transaction)
   return newRecord
 }
+
+export const destroyAll = async (
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.destroy({
+    tableName: TableName,
+    transaction,
+  })
+  return true
+}
