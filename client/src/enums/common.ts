@@ -5,6 +5,16 @@ export const Config = Object.freeze({
   DefaultEnvId: 1,
 })
 
+export const Env = Object.freeze({
+  ServerHost: process.env.REACT_APP_SERVER_HOST!,
+  ServerType: process.env.REACT_APP_SERVER_TYPE!,
+  Theme: process.env.REACT_APP_THEME!,
+  PayPalClientId: process.env.REACT_APP_PAYPAL_CLIENT_ID!,
+  PayPalProPlanId: process.env.REACT_APP_PAYPAL_PRO_PLAN_ID!,
+  PayPalPremiumPlanId: process.env.REACT_APP_PAYPAL_PREMIUM_PLAN_ID!,
+  ContactEmail: process.env.REACT_APP_CONTACT_EMAIL!,
+})
+
 export const Plan = Object.freeze({
   Basic: {
     Title: localeTool.t('common.basic'),

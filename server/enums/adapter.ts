@@ -65,12 +65,14 @@ export const MailerConfig = Object.freeze({
 export const HostConfig = Object.freeze({
   ClientHost: process.env.CLIENT_HOST!,
   ClientType: process.env.CLIENT_TYPE!,
+  ServerPort: Number(process.env.SERVER_PORT!),
+  TokenSecret: process.env.TOKEN_SECRET!,
 })
 
 export const PaymentConfig = Object.freeze({
   BaseUrl: process.env.PAYPAL_BASE_URL!,
-  ClientID: process.env.PAYPAL_CLIENT_ID!,
+  ClientId: process.env.PAYPAL_CLIENT_ID!,
   ClientSecret: process.env.PAYPAL_CLIENT_SECRET!,
-  ProPlanID: process.env.PAYPAL_PRO_PLAN_ID!,
-  PremiumPlanID: process.env.PAYPAL_PREMIUM_PLAN_ID!,
+  ProPlanId: process.env.PAYPAL_PRO_PLAN_ID!,
+  PremiumPlanId: process.env.PAYPAL_PREMIUM_PLAN_ID!,
 })

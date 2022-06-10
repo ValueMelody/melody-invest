@@ -134,8 +134,8 @@ export const createSubscription = async (
 ): Promise<interfaces.userModel.Record> => {
   const detail = await paymentAdapter.getSubscriptionDetail(subscriptionId)
 
-  const isProPlan = detail?.plan_id === adapterEnum.PaymentConfig.ProPlanID
-  const isPremiumPlan = detail?.plan_id === adapterEnum.PaymentConfig.PremiumPlanID
+  const isProPlan = detail?.plan_id === adapterEnum.PaymentConfig.ProPlanId
+  const isPremiumPlan = detail?.plan_id === adapterEnum.PaymentConfig.PremiumPlanId
   const isActive = detail?.status === 'ACTIVE'
   const isSucceed = isActive && (isProPlan || isPremiumPlan)
   if (!isSucceed) throw errorEnum.Custom.SubscriptionFailed

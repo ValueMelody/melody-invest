@@ -211,7 +211,7 @@ const useRequest = () => {
     } catch (e) {
       store.showRequestError({
         message: localeTool.t('setting.subscribeFailed', {
-          email: process.env.REACT_APP_CONTACT_EMAIL,
+          email: commonEnum.Env.ContactEmail,
         }),
       })
     } finally {

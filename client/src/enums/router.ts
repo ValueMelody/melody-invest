@@ -1,3 +1,5 @@
+import * as commonEnum from './common'
+
 export const Nav = Object.freeze({
   Activation: '/activation',
   SignUp: '/sign-up',
@@ -13,7 +15,7 @@ export const Nav = Object.freeze({
   Pricing: '/pricing',
 })
 
-const base = `${process.env.REACT_APP_SERVER_TYPE}://${process.env.REACT_APP_SERVER_HOST}`
+const base = `${commonEnum.Env.ServerType}://${commonEnum.Env.ServerHost}`
 
 export const Endpoint = Object.freeze({
   Systems: `${base}/system`,

@@ -1,10 +1,7 @@
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../../tools/vendor'
 import useRequest from '../../../states/useRequest'
-
-const clientId = process.env.REACT_APP_PAYPAL_CLIENT_ID!
-const proPlanId = process.env.REACT_APP_PAYPAL_PRO_PLAN_ID!
-const premiumPlanId = process.env.REACT_APP_PAYPAL_PREMIUM_PLAN_ID!
+import * as commonEnum from '../../../enums/common'
 
 type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
 
@@ -21,7 +18,9 @@ const Button = ({
 
   const [{ options }, dispatch] = vendorTool.paypal.usePayPalScriptReducer()
 
-  const planId = planType === constants.User.Type.Pro ? proPlanId : premiumPlanId
+  const planId = planType === constants.User.Type.Pro
+    ? commonEnum.Env.PayPalProPlanId
+    : commonEnum.Env.PayPalPremiumPlanId
 
   // ------------------------------------------------------------ Effect --
 
@@ -77,7 +76,7 @@ const SubscribeButton = ({
   return (
     <vendorTool.paypal.PayPalScriptProvider
       options={{
-        'client-id': clientId,
+        'client-id': commonEnum.Env.PayPalClientId,
         components: 'buttons',
         intent: 'subscription',
         vault: true,

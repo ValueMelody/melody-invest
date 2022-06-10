@@ -6,6 +6,7 @@ import sha512 from 'crypto-js/sha512'
 import md5 from 'crypto-js/md5'
 import * as interfaces from '@shared/interfaces'
 import * as emailEnum from '../enums/email'
+import * as adapterEnum from '../enums/adapter'
 
 export const toSHA256 = (content: string): string => {
   return sha256(content).toString()
@@ -32,13 +33,13 @@ export const encodeJWT = (
   auth: interfaces.request.Auth, expiresIn: '12h' | '30d',
 ): string => {
   const jwtToken = jwt.sign(
-    auth, process.env.TOKEN_SECRET!, { expiresIn },
+    auth, adapterEnum.HostConfig.TokenSecret, { expiresIn },
   )
   return jwtToken
 }
 
 export const decodeJWT = (token: string): interfaces.request.Auth | null => {
-  const payload = jwt.verify(token, process.env.TOKEN_SECRET!)
+  const payload = jwt.verify(token, adapterEnum.HostConfig.TokenSecret)
   const id = typeof payload === 'object' && payload.id
   const email = typeof payload === 'object' && payload.email
   if (!id || !email) return null
