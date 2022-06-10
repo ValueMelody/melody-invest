@@ -7,8 +7,6 @@
     "axios": "^0.26.0",
     "classnames": "^2.3.1",
     "i18next": "^21.6.13",
-    "install": "^0.13.0",
-    "npm": "^8.12.1",
     "password-validator": "^5.2.1",
     "react": "^17.0.2",
     "react-datepicker": "^4.7.0",
