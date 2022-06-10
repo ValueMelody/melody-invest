@@ -1,10 +1,10 @@
+import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
-import * as themeEnum from '../../../enums/theme'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   gainCell: {
     padding: '0.5rem !important',

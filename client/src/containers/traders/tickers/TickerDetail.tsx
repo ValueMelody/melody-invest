@@ -1,3 +1,4 @@
+import * as interfaces from '@shared/interfaces'
 import useTickerState from '../../../states/useTickerState'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
@@ -6,12 +7,11 @@ import TraderEnvCard from '../elements/TraderEnvCard'
 import * as vendorTool from '../../../tools/vendor'
 import * as routerTool from '../../../tools/router'
 import * as localeTool from '../../../tools/locale'
-import * as themeEnum from '../../../enums/theme'
 import EachTops from '../blocks/EachTops'
 import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   desc: {
     marginLeft: '1rem !important',

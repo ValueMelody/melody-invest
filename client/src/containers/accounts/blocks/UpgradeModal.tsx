@@ -1,11 +1,11 @@
+import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
-import { Theme } from '../../../enums/theme'
 import * as commonEnum from '../../../enums/common'
 import SubscribeButton from './SubscribeButton'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   selected: {
     border: `2px solid ${theme.PrimaryColor} !important`,
   },

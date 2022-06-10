@@ -1,5 +1,4 @@
 import * as interfaces from '@shared/interfaces'
-import * as themeEnum from '../../../enums/theme'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -8,7 +7,7 @@ import TickerLabel from '../elements/TickerLabel'
 import VariationList from '../elements/VariationList'
 import usePageStyles from '../../hooks/usePageStyles'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   section: {
     marginBottom: '1rem',
   },

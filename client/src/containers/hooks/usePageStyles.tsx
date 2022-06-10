@@ -1,8 +1,8 @@
+import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../tools/vendor'
-import * as themeEnum from '../../enums/theme'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   root: {
     display: 'flex',
