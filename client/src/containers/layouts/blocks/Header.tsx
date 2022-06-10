@@ -1,4 +1,4 @@
-import * as themeEnum from '../../../enums/theme'
+import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -6,7 +6,7 @@ import useUserState from '../../../states/useUserState'
 import HeaderLink from '../elements/HeaderLink'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   header: {
     height: '3rem',

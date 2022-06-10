@@ -1,16 +1,6 @@
-export interface Theme {
-  BorderRadius: number;
-  PrimaryColor: string;
-  SecondaryColor: string;
-  IncreaseColor: 'green' | 'red';
-  DecreaseColor: 'green' | 'red';
-  LightGray: string;
-  Gray: string;
-  Black: string;
-  White: string;
-}
+import * as interfaces from '@shared/interfaces'
 
-export const Basic: Theme = Object.freeze({
+export const Basic: interfaces.common.Theme = Object.freeze({
   BorderRadius: 5,
   PrimaryColor: '#2185d0',
   SecondaryColor: '#767676',

@@ -1,9 +1,9 @@
+import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import * as themeEnum from '../../../enums/theme'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   footer: {
     width: '100%',
     backgroundColor: theme.Black,

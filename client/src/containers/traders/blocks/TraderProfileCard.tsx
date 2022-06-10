@@ -1,5 +1,4 @@
 import * as interfaces from '@shared/interfaces'
-import * as themeEnum from '../../../enums/theme'
 import * as localeTool from '../../../tools/locale'
 import * as vendorTool from '../../../tools/vendor'
 import PatternBehaviors from '../elements/PatternBehaviors'
@@ -11,7 +10,7 @@ import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   pattern: {
     margin: '0 0 2rem 0 !important',

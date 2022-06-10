@@ -12,11 +12,10 @@ import ComboProfiles from '../elements/ComboProfiles'
 import ProfileValue from '../elements/ProfileValue'
 import HoldingCard from '../blocks/HoldingCard'
 import ValueChangePanel from '../elements/ValueChangePanel'
-import * as themeEnum from '../../../enums/theme'
 import usePageStyles from '../../hooks/usePageStyles'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   header: {
     width: '100%',

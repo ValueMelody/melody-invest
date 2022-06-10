@@ -4,10 +4,9 @@ import * as vendorTool from '../../../tools/vendor'
 import * as parseTool from '../../../tools/parse'
 import * as localeTool from '../../../tools/locale'
 import BehaviorLabel from './BehaviorLabel'
-import * as themeEnum from '../../../enums/theme'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   container: {
     margin: '1rem',

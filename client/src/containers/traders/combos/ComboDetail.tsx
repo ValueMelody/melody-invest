@@ -3,7 +3,6 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import * as themeEnum from '../../../enums/theme'
 import useRequest from '../../../states/useRequest'
 import useCommonState from '../../../states/useCommonState'
 import useUserState from '../../../states/useUserState'
@@ -17,7 +16,7 @@ import ComboProfiles from '../elements/ComboProfiles'
 import TraderComboCard from '../elements/TraderComboCard'
 import ProfileValue from '../elements/ProfileValue'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   combo: {
     width: '100%',
   },

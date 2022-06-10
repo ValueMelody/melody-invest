@@ -1,11 +1,10 @@
 import * as interfaces from '@shared/interfaces'
-import * as themeEnum from '../../../enums/theme'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 
 const useStyles = vendorTool.jss.createUseStyles((
-  theme: themeEnum.Theme,
+  theme: interfaces.common.Theme,
 ) => ({
   container: {
     margin: '1rem 0.75rem 1rem 0 !important',
