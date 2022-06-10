@@ -42,6 +42,8 @@
     "common.premium": "Premium",
     "common.plan": "Plan",
     "common.upgrade": "Upgrade",
+    "common.close": "Close",
+    "common.select": "Select",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -70,6 +72,7 @@
     "setting.accountType": "Account Type",
     "setting.accountInfo": "Account Info",
     "setting.accountAction": "Account Action",
+    "setting.selectPlan": "Upgrade your plan",
 
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",

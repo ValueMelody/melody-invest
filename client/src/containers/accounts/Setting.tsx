@@ -6,6 +6,7 @@ import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
 import useAccountUI from './hooks/useAccountUI'
 import usePrivateGuard from '../hooks/usePrivateGuard'
+import UpgradeModel from './blocks/UpgradeModal'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {
@@ -130,9 +131,7 @@ const Setting = () => {
           </vendorTool.ui.CardContent>
           {user.userType !== constants.User.Type.Premium && (
             <vendorTool.ui.CardContent extra>
-              <vendorTool.ui.Button color='blue'>
-                {localeTool.t('common.upgrade')}
-              </vendorTool.ui.Button>
+              <UpgradeModel />
             </vendorTool.ui.CardContent>
           )}
         </vendorTool.ui.Card>

@@ -12,5 +12,6 @@ describe('#', () => {
     expect(vendor.request).toBeDefined()
     expect(vendor.DatePicker).toBeDefined()
     expect(vendor.PasswordValidator).toBeDefined()
+    expect(vendor.paypal).toBeDefined()
   })
 })
