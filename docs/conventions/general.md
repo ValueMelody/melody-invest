@@ -74,6 +74,19 @@ import * as commonEnum form '../enums/common'
 import * as parseTool from '../tools/parse'
 ```
 
+## always load proces.env variables into enum first
+
+```
+// Good
+const commonEnum = {
+  port: process.env.PORT!
+}
+const port = commonEnum.port
+
+// Bad
+const port = process.env.PORT!
+```
+
 ## use Pascal case for constant, and object.freeze for constant in object
 
 ```
@@ -88,7 +101,7 @@ enum BASE_KEY {
 }
 ```
 
-## Wrap test cases inside describ
+## Wrap test cases inside describe
 
 ```
 // Good
