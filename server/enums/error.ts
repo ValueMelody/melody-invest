@@ -6,6 +6,7 @@ export const Default = Object.freeze({
 })
 
 export const Custom = Object.freeze({
+  PayPalServerError: { code: 500, message: 'Can not connect to PayPal' },
   CreationFailed: { code: 500, message: 'Can not create record.' },
   UpdationFailed: { code: 500, message: 'Can not update record.' },
   RecordNotFound: { code: 500, message: 'Item not found.' },
@@ -16,4 +17,5 @@ export const Custom = Object.freeze({
   EmailWrongFormat: { code: 403, message: 'Email format required.' },
   UserNotFound: { code: 404, message: 'Can not find user matches provided email and password' },
   UserNotActivated: { code: 403, message: 'User not activated' },
+  SubscriptionFailed: { code: 403, message: 'Unable to verify subscription status' },
 })

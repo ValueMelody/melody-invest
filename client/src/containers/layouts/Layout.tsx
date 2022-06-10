@@ -56,7 +56,7 @@ const Layout: vendorTool.react.FunctionComponent = ({
     const clearMessage = setTimeout(() => {
       const msgId = messages[0].id
       removeMessage(msgId)
-    }, 5000)
+    }, 10000)
     return () => clearTimeout(clearMessage)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])

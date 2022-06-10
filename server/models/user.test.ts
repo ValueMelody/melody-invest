@@ -13,6 +13,7 @@ const record1 = {
   activationCode: 'xyz',
   resetSentAt: null,
   resetCode: null,
+  subscriptionId: null,
 }
 
 const record2 = {
@@ -27,6 +28,7 @@ const record2 = {
   activationCode: null,
   resetSentAt: null,
   resetCode: null,
+  subscriptionId: null,
 }
 
 beforeAll(async () => {
@@ -115,6 +117,7 @@ describe('#update', () => {
       password: '222',
       activationSentAt: null,
       activationCode: null,
+      subscriptionId: 'test123456',
     }
     const updated = await user.update(1, info, transaction)
     await transaction.commit()

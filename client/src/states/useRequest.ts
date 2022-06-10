@@ -1,10 +1,12 @@
 import * as interfaces from '@shared/interfaces'
 import { context, Context, TraderProfiles } from './context'
 import * as requestAdapter from '../adapters/request'
+import * as storageAdapter from '../adapters/storage'
 import * as routerEnum from '../enums/router'
 import * as commonEnum from '../enums/common'
 import * as parseTool from '../tools/parse'
 import * as vendorTool from '../tools/vendor'
+import * as localeTool from '../tools/locale'
 
 const useRequest = () => {
   const store: Context = vendorTool.react.useContext(context)
@@ -186,6 +188,37 @@ const useRequest = () => {
     }
   }
 
+  // ------------------------------------------------------------ create --
+
+  const createUserPlan = async (
+    subscriptionId: string,
+    planType: number,
+  ) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPostRequest(endpoint, {
+        subscriptionId,
+      })
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('setting.subscribeSucceed'),
+      })
+
+      storageAdapter.set(storageAdapter.Key.UserType, planType.toString())
+      store.loadUserType(planType)
+    } catch (e) {
+      store.showRequestError({
+        message: localeTool.t('setting.subscribeFailed', {
+          email: process.env.REACT_APP_CONTACT_EMAIL,
+        }),
+      })
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   // ------------------------------------------------------------ export --
 
   return {
@@ -193,6 +226,7 @@ const useRequest = () => {
     fetchSystemTopTraderProfiles,
     fetchSystemTopTraderCombos,
     fetchComboDetail,
+    createUserPlan,
   }
 }
 

@@ -10,6 +10,7 @@ exports.up = (knex) => {
       table.timestamp('resetSentAt')
       table.specificType('resetCode', 'CHAR(64)')
       table.string('email', 100).notNullable()
+      table.string('subscriptionId', 20)
       table.specificType('password', 'CHAR(64)').notNullable()
       table.smallint('type').notNullable()
       table.unique('email', 'user_ukey')
