@@ -8,11 +8,12 @@ import systemRouter from './routers/system'
 import usersRouter from './routers/users'
 import tradersRouter from './routers/traders'
 import * as errorEnum from './enums/error'
+import * as adapterEnum from './enums/adapter'
 
 const app = express()
 export default app
 
-const port = process.env.SERVER_PORT || 3000
+const port = adapterEnum.HostConfig.ServerPort || 3001
 
 app.use(cors())
 app.use(express.json())

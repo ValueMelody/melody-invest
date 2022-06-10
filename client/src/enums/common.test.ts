@@ -7,6 +7,18 @@ describe('#Config', () => {
   })
 })
 
+describe('#Env', () => {
+  test('Have defined env enums', () => {
+    expect(common.Env.ServerHost).toBeDefined()
+    expect(common.Env.ServerType).toBeDefined()
+    expect(common.Env.Theme).toBeDefined()
+    expect(common.Env.PayPalClientId).toBeDefined()
+    expect(common.Env.PayPalProPlanId).toBeDefined()
+    expect(common.Env.PayPalPremiumPlanId).toBeDefined()
+    expect(common.Env.ContactEmail).toBeDefined()
+  })
+})
+
 describe('#Plan', () => {
   test('Have defined plan enums', () => {
     expect(common.Plan.Basic.Title).toBeDefined()

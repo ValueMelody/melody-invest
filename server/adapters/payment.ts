@@ -15,7 +15,7 @@ export const createAccessToken = async () => {
         'content-type': 'application/x-www-form-urlencoded',
       },
       auth: {
-        username: adapterEnum.PaymentConfig.ClientID,
+        username: adapterEnum.PaymentConfig.ClientId,
         password: adapterEnum.PaymentConfig.ClientSecret,
       },
     },

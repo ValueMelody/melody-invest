@@ -80,6 +80,8 @@ describe('#HostConfig', () => {
     expect(adapter.HostConfig).toStrictEqual({
       ClientHost: '127.0.0.1:3099',
       ClientType: 'http',
+      ServerPort: 3001,
+      TokenSecret: '123',
     })
   })
 })
@@ -88,10 +90,10 @@ describe('#PayPalConfig', () => {
   test('Have defined paypal enums', () => {
     expect(adapter.PaymentConfig).toStrictEqual({
       BaseUrl: 'https://paypal.com',
-      ClientID: '123456',
+      ClientId: '123456',
       ClientSecret: 'ABCDEF',
-      ProPlanID: 'P-PRO',
-      PremiumPlanID: 'P-PREMIUM',
+      ProPlanId: 'P-PRO',
+      PremiumPlanId: 'P-PREMIUM',
     })
   })
 })
