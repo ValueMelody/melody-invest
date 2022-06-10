@@ -2,6 +2,7 @@ import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
 import * as themeEnum from '../../enums/theme'
+import * as commonEnum from '../../enums/common'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: themeEnum.Theme) => ({
   table: {
@@ -116,12 +117,13 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('common.basic')}
+            title={commonEnum.Plan.Basic.Title}
             className={vendorTool.classNames(classes.basicHeader)}
           />
-          <Price title={localeTool.t('pricing.basicPrice')} />
-          <Item title={localeTool.t('pricing.basicProfiles')} />
-          <Item title={localeTool.t('pricing.basicEnvs')} />
+          <Price title={commonEnum.Plan.Basic.Price} />
+          {commonEnum.Plan.Basic.Services.map((service) => (
+            <Item key={service} title={service} />
+          ))}
           <Item title='' />
           <Item title='' />
           <Item title='' />
@@ -147,13 +149,13 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('common.pro')}
+            title={commonEnum.Plan.Pro.Title}
             className={classes.proHeader}
           />
-          <Price title={localeTool.t('pricing.proPrice')} />
-          <Item title={localeTool.t('pricing.proProfiles')} />
-          <Item title={localeTool.t('pricing.proEnvs')} />
-          <Item title={localeTool.t('pricing.proCombos')} />
+          <Price title={commonEnum.Plan.Pro.Price} />
+          {commonEnum.Plan.Pro.Services.map((service) => (
+            <Item key={service} title={service} />
+          ))}
           <Item title='' />
           <Item title='' />
           <Item title='' />
@@ -168,13 +170,13 @@ const Pricing = () => {
           className={vendorTool.classNames('column-center', classes.column)}
         >
           <Header
-            title={localeTool.t('common.premium')}
+            title={commonEnum.Plan.Premium.Title}
             className={classes.premiumHeader}
           />
-          <Price title={localeTool.t('pricing.premiumPrice')} />
-          <Item title={localeTool.t('pricing.premiumProfiles')} />
-          <Item title={localeTool.t('pricing.premiumEnvs')} />
-          <Item title={localeTool.t('pricing.premiumCombos')} />
+          <Price title={commonEnum.Plan.Premium.Price} />
+          {commonEnum.Plan.Premium.Services.map((service) => (
+            <Item key={service} title={service} />
+          ))}
           <Item title='' />
           <Item title='' />
           <Item title='' />
