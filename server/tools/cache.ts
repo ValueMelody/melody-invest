@@ -7,3 +7,7 @@ export const generateTickerPricesKey = (date: string): string => {
 export const generateSystemEndpointKey = (name: string): string => {
   return `${adapterEnum.CacheKey.SysemEndpoint}-[${name}]`
 }
+
+export const generatePayPalAccessTokenKey = (): string => {
+  return adapterEnum.CacheKey.PayPalAccessToken
+}

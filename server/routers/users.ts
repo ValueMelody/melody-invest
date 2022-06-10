@@ -26,6 +26,10 @@ const validateAccessCode = (code: string) => {
   if (!code || code.length !== 64) throw errorEnum.Custom.WrongAccessCode
 }
 
+const validateSubscriptionId = (id: string) => {
+  if (!id) throw errorEnum.Default.Forbidden
+}
+
 // ------------------------------------------------------------ Get --
 
 usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
@@ -59,6 +63,16 @@ usersRouter.post('/', async (req, res) => {
 
   const user = await crudUsers.createUser(email, password)
   return res.status(201).send(user)
+})
+
+usersRouter.post('/subscription', authMiddleware.normalUser, async (req, res) => {
+  const subscriptionId = req.body.subscriptionId?.trim()
+
+  validateSubscriptionId(subscriptionId)
+
+  const auth: interfaces.request.Auth = req.body.auth
+  await crudUsers.createSubscription(auth.id, subscriptionId)
+  return res.status(204).send()
 })
 
 usersRouter.post('/reset', async (req, res) => {

@@ -5,7 +5,7 @@ import * as adapterEnum from '../enums/adapter'
 
 let _cache: Redis.Redis | null = null
 
-type Age = '1d'
+type Age = '1d' | string
 
 export const initTestConnection = () => {
   _cache = new RedisMock()

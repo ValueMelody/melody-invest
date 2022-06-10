@@ -46,6 +46,7 @@ export const CacheConfig = Object.freeze({
 export const CacheKey = Object.freeze({
   TickerPrices: 'tickerPrices',
   SysemEndpoint: 'systemEndpoint',
+  PayPalAccessToken: 'paypalAccessToken',
 })
 
 export const MarketConfig = Object.freeze({
@@ -64,4 +65,12 @@ export const MailerConfig = Object.freeze({
 export const HostConfig = Object.freeze({
   ClientHost: process.env.CLIENT_HOST!,
   ClientType: process.env.CLIENT_TYPE!,
+})
+
+export const PaymentConfig = Object.freeze({
+  BaseUrl: process.env.PAYPAL_BASE_URL!,
+  ClientID: process.env.PAYPAL_CLIENT_ID!,
+  ClientSecret: process.env.PAYPAL_CLIENT_SECRET!,
+  ProPlanID: process.env.PAYPAL_PRO_PLAN_ID!,
+  PremiumPlanID: process.env.PAYPAL_PREMIUM_PLAN_ID!,
 })

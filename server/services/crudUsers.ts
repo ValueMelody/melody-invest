@@ -2,6 +2,7 @@ import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as databaseAdapter from '../adapters/database'
+import * as paymentAdapter from '../adapters/payment'
 import * as userModel from '../models/user'
 import * as emailModel from '../models/email'
 import * as traderModel from '../models/trader'
@@ -125,6 +126,36 @@ export const createUserToken = async (
   const expiresIn = remember ? '30d' : '12h'
   const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
   return { jwtToken, expiresIn, userType: user.type }
+}
+
+export const createSubscription = async (
+  userId: number,
+  subscriptionId: string,
+): Promise<interfaces.userModel.Record> => {
+  const detail = await paymentAdapter.getSubscriptionDetail(subscriptionId)
+
+  const isProPlan = detail?.plan_id === adapterEnum.PaymentConfig.ProPlanID
+  const isPremiumPlan = detail?.plan_id === adapterEnum.PaymentConfig.PremiumPlanID
+  const isActive = detail?.status === 'ACTIVE'
+  const isSucceed = isActive && (isProPlan || isPremiumPlan)
+  if (!isSucceed) throw errorEnum.Custom.SubscriptionFailed
+
+  const userType = isProPlan ? constants.User.Type.Pro : constants.User.Type.Premium
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const updatedUser = await userModel.update(userId, {
+      type: userType,
+      subscriptionId,
+    }, transaction)
+
+    await transaction.commit()
+
+    return updatedUser
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }
 
 export const generateResetCode = async (

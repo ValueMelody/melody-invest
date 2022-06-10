@@ -9,6 +9,7 @@ export interface Record {
   resetSentAt: Date | null;
   email: string;
   password: string;
+  subscriptionId: string;
   type: number;
 }
 
@@ -26,4 +27,6 @@ export interface Update {
   resetCode?: string | null;
   resetSentAt?: Date | null;
   password?: string;
+  type?: number;
+  subscriptionId?: string;
 }

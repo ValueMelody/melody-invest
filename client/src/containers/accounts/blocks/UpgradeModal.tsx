@@ -23,8 +23,12 @@ const UpgradeModal = () => {
 
   // ------------------------------------------------------------ Handler --
 
-  const handleToggle = () => {
-    setIsOpen(!isOpen)
+  const handleOpenModal = () => {
+    setIsOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsOpen(false)
   }
 
   const handleSelectType = (
@@ -38,8 +42,8 @@ const UpgradeModal = () => {
   return (
     <vendorTool.ui.Modal
       open={isOpen}
-      onOpen={handleToggle}
-      onClose={handleToggle}
+      onOpen={handleOpenModal}
+      onClose={handleCloseModal}
       trigger={(
         <vendorTool.ui.Button color='blue'>
           {localeTool.t('common.upgrade')}
@@ -67,7 +71,10 @@ const UpgradeModal = () => {
                   <h5 key={service}>{service}</h5>
                 ))}
                 {selectedProType && (
-                  <SubscribeButton planType={constants.User.Type.Pro} />
+                  <SubscribeButton
+                    planType={constants.User.Type.Pro}
+                    onCloseModal={handleCloseModal}
+                  />
                 )}
               </vendorTool.ui.CardDescription>
             </vendorTool.ui.CardContent>
@@ -88,7 +95,10 @@ const UpgradeModal = () => {
                   <h5 key={service}>{service}</h5>
                 ))}
                 {selectedPremiumType && (
-                  <SubscribeButton planType={constants.User.Type.Premium} />
+                  <SubscribeButton
+                    planType={constants.User.Type.Premium}
+                    onCloseModal={handleCloseModal}
+                  />
                 )}
               </vendorTool.ui.CardDescription>
             </vendorTool.ui.CardContent>
@@ -96,7 +106,7 @@ const UpgradeModal = () => {
         </vendorTool.ui.Card.Group>
       </vendorTool.ui.Modal.Content>
       <vendorTool.ui.Modal.Actions>
-        <vendorTool.ui.Button color='grey' onClick={handleToggle}>
+        <vendorTool.ui.Button color='grey' onClick={handleCloseModal}>
           {localeTool.t('common.close')}
         </vendorTool.ui.Button>
       </vendorTool.ui.Modal.Actions>

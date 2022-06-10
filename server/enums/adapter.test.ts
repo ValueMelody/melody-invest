@@ -49,6 +49,8 @@ describe('#CacheConfig', () => {
 describe('#CacheKey', () => {
   test('Have defined cache key enums', () => {
     expect(adapter.CacheKey.TickerPrices).toBeDefined()
+    expect(adapter.CacheKey.SysemEndpoint).toBeDefined()
+    expect(adapter.CacheKey.PayPalAccessToken).toBeDefined()
   })
 })
 
@@ -78,6 +80,18 @@ describe('#HostConfig', () => {
     expect(adapter.HostConfig).toStrictEqual({
       ClientHost: '127.0.0.1:3099',
       ClientType: 'http',
+    })
+  })
+})
+
+describe('#PayPalConfig', () => {
+  test('Have defined paypal enums', () => {
+    expect(adapter.PaymentConfig).toStrictEqual({
+      BaseUrl: 'https://paypal.com',
+      ClientID: '123456',
+      ClientSecret: 'ABCDEF',
+      ProPlanID: 'P-PRO',
+      PremiumPlanID: 'P-PREMIUM',
     })
   })
 })
