@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import useTraderState from '../../../states/useTraderState'
-import useTickerState from '../../../states/useTickerState'
-import useUserState from '../../../states/useUserState'
+import useResourceState from '../../../states/useResourceState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -36,16 +36,13 @@ const EnvDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const {
-    getTopTraderProfiles, fetchTopProfiles, deleteWatchedEnv,
-  } = useTraderState()
-  const { getTickerIdentity } = useTickerState()
-  const { getUser } = useUserState()
+  const { getTraderEnv } = useTraderState()
+  const { fetchTraderEnv, deleteTraderEnv } = useTraderRequest()
+  const { getTickerIdentity } = useResourceState()
 
-  const user = getUser()
   const envId = params.envId ? parseInt(params.envId) : null
-  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
-  const topTraderProfiles = getTopTraderProfiles(envId)
+  const traderEnv = getTraderEnv(envId)
+  const topTraderProfiles = traderEnv?.tops
 
   const bestOverall = topTraderProfiles?.yearly[0] || null
   const bestPastYear = topTraderProfiles?.pastYear[0] || null
@@ -57,11 +54,7 @@ const EnvDetail = () => {
 
   const handleUnwatch = async () => {
     if (!envId) return
-    const result = await deleteWatchedEnv(envId)
-    if (result) {
-      const link = routerTool.dashboardRoute()
-      navigate(link)
-    }
+    await deleteTraderEnv(envId)
   }
 
   // ------------------------------------------------------------ Effect --
@@ -73,7 +66,7 @@ const EnvDetail = () => {
 
   vendorTool.react.useEffect(() => {
     if (!envId || topTraderProfiles) return
-    fetchTopProfiles(envId)
+    fetchTraderEnv(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [envId, topTraderProfiles])
 
@@ -93,11 +86,11 @@ const EnvDetail = () => {
     <section className={pageClasses.root}>
       <aside className={pageClasses.aside}>
         <TraderEnvCard
-          traderEnv={traderEnv}
+          traderEnv={traderEnv.record}
           isActive={false}
         />
         <div className={classes.tickers}>
-          {traderEnv.tickerIds && traderEnv.tickerIds.map((tickerId) => (
+          {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (
             <TickerLabel
               color='blue'
               key={tickerId}
@@ -106,7 +99,7 @@ const EnvDetail = () => {
             />
           ))}
         </div>
-        {!traderEnv.isSystem && (
+        {!traderEnv.record.isSystem && (
           <div className={vendorTool.classNames('row-around', classes.watch)}>
             <WatchButton
               isWatched={true}

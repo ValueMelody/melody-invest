@@ -2,7 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import useTickerState from '../../../states/useTickerState'
+import useResourceState from '../../../states/useResourceState'
 import TickerLabel from '../elements/TickerLabel'
 import VariationList from '../elements/VariationList'
 import usePageStyles from '../../hooks/usePageStyles'
@@ -34,7 +34,7 @@ const TickerList = () => {
   const [selectedCategory, setSelectedCategory] = vendorTool.react.useState(1)
   const [searchText, setSearchText] = vendorTool.react.useState('')
 
-  const { getTickerIdentities, getTickerCategories } = useTickerState()
+  const { getTickerIdentities, getTickerCategories } = useResourceState()
 
   const tickers = getTickerIdentities()
   const availableTickers = tickers.filter((ticker) => {

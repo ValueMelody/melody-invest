@@ -1,5 +1,5 @@
 import Router from './containers/Router'
-import { context } from './states/context'
+import { context } from './context'
 import useStore from './states/store'
 import * as themeEnum from './enums/theme'
 import * as vendorTool from './tools/vendor'

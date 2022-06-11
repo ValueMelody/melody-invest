@@ -8,6 +8,7 @@ import ProfileLabel from '../elements/ProfileLabel'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import useCommonState from '../../../states/useCommonState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -52,7 +53,8 @@ const TraderProfileCard = ({
   const { getUser } = useUserState()
   const user = getUser()
 
-  const { createWatchedProfile, deleteWatchedProfile } = useTraderState()
+  const { getTraderEnv } = useTraderState()
+  const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
   const { addMessage, getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
@@ -62,7 +64,7 @@ const TraderProfileCard = ({
   const traderEnvId = trader?.traderEnvId || null
   const traderId = trader?.id || null
 
-  const traderEnv = user.userTraderEnvs.find((env) => env.id === traderEnvId) || null
+  const traderEnv = getTraderEnv(traderEnvId)
   const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
 
   // ------------------------------------------------------------ Handler --
@@ -112,7 +114,7 @@ const TraderProfileCard = ({
           <ProfileLabel
             color='blue'
             trader={trader}
-            traderEnv={traderEnv}
+            traderEnv={traderEnv.record}
           />
           <h5 className={classes.desc}>
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}

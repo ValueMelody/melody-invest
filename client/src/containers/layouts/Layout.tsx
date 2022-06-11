@@ -1,7 +1,8 @@
 import * as vendorTool from '../../tools/vendor'
 import Header from './blocks/Header'
 import Footer from './blocks/Footer'
-import useRequest from '../../states/useRequest'
+import useSystemRequest from '../../requests/useSystemRequest'
+import useUserRequest from '../../requests/useUserRequest'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 
@@ -32,11 +33,13 @@ const Layout: vendorTool.react.FunctionComponent = ({
 
   // ------------------------------------------------------------ State --
 
-  const { messages, removeMessage } = useCommonState()
-  const { getUser, fetchUserOverall } = useUserState()
-  const { fetchSystemDefaults } = useRequest()
+  const { getMessages, removeMessage } = useCommonState()
+  const { getUser } = useUserState()
+  const { fetchSystemDefaults } = useSystemRequest()
+  const { fetchUserOverall } = useUserRequest()
 
   const user = getUser()
+  const messages = getMessages()
 
   // ------------------------------------------------------------ Effect --
 

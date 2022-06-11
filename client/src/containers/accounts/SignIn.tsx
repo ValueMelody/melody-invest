@@ -2,8 +2,8 @@ import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
 import RequiredLabel from '../elements/RequiredLabel'
+import useUserRequest from '../../requests/useUserRequest'
 import useCommonState from '../../states/useCommonState'
-import useUserState from '../../states/useUserState'
 import useAccountUI from './hooks/useAccountUI'
 import usePublicGuard from '../hooks/usePublicGuard'
 
@@ -22,7 +22,7 @@ const SignIn = () => {
   const pageClasses = useStyles()
   const { classes, getPasswordError } = useAccountUI()
   const { addMessage } = useCommonState()
-  const { createUserToken } = useUserState()
+  const { createUserToken } = useUserRequest()
 
   const [email, setEmail] = vendorTool.react.useState('')
   const [password, setPassword] = vendorTool.react.useState('')

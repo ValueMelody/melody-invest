@@ -1,6 +1,6 @@
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../../tools/vendor'
-import useRequest from '../../../states/useRequest'
+import useUserRequest from '../../../requests/useUserRequest'
 import * as commonEnum from '../../../enums/common'
 
 type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
@@ -14,7 +14,7 @@ const Button = ({
 }) => {
   // ------------------------------------------------------------ State --
 
-  const { createUserPlan } = useRequest()
+  const { createUserSubscription } = useUserRequest()
 
   const [{ options }, dispatch] = vendorTool.paypal.usePayPalScriptReducer()
 
@@ -41,7 +41,7 @@ const Button = ({
   }
 
   const handleApproved = async (subscriptionId: string) => {
-    await createUserPlan(subscriptionId, planType)
+    await createUserSubscription(subscriptionId, planType)
     handleCloseModal()
   }
 

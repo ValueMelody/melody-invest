@@ -1,9 +1,9 @@
 import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
 import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import RequiredLabel from '../../elements/RequiredLabel'
 import TraderProfileCard from '../blocks/TraderProfileCard'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
@@ -27,16 +27,15 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const ComboBuilder = () => {
   usePrivateGuard()
-
   const classes = useStyles()
-  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
   const [envName, setEnvName] = vendorTool.react.useState('')
 
-  const { getTraderProfile, createTraderCombo } = useTraderState()
+  const { createTraderCombo } = useTraderRequest()
+  const { getTraderProfile, getTraderCombos } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
   const profiles = user.userTraderIds?.map((traderId) => getTraderProfile(traderId)) || []
@@ -45,8 +44,10 @@ const ComboBuilder = () => {
   const hasValidName = !!parsedName.trim()
   const hasValidTraders = selectedTraderIds.length >= 2
 
-  const hasDuplicatedName = user.comboProfiles.some((combo) => combo.identity.name.toLowerCase() === parsedName)
-  const hasDuplicatedCombo = user.comboProfiles.some((combo) => {
+  const traderCombos = getTraderCombos()
+
+  const hasDuplicatedName = traderCombos.some((combo) => combo.identity.name.toLowerCase() === parsedName)
+  const hasDuplicatedCombo = traderCombos.some((combo) => {
     const currentIds = combo.identity.traderIds.join(',')
     const buildIds = selectedTraderIds.join(',')
     return currentIds === buildIds
@@ -74,11 +75,7 @@ const ComboBuilder = () => {
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    const result = await createTraderCombo(envName, selectedTraderIds)
-    if (result) {
-      const link = routerTool.dashboardRoute()
-      navigate(link)
-    }
+    await createTraderCombo(envName, selectedTraderIds)
   }
 
   // ------------------------------------------------------------ UI --

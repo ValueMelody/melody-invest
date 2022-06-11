@@ -1,4 +1,4 @@
-import * as context from './context'
+import * as context from '../context'
 import * as vendorTool from '../tools/vendor'
 import * as localeTool from '../tools/locale'
 import * as routerTool from '../tools/router'
@@ -23,19 +23,20 @@ const useStore = () => {
     tickerIdentities: {},
     tickerCategories: {},
     userTraderIds: currentUserType ? null : [],
-    userTraderEnvs: [],
-    comboProfiles: [],
     userType: currentUserType,
     userEmail: '',
+    overallTopTraderProfiles: null,
   })
 
   const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})
 
-  const [behaviorDetails, setBehaviorDetails] = vendorTool.react.useState<context.BehaviorDetails>({})
+  const [traderBehaviors, setTraderBehaviors] = vendorTool.react.useState<context.TraderBehaviors>({})
 
-  const [tickerDetails, setTickerDetails] = vendorTool.react.useState<context.TickerDetails>({})
+  const [traderTickers, setTraderTickers] = vendorTool.react.useState<context.TraderTickers>({})
 
-  const [topTraderProfiles, setTopTraderProfiles] = vendorTool.react.useState<context.TopTraderProfiles>({})
+  const [traderEnvs, setTraderEnvs] = vendorTool.react.useState<context.TraderEnvs>({})
+
+  const [traderCombos, setTraderCombos] = vendorTool.react.useState<context.TraderCombos>({})
 
   const loadUserType = (type: number) => {
     setResources((state) => ({ ...state, userType: type }))
@@ -110,12 +111,14 @@ const useStore = () => {
     setResources,
     traderProfiles,
     setTraderProfiles,
-    behaviorDetails,
-    setBehaviorDetails,
-    tickerDetails,
-    setTickerDetails,
-    topTraderProfiles,
-    setTopTraderProfiles,
+    traderBehaviors,
+    setTraderBehaviors,
+    traderTickers,
+    setTraderTickers,
+    traderEnvs,
+    setTraderEnvs,
+    traderCombos,
+    setTraderCombos,
   }
 }
 

@@ -108,14 +108,16 @@ const buildTraderTopProfiles = async (
   }
 }
 
-export const getTopProfiles = async (
+export const getEnvDetail = async (
   traderEnvId: number,
-): Promise<interfaces.response.TopTraderProfiles> => {
+): Promise<interfaces.response.EnvDetail> => {
   const each = 1
   const tops = await traderModel.getTops(each, { envId: traderEnvId })
   const topProfiles = await buildTraderTopProfiles(tops)
 
-  return topProfiles
+  return {
+    topProfiles,
+  }
 }
 
 export const getBehaviorDetail = async (
@@ -202,20 +204,6 @@ export const createTraderProfile = async (
     await transaction.rollback()
     throw error
   }
-}
-
-export const getTraderEnv = async (
-  userId: number, envId: number,
-): Promise<interfaces.traderEnvModel.Record> => {
-  const env = await traderEnvModel.getByPK(envId)
-  if (!env) throw errorEnum.Default.NotFound
-
-  const envFollower = await traderEnvFollowerModel.getByUK(userId, envId)
-  if (!envFollower && !env.isSystem) throw errorEnum.Default.NotFound
-
-  const name = envFollower && !env.isSystem ? envFollower.name : env.name
-
-  return { ...env, name }
 }
 
 export const getComboDetail = async (

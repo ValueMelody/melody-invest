@@ -1,6 +1,7 @@
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
+import useUserRequest from '../../requests/useUserRequest'
 import useCommonState from '../../states/useCommonState'
 import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
@@ -22,7 +23,8 @@ const Setting = () => {
 
   const classes = useStyles()
   const { getPasswordError } = useAccountUI()
-  const { getUser, updateUserPassword, removeUserToken } = useUserState()
+  const { updateUserPassword } = useUserRequest()
+  const { getUser, removeUser } = useUserState()
   const { addMessage } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
@@ -98,7 +100,7 @@ const Setting = () => {
   }
 
   const handleSignOut = () => {
-    removeUserToken()
+    removeUser()
   }
 
   // ------------------------------------------------------------ UI --

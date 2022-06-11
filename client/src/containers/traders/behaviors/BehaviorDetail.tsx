@@ -7,7 +7,7 @@ import * as routerTool from '../../../tools/router'
 import EachTops from '../blocks/EachTops'
 import BehaviorLabel from '../elements/BehaviorLabel'
 import TraderEnvCard from '../elements/TraderEnvCard'
-import useUserState from '../../../states/useUserState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 
@@ -33,16 +33,18 @@ const BehaviorDetail = () => {
   const { classes: pageClasses } = usePageStyles()
 
   // ------------------------------------------------------------ State --
-  const { getUser } = useUserState()
-  const { getBehaviorDetail, fetchBehaviorDetail } = useTraderState()
-  const user = getUser()
+
+  const { getTraderBehavior, getTraderEnv, getTraderEnvs } = useTraderState()
+  const { fetchTraderBehavior } = useTraderRequest()
 
   const behavior = params.behavior || null
   const envId = params.envId ? parseInt(params.envId) : 1
   const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior) || null
-  const behaviorDetail = getBehaviorDetail(envId, validBehavior)
+  const behaviorDetail = getTraderBehavior(envId, validBehavior)
   const topTraderProfiles = behaviorDetail?.tops
-  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
+
+  const traderEnvs = getTraderEnvs()
+  const traderEnv = getTraderEnv(envId)
 
   const bestOverall = topTraderProfiles?.yearly[0] || null
   const bestPastYear = topTraderProfiles?.pastYear[0] || null
@@ -59,7 +61,7 @@ const BehaviorDetail = () => {
 
   vendorTool.react.useEffect(() => {
     if (behaviorDetail || !validBehavior || !envId) return
-    fetchBehaviorDetail(envId, validBehavior)
+    fetchTraderBehavior(envId, validBehavior)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [behaviorDetail])
 
@@ -86,7 +88,7 @@ const BehaviorDetail = () => {
         <vendorTool.ui.Header
           as='h3'
           icon='star'
-          content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.name })}
+          content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}
           className={classes.leftTitle}
         />
         <section className='row-start'>
@@ -100,11 +102,11 @@ const BehaviorDetail = () => {
         </section>
       </section>
       <aside className={pageClasses.aside}>
-        {user.userTraderEnvs.map((traderEnv) => (
+        {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnv.id}
-            traderEnv={traderEnv}
-            isActive={envId === traderEnv.id}
+            key={traderEnv.record.id}
+            traderEnv={traderEnv.record}
+            isActive={envId === traderEnv.record.id}
             onClick={handleClickEnv}
           />
         ))}

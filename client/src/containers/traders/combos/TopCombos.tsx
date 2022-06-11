@@ -1,9 +1,8 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import useCommonState from '../../../states/useCommonState'
-import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
-import useRequest from '../../../states/useRequest'
+import useSystemRequest from '../../../requests/useSystemRequest'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -39,22 +38,20 @@ const TopCombos = () => {
   // ------------------------------------------------------------ State --
 
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
-  const { getTraderProfile } = useTraderState()
+  const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
 
-  const { fetchSystemTopTraderCombos } = useRequest()
+  const { fetchSystemTraderCombos } = useSystemRequest()
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
 
-  const { getUser } = useUserState()
-  const user = getUser()
-
-  const systemCombos = user.comboProfiles.filter((combo) => combo.identity.isSystem)
+  const traderCombos = getTraderCombos()
+  const systemCombos = traderCombos.filter((combo) => combo.identity.isSystem)
   const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
 
   const profilesWithEnvs = focusedCombo?.identity.traderIds.map((traderId) => {
     const profile = getTraderProfile(traderId)
-    const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
-    return { profile, env }
+    const env = getTraderEnv(profile?.trader.traderEnvId || null)
+    return { profile, env: env?.record || null }
   }) || []
 
   const comboHoldings = focusedCombo?.detail?.holdings || []
@@ -63,7 +60,7 @@ const TopCombos = () => {
 
   vendorTool.react.useEffect(() => {
     if (focusedCombo) return
-    fetchSystemTopTraderCombos()
+    fetchSystemTraderCombos()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [focusedCombo])
 

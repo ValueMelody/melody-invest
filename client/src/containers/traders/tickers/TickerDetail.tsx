@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
-import useTickerState from '../../../states/useTickerState'
-import useUserState from '../../../states/useUserState'
+import useResourceState from '../../../states/useResourceState'
 import useTraderState from '../../../states/useTraderState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import TickerLabel from '../elements/TickerLabel'
 import TraderEnvCard from '../elements/TraderEnvCard'
 import * as vendorTool from '../../../tools/vendor'
@@ -33,20 +33,20 @@ const TickerDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getTickerIdentities } = useTickerState()
-  const { getTickerDetail, fetchTickerDetail } = useTraderState()
-  const { getUser } = useUserState()
-  const user = getUser()
+  const { fetchTraderTicker } = useTraderRequest()
+  const { getTickerIdentities } = useResourceState()
+  const { getTraderTicker, getTraderEnv, getTraderEnvs } = useTraderState()
 
   const tickerId = params.tickerId ? parseInt(params.tickerId) : null
   const envId = params.envId ? parseInt(params.envId) : 1
 
+  const traderEnvs = getTraderEnvs()
   const tickerIdentities = getTickerIdentities()
   const tickerIdentity = tickerIdentities.find((identity) => identity.id === tickerId) || null
 
-  const tickerDetail = getTickerDetail(envId, tickerId)
+  const tickerDetail = getTraderTicker(envId, tickerId)
   const topTraderProfiles = tickerDetail?.tops
-  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
+  const traderEnv = getTraderEnv(envId)
 
   const bestOverall = topTraderProfiles?.yearly[0] || null
   const bestPastYear = topTraderProfiles?.pastYear[0] || null
@@ -63,7 +63,7 @@ const TickerDetail = () => {
 
   vendorTool.react.useEffect(() => {
     if (tickerDetail || !tickerId || !envId) return
-    fetchTickerDetail(envId, tickerId)
+    fetchTraderTicker(envId, tickerId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tickerDetail])
 
@@ -91,7 +91,7 @@ const TickerDetail = () => {
         <vendorTool.ui.Header
           as='h3'
           icon='star'
-          content={localeTool.t('availableTickers.topProfiles', { name: traderEnv.name })}
+          content={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}
           className={classes.leftTitle}
         />
         <section className='row-start'>
@@ -105,11 +105,11 @@ const TickerDetail = () => {
         </section>
       </section>
       <aside className={pageClasses.aside}>
-        {user.userTraderEnvs.map((traderEnv) => (
+        {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnv.id}
-            traderEnv={traderEnv}
-            isActive={envId === traderEnv.id}
+            key={traderEnv.record.id}
+            traderEnv={traderEnv.record}
+            isActive={envId === traderEnv.record.id}
             onClick={handleClickEnv}
           />
         ))}

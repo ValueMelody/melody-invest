@@ -8,15 +8,11 @@ import * as authMiddleware from '../middlewares/auth'
 const tradersRouter = Router()
 export default tradersRouter
 
-// ------------------------------------------------------------ Validdate --
+// ------------------------------------------------------------ Validate --
 
 const validateGetProfileParams = (id: number, accessCode: string) => {
   const hasValidParam = id && accessCode && accessCode.length === 16
   if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
-}
-
-const validateGetEnvParams = (id: number) => {
-  if (!id) throw errorEnum.Custom.MissingParams
 }
 
 const validateGetComboParams = (id: number) => {
@@ -98,23 +94,12 @@ tradersRouter.get('/combos/:id', authMiddleware.normalUser, async (req, res) => 
 
 tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
   const envId = parseInt(req.params.id)
-
-  validateGetEnvParams(envId)
-
-  const auth: interfaces.request.Auth = req.body.auth
-
-  const env = await crudTraders.getTraderEnv(auth.id, envId)
-  return res.status(200).send(env)
-})
-
-tradersRouter.get('/envs/:id/tops', authMiddleware.normalUser, async (req, res) => {
-  const envId = parseInt(req.params.id)
   validateEnvId(envId)
 
   const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.verifyUserToTraderEnv(auth.id, envId)
 
-  const tops = await crudTraders.getTopProfiles(envId)
+  const tops = await crudTraders.getEnvDetail(envId)
   return res.status(200).send(tops)
 })
 

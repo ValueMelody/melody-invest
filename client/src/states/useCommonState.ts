@@ -1,4 +1,4 @@
-import { context, Context } from './context'
+import { context, Context, Message } from '../context'
 import * as vendorTool from '../tools/vendor'
 
 const useCommonState = () => {
@@ -10,18 +10,22 @@ const useCommonState = () => {
     return store.common.activeChartIndex
   }
 
-  // ------------------------------------------------------------ Get --
+  const getMessages = (): Message[] => {
+    return store.common.messages
+  }
+
+  // ------------------------------------------------------------ Set --
 
   const setActiveChartIndex = (index: number) => {
     return store.setCommon((common) => ({ ...common, activeChartIndex: index }))
   }
 
-  // ------------------------------------------------------------ export --
+  // ------------------------------------------------------------ Export --
 
   return {
     getActiveChartIndex,
     setActiveChartIndex,
-    messages: store.common.messages,
+    getMessages,
     addMessage: store.addMessage,
     removeMessage: store.removeMessage,
     clearMessages: store.clearMessages,
