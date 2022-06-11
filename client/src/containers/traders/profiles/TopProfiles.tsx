@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
 import useTraderState from '../../../states/useTraderState'
-import useRequest from '../../../states/useRequest'
+import useSystemRequest from '../../../requests/useSystemRequest'
+import useResourceState from '../../../states/useResourceState'
 import usePageStyles from '../../hooks/usePageStyles'
-import * as commonEnum from '../../../enums/common'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -15,11 +15,12 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getTopTraderProfiles, getTraderProfile } = useTraderState()
-  const { fetchSystemTopTraderProfiles } = useRequest()
+  const { fetchOverallTopTraderProfiles } = useSystemRequest()
+  const { getOverallTopTraderProfiles } = useResourceState()
+  const { getTraderProfile } = useTraderState()
   const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
 
-  const topTraderProfiles = getTopTraderProfiles(commonEnum.Config.OverallEnvId)
+  const topTraderProfiles = getOverallTopTraderProfiles()
 
   const topOptions = [
     {
@@ -60,7 +61,7 @@ const TopProfiles = () => {
 
   vendorTool.react.useEffect(() => {
     if (topTraderProfiles) return
-    fetchSystemTopTraderProfiles()
+    fetchOverallTopTraderProfiles()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [topTraderProfiles])
 

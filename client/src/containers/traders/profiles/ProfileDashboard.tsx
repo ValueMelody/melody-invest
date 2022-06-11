@@ -31,10 +31,12 @@ const ProfileDashboard = () => {
   usePrivateGuard()
 
   const { getUser } = useUserState()
-  const { getTraderProfile } = useTraderState()
+  const { getTraderProfile, getTraderCombos, getTraderEnvs } = useTraderState()
 
   const user = getUser()
-  const combos = user.comboProfiles
+  const envs = getTraderEnvs()
+  const combos = getTraderCombos()
+
   const userCombos = combos.filter((combo) => !combo.identity.isSystem)
 
   // ------------------------------------------------------------ Handler --
@@ -104,10 +106,10 @@ const ProfileDashboard = () => {
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        {user.userTraderEnvs.map((env) => (
+        {envs.map((env) => (
           <TraderEnvCard
-            key={env.id}
-            traderEnv={env}
+            key={env.record.id}
+            traderEnv={env.record}
             isActive={false}
             onClick={handleClickEnv}
           />

@@ -5,7 +5,7 @@ import {
   RenderOptions,
 } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { context } from './states/context'
+import { context } from './context'
 import useStore from './states/store'
 import * as vendorTool from './tools/vendor'
 import * as themeEnum from './enums/theme'

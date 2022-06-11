@@ -1,8 +1,7 @@
 import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
-// import useCommonState from '../../states/useCommonState'
-import useUserState from '../../states/useUserState'
+import useUserRequest from '../../requests/useUserRequest'
 import useAccountUI from './hooks/useAccountUI'
 import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
@@ -14,8 +13,7 @@ const Forgot = () => {
   // ------------------------------------------------------------ State --
 
   const { classes } = useAccountUI()
-  // const { addMessage, clearMessages } = useCommonState()
-  const { createResetCode } = useUserState()
+  const { createResetEmail } = useUserRequest()
 
   const [email, setEmail] = vendorTool.react.useState('')
 
@@ -36,7 +34,7 @@ const Forgot = () => {
   ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
-    await createResetCode(parsedEmail)
+    await createResetEmail(parsedEmail)
   }
 
   // ------------------------------------------------------------ UI --

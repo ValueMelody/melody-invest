@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../tools/vendor'
+import * as vendorTool from './tools/vendor'
 
 export interface Message {
   id: number;
@@ -22,15 +22,6 @@ interface TopTraderProfileIds {
   pastWeek: number[];
 }
 
-export interface TopTraderProfiles {
-  [traderEnvId: number]: TopTraderProfileIds
-}
-
-export interface ComboProfile {
-  identity: interfaces.traderComboModel.Identity;
-  detail?: interfaces.response.ComboDetail
-}
-
 export interface Resources {
   tickerIdentities: {
     [tickerId: number]: interfaces.tickerModel.Identity;
@@ -39,10 +30,9 @@ export interface Resources {
     [categoryId: number]: interfaces.tickerCategoryModel.Record;
   };
   userTraderIds: number[] | null;
-  userTraderEnvs: interfaces.traderEnvModel.Record[];
-  comboProfiles: ComboProfile[];
   userType: number;
   userEmail: string,
+  overallTopTraderProfiles: TopTraderProfileIds | null,
 }
 
 export interface TraderProfiles {
@@ -54,20 +44,38 @@ export interface TraderProfiles {
   };
 }
 
-export interface BehaviorDetail {
+export interface TraderCombo {
+  identity: interfaces.traderComboModel.Identity,
+  detail?: interfaces.response.ComboDetail;
+}
+
+export interface TraderCombos {
+  [key: number]: TraderCombo;
+}
+
+export interface TraderBehavior {
   tops: TopTraderProfileIds;
 }
 
-export interface BehaviorDetails {
-  [key: string]: BehaviorDetail;
+export interface TraderBehaviors {
+  [key: string]: TraderBehavior;
 }
 
-export interface TickerDetail {
+export interface TraderTicker {
   tops: TopTraderProfileIds;
 }
 
-export interface TickerDetails {
-  [key: string]: TickerDetail;
+export interface TraderTickers {
+  [key: string]: TraderTicker;
+}
+
+export interface TraderEnv {
+  record: interfaces.traderEnvModel.Record,
+  tops?: TopTraderProfileIds;
+}
+
+export interface TraderEnvs {
+  [key: number]: TraderEnv;
 }
 
 export interface Context {
@@ -84,12 +92,14 @@ export interface Context {
   setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;
   setTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TraderProfiles>>;
-  behaviorDetails: BehaviorDetails;
-  setBehaviorDetails: vendorTool.react.Dispatch<React.SetStateAction<BehaviorDetails>>;
-  tickerDetails: TickerDetails;
-  setTickerDetails: vendorTool.react.Dispatch<React.SetStateAction<TickerDetails>>;
-  topTraderProfiles: TopTraderProfiles;
-  setTopTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TopTraderProfiles>>;
+  traderBehaviors: TraderBehaviors;
+  setTraderBehaviors: vendorTool.react.Dispatch<React.SetStateAction<TraderBehaviors>>;
+  traderTickers: TraderTickers;
+  setTraderTickers: vendorTool.react.Dispatch<React.SetStateAction<TraderTickers>>;
+  traderEnvs: TraderEnvs;
+  setTraderEnvs: vendorTool.react.Dispatch<React.SetStateAction<TraderEnvs>>;
+  traderCombos: TraderCombos;
+  setTraderCombos: vendorTool.react.Dispatch<React.SetStateAction<TraderCombos>>;
 }
 
 // @ts-ignore

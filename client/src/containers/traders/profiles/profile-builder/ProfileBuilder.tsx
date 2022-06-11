@@ -2,13 +2,12 @@ import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../../../tools/vendor'
 import * as localeTool from '../../../../tools/locale'
-import * as routerTool from '../../../../tools/router'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import BehaviorEditor from '../../elements/BehaviorEditor'
 import TraderEnvCard from '../../elements/TraderEnvCard'
+import useTraderRequest from '../../../../requests/useTraderRequest'
 import useTraderState from '../../../../states/useTraderState'
-import useUserState from '../../../../states/useUserState'
 import usePrivateGuard from '../../../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
@@ -34,7 +33,6 @@ const getActiveBehaviorCount = (
 }
 
 const ProfileBuilder = () => {
-  const navigate = vendorTool.router.useNavigate()
   const classes = useStyles()
 
   // ------------------------------------------------------------ State --
@@ -50,9 +48,9 @@ const ProfileBuilder = () => {
   const [behaviorValues, setBehaviorValues] = vendorTool.react.useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = vendorTool.react.useState(1)
 
-  const { getUser } = useUserState()
-  const { createTraderProfile } = useTraderState()
-  const user = getUser()
+  const { getTraderEnvs } = useTraderState()
+  const { createTraderProfile } = useTraderRequest()
+  const traderEnvs = getTraderEnvs()
 
   const BUY_GROUPS = [
     {
@@ -199,11 +197,7 @@ const ProfileBuilder = () => {
         ...values,
         [behavior]: behaviorValues[behavior],
       }), defaultValues)
-    const result = await createTraderProfile(selectedTraderEnvId, traderPattern)
-    if (result) {
-      const link = routerTool.profileDetailRoute(result.traderId, result.accessCode)
-      navigate(link)
-    }
+    await createTraderProfile(selectedTraderEnvId, traderPattern)
   }
 
   // ------------------------------------------------------------ UI --
@@ -339,11 +333,11 @@ const ProfileBuilder = () => {
       </vendorTool.ui.Segment.Group>
       <h4>{localeTool.t('common.selectEnvironment')}:</h4>
       <div className='row-start'>
-        {user.userTraderEnvs.map((traderEnv) => (
+        {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnv.id}
-            traderEnv={traderEnv}
-            isActive={traderEnv.id === selectedTraderEnvId}
+            key={traderEnv.record.id}
+            traderEnv={traderEnv.record}
+            isActive={traderEnv.record.id === selectedTraderEnvId}
             onClick={handleSelectEnv}
           />
         ))}

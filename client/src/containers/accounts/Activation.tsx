@@ -1,7 +1,7 @@
 import usePublicGuard from '../hooks/usePublicGuard'
 import * as vendorTool from '../../tools/vendor'
 import * as routerTool from '../../tools/router'
-import useUserState from '../../states/useUserState'
+import useUserRequest from '../../requests/useUserRequest'
 
 const Activation = () => {
   usePublicGuard()
@@ -12,7 +12,7 @@ const Activation = () => {
 
   const accessCode = params.code
 
-  const { activateUser } = useUserState()
+  const { activateUser } = useUserRequest()
 
   // ------------------------------------------------------------ Effect --
 

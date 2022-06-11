@@ -2,7 +2,7 @@ import * as vendorTool from '../../tools/vendor'
 import * as localeTool from '../../tools/locale'
 import * as routerTool from '../../tools/router'
 import useCommonState from '../../states/useCommonState'
-import useUserState from '../../states/useUserState'
+import useUserRequest from '../../requests/useUserRequest'
 import useAccountUI from './hooks/useAccountUI'
 import RequiredLabel from '../elements/RequiredLabel'
 import usePublicGuard from '../hooks/usePublicGuard'
@@ -18,7 +18,7 @@ const Reset = () => {
 
   const { classes, getPasswordError } = useAccountUI()
   const { addMessage } = useCommonState()
-  const { resetUserPassword } = useUserState()
+  const { resetUserPassword } = useUserRequest()
 
   const [email, setEmail] = vendorTool.react.useState('')
   const [password, setPassword] = vendorTool.react.useState('')

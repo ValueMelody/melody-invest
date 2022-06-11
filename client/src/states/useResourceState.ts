@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import { context, Context } from './context'
+import { context, Context } from '../context'
 import * as vendorTool from '../tools/vendor'
 
-const useTickerState = () => {
+const useResourceState = () => {
   const store: Context = vendorTool.react.useContext(context)
 
   // ------------------------------------------------------------ Get --
@@ -31,6 +31,10 @@ const useTickerState = () => {
     return categories.sort((prev, curr) => curr.id > prev.id ? -1 : 1)
   }
 
+  const getOverallTopTraderProfiles = () => {
+    return store.resources.overallTopTraderProfiles
+  }
+
   // ------------------------------------------------------------ export --
 
   return {
@@ -38,7 +42,8 @@ const useTickerState = () => {
     getTickerIdentities,
     getTickerCategory,
     getTickerCategories,
+    getOverallTopTraderProfiles,
   }
 }
 
-export default useTickerState
+export default useResourceState

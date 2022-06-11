@@ -1,6 +1,6 @@
 import * as constants from '@shared/constants'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import useTraderState from '../../../states/useTraderState'
-import useUserState from '../../../states/useUserState'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
@@ -33,21 +33,18 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const {
-    getTraderProfile, fetchTraderProfile, fetchProfileDetail,
-  } = useTraderState()
-  const { getUser } = useUserState()
+  const { getTraderProfile, getTraderEnv } = useTraderState()
+  const { fetchTraderProfile, fetchProfileDetail } = useTraderRequest()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
 
   const traderId = params.traderId ? parseInt(params.traderId) : null
   const accessCode = params?.accessCode || null
-  const user = getUser()
 
   const profileDetail = getTraderProfile(traderId)
 
   const envId = profileDetail?.trader?.traderEnvId || null
-  const traderEnv = user.userTraderEnvs.find((env) => env.id === envId) || null
+  const traderEnv = getTraderEnv(envId)
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
@@ -90,13 +87,13 @@ const ProfileDetail = () => {
         <div className={classes.envContainer}>
           <h4>{localeTool.t('common.environments')}:</h4>
           {profileEnvs.map((profileEnv) => {
-            const traderEnv = user.userTraderEnvs.find((env) => env.id === profileEnv.traderEnvId)
+            const traderEnv = getTraderEnv(profileEnv.traderEnvId)
             if (!traderEnv) return null
 
             return (
               <TraderEnvCard
                 key={profileEnv.traderEnvId}
-                traderEnv={traderEnv}
+                traderEnv={traderEnv.record}
                 isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
                 onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
               />

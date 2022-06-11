@@ -1,11 +1,10 @@
 import * as constants from '@shared/constants'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
 import RequiredLabel from '../../elements/RequiredLabel'
-import useTickerState from '../../../states/useTickerState'
+import useResourceState from '../../../states/useResourceState'
 import useTraderState from '../../../states/useTraderState'
-import useUserState from '../../../states/useUserState'
+import useTraderRequest from '../../../requests/useTraderRequest'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
@@ -58,19 +57,19 @@ const maxDate = getDateFromString(maxYear)
 
 const EnvBuilder = () => {
   const classes = useStyles()
-  const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
-  const { getTickerIdentities } = useTickerState()
-  const { createTraderEnv } = useTraderState()
-  const { getUser } = useUserState()
-  const user = getUser()
+  const { getTickerIdentities } = useResourceState()
+  const { getTraderEnvs } = useTraderState()
+  const { createTraderEnv } = useTraderRequest()
 
   const [startYear, setStartYear] = vendorTool.react.useState('')
   const [startMonth, setStartMonth] = vendorTool.react.useState('01-01')
   const [tickerIds, setTickerIds] = vendorTool.react.useState<number[] | null>(null)
   const [envName, setEnvName] = vendorTool.react.useState('')
+
+  const traderEnvs = getTraderEnvs()
 
   const parsedEnvName = envName.trim().toLowerCase()
   const hasValidName = !!parsedEnvName
@@ -88,11 +87,11 @@ const EnvBuilder = () => {
   const date = startYear ? parseDateString(dateString) : null
   const selectedDate = date ? getDateFromString(date) : null
 
-  const hasDuplicatedName = user.userTraderEnvs.some((env) => env.name?.toLowerCase() === parsedEnvName)
-  const hasDuplicatedEnv = user.userTraderEnvs.some((env) => {
-    const currentIds = env.tickerIds ? env.tickerIds.join(',') : null
+  const hasDuplicatedName = traderEnvs.some((env) => env.record.name?.toLowerCase() === parsedEnvName)
+  const hasDuplicatedEnv = traderEnvs.some((env) => {
+    const currentIds = env.record.tickerIds ? env.record.tickerIds.join(',') : null
     const buildIds = tickerIds ? tickerIds.join(',') : null
-    return dateString === env.startDate && currentIds === buildIds
+    return dateString === env.record.startDate && currentIds === buildIds
   })
 
   const couldCreate = hasValidName && hasValidTickers && !hasDuplicatedName && !hasDuplicatedEnv
@@ -134,11 +133,7 @@ const EnvBuilder = () => {
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    const envId = await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
-    if (envId) {
-      const link = routerTool.envDetailRoute(envId)
-      navigate(link)
-    }
+    await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
   }
 
   const handleSearch = (

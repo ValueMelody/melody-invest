@@ -4,7 +4,7 @@ import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
 import ValueDiffer from '../elements/ValueDiffer'
 import HoldingShare from '../elements/HoldingShare'
-import useTickerState from '../../../states/useTickerState'
+import useResourceState from '../../../states/useResourceState'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -32,7 +32,7 @@ const HoldingCard = ({
 
   // ------------------------------------------------------------ State --
 
-  const { getTickerIdentity } = useTickerState()
+  const { getTickerIdentity } = useResourceState()
   const [showAllHoldings, setShowAllHoldings] = vendorTool.react.useState(false)
   const orderedHoldingItems = holding.items.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
   const displayedHoldingItems = showAllHoldings ? orderedHoldingItems : orderedHoldingItems.slice(0, 10)

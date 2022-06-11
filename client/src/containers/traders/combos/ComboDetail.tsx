@@ -3,9 +3,8 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import useRequest from '../../../states/useRequest'
+import useTraderRequest from '../../../requests/useTraderRequest'
 import useCommonState from '../../../states/useCommonState'
-import useUserState from '../../../states/useUserState'
 import useTraderState from '../../../states/useTraderState'
 import usePageStyles from '../../hooks/usePageStyles'
 import useShowMore from '../../hooks/useShowMore'
@@ -44,30 +43,27 @@ const ComboDetail = () => {
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
 
-  const { getUser } = useUserState()
-  const user = getUser()
-
   const { displayedTotal, renderShowMoreButton } = useShowMore()
-  const { getTraderProfile } = useTraderState()
-  const { fetchComboDetail } = useRequest()
+  const { getTraderProfile, getTraderCombo, getTraderEnv } = useTraderState()
+  const { fetchTraderCombo } = useTraderRequest()
 
   const comboId = params.comboId ? parseInt(params.comboId) : null
-  const matchedCombo = user.comboProfiles.find((combo) => combo.identity.id === comboId)
+  const matchedCombo = getTraderCombo(comboId)
 
   const holdings = matchedCombo?.detail?.holdings || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
   const profilesWithEnvs = matchedCombo?.identity.traderIds.map((traderId) => {
     const profile = getTraderProfile(traderId)
-    const env = user.userTraderEnvs.find((env) => env.id === profile?.trader.traderEnvId) || null
-    return { profile, env }
+    const env = getTraderEnv(profile?.trader.traderEnvId || null)
+    return { profile, env: env?.record || null }
   }) || []
 
   // ------------------------------------------------------------ Effect --
 
   vendorTool.react.useEffect(() => {
     if (!matchedCombo || matchedCombo?.detail) return
-    fetchComboDetail(matchedCombo.identity.id)
+    fetchTraderCombo(matchedCombo.identity.id)
   }, [matchedCombo])
 
   // ------------------------------------------------------------ Handler --

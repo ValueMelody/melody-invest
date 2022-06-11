@@ -68,6 +68,10 @@ export interface ProfileDetail {
   holdings: traderHoldingModel.Record[];
 }
 
+export interface EnvDetail {
+  topProfiles: TopTraderProfiles;
+}
+
 export interface BehaviorDetail {
   topProfiles: TopTraderProfiles;
 }
