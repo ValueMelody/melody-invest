@@ -15,10 +15,6 @@ const validateGetProfileParams = (id: number, accessCode: string) => {
   if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
 }
 
-const validateGetEnvParams = (id: number) => {
-  if (!id) throw errorEnum.Custom.MissingParams
-}
-
 const validateGetComboParams = (id: number) => {
   if (!id) throw errorEnum.Custom.MissingParams
 }
