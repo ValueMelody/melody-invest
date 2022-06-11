@@ -38,8 +38,10 @@ const TraderEnvCard = ({
 
   return (
     <vendorTool.ui.Card
+      data-testid='traderEnvCard'
       className={vendorTool.classNames(classes.container, {
         [classes.isActive]: isActive,
+        'click-cursor': !!onClick,
       })}
       onClick={handleClickEnv}
     >

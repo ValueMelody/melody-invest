@@ -134,6 +134,7 @@ const ProfileDashboard = () => {
         <section className={vendorTool.classNames('row-center', classes.card)}>
           {userCombos.map((combo) => (
             <TraderComboCard
+              isActive={false}
               key={combo.identity.id}
               traderCombo={combo.identity}
               onClick={handleClickCombo}
