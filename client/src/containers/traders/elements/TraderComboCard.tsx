@@ -20,7 +20,7 @@ const TraderComboCard = ({
   onClick,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
-  isActive?: boolean;
+  isActive: boolean;
   onClick?: (comboId: number) => void;
 }) => {
   const classes = useStyles()
@@ -38,8 +38,10 @@ const TraderComboCard = ({
 
   return (
     <vendorTool.ui.Card
+      data-testid='traderComboCard'
       className={vendorTool.classNames(classes.container, {
         [classes.isActive]: !!isActive,
+        'click-cursor': !!onClick,
       })}
       onClick={handleClickCombo}
     >
