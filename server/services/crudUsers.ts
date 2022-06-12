@@ -1,4 +1,5 @@
 import { Knex } from 'knex'
+import moment from 'moment'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as databaseAdapter from '../adapters/database'
@@ -57,11 +58,22 @@ export const getUserOverall = async (
     }
   })
 
+  let planStartAtUTC = null
+  let planEndAtUTC = null
+  if (user.type === constants.User.Type.Pro || user.type === constants.User.Type.Premium) {
+    let subscription = await userSubscriptionModel.getUserActive(user.id)
+    if (!subscription) subscription = await userSubscriptionModel.getUserLatest(user.id)
+    planStartAtUTC = subscription?.startAtUTC || null
+    planEndAtUTC = subscription?.endAtUTC || null
+  }
+
   return {
     traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
     traderEnvs,
     traderCombos,
     email: user.email,
+    planStartAtUTC,
+    planEndAtUTC,
   }
 }
 
@@ -153,11 +165,48 @@ export const createSubscription = async (
       userId,
       subscriptionId,
       status: constants.User.SubscriptionStatus.Active,
+      startAtUTC: `${(new Date()).toISOString().substring(0, 19)}Z`,
     }, transaction)
 
     await transaction.commit()
 
     return updatedUser
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const deleteSubscription = async (
+  userId: number,
+) => {
+  const subscription = await userSubscriptionModel.getUserActive(userId)
+  if (subscription?.status !== constants.User.SubscriptionStatus.Active) throw errorEnum.Custom.SubscriptionNotFound
+
+  const detail = await paymentAdapter.getSubscriptionDetail(subscription.subscriptionId)
+  if (detail.status !== 'ACTIVE') throw errorEnum.Custom.SubscriptionNotFound
+
+  try {
+    await paymentAdapter.cancelSubscription(subscription.subscriptionId)
+  } catch (e) {
+    throw errorEnum.Custom.PayPalServerError
+  }
+
+  const totalCycles = detail.billing_info.cycle_executions.reduce((total: number, info: any) => {
+    return total + info.cycles_completed
+  }, 0)
+  const endTime = moment(subscription.startAtUTC).add(totalCycles, 'months')
+  console.log(endTime)
+  console.log(endTime.toISOString().substring(0, 19))
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await userSubscriptionModel.update(subscription.id, {
+      status: constants.User.SubscriptionStatus.Cancelled,
+      endAtUTC: `${endTime.toISOString().substring(0, 19)}Z`,
+    }, transaction)
+
+    await transaction.commit()
   } catch (error) {
     await transaction.rollback()
     throw error

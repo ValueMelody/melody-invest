@@ -117,3 +117,10 @@ usersRouter.put('/reset', async (req, res) => {
   await crudUsers.resetPassword(email, password, resetCode)
   return res.status(204).send()
 })
+
+// ------------------------------------------------------------ Delete --
+usersRouter.delete('/subscription', authMiddleware.normalUser, async (req, res) => {
+  const auth: interfaces.request.Auth = req.body.auth
+  await crudUsers.deleteSubscription(auth.id)
+  return res.status(204).send()
+})

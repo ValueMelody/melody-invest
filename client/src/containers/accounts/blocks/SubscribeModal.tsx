@@ -5,13 +5,15 @@ import * as localeTool from '../../../tools/locale'
 import * as commonEnum from '../../../enums/common'
 import SubscribeButton from './SubscribeButton'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
+const useStyles = vendorTool.jss.createUseStyles((
+  theme: interfaces.common.Theme,
+) => ({
   selected: {
     border: `2px solid ${theme.PrimaryColor} !important`,
   },
 }))
 
-const UpgradeModal = () => {
+const SubscribeModal = () => {
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
@@ -46,7 +48,7 @@ const UpgradeModal = () => {
       onClose={handleCloseModal}
       trigger={(
         <vendorTool.ui.Button color='blue'>
-          {localeTool.t('common.upgrade')}
+          {localeTool.t('common.subscribe')}
         </vendorTool.ui.Button>
       )}
     >
@@ -114,4 +116,4 @@ const UpgradeModal = () => {
   )
 }
 
-export default UpgradeModal
+export default SubscribeModal

@@ -49,3 +49,19 @@ export const getSubscriptionDetail = async (
   })
   return result.data
 }
+
+export const cancelSubscription = async (
+  subscriptionId: string,
+) => {
+  const accessToken = await getAccessToken()
+  const url = `${adapterEnum.PaymentConfig.BaseUrl}/billing/subscriptions/${subscriptionId}/cancel`
+  await axios.post(
+    url,
+    { reason: 'Cancalled by user' },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    },
+  )
+}

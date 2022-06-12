@@ -48,6 +48,8 @@ export interface UserOverall {
   traderEnvs: traderEnvModel.Record[];
   traderCombos: traderComboModel.Identity[];
   email: string;
+  planStartAtUTC: string | null,
+  planEndAtUTC: string | null,
 }
 
 export interface UserToken {

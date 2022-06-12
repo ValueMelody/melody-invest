@@ -11,6 +11,8 @@ describe('#Default', () => {
 
 describe('Custom', () => {
   test('Have defined custom error enums', () => {
+    expect(error.Custom.PayPalServerError).toBeDefined()
+    expect(error.Custom.SubscriptionNotFound).toBeDefined()
     expect(error.Custom.CreationFailed).toBeDefined()
     expect(error.Custom.UpdationFailed).toBeDefined()
     expect(error.Custom.RecordNotFound).toBeDefined()

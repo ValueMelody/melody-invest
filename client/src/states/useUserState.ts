@@ -14,6 +14,8 @@ const useUserState = () => {
       userTraderIds: store.resources.userTraderIds,
       userType: store.resources.userType,
       userEmail: store.resources.userEmail,
+      planStartAtUTC: store.resources.planStartAtUTC,
+      planEndAtUTC: store.resources.planEndAtUTC,
     }
   }
 

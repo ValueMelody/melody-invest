@@ -113,3 +113,7 @@ h4, h5, h6 {
 #root .header > .icon {
   font-size: 18px;
 }
+
+.ui.page.modals {
+  z-index: 999;
+}
