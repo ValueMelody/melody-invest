@@ -32,6 +32,8 @@ export interface Resources {
   userTraderIds: number[] | null;
   userType: number;
   userEmail: string,
+  planStartAtUTC: string | null;
+  planEndAtUTC: string | null;
   overallTopTraderProfiles: TopTraderProfileIds | null,
 }
 

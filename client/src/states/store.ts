@@ -25,6 +25,8 @@ const useStore = () => {
     userTraderIds: currentUserType ? null : [],
     userType: currentUserType,
     userEmail: '',
+    planStartAtUTC: null,
+    planEndAtUTC: null,
     overallTopTraderProfiles: null,
   })
 

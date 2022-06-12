@@ -7,12 +7,15 @@ import useUserState from '../../states/useUserState'
 import RequiredLabel from '../elements/RequiredLabel'
 import useAccountUI from './hooks/useAccountUI'
 import usePrivateGuard from '../hooks/usePrivateGuard'
-import UpgradeModel from './blocks/UpgradeModal'
+import SubscribeModal from './blocks/SubscribeModal'
+import UnsubscribeButton from './blocks/UnsubscribeButton'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {
-    marginTop: '0.5rem',
-    marginBottom: '1rem',
+    marginTop: '2rem !important',
+  },
+  planDate: {
+    marginTop: '1rem !important',
   },
 }))
 
@@ -115,6 +118,12 @@ const Setting = () => {
             </vendorTool.ui.CardHeader>
             <vendorTool.ui.CardDescription>
               <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
+              <vendorTool.ui.Button
+                className={classes.input}
+                onClick={handleSignOut}
+              >
+                {localeTool.t('setting.signOut')}
+              </vendorTool.ui.Button>
             </vendorTool.ui.CardDescription>
           </vendorTool.ui.CardContent>
         </vendorTool.ui.Card>
@@ -129,11 +138,24 @@ const Setting = () => {
               </h4>
               <h5>- {userTypeText.profiles}</h5>
               <h5>- {userTypeText.envs}</h5>
+              {user.userType !== constants.User.Type.Basic && !user.planEndAtUTC && (
+                <UnsubscribeButton />
+              )}
+              {user.planStartAtUTC && (
+                <h5 className={classes.planDate}>
+                  {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
+                </h5>
+              )}
+              {user.planEndAtUTC && (
+                <h5 className={classes.planDate}>
+                  {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
+                </h5>
+              )}
             </vendorTool.ui.CardDescription>
           </vendorTool.ui.CardContent>
-          {user.userType !== constants.User.Type.Premium && (
+          {user.userType === constants.User.Type.Basic && (
             <vendorTool.ui.CardContent extra>
-              <UpgradeModel />
+              <SubscribeModal />
             </vendorTool.ui.CardContent>
           )}
         </vendorTool.ui.Card>
@@ -174,18 +196,6 @@ const Setting = () => {
                   {localeTool.t('setting.changePassword')}
                 </vendorTool.ui.Button>
               </form>
-            </vendorTool.ui.CardDescription>
-          </vendorTool.ui.CardContent>
-        </vendorTool.ui.Card>
-        <vendorTool.ui.Card>
-          <vendorTool.ui.CardContent>
-            <vendorTool.ui.CardHeader>
-              <h3>{localeTool.t('setting.accountAction')}</h3>
-            </vendorTool.ui.CardHeader>
-            <vendorTool.ui.CardDescription>
-              <vendorTool.ui.Button onClick={handleSignOut}>
-                {localeTool.t('setting.signOut')}
-              </vendorTool.ui.Button>
             </vendorTool.ui.CardDescription>
           </vendorTool.ui.CardContent>
         </vendorTool.ui.Card>

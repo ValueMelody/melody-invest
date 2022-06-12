@@ -29,6 +29,8 @@ const useUserRequest = () => {
       traderEnvs: envs,
       traderCombos: combos,
       email,
+      planStartAtUTC,
+      planEndAtUTC,
     } = overall
 
     const traderIds = profiles.map((profile) => profile.trader.id)
@@ -37,6 +39,8 @@ const useUserRequest = () => {
       ...resources,
       userEmail: email,
       userTraderIds: traderIds,
+      planStartAtUTC,
+      planEndAtUTC,
     }))
 
     const traderCombos = combos.reduce((combos, combo) => ({
@@ -89,7 +93,7 @@ const useUserRequest = () => {
       store.addMessage({
         id: Math.random(),
         type: 'success',
-        title: localeTool.t('common.signUpSuccess'),
+        title: localeTool.t('signUp.success'),
       })
     } catch (e) {
       store.showRequestError(e)
@@ -159,7 +163,7 @@ const useUserRequest = () => {
       store.addMessage({
         id: Math.random(),
         type: 'success',
-        title: localeTool.t('common.resetEmailSent'),
+        title: localeTool.t('reset.emailSent'),
       })
     } catch (e) {
       store.showRequestError(e)
@@ -181,7 +185,7 @@ const useUserRequest = () => {
       store.addMessage({
         id: Math.random(),
         type: 'success',
-        title: localeTool.t('common.activationSuccess'),
+        title: localeTool.t('activate.success'),
       })
     } catch (e) {
       store.showRequestError(e)
@@ -236,6 +240,26 @@ const useUserRequest = () => {
     }
   }
 
+  // ------------------------------------------------------------ Update --
+
+  const cancelUserSubscription = async () => {
+    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+    store.startLoading()
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('setting.ubsubscribeSuccess'),
+      })
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   // ------------------------------------------------------------ Export --
 
   return {
@@ -247,6 +271,7 @@ const useUserRequest = () => {
     activateUser,
     updateUserPassword,
     resetUserPassword,
+    cancelUserSubscription,
   }
 }
 

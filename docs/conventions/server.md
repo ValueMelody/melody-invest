@@ -25,3 +25,13 @@ interface Update {
 }
 
 ```
+
+# Use xxxUTC to store date which will be used for compare
+
+```
+// Bad
+table.timestamp('createdAt').defaultTo(knex.raw('now()')).notNullable()
+
+// Good
+table.specificType('createdAtUTC', 'CHAR(19)').notNullable()
+```
