@@ -16,7 +16,7 @@ const RequiredLabel = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <h5>
+    <h5 data-testid='requiredLabel'>
       <b>
         {title}&nbsp;
         <span className={classes.required}>*</span>
