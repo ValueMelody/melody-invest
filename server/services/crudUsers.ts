@@ -4,6 +4,7 @@ import * as constants from '@shared/constants'
 import * as databaseAdapter from '../adapters/database'
 import * as paymentAdapter from '../adapters/payment'
 import * as userModel from '../models/user'
+import * as userSubscriptionModel from '../models/userSubscription'
 import * as emailModel from '../models/email'
 import * as traderModel from '../models/trader'
 import * as traderEnvModel from '../models/traderEnv'
@@ -146,7 +147,12 @@ export const createSubscription = async (
   try {
     const updatedUser = await userModel.update(userId, {
       type: userType,
+    }, transaction)
+
+    await userSubscriptionModel.create({
+      userId,
       subscriptionId,
+      status: constants.User.SubscriptionStatus.Active,
     }, transaction)
 
     await transaction.commit()

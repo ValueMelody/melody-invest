@@ -1,4 +1,5 @@
 import * as userModel from './models/user'
+import * as userSubscriptionModel from './models/userSubscription'
 import * as tickerModel from './models/ticker'
 import * as tickerDailyModel from './models/tickerDaily'
 import * as tickerQuarterlyModel from './models/tickerQuarterly'
@@ -25,6 +26,7 @@ import * as common from './common'
 
 export {
   userModel,
+  userSubscriptionModel,
   tickerModel,
   tickerDailyModel,
   tickerQuarterlyModel,

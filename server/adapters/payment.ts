@@ -32,7 +32,7 @@ const getAccessToken = async () => {
   if (stored) return stored
   const accessResult = await createAccessToken()
   if (!accessResult.accessToken) throw errorEnum.Custom.PayPalServerError
-  const hours = (accessResult.expiresIn / 3600) - 1
+  const hours = Math.floor(accessResult.expiresIn / 3600) - 1
   await cacheAdapter.set(key, accessResult.accessToken, `${hours}h`)
   return accessResult.accessToken
 }
