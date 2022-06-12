@@ -22,6 +22,7 @@ const ConfirmModal = ({
 
   return (
     <vendorTool.ui.Modal
+      data-testid='confirmModal'
       open={isOpen}
       onClose={handleCloseModal}
     >
