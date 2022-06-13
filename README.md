@@ -32,9 +32,9 @@ server -> Express.js hosted Backend APIs for general requests
   adapters -> wrappers for outer resources
   enums -> constants used for server only
   locales -> translation files for server only
-  middlewares -> express middleware functions
+  middlewares -> middlewares for auth and access
   models -> database access functions
-  routers -> express routers
+  routers -> routers for API endpoints
   services -> business logic handlers
     shared -> single purpose business logic functions
   tasks -> cli routings

@@ -20,3 +20,7 @@ export const Custom = Object.freeze({
   UserNotActivated: { code: 403, message: 'User not activated' },
   SubscriptionFailed: { code: 403, message: 'Unable to verify subscription status' },
 })
+
+export const Dev = Object.freeze({
+  WrongMiddleware: { code: 500, message: 'Wrong middleware usage' },
+})

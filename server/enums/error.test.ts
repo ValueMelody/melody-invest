@@ -9,7 +9,7 @@ describe('#Default', () => {
   })
 })
 
-describe('Custom', () => {
+describe('#Custom', () => {
   test('Have defined custom error enums', () => {
     expect(error.Custom.PayPalServerError).toBeDefined()
     expect(error.Custom.SubscriptionNotFound).toBeDefined()
@@ -23,5 +23,11 @@ describe('Custom', () => {
     expect(error.Custom.EmailWrongFormat).toBeDefined()
     expect(error.Custom.UserNotFound).toBeDefined()
     expect(error.Custom.UserNotActivated).toBeDefined()
+  })
+})
+
+describe('#Dev', () => {
+  test('Have defined dev enums', () => {
+    expect(error.Dev.WrongMiddleware).toBeDefined()
   })
 })

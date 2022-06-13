@@ -55,35 +55,6 @@ export const getProfileDetail = async (
   }
 }
 
-export const verifyUserToTraderEnv = async (
-  userId: number, traderEnvId: number,
-) => {
-  const env = await traderEnvModel.getByPK(traderEnvId)
-  if (!env) throw errorEnum.Default.NotFound
-
-  if (!env.isSystem) {
-    const envFollower = await traderEnvFollowerModel.getByUK(userId, traderEnvId)
-    if (!envFollower) throw errorEnum.Default.NotFound
-  }
-}
-
-export const verifyUserToTraderIds = async (
-  userId: number,
-  traderIds: number[],
-) => {
-  const followed = await traderFollowerModel.getUserFollowed(userId)
-  const followedIds = followed.map((follow) => follow.traderId)
-  const allContained = traderIds.every((traderId) => followedIds.includes(traderId))
-  if (!allContained) throw errorEnum.Default.Forbidden
-}
-
-export const verifyUserToTraderCombo = async (
-  userId: number, traderComboId: number,
-) => {
-  const relation = await traderComboFollowerModel.getByUK(userId, traderComboId)
-  if (!relation) throw errorEnum.Default.NotFound
-}
-
 export const getUserTraderEnvIds = async (
   userId: number | null,
 ): Promise<number[]> => {
