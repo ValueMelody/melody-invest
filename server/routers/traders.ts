@@ -4,6 +4,7 @@ import * as constants from '@shared/constants'
 import * as crudTraders from '../services/crudTraders'
 import * as errorEnum from '../enums/error'
 import * as authMiddleware from '../middlewares/auth'
+import * as traderMiddleware from '../middlewares/trader'
 
 const tradersRouter = Router()
 export default tradersRouter
@@ -13,10 +14,6 @@ export default tradersRouter
 const validateGetProfileParams = (id: number, accessCode: string) => {
   const hasValidParam = id && accessCode && accessCode.length === 16
   if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
-}
-
-const validateGetComboParams = (id: number) => {
-  if (!id) throw errorEnum.Custom.MissingParams
 }
 
 const validateCreateProfileParams = (traderId: number, traderPattern: interfaces.traderPatternModel.Create) => {
@@ -81,53 +78,54 @@ tradersRouter.get(
   },
 )
 
-tradersRouter.get('/combos/:id', authMiddleware.normalUser, async (req, res) => {
-  const comboId = parseInt(req.params.id)
-  validateGetComboParams(comboId)
+tradersRouter.get(
+  '/combos/:combo_id',
+  authMiddleware.normalUser,
+  async (req, res) => {
+    const comboId = parseInt(req.params.combo_id)
+    const comboDetail = await crudTraders.getComboDetail(comboId)
+    return res.status(200).send(comboDetail)
+  },
+)
 
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.verifyUserToTraderCombo(auth.id, comboId)
+tradersRouter.get(
+  '/envs/:env_id',
+  authMiddleware.normalUser,
+  traderMiddleware.couldAccessEnv,
+  async (req, res) => {
+    const envId = parseInt(req.params.env_id)
+    const tops = await crudTraders.getEnvDetail(envId)
+    return res.status(200).send(tops)
+  },
+)
 
-  const comboDetail = await crudTraders.getComboDetail(comboId)
-  return res.status(200).send(comboDetail)
-})
+tradersRouter.get(
+  '/envs/:env_id/behaviors/:behavior',
+  authMiddleware.normalUser,
+  traderMiddleware.couldAccessEnv,
+  async (req, res) => {
+    const envId = parseInt(req.params.env_id)
+    const behavior = req.params.behavior
+    const matchedBahavior = validateBehavior(behavior)
 
-tradersRouter.get('/envs/:id', authMiddleware.normalUser, async (req, res) => {
-  const envId = parseInt(req.params.id)
-  validateEnvId(envId)
+    const detail = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
+    return res.status(200).send(detail)
+  },
+)
 
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
+tradersRouter.get(
+  '/envs/:env_id/tickers/:ticker_id',
+  authMiddleware.normalUser,
+  traderMiddleware.couldAccessEnv,
+  async (req, res) => {
+    const envId = parseInt(req.params.env_id)
+    const tickerId = parseInt(req.params.ticker_id)
+    validateTickerId(tickerId)
 
-  const tops = await crudTraders.getEnvDetail(envId)
-  return res.status(200).send(tops)
-})
-
-tradersRouter.get('/envs/:env_id/behaviors/:behavior', authMiddleware.normalUser, async (req, res) => {
-  const envId = parseInt(req.params.env_id)
-  validateEnvId(envId)
-  const behavior = req.params.behavior
-  const matchedBahavior = validateBehavior(behavior)
-
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
-
-  const detail = await crudTraders.getBehaviorDetail(envId, matchedBahavior)
-  return res.status(200).send(detail)
-})
-
-tradersRouter.get('/envs/:env_id/tickers/:ticker_id', authMiddleware.normalUser, async (req, res) => {
-  const envId = parseInt(req.params.env_id)
-  validateEnvId(envId)
-  const tickerId = parseInt(req.params.ticker_id)
-  validateTickerId(tickerId)
-
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.verifyUserToTraderEnv(auth.id, envId)
-
-  const detail = await crudTraders.getTickerDetail(envId, tickerId)
-  return res.status(200).send(detail)
-})
+    const detail = await crudTraders.getTickerDetail(envId, tickerId)
+    return res.status(200).send(detail)
+  },
+)
 
 // ------------------------------------------------------------ Post --
 
@@ -163,19 +161,23 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
   return res.status(201).send(traderEnv)
 })
 
-tradersRouter.post('/combos', authMiddleware.normalUser, async (req, res) => {
-  const { name, traderIds }: interfaces.request.TraderComboCreation = req.body
-  const parsedName = name?.trim()
-  validateCreateComboParams(parsedName, traderIds)
+tradersRouter.post(
+  '/combos',
+  authMiddleware.normalUser,
+  traderMiddleware.couldAccessTraders,
+  async (req, res) => {
+    const { name, traderIds }: interfaces.request.TraderComboCreation = req.body
+    const parsedName = name?.trim()
+    validateCreateComboParams(parsedName, traderIds)
 
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.verifyUserToTraderIds(auth.id, traderIds)
+    const auth: interfaces.request.Auth = req.body.auth
 
-  const traderCombo = await crudTraders.createTraderCombo(
-    auth.id, parsedName, traderIds,
-  )
-  return res.status(201).send(traderCombo)
-})
+    const traderCombo = await crudTraders.createTraderCombo(
+      auth.id, parsedName, traderIds,
+    )
+    return res.status(201).send(traderCombo)
+  },
+)
 
 // ------------------------------------------------------------ Delete --
 
