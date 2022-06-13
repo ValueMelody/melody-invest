@@ -28,6 +28,6 @@ describe('#Custom', () => {
 
 describe('#Dev', () => {
   test('Have defined dev enums', () => {
-    expect(error.Dev.EnvNotDefined).toBeDefined()
+    expect(error.Dev.WrongMiddleware).toBeDefined()
   })
 })
