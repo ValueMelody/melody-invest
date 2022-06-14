@@ -29,6 +29,7 @@ export interface Resources {
   tickerCategories: {
     [categoryId: number]: interfaces.tickerCategoryModel.Record;
   };
+  hasLogin: boolean;
   userTraderIds: number[] | null;
   userType: number;
   userEmail: string,
@@ -85,11 +86,11 @@ export interface Context {
   setCommon: vendorTool.react.Dispatch<React.SetStateAction<Common>>;
   startLoading: () => void;
   stopLoading: () => void;
-  loadUserType: (type: number) => void;
   addMessage: (message: Message) => void;
   removeMessage: (id: number) => void;
   clearMessages: (option?: { onlyErrors: boolean }) => void;
   showRequestError: (err: any) => void;
+  cleanUserState: () => void;
   resources: Resources;
   setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;

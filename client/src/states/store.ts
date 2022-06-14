@@ -1,3 +1,4 @@
+import * as constants from '@shared/constants'
 import * as context from '../context'
 import * as vendorTool from '../tools/vendor'
 import * as localeTool from '../tools/locale'
@@ -5,8 +6,6 @@ import * as routerTool from '../tools/router'
 import * as storageAdapter from '../adapters/storage'
 import * as requestAdapter from '../adapters/request'
 
-const userType = storageAdapter.get(storageAdapter.Key.UserType)
-const currentUserType = userType ? parseInt(userType) : 0
 const jwtToken = storageAdapter.get(storageAdapter.Key.JWTToken)
 if (jwtToken) requestAdapter.setJWTToken(jwtToken)
 
@@ -22,8 +21,9 @@ const useStore = () => {
   const [resources, setResources] = vendorTool.react.useState<context.Resources>({
     tickerIdentities: {},
     tickerCategories: {},
-    userTraderIds: currentUserType ? null : [],
-    userType: currentUserType,
+    hasLogin: !!jwtToken,
+    userTraderIds: jwtToken ? null : [],
+    userType: 0,
     userEmail: '',
     planStartAtUTC: null,
     planEndAtUTC: null,
@@ -39,10 +39,6 @@ const useStore = () => {
   const [traderEnvs, setTraderEnvs] = vendorTool.react.useState<context.TraderEnvs>({})
 
   const [traderCombos, setTraderCombos] = vendorTool.react.useState<context.TraderCombos>({})
-
-  const loadUserType = (type: number) => {
-    setResources((state) => ({ ...state, userType: type }))
-  }
 
   const startLoading = () => {
     setCommon((state) => ({ ...state, isLoading: true }))
@@ -78,6 +74,37 @@ const useStore = () => {
     }))
   }
 
+  const cleanUserState = () => {
+    setResources((resources) => ({
+      ...resources,
+      hasLogin: false,
+      userEmail: '',
+      userType: constants.User.Type.Guest,
+      userTraderIds: [],
+    }))
+
+    setTraderCombos((combos) => {
+      const systemCombos = Object.values(combos).filter((combo: context.TraderCombo) => combo.identity.isSystem)
+      const systemComboMap = systemCombos.reduce((comboMap, combo) => ({
+        ...comboMap,
+        [combo.identity.id]: combo,
+      }), {})
+      return systemComboMap
+    })
+
+    setTraderEnvs((envs) => {
+      const systemEnvs = Object.values(envs).filter((env: context.TraderEnv) => env.record.isSystem)
+      const systemEnvMap = systemEnvs.reduce((envMap, env) => ({
+        ...envMap,
+        [env.record.id]: env,
+      }), {})
+      return systemEnvMap
+    })
+
+    requestAdapter.setJWTToken('')
+    storageAdapter.remove(storageAdapter.Key.JWTToken)
+  }
+
   const showRequestError = (err: any) => {
     const message = err?.message || ''
     if (message) {
@@ -88,12 +115,7 @@ const useStore = () => {
       })
     }
     if (message === localeTool.t('error.401')) {
-      setResources((resources) => ({
-        ...resources,
-        userType: 0,
-      }))
-      storageAdapter.remove(storageAdapter.Key.JWTToken)
-      storageAdapter.remove(storageAdapter.Key.UserType)
+      cleanUserState()
       const url = routerTool.signInRoute()
       navigate(url)
     }
@@ -102,7 +124,6 @@ const useStore = () => {
   return {
     common,
     setCommon,
-    loadUserType,
     startLoading,
     stopLoading,
     addMessage,
@@ -121,6 +142,7 @@ const useStore = () => {
     setTraderEnvs,
     traderCombos,
     setTraderCombos,
+    cleanUserState,
   }
 }
 

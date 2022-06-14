@@ -1,6 +1,5 @@
 export const Key = Object.freeze({
   JWTToken: 'jwtToken',
-  UserType: 'userType',
 })
 
 type KeyIndex = keyof typeof Key

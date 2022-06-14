@@ -42,8 +42,9 @@ export const decodeJWT = (token: string): interfaces.request.Auth | null => {
   const payload = jwt.verify(token, adapterEnum.HostConfig.TokenSecret)
   const id = typeof payload === 'object' && payload.id
   const email = typeof payload === 'object' && payload.email
-  if (!id || !email) return null
-  return { id, email }
+  const type = typeof payload === 'object' && payload.type
+  if (!id || !email || !type) return null
+  return { id, email, type }
 }
 
 export const getNumbersInRange = (min: number, max: number): number[] => {

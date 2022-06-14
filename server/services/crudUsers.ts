@@ -72,6 +72,7 @@ export const getUserOverall = async (
     traderEnvs,
     traderCombos,
     email: user.email,
+    type: user.type,
     planStartAtUTC,
     planEndAtUTC,
   }
@@ -137,14 +138,16 @@ export const createUserToken = async (
   if (user.activationCode) throw errorEnum.Custom.UserNotActivated
 
   const expiresIn = remember ? '30d' : '12h'
-  const jwtToken = generateTool.encodeJWT({ id: user.id, email }, expiresIn)
-  return { jwtToken, expiresIn, userType: user.type }
+  const jwtToken = generateTool.encodeJWT({
+    id: user.id, email, type: user.type,
+  }, expiresIn)
+  return { jwtToken, expiresIn }
 }
 
 export const createSubscription = async (
   userId: number,
   subscriptionId: string,
-): Promise<interfaces.userModel.Record> => {
+): Promise<interfaces.response.UserToken> => {
   const detail = await paymentAdapter.getSubscriptionDetail(subscriptionId)
 
   const isProPlan = detail?.plan_id === adapterEnum.PaymentConfig.ProPlanId
@@ -170,7 +173,11 @@ export const createSubscription = async (
 
     await transaction.commit()
 
-    return updatedUser
+    const expiresIn = '12h'
+    const jwtToken = generateTool.encodeJWT({
+      id: userId, email: updatedUser.email, type: updatedUser.type,
+    }, expiresIn)
+    return { jwtToken, expiresIn }
   } catch (error) {
     await transaction.rollback()
     throw error

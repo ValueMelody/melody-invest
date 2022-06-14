@@ -64,9 +64,9 @@ describe('#buildAccessCode', () => {
 
 describe('#encodeJWT', () => {
   test('could encode jwt', () => {
-    const first = generate.encodeJWT({ id: 1, email: 'abc' }, '12h')
-    const second = generate.encodeJWT({ id: 1, email: 'abc' }, '30d')
-    const third = generate.encodeJWT({ id: 2, email: 'abc' }, '30d')
+    const first = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
+    const second = generate.encodeJWT({ id: 1, email: 'abc', type: 2 }, '30d')
+    const third = generate.encodeJWT({ id: 2, email: 'abc', type: 3 }, '30d')
     expect(first.length).toBeTruthy()
     expect(second.length).toBeTruthy()
     expect(third.length).toBeTruthy()
@@ -78,10 +78,11 @@ describe('#encodeJWT', () => {
 
 describe('#decodeJWT', () => {
   test('could decode jwt', () => {
-    const jwt = generate.encodeJWT({ id: 1, email: 'abc' }, '12h')
+    const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
     const result = generate.decodeJWT(jwt)
     expect(result?.id).toBe(1)
     expect(result?.email).toBe('abc')
+    expect(result?.type).toBe(1)
   })
   test('return null if not valid', () => {
     // @ts-ignore

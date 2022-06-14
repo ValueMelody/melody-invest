@@ -13,9 +13,9 @@ const usePrivateGuard = () => {
   // ------------------------------------------------------------ effect --
 
   vendorTool.react.useEffect(() => {
-    if (!user.userType) navigate(routerTool.signInRoute())
+    if (!user.hasLogin) navigate(routerTool.signInRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.userType])
+  }, [user.hasLogin])
 }
 
 export default usePrivateGuard

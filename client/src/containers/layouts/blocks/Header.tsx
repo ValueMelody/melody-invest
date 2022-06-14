@@ -34,7 +34,6 @@ const Header = () => {
 
   const { getUser } = useUserState()
   const user = getUser()
-  const isLoggedInUser = !!user.userType
 
   // ------------------------------------------------------------ UI --
 
@@ -63,7 +62,7 @@ const Header = () => {
         />
       </nav>
       <nav>
-        {isLoggedInUser && (
+        {user.hasLogin && (
           <HeaderLink
             route={routerTool.dashboardRoute()}
             title={localeTool.t('dashboard.title')}
@@ -71,7 +70,7 @@ const Header = () => {
           />
         )}
         <HeaderLink
-          route={isLoggedInUser ? routerTool.settingRoute() : routerTool.signInRoute()}
+          route={user.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
           icon='user circle'
         />
       </nav>

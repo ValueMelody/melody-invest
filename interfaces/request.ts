@@ -1,6 +1,7 @@
 export interface Auth {
   id: number;
   email: string;
+  type: number;
 }
 
 export interface TraderEnvCreation {
