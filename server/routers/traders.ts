@@ -4,7 +4,7 @@ import * as constants from '@shared/constants'
 import * as crudTraders from '../services/crudTraders'
 import * as errorEnum from '../enums/error'
 import * as authMiddleware from '../middlewares/auth'
-import * as traderMiddleware from '../middlewares/trader'
+import * as accessMiddleware from '../middlewares/access'
 
 const tradersRouter = Router()
 export default tradersRouter
@@ -91,7 +91,7 @@ tradersRouter.get(
 tradersRouter.get(
   '/envs/:env_id',
   authMiddleware.normalUser,
-  traderMiddleware.couldAccessEnv,
+  accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
     const tops = await crudTraders.getEnvDetail(envId)
@@ -102,7 +102,7 @@ tradersRouter.get(
 tradersRouter.get(
   '/envs/:env_id/behaviors/:behavior',
   authMiddleware.normalUser,
-  traderMiddleware.couldAccessEnv,
+  accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
     const behavior = req.params.behavior
@@ -116,7 +116,7 @@ tradersRouter.get(
 tradersRouter.get(
   '/envs/:env_id/tickers/:ticker_id',
   authMiddleware.normalUser,
-  traderMiddleware.couldAccessEnv,
+  accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
     const tickerId = parseInt(req.params.ticker_id)
@@ -164,7 +164,7 @@ tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
 tradersRouter.post(
   '/combos',
   authMiddleware.normalUser,
-  traderMiddleware.couldAccessTraders,
+  accessMiddleware.couldAccessTraders,
   async (req, res) => {
     const { name, traderIds }: interfaces.request.TraderComboCreation = req.body
     const parsedName = name?.trim()

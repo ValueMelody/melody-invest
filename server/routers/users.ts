@@ -71,8 +71,8 @@ usersRouter.post('/subscription', authMiddleware.normalUser, async (req, res) =>
   validateSubscriptionId(subscriptionId)
 
   const auth: interfaces.request.Auth = req.body.auth
-  await crudUsers.createSubscription(auth.id, subscriptionId)
-  return res.status(204).send()
+  const userToken = await crudUsers.createSubscription(auth.id, subscriptionId)
+  return res.status(201).send(userToken)
 })
 
 usersRouter.post('/reset', async (req, res) => {

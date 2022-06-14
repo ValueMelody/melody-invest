@@ -16,11 +16,13 @@ const useUserRequest = () => {
   // ------------------------------------------------------------ Store --
 
   const storeUserToken = (userToken: interfaces.response.UserToken) => {
-    const { jwtToken, userType } = userToken
+    const { jwtToken } = userToken
     requestAdapter.setJWTToken(jwtToken)
     storageAdapter.set(storageAdapter.Key.JWTToken, jwtToken)
-    storageAdapter.set(storageAdapter.Key.UserType, userType.toString())
-    store.loadUserType(userType)
+    store.setResources((resources) => ({
+      ...resources,
+      hasLogin: true,
+    }))
   }
 
   const storeUserOverall = (overall: interfaces.response.UserOverall) => {
@@ -29,6 +31,7 @@ const useUserRequest = () => {
       traderEnvs: envs,
       traderCombos: combos,
       email,
+      type,
       planStartAtUTC,
       planEndAtUTC,
     } = overall
@@ -38,6 +41,7 @@ const useUserRequest = () => {
     store.setResources((resources) => ({
       ...resources,
       userEmail: email,
+      userType: type,
       userTraderIds: traderIds,
       planStartAtUTC,
       planEndAtUTC,
@@ -109,17 +113,20 @@ const useUserRequest = () => {
     const endpoint = `${routerEnum.Endpoint.Users}/subscription`
     store.startLoading()
     try {
-      await requestAdapter.sendPostRequest(endpoint, {
+      const userToken = await requestAdapter.sendPostRequest(endpoint, {
         subscriptionId,
       })
+      storeUserToken(userToken)
+
       store.addMessage({
         id: Math.random(),
         type: 'success',
         title: localeTool.t('setting.subscribeSucceed'),
       })
-
-      storageAdapter.set(storageAdapter.Key.UserType, planType.toString())
-      store.loadUserType(planType)
+      store.setResources((resource) => ({
+        ...resource,
+        userType: planType,
+      }))
     } catch (e) {
       store.showRequestError({
         message: localeTool.t('setting.subscribeFailed', {

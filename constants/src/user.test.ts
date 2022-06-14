@@ -14,3 +14,9 @@ describe('#SubscriptionStatus', () => {
   expect(user.SubscriptionStatus.Suspended).toBeDefined()
   expect(user.SubscriptionStatus.Cancelled).toBeDefined()
 })
+
+describe('#PlanLimit', () => {
+  expect(user.PlanLimit.Basic).toBeDefined()
+  expect(user.PlanLimit.Pro).toBeDefined()
+  expect(user.PlanLimit.Premium).toBeDefined()
+})

@@ -10,3 +10,21 @@ export const SubscriptionStatus = Object.freeze({
   Suspended: 2,
   Cancelled: 3,
 })
+
+export const PlanLimit = Object.freeze({
+  Basic: {
+    Profiles: 5,
+    Envs: 0,
+    Combos: 0,
+  },
+  Pro: {
+    Profiles: 30,
+    Envs: 3,
+    Combos: 3,
+  },
+  Premium: {
+    Profiles: 100,
+    Envs: 10,
+    Combos: 10,
+  },
+})

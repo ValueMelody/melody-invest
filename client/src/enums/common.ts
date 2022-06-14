@@ -1,3 +1,4 @@
+import * as constants from '@shared/constants'
 import * as localeTool from '../tools/locale'
 
 export const Config = Object.freeze({
@@ -20,7 +21,7 @@ export const Plan = Object.freeze({
     Title: localeTool.t('common.basic'),
     Price: localeTool.t('pricing.basicPrice'),
     Services: [
-      localeTool.t('pricing.basicProfiles'),
+      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Basic.Profiles }),
       localeTool.t('pricing.basicEnvs'),
     ],
   },
@@ -28,18 +29,18 @@ export const Plan = Object.freeze({
     Title: localeTool.t('common.pro'),
     Price: localeTool.t('pricing.proPrice'),
     Services: [
-      localeTool.t('pricing.proProfiles'),
-      localeTool.t('pricing.proEnvs'),
-      localeTool.t('pricing.proCombos'),
+      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Pro.Profiles }),
+      localeTool.t('pricing.envsLimit', { num: constants.User.PlanLimit.Pro.Envs }),
+      localeTool.t('pricing.combosLimit', { num: constants.User.PlanLimit.Pro.Combos }),
     ],
   },
   Premium: {
     Title: localeTool.t('common.premium'),
     Price: localeTool.t('pricing.premiumPrice'),
     Services: [
-      localeTool.t('pricing.premiumProfiles'),
-      localeTool.t('pricing.premiumEnvs'),
-      localeTool.t('pricing.premiumCombos'),
+      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Premium.Profiles }),
+      localeTool.t('pricing.envsLimit', { num: constants.User.PlanLimit.Premium.Envs }),
+      localeTool.t('pricing.combosLimit', { num: constants.User.PlanLimit.Premium.Combos }),
     ],
   },
 })

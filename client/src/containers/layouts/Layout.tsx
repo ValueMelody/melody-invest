@@ -49,10 +49,10 @@ const Layout: vendorTool.react.FunctionComponent = ({
   }, [])
 
   vendorTool.react.useEffect(() => {
-    if (!user.userType) return
+    if (!user.hasLogin || user.userType) return
     fetchUserOverall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.userType])
+  }, [user.hasLogin, user.userType])
 
   vendorTool.react.useEffect(() => {
     if (!messages.length) return

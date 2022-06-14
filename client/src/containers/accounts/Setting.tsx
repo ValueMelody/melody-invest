@@ -9,6 +9,7 @@ import useAccountUI from './hooks/useAccountUI'
 import usePrivateGuard from '../hooks/usePrivateGuard'
 import SubscribeModal from './blocks/SubscribeModal'
 import UnsubscribeButton from './blocks/UnsubscribeButton'
+import * as commonEnum from '../../enums/common'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {
@@ -39,27 +40,12 @@ const Setting = () => {
   const userTypeText = vendorTool.react.useMemo(() => {
     switch (user.userType) {
       case constants.User.Type.Premium:
-        return {
-          title: localeTool.t('common.premium'),
-          price: localeTool.t('pricing.premiumPrice'),
-          profiles: localeTool.t('pricing.premiumProfiles'),
-          envs: localeTool.t('pricing.premiumEnvs'),
-        }
+        return commonEnum.Plan.Premium
       case constants.User.Type.Pro:
-        return {
-          title: localeTool.t('common.pro'),
-          price: localeTool.t('pricing.proPrice'),
-          profiles: localeTool.t('pricing.proProfiles'),
-          envs: localeTool.t('pricing.proEnvs'),
-        }
+        return commonEnum.Plan.Pro
       case constants.User.Type.Basic:
       default:
-        return {
-          title: localeTool.t('common.basic'),
-          price: localeTool.t('pricing.basicPrice'),
-          profiles: localeTool.t('pricing.basicProfiles'),
-          envs: localeTool.t('pricing.basicEnvs'),
-        }
+        return commonEnum.Plan.Basic
     }
   }, [user.userType])
 
@@ -134,10 +120,11 @@ const Setting = () => {
             </vendorTool.ui.CardHeader>
             <vendorTool.ui.CardDescription>
               <h4>
-                {`${userTypeText.title} ${localeTool.t('common.plan')} - ${userTypeText.price}`}
+                {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
               </h4>
-              <h5>- {userTypeText.profiles}</h5>
-              <h5>- {userTypeText.envs}</h5>
+              {userTypeText.Services.map((service) => (
+                <h5 key={service}>- {service}</h5>
+              ))}
               {user.userType !== constants.User.Type.Basic && !user.planEndAtUTC && (
                 <UnsubscribeButton />
               )}

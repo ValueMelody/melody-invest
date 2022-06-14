@@ -1,7 +1,4 @@
-import * as constants from '@shared/constants'
-import { context, Context, TraderCombo, TraderEnv } from '../context'
-import * as requestAdapter from '../adapters/request'
-import * as storageAdapter from '../adapters/storage'
+import { context, Context } from '../context'
 import * as vendorTool from '../tools/vendor'
 
 const useUserState = () => {
@@ -11,6 +8,7 @@ const useUserState = () => {
 
   const getUser = () => {
     return {
+      hasLogin: store.resources.hasLogin,
       userTraderIds: store.resources.userTraderIds,
       userType: store.resources.userType,
       userEmail: store.resources.userEmail,
@@ -22,33 +20,7 @@ const useUserState = () => {
   // ------------------------------------------------------------ Remove --
 
   const removeUser = () => {
-    store.setResources((resources) => ({
-      ...resources,
-      userType: constants.User.Type.Guest,
-      userTraderIds: [],
-    }))
-
-    store.setTraderCombos((combos) => {
-      const systemCombos = Object.values(combos).filter((combo: TraderCombo) => combo.identity.isSystem)
-      const systemComboMap = systemCombos.reduce((comboMap, combo) => ({
-        ...comboMap,
-        [combo.identity.id]: combo,
-      }), {})
-      return systemComboMap
-    })
-
-    store.setTraderEnvs((envs) => {
-      const systemEnvs = Object.values(envs).filter((env: TraderEnv) => env.record.isSystem)
-      const systemEnvMap = systemEnvs.reduce((envMap, env) => ({
-        ...envMap,
-        [env.record.id]: env,
-      }), {})
-      return systemEnvMap
-    })
-
-    requestAdapter.setJWTToken('')
-    storageAdapter.remove(storageAdapter.Key.JWTToken)
-    storageAdapter.remove(storageAdapter.Key.UserType)
+    store.cleanUserState()
   }
 
   // ------------------------------------------------------------ Export --
