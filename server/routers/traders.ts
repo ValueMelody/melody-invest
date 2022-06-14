@@ -129,41 +129,57 @@ tradersRouter.get(
 
 // ------------------------------------------------------------ Post --
 
-tradersRouter.post('/profiles', authMiddleware.normalUser, async (req, res) => {
-  const traderEnvId = req.body.traderEnvId
-  const traderPattern = req.body.traderPattern
-  validateCreateProfileParams(traderEnvId, traderPattern)
+tradersRouter.post(
+  '/profiles',
+  authMiddleware.normalUser,
+  accessMiddleware.couldCreateProfile,
+  async (req, res) => {
+    const traderEnvId = req.body.traderEnvId
+    const traderPattern = req.body.traderPattern
+    validateCreateProfileParams(traderEnvId, traderPattern)
 
-  const auth: interfaces.request.Auth = req.body.auth
+    const auth: interfaces.request.Auth = req.body.auth
 
-  const trader = await crudTraders.createTraderProfile(auth.id, traderEnvId, traderPattern)
-  return res.status(201).send(trader)
-})
+    const trader = await crudTraders.createTraderProfile(auth.id, traderEnvId, traderPattern)
+    return res.status(201).send(trader)
+  },
+)
 
-tradersRouter.post('/profiles/:trader_id', authMiddleware.normalUser, async (req, res) => {
-  const traderId = parseInt(req.params.trader_id)
-  validateTraderId(traderId)
+tradersRouter.post(
+  '/profiles/:trader_id',
+  authMiddleware.normalUser,
+  accessMiddleware.couldCreateProfile,
+  async (req, res) => {
+    const traderId = parseInt(req.params.trader_id)
+    validateTraderId(traderId)
 
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudTraders.createFollowedTrader(auth.id, traderId)
-  return res.status(201).send()
-})
+    const auth: interfaces.request.Auth = req.body.auth
+    await crudTraders.createFollowedTrader(auth.id, traderId)
+    return res.status(201).send()
+  },
+)
 
-tradersRouter.post('/envs', authMiddleware.normalUser, async (req, res) => {
-  const { name, startDate, tickerIds }: interfaces.request.TraderEnvCreation = req.body
-  const parsedName = name?.trim()
-  validateCreateEnvParams(parsedName, startDate, tickerIds)
-  const auth: interfaces.request.Auth = req.body.auth
+tradersRouter.post(
+  '/envs',
+  authMiddleware.normalUser,
+  accessMiddleware.couldCreateEnv,
+  async (req, res) => {
+    const { name, startDate, tickerIds }: interfaces.request.TraderEnvCreation = req.body
+    const parsedName = name?.trim()
+    validateCreateEnvParams(parsedName, startDate, tickerIds)
+    const auth: interfaces.request.Auth = req.body.auth
 
-  const traderEnv = await crudTraders.createTraderEnv(
-    auth.id, parsedName, startDate, tickerIds,
-  )
-  return res.status(201).send(traderEnv)
-})
+    const traderEnv = await crudTraders.createTraderEnv(
+      auth.id, parsedName, startDate, tickerIds,
+    )
+    return res.status(201).send(traderEnv)
+  },
+)
 
 tradersRouter.post(
   '/combos',
   authMiddleware.normalUser,
+  accessMiddleware.couldCreateCombo,
   accessMiddleware.couldAccessTraders,
   async (req, res) => {
     const { name, traderIds }: interfaces.request.TraderComboCreation = req.body
