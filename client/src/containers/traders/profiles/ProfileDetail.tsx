@@ -6,7 +6,7 @@ import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
 import TraderProfileCard from '../blocks/TraderProfileCard'
 import HoldingCard from '../blocks/HoldingCard'
-import TraderEnvCard from '../elements/TraderEnvCard'
+import TraderEnvCard from '../blocks/TraderEnvCard'
 import useShowMore from '../../hooks/useShowMore'
 
 const useStyles = vendorTool.jss.createUseStyles(({

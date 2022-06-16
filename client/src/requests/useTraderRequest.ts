@@ -118,7 +118,7 @@ const useTraderRequest = () => {
   }
 
   const storeWatchedProfile = (traderId: number) => {
-    const currentUserIds = store.resources.userTraderIds || []
+    const currentUserIds = store.resources.userTraderIds
     if (currentUserIds.includes(traderId)) return
     const traderIds = [...currentUserIds, traderId]
     store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
@@ -141,7 +141,7 @@ const useTraderRequest = () => {
   }
 
   const removeWatchedProfile = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds || []
+    const traderIds = store.resources.userTraderIds
     const remainingTraderIds = traderIds.filter((id) => id !== traderId)
     store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
   }
