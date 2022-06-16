@@ -30,7 +30,7 @@ export interface Resources {
     [categoryId: number]: interfaces.tickerCategoryModel.Record;
   };
   hasLogin: boolean;
-  userTraderIds: number[] | null;
+  userTraderIds: number[];
   userType: number;
   userEmail: string,
   planStartAtUTC: string | null;

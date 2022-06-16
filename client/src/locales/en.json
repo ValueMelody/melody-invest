@@ -62,6 +62,8 @@
     "pricing.premiumPrice": "$19.99 / Month",
     "pricing.title": "Our Subscription Plans and Prices",
 
+    "permission.limited": "Unaccessible due to plan limit, check your account page for details",
+
     "setting.changePassword": "Change Password",
     "setting.signOut": "Sign Out",
     "setting.accountType": "Account Type",

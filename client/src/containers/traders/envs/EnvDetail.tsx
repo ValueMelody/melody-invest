@@ -5,7 +5,7 @@ import useTraderRequest from '../../../requests/useTraderRequest'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as routerTool from '../../../tools/router'
-import TraderEnvCard from '../elements/TraderEnvCard'
+import TraderEnvCard from '../blocks/TraderEnvCard'
 import TickerLabel from '../elements/TickerLabel'
 import WatchButton from '../elements/WatchButton'
 import EachTops from '../blocks/EachTops'
@@ -87,7 +87,6 @@ const EnvDetail = () => {
       <aside className={pageClasses.aside}>
         <TraderEnvCard
           traderEnv={traderEnv.record}
-          isActive={false}
         />
         <div className={classes.tickers}>
           {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (

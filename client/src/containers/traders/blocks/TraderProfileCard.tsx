@@ -27,6 +27,9 @@ const useStyles = vendorTool.jss.createUseStyles((
   active: {
     border: `2px solid ${theme.PrimaryColor} !important`,
   },
+  disabled: {
+    backgroundColor: `${theme.LightGray} !important`,
+  },
   label: {
     alignSelf: 'flex-start',
   },
@@ -37,14 +40,16 @@ const useStyles = vendorTool.jss.createUseStyles((
 
 const TraderProfileCard = ({
   profile,
-  isActive,
+  isActive = false,
+  simple = false,
+  disabled = false,
   onClick,
-  simple,
 }: {
   profile: interfaces.response.TraderProfile | null;
   isActive?: boolean,
-  onClick?: (record: interfaces.traderModel.Record) => void;
   simple?: boolean;
+  disabled?: boolean;
+  onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const classes = useStyles()
 
@@ -65,7 +70,8 @@ const TraderProfileCard = ({
   const traderId = trader?.id || null
 
   const traderEnv = getTraderEnv(traderEnvId)
-  const isWatched = !!user.userTraderIds && !!traderId && user.userTraderIds.includes(traderId)
+  const isWatched = !!user.userType && !!traderId && user.userTraderIds.includes(traderId)
+  const isClickable = !!onClick && !disabled
 
   // ------------------------------------------------------------ Handler --
 
@@ -82,6 +88,15 @@ const TraderProfileCard = ({
         title: localeTool.t('error.guest'),
         type: 'error',
       })
+      return
+    }
+    if (!user.canFollowTrader) {
+      addMessage({
+        id: Math.random(),
+        title: localeTool.t('permission.limited'),
+        type: 'error',
+      })
+      return
     }
     if (isWatched) {
       deleteWatchedProfile(trader.id)
@@ -101,10 +116,11 @@ const TraderProfileCard = ({
   return (
     <vendorTool.ui.Segment
       className={vendorTool.classNames('row-around', classes.pattern, {
-        'click-cursor': !!onClick,
+        'click-cursor': isClickable,
+        [classes.disabled]: disabled,
         [classes.active]: !!isActive,
       })}
-      onClick={handleClick}
+      onClick={isClickable ? handleClick : undefined}
       padded
     >
       <header
@@ -120,7 +136,7 @@ const TraderProfileCard = ({
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
           </h5>
         </div>
-        {!!user.userTraderIds && !simple && (
+        {!!user.userType && !simple && (
           <WatchButton
             isWatched={isWatched}
             onToggle={handleToggleWatch}
@@ -129,23 +145,32 @@ const TraderProfileCard = ({
       </header>
 
       <div className={classes.body}>
-        <section className='row-around'>
-          <ValueChangePanel
-            yearlyPercentNumber={trader.yearlyPercentNumber}
-            pastYearPercentNumber={trader.pastYearPercentNumber}
-            pastQuarterPercentNumber={trader.pastQuarterPercentNumber}
-            pastMonthPercentNumber={trader.pastMonthPercentNumber}
-            pastWeekPercentNumber={trader.pastWeekPercentNumber}
-            oneDecadeTrends={trader.oneDecadeTrends}
-            oneYearTrends={trader.oneYearTrends}
-            totalValue={trader.totalValue}
-            activeChartIndex={activeChartIndex}
-            onChangeChart={handleChangeChartIndex}
-            showCharts={!simple}
-            showPercents
-          />
-        </section>
-        {!simple && (
+        {disabled && (
+          <h4>
+            {localeTool.t('permission.limited')}
+          </h4>
+        )}
+
+        {!disabled && (
+          <section className='row-around'>
+            <ValueChangePanel
+              yearlyPercentNumber={trader.yearlyPercentNumber}
+              pastYearPercentNumber={trader.pastYearPercentNumber}
+              pastQuarterPercentNumber={trader.pastQuarterPercentNumber}
+              pastMonthPercentNumber={trader.pastMonthPercentNumber}
+              pastWeekPercentNumber={trader.pastWeekPercentNumber}
+              oneDecadeTrends={trader.oneDecadeTrends}
+              oneYearTrends={trader.oneYearTrends}
+              totalValue={trader.totalValue}
+              activeChartIndex={activeChartIndex}
+              onChangeChart={handleChangeChartIndex}
+              showCharts={!simple}
+              showPercents
+            />
+          </section>
+        )}
+
+        {!simple && !disabled && (
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
         )}
       </div>

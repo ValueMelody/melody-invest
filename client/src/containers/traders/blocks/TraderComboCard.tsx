@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
+import useUserState from '../../../states/useUserState'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -12,18 +13,29 @@ const useStyles = vendorTool.jss.createUseStyles((
   isActive: {
     border: `3px solid ${theme.PrimaryColor} !important`,
   },
+  disabled: {
+    backgroundColor: `${theme.LightGray} !important`,
+  },
 }))
 
 const TraderComboCard = ({
   traderCombo,
-  isActive,
   onClick,
+  isActive = false,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
-  isActive: boolean;
+  isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
   const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
+  const { getUser } = useUserState()
+  const user = getUser()
+  const disabled = !traderCombo || (
+    !traderCombo.isSystem && !user.accessibleComboIds.includes(traderCombo.id)
+  )
 
   // ------------------------------------------------------------ Handler --
 
@@ -40,10 +52,10 @@ const TraderComboCard = ({
     <vendorTool.ui.Card
       data-testid='traderComboCard'
       className={vendorTool.classNames(classes.container, {
-        [classes.isActive]: !!isActive,
-        'click-cursor': !!onClick,
+        [classes.isActive]: isActive,
+        [classes.disabled]: disabled,
       })}
-      onClick={handleClickCombo}
+      onClick={!disabled ? handleClickCombo : undefined}
     >
       <vendorTool.ui.Card.Content>
         <vendorTool.ui.Card.Header
@@ -54,7 +66,9 @@ const TraderComboCard = ({
           )}
         />
         <vendorTool.ui.Card.Description
-          content={parseTool.traderComboTraders(traderCombo)}
+          content={
+            disabled ? localeTool.t('permission.limited') : parseTool.traderComboTraders(traderCombo)
+          }
         />
       </vendorTool.ui.Card.Content>
     </vendorTool.ui.Card>

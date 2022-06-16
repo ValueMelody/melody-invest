@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as vendorTool from '../../../tools/vendor'
 import * as localeTool from '../../../tools/locale'
 import * as parseTool from '../../../tools/parse'
+import useUserState from '../../../states/useUserState'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -10,20 +11,31 @@ const useStyles = vendorTool.jss.createUseStyles((
     margin: '1rem 0.75rem 1rem 0 !important',
   },
   isActive: {
-    border: `2px solid ${theme.PrimaryColor} !important`,
+    border: `3px solid ${theme.PrimaryColor} !important`,
+  },
+  disabled: {
+    backgroundColor: `${theme.LightGray} !important`,
   },
 }))
 
 const TraderEnvCard = ({
   traderEnv,
-  isActive,
+  isActive = false,
   onClick,
 }: {
   traderEnv: interfaces.traderEnvModel.Record | null;
-  isActive: boolean;
+  isActive?: boolean;
   onClick?: (envId: number) => void;
 }) => {
   const classes = useStyles()
+
+  // ------------------------------------------------------------ State --
+
+  const { getUser } = useUserState()
+  const user = getUser()
+  const disabled = !traderEnv || (
+    !traderEnv.isSystem && !user.accessibleEnvIds.includes(traderEnv.id)
+  )
 
   // ------------------------------------------------------------ Handler --
 
@@ -41,9 +53,9 @@ const TraderEnvCard = ({
       data-testid='traderEnvCard'
       className={vendorTool.classNames(classes.container, {
         [classes.isActive]: isActive,
-        'click-cursor': !!onClick,
+        [classes.disabled]: disabled,
       })}
-      onClick={handleClickEnv}
+      onClick={!disabled ? handleClickEnv : undefined}
     >
       <vendorTool.ui.Card.Content>
         <vendorTool.ui.Card.Header
@@ -62,7 +74,9 @@ const TraderEnvCard = ({
           content={parseTool.traderEnvStartDate(traderEnv)}
         />
         <vendorTool.ui.Card.Description
-          content={parseTool.traderEnvTickers(traderEnv)}
+          content={
+            disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)
+          }
         />
       </vendorTool.ui.Card.Content>
     </vendorTool.ui.Card>

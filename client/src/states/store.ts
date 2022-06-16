@@ -22,7 +22,7 @@ const useStore = () => {
     tickerIdentities: {},
     tickerCategories: {},
     hasLogin: !!jwtToken,
-    userTraderIds: jwtToken ? null : [],
+    userTraderIds: [],
     userType: 0,
     userEmail: '',
     planStartAtUTC: null,

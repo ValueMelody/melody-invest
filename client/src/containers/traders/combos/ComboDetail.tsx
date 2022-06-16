@@ -12,7 +12,7 @@ import usePrivateGuard from '../../hooks/usePrivateGuard'
 import HoldingCard from '../blocks/HoldingCard'
 import ValueChangePanel from '../elements/ValueChangePanel'
 import ComboProfiles from '../elements/ComboProfiles'
-import TraderComboCard from '../elements/TraderComboCard'
+import TraderComboCard from '../blocks/TraderComboCard'
 import ProfileValue from '../elements/ProfileValue'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
@@ -87,7 +87,6 @@ const ComboDetail = () => {
         <div className={vendorTool.classNames(classes.combo, 'row-around')}>
           <TraderComboCard
             traderCombo={matchedCombo.identity}
-            isActive
           />
         </div>
         <vendorTool.ui.Header

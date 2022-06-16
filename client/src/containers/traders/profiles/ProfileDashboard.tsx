@@ -7,8 +7,8 @@ import * as routerTool from '../../../tools/router'
 import usePrivateGuard from '../../hooks/usePrivateGuard'
 import usePageStyles from '../../hooks/usePageStyles'
 import TraderProfileCard from '../blocks/TraderProfileCard'
-import TraderEnvCard from '../elements/TraderEnvCard'
-import TraderComboCard from '../elements/TraderComboCard'
+import TraderEnvCard from '../blocks/TraderEnvCard'
+import TraderComboCard from '../blocks/TraderComboCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   header: {
@@ -70,7 +70,7 @@ const ProfileDashboard = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!user.userTraderIds) return null
+  if (!user.userType) return null
 
   return (
     <section className={pageClasses.root}>
@@ -81,20 +81,28 @@ const ProfileDashboard = () => {
             icon='star'
             content={localeTool.t('dashboard.watchedProfiles')}
           />
-          <vendorTool.ui.Button
-            icon
-            labelPosition='left'
-            color='blue'
-            onClick={handleClickAddProfile}
-            title={localeTool.t('dashboard.newProfileDesc')}
+          <div
+            data-tooltip={
+              user.canFollowTrader ? localeTool.t('dashboard.newProfileDesc') : localeTool.t('permission.limited')
+            }
+            data-position='bottom center'
           >
-            <vendorTool.ui.Icon name='plus' />
-            {localeTool.t('common.new')}
-          </vendorTool.ui.Button>
+            <vendorTool.ui.Button
+              icon
+              labelPosition='left'
+              color='blue'
+              onClick={handleClickAddProfile}
+              disabled={!user.canFollowTrader}
+            >
+              <vendorTool.ui.Icon name='plus' />
+              {localeTool.t('common.new')}
+            </vendorTool.ui.Button>
+          </div>
         </header>
         {user.userTraderIds.map((traderId) => (
           <TraderProfileCard
             key={traderId}
+            disabled={!user.accessibleTraderIds.includes(traderId)}
             profile={getTraderProfile(traderId)}
             onClick={handleClickRow}
           />
@@ -106,25 +114,31 @@ const ProfileDashboard = () => {
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        {envs.map((env) => (
-          <TraderEnvCard
-            key={env.record.id}
-            traderEnv={env.record}
-            isActive={false}
-            onClick={handleClickEnv}
-          />
-        ))}
         <section className={vendorTool.classNames('row-center', classes.card)}>
-          <vendorTool.ui.Button
-            icon
-            labelPosition='left'
-            color='blue'
-            onClick={handleClickAddEnv}
-            title={localeTool.t('dashboard.newEnvDesc')}
+          {envs.map((env) => (
+            <TraderEnvCard
+              key={env.record.id}
+              traderEnv={env.record}
+              onClick={handleClickEnv}
+            />
+          ))}
+          <div
+            data-tooltip={
+              user.canFollowEnv ? localeTool.t('dashboard.newEnvDesc') : localeTool.t('permission.limited')
+            }
+            data-position='bottom center'
           >
-            <vendorTool.ui.Icon name='plus' />
-            {localeTool.t('common.new')}
-          </vendorTool.ui.Button>
+            <vendorTool.ui.Button
+              icon
+              labelPosition='left'
+              color='blue'
+              onClick={handleClickAddEnv}
+              disabled={!user.canFollowEnv}
+            >
+              <vendorTool.ui.Icon name='plus' />
+              {localeTool.t('common.new')}
+            </vendorTool.ui.Button>
+          </div>
         </section>
         <vendorTool.ui.Header
           as='h3'
@@ -134,22 +148,28 @@ const ProfileDashboard = () => {
         <section className={vendorTool.classNames('row-center', classes.card)}>
           {userCombos.map((combo) => (
             <TraderComboCard
-              isActive={false}
               key={combo.identity.id}
               traderCombo={combo.identity}
               onClick={handleClickCombo}
             />
           ))}
-          <vendorTool.ui.Button
-            icon
-            labelPosition='left'
-            color='blue'
-            onClick={handleClickAddCombo}
-            title={localeTool.t('dashboard.newComboDesc')}
+          <div
+            data-tooltip={
+              user.canFollowCombo ? localeTool.t('dashboard.newComboDesc') : localeTool.t('permission.limited')
+            }
+            data-position='bottom center'
           >
-            <vendorTool.ui.Icon name='plus' />
-            {localeTool.t('common.new')}
-          </vendorTool.ui.Button>
+            <vendorTool.ui.Button
+              icon
+              labelPosition='left'
+              color='blue'
+              onClick={handleClickAddCombo}
+              disabled={!user.canFollowCombo}
+            >
+              <vendorTool.ui.Icon name='plus' />
+              {localeTool.t('common.new')}
+            </vendorTool.ui.Button>
+          </div>
         </section>
       </aside>
     </section>

@@ -38,7 +38,7 @@ const ComboBuilder = () => {
   const { getTraderProfile, getTraderCombos } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
-  const profiles = user.userTraderIds?.map((traderId) => getTraderProfile(traderId)) || []
+  const profiles = user.userTraderIds.map((traderId) => getTraderProfile(traderId)) || []
 
   const parsedName = envName.trim().toLowerCase()
   const hasValidName = !!parsedName.trim()
