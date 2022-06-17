@@ -1,5 +1,6 @@
-import * as vendorTool from '../../../../tools/vendor'
-import * as localeTool from '../../../../tools/locale'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles({
   segmentHeader: {
@@ -32,7 +33,9 @@ const ProfileBuilderHeader = ({
   isExtended: boolean;
   onExtend: () => void;
 }) => {
+  // ------------------------------------------------------------ State --
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   // ------------------------------------------------------------ Handler --
 
@@ -46,9 +49,11 @@ const ProfileBuilderHeader = ({
   return (
     <header
       onClick={handleToggleBuyBehaviors}
-      className={vendorTool.classNames('row-start', 'click-cursor', {
-        [classes.segmentHeader]: isExtended,
-      })}
+      className={vendorTool.classNames(
+        commonClasses.rowStart,
+        commonClasses.cursorClickable,
+        { [classes.segmentHeader]: isExtended },
+      )}
     >
       <h3 className={classes.segmentTitle}>
         {title}

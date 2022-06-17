@@ -1,14 +1,15 @@
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../../tools/vendor'
-import * as localeTool from '../../../../tools/locale'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useTraderRequest from 'requests/useTraderRequest'
+import useTraderState from 'states/useTraderState'
+import usePrivateGuard from 'handlers/usePrivateGuard'
+import useCommonStyle from 'styles/useCommonStyle'
+import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
-import BehaviorEditor from '../../elements/BehaviorEditor'
-import TraderEnvCard from '../../blocks/TraderEnvCard'
-import useTraderRequest from '../../../../requests/useTraderRequest'
-import useTraderState from '../../../../states/useTraderState'
-import usePrivateGuard from '../../../hooks/usePrivateGuard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   confirmButton: {
@@ -33,11 +34,12 @@ const getActiveBehaviorCount = (
 }
 
 const ProfileBuilder = () => {
-  const classes = useStyles()
+  usePrivateGuard()
 
   // ------------------------------------------------------------ State --
 
-  usePrivateGuard()
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = vendorTool.react.useState(false)
   const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = vendorTool.react.useState(false)
@@ -204,7 +206,7 @@ const ProfileBuilder = () => {
 
   return (
     <section>
-      <header className='row-around'>
+      <header className={commonClasses.rowAround}>
         <h2>{localeTool.t('profileBuilder.title')}</h2>
       </header>
       <vendorTool.ui.Segment.Group>
@@ -332,7 +334,7 @@ const ProfileBuilder = () => {
         </vendorTool.ui.Segment>
       </vendorTool.ui.Segment.Group>
       <h4>{localeTool.t('common.selectEnvironment')}:</h4>
-      <div className='row-start'>
+      <div className={commonClasses.rowStart}>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.record.id}
@@ -343,7 +345,7 @@ const ProfileBuilder = () => {
         ))}
       </div>
       <form onSubmit={handleSubmit}>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'

@@ -1,13 +1,14 @@
 import * as constants from '@shared/constants'
-import useTraderRequest from '../../../requests/useTraderRequest'
-import useTraderState from '../../../states/useTraderState'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import TraderProfileCard from '../blocks/TraderProfileCard'
-import HoldingCard from '../blocks/HoldingCard'
-import TraderEnvCard from '../blocks/TraderEnvCard'
-import useShowMore from '../../hooks/useShowMore'
+import useTraderRequest from 'requests/useTraderRequest'
+import useTraderState from 'states/useTraderState'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useShowMore from 'handlers/useShowMore'
+import useCommonStyle from 'styles/useCommonStyle'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import HoldingCard from 'containers/traders/blocks/HoldingCard'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -29,9 +30,11 @@ const useStyles = vendorTool.jss.createUseStyles(({
 const ProfileDetail = () => {
   const params = vendorTool.router.useParams()
   const navigate = vendorTool.router.useNavigate()
-  const classes = useStyles()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const { getTraderProfile, getTraderEnv } = useTraderState()
   const { fetchTraderProfile, fetchProfileDetail } = useTraderRequest()
@@ -79,7 +82,10 @@ const ProfileDetail = () => {
   if (!profileDetail || !profileDetail || !traderEnv) return null
 
   return (
-    <div className={vendorTool.classNames('row-between', classes.container)}>
+    <div className={vendorTool.classNames(
+      commonClasses.rowBetween,
+      classes.container,
+    )}>
       <div className={classes.left}>
         <TraderProfileCard
           profile={profileDetail}

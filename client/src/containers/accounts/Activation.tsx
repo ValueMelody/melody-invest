@@ -1,7 +1,7 @@
-import usePublicGuard from '../hooks/usePublicGuard'
-import * as vendorTool from '../../tools/vendor'
-import * as routerTool from '../../tools/router'
-import useUserRequest from '../../requests/useUserRequest'
+import * as vendorTool from 'tools/vendor'
+import * as routerTool from 'tools/router'
+import useUserRequest from 'requests/useUserRequest'
+import usePublicGuard from 'handlers/usePublicGuard'
 
 const Activation = () => {
   usePublicGuard()

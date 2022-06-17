@@ -1,9 +1,11 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useShowMore = () => {
   // ------------------------------------------------------------ state --
 
+  const { commonClasses } = useCommonStyle()
   const [displayedTotal, setDisplayedTotal] = vendorTool.react.useState(5)
 
   // ------------------------------------------------------------ handler --
@@ -15,7 +17,7 @@ const useShowMore = () => {
   // ------------------------------------------------------------ render --
 
   const renderShowMoreButton = () => (
-    <div className='row-around'>
+    <div className={commonClasses.rowAround}>
       <vendorTool.ui.Button onClick={handleClickShowMore}>
         {localeTool.t('common.showMoreHistory')}
       </vendorTool.ui.Button>

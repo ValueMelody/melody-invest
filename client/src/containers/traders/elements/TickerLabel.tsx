@@ -1,5 +1,6 @@
-import * as vendorTool from '../../../tools/vendor'
 import * as interfaces from '@shared/interfaces'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   label: {
@@ -17,7 +18,10 @@ const TickerLabel = ({
   onClick?: (tickerId: number) => void;
   color: vendorTool.ui.SemanticCOLORS;
 }) => {
+  // ------------------------------------------------------------ State --
+
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   // ------------------------------------------------------------ Handler --
 
@@ -35,7 +39,7 @@ const TickerLabel = ({
       data-testid='tickerLabel'
       color={color}
       className={vendorTool.classNames(classes.label, {
-        'click-cursor': !!onClick,
+        [commonClasses.cursorClickable]: !!onClick,
       })}
       title={ticker.name}
       onClick={handleClick}

@@ -1,7 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   footer: {
@@ -23,9 +24,15 @@ const Footer = () => {
   // ------------------------------------------------------------ State -
 
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
+
+  // ------------------------------------------------------------ UI -
 
   return (
-    <footer className={vendorTool.classNames(classes.footer, 'row-start')}>
+    <footer className={vendorTool.classNames(
+      classes.footer,
+      commonClasses.rowStart,
+    )}>
       <a href='mailto: valuemelody@outlook.com' className={classes.link}>
         {localeTool.t('common.contactUs')}
       </a>

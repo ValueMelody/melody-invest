@@ -1,17 +1,18 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import useCommonState from '../../../states/useCommonState'
-import useTraderState from '../../../states/useTraderState'
-import useSystemRequest from '../../../requests/useSystemRequest'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import TraderComboCard from '../blocks/TraderComboCard'
-import ComboProfiles from '../elements/ComboProfiles'
-import ProfileValue from '../elements/ProfileValue'
-import HoldingCard from '../blocks/HoldingCard'
-import ValueChangePanel from '../elements/ValueChangePanel'
-import usePageStyles from '../../hooks/usePageStyles'
+import useCommonState from 'states/useCommonState'
+import useTraderState from 'states/useTraderState'
+import useSystemRequest from 'requests/useSystemRequest'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
+import HoldingCard from 'containers/traders/blocks/HoldingCard'
+import ComboProfiles from 'containers/traders/elements/ComboProfiles'
+import ProfileValue from 'containers/traders/elements/ProfileValue'
+import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -31,11 +32,13 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const TopCombos = () => {
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
+  const { traderClasses } = useTraderStyle()
 
   const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
   const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
@@ -84,8 +87,11 @@ const TopCombos = () => {
   if (!focusedCombo || !focusedCombo.detail) return null
 
   return (
-    <section className='column-start'>
-      <header className={vendorTool.classNames('row-start', classes.header)}>
+    <section className={commonClasses.columnStart}>
+      <header className={vendorTool.classNames(
+        commonClasses.rowStart,
+        classes.header,
+      )}>
         {systemCombos.map((combo) => (
             <TraderComboCard
               key={combo.identity.id}
@@ -95,8 +101,8 @@ const TopCombos = () => {
             />
         ))}
       </header>
-      <section className={pageClasses.root}>
-        <section className={pageClasses.main}>
+      <section className={traderClasses.root}>
+        <section className={traderClasses.main}>
           <ValueChangePanel
             yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
             pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
@@ -125,14 +131,14 @@ const TopCombos = () => {
             />
           ))}
         </section>
-        <section className={pageClasses.aside}>
+        <section className={traderClasses.aside}>
           <vendorTool.ui.Header
             as='h3'
             icon='star'
             content={localeTool.t('traderCombo.includedProfiles')}
             className={classes.valueTitle}
           />
-          <div className='column-center'>
+          <div className={commonClasses.columnCenter}>
             {profilesWithEnvs.map((profileWithEnv) => (
               <ProfileValue
                 key={profileWithEnv.profile?.trader.id}

@@ -1,14 +1,15 @@
 import * as interfaces from '@shared/interfaces'
-import useUserState from '../../../states/useUserState'
-import useTraderState from '../../../states/useTraderState'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import usePrivateGuard from '../../hooks/usePrivateGuard'
-import usePageStyles from '../../hooks/usePageStyles'
-import TraderProfileCard from '../blocks/TraderProfileCard'
-import TraderEnvCard from '../blocks/TraderEnvCard'
-import TraderComboCard from '../blocks/TraderComboCard'
+import useUserState from 'states/useUserState'
+import useTraderState from 'states/useTraderState'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import usePrivateGuard from 'handlers/usePrivateGuard'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   header: {
@@ -22,13 +23,15 @@ const useStyles = vendorTool.jss.createUseStyles(({
 }))
 
 const ProfileDashboard = () => {
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
+  usePrivateGuard()
+
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
 
-  usePrivateGuard()
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
+  const { traderClasses } = useTraderStyle()
 
   const { getUser } = useUserState()
   const { getTraderProfile, getTraderCombos, getTraderEnvs } = useTraderState()
@@ -73,9 +76,12 @@ const ProfileDashboard = () => {
   if (!user.userType) return null
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
-        <header className={vendorTool.classNames('row-between', classes.header)}>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
+        <header className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          classes.header,
+        )}>
           <vendorTool.ui.Header
             as='h3'
             icon='star'
@@ -108,13 +114,16 @@ const ProfileDashboard = () => {
           />
         ))}
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         <vendorTool.ui.Header
           as='h3'
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        <section className={vendorTool.classNames('row-center', classes.card)}>
+        <section className={vendorTool.classNames(
+          commonClasses.rowCenter,
+          classes.card,
+        )}>
           {envs.map((env) => (
             <TraderEnvCard
               key={env.record.id}
@@ -145,7 +154,10 @@ const ProfileDashboard = () => {
           icon='boxes'
           content={localeTool.t('dashboard.watchedCombos')}
         />
-        <section className={vendorTool.classNames('row-center', classes.card)}>
+        <section className={vendorTool.classNames(
+          commonClasses.rowCenter,
+          classes.card,
+        )}>
           {userCombos.map((combo) => (
             <TraderComboCard
               key={combo.identity.id}

@@ -1,10 +1,11 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
-import * as routerTool from '../../tools/router'
-import useUserRequest from '../../requests/useUserRequest'
-import useAccountUI from './hooks/useAccountUI'
-import RequiredLabel from '../elements/RequiredLabel'
-import usePublicGuard from '../hooks/usePublicGuard'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useUserRequest from 'requests/useUserRequest'
+import RequiredLabel from 'containers/elements/RequiredLabel'
+import usePublicGuard from 'handlers/usePublicGuard'
+import useAccountStyle from 'styles/useAccountStyle'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const Forgot = () => {
   usePublicGuard()
@@ -12,7 +13,8 @@ const Forgot = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { classes } = useAccountUI()
+  const { accountClasses } = useAccountStyle()
+  const { commonClasses } = useCommonStyle()
   const { createResetEmail } = useUserRequest()
 
   const [email, setEmail] = vendorTool.react.useState('')
@@ -40,10 +42,18 @@ const Forgot = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('forgot.title')}</h2>
+    <div className={vendorTool.classNames(
+      accountClasses.container,
+      commonClasses.columnCenter,
+    )}>
+      <h2 className={accountClasses.title}>
+        {localeTool.t('forgot.title')}
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
             type='email'
@@ -51,7 +61,7 @@ const Forgot = () => {
             onChange={handleChangeEmail}
           />
         </div>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
@@ -62,7 +72,7 @@ const Forgot = () => {
         </div>
       </form>
       <vendorTool.ui.Button
-        className={classes.routerButton}
+        className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'
         content={localeTool.t('signUp.toSignIn')}

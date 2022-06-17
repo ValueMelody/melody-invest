@@ -1,15 +1,16 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import EachTops from '../blocks/EachTops'
-import BehaviorLabel from '../elements/BehaviorLabel'
-import TraderEnvCard from '../blocks/TraderEnvCard'
-import useTraderRequest from '../../../requests/useTraderRequest'
-import useTraderState from '../../../states/useTraderState'
-import usePageStyles from '../../hooks/usePageStyles'
+import * as vendorTool from 'tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useTraderRequest from 'requests/useTraderRequest'
+import useTraderState from 'states/useTraderState'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import EachTops from 'containers/traders/blocks/EachTops'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -29,10 +30,12 @@ const useStyles = vendorTool.jss.createUseStyles((
 const BehaviorDetail = () => {
   const params = vendorTool.router.useParams()
   const navigate = vendorTool.router.useNavigate()
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { traderClasses } = useTraderStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { getTraderBehavior, getTraderEnv, getTraderEnvs } = useTraderState()
   const { fetchTraderBehavior } = useTraderRequest()
@@ -77,9 +80,12 @@ const BehaviorDetail = () => {
   if (!validBehavior || !traderEnv) return null
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
-        <header className={vendorTool.classNames('row-start', classes.header)}>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
+        <header className={vendorTool.classNames(
+          commonClasses.rowStart,
+          classes.header,
+        )}>
           <BehaviorLabel behavior={validBehavior} color='blue' />
           <h4 className={classes.desc}>
             {parseTool.behaviorDesc(validBehavior)}
@@ -91,7 +97,7 @@ const BehaviorDetail = () => {
           content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}
           className={classes.leftTitle}
         />
-        <section className='row-start'>
+        <section className={commonClasses.rowStart}>
           <EachTops
             bestOverall={bestOverall}
             bestPastYear={bestPastYear}
@@ -101,7 +107,7 @@ const BehaviorDetail = () => {
           />
         </section>
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.record.id}

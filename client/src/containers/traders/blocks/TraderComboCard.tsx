@@ -1,22 +1,10 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
-import useUserState from '../../../states/useUserState'
-
-const useStyles = vendorTool.jss.createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  container: {
-    margin: '1rem 0.75rem 1rem 0 !important',
-  },
-  isActive: {
-    border: `3px solid ${theme.PrimaryColor} !important`,
-  },
-  disabled: {
-    backgroundColor: `${theme.LightGray} !important`,
-  },
-}))
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import useUserState from 'states/useUserState'
+import useCardStyle from 'styles/useCardStyle'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const TraderComboCard = ({
   traderCombo,
@@ -27,9 +15,10 @@ const TraderComboCard = ({
   isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const { cardClasses } = useCardStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -51,16 +40,16 @@ const TraderComboCard = ({
   return (
     <vendorTool.ui.Card
       data-testid='traderComboCard'
-      className={vendorTool.classNames(classes.container, {
-        [classes.isActive]: isActive,
-        [classes.disabled]: disabled,
+      className={vendorTool.classNames(cardClasses.container, {
+        [cardClasses.isActive]: isActive,
+        [cardClasses.disabled]: disabled,
       })}
       onClick={!disabled ? handleClickCombo : undefined}
     >
       <vendorTool.ui.Card.Content>
         <vendorTool.ui.Card.Header
           content={(
-            <div className='row-between'>
+            <div className={commonClasses.rowBetween}>
               <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
             </div>
           )}

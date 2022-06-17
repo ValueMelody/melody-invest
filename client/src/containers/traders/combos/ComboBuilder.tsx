@@ -1,12 +1,13 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import useUserState from '../../../states/useUserState'
-import useTraderState from '../../../states/useTraderState'
-import useTraderRequest from '../../../requests/useTraderRequest'
-import RequiredLabel from '../../elements/RequiredLabel'
-import TraderProfileCard from '../blocks/TraderProfileCard'
-import usePrivateGuard from '../../hooks/usePrivateGuard'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useUserState from 'states/useUserState'
+import useTraderState from 'states/useTraderState'
+import useTraderRequest from 'requests/useTraderRequest'
+import usePrivateGuard from 'handlers/usePrivateGuard'
+import useCommonStyle from 'styles/useCommonStyle'
+import RequiredLabel from 'containers/elements/RequiredLabel'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
@@ -27,9 +28,11 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const ComboBuilder = () => {
   usePrivateGuard()
-  const classes = useStyles()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
   const [envName, setEnvName] = vendorTool.react.useState('')
@@ -81,18 +84,27 @@ const ComboBuilder = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className='column-center'>
-      <header className={vendorTool.classNames('row-around', classes.row)}>
+    <section className={commonClasses.columnCenter}>
+      <header className={vendorTool.classNames(
+        commonClasses.rowAround,
+        classes.row,
+      )}>
         <h2>{localeTool.t('comboBuilder.title')}</h2>
       </header>
-      <section className={vendorTool.classNames('row-between', classes.row)}>
+      <section className={vendorTool.classNames(
+        commonClasses.rowBetween,
+        classes.row,
+      )}>
         <RequiredLabel title={localeTool.t('comboBuilder.name')} />
         <vendorTool.ui.Input
           value={envName}
           onChange={handleChangeName}
         />
       </section>
-      <section className={vendorTool.classNames('column-center', classes.profileTitle)}>
+      <section className={vendorTool.classNames(
+        commonClasses.columnCenter,
+        classes.profileTitle,
+      )}>
         <h4>
           {localeTool.t('comboBuilder.selectProfiles')}:&nbsp;
           ({selectedTraderIds.length} / {profiles.length})
@@ -104,7 +116,7 @@ const ComboBuilder = () => {
           {localeTool.t('comboBuilder.noEnoughProfiles')}
         </vendorTool.ui.Message>
       )}
-      <section className='row-around'>
+      <section className={commonClasses.rowAround}>
         {profiles.map((profile, index) => (
           <TraderProfileCard
             key={profile?.trader.id || `index-${index}`}
@@ -126,7 +138,7 @@ const ComboBuilder = () => {
         </vendorTool.ui.Message>
       )}
       <form onSubmit={handleSubmit}>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'

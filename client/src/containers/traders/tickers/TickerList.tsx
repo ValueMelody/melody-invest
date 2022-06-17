@@ -1,11 +1,12 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import useResourceState from '../../../states/useResourceState'
-import TickerLabel from '../elements/TickerLabel'
-import VariationList from '../elements/VariationList'
-import usePageStyles from '../../hooks/usePageStyles'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useResourceState from 'states/useResourceState'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import TickerLabel from 'containers/traders/elements/TickerLabel'
+import VariationList from 'containers/traders/elements/VariationList'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   section: {
@@ -25,11 +26,13 @@ const isSearchedTicker = (
 }
 
 const TickerList = () => {
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
+  const { traderClasses } = useTraderStyle()
 
   const [selectedCategory, setSelectedCategory] = vendorTool.react.useState(1)
   const [searchText, setSearchText] = vendorTool.react.useState('')
@@ -66,8 +69,8 @@ const TickerList = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
         <header className={classes.section}>
           <vendorTool.ui.Input
             icon='search'
@@ -76,7 +79,7 @@ const TickerList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section className='row-start'>
+        <section className={commonClasses.rowStart}>
           {availableTickers.map((ticker) => (
             <TickerLabel
               color='grey'
@@ -87,7 +90,7 @@ const TickerList = () => {
           ))}
         </section>
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         <h3>{localeTool.t('tickerList.categories')}:</h3>
         <VariationList
           options={categoryOptions}

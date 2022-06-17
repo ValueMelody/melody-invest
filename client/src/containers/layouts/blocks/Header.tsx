@@ -1,9 +1,10 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import useUserState from '../../../states/useUserState'
-import HeaderLink from '../elements/HeaderLink'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useUserState from 'states/useUserState'
+import useCommonStyle from 'styles/useCommonStyle'
+import HeaderLink from 'containers/layouts/elements/HeaderLink'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -31,6 +32,7 @@ const Header = () => {
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -38,7 +40,10 @@ const Header = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <header className={vendorTool.classNames('row-between', classes.header)}>
+    <header className={vendorTool.classNames(
+      commonClasses.rowBetween,
+      classes.header,
+    )}>
       <nav>
         <HeaderLink
           route={routerTool.topProfilesRoute()}

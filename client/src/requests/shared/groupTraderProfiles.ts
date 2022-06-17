@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import { TraderProfiles } from '../../context'
+import { TraderProfiles } from 'context'
 
 const groupTraderProfiles = (
   traderProfiles: interfaces.response.TraderProfile[],

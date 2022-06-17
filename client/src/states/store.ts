@@ -1,10 +1,10 @@
 import * as constants from '@shared/constants'
-import * as context from '../context'
-import * as vendorTool from '../tools/vendor'
-import * as localeTool from '../tools/locale'
-import * as routerTool from '../tools/router'
-import * as storageAdapter from '../adapters/storage'
-import * as requestAdapter from '../adapters/request'
+import * as context from 'context'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import * as storageAdapter from 'adapters/storage'
+import * as requestAdapter from 'adapters/request'
 
 const jwtToken = storageAdapter.get(storageAdapter.Key.JWTToken)
 if (jwtToken) requestAdapter.setJWTToken(jwtToken)

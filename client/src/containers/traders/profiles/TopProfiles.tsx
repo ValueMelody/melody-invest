@@ -1,19 +1,22 @@
 import * as interfaces from '@shared/interfaces'
-import useTraderState from '../../../states/useTraderState'
-import useSystemRequest from '../../../requests/useSystemRequest'
-import useResourceState from '../../../states/useResourceState'
-import usePageStyles from '../../hooks/usePageStyles'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import TraderProfileCard from '../blocks/TraderProfileCard'
-import VariationList from '../elements/VariationList'
+import useTraderState from 'states/useTraderState'
+import useResourceState from 'states/useResourceState'
+import useSystemRequest from 'requests/useSystemRequest'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import VariationList from 'containers/traders/elements/VariationList'
 
 const TopProfiles = () => {
-  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const { traderClasses } = useTraderStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { fetchOverallTopTraderProfiles } = useSystemRequest()
   const { getOverallTopTraderProfiles } = useResourceState()
@@ -79,9 +82,9 @@ const TopProfiles = () => {
   if (!topTraderProfiles || !focusedTop) return null
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
-        <section className='row-start'>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
+        <section className={commonClasses.rowStart}>
           {focusedTop.traders.map((traderId) => (
             <div key={traderId}>
               <TraderProfileCard
@@ -92,7 +95,7 @@ const TopProfiles = () => {
           ))}
         </section>
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         <h2>{localeTool.t('bestReturn.type')}:</h2>
         <VariationList
           options={topOptions}

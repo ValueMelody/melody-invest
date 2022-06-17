@@ -4,3 +4,4 @@ constants/dist
 server/dist
 server/.clinic
 *.log
+.DS_Store

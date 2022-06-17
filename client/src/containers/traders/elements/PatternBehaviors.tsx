@@ -1,8 +1,9 @@
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as themeEnum from '../../../enums/theme'
-import * as vendorTool from '../../../tools/vendor'
-import * as routerTool from '../../../tools/router'
+import * as themeEnum from 'enums/theme'
+import * as vendorTool from 'tools/vendor'
+import * as routerTool from 'tools/router'
+import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = vendorTool.jss.createUseStyles({
@@ -18,10 +19,12 @@ const PatternBehaviors = ({
   pattern: interfaces.traderPatternModel.Public;
   envId: number;
 }) => {
-  const classes = useStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
     ...constants.Behavior.AllocateBehaviors,
@@ -41,7 +44,10 @@ const PatternBehaviors = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames('row-start', classes.container)}>
+    <div className={vendorTool.classNames(
+      commonClasses.rowStart,
+      classes.container,
+    )}>
       {activeBuyBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}

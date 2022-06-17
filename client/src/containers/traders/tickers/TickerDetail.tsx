@@ -1,14 +1,15 @@
 import * as interfaces from '@shared/interfaces'
-import useResourceState from '../../../states/useResourceState'
-import useTraderState from '../../../states/useTraderState'
-import useTraderRequest from '../../../requests/useTraderRequest'
-import TickerLabel from '../elements/TickerLabel'
-import TraderEnvCard from '../blocks/TraderEnvCard'
-import * as vendorTool from '../../../tools/vendor'
-import * as routerTool from '../../../tools/router'
-import * as localeTool from '../../../tools/locale'
-import EachTops from '../blocks/EachTops'
-import usePageStyles from '../../hooks/usePageStyles'
+import useResourceState from 'states/useResourceState'
+import useTraderState from 'states/useTraderState'
+import useTraderRequest from 'requests/useTraderRequest'
+import * as vendorTool from 'tools/vendor'
+import * as routerTool from 'tools/router'
+import * as localeTool from 'tools/locale'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import TickerLabel from 'containers/traders/elements/TickerLabel'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import EachTops from 'containers/traders/blocks/EachTops'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -27,11 +28,13 @@ const useStyles = vendorTool.jss.createUseStyles((
 
 const TickerDetail = () => {
   const params = vendorTool.router.useParams()
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { traderClasses } = useTraderStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { fetchTraderTicker } = useTraderRequest()
   const { getTickerIdentities } = useResourceState()
@@ -80,9 +83,12 @@ const TickerDetail = () => {
   if (!tickerIdentity || !traderEnv) return null
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
-        <header className={vendorTool.classNames('row-start', classes.header)}>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
+        <header className={vendorTool.classNames(
+          commonClasses.rowStart,
+          classes.header,
+        )}>
           <TickerLabel ticker={tickerIdentity} color='grey' />
           <h4 className={classes.desc}>
             {tickerIdentity.name}
@@ -94,7 +100,7 @@ const TickerDetail = () => {
           content={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}
           className={classes.leftTitle}
         />
-        <section className='row-start'>
+        <section className={commonClasses.rowStart}>
           <EachTops
             bestOverall={bestOverall}
             bestPastYear={bestPastYear}
@@ -104,7 +110,7 @@ const TickerDetail = () => {
           />
         </section>
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.record.id}

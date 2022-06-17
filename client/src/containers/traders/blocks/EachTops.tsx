@@ -1,9 +1,9 @@
 import * as interfaces from '@shared/interfaces'
+import useTraderState from 'states/useTraderState'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
 import TraderProfileCard from './TraderProfileCard'
-import useTraderState from '../../../states/useTraderState'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   card: {

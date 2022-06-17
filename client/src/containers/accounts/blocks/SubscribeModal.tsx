@@ -1,22 +1,17 @@
-import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as commonEnum from '../../../enums/common'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as commonEnum from 'enums/common'
+import useCardStyle from 'styles/useCardStyle'
+import useCommonStyle from 'styles/useCommonStyle'
 import SubscribeButton from './SubscribeButton'
-
-const useStyles = vendorTool.jss.createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  selected: {
-    border: `2px solid ${theme.PrimaryColor} !important`,
-  },
-}))
 
 const SubscribeModal = () => {
   // ------------------------------------------------------------ State --
 
-  const classes = useStyles()
+  const { cardClasses } = useCardStyle()
+  const { commonClasses } = useCommonStyle()
+
   const [isOpen, setIsOpen] = vendorTool.react.useState(false)
   const [planType, setPlanType] = vendorTool.react.useState(constants.User.Type.Pro)
 
@@ -56,11 +51,12 @@ const SubscribeModal = () => {
         {localeTool.t('setting.selectPlan')}
       </vendorTool.ui.Modal.Header>
       <vendorTool.ui.Modal.Content>
-        <vendorTool.ui.Card.Group className='row-around'>
+        <vendorTool.ui.Card.Group className={commonClasses.rowAround}>
           <vendorTool.ui.Card
-            className={vendorTool.classNames('click-cursor', {
-              [classes.selected]: selectedProType,
-            })}
+            className={vendorTool.classNames(
+              [commonClasses.cursorClickable],
+              { [cardClasses.isActive]: selectedProType },
+            )}
             onClick={() => handleSelectType(constants.User.Type.Pro)}
           >
             <vendorTool.ui.CardContent>
@@ -82,9 +78,10 @@ const SubscribeModal = () => {
             </vendorTool.ui.CardContent>
           </vendorTool.ui.Card>
           <vendorTool.ui.Card
-            className={vendorTool.classNames('click-cursor', {
-              [classes.selected]: selectedPremiumType,
-            })}
+            className={vendorTool.classNames(
+              [commonClasses.cursorClickable],
+              { [cardClasses.isActive]: selectedPremiumType },
+            )}
             onClick={() => handleSelectType(constants.User.Type.Premium)}
           >
             <vendorTool.ui.CardContent>

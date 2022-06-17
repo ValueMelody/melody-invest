@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import { context, Context, TraderCombo, TraderEnv } from '../context'
-import * as vendorTool from '../tools/vendor'
+import { context, Context, TraderCombo, TraderEnv } from 'context'
+import * as vendorTool from 'tools/vendor'
 
 const useTraderState = () => {
   const store: Context = vendorTool.react.useContext(context)

@@ -1,9 +1,9 @@
 import * as constants from '@shared/constants'
-import { render, screen, fireEvent } from '../../../test.utils'
+import { render, screen, fireEvent } from 'test.utils'
+import { context, Context } from 'context'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
 import TraderComboCard from './TraderComboCard'
-import { context, Context } from '../../../context'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
 
 const traderCombo = {
   id: 123,

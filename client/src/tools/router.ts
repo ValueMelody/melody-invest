@@ -1,4 +1,4 @@
-import * as routerEnum from '../enums/router'
+import * as routerEnum from 'enums/router'
 
 export const tickerListRoute = (): string => {
   return routerEnum.Nav.Tickers

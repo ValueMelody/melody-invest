@@ -1,15 +1,15 @@
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
-import useUserRequest from '../../requests/useUserRequest'
-import useCommonState from '../../states/useCommonState'
-import useUserState from '../../states/useUserState'
-import RequiredLabel from '../elements/RequiredLabel'
-import useAccountUI from './hooks/useAccountUI'
-import usePrivateGuard from '../hooks/usePrivateGuard'
-import SubscribeModal from './blocks/SubscribeModal'
-import UnsubscribeButton from './blocks/UnsubscribeButton'
-import * as commonEnum from '../../enums/common'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as commonEnum from 'enums/common'
+import useUserRequest from 'requests/useUserRequest'
+import useCommonState from 'states/useCommonState'
+import useUserState from 'states/useUserState'
+import usePasswordValidator from 'handlers/usePasswordValidator'
+import usePrivateGuard from 'handlers/usePrivateGuard'
+import RequiredLabel from 'containers/elements/RequiredLabel'
+import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
+import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {
@@ -26,7 +26,7 @@ const Setting = () => {
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
-  const { getPasswordError } = useAccountUI()
+  const { validatePassword } = usePasswordValidator()
   const { updateUserPassword } = useUserRequest()
   const { getUser, removeUser } = useUserState()
   const { addMessage } = useCommonState()
@@ -77,7 +77,7 @@ const Setting = () => {
     const parsedNewPassword = newPassword.trim()
     const parsedRetypePasswod = retypePassword.trim()
 
-    const formatError = getPasswordError(parsedCurrentPassword) || getPasswordError(parsedNewPassword)
+    const formatError = validatePassword(parsedCurrentPassword) || validatePassword(parsedNewPassword)
     const error = parsedNewPassword !== parsedRetypePasswod
       ? localeTool.t('error.password.requireSame')
       : formatError

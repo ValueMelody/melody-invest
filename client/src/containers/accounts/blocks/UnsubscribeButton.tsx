@@ -1,7 +1,7 @@
-import * as localeTool from '../../../tools/locale'
-import * as vendorTool from '../../../tools/vendor'
-import useUserRequest from '../../../requests/useUserRequest'
-import ConfirmModal from '../../elements/ConfirmModal'
+import * as localeTool from 'tools/locale'
+import * as vendorTool from 'tools/vendor'
+import useUserRequest from 'requests/useUserRequest'
+import ConfirmModal from 'containers/elements/ConfirmModal'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {

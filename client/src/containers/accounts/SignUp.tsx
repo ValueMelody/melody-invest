@@ -1,11 +1,13 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
-import * as routerTool from '../../tools/router'
-import useUserRequest from '../../requests/useUserRequest'
-import useCommonState from '../../states/useCommonState'
-import useAccountUI from './hooks/useAccountUI'
-import RequiredLabel from '../elements/RequiredLabel'
-import usePublicGuard from '../hooks/usePublicGuard'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useUserRequest from 'requests/useUserRequest'
+import useCommonState from 'states/useCommonState'
+import usePublicGuard from 'handlers/usePublicGuard'
+import usePasswordValidator from 'handlers/usePasswordValidator'
+import useAccountStyle from 'styles/useAccountStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 
 const SignUp = () => {
   usePublicGuard()
@@ -13,7 +15,9 @@ const SignUp = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { classes, getPasswordError } = useAccountUI()
+  const { accountClasses } = useAccountStyle()
+  const { commonClasses } = useCommonStyle()
+  const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { createUser } = useUserRequest()
 
@@ -59,7 +63,7 @@ const SignUp = () => {
     const parsedRetypePasswod = retypePassword.trim()
     const error = parsedPassword !== parsedRetypePasswod
       ? localeTool.t('error.password.requireSame')
-      : getPasswordError(parsedPassword)
+      : validatePassword(parsedPassword)
     if (error) {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
@@ -70,10 +74,18 @@ const SignUp = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('signUp.title')}</h2>
+    <div className={vendorTool.classNames(
+      accountClasses.container,
+      commonClasses.columnCenter,
+    )}>
+      <h2 className={accountClasses.title}>
+        {localeTool.t('signUp.title')}
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
             type='email'
@@ -81,7 +93,10 @@ const SignUp = () => {
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.password')} />
           <vendorTool.ui.Input
             type='password'
@@ -89,7 +104,10 @@ const SignUp = () => {
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
           <vendorTool.ui.Input
             type='password'
@@ -97,14 +115,14 @@ const SignUp = () => {
             onChange={handleChangeRetypePassword}
           />
         </div>
-        <div className={classes.row}>
+        <div className={accountClasses.row}>
           <vendorTool.ui.Checkbox
             label={localeTool.t('signUp.terms')}
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
         </div>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
@@ -115,7 +133,7 @@ const SignUp = () => {
         </div>
       </form>
       <vendorTool.ui.Button
-        className={classes.routerButton}
+        className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'
         content={localeTool.t('signUp.toSignIn')}

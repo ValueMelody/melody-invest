@@ -1,8 +1,9 @@
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../tools/vendor'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
+import * as vendorTool from 'tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
+import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
 
 const useStyles = vendorTool.jss.createUseStyles((
@@ -34,9 +35,10 @@ const BehaviorEditor = ({
   onClick: (behavior: interfaces.traderPatternModel.Behavior) => void;
   onSelect: (behavior: interfaces.traderPatternModel.Behavior, value: number | null) => void;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const options = constants.BehaviorValue.Options[behavior]
   const hasValue = behaviorValue !== null && options.includes(behaviorValue)
@@ -70,8 +72,11 @@ const BehaviorEditor = ({
   }
 
   return (
-    <div className={vendorTool.classNames('column-start', classes.container)}>
-      <div className='row-start'>
+    <div className={vendorTool.classNames(
+      commonClasses.columnStart,
+      classes.container,
+    )}>
+      <div className={commonClasses.rowStart}>
         <BehaviorLabel
           behavior={behavior}
           color='black'

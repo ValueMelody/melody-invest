@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
-import * as parseTool from '../../../tools/parse'
-import * as vendorTool from '../../../tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles({
   container: {
@@ -19,9 +20,10 @@ const BehaviorLabel = ({
   value?: number | null;
   onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const behaviorTitle = parseTool.behaviorTitle(behavior)
   const behaviorDesc = parseTool.behaviorDesc(behavior)
@@ -42,8 +44,8 @@ const BehaviorLabel = ({
     <vendorTool.ui.Label
       data-testid='behaviorLabel'
       className={vendorTool.classNames(classes.container, {
-        'info-cursor': !onClick,
-        'click-cursor': !!onClick,
+        [commonClasses.cursorInfo]: !onClick,
+        [commonClasses.cursorClickable]: !!onClick,
       })}
       color={color}
       title={behaviorDesc}

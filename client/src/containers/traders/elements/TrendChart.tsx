@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
+import * as vendorTool from 'tools/vendor'
 
 const TrendChart = ({
   data,

@@ -1,6 +1,6 @@
 import * as constants from '@shared/constants'
-import { context, Context, TraderEnv, TraderCombo } from '../context'
-import * as vendorTool from '../tools/vendor'
+import { context, Context, TraderEnv, TraderCombo } from 'context'
+import * as vendorTool from 'tools/vendor'
 
 const useUserState = () => {
   const store: Context = vendorTool.react.useContext(context)

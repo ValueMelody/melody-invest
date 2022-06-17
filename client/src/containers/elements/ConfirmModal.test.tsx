@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from '../../test.utils'
+import { render, screen, fireEvent } from 'test.utils'
 import ConfirmModal from './ConfirmModal'
 
 describe('#ConfirmModal', () => {
