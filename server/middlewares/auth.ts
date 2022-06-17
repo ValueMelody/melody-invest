@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import { Request, Response, NextFunction } from 'express'
-import * as errorEnum from '../enums/error'
-import * as generateTool from '../tools/generate'
+import * as errorEnum from 'enums/error'
+import * as generateTool from 'tools/generate'
 
 const getAuth = (req: Request): interfaces.request.Auth | null => {
   const authHeader = req.headers.authorization

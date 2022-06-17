@@ -1,9 +1,9 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as emailModel from '../models/email'
-import * as databaseAdapter from '../adapters/database'
-import * as emailAdapter from '../adapters/email'
-import * as runTool from '../tools/run'
+import * as emailModel from 'models/email'
+import * as databaseAdapter from 'adapters/database'
+import * as emailAdapter from 'adapters/email'
+import * as runTool from 'tools/run'
 
 const getPendingEmails = async (): Promise<
   interfaces.emailModel.Record[]

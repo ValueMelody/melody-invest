@@ -1,9 +1,9 @@
 import axios from 'axios'
 import qs from 'qs'
-import * as adapterEnum from '../enums/adapter'
-import * as errorEnum from '../enums/error'
+import * as adapterEnum from 'enums/adapter'
+import * as errorEnum from 'enums/error'
+import * as cacheTool from 'tools/cache'
 import * as cacheAdapter from './cache'
-import * as cacheTool from '../tools/cache'
 
 export const createAccessToken = async () => {
   const url = `${adapterEnum.PaymentConfig.BaseUrl}/oauth2/token`

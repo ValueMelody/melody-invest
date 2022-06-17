@@ -1,4 +1,4 @@
-import * as databaseAdapter from '../adapters/database'
+import * as databaseAdapter from 'adapters/database'
 import * as traderFollower from './traderFollower'
 
 beforeAll(async () => {

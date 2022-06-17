@@ -1,5 +1,5 @@
 import * as traderComboFollower from './traderComboFollower'
-import * as databaseAdapter from '../adapters/database'
+import * as databaseAdapter from 'adapters/database'
 
 beforeAll(async () => {
   databaseAdapter.initTestConnection()

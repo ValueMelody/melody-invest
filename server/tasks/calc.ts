@@ -1,6 +1,6 @@
-import * as calcTickers from '../services/calcTickers'
-import * as calcIndicators from '../services/calcIndicators'
-import * as calcTraders from '../services/calcTraders'
+import * as calcTickers from 'services/calcTickers'
+import * as calcIndicators from 'services/calcIndicators'
+import * as calcTraders from 'services/calcTraders'
 
 export const calcPriceMovements = async () => {
   await calcTickers.calcAllTickersAveragePrice()

@@ -1,7 +1,7 @@
 import { Router } from 'express'
-import * as cacheAdapter from '../adapters/cache'
-import * as cacheTool from '../tools/cache'
-import * as crudSystems from '../services/crudSystems'
+import * as cacheAdapter from 'adapters/cache'
+import * as cacheTool from 'tools/cache'
+import * as crudSystems from 'services/crudSystems'
 
 const systemRouter = Router()
 export default systemRouter

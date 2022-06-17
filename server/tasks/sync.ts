@@ -1,7 +1,7 @@
-import * as syncTickers from '../services/syncTickers'
-import * as syncIndicators from '../services/syncIndicators'
-import * as dateTool from '../tools/date'
-import * as marketEnum from '../enums/market'
+import * as syncTickers from 'services/syncTickers'
+import * as syncIndicators from 'services/syncIndicators'
+import * as dateTool from 'tools/date'
+import * as marketEnum from 'enums/market'
 
 const validateDateParam = (date: string) => {
   if (!date || date.length !== 10) throw new Error('no date or wrong date provided')

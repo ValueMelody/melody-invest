@@ -1,12 +1,12 @@
 import * as interfaces from '@shared/interfaces'
-import * as marketAdapter from '../adapters/market'
-import * as databaseAdapter from '../adapters/database'
-import * as indicatorYearlyModel from '../models/indicatorYearly'
-import * as indicatorQuarterlyModel from '../models/indicatorQuarterly'
-import * as indicatorMonthlyModel from '../models/indicatorMonthly'
-import * as dateTool from '../tools/date'
-import * as runTool from '../tools/run'
-import * as marketEnum from '../enums/market'
+import * as marketAdapter from 'adapters/market'
+import * as databaseAdapter from 'adapters/database'
+import * as indicatorYearlyModel from 'models/indicatorYearly'
+import * as indicatorQuarterlyModel from 'models/indicatorQuarterly'
+import * as indicatorMonthlyModel from 'models/indicatorMonthly'
+import * as dateTool from 'tools/date'
+import * as runTool from 'tools/run'
+import * as marketEnum from 'enums/market'
 
 type MonthlyIndicatorType =
   typeof marketEnum.Type.FundsRate |

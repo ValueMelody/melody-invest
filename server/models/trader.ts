@@ -1,8 +1,8 @@
 import { Knex } from 'knex'
 import * as interfaces from '@shared/interfaces'
-import * as adapterEnum from '../enums/adapter'
-import * as databaseAdapter from '../adapters/database'
-import * as generateTool from '../tools/generate'
+import * as adapterEnum from 'enums/adapter'
+import * as databaseAdapter from 'adapters/database'
+import * as generateTool from 'tools/generate'
 
 const TableName = adapterEnum.DatabaseTable.Trader
 

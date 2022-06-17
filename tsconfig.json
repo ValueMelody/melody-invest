@@ -4,9 +4,5 @@
     "resolveJsonModule": true,
     "jsx": "react-jsx",
     "allowJs": true,
-    "baseUrl": "./",
-    "paths" : {
-      "*" : ["client/src/*", "server/*"]
-    }
   },
 }

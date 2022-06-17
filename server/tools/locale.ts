@@ -1,4 +1,4 @@
-import enLocale from '../locales/en.json'
+import enLocale from 'locales/en.json'
 
 export const getTranslation = (
   name: keyof typeof enLocale.translation,

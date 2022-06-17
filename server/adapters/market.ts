@@ -1,7 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
-import * as marketEnum from '../enums/market'
-import * as adapterEnum from '../enums/adapter'
+import * as marketEnum from 'enums/market'
+import * as adapterEnum from 'enums/adapter'
 
 export const getCooldownPerMin = (): number => {
   return adapterEnum.MarketConfig.CooldownSeconds || 15

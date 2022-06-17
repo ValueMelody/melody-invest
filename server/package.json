@@ -2,27 +2,27 @@
   "name": "server",
   "private": true,
   "scripts": {
-    "start": "ts-node-dev ./index.ts",
+    "start": "ts-node-dev -r tsconfig-paths/register ./index.ts",
     "start-check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
     "tsc": "tsc",
     "build": "tsc --build --clean && tsc --build --force",
     "migrate": "knex migrate:latest",
     "lint": "eslint ./ --ext .ts",
     "lint-fix": "eslint --fix ./ --ext .ts",
-    "syncTickerPrices": "ts-node cli syncTickerPrices",
-    "syncTickerIncomes": "ts-node cli syncTickerIncomes",
-    "syncTickerEarnings": "ts-node cli syncTickerEarnings",
-    "syncMonthlyIndicators": "ts-node cli syncMonthlyIndicators",
-    "syncQuarterlyIndicators": "ts-node cli syncQuarterlyIndicators",
-    "syncYearlyIndicators": "ts-node cli syncYearlyIndicators",
-    "calcPriceMovements": "ts-node cli calcPriceMovements",
-    "calcFinancialMovements": "ts-node cli calcFinancialMovements",
-    "calcIndicatorMovements": "ts-node cli calcIndicatorMovements",
-    "calcDailyTickers": "ts-node cli calcDailyTickers",
-    "calcTraderPerformances": "ts-node cli calcTraderPerformances",
-    "calcTraderDescendants": "ts-node cli calcTraderDescendants",
-    "calcTraderAccessHashs": "ts-node cli calcTraderAccessHashs",
-    "sendPendingEmails": "ts-node cli sendPendingEmails"
+    "syncTickerPrices": "ts-node -r tsconfig-paths/register cli syncTickerPrices",
+    "syncTickerIncomes": "ts-node -r tsconfig-paths/register cli syncTickerIncomes",
+    "syncTickerEarnings": "ts-node -r tsconfig-paths/register cli syncTickerEarnings",
+    "syncMonthlyIndicators": "ts-node -r tsconfig-paths/register cli syncMonthlyIndicators",
+    "syncQuarterlyIndicators": "ts-node -r tsconfig-paths/register cli syncQuarterlyIndicators",
+    "syncYearlyIndicators": "ts-node -r tsconfig-paths/register cli syncYearlyIndicators",
+    "calcPriceMovements": "ts-node -r tsconfig-paths/register cli calcPriceMovements",
+    "calcFinancialMovements": "ts-node -r tsconfig-paths/register cli calcFinancialMovements",
+    "calcIndicatorMovements": "ts-node -r tsconfig-paths/register cli calcIndicatorMovements",
+    "calcDailyTickers": "ts-node -r tsconfig-paths/register cli calcDailyTickers",
+    "calcTraderPerformances": "ts-node -r tsconfig-paths/register cli calcTraderPerformances",
+    "calcTraderDescendants": "ts-node -r tsconfig-paths/register cli calcTraderDescendants",
+    "calcTraderAccessHashs": "ts-node -r tsconfig-paths/register cli calcTraderAccessHashs",
+    "sendPendingEmails": "ts-node -r tsconfig-paths/register cli sendPendingEmails"
   },
   "dependencies": {
     "@shared/constants": "*",
@@ -56,6 +56,7 @@
     "@types/nodemailer": "^6.4.4",
     "clinic": "^11.1.0",
     "compression": "^1.7.4",
-    "ts-node": "^10.7.0"
+    "ts-node": "^10.7.0",
+    "tsconfig-paths": "^4.0.0"
   }
 }

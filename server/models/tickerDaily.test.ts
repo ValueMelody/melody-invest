@@ -1,8 +1,8 @@
 import * as tickerDaily from './tickerDaily'
-import * as databaseAdapter from '../adapters/database'
-import * as cacheAdapter from '../adapters/cache'
-import * as cacheTool from '../tools/cache'
-import * as adapterEnum from '../enums/adapter'
+import * as databaseAdapter from 'adapters/database'
+import * as cacheAdapter from 'adapters/cache'
+import * as cacheTool from 'tools/cache'
+import * as adapterEnum from 'enums/adapter'
 
 beforeAll(async () => {
   databaseAdapter.initTestConnection()
