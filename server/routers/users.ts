@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import * as interfaces from '@shared/interfaces'
-import * as errorEnum from '../enums/error'
-import * as crudUsers from '../services/crudUsers'
-import * as verifyTool from '../tools/verify'
-import * as authMiddleware from '../middlewares/auth'
+import * as errorEnum from 'enums/error'
+import * as crudUsers from 'services/crudUsers'
+import * as verifyTool from 'tools/verify'
+import * as authMiddleware from 'middlewares/auth'
 
 const usersRouter = Router()
 export default usersRouter

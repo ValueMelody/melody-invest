@@ -5,8 +5,8 @@ import sha256 from 'crypto-js/sha256'
 import sha512 from 'crypto-js/sha512'
 import md5 from 'crypto-js/md5'
 import * as interfaces from '@shared/interfaces'
-import * as emailEnum from '../enums/email'
-import * as adapterEnum from '../enums/adapter'
+import * as emailEnum from 'enums/email'
+import * as adapterEnum from 'enums/adapter'
 
 export const toSHA256 = (content: string): string => {
   return sha256(content).toString()

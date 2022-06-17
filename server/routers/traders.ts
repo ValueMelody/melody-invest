@@ -1,10 +1,10 @@
 import { Router } from 'express'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as crudTraders from '../services/crudTraders'
-import * as errorEnum from '../enums/error'
-import * as authMiddleware from '../middlewares/auth'
-import * as accessMiddleware from '../middlewares/access'
+import * as crudTraders from 'services/crudTraders'
+import * as errorEnum from 'enums/error'
+import * as authMiddleware from 'middlewares/auth'
+import * as accessMiddleware from 'middlewares/access'
 
 const tradersRouter = Router()
 export default tradersRouter

@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import * as email from './email'
-import * as localeTool from '../tools/locale'
+import * as localeTool from 'tools/locale'
 
 // @ts-ignore
 const user: interfaces.userModel.Record = {

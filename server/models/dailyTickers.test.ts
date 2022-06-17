@@ -1,5 +1,5 @@
+import * as databaseAdapter from 'adapters/database'
 import * as dailyTickers from './dailyTickers'
-import * as databaseAdapter from '../adapters/database'
 
 beforeAll(async () => {
   databaseAdapter.initTestConnection()

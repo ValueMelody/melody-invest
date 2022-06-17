@@ -1,7 +1,7 @@
 Organize request files based on this template
 /client/src/requests
 ```
-import * as vendorTool from '../tools/vendor
+import * as vendorTool from 'tools/vendor
 
 const useTemplateRequest = () => {
   const store: Context = vendorTool.react.useContext(context)

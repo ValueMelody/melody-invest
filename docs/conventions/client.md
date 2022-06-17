@@ -2,7 +2,7 @@
 
 ```
 // Good
-import * as vendorTool from '../tools/vendor'
+import * as vendorTool from 'tools/vendor'
 const useStyles = vendorTool.jss.createUseStyles(({}))
 
 // Bad

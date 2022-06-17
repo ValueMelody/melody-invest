@@ -1,7 +1,7 @@
 import Redis from 'ioredis'
 import RedisMock from 'ioredis-mock'
 import ms from 'ms'
-import * as adapterEnum from '../enums/adapter'
+import * as adapterEnum from 'enums/adapter'
 
 let _cache: Redis.Redis | null = null
 

@@ -1,7 +1,7 @@
 Organize router files based on this template
 /client/src/containers
 ```
-import * as vendorTool from '../tools/vendor
+import * as vendorTool from 'tools/vendor
 
 const Template = () => {
   const classes = vendorTool.react.useStyles()

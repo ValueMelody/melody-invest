@@ -52,26 +52,26 @@ export const sharedServiceFunction = () => {}
 
 ```
 // Good
-import * as userEnum from '../enums/user'
+import * as userEnum from 'enums/user'
 
 // Bad
-import { userTypes } from '../enums/user'
+import { userTypes } from 'enums/user'
 ```
 
 ## list import from same folder together
 
 ```
 // Good
-import * as userEnum from '../enums/user'
-import * as commonEnum form '../enums/common'
-import * as parseTool from '../tools/parse'
-import * as localeTool from '../tools/locale'
+import * as userEnum from 'enums/user'
+import * as commonEnum form 'enums/common'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
 
 // Bad
-import * as userEnum from '../enums/user'
-import * as localeTool from '../tools/locale'
-import * as commonEnum form '../enums/common'
-import * as parseTool from '../tools/parse'
+import * as userEnum from 'enums/user'
+import * as localeTool from 'tools/locale'
+import * as commonEnum form 'enums/common'
+import * as parseTool from 'tools/parse'
 ```
 
 ## always load proces.env variables into enum first
