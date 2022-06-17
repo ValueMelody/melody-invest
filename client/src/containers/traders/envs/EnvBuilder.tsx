@@ -1,10 +1,11 @@
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import RequiredLabel from '../../elements/RequiredLabel'
-import useResourceState from '../../../states/useResourceState'
-import useTraderState from '../../../states/useTraderState'
-import useTraderRequest from '../../../requests/useTraderRequest'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useResourceState from 'states/useResourceState'
+import useTraderState from 'states/useTraderState'
+import useTraderRequest from 'requests/useTraderRequest'
+import useCommonStyle from 'styles/useCommonStyle'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   row: {
@@ -56,9 +57,10 @@ const maxYear = getMaxYear()
 const maxDate = getDateFromString(maxYear)
 
 const EnvBuilder = () => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentities } = useResourceState()
   const { getTraderEnvs } = useTraderState()
@@ -150,16 +152,25 @@ const EnvBuilder = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className='column-center'>
-      <header className={vendorTool.classNames('row-around', classes.row)}>
+    <section className={commonClasses.columnCenter}>
+      <header className={vendorTool.classNames(
+        commonClasses.rowAround,
+        classes.row,
+      )}>
         <h2>{localeTool.t('envBuilder.title')}</h2>
       </header>
       <section
-        className={vendorTool.classNames('row-between', classes.row)}
+        className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          classes.row,
+        )}
         title={localeTool.t('envBuilder.startDateDesc')}
       >
         <h5><b>{localeTool.t('envBuilder.startDate')}:</b></h5>
-        <div className={vendorTool.classNames('row-between', classes.input)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          classes.input,
+        )}>
           <div className={classes.dropdown}>
             <vendorTool.DatePicker
               minDate={minDate}
@@ -182,7 +193,10 @@ const EnvBuilder = () => {
         </div>
       </section>
       <section
-        className={vendorTool.classNames('row-between', classes.row)}
+        className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          classes.row,
+        )}
         title={localeTool.t('traderEnv.allTickers')}
       >
         <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
@@ -194,7 +208,10 @@ const EnvBuilder = () => {
       </section>
       {tickerIds && (
         <section
-          className={vendorTool.classNames('row-between', classes.row)}
+          className={vendorTool.classNames(
+            commonClasses.rowBetween,
+            classes.row,
+          )}
           title={localeTool.t('envBuilder.targetTickersDesc')}
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
@@ -209,7 +226,10 @@ const EnvBuilder = () => {
           />
         </section>
       )}
-      <section className={vendorTool.classNames('row-between', classes.row)}>
+      <section className={vendorTool.classNames(
+        commonClasses.rowBetween,
+        classes.row,
+      )}>
         <RequiredLabel title={localeTool.t('envBuilder.name')} />
         <vendorTool.ui.Input
           className={classes.input}
@@ -228,7 +248,7 @@ const EnvBuilder = () => {
         </vendorTool.ui.Message>
       )}
       <form onSubmit={handleSubmit}>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'

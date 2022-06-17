@@ -1,15 +1,16 @@
 import * as interfaces from '@shared/interfaces'
-import useTraderState from '../../../states/useTraderState'
-import useResourceState from '../../../states/useResourceState'
-import useTraderRequest from '../../../requests/useTraderRequest'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as routerTool from '../../../tools/router'
-import TraderEnvCard from '../blocks/TraderEnvCard'
-import TickerLabel from '../elements/TickerLabel'
-import WatchButton from '../elements/WatchButton'
-import EachTops from '../blocks/EachTops'
-import usePageStyles from '../../hooks/usePageStyles'
+import useTraderState from 'states/useTraderState'
+import useResourceState from 'states/useResourceState'
+import useTraderRequest from 'requests/useTraderRequest'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useTraderStyle from 'styles/useTraderStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import EachTops from 'containers/traders/blocks/EachTops'
+import TickerLabel from 'containers/traders/elements/TickerLabel'
+import WatchButton from 'containers/traders/elements/WatchButton'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -29,12 +30,14 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const EnvDetail = () => {
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
   const params = vendorTool.router.useParams()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { traderClasses } = useTraderStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { getTraderEnv } = useTraderState()
   const { fetchTraderEnv, deleteTraderEnv } = useTraderRequest()
@@ -83,8 +86,8 @@ const EnvDetail = () => {
   if (!traderEnv || !topTraderProfiles) return null
 
   return (
-    <section className={pageClasses.root}>
-      <aside className={pageClasses.aside}>
+    <section className={traderClasses.root}>
+      <aside className={traderClasses.aside}>
         <TraderEnvCard
           traderEnv={traderEnv.record}
         />
@@ -99,7 +102,10 @@ const EnvDetail = () => {
           ))}
         </div>
         {!traderEnv.record.isSystem && (
-          <div className={vendorTool.classNames('row-around', classes.watch)}>
+          <div className={vendorTool.classNames(
+            commonClasses.rowAround,
+            classes.watch,
+          )}>
             <WatchButton
               isWatched={true}
               onToggle={handleUnwatch}
@@ -107,14 +113,14 @@ const EnvDetail = () => {
           </div>
         )}
       </aside>
-      <section className={pageClasses.main}>
+      <section className={traderClasses.main}>
         <vendorTool.ui.Header
           as='h3'
           icon='star'
           content={localeTool.t('traderEnv.topProfiles')}
           className={classes.rightTitle}
         />
-        <section className={'row-start'}>
+        <section className={commonClasses.rowStart}>
           <EachTops
             bestOverall={bestOverall}
             bestPastYear={bestPastYear}

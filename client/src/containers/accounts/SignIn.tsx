@@ -1,11 +1,13 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
-import * as routerTool from '../../tools/router'
-import RequiredLabel from '../elements/RequiredLabel'
-import useUserRequest from '../../requests/useUserRequest'
-import useCommonState from '../../states/useCommonState'
-import useAccountUI from './hooks/useAccountUI'
-import usePublicGuard from '../hooks/usePublicGuard'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useUserRequest from 'requests/useUserRequest'
+import useCommonState from 'states/useCommonState'
+import usePublicGuard from 'handlers/usePublicGuard'
+import usePasswordValidator from 'handlers/usePasswordValidator'
+import useAccountStyle from 'styles/useAccountStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   forgotButton: {
@@ -20,7 +22,9 @@ const SignIn = () => {
   // ------------------------------------------------------------ State --
 
   const pageClasses = useStyles()
-  const { classes, getPasswordError } = useAccountUI()
+  const { commonClasses } = useCommonStyle()
+  const { accountClasses } = useAccountStyle()
+  const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { createUserToken } = useUserRequest()
 
@@ -60,7 +64,7 @@ const SignIn = () => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
     const parsedPassword = password.trim()
-    const error = getPasswordError(parsedPassword)
+    const error = validatePassword(parsedPassword)
     if (error) {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
@@ -71,10 +75,18 @@ const SignIn = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('signIn.title')}</h2>
+    <div className={vendorTool.classNames(
+      accountClasses.container,
+      commonClasses.columnCenter,
+    )}>
+      <h2 className={accountClasses.title}>
+        {localeTool.t('signIn.title')}
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
             type='email'
@@ -82,7 +94,10 @@ const SignIn = () => {
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.password')} />
           <vendorTool.ui.Input
             type='password'
@@ -90,14 +105,17 @@ const SignIn = () => {
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames(classes.row, 'row-around')}>
+        <div className={vendorTool.classNames(
+          accountClasses.row,
+          commonClasses.rowAround,
+        )}>
           <vendorTool.ui.Checkbox
             label={localeTool.t('signIn.remember')}
             checked={shouldRemember}
             onChange={handleToggleRemember}
           />
         </div>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
@@ -108,7 +126,7 @@ const SignIn = () => {
         </div>
       </form>
       <vendorTool.ui.Button
-        className={classes.routerButton}
+        className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'
         content={localeTool.t('signIn.toSignUp')}

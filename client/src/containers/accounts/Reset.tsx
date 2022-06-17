@@ -1,11 +1,13 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
-import * as routerTool from '../../tools/router'
-import useCommonState from '../../states/useCommonState'
-import useUserRequest from '../../requests/useUserRequest'
-import useAccountUI from './hooks/useAccountUI'
-import RequiredLabel from '../elements/RequiredLabel'
-import usePublicGuard from '../hooks/usePublicGuard'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import useCommonState from 'states/useCommonState'
+import useUserRequest from 'requests/useUserRequest'
+import usePasswordValidator from 'handlers/usePasswordValidator'
+import usePublicGuard from 'handlers/usePublicGuard'
+import useAccountStyle from 'styles/useAccountStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 
 const Reset = () => {
   usePublicGuard()
@@ -14,15 +16,17 @@ const Reset = () => {
 
   // ------------------------------------------------------------ State --
 
-  const resetCode = params.code
-
-  const { classes, getPasswordError } = useAccountUI()
+  const { accountClasses } = useAccountStyle()
+  const { commonClasses } = useCommonStyle()
+  const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { resetUserPassword } = useUserRequest()
 
   const [email, setEmail] = vendorTool.react.useState('')
   const [password, setPassword] = vendorTool.react.useState('')
   const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
+
+  const resetCode = params.code
 
   // ------------------------------------------------------------ Handler --
 
@@ -58,7 +62,7 @@ const Reset = () => {
     const parsedRetypePasswod = retypePassword.trim()
     const error = parsedPassword !== parsedRetypePasswod
       ? localeTool.t('error.password.requireSame')
-      : getPasswordError(parsedPassword)
+      : validatePassword(parsedPassword)
     if (error) {
       addMessage({ id: Math.random(), type: 'error', title: error })
       return
@@ -71,10 +75,18 @@ const Reset = () => {
   if (!resetCode) return null
 
   return (
-    <div className={vendorTool.classNames(classes.container, 'column-center')}>
-      <h2 className={classes.title}>{localeTool.t('reset.title')}</h2>
+    <div className={vendorTool.classNames(
+      accountClasses.container,
+      commonClasses.columnCenter,
+    )}>
+      <h2 className={accountClasses.title}>
+        {localeTool.t('reset.title')}
+      </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
             type='email'
@@ -82,7 +94,10 @@ const Reset = () => {
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.newPassword')} />
           <vendorTool.ui.Input
             type='password'
@@ -90,7 +105,10 @@ const Reset = () => {
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames('row-between', classes.row)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          accountClasses.row,
+        )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
           <vendorTool.ui.Input
             type='password'
@@ -98,7 +116,7 @@ const Reset = () => {
             onChange={handleChangeRetypePassword}
           />
         </div>
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
             type='submit'
             color='blue'
@@ -109,7 +127,7 @@ const Reset = () => {
         </div>
       </form>
       <vendorTool.ui.Button
-        className={classes.routerButton}
+        className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'
         content={localeTool.t('common.backToLogin')}

@@ -2,6 +2,16 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'jsdom',
+  moduleDirectories: [
+    '<rootDir>/node_modules',
+    '<rootDir>/client/node_modules',
+    '<rootDir>/client/src',
+  ],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json',
+    },
+  },
   coverageReporters: ['text'],
   collectCoverageFrom: [
     './client/**/*.{ts,tsx}',

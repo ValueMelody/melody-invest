@@ -1,5 +1,5 @@
 import * as constants from '@shared/constants'
-import * as localeTool from '../tools/locale'
+import * as localeTool from 'tools/locale'
 
 export const Config = Object.freeze({
   OverallEnvId: 0,

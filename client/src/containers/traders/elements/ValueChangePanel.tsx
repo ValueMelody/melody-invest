@@ -1,4 +1,5 @@
-import * as vendorTool from '../../../tools/vendor'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 import ValueChangePercents from './ValueChangePercents'
 import ValueChangeCharts from './ValueChangeCharts'
 
@@ -35,7 +36,10 @@ const ValueChangePanel = ({
   showPercents: boolean;
   showCharts: boolean;
 }) => {
+  // ------------------------------------------------------------ State --
+
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   // ------------------------------------------------------------ Handler --
 
@@ -48,7 +52,10 @@ const ValueChangePanel = ({
   if (!showPercents && !showCharts) return null
 
   return (
-    <section className={vendorTool.classNames('row-around', classes.root)}>
+    <section className={vendorTool.classNames(
+      commonClasses.rowAround,
+      classes.root,
+    )}>
       {showPercents && (
         <ValueChangePercents
           yearlyPercentNumber={yearlyPercentNumber}

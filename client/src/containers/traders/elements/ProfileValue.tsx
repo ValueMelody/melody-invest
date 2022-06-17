@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../tools/vendor'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 import ProfileLabel from './ProfileLabel'
 import ValueDiffer from './ValueDiffer'
 
@@ -19,9 +20,12 @@ const ProfileValue = ({
   env: interfaces.traderEnvModel.Record | null;
   onClick?: (trader: interfaces.traderModel.Record) => void;
 }) => {
-  const classes = useStyles()
+  // ------------------------------------------------------------ State --
 
-  // ------------------------------------------------------------ handler --
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
+
+  // ------------------------------------------------------------ Handler --
   const handleClick = () => {
     if (!trader || !onClick) return
     onClick(trader)
@@ -32,9 +36,11 @@ const ProfileValue = ({
 
   return (
     <div
-      className={vendorTool.classNames('row-start', classes.container, {
-        'click-cursor': !!onClick,
-      })}
+      className={vendorTool.classNames(
+        commonClasses.rowStart,
+        classes.container,
+        { [commonClasses.cursorClickable]: !!onClick },
+      )}
       onClick={handleClick}
     >
       <ProfileLabel

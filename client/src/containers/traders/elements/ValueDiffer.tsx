@@ -1,7 +1,8 @@
-import * as vendorTool from '../../../tools/vendor'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
-import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from 'tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
+import * as themeEnum from 'enums/theme'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -24,9 +25,10 @@ const ValueDiffer = ({
   currentValue: number;
   compareValue: number;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const differ = (currentValue - compareValue) / compareValue
   const isPositive = differ > 0
@@ -38,7 +40,10 @@ const ValueDiffer = ({
   return (
     <div
       data-testid='valueDiffer'
-      className={vendorTool.classNames('row-start', classes.container)}
+      className={vendorTool.classNames(
+        commonClasses.rowStart,
+        classes.container,
+      )}
     >
       {title && <h5>{title}:</h5>}
       <vendorTool.ui.Label

@@ -116,3 +116,13 @@ test('could do somthing', () => {
   expect(functionName()).toBeTruthy()
 }
 ```
+
+## Import from base when import from parent folders
+
+```
+// good
+import parseTool from 'tools/parse'
+
+// bad
+import parseTool from '../../../tools/parse'
+```

@@ -1,12 +1,12 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
-import * as routerTool from '../../../tools/router'
-import BehaviorLabel from '../elements/BehaviorLabel'
-import VariationList from '../elements/VariationList'
-import usePageStyles from '../../hooks/usePageStyles'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import * as routerTool from 'tools/router'
+import useTraderStyle from 'styles/useTraderStyle'
+import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
+import VariationList from 'containers/traders/elements/VariationList'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   header: {
@@ -27,11 +27,12 @@ const isSearchedBehavior = (
 }
 
 const BehaviorList = () => {
-  const classes = useStyles()
-  const { classes: pageClasses } = usePageStyles()
   const navigate = vendorTool.router.useNavigate()
 
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { traderClasses } = useTraderStyle()
 
   const [searchText, setSearchText] = vendorTool.react.useState('')
   const [focusedType, setFocusedType] = vendorTool.react.useState('buyBehaviors')
@@ -85,8 +86,8 @@ const BehaviorList = () => {
   if (!focusedOption) return null
 
   return (
-    <section className={pageClasses.root}>
-      <section className={pageClasses.main}>
+    <section className={traderClasses.root}>
+      <section className={traderClasses.main}>
         <header className={classes.header}>
           <vendorTool.ui.Input
             icon='search'
@@ -106,7 +107,7 @@ const BehaviorList = () => {
           ))}
         </section>
       </section>
-      <aside className={pageClasses.aside}>
+      <aside className={traderClasses.aside}>
         <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
         <VariationList
           options={focusOptions}

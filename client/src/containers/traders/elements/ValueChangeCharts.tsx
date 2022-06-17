@@ -1,7 +1,8 @@
 import TrendChart from './TrendChart'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
-import * as vendorTool from '../../../tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   root: {
@@ -22,9 +23,10 @@ const ValueChangeCharts = ({
   activeChartIndex: number;
   onChangeChart: (index: number) => void;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const hasNoTrends = !oneYearTrends?.length && !oneDecadeTrends?.length
 
@@ -48,8 +50,11 @@ const ValueChangeCharts = ({
   if (!totalValue || hasNoTrends) return null
 
   return (
-    <section className={vendorTool.classNames(classes.root, 'column-center')}>
-      <div className='row-around'>
+    <section className={vendorTool.classNames(
+      classes.root,
+      commonClasses.columnCenter,
+    )}>
+      <div className={commonClasses.rowAround}>
         <TrendChart
           data={activeChartIndex === 0 ? decadeTrends : yearTrends}
         />

@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import { context, Context } from '../context'
-import * as vendorTool from '../tools/vendor'
+import { context, Context } from 'context'
+import * as vendorTool from 'tools/vendor'
 
 const useResourceState = () => {
   const store: Context = vendorTool.react.useContext(context)

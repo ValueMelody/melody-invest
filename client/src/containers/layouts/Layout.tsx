@@ -1,10 +1,11 @@
-import * as vendorTool from '../../tools/vendor'
-import Header from './blocks/Header'
-import Footer from './blocks/Footer'
-import useSystemRequest from '../../requests/useSystemRequest'
-import useUserRequest from '../../requests/useUserRequest'
-import useCommonState from '../../states/useCommonState'
-import useUserState from '../../states/useUserState'
+import * as vendorTool from 'tools/vendor'
+import useSystemRequest from 'requests/useSystemRequest'
+import useUserRequest from 'requests/useUserRequest'
+import useCommonState from 'states/useCommonState'
+import useUserState from 'states/useUserState'
+import useCommonStyle from 'styles/useCommonStyle'
+import Header from 'containers/layouts/blocks/Header'
+import Footer from 'containers/layouts/blocks/Footer'
 
 const useStyles = vendorTool.jss.createUseStyles({
   main: {
@@ -29,9 +30,9 @@ const useStyles = vendorTool.jss.createUseStyles({
 const Layout: vendorTool.react.FunctionComponent = ({
   children,
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const { getMessages, removeMessage } = useCommonState()
   const { getUser } = useUserState()
@@ -97,7 +98,10 @@ const Layout: vendorTool.react.FunctionComponent = ({
           ))}
         </div>
       )}
-      <main className={vendorTool.classNames(classes.main, 'column-center')}>
+      <main className={vendorTool.classNames(
+        classes.main,
+        commonClasses.columnCenter,
+      )}>
         <section className={classes.children}>
           {children}
         </section>

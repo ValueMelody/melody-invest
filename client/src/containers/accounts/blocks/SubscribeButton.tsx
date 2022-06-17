@@ -1,7 +1,7 @@
 import * as constants from '@shared/constants'
-import * as vendorTool from '../../../tools/vendor'
-import useUserRequest from '../../../requests/useUserRequest'
-import * as commonEnum from '../../../enums/common'
+import * as vendorTool from 'tools/vendor'
+import useUserRequest from 'requests/useUserRequest'
+import * as commonEnum from 'enums/common'
 
 type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
 

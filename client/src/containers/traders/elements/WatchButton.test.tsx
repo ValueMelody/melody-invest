@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from '../../../test.utils'
+import { render, screen, fireEvent } from 'test.utils'
 import WatchButton from './WatchButton'
-import * as localeTool from '../../../tools/locale'
+import * as localeTool from 'tools/locale'
 
 describe('#WatchButton', () => {
   test('could render as watched', () => {

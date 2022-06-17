@@ -1,5 +1,5 @@
-import * as vendorTool from '../../tools/vendor'
-import * as localeTool from '../../tools/locale'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
 
 const ConfirmModal = ({
   title,

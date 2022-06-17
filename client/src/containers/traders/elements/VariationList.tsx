@@ -1,4 +1,5 @@
-import * as vendorTool from '../../../tools/vendor'
+import * as vendorTool from 'tools/vendor'
+import useCommonStyle from 'styles/useCommonStyle'
 
 type Value = string | number
 
@@ -26,12 +27,14 @@ const VariationList = ({
   options: Option[];
   activeValue: Value;
 }) => {
+  // ------------------------------------------------------------ State --
   const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   // ------------------------------------------------------------ UI --
 
   return (
-    <section data-testid='variationList' className='column-start'>
+    <section data-testid='variationList' className={commonClasses.columnStart}>
       {options.map((option) => {
         const handleClick = () => {
           option.onClick(option.value)
@@ -42,7 +45,7 @@ const VariationList = ({
             key={option.value}
             className={vendorTool.classNames(
               classes.label,
-              'click-cursor',
+              commonClasses.cursorClickable,
               { [classes.active]: option.value === activeValue })}
             pointing={option.value === activeValue ? 'left' : undefined}
             color={option.value === activeValue ? 'blue' : undefined}

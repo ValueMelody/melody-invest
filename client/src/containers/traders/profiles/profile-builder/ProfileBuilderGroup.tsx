@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../../tools/vendor'
-import BehaviorEditor from '../../elements/BehaviorEditor'
+import * as vendorTool from 'tools/vendor'
+import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 
 const useStyles = vendorTool.jss.createUseStyles({
   segment: {

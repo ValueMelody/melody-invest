@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import { render, screen } from '../../../test.utils'
+import { render, screen } from 'test.utils'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
 import ProfileLabel from './ProfileLabel'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
 
 describe('#ProfileLabel', () => {
   // @ts-ignore

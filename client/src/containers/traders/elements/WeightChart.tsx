@@ -1,7 +1,7 @@
-import * as vendorTool from '../../../tools/vendor'
-import * as parseTool from '../../../tools/parse'
-import * as localeTool from '../../../tools/locale'
-import * as themeEnum from '../../../enums/theme'
+import * as vendorTool from 'tools/vendor'
+import * as parseTool from 'tools/parse'
+import * as localeTool from 'tools/locale'
+import * as themeEnum from 'enums/theme'
 
 interface DataPoint {
   label: string;

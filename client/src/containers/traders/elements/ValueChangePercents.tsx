@@ -1,11 +1,9 @@
-import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
+const useStyles = vendorTool.jss.createUseStyles(({
   gainCell: {
     padding: '0.5rem !important',
   },
@@ -24,8 +22,12 @@ const ValueChangePercents = ({
   pastMonthPercentNumber: number | null;
   pastWeekPercentNumber: number | null;
 }) => {
+  // ------------------------------------------------------------ State --
+
   const classes = useStyles()
-  const gainCellClass = vendorTool.classNames('column-center', classes.gainCell)
+  const { commonClasses } = useCommonStyle()
+
+  const gainCellClass = vendorTool.classNames(commonClasses.columnCenter, classes.gainCell)
 
   const hasValue =
     yearlyPercentNumber ||

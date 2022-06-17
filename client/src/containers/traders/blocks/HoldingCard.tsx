@@ -1,10 +1,11 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import * as parseTool from '../../../tools/parse'
-import ValueDiffer from '../elements/ValueDiffer'
-import HoldingShare from '../elements/HoldingShare'
-import useResourceState from '../../../states/useResourceState'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import useResourceState from 'states/useResourceState'
+import useCommonStyle from 'styles/useCommonStyle'
+import ValueDiffer from 'containers/traders/elements/ValueDiffer'
+import HoldingShare from 'containers/traders/elements/HoldingShare'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   container: {
@@ -28,9 +29,10 @@ const HoldingCard = ({
   previousHolding: interfaces.traderHoldingModel.Detail | null,
   initialValue: number,
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentity } = useResourceState()
   const [showAllHoldings, setShowAllHoldings] = vendorTool.react.useState(false)
@@ -47,8 +49,8 @@ const HoldingCard = ({
 
   return (
     <vendorTool.ui.Segment className={classes.container}>
-      <div className='column-start'>
-        <div className='row-start'>
+      <div className={commonClasses.columnStart}>
+        <div className={commonClasses.rowStart}>
           <vendorTool.ui.Label>
             {localeTool.t('common.date')}: {holding.date}
           </vendorTool.ui.Label>
@@ -65,7 +67,10 @@ const HoldingCard = ({
             </h5>
           )}
         </div>
-        <div className={vendorTool.classNames('row-start', classes.differRow)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowStart,
+          classes.differRow,
+        )}>
           {previousHolding && (
             <ValueDiffer
               title={localeTool.t('common.sinceLast')}
@@ -94,7 +99,7 @@ const HoldingCard = ({
         )
       })}
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
-        <div className='row-around'>
+        <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}
           </vendorTool.ui.Button>

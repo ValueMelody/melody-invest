@@ -1,4 +1,5 @@
-import * as vendorTool from '../tools/vendor'
+import * as vendorTool from 'tools/vendor'
+import * as routerEnum from 'enums/router'
 import Pricing from './general/Pricing'
 import Activation from './accounts/Activation'
 import SignUp from './accounts/SignUp'
@@ -20,7 +21,6 @@ import TickerDetail from './traders/tickers/TickerDetail'
 import TopCombos from './traders/combos/TopCombos'
 import ComboDetail from './traders/combos/ComboDetail'
 import ComboBuilder from './traders/combos/ComboBuilder'
-import * as routerEnum from '../enums/router'
 
 const Router = () => {
   return (

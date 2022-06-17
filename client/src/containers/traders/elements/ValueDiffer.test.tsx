@@ -1,6 +1,6 @@
-import { render, screen } from '../../../test.utils'
+import { render, screen } from 'test.utils'
 import ValueDiffer from './ValueDiffer'
-import * as localeTool from '../../../tools/locale'
+import * as localeTool from 'tools/locale'
 
 describe('#ValueDiffer', () => {
   test('do not render if there is no differ', () => {

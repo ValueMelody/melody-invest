@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from '../../../test.utils'
+import { render, screen, fireEvent } from 'test.utils'
 import BehaviorLabel from './BehaviorLabel'
-import * as parseTool from '../../../tools/parse'
+import * as parseTool from 'tools/parse'
 
 describe('#BehaviorLabel', () => {
   const behavior = 'priceDailyIncreaseBuy'
@@ -15,8 +15,8 @@ describe('#BehaviorLabel', () => {
     const container = screen.getByTestId('behaviorLabel')
     expect(container).toBeTruthy()
     expect(container.innerHTML).toBe(`${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`)
-    expect(container.classList).toContain('info-cursor')
-    expect(container.classList).not.toContain('click-cursor')
+    expect(container.className).toContain('cursorInfo')
+    expect(container.className).not.toContain('cursorClickable')
     expect(container.classList).toContain('green')
     expect(container.getAttribute('title')).toBe(parseTool.behaviorDesc(behavior))
 
@@ -59,8 +59,8 @@ describe('#BehaviorLabel', () => {
       />,
     )
     const container = screen.getByTestId('behaviorLabel')
-    expect(container?.classList).toContain('click-cursor')
-    expect(container?.classList).not.toContain('info-cursor')
+    expect(container.className).toContain('cursorClickable')
+    expect(container.classList).not.toContain('cursorInfo')
 
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(1)

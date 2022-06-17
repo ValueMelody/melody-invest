@@ -1,9 +1,10 @@
 import * as interfaces from '@shared/interfaces'
+import * as parseTool from 'tools/parse'
+import * as vendorTool from 'tools/vendor'
+import * as localeTool from 'tools/locale'
+import useCommonStyle from 'styles/useCommonStyle'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import WeightChart from './WeightChart'
-import * as parseTool from '../../../tools/parse'
-import * as vendorTool from '../../../tools/vendor'
-import * as localeTool from '../../../tools/locale'
-import TraderProfileCard from '../blocks/TraderProfileCard'
 
 interface ProfileWithEnv {
   profile: interfaces.response.TraderProfile | null;
@@ -18,6 +19,8 @@ const ComboProfiles = ({
   onClickProfile: (trader: interfaces.traderModel.Record) => void;
 }) => {
   // ------------------------------------------------------------ State --
+
+  const { commonClasses } = useCommonStyle()
 
   const chartData = profilesWithEnvs.map((profileWithEnv) => {
     const label = profileWithEnv.profile
@@ -51,13 +54,13 @@ const ComboProfiles = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className='column-center'>
+    <section className={commonClasses.columnCenter}>
       <WeightChart
         activeIndex={activeIndex}
         onMouseEnter={handleChangeActive}
         data={chartData}
       />
-      <section className='column-start'>
+      <section className={commonClasses.columnStart}>
         <TraderProfileCard
           profile={profilesWithEnvs[activeIndex].profile}
           onClick={handleClickProfile}

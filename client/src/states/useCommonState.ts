@@ -1,5 +1,5 @@
-import { context, Context, Message } from '../context'
-import * as vendorTool from '../tools/vendor'
+import { context, Context, Message } from 'context'
+import * as vendorTool from 'tools/vendor'
 
 const useCommonState = () => {
   const store: Context = vendorTool.react.useContext(context)

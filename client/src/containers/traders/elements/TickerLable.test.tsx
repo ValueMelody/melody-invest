@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import { render, screen, fireEvent } from '../../../test.utils'
+import { render, screen, fireEvent } from 'test.utils'
 import TickerLabel from './TickerLabel'
 
 describe('#tickerLabel', () => {
@@ -34,7 +34,7 @@ describe('#tickerLabel', () => {
     expect(container.getAttribute('title')).toBe(ticker.name)
     expect(container.classList).toContain('green')
     expect(container.classList).not.toContain('red')
-    expect(container.classList).not.toContain('click-cursor')
+    expect(container.className).not.toContain('cursorClickable')
 
     fireEvent.click(container)
   })
@@ -61,7 +61,7 @@ describe('#tickerLabel', () => {
       />,
     )
     const container = screen.getByTestId('tickerLabel')
-    expect(container.classList).toContain('click-cursor')
+    expect(container.className).toContain('cursorClickable')
 
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(1)

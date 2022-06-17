@@ -1,14 +1,16 @@
 import * as interfaces from '@shared/interfaces'
-import * as localeTool from '../../../tools/locale'
-import * as vendorTool from '../../../tools/vendor'
-import PatternBehaviors from '../elements/PatternBehaviors'
-import ValueChangePanel from '../elements/ValueChangePanel'
-import WatchButton from '../elements/WatchButton'
-import ProfileLabel from '../elements/ProfileLabel'
-import useUserState from '../../../states/useUserState'
-import useTraderState from '../../../states/useTraderState'
-import useCommonState from '../../../states/useCommonState'
-import useTraderRequest from '../../../requests/useTraderRequest'
+import * as localeTool from 'tools/locale'
+import * as vendorTool from 'tools/vendor'
+import useUserState from 'states/useUserState'
+import useTraderState from 'states/useTraderState'
+import useCommonState from 'states/useCommonState'
+import useTraderRequest from 'requests/useTraderRequest'
+import useCardStyle from 'styles/useCardStyle'
+import useCommonStyle from 'styles/useCommonStyle'
+import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
+import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
+import WatchButton from 'containers/traders/elements/WatchButton'
+import ProfileLabel from 'containers/traders/elements/ProfileLabel'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -23,12 +25,6 @@ const useStyles = vendorTool.jss.createUseStyles((
   },
   body: {
     padding: '1rem',
-  },
-  active: {
-    border: `2px solid ${theme.PrimaryColor} !important`,
-  },
-  disabled: {
-    backgroundColor: `${theme.LightGray} !important`,
   },
   label: {
     alignSelf: 'flex-start',
@@ -51,9 +47,11 @@ const TraderProfileCard = ({
   disabled?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
+
+  const classes = useStyles()
+  const { cardClasses } = useCardStyle()
+  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -115,18 +113,24 @@ const TraderProfileCard = ({
 
   return (
     <vendorTool.ui.Segment
-      className={vendorTool.classNames('row-around', classes.pattern, {
-        'click-cursor': isClickable,
-        [classes.disabled]: disabled,
-        [classes.active]: !!isActive,
+      className={vendorTool.classNames(commonClasses.rowAround, classes.pattern, {
+        [commonClasses.cursorClickable]: isClickable,
+        [cardClasses.disabled]: disabled,
+        [cardClasses.isActive]: !!isActive,
       })}
       onClick={isClickable ? handleClick : undefined}
       padded
     >
       <header
-        className={vendorTool.classNames('row-between', classes.header)}
+        className={vendorTool.classNames(
+          commonClasses.rowBetween,
+          classes.header,
+        )}
       >
-        <div className={vendorTool.classNames('row-start', classes.label)}>
+        <div className={vendorTool.classNames(
+          commonClasses.rowStart,
+          classes.label,
+        )}>
           <ProfileLabel
             color='blue'
             trader={trader}
@@ -152,7 +156,7 @@ const TraderProfileCard = ({
         )}
 
         {!disabled && (
-          <section className='row-around'>
+          <section className={commonClasses.rowAround}>
             <ValueChangePanel
               yearlyPercentNumber={trader.yearlyPercentNumber}
               pastYearPercentNumber={trader.pastYearPercentNumber}

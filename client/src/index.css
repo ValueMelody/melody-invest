@@ -48,64 +48,6 @@ h4, h5, h6 {
   margin: 0.25rem 0 !important;
 }
 
-.row-between {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.row-around {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
-}
-
-.row-start {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.row-center {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-}
-
-.column-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.column-start {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-}
-
-.click-cursor {
-  cursor: pointer;
-}
-
-.info-cursor {
-  cursor: help;
-}
-
-.default-cursor {
-  cursor: default;
-}
-
 #root .ui.label > .icon {
   margin: 0;
 }
