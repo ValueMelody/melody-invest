@@ -62,7 +62,10 @@ describe('#traderComboCard', () => {
     expect(screen.getByText('Trade based on selected 5 stocks')).toBeTruthy()
     expect(screen.queryByText('Trade based on all stocks available')).toBeFalsy()
 
-    expect(container?.className).not.toContain('isActive')
+    expect(container.className).not.toContain('isActive')
+
+    const watchButton = screen.queryByTestId('watchButton')
+    expect(watchButton).toBeFalsy()
 
     fireEvent.click(container)
   })
@@ -133,6 +136,9 @@ describe('#traderComboCard', () => {
     expect(container?.className).toContain('disabled')
     const limitText = localeTool.t('permission.limited')
     expect(screen.getByText(limitText)).toBeTruthy()
+
+    const watchButton = screen.getByTestId('watchButton')
+    expect(watchButton).toBeTruthy()
 
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(0)

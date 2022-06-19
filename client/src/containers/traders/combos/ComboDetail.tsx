@@ -15,10 +15,14 @@ import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import ComboProfiles from 'containers/traders/elements/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
+import WatchButton from 'containers/traders/elements/WatchButton'
 
 const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
   combo: {
     width: '100%',
+    paddingBottom: '2rem !important',
+    marginBottom: '2rem !important',
+    borderBottom: `1px solid ${theme.PrimaryColor}`,
   },
   profileTitle: {
     margin: '1rem 0 !important',
@@ -48,7 +52,7 @@ const ComboDetail = () => {
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
   const { getTraderProfile, getTraderCombo, getTraderEnv } = useTraderState()
-  const { fetchTraderCombo } = useTraderRequest()
+  const { fetchTraderCombo, deleteTraderCombo } = useTraderRequest()
 
   const comboId = params.comboId ? parseInt(params.comboId) : null
   const matchedCombo = getTraderCombo(comboId)
@@ -80,6 +84,11 @@ const ComboDetail = () => {
     setActiveChartIndex(index)
   }
 
+  const handleUnwatch = async () => {
+    if (!comboId) return
+    await deleteTraderCombo(comboId)
+  }
+
   // ------------------------------------------------------------ UI --
 
   if (!matchedCombo?.detail) return null
@@ -89,11 +98,17 @@ const ComboDetail = () => {
       <aside className={traderClasses.aside}>
         <div className={vendorTool.classNames(
           classes.combo,
-          commonClasses.rowAround,
+          commonClasses.columnCenter,
         )}>
           <TraderComboCard
             traderCombo={matchedCombo.identity}
           />
+          {!matchedCombo.identity.isSystem && (
+            <WatchButton
+              isWatched={true}
+              onToggle={handleUnwatch}
+            />
+          )}
         </div>
         <vendorTool.ui.Header
           as='h3'

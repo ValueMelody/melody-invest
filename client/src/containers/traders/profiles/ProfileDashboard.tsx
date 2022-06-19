@@ -108,6 +108,7 @@ const ProfileDashboard = () => {
         {user.userTraderIds.map((traderId) => (
           <TraderProfileCard
             key={traderId}
+            disabledUnwatch={user.accessibleTraderIds.includes(traderId)}
             disabled={!user.accessibleTraderIds.includes(traderId)}
             profile={getTraderProfile(traderId)}
             onClick={handleClickRow}

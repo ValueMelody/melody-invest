@@ -149,7 +149,13 @@ const useTraderRequest = () => {
   const removeWatchedEnv = (traderEnvId: number) => {
     const traderEnvs = { ...store.traderEnvs }
     delete traderEnvs[traderEnvId]
-    store.setTraderEnvs((envs) => traderEnvs)
+    store.setTraderEnvs(traderEnvs)
+  }
+
+  const removeWatchedCombo = (traderComboId: number) => {
+    const traderCombos = { ...store.traderCombos }
+    delete traderCombos[traderComboId]
+    store.setTraderCombos(traderCombos)
   }
 
   // ------------------------------------------------------------ fetch --
@@ -336,6 +342,21 @@ const useTraderRequest = () => {
     }
   }
 
+  const deleteTraderCombo = async (traderComboId: number) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${traderComboId}`
+    store.startLoading()
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      removeWatchedCombo(traderComboId)
+      const link = routerTool.dashboardRoute()
+      navigate(link)
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
   const deleteTraderEnv = async (traderEnvId: number) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}`
     store.startLoading()
@@ -366,6 +387,7 @@ const useTraderRequest = () => {
     createWatchedProfile,
     deleteWatchedProfile,
     deleteTraderEnv,
+    deleteTraderCombo,
   }
 }
 

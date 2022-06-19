@@ -21,9 +21,11 @@ const useStyles = vendorTool.jss.createUseStyles({
     width: '100%',
   },
   messages: {
-    marginTop: '4rem',
-    paddingLeft: '1rem',
-    paddingRight: '1rem',
+    position: 'fixed',
+    top: '4rem',
+    left: '1rem',
+    right: '1rem',
+    zIndex: 1000,
   },
 })
 

@@ -10,3 +10,12 @@ describe('#isEmail', () => {
     expect(verify.isEmail('abc@outlook.')).toBeFalsy()
   })
 })
+
+describe('#isGreaterThanZero', () => {
+  test('could test value', () => {
+    expect(verify.isGreaterThanZero(2)).toBeTruthy()
+    expect(verify.isGreaterThanZero(1)).toBeTruthy()
+    expect(verify.isGreaterThanZero(0)).toBeFalsy()
+    expect(verify.isGreaterThanZero(-1)).toBeFalsy()
+  })
+})
