@@ -19,7 +19,11 @@ systemRouter.get('/policy/:type', async (req, res) => {
   const type = parseInt(req.params.type)
   validateGetPolicyParams(type)
 
-  const policy = await crudSystems.getSystemPolicy(type)
+  const policy = await cacheAdapter.returnBuild(
+    cacheTool.generateSystemEndpointKey(`policy-${type}`),
+    '1d',
+    async () => await crudSystems.getSystemPolicy(type),
+  )
   return res.status(200).send(policy)
 })
 

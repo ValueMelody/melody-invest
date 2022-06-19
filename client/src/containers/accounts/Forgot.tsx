@@ -42,16 +42,13 @@ const Forgot = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(
-      accountClasses.container,
-      commonClasses.columnCenter,
-    )}>
+    <div className={accountClasses.container}>
       <h2 className={accountClasses.title}>
         {localeTool.t('forgot.title')}
       </h2>
       <form onSubmit={handleSubmit}>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />

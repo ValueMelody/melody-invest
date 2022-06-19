@@ -1,13 +1,24 @@
+import * as constants from '@shared/constants'
 import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
+import useSystemRequest from 'requests/useSystemRequest'
 import useCommonState from 'states/useCommonState'
+import useResourceState from 'states/useResourceState'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
+
+const useStyles = vendorTool.jss.createUseStyles(({
+  policy: {
+    padding: '1rem',
+    height: 280,
+    width: '100%',
+  },
+}))
 
 const SignUp = () => {
   usePublicGuard()
@@ -15,16 +26,27 @@ const SignUp = () => {
 
   // ------------------------------------------------------------ State --
 
+  const classes = useStyles()
+
   const { accountClasses } = useAccountStyle()
   const { commonClasses } = useCommonStyle()
   const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { createUser } = useUserRequest()
+  const { fetchSystemPolicy } = useSystemRequest()
+  const { getPolicy } = useResourceState()
+  const policy = getPolicy()
 
   const [email, setEmail] = vendorTool.react.useState('')
   const [password, setPassword] = vendorTool.react.useState('')
   const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
   const [isConfirmed, setIsConfirmed] = vendorTool.react.useState(false)
+
+  // ------------------------------------------------------------ Effect --
+
+  vendorTool.react.useEffect(() => {
+    if (!policy.termsPolicy) fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions)
+  }, [policy.termsPolicy])
 
   // ------------------------------------------------------------ Handler --
 
@@ -74,16 +96,13 @@ const SignUp = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(
-      accountClasses.container,
-      commonClasses.columnCenter,
-    )}>
+    <div className={accountClasses.container}>
       <h2 className={accountClasses.title}>
         {localeTool.t('signUp.title')}
       </h2>
       <form onSubmit={handleSubmit}>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
@@ -94,7 +113,7 @@ const SignUp = () => {
           />
         </div>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
@@ -105,7 +124,7 @@ const SignUp = () => {
           />
         </div>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
@@ -113,6 +132,13 @@ const SignUp = () => {
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
+          />
+        </div>
+        <div className={accountClasses.row}>
+          <vendorTool.ui.TextArea
+            className={classes.policy}
+            disabled
+            value={policy.termsPolicy || ''}
           />
         </div>
         <div className={accountClasses.row}>
