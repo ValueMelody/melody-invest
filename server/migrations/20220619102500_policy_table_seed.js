@@ -3,8 +3,7 @@ exports.up = (knex) => {
   return knex('policy').insert([
     {
       type: 1,
-      content: `
-        valuemelody.com Privacy Policy
+      content: `valuemelody.com Privacy Policy
 
         This Privacy Policy describes how your personal information is collected, used, and shared when you visit or make a purchase from valuemelody.com (the “Site”).
         
@@ -73,8 +72,7 @@ exports.up = (knex) => {
     },
     {
       type: 2,
-      content: `
-        TERMS OF SERVICE
+      content: `TERMS OF SERVICE
 
         ----
         
