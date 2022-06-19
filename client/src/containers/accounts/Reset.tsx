@@ -9,6 +9,12 @@ import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 
+const useStyles = vendorTool.jss.createUseStyles(({
+  input: {
+    width: 280,
+  },
+}))
+
 const Reset = () => {
   usePublicGuard()
   const navigate = vendorTool.router.useNavigate()
@@ -16,6 +22,7 @@ const Reset = () => {
 
   // ------------------------------------------------------------ State --
 
+  const classes = useStyles()
   const { accountClasses } = useAccountStyle()
   const { commonClasses } = useCommonStyle()
   const { validatePassword } = usePasswordValidator()
@@ -75,42 +82,42 @@ const Reset = () => {
   if (!resetCode) return null
 
   return (
-    <div className={vendorTool.classNames(
-      accountClasses.container,
-      commonClasses.columnCenter,
-    )}>
+    <div className={accountClasses.container}>
       <h2 className={accountClasses.title}>
         {localeTool.t('reset.title')}
       </h2>
       <form onSubmit={handleSubmit}>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
+            className={classes.input}
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.newPassword')} />
           <vendorTool.ui.Input
+            className={classes.input}
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
           <vendorTool.ui.Input
+            className={classes.input}
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}

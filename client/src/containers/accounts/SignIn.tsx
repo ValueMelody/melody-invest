@@ -10,6 +10,9 @@ import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 
 const useStyles = vendorTool.jss.createUseStyles(({
+  input: {
+    width: 280,
+  },
   forgotButton: {
     marginTop: '2rem !important',
   },
@@ -21,7 +24,7 @@ const SignIn = () => {
 
   // ------------------------------------------------------------ State --
 
-  const pageClasses = useStyles()
+  const classes = useStyles()
   const { commonClasses } = useCommonStyle()
   const { accountClasses } = useAccountStyle()
   const { validatePassword } = usePasswordValidator()
@@ -75,31 +78,30 @@ const SignIn = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(
-      accountClasses.container,
-      commonClasses.columnCenter,
-    )}>
+    <div className={accountClasses.container}>
       <h2 className={accountClasses.title}>
         {localeTool.t('signIn.title')}
       </h2>
       <form onSubmit={handleSubmit}>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
           <vendorTool.ui.Input
+            className={classes.input}
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
         <div className={vendorTool.classNames(
-          commonClasses.rowBetween,
+          commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
           <vendorTool.ui.Input
+            className={classes.input}
             type='password'
             value={password}
             onChange={handleChangePassword}
@@ -125,20 +127,24 @@ const SignIn = () => {
           </vendorTool.ui.Button>
         </div>
       </form>
-      <vendorTool.ui.Button
-        className={accountClasses.routerButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('signIn.toSignUp')}
-        onClick={handleClickSignUp}
-      />
-      <vendorTool.ui.Button
-        className={pageClasses.forgotButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('signIn.toReset')}
-        onClick={handleClickForgot}
-      />
+      <div className={accountClasses.row}>
+        <div className={commonClasses.columnCenter}>
+          <vendorTool.ui.Button
+            className={accountClasses.routerButton}
+            icon='right arrow'
+            labelPosition='right'
+            content={localeTool.t('signIn.toSignUp')}
+            onClick={handleClickSignUp}
+          />
+          <vendorTool.ui.Button
+            className={classes.forgotButton}
+            icon='right arrow'
+            labelPosition='right'
+            content={localeTool.t('signIn.toReset')}
+            onClick={handleClickForgot}
+          />
+        </div>
+      </div>
     </div>
   )
 }
