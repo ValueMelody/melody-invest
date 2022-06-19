@@ -124,3 +124,15 @@ describe('#pricingRoute', () => {
     expect(routerTool.pricingRoute()).toBe('/pricing')
   })
 })
+
+describe('#privacyRoute', () => {
+  test('could get correct url for privacy route', () => {
+    expect(routerTool.privacyRoute()).toBe('/privacy')
+  })
+})
+
+describe('#termsRoute', () => {
+  test('could get correct url for terms route', () => {
+    expect(routerTool.termsRoute()).toBe('/terms')
+  })
+})

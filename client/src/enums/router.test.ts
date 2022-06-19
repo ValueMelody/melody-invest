@@ -13,6 +13,7 @@ describe('#Nav', () => {
     expect(router.Nav.Dashboard).toBeDefined()
     expect(router.Nav.NotFound).toBeDefined()
     expect(router.Nav.Pricing).toBeDefined()
+    expect(router.Nav.Privacy).toBeDefined()
   })
 })
 

@@ -6,10 +6,18 @@ import * as tickerCategoryModel from 'models/tickerCategory'
 import * as traderModel from 'models/trader'
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as traderEnvModel from 'models/traderEnv'
+import * as policyModel from 'models/policy'
 import * as runTool from 'tools/run'
 import buildTopTraderProfiles from './shared/buildTopTraderProfiles'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
 import buildComboEntities from './shared/buildComboEntities'
+
+export const getSystemPolicy = async (
+  type: number,
+): Promise<interfaces.policyModel.Record | null> => {
+  const record = await policyModel.getLatest(type)
+  return record
+}
 
 const getSystemTopTraderCombo = async (
   traderEnvId: number,

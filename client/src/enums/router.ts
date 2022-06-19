@@ -13,6 +13,8 @@ export const Nav = Object.freeze({
   Dashboard: '/dashboard',
   NotFound: '/404',
   Pricing: '/pricing',
+  Privacy: '/privacy',
+  Terms: '/terms',
 })
 
 const base = `${commonEnum.Env.ServerType}://${commonEnum.Env.ServerHost}`

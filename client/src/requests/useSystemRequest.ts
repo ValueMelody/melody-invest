@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as constants from '@shared/constants'
 import { context, Context } from 'context'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
@@ -95,7 +96,40 @@ const useSystemRequest = () => {
     }))
   }
 
+  const storeSystemPolicy = (
+    type: number,
+    policy: interfaces.policyModel.Record,
+  ) => {
+    let key: 'privacyPolicy' | 'termsPolicy'
+    switch (type) {
+      case constants.Content.PolicyType.Privacy:
+        key = 'privacyPolicy'
+        break
+      case constants.Content.PolicyType.TermsAndConditions:
+      default:
+        key = 'termsPolicy'
+        break
+    }
+    store.setResources((resources) => ({
+      ...resources,
+      [key]: policy.content,
+    }))
+  }
+
   // ------------------------------------------------------------ fetch --
+
+  const fetchSystemPolicy = async (type: number) => {
+    const endpoint = `${routerEnum.Endpoint.Systems}/policy/${type}`
+    store.startLoading()
+    try {
+      const policy = await requestAdapter.sendGetRequest(endpoint)
+      storeSystemPolicy(type, policy)
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
 
   const fetchSystemDefaults = async () => {
     const endpoint = `${routerEnum.Endpoint.Systems}/defaults`
@@ -139,6 +173,7 @@ const useSystemRequest = () => {
   // ------------------------------------------------------------ export --
 
   return {
+    fetchSystemPolicy,
     fetchSystemDefaults,
     fetchSystemTraderCombos,
     fetchOverallTopTraderProfiles,

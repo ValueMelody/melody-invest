@@ -7,5 +7,6 @@ describe('index', () => {
     expect(index.BehaviorValue).toBeDefined()
     expect(index.Email).toBeDefined()
     expect(index.User).toBeDefined()
+    expect(index.Content).toBeDefined()
   })
 })

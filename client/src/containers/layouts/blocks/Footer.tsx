@@ -37,10 +37,16 @@ const Footer = () => {
         {localeTool.t('common.contactUs')}
       </a>
       <vendorTool.router.Link
-        to={routerTool.pricingRoute()}
+        to={routerTool.privacyRoute()}
         className={classes.link}
       >
-        {localeTool.t('common.pricing')}
+        {localeTool.t('page.privacyPolicy')}
+      </vendorTool.router.Link>
+      <vendorTool.router.Link
+        to={routerTool.termsRoute()}
+        className={classes.link}
+      >
+        {localeTool.t('page.termsPolicy')}
       </vendorTool.router.Link>
     </footer>
   )
