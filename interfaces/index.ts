@@ -19,6 +19,7 @@ import * as indicatorQuarterlyModel from './models/indicatorQuarterly'
 import * as indicatorYearlyModel from './models/indicatorYearly'
 import * as dailyTickersModel from './models/dailyTickers'
 import * as emailModel from './models/email'
+import * as policyModel from './models/policy'
 
 import * as response from './response'
 import * as request from './request'
@@ -46,6 +47,8 @@ export {
   indicatorYearlyModel,
   dailyTickersModel,
   emailModel,
+  policyModel,
+
   response,
   request,
   common,

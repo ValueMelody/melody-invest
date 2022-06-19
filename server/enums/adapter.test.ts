@@ -35,6 +35,7 @@ describe('DatabaseTable', () => {
     expect(adapter.DatabaseTable.TraderCombo).toBeDefined()
     expect(adapter.DatabaseTable.TraderComboFollower).toBeDefined()
     expect(adapter.DatabaseTable.DailyTickers).toBeDefined()
+    expect(adapter.DatabaseTable.Policy).toBeDefined()
   })
 })
 

@@ -79,3 +79,11 @@ export const resetRoute = (): string => {
 export const pricingRoute = (): string => {
   return routerEnum.Nav.Pricing
 }
+
+export const privacyRoute = (): string => {
+  return routerEnum.Nav.Privacy
+}
+
+export const termsRoute = (): string => {
+  return routerEnum.Nav.Terms
+}

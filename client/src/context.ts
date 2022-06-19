@@ -36,6 +36,8 @@ export interface Resources {
   planStartAtUTC: string | null;
   planEndAtUTC: string | null;
   overallTopTraderProfiles: TopTraderProfileIds | null,
+  privacyPolicy: string | null;
+  termsPolicy: string | null;
 }
 
 export interface TraderProfiles {

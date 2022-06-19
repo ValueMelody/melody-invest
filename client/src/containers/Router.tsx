@@ -1,5 +1,7 @@
 import * as vendorTool from 'tools/vendor'
 import * as routerEnum from 'enums/router'
+import Privacy from './general/Privacy'
+import Terms from './general/Terms'
 import Pricing from './general/Pricing'
 import Activation from './accounts/Activation'
 import SignUp from './accounts/SignUp'
@@ -26,6 +28,14 @@ const Router = () => {
   return (
     <Layout>
       <vendorTool.router.Routes>
+      <vendorTool.router.Route
+          path={routerEnum.Nav.Terms}
+          element={<Terms />}
+        />
+        <vendorTool.router.Route
+          path={routerEnum.Nav.Privacy}
+          element={<Privacy />}
+        />
         <vendorTool.router.Route
           path={routerEnum.Nav.Pricing}
           element={<Pricing />}

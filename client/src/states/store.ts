@@ -28,6 +28,8 @@ const useStore = () => {
     planStartAtUTC: null,
     planEndAtUTC: null,
     overallTopTraderProfiles: null,
+    privacyPolicy: null,
+    termsPolicy: null,
   })
 
   const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})

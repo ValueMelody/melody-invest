@@ -44,6 +44,9 @@
     "common.close": "Close",
     "common.select": "Select",
 
+    "page.privacyPolicy": "Privacy Policy",
+    "page.termsPolicy": "Terms and Conditions",
+
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
     "error.password.requireUpper": "Password must include at least 1 upper case letter!",

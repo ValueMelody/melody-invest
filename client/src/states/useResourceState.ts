@@ -7,6 +7,13 @@ const useResourceState = () => {
 
   // ------------------------------------------------------------ Get --
 
+  const getPolicy = () => {
+    return {
+      privacyPolicy: store.resources.privacyPolicy,
+      termsPolicy: store.resources.termsPolicy,
+    }
+  }
+
   const getTickerIdentity = (
     tickerId: number,
   ): interfaces.tickerModel.Identity | null => {
@@ -38,6 +45,7 @@ const useResourceState = () => {
   // ------------------------------------------------------------ export --
 
   return {
+    getPolicy,
     getTickerIdentity,
     getTickerIdentities,
     getTickerCategory,
