@@ -279,7 +279,8 @@ export const createTraderCombo = async (
 }
 
 export const deleteFollowedEnv = async (
-  userId: number, envId: number,
+  userId: number,
+  envId: number,
 ) => {
   const envFollower = await traderEnvFollowerModel.getByUK(userId, envId)
   if (!envFollower) return
@@ -287,6 +288,23 @@ export const deleteFollowedEnv = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await traderEnvFollowerModel.destroy(userId, envId, transaction)
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const deleteFollowedCombo = async (
+  userId: number,
+  comboId: number,
+) => {
+  const comboFollower = await traderComboFollowerModel.getByUK(userId, comboId)
+  if (!comboFollower) return
+
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await traderComboFollowerModel.destroy(userId, comboId, transaction)
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()

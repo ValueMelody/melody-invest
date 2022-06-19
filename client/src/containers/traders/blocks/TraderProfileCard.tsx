@@ -39,12 +39,14 @@ const TraderProfileCard = ({
   isActive = false,
   simple = false,
   disabled = false,
+  disabledUnwatch = false,
   onClick,
 }: {
   profile: interfaces.response.TraderProfile | null;
   isActive?: boolean,
   simple?: boolean;
   disabled?: boolean;
+  disabledUnwatch?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   // ------------------------------------------------------------ State --
@@ -68,7 +70,10 @@ const TraderProfileCard = ({
   const traderId = trader?.id || null
 
   const traderEnv = getTraderEnv(traderEnvId)
+
   const isWatched = !!user.userType && !!traderId && user.userTraderIds.includes(traderId)
+  const showToggle = !isWatched || !disabledUnwatch
+
   const isClickable = !!onClick && !disabled
 
   // ------------------------------------------------------------ Handler --
@@ -88,7 +93,7 @@ const TraderProfileCard = ({
       })
       return
     }
-    if (!user.canFollowTrader) {
+    if (!user.canFollowTrader && !isWatched) {
       addMessage({
         id: Math.random(),
         title: localeTool.t('permission.limited'),
@@ -140,7 +145,7 @@ const TraderProfileCard = ({
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
           </h5>
         </div>
-        {!!user.userType && !simple && (
+        {!!user.userType && !simple && showToggle && (
           <WatchButton
             isWatched={isWatched}
             onToggle={handleToggleWatch}

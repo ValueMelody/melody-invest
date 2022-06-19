@@ -126,3 +126,25 @@ import parseTool from 'tools/parse'
 // bad
 import parseTool from '../../../tools/parse'
 ```
+
+## Optional default param value must be default to false/null
+
+```
+// good
+const Label = ({
+  disabled = false
+}: {
+  disabled?: boolean;
+})
+
+const isPositive = (allowZero = false) => {}
+
+// bad
+const Label = ({
+  enabled = true
+}: {
+  enabled?: boolean;
+})
+
+const isPositive = (onlyPositive = true) => {}
+```

@@ -5,6 +5,7 @@ import * as crudTraders from 'services/crudTraders'
 import * as errorEnum from 'enums/error'
 import * as authMiddleware from 'middlewares/auth'
 import * as accessMiddleware from 'middlewares/access'
+import * as verifyTool from 'tools/verify'
 
 const tradersRouter = Router()
 export default tradersRouter
@@ -16,7 +17,10 @@ const validateGetProfileParams = (id: number, accessCode: string) => {
   if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
 }
 
-const validateCreateProfileParams = (traderId: number, traderPattern: interfaces.traderPatternModel.Create) => {
+const validateCreateProfileParams = (
+  traderId: number,
+  traderPattern: interfaces.traderPatternModel.Create,
+) => {
   if (!traderId || !traderPattern) throw errorEnum.Custom.MissingParams
 }
 
@@ -30,18 +34,6 @@ const validateCreateComboParams = (name: string, traderIds: number[]) => {
   if (!name || !Array.isArray(traderIds) || traderIds.length < 2) throw errorEnum.Custom.MissingParams
   const hasWrongId = traderIds.some((id) => typeof id !== 'number')
   if (hasWrongId) throw errorEnum.Default.Forbidden
-}
-
-const validateTraderId = (traderId: number) => {
-  if (!traderId) throw errorEnum.Default.Forbidden
-}
-
-const validateEnvId = (envId: number) => {
-  if (!envId) throw errorEnum.Default.Forbidden
-}
-
-const validateTickerId = (tickerId: number) => {
-  if (!tickerId) throw errorEnum.Default.Forbidden
 }
 
 const validateBehavior = (behavior: string): interfaces.traderPatternModel.Behavior => {
@@ -83,6 +75,8 @@ tradersRouter.get(
   authMiddleware.normalUser,
   async (req, res) => {
     const comboId = parseInt(req.params.combo_id)
+    if (!verifyTool.isGreaterThanZero(comboId)) throw errorEnum.Default.Forbidden
+
     const comboDetail = await crudTraders.getComboDetail(comboId)
     return res.status(200).send(comboDetail)
   },
@@ -94,6 +88,8 @@ tradersRouter.get(
   accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
+    if (!verifyTool.isGreaterThanZero(envId)) throw errorEnum.Default.Forbidden
+
     const tops = await crudTraders.getEnvDetail(envId)
     return res.status(200).send(tops)
   },
@@ -105,6 +101,8 @@ tradersRouter.get(
   accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
+    if (!verifyTool.isGreaterThanZero(envId)) throw errorEnum.Default.Forbidden
+
     const behavior = req.params.behavior
     const matchedBahavior = validateBehavior(behavior)
 
@@ -119,8 +117,10 @@ tradersRouter.get(
   accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
+    if (!verifyTool.isGreaterThanZero(envId)) throw errorEnum.Default.Forbidden
+
     const tickerId = parseInt(req.params.ticker_id)
-    validateTickerId(tickerId)
+    if (!verifyTool.isGreaterThanZero(tickerId)) throw errorEnum.Default.Forbidden
 
     const detail = await crudTraders.getTickerDetail(envId, tickerId)
     return res.status(200).send(detail)
@@ -151,7 +151,7 @@ tradersRouter.post(
   accessMiddleware.couldCreateProfile,
   async (req, res) => {
     const traderId = parseInt(req.params.trader_id)
-    validateTraderId(traderId)
+    if (!verifyTool.isGreaterThanZero(traderId)) throw errorEnum.Default.Forbidden
 
     const auth: interfaces.request.Auth = req.body.auth
     await crudTraders.createFollowedTrader(auth.id, traderId)
@@ -199,7 +199,7 @@ tradersRouter.post(
 
 tradersRouter.delete('/profiles/:trader_id', authMiddleware.normalUser, async (req, res) => {
   const traderId = parseInt(req.params.trader_id)
-  validateTraderId(traderId)
+  if (!verifyTool.isGreaterThanZero(traderId)) throw errorEnum.Default.Forbidden
 
   const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.deleteFollowedProfile(auth.id, traderId)
@@ -208,9 +208,18 @@ tradersRouter.delete('/profiles/:trader_id', authMiddleware.normalUser, async (r
 
 tradersRouter.delete('/envs/:env_id', authMiddleware.normalUser, async (req, res) => {
   const envId = parseInt(req.params.env_id)
-  validateEnvId(envId)
+  if (!verifyTool.isGreaterThanZero(envId)) throw errorEnum.Default.Forbidden
 
   const auth: interfaces.request.Auth = req.body.auth
   await crudTraders.deleteFollowedEnv(auth.id, envId)
+  return res.status(204).send()
+})
+
+tradersRouter.delete('/combos/:combo_id', authMiddleware.normalUser, async (req, res) => {
+  const comboId = parseInt(req.params.combo_id)
+  if (!verifyTool.isGreaterThanZero(comboId)) throw errorEnum.Default.Forbidden
+
+  const auth: interfaces.request.Auth = req.body.auth
+  await crudTraders.deleteFollowedCombo(auth.id, comboId)
   return res.status(204).send()
 })

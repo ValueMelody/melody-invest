@@ -3,8 +3,10 @@ import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
+import useTraderRequest from 'requests/useTraderRequest'
 import useCardStyle from 'styles/useCardStyle'
 import useCommonStyle from 'styles/useCommonStyle'
+import WatchButton from '../elements/WatchButton'
 
 const TraderEnvCard = ({
   traderEnv,
@@ -22,7 +24,10 @@ const TraderEnvCard = ({
 
   const { getUser } = useUserState()
   const user = getUser()
-  const disabled = !traderEnv || (
+
+  const { deleteTraderEnv } = useTraderRequest()
+
+  const disabled = traderEnv && (
     !traderEnv.isSystem && !user.accessibleEnvIds.includes(traderEnv.id)
   )
 
@@ -31,6 +36,11 @@ const TraderEnvCard = ({
   const handleClickEnv = () => {
     if (!traderEnv || !onClick) return
     onClick(traderEnv.id)
+  }
+
+  const handleUnfollow = async () => {
+    if (!traderEnv) return
+    await deleteTraderEnv(traderEnv.id)
   }
 
   // ------------------------------------------------------------ UI --
@@ -55,6 +65,9 @@ const TraderEnvCard = ({
                 <vendorTool.ui.Label title={localeTool.t('traderEnv.systemDesc')}>
                   {localeTool.t('common.system')}
                 </vendorTool.ui.Label>
+              )}
+              {disabled && (
+                <WatchButton isWatched onToggle={handleUnfollow} />
               )}
             </div>
           )}

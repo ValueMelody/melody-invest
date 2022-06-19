@@ -3,8 +3,10 @@ import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
+import useTraderRequest from 'requests/useTraderRequest'
 import useCardStyle from 'styles/useCardStyle'
 import useCommonStyle from 'styles/useCommonStyle'
+import WatchButton from '../elements/WatchButton'
 
 const TraderComboCard = ({
   traderCombo,
@@ -22,7 +24,10 @@ const TraderComboCard = ({
 
   const { getUser } = useUserState()
   const user = getUser()
-  const disabled = !traderCombo || (
+
+  const { deleteTraderCombo } = useTraderRequest()
+
+  const disabled = traderCombo && (
     !traderCombo.isSystem && !user.accessibleComboIds.includes(traderCombo.id)
   )
 
@@ -31,6 +36,11 @@ const TraderComboCard = ({
   const handleClickCombo = () => {
     if (!traderCombo || !onClick) return
     onClick(traderCombo.id)
+  }
+
+  const handleUnfollow = async () => {
+    if (!traderCombo) return
+    await deleteTraderCombo(traderCombo.id)
   }
 
   // ------------------------------------------------------------ UI --
@@ -51,6 +61,9 @@ const TraderComboCard = ({
           content={(
             <div className={commonClasses.rowBetween}>
               <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
+              {disabled && (
+                <WatchButton isWatched onToggle={handleUnfollow} />
+              )}
             </div>
           )}
         />
