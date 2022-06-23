@@ -36,12 +36,11 @@ const store: Context = {
 describe('#traderComboCard', () => {
   test('do not render if there is no combo', () => {
     render(
-      <context.Provider value={store}>
-        <TraderComboCard
-          traderCombo={null}
-          isActive
-        />
-      </context.Provider>,
+      <TraderComboCard
+        traderCombo={null}
+        isActive
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.queryByTestId('traderComboCard')
     expect(container).toBeFalsy()
@@ -49,11 +48,10 @@ describe('#traderComboCard', () => {
 
   test('could render', () => {
     render(
-      <context.Provider value={store}>
-        <TraderComboCard
-          traderCombo={traderCombo}
-        />
-      </context.Provider>,
+      <TraderComboCard
+        traderCombo={traderCombo}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container).toBeTruthy()
@@ -69,12 +67,11 @@ describe('#traderComboCard', () => {
 
   test('could render as active', () => {
     render(
-      <context.Provider value={store}>
-        <TraderComboCard
-          traderCombo={traderCombo}
-          isActive
-        />
-      </context.Provider>,
+      <TraderComboCard
+        traderCombo={traderCombo}
+        isActive
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('isActive')
@@ -83,13 +80,12 @@ describe('#traderComboCard', () => {
   test('could render as clickable', () => {
     const onClick = jest.fn()
     render(
-      <context.Provider value={store}>
-        <TraderComboCard
-          traderCombo={traderCombo}
-          isActive
-          onClick={onClick}
-        />
-      </context.Provider>,
+      <TraderComboCard
+        traderCombo={traderCombo}
+        isActive
+        onClick={onClick}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderComboCard')
 
@@ -101,15 +97,14 @@ describe('#traderComboCard', () => {
   test('could render as disabled', () => {
     const onClick = jest.fn()
     render(
-      <context.Provider value={store}>
-        <TraderComboCard
-          traderCombo={{
-            ...traderCombo,
-            id: 234,
-          }}
-          onClick={onClick}
-        />
-      </context.Provider>,
+      <TraderComboCard
+        traderCombo={{
+          ...traderCombo,
+          id: 234,
+        }}
+        onClick={onClick}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('disabled')

@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks'
+import { renderHook } from 'test.utils'
 import useCommonStyle from './useCommonStyle'
 
 describe('#useCommonStyle', () => {

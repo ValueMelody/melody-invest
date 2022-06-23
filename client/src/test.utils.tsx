@@ -2,13 +2,18 @@ import {
   render as defaultRender,
   screen,
   fireEvent,
-  RenderOptions,
 } from '@testing-library/react'
+import {
+  renderHook as defaultRenderHook,
+  act,
+} from '@testing-library/react-hooks'
 import '@testing-library/jest-dom'
 import * as vendorTool from './tools/vendor'
 import * as themeEnum from './enums/theme'
+import { context } from 'context'
+import useStore from 'states/store'
 
-const WithProviders: vendorTool.react.FC = ({ children }) => {
+const WithThemeProvider: vendorTool.react.FC = ({ children }) => {
   return (
       <vendorTool.jss.ThemeProvider theme={themeEnum.theme}>
         {children}
@@ -16,21 +21,75 @@ const WithProviders: vendorTool.react.FC = ({ children }) => {
   )
 }
 
-const Base: vendorTool.react.FC = ({ children }) => {
+const WithStoreProvider = ({
+  children,
+  store,
+}: {
+  children?: vendorTool.react.ReactNode;
+  store?: object;
+}) => {
+  const defaultStore = useStore()
+  return (
+    <context.Provider value={{ ...defaultStore, ...store }}>
+      {children}
+    </context.Provider>
+  )
+}
+
+const InterfaceBase = ({
+  children,
+  store,
+}: {
+  children: vendorTool.react.ReactNode;
+  store?: object;
+}) => {
   return (
     <vendorTool.router.BrowserRouter>
-      <WithProviders>
-        {children}
-      </WithProviders>
+      <WithThemeProvider>
+        <WithStoreProvider store={store}>
+          {children}
+        </WithStoreProvider>
+      </WithThemeProvider>
     </vendorTool.router.BrowserRouter>
   )
 }
 
+interface RenderOptions {
+  wrapperProps?: object;
+}
+
 export const render = (
   ui: vendorTool.react.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => defaultRender(ui, { wrapper: Base, ...options })
+  options?: RenderOptions,
+) => defaultRender(ui, {
+  wrapper: (props) => <InterfaceBase {...props} {...options?.wrapperProps} />,
+})
+
+const HookBase = ({
+  children,
+  store,
+}: {
+  children?: vendorTool.react.ReactNode,
+  store?: object,
+}) => {
+  return (
+    <vendorTool.router.BrowserRouter>
+      <WithStoreProvider store={store}>
+        <WithThemeProvider>
+          {children}
+        </WithThemeProvider>
+      </WithStoreProvider>
+    </vendorTool.router.BrowserRouter>
+  )
+}
+
+export const renderHook = (
+  hook: () => any,
+  options?: RenderOptions,
+) => defaultRenderHook(hook, {
+  wrapper: (props) => <HookBase {...props} {...options?.wrapperProps} />,
+})
 
 export {
-  screen, fireEvent,
+  screen, fireEvent, act,
 }

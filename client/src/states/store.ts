@@ -64,18 +64,6 @@ const useStore = () => {
     })
   }
 
-  const clearMessages = (options?: { onlyErrors: boolean }) => {
-    setCommon((state) => ({
-      ...state,
-      messages: state.messages.filter((message) => {
-        if (options?.onlyErrors) {
-          return message.type === 'success'
-        }
-        return false
-      }),
-    }))
-  }
-
   const cleanUserState = () => {
     setResources((resources) => ({
       ...resources,
@@ -130,7 +118,6 @@ const useStore = () => {
     stopLoading,
     addMessage,
     removeMessage,
-    clearMessages,
     showRequestError,
     resources,
     setResources,

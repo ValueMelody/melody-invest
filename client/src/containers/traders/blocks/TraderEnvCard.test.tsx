@@ -35,12 +35,11 @@ const store: Context = {
 describe('#traderComboCard', () => {
   test('do not render if there is no combo', () => {
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={null}
-          isActive
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={null}
+        isActive
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.queryByTestId('traderEnvCard')
     expect(container).toBeFalsy()
@@ -48,11 +47,10 @@ describe('#traderComboCard', () => {
 
   test('could render', () => {
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={traderEnv}
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={traderEnv}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
@@ -72,15 +70,14 @@ describe('#traderComboCard', () => {
 
   test('could render as system and all tickers', () => {
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={{
-            ...traderEnv,
-            isSystem: true,
-            tickerIds: null,
-          }}
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={{
+          ...traderEnv,
+          isSystem: true,
+          tickerIds: null,
+        }}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
@@ -90,12 +87,11 @@ describe('#traderComboCard', () => {
 
   test('could render as active', () => {
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={traderEnv}
-          isActive
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={traderEnv}
+        isActive
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('isActive')
@@ -104,13 +100,12 @@ describe('#traderComboCard', () => {
   test('could render as clickable', () => {
     const onClick = jest.fn()
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={traderEnv}
-          isActive
-          onClick={onClick}
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={traderEnv}
+        isActive
+        onClick={onClick}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderEnvCard')
 
@@ -122,15 +117,14 @@ describe('#traderComboCard', () => {
   test('could render as disabled', () => {
     const onClick = jest.fn()
     render(
-      <context.Provider value={store}>
-        <TraderEnvCard
-          traderEnv={{
-            ...traderEnv,
-            id: 234,
-          }}
-          onClick={onClick}
-        />
-      </context.Provider>,
+      <TraderEnvCard
+        traderEnv={{
+          ...traderEnv,
+          id: 234,
+        }}
+        onClick={onClick}
+      />,
+      { wrapperProps: { store } },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('disabled')
