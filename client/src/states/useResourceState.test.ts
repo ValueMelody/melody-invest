@@ -1,4 +1,4 @@
-import { renderHook, act } from 'test.utils'
+import { renderHook } from 'test.utils'
 import useResourceState from './useResourceState'
 
 const store = {
