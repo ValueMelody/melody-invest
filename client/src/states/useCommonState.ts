@@ -28,7 +28,6 @@ const useCommonState = () => {
     getMessages,
     addMessage: store.addMessage,
     removeMessage: store.removeMessage,
-    clearMessages: store.clearMessages,
   }
 }
 

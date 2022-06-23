@@ -90,7 +90,6 @@ export interface Context {
   stopLoading: () => void;
   addMessage: (message: Message) => void;
   removeMessage: (id: number) => void;
-  clearMessages: (option?: { onlyErrors: boolean }) => void;
   showRequestError: (err: any) => void;
   cleanUserState: () => void;
   resources: Resources;

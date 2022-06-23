@@ -28,7 +28,7 @@ const Router = () => {
   return (
     <Layout>
       <vendorTool.router.Routes>
-      <vendorTool.router.Route
+        <vendorTool.router.Route
           path={routerEnum.Nav.Terms}
           element={<Terms />}
         />
