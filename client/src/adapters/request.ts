@@ -3,7 +3,7 @@ import * as localeTool from 'tools/locale'
 
 vendorTool.request.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://127.0.0.1:3100'
 
-export const setJWTToken = (token: string) => {
+export const setAuthToken = (token: string) => {
   if (!token) {
     vendorTool.request.defaults.headers.common.Authorization = ''
   } else {

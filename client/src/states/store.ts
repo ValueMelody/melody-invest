@@ -3,11 +3,12 @@ import * as context from 'context'
 import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import * as commonEnum from 'enums/common'
 import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
 
-const jwtToken = storageAdapter.get(storageAdapter.Key.JWTToken)
-if (jwtToken) requestAdapter.setJWTToken(jwtToken)
+const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
+if (authToken) requestAdapter.setAuthToken(authToken)
 
 const useStore = () => {
   const navigate = vendorTool.router.useNavigate()
@@ -21,7 +22,7 @@ const useStore = () => {
   const [resources, setResources] = vendorTool.react.useState<context.Resources>({
     tickerIdentities: {},
     tickerCategories: {},
-    hasLogin: !!jwtToken,
+    hasLogin: !!authToken,
     userTraderIds: [],
     userType: 0,
     userEmail: '',
@@ -91,8 +92,8 @@ const useStore = () => {
       return systemEnvMap
     })
 
-    requestAdapter.setJWTToken('')
-    storageAdapter.remove(storageAdapter.Key.JWTToken)
+    requestAdapter.setAuthToken('')
+    storageAdapter.remove(commonEnum.StorageKey.AuthToken)
   }
 
   const showRequestError = (err: any) => {

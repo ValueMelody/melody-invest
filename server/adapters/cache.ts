@@ -1,5 +1,4 @@
 import Redis from 'ioredis'
-import RedisMock from 'ioredis-mock'
 import ms from 'ms'
 import * as adapterEnum from 'enums/adapter'
 
@@ -7,11 +6,6 @@ let _cache: Redis.Redis | null = null
 
 type Age = '1d' | string
 
-export const initTestConnection = () => {
-  _cache = new RedisMock()
-}
-
-// istanbul ignore next
 export const initConnection = () => {
   _cache = new Redis(adapterEnum.CacheConfig.Connection)
 }

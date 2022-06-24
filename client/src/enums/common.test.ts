@@ -1,5 +1,11 @@
 import * as common from './common'
 
+describe('#StorageKey', () => {
+  test('Have defined storage key', () => {
+    expect(common.StorageKey.AuthToken).toBeDefined()
+  })
+})
+
 describe('#Config', () => {
   test('Have defined config enums', () => {
     expect(common.Config.DefaultEnvId).toBeDefined()

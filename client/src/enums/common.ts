@@ -1,6 +1,10 @@
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 
+export const StorageKey = Object.freeze({
+  AuthToken: 'authToken',
+})
+
 export const Config = Object.freeze({
   OverallEnvId: 0,
   DefaultEnvId: 1,

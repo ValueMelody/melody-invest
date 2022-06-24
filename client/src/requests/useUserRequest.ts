@@ -17,8 +17,8 @@ const useUserRequest = () => {
 
   const storeUserToken = (userToken: interfaces.response.UserToken) => {
     const { jwtToken } = userToken
-    requestAdapter.setJWTToken(jwtToken)
-    storageAdapter.set(storageAdapter.Key.JWTToken, jwtToken)
+    requestAdapter.setAuthToken(jwtToken)
+    storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
     store.setResources((resources) => ({
       ...resources,
       hasLogin: true,

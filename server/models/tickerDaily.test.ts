@@ -5,8 +5,8 @@ import * as cacheTool from 'tools/cache'
 import * as adapterEnum from 'enums/adapter'
 
 beforeAll(async () => {
-  databaseAdapter.initTestConnection()
-  cacheAdapter.initTestConnection()
+  databaseAdapter.initConnection()
+  cacheAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',

@@ -30,7 +30,7 @@ const record2 = {
 }
 
 beforeAll(async () => {
-  databaseAdapter.initTestConnection()
+  databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
