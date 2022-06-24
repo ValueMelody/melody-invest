@@ -1,12 +1,10 @@
-export const Key = Object.freeze({
-  JWTToken: 'jwtToken',
-})
+import * as commonEnum from 'enums/common'
 
-type KeyIndex = keyof typeof Key
-type KeyType = typeof Key[KeyIndex]
+type KeyIndex = keyof typeof commonEnum.StorageKey
+type KeyType = typeof commonEnum.StorageKey[KeyIndex]
 
 export const set = (key: KeyType, value: string) => {
-  window.localStorage.setItem(key, value)
+  localStorage.setItem(key, value)
 }
 
 export const get = (key: KeyType): string | null => {

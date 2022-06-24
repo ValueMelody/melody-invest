@@ -1,7 +1,7 @@
 import * as cache from './cache'
 
 beforeAll(async () => {
-  cache.initTestConnection()
+  cache.initConnection()
 })
 
 afterAll(async () => {

@@ -3,7 +3,7 @@ import * as policy from './policy'
 import * as databaseAdapter from 'adapters/database'
 
 beforeAll(async () => {
-  databaseAdapter.initTestConnection()
+  databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
