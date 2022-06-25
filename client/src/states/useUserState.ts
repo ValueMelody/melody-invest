@@ -12,8 +12,9 @@ const useUserState = () => {
       case constants.User.Type.Pro:
         return constants.User.PlanLimit.Pro
       case constants.User.Type.Basic:
-      default:
         return constants.User.PlanLimit.Basic
+      default:
+        return constants.User.PlanLimit.Guest
     }
   }, [store.resources.userType])
 

@@ -72,6 +72,8 @@ const useStore = () => {
       userEmail: '',
       userType: constants.User.Type.Guest,
       userTraderIds: [],
+      planStartAtUTC: null,
+      planEndAtUTC: null,
     }))
 
     setTraderCombos((combos) => {

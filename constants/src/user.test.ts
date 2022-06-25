@@ -16,6 +16,7 @@ describe('#SubscriptionStatus', () => {
 })
 
 describe('#PlanLimit', () => {
+  expect(user.PlanLimit.Guest).toBeDefined()
   expect(user.PlanLimit.Basic).toBeDefined()
   expect(user.PlanLimit.Pro).toBeDefined()
   expect(user.PlanLimit.Premium).toBeDefined()

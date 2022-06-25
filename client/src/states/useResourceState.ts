@@ -35,7 +35,7 @@ const useResourceState = () => {
 
   const getTickerCategories = (): interfaces.tickerCategoryModel.Record[] => {
     const categories = Object.values(store.resources.tickerCategories)
-    return categories.sort((prev, curr) => curr.id > prev.id ? -1 : 1)
+    return categories
   }
 
   const getOverallTopTraderProfiles = () => {
