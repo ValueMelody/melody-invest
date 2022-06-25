@@ -12,6 +12,11 @@ export const SubscriptionStatus = Object.freeze({
 })
 
 export const PlanLimit = Object.freeze({
+  Guest: {
+    Profiles: 0,
+    Envs: 0,
+    Combos: 0,
+  },
   Basic: {
     Profiles: 5,
     Envs: 0,
