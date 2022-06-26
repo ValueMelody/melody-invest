@@ -17,7 +17,7 @@ const useShowMore = () => {
   // ------------------------------------------------------------ render --
 
   const renderShowMoreButton = () => (
-    <div className={commonClasses.rowAround}>
+    <div className={commonClasses.rowAround} data-testid='showMore'>
       <vendorTool.ui.Button onClick={handleClickShowMore}>
         {localeTool.t('common.showMoreHistory')}
       </vendorTool.ui.Button>
