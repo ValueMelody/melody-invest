@@ -32,25 +32,22 @@ const WithStoreProvider = ({
   children?: vendorTool.react.ReactNode;
   store?: object;
 }) => {
-  const defaultStore = useStore()
-
-  useEffect(() => {
+  const defaultStore = useStore({
     // @ts-ignore
-    if (store.resources) defaultStore.setResources(store.resources)
+    initCommon: store?.common,
     // @ts-ignore
-    if (store.common) defaultStore.setCommon(store.common)
+    initResources: store?.resources,
     // @ts-ignore
-    if (store.traderProfiles) defaultStore.setTraderProfiles(store.traderProfiles)
+    initTraderBehaviors: store?.traderBehaviors,
     // @ts-ignore
-    if (store.traderCombos) defaultStore.setTraderCombos(store.traderCombos)
+    initTraderEnvs: store?.traderEnvs,
     // @ts-ignore
-    if (store.traderEnvs) defaultStore.setTraderEnvs(store.traderEnvs)
+    initTraderCombos: store?.traderCombos,
     // @ts-ignore
-    if (store.traderTickers) defaultStore.setTraderTickers(store.traderTickers)
+    initTraderProfiles: store?.traderProfiles,
     // @ts-ignore
-    if (store.traderBehaviors) defaultStore.setTraderBehaviors(store.traderBehaviors)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    initTraderTickers: store?.traderTickers,
+  })
 
   if (disabled) {
     return (

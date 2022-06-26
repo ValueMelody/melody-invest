@@ -9,11 +9,16 @@ npm start
 # Project Structure:
 ```
 docs -> docs about conventions, syntaxs, and file templates
-  
+  templates -> templates for different module
+  coventions -> conventions for coding styles
+
+scripts -> scripts for maintain project
+  mocks -> mocks for vendor libraries for testing purpose
+
 interfaces -> interfaces for DB models, API requests and responses
-  
+
 constants -> constants shared by both client and server
-  
+
 client -> React.js hosted Frontend site for general customers
   adapters -> wrappers for outer resources
   containers -> React components
@@ -28,7 +33,7 @@ client -> React.js hosted Frontend site for general customers
     shared -> single purpose state sync functions
   tools -> pure helper functions
   index.css -> basic shared styles
-  
+
 server -> Express.js hosted Backend APIs for general requests
   adapters -> wrappers for outer resources
   enums -> constants used for server only
