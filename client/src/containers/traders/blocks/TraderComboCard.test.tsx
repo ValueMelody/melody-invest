@@ -40,7 +40,7 @@ describe('#traderComboCard', () => {
         traderCombo={null}
         isActive
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.queryByTestId('traderComboCard')
     expect(container).toBeFalsy()
@@ -51,7 +51,7 @@ describe('#traderComboCard', () => {
       <TraderComboCard
         traderCombo={traderCombo}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container).toBeTruthy()
@@ -71,7 +71,7 @@ describe('#traderComboCard', () => {
         traderCombo={traderCombo}
         isActive
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('isActive')
@@ -85,7 +85,7 @@ describe('#traderComboCard', () => {
         isActive
         onClick={onClick}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderComboCard')
 
@@ -104,7 +104,7 @@ describe('#traderComboCard', () => {
         }}
         onClick={onClick}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('disabled')

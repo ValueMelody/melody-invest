@@ -30,7 +30,7 @@ describe('#trader combos', () => {
   test('could getTraderCombos', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderCombos()).toStrictEqual([
       store.traderCombos[1],
@@ -41,7 +41,7 @@ describe('#trader combos', () => {
   test('could getTraderCombo', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderCombo(1)).toStrictEqual(store.traderCombos[1])
     expect(result.current.getTraderCombo(2)).toStrictEqual(store.traderCombos[2])
@@ -54,7 +54,7 @@ describe('#trader envs', () => {
   test('could getTraderEnvs', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderEnvs()).toStrictEqual([
       store.traderEnvs[1],
@@ -65,7 +65,7 @@ describe('#trader envs', () => {
   test('could getTraderEnv', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderEnv(1)).toStrictEqual(store.traderEnvs[1])
     expect(result.current.getTraderEnv(2)).toStrictEqual(store.traderEnvs[2])
@@ -78,7 +78,7 @@ describe('#getTraderBehavior', () => {
   test('could getTraderBehavior', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderBehavior(1, '1')).toStrictEqual(store.traderBehaviors['1-1'])
     expect(result.current.getTraderBehavior(1, '2')).toStrictEqual(store.traderBehaviors['1-2'])
@@ -94,7 +94,7 @@ describe('#getTraderTicker', () => {
   test('could getTraderTicker', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderTicker(1, 1)).toStrictEqual(store.traderTickers['1-1'])
     expect(result.current.getTraderTicker(1, 2)).toStrictEqual(store.traderTickers['1-2'])
@@ -110,7 +110,7 @@ describe('#getTraderProfile', () => {
   test('could getTraderProfile', () => {
     const { result } = renderHook(
       useTraderState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTraderProfile(1)).toStrictEqual(store.traderProfiles[1])
     expect(result.current.getTraderProfile(2)).toStrictEqual(store.traderProfiles[2])
