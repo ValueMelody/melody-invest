@@ -103,7 +103,7 @@ const InterfaceBase = ({
   )
 }
 
-export const render = (
+const render = (
   ui: vendorTool.react.ReactElement,
   options?: object,
 ) => defaultRender(ui, {
@@ -132,7 +132,7 @@ const HookBase = ({
   )
 }
 
-export const renderHook = (
+const renderHook = (
   hook: () => any,
   options?: object,
 ) => defaultRenderHook(hook, {
@@ -140,5 +140,9 @@ export const renderHook = (
 })
 
 export {
-  screen, fireEvent, act,
+  render,
+  screen,
+  fireEvent,
+  act,
+  renderHook,
 }
