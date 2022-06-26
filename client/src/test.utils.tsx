@@ -12,7 +12,6 @@ import * as vendorTool from './tools/vendor'
 import * as themeEnum from './enums/theme'
 import { context } from 'context'
 import useStore from 'states/store'
-import { useEffect } from 'react'
 import { MemoryHistory } from 'history'
 
 const WithThemeProvider: vendorTool.react.FC = ({ children }) => {
