@@ -19,7 +19,7 @@ module.exports = {
       ],
       setupFiles: [
         'dotenv/config',
-        '<rootDir>/scripts/test/storageMock',
+        '<rootDir>/scripts/mocks/storageMock',
       ],
       testMatch: ['<rootDir>/client/**/*.test.{ts,tsx}'],
       coveragePathIgnorePatterns: ['/dist/'],
@@ -40,8 +40,8 @@ module.exports = {
       ],
       setupFiles: [
         'dotenv/config',
-        '<rootDir>/scripts/test/cacheMock',
-        '<rootDir>/scripts/test/databaseMock',
+        '<rootDir>/scripts/mocks/cacheMock',
+        '<rootDir>/scripts/mocks/databaseMock',
       ],
       testMatch: ['<rootDir>/server/**/*.test.ts'],
       coveragePathIgnorePatterns: ['/dist/'],

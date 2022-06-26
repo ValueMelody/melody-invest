@@ -7,18 +7,36 @@ import * as commonEnum from 'enums/common'
 import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
 
-const useStore = () => {
+const useStore = (defaultState?: {
+  initCommon?: context.Common;
+  initResources?: context.Resources;
+  initTraderEnvs?: context.TraderEnvs;
+  initTraderCombos?: context.TraderCombos;
+  initTraderProfiles?: context.TraderProfiles;
+  initTraderBehaviors?: context.TraderBehaviors;
+  initTraderTickers?: context.TraderTickers;
+}) => {
+  const {
+    initCommon,
+    initResources,
+    initTraderEnvs,
+    initTraderCombos,
+    initTraderProfiles,
+    initTraderBehaviors,
+    initTraderTickers,
+  } = defaultState || {}
+
   const navigate = vendorTool.router.useNavigate()
 
   const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
 
-  const [common, setCommon] = vendorTool.react.useState<context.Common>({
+  const [common, setCommon] = vendorTool.react.useState<context.Common>(initCommon || {
     isLoading: false,
     messages: [],
     activeChartIndex: 0,
   })
 
-  const [resources, setResources] = vendorTool.react.useState<context.Resources>({
+  const [resources, setResources] = vendorTool.react.useState<context.Resources>(initResources || {
     tickerIdentities: {},
     tickerCategories: {},
     hasLogin: !!authToken,
@@ -32,15 +50,25 @@ const useStore = () => {
     termsPolicy: null,
   })
 
-  const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>({})
+  const [traderProfiles, setTraderProfiles] = vendorTool.react.useState<context.TraderProfiles>(
+    initTraderProfiles || {},
+  )
 
-  const [traderBehaviors, setTraderBehaviors] = vendorTool.react.useState<context.TraderBehaviors>({})
+  const [traderBehaviors, setTraderBehaviors] = vendorTool.react.useState<context.TraderBehaviors>(
+    initTraderBehaviors || {},
+  )
 
-  const [traderTickers, setTraderTickers] = vendorTool.react.useState<context.TraderTickers>({})
+  const [traderTickers, setTraderTickers] = vendorTool.react.useState<context.TraderTickers>(
+    initTraderTickers || {},
+  )
 
-  const [traderEnvs, setTraderEnvs] = vendorTool.react.useState<context.TraderEnvs>({})
+  const [traderEnvs, setTraderEnvs] = vendorTool.react.useState<context.TraderEnvs>(
+    initTraderEnvs || {},
+  )
 
-  const [traderCombos, setTraderCombos] = vendorTool.react.useState<context.TraderCombos>({})
+  const [traderCombos, setTraderCombos] = vendorTool.react.useState<context.TraderCombos>(
+    initTraderCombos || {},
+  )
 
   const startLoading = () => {
     setCommon((state) => ({ ...state, isLoading: true }))
