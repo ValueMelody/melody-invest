@@ -7,11 +7,10 @@ import * as commonEnum from 'enums/common'
 import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
 
-const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
-if (authToken) requestAdapter.setAuthToken(authToken)
-
 const useStore = () => {
   const navigate = vendorTool.router.useNavigate()
+
+  const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
 
   const [common, setCommon] = vendorTool.react.useState<context.Common>({
     isLoading: false,
@@ -115,13 +114,9 @@ const useStore = () => {
   }
 
   return {
+    // states
     common,
     setCommon,
-    startLoading,
-    stopLoading,
-    addMessage,
-    removeMessage,
-    showRequestError,
     resources,
     setResources,
     traderProfiles,
@@ -134,7 +129,14 @@ const useStore = () => {
     setTraderEnvs,
     traderCombos,
     setTraderCombos,
+
+    // helper functions
+    startLoading,
+    stopLoading,
+    addMessage,
+    removeMessage,
     cleanUserState,
+    showRequestError,
   }
 }
 

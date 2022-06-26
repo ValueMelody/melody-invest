@@ -23,7 +23,7 @@ describe('#getPolicy', () => {
   test('could getPolicy', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getPolicy()).toStrictEqual({
       privacyPolicy: store.resources.privacyPolicy,
@@ -36,7 +36,7 @@ describe('#tickerIdentity', () => {
   test('could getTickerIdentities', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTickerIdentities()).toStrictEqual([
       store.resources.tickerIdentities[3],
@@ -48,7 +48,7 @@ describe('#tickerIdentity', () => {
   test('could getTickerIdentity', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTickerIdentity(1)).toStrictEqual(
       store.resources.tickerIdentities[1],
@@ -67,7 +67,7 @@ describe('#tickerCategory', () => {
   test('could getTickerCategories', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTickerCategories()).toStrictEqual([
       store.resources.tickerCategories[1],
@@ -79,7 +79,7 @@ describe('#tickerCategory', () => {
   test('could getTickerCategory', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getTickerCategory(1)).toStrictEqual(
       store.resources.tickerCategories[1],
@@ -98,7 +98,7 @@ describe('#getOverallTopTraderProfiles', () => {
   test('could getOverallTopTraderProfiles', () => {
     const { result } = renderHook(
       useResourceState,
-      { wrapperProps: { store } },
+      { store },
     )
     expect(result.current.getOverallTopTraderProfiles()).toStrictEqual(
       store.resources.overallTopTraderProfiles,

@@ -39,7 +39,7 @@ describe('#traderComboCard', () => {
         traderEnv={null}
         isActive
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.queryByTestId('traderEnvCard')
     expect(container).toBeFalsy()
@@ -50,7 +50,7 @@ describe('#traderComboCard', () => {
       <TraderEnvCard
         traderEnv={traderEnv}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
@@ -77,7 +77,7 @@ describe('#traderComboCard', () => {
           tickerIds: null,
         }}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
@@ -91,7 +91,7 @@ describe('#traderComboCard', () => {
         traderEnv={traderEnv}
         isActive
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('isActive')
@@ -105,7 +105,7 @@ describe('#traderComboCard', () => {
         isActive
         onClick={onClick}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
 
@@ -124,7 +124,7 @@ describe('#traderComboCard', () => {
         }}
         onClick={onClick}
       />,
-      { wrapperProps: { store } },
+      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('disabled')

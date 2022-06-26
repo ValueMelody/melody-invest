@@ -2,11 +2,17 @@ import Router from './containers/Router'
 import { context } from './context'
 import useStore from './states/store'
 import * as themeEnum from './enums/theme'
+import * as commonEnum from './enums/common'
 import * as vendorTool from './tools/vendor'
+import * as storageAdapter from 'adapters/storage'
+import * as requestAdapter from 'adapters/request'
 
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 import 'react-datepicker/dist/react-datepicker.css'
+
+const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
+if (authToken) requestAdapter.setAuthToken(authToken)
 
 const App = () => {
   const store = useStore()
