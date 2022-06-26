@@ -1,5 +1,5 @@
 import { createMemoryHistory } from 'history'
-import { render, renderHook, act } from 'test.utils'
+import { renderHook, act } from 'test.utils'
 import store from './store'
 import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
