@@ -8,12 +8,14 @@ import useUserState from 'states/useUserState'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
+import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 
 const useStyles = vendorTool.jss.createUseStyles(({
   input: {
     marginTop: '2rem !important',
+    display: 'block !important',
   },
   planDate: {
     marginTop: '1rem !important',
@@ -27,13 +29,14 @@ const Setting = () => {
 
   const classes = useStyles()
   const { validatePassword } = usePasswordValidator()
-  const { updateUserPassword } = useUserRequest()
+  const { updateUserPassword, lockUserAccount } = useUserRequest()
   const { getUser, removeUser } = useUserState()
   const { addMessage } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
   const [newPassword, setNewPassword] = vendorTool.react.useState('')
   const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
+  const [showConfirmLock, setShowConfirmLock] = vendorTool.react.useState(false)
 
   const user = getUser()
 
@@ -92,10 +95,32 @@ const Setting = () => {
     removeUser()
   }
 
+  const handleConfirmLock = () => {
+    lockUserAccount()
+  }
+
+  const handleToggleConfirmLock = () => {
+    setShowConfirmLock(!showConfirmLock)
+  }
+
   // ------------------------------------------------------------ UI --
 
   return (
     <div>
+      <ConfirmModal
+        title={localeTool.t('setting.lockAccess')}
+        isOpen={showConfirmLock}
+        onClose={handleToggleConfirmLock}
+      >
+        <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
+        <vendorTool.ui.Button
+          color='blue'
+          className={classes.input}
+          onClick={handleConfirmLock}
+        >
+          {localeTool.t('common.confirm')}
+        </vendorTool.ui.Button>
+      </ConfirmModal>
       <vendorTool.ui.CardGroup>
         <vendorTool.ui.Card>
           <vendorTool.ui.CardContent>
@@ -109,6 +134,12 @@ const Setting = () => {
                 onClick={handleSignOut}
               >
                 {localeTool.t('setting.signOut')}
+              </vendorTool.ui.Button>
+              <vendorTool.ui.Button
+                className={classes.input}
+                onClick={handleToggleConfirmLock}
+              >
+                {localeTool.t('setting.lockAccess')}
               </vendorTool.ui.Button>
             </vendorTool.ui.CardDescription>
           </vendorTool.ui.CardContent>

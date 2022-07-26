@@ -78,7 +78,10 @@
     "setting.planStartAt": "Subscribed since {{date}}",
     "setting.planEndAt": "Subscription ends at {{date}}",
     "setting.unsubscribeDesc": "Your current active plan will still be valid until the end of current cycle after unsubscribe. If you want to unsubscribe, click the Confirm button",
-    "setting.ubsubscribeSuccess": "Your have unsubscribed from our monthly plan",
+    "setting.unsubscribeSuccess": "Your have unsubscribed from our monthly plan",
+    "setting.lockAccess": "Lock Access",
+    "setting.lockAccessDesc": "You can no longer log into your account after access lock, you'll need to reset password in order to re-active your account",
+    "setting.lockAccessSuccess": "Your account access has been locked",
 
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",

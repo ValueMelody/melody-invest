@@ -171,3 +171,7 @@ export const isNearbyQuarter = (
   if (parseInt(month) - 1 === parseInt(fiscalMonth)) return true
   return false
 }
+
+export const toUTCFormat = (date: moment.Moment): string => {
+  return `${date.toISOString().substring(0, 19)}Z`
+}

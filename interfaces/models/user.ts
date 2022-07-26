@@ -27,4 +27,5 @@ export interface Update {
   resetSentAt?: Date | null;
   password?: string;
   type?: number;
+  deletedAt?: Date | null;
 }
