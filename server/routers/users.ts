@@ -97,6 +97,12 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
   return res.status(204).send()
 })
 
+usersRouter.put('/lock', authMiddleware.normalUser, async (req, res) => {
+  const auth: interfaces.request.Auth = req.body.auth
+  await crudUsers.lockAccess(auth.id)
+  return res.status(204).send()
+})
+
 usersRouter.put('/activate', async (req, res) => {
   const token = req.body.token?.trim()
 

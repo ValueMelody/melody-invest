@@ -247,7 +247,26 @@ const useUserRequest = () => {
     }
   }
 
-  // ------------------------------------------------------------ Update --
+  const lockUserAccount = async () => {
+    const endpoint = `${routerEnum.Endpoint.Users}/lock`
+    store.startLoading()
+    try {
+      await requestAdapter.sendPutRequest(endpoint)
+      store.cleanUserState()
+      store.addMessage({
+        id: Math.random(),
+        type: 'success',
+        title: localeTool.t('setting.lockAccessSuccess'),
+      })
+      navigate(routerTool.signInRoute())
+    } catch (e) {
+      store.showRequestError(e)
+    } finally {
+      store.stopLoading()
+    }
+  }
+
+  // ------------------------------------------------------------ Delete --
 
   const cancelUserSubscription = async () => {
     const endpoint = `${routerEnum.Endpoint.Users}/subscription`
@@ -258,7 +277,7 @@ const useUserRequest = () => {
       store.addMessage({
         id: Math.random(),
         type: 'success',
-        title: localeTool.t('setting.ubsubscribeSuccess'),
+        title: localeTool.t('setting.unsubscribeSuccess'),
       })
     } catch (e) {
       store.showRequestError(e)
@@ -278,6 +297,7 @@ const useUserRequest = () => {
     activateUser,
     updateUserPassword,
     resetUserPassword,
+    lockUserAccount,
     cancelUserSubscription,
   }
 }

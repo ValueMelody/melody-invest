@@ -16,6 +16,7 @@ import * as traderComboModel from 'models/traderCombo'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as generateTool from 'tools/generate'
 import * as localeTool from 'tools/locale'
+import * as dateTool from 'tools/date'
 import * as errorEnum from 'enums/error'
 import * as adapterEnum from 'enums/adapter'
 import * as traderLogic from 'logics/trader'
@@ -60,11 +61,19 @@ export const getUserOverall = async (
 
   let planStartAtUTC = null
   let planEndAtUTC = null
+  let userType = user.type
   if (user.type === constants.User.Type.Pro || user.type === constants.User.Type.Premium) {
     let subscription = await userSubscriptionModel.getUserActive(user.id)
     if (!subscription) subscription = await userSubscriptionModel.getUserLatest(user.id)
     planStartAtUTC = subscription?.startAtUTC || null
     planEndAtUTC = subscription?.endAtUTC || null
+
+    const planIsEnd = !!planEndAtUTC && dateTool.toUTCFormat(moment()) > planEndAtUTC
+    if (planIsEnd) {
+      userType = constants.User.Type.Basic
+      planStartAtUTC = null
+      planEndAtUTC = null
+    }
   }
 
   return {
@@ -72,7 +81,7 @@ export const getUserOverall = async (
     traderEnvs,
     traderCombos,
     email: user.email,
-    type: user.type,
+    type: userType,
     planStartAtUTC,
     planEndAtUTC,
   }
@@ -134,7 +143,7 @@ export const createUserToken = async (
 ): Promise<interfaces.response.UserToken> => {
   const encryptedPassword = generateTool.buildEncryptedPassword(password)
   const user = await userModel.getByUK(email)
-  if (!user || user.password !== encryptedPassword) throw errorEnum.Custom.UserNotFound
+  if (!user || user.password !== encryptedPassword || !!user.deletedAt) throw errorEnum.Custom.UserNotFound
   if (user.activationCode) throw errorEnum.Custom.UserNotActivated
 
   const expiresIn = remember ? '30d' : '12h'
@@ -168,7 +177,7 @@ export const createSubscription = async (
       userId,
       subscriptionId,
       status: constants.User.SubscriptionStatus.Active,
-      startAtUTC: `${(new Date()).toISOString().substring(0, 19)}Z`,
+      startAtUTC: dateTool.toUTCFormat(moment()),
     }, transaction)
 
     await transaction.commit()
@@ -203,14 +212,12 @@ export const deleteSubscription = async (
     return total + info.cycles_completed
   }, 0)
   const endTime = moment(subscription.startAtUTC).add(totalCycles, 'months')
-  console.log(endTime)
-  console.log(endTime.toISOString().substring(0, 19))
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     await userSubscriptionModel.update(subscription.id, {
       status: constants.User.SubscriptionStatus.Cancelled,
-      endAtUTC: `${endTime.toISOString().substring(0, 19)}Z`,
+      endAtUTC: dateTool.toUTCFormat(endTime),
     }, transaction)
 
     await transaction.commit()
@@ -279,7 +286,7 @@ export const resetPassword = async (
   if (!user || user.resetCode !== resetCode) return
 
   const encryptedNewPassword = generateTool.buildEncryptedPassword(password)
-  if (user.password === encryptedNewPassword && user.activationCode === null) return
+  if (user.password === encryptedNewPassword && !user.deletedAt && !user.activationCode) return
 
   const transaction = await databaseAdapter.createTransaction()
   try {
@@ -288,6 +295,22 @@ export const resetPassword = async (
       resetCode: null,
       resetSentAt: null,
       activationCode: null,
+      deletedAt: null,
+    }, transaction)
+    await transaction.commit()
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
+}
+
+export const lockAccess = async (
+  userId: number,
+) => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    await userModel.update(userId, {
+      deletedAt: new Date(),
     }, transaction)
     await transaction.commit()
   } catch (error) {

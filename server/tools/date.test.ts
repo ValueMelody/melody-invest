@@ -1,3 +1,5 @@
+import moment from 'moment'
+import 'moment-timezone'
 import * as date from './date'
 
 describe('#getInitialDate', () => {
@@ -237,5 +239,12 @@ describe('#isNearbyQuarter', () => {
     expect(date.isNearbyQuarter('2022-12-15', '2022-12')).toEqual(true)
     expect(date.isNearbyQuarter('2023-01-31', '2022-12')).toEqual(true)
     expect(date.isNearbyQuarter('2023-02-01', '2022-12')).toEqual(false)
+  })
+})
+
+describe('#toUTCFormat', () => {
+  test('could generate UTC format', () => {
+    const time = moment.tz('2010-01-02 12:00:00', 'America/Los_Angeles')
+    expect(date.toUTCFormat(time)).toEqual('2010-01-02T20:00:00Z')
   })
 })
