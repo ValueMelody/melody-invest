@@ -112,16 +112,14 @@ const Setting = () => {
         isOpen={showConfirmLock}
         onClose={handleToggleConfirmLock}
       >
-        <>
-          <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
-          <vendorTool.ui.Button
-            color='blue'
-            className={classes.input}
-            onClick={handleConfirmLock}
-          >
-            {localeTool.t('common.confirm')}
-          </vendorTool.ui.Button>
-        </>
+        <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
+        <vendorTool.ui.Button
+          color='blue'
+          className={classes.input}
+          onClick={handleConfirmLock}
+        >
+          {localeTool.t('common.confirm')}
+        </vendorTool.ui.Button>
       </ConfirmModal>
       <vendorTool.ui.CardGroup>
         <vendorTool.ui.Card>

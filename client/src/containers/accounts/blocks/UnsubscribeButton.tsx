@@ -43,16 +43,14 @@ const UnsubscribeButton = () => {
         isOpen={showModal}
         onClose={handleCloseModal}
       >
-        <>
-          <h4>{localeTool.t('setting.unsubscribeDesc')}</h4>
-          <vendorTool.ui.Button
-            color='blue'
-            className={classes.input}
-            onClick={handleConfirmUnsubscribe}
-          >
-            {localeTool.t('common.confirm')}
-          </vendorTool.ui.Button>
-        </>
+        <h4>{localeTool.t('setting.unsubscribeDesc')}</h4>
+        <vendorTool.ui.Button
+          color='blue'
+          className={classes.input}
+          onClick={handleConfirmUnsubscribe}
+        >
+          {localeTool.t('common.confirm')}
+        </vendorTool.ui.Button>
       </ConfirmModal>
       <vendorTool.ui.Button
         className={classes.input}
