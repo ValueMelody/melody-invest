@@ -28,7 +28,7 @@ h4, .card > .content > .header {
   font-weight: 500 !important;
 }
 
-h5 {
+h5, a {
   font-size: 0.95rem !important;
   font-weight: 500 !important;
 }
