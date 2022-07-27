@@ -46,6 +46,7 @@
 
     "page.privacyPolicy": "Privacy Policy",
     "page.termsPolicy": "Terms and Conditions",
+    "page.disclaimer": "Disclaimer: any information contained in this website is generated under assumptions which can be inaccurate and misleading. You should not rely on any information contained in this website.",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
