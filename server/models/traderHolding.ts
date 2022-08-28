@@ -12,6 +12,7 @@ const convertToRecord = (
     ...raw,
     totalValue: parseInt(raw.totalValue),
     totalCash: parseInt(raw.totalCash),
+    items: typeof raw.items === 'string' ? JSON.parse(raw.items) : raw.items,
   }
 }
 
