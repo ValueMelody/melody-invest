@@ -22,15 +22,19 @@ const buildComboEntities = async (
     uniqueDates, traderIds, holdingsByTraders,
   )
 
-  const aggregatedHoldings = Object.keys(holdingsByDates)
+  // istanbul ignore next
+  const availableDates = Object
+    .keys(holdingsByDates)
+    .sort((prev, curr) => curr < prev ? -1 : 1)
+
+  const aggregatedHoldings = availableDates
     .map((date) => holdingLogic.mergeTraderHoldingsByDate(
       date, holdingsByDates[date],
     ))
-  const sortedHoldings = aggregatedHoldings.sort((prev, curr) => curr.date < prev.date ? -1 : 1)
 
   return {
     traderProfiles: profiles,
-    holdings: sortedHoldings,
+    holdings: aggregatedHoldings,
   }
 }
 

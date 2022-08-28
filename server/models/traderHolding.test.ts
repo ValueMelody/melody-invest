@@ -55,7 +55,7 @@ describe('#getLatest', () => {
     expect(latest2?.totalValue).toBe(105000)
     expect(latest2?.totalCash).toBe(100000)
 
-    const latest3 = await traderHolding.getLatest(3)
+    const latest3 = await traderHolding.getLatest(4)
     expect(latest3).toBeNull()
   })
 })
@@ -84,7 +84,7 @@ describe('#getAllByTraderIds', () => {
     expect(all2[0]?.id).toBe('5ed6d4c8-c159-4588-b966-364a4bdbd3a3')
     const all3 = await traderHolding.getAllByTraderIds([1, 2])
     expect(all3.length).toBe(3)
-    const all4 = await traderHolding.getAllByTraderIds([3])
+    const all4 = await traderHolding.getAllByTraderIds([4])
     expect(all4.length).toBe(0)
   })
 })
@@ -98,7 +98,7 @@ describe('#getAll', () => {
     const all2 = await traderHolding.getAll(2)
     expect(all2.length).toBe(1)
     expect(all2[0]?.id).toBe('5ed6d4c8-c159-4588-b966-364a4bdbd3a3')
-    const all3 = await traderHolding.getAll(3)
+    const all3 = await traderHolding.getAll(4)
     expect(all3.length).toBe(0)
   })
 })
@@ -106,7 +106,7 @@ describe('#getAll', () => {
 describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await traderHolding.create({
+    const data = {
       date: '2022-01-02',
       traderId: 3,
       totalValue: 4000,
@@ -114,14 +114,13 @@ describe('#create', () => {
       items: [
         { shares: 1000, tickerId: 1, splitMultiplier: 2, value: 3000 },
       ],
-    }, transaction)
+    }
+    const created = await traderHolding.create(data, transaction)
     await transaction.commit()
-    expect(created?.traderId).toBe(3)
-    expect(created?.totalValue).toBe(4000)
-    expect(created?.totalCash).toBe(1000)
-    expect(created.items).toBe(JSON.stringify([
-      { shares: 1000, tickerId: 1, splitMultiplier: 2, value: 3000 },
-    ]))
+    expect(created?.traderId).toBe(data.traderId)
+    expect(created?.totalValue).toBe(data.totalValue)
+    expect(created?.totalCash).toBe(data.totalCash)
+    expect(created.items).toStrictEqual(data.items)
   })
 })
 
