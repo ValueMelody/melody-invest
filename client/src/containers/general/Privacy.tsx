@@ -27,6 +27,7 @@ const Privacy = () => {
         {localeTool.t('page.privacyPolicy')}
       </h2>
       <vendorTool.ui.TextArea
+        data-testid='privacy-content'
         className={contentClasses.contentTextarea}
         disabled
         value={policy.privacyPolicy || ''}

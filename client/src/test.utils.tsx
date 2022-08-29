@@ -2,6 +2,7 @@ import {
   render as defaultRender,
   screen,
   fireEvent,
+  waitFor,
 } from '@testing-library/react'
 import {
   renderHook as defaultRenderHook,
@@ -144,5 +145,6 @@ export {
   screen,
   fireEvent,
   act,
+  waitFor,
   renderHook,
 }
