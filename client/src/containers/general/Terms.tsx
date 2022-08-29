@@ -27,6 +27,7 @@ const Terms = () => {
         {localeTool.t('page.termsPolicy')}
       </h2>
       <vendorTool.ui.TextArea
+        data-testid='terms-content'
         className={contentClasses.contentTextarea}
         disabled
         value={policy.termsPolicy || ''}
