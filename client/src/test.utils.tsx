@@ -89,12 +89,14 @@ const WithRouterProvider = ({
 const InterfaceBase = ({
   children,
   store,
+  history,
 }: {
   children: vendorTool.react.ReactNode;
   store?: object;
+  history?: MemoryHistory;
 }) => {
   return (
-    <WithRouterProvider>
+    <WithRouterProvider history={history}>
       <WithThemeProvider>
         <WithStoreProvider store={store}>
           {children}

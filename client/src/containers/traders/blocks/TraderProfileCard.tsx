@@ -118,6 +118,7 @@ const TraderProfileCard = ({
 
   return (
     <vendorTool.ui.Segment
+      data-testid='traderProfileCard'
       className={vendorTool.classNames(commonClasses.rowAround, classes.pattern, {
         [commonClasses.cursorClickable]: isClickable,
         [cardClasses.disabled]: disabled,

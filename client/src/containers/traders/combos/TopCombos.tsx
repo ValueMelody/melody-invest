@@ -10,7 +10,7 @@ import useTraderStyle from 'styles/useTraderStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
-import ComboProfiles from 'containers/traders/elements/ComboProfiles'
+import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 

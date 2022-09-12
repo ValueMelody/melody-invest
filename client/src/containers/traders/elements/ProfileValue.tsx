@@ -36,6 +36,7 @@ const ProfileValue = ({
 
   return (
     <div
+      data-testid='profileValue'
       className={vendorTool.classNames(
         commonClasses.rowStart,
         classes.container,

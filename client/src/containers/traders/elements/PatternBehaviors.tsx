@@ -32,8 +32,10 @@ const PatternBehaviors = ({
     ...constants.Behavior.PreferenceBehaviors,
   ]
 
-  const activeBuyBehaviors = constants.Behavior.BuyBehaviors.filter((key) => pattern[key] !== null)
-  const activeSellBehaviors = constants.Behavior.SellBehaviors.filter((key) => pattern[key] !== null)
+  const activeBuyBehaviors = constants.Behavior.BuyBehaviors
+    .filter((key) => pattern[key] !== null && pattern[key] !== undefined)
+  const activeSellBehaviors = constants.Behavior.SellBehaviors
+    .filter((key) => pattern[key] !== null && pattern[key] !== undefined)
 
   // ------------------------------------------------------------ Handler --
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
