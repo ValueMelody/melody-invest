@@ -72,10 +72,13 @@ const BehaviorEditor = ({
   }
 
   return (
-    <div className={vendorTool.classNames(
-      commonClasses.columnStart,
-      classes.container,
-    )}>
+    <div
+      data-testid='behaviorEditor'
+      className={vendorTool.classNames(
+        commonClasses.columnStart,
+        classes.container,
+      )}
+    >
       <div className={commonClasses.rowStart}>
         <BehaviorLabel
           behavior={behavior}

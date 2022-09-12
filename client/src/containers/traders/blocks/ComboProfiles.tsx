@@ -4,7 +4,7 @@ import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
-import WeightChart from './WeightChart'
+import WeightChart from '../elements/WeightChart'
 
 interface ProfileWithEnv {
   profile: interfaces.response.TraderProfile | null;

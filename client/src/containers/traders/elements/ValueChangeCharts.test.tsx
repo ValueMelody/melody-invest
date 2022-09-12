@@ -70,5 +70,17 @@ describe('#ValueChangeCharts', () => {
     )
 
     expect(container).toBeEmptyDOMElement()
+
+    const { container: container1 } = render(
+      <ValueChangeCharts
+        oneDecadeTrends={null}
+        oneYearTrends={null}
+        totalValue={50}
+        activeChartIndex={1}
+        onChangeChart={() => {}}
+      />,
+    )
+
+    expect(container1).toBeEmptyDOMElement()
   })
 })

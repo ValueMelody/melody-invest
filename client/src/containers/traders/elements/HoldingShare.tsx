@@ -44,8 +44,8 @@ const HoldingShare = ({
 
   return (
     <vendorTool.ui.Label
+      data-testid='holdingShare'
       basic
-      key={holdingItem.tickerId}
       title={tickerIdentity?.name}
       className={classes.ticker}
     >
