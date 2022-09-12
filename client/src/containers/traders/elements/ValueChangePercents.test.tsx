@@ -1,4 +1,4 @@
-import { render, screen, fireEvent } from 'test.utils'
+import { render, screen } from 'test.utils'
 import ValueChangePercents from './ValueChangePercents'
 import * as localeTool from 'tools/locale'
 

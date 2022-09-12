@@ -1,5 +1,5 @@
 import ComboProfiles from './ComboProfiles'
-import { fireEvent, render, screen } from 'test.utils'
+import { render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
 
 describe('#ComboProfiles', () => {

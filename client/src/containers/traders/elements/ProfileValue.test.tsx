@@ -65,6 +65,4 @@ describe('#ProfileValue', () => {
     expect(screen.queryByTestId('valueDiffer')).toBeFalsy()
     expect(screen.queryByTestId('100.00%')).toBeFalsy()
   })
-
-  
 })
