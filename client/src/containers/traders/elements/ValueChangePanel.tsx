@@ -33,8 +33,8 @@ const ValueChangePanel = ({
   totalValue: number | null;
   activeChartIndex: number;
   onChangeChart: (index: number) => void;
-  showPercents: boolean;
-  showCharts: boolean;
+  showPercents?: boolean;
+  showCharts?: boolean;
 }) => {
   // ------------------------------------------------------------ State --
 

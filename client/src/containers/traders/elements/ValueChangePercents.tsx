@@ -47,7 +47,7 @@ const ValueChangePercents = ({
   }
 
   return (
-    <vendorTool.ui.Menu compact>
+    <vendorTool.ui.Menu compact data-testid='valueChangePercents'>
       <vendorTool.ui.Menu.Item className={gainCellClass}>
         <vendorTool.ui.Header as='h6'>
           {localeTool.t('gain.yearly')}:

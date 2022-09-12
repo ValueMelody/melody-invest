@@ -50,10 +50,13 @@ const ValueChangeCharts = ({
   if (!totalValue || hasNoTrends) return null
 
   return (
-    <section className={vendorTool.classNames(
-      classes.root,
-      commonClasses.columnCenter,
-    )}>
+    <section
+      data-testid='valueChangeCharts'
+      className={vendorTool.classNames(
+        classes.root,
+        commonClasses.columnCenter,
+      )}
+    >
       <div className={commonClasses.rowAround}>
         <TrendChart
           data={activeChartIndex === 0 ? decadeTrends : yearTrends}
