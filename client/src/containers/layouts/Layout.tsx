@@ -80,6 +80,7 @@ const Layout: vendorTool.react.FunctionComponent = ({
         <div className={classes.messages}>
           {messages.map((message) => (
             <vendorTool.ui.Message
+              data-testid='message'
               key={message.id}
               info={message.type === 'info'}
               success={message.type === 'success'}

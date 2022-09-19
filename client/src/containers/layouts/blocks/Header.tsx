@@ -40,10 +40,13 @@ const Header = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <header className={vendorTool.classNames(
-      commonClasses.rowBetween,
-      classes.header,
-    )}>
+    <header
+      data-testid='header'
+      className={vendorTool.classNames(
+        commonClasses.rowBetween,
+        classes.header,
+      )}
+    >
       <nav>
         <HeaderLink
           route={routerTool.topProfilesRoute()}
