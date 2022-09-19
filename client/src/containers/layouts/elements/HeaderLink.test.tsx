@@ -1,10 +1,8 @@
 import HeaderLink from './HeaderLink'
 import { createMemoryHistory } from 'history'
 import { fireEvent, render, screen } from 'test.utils'
-import * as localeTool from 'tools/locale'
-import * as routerTool from 'tools/router'
 
-describe('#BehaviorEditor', () => {
+describe('#HeaderLink', () => {
   test('could render Footer', () => {
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
