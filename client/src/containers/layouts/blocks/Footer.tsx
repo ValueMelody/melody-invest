@@ -33,10 +33,13 @@ const Footer = () => {
   // ------------------------------------------------------------ UI -
 
   return (
-    <footer className={vendorTool.classNames(
-      classes.footer,
-      commonClasses.columnStart,
-    )}>
+    <footer
+      data-testid='footer'
+      className={vendorTool.classNames(
+        classes.footer,
+        commonClasses.columnStart,
+      )}
+    >
       <h5>{localeTool.t('page.disclaimer')}</h5>
       <div className={vendorTool.classNames(
         classes.links,
