@@ -150,6 +150,7 @@ const SignUp = () => {
         </div>
         <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
+            data-testid='signUpButton'
             type='submit'
             color='blue'
             disabled={!email || !password || !retypePassword || !isConfirmed}
@@ -159,6 +160,7 @@ const SignUp = () => {
         </div>
       </form>
       <vendorTool.ui.Button
+        data-testid='signInButton'
         className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'

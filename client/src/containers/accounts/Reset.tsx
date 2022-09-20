@@ -33,7 +33,7 @@ const Reset = () => {
   const [password, setPassword] = vendorTool.react.useState('')
   const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
 
-  const resetCode = params.code
+  const resetCode = params.code || ''
 
   // ------------------------------------------------------------ Handler --
 
@@ -63,7 +63,6 @@ const Reset = () => {
     e: vendorTool.react.FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    if (!resetCode) return
     const parsedEmail = email.trim().toLowerCase()
     const parsedPassword = password.trim()
     const parsedRetypePasswod = retypePassword.trim()
@@ -134,6 +133,7 @@ const Reset = () => {
         </div>
       </form>
       <vendorTool.ui.Button
+        data-testid='loginButton'
         className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'

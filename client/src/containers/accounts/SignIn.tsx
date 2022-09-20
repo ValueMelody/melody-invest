@@ -119,6 +119,7 @@ const SignIn = () => {
         </div>
         <div className={commonClasses.rowAround}>
           <vendorTool.ui.Button
+            data-testid='signInButton'
             type='submit'
             color='blue'
             disabled={!email || !password}
@@ -130,6 +131,7 @@ const SignIn = () => {
       <div className={accountClasses.row}>
         <div className={commonClasses.columnCenter}>
           <vendorTool.ui.Button
+            data-testid='signUpButton'
             className={accountClasses.routerButton}
             icon='right arrow'
             labelPosition='right'
@@ -137,6 +139,7 @@ const SignIn = () => {
             onClick={handleClickSignUp}
           />
           <vendorTool.ui.Button
+            data-testid='forgotButton'
             className={classes.forgotButton}
             icon='right arrow'
             labelPosition='right'
