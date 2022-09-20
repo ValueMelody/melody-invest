@@ -5,6 +5,11 @@ import * as databaseAdapter from 'adapters/database'
 
 const TableName = adapterEnum.DatabaseTable.TraderHolding
 
+// istanbul ignore next
+const parseItems = (
+  items: string | interfaces.traderHoldingModel.Item[],
+) => typeof items === 'string' ? JSON.parse(items) : items
+
 const convertToRecord = (
   raw: interfaces.traderHoldingModel.Raw,
 ): interfaces.traderHoldingModel.Record => {
@@ -12,7 +17,7 @@ const convertToRecord = (
     ...raw,
     totalValue: parseInt(raw.totalValue),
     totalCash: parseInt(raw.totalCash),
-    items: typeof raw.items === 'string' ? JSON.parse(raw.items) : raw.items,
+    items: parseItems(raw.items),
   }
 }
 
