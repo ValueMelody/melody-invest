@@ -27,12 +27,7 @@ interface Find {
   orderBy?: OrderBy[];
   limit?: number;
   select?: string[];
-  leftJoin?: Join;
   join?: Join;
-  groupBy?: string[];
-  groupByRaw?: string;
-  max?: string;
-  distinct?: string;
   distinctOn?: string;
 }
 
@@ -70,6 +65,7 @@ export const _initTestConnection = () => {
   _db = db.adapters.createKnex(0)
 }
 
+// istanbul ignore next
 export const initConnection = () => {
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,
@@ -89,23 +85,13 @@ const find = async ({
   orderBy = [{ column: 'id', order: 'asc' }],
   limit,
   select = ['*'],
-  leftJoin,
   join,
-  groupBy,
-  max,
-  distinct,
   distinctOn,
 }: Find): Promise<any[] | null> => {
   const db = getConnection()
   const query = db.select(...select).from(tableName)
 
-  if (max) query.max(max)
-
-  if (distinct) query.distinct(distinct)
-
   if (distinctOn) query.distinctOn(distinctOn)
-
-  if (leftJoin) query.leftJoin(leftJoin.joinTable, leftJoin.foreignKey, leftJoin.joinKey)
 
   if (join) query.join(join.joinTable, join.foreignKey, join.joinKey)
 
@@ -121,8 +107,6 @@ const find = async ({
       }
     })
   }
-
-  if (groupBy) query.groupBy(...groupBy)
 
   if (orderBy) query.orderBy(orderBy)
 
@@ -157,14 +141,18 @@ export const create = async ({
   transaction,
 }: Create) => {
   const db = getConnection()
-  const record = await db
-    .table(tableName)
-    .transacting(transaction)
-    .clone()
-    .insert(values)
-    .returning('*')
-  if (!record || record?.length !== 1) throw errorEnum.Custom.CreationFailed
-  return record[0]
+  try {
+    const record = await db
+      .table(tableName)
+      .transacting(transaction)
+      .clone()
+      .insert(values)
+      .returning('*')
+    return record[0]
+  } catch (e) {
+    await transaction.rollback()
+    throw errorEnum.Custom.CreationFailed
+  }
 }
 
 export const update = async ({
@@ -196,10 +184,18 @@ export const update = async ({
     }
   })
 
-  const records = await query
+  try {
+    const records = await query
 
-  if (!records || records.length === 0) throw errorEnum.Custom.UpdationFailed
-  return records
+    if (!records || records.length === 0) {
+      await transaction.rollback()
+      throw errorEnum.Custom.UpdationFailed
+    }
+    return records
+  } catch (e) {
+    await transaction.rollback()
+    throw errorEnum.Custom.UpdationFailed
+  }
 }
 
 export const destroy = async ({
