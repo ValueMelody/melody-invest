@@ -118,6 +118,8 @@ describe('#pickBehaviorValues', () => {
       { priceDailyDecreaseBuy: 1 },
     ).length).toBe(1)
   })
+
+  test.todo('could handle case when there is no subValues')
 })
 
 describe('#pickRandomBehaviorValue', () => {
