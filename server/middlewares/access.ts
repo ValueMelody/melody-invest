@@ -14,8 +14,9 @@ const getLimits = (userType: number) => {
     case constants.User.Type.Pro:
       return constants.User.PlanLimit.Pro
     case constants.User.Type.Basic:
-    default:
       return constants.User.PlanLimit.Basic
+    default:
+      return constants.User.PlanLimit.Guest
   }
 }
 
@@ -70,7 +71,7 @@ export const couldCreateProfile = async (
 export const couldAccessEnv = async (
   req: Request, res: Response, next: NextFunction,
 ) => {
-  const envId = parseInt(req.params.env_id)
+  const envId = parseInt(req.params?.env_id)
   if (!envId) throw errorEnum.Dev.WrongMiddleware
 
   const env = await traderEnvModel.getByPK(envId)
@@ -94,7 +95,7 @@ export const couldAccessEnv = async (
 export const couldAccessCombo = async (
   req: Request, res: Response, next: NextFunction,
 ) => {
-  const comboId = parseInt(req.params.combo_id)
+  const comboId = parseInt(req.params?.combo_id)
   if (!comboId) throw errorEnum.Dev.WrongMiddleware
 
   const auth: interfaces.request.Auth = req.body.auth
@@ -111,7 +112,7 @@ export const couldAccessCombo = async (
   next()
 }
 
-export const couldAccessTraders = async (
+export const couldAccessProfiles = async (
   req: Request, res: Response, next: NextFunction,
 ) => {
   const traderIds: number[] = req.body?.traderIds

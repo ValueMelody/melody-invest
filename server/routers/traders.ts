@@ -180,7 +180,7 @@ tradersRouter.post(
   '/combos',
   authMiddleware.normalUser,
   accessMiddleware.couldCreateCombo,
-  accessMiddleware.couldAccessTraders,
+  accessMiddleware.couldAccessProfiles,
   async (req, res) => {
     const { name, traderIds }: interfaces.request.TraderComboCreation = req.body
     const parsedName = name?.trim()
