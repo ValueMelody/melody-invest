@@ -87,7 +87,7 @@ export const getUserOverall = async (
   }
 }
 
-export const generateActivationEmail = async (
+const generateActivationEmail = async (
   user: interfaces.userModel.Record,
   transaction: Knex.Transaction,
 ) => {
