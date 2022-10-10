@@ -5,6 +5,15 @@ import * as databaseAdapter from 'adapters/database'
 
 const TableName = adapterEnum.DatabaseTable.Email
 
+export const getAll = async (): Promise<
+  interfaces.emailModel.Record[]
+> => {
+  const emails = await databaseAdapter.findAll({
+    tableName: TableName,
+  })
+  return emails
+}
+
 export const create = async (
   values: interfaces.emailModel.Create,
   transaction: Knex.Transaction,
