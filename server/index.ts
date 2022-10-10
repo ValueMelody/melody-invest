@@ -14,6 +14,7 @@ const app = express()
 export default app
 
 const port = adapterEnum.HostConfig.ServerPort || 3001
+const host = adapterEnum.HostConfig.ServerHost || '127.0.0.1'
 
 app.use(cors())
 app.use(express.json())
@@ -37,7 +38,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 try {
-  app.listen(port, (): void => {
+  app.listen(port, host, (): void => {
     console.info(`Connected successfully on port ${port}`)
   })
 } catch (error) {

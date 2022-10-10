@@ -41,8 +41,8 @@
     "compile": "npm run compile --workspace=constants",
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
-    "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Projects/Backup/melody.bak",
-    "database:restore": "pg_restore -d melody -U admin ~/Projects/Backup/melody.bak"
+    "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Backup/melody.bak",
+    "database:restore": "pg_restore -d melody -U admin ~/Backup/melody.bak"
   },
   "devDependencies": {
     "@types/jest": "^27.4.1",
