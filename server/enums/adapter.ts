@@ -68,6 +68,7 @@ export const HostConfig = Object.freeze({
   ClientHost: process.env.CLIENT_HOST!,
   ClientType: process.env.CLIENT_TYPE!,
   ServerPort: Number(process.env.SERVER_PORT!),
+  ServerHost: process.env.SERVER_HOST!,
   TokenSecret: process.env.TOKEN_SECRET!,
 })
 

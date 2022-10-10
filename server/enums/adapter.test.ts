@@ -83,6 +83,7 @@ describe('#HostConfig', () => {
       ClientHost: '127.0.0.1:3099',
       ClientType: 'http',
       ServerPort: 3001,
+      ServerHost: '127.0.0.1',
       TokenSecret: '123',
     })
   })
