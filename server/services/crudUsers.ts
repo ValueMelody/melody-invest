@@ -102,7 +102,8 @@ const generateActivationEmail = async (
 }
 
 export const createUser = async (
-  email: string, password: string,
+  email: string,
+  password: string,
 ) => {
   let user = await userModel.getByUK(email)
 
@@ -110,6 +111,7 @@ export const createUser = async (
   try {
     if (user && user.activationCode) {
       user = await userModel.update(user.id, {
+        password: generateTool.buildEncryptedPassword(password),
         activationCode: generateTool.buildAccessCode(),
         activationSentAt: new Date(),
       }, transaction)

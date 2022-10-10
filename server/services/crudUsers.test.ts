@@ -51,12 +51,56 @@ describe('#createUser', () => {
     expect(user?.activationSentAt).toBeTruthy()
 
     const emails = await emailModel.getAll()
-    const email = emails[emails.length - 1]
+    const email = emails[0]
 
     expect(email.sendTo).toBe(user!.email)
     expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
     expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
     expect(email.status).toBe(constants.Email.Status.Pending)
     expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
+  })
+
+  test('could resend activation', async () => {
+    const emailAddr = 'a@email.com'
+    const password = 'abcde123'
+    const returned = await crudUsers.createUser(emailAddr, password)
+
+    const user = await userModel.getByUK(emailAddr)
+    expect(returned).toStrictEqual(user)
+
+    expect(user?.email).toBe(emailAddr)
+    expect(user?.password).toBe(generateTool.buildEncryptedPassword(password))
+    expect(user?.type).toBe(constants.User.Type.Basic)
+    expect(user?.activationCode).toBeTruthy()
+    expect(user?.activationCode).not.toBe('xyz')
+    expect(user?.activationSentAt).toBeTruthy()
+    expect(user?.activationSentAt).not.toBe('2022-01-03')
+
+    const emails = await emailModel.getAll()
+    const email = emails[0]
+
+    expect(email.sendTo).toBe(user!.email)
+    expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
+    expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
+    expect(email.status).toBe(constants.Email.Status.Pending)
+    expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
+  })
+
+  test('do nothing if already activated', async () => {
+    const emailAddr = 'b@email.com'
+    const password = 'abcde123'
+    const returned = await crudUsers.createUser(emailAddr, password)
+
+    const user = await userModel.getByUK(emailAddr)
+    expect(returned).toStrictEqual(user)
+
+    expect(user?.email).toBe(emailAddr)
+    expect(user?.password).toBe('aabbcc')
+    expect(user?.type).toBe(constants.User.Type.Basic)
+    expect(user?.activationCode).toBeFalsy()
+    expect(user?.activationSentAt).toBeFalsy()
+
+    const emails = await emailModel.getAll()
+    expect(emails.length).toBe(3)
   })
 })

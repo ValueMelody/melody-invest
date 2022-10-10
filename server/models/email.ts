@@ -10,6 +10,7 @@ export const getAll = async (): Promise<
 > => {
   const emails = await databaseAdapter.findAll({
     tableName: TableName,
+    orderBy: [{ column: 'createdAt', order: 'desc' }],
   })
   return emails
 }
