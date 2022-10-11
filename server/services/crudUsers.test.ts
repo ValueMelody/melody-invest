@@ -1,10 +1,10 @@
-import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
 import * as emailModel from 'models/email'
 import * as userModel from 'models/user'
 import * as adapterEnum from 'enums/adapter'
+import * as errorEnum from 'enums/error'
 import * as emailLogic from 'logics/email'
 import * as localeTool from 'tools/locale'
 import * as generateTool from 'tools/generate'
@@ -102,5 +102,72 @@ describe('#createUser', () => {
 
     const emails = await emailModel.getAll()
     expect(emails.length).toBe(3)
+  })
+})
+
+describe('#createUserToken', () => {
+  jest.spyOn(generateTool, 'buildEncryptedPassword')
+    .mockImplementation((password) => password)
+
+  test('could create user token expires in 12h', async () => {
+    const result = await crudUsers.createUserToken('b@email.com', 'aabbcc', false)
+    expect(result.jwtToken).toBeTruthy()
+    expect(result.expiresIn).toBe('12h')
+  })
+
+  test('could create user token expires in 30d', async () => {
+    const result = await crudUsers.createUserToken('b@email.com', 'aabbcc', true)
+    expect(result.jwtToken).toBeTruthy()
+    expect(result.expiresIn).toBe('30d')
+  })
+
+  test('do not generate token if user not exists', async () => {
+    await expect(async () => await crudUsers.createUserToken('c@email.com', 'aabbcc', false))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotFound)
+  })
+
+  test('do not generate token if pass wrong password', async () => {
+    await expect(async () => await crudUsers.createUserToken('b@email.com', 'aabbcc1', false))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotFound)
+  })
+
+  test('do not generate token if user has been deleted', async () => {
+    await expect(async () => await crudUsers.createUserToken('deleted@email.com', 'aabbcc123', false))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotFound)
+  })
+
+  test('do not generate token if user has not been activated yet', async () => {
+    await expect(async () => await crudUsers.createUserToken('a@email.com', 'abc', false))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotActivated)
+  })
+})
+
+describe('#generateResetCode', () => {
+  test('could generate reset token', async () => {
+    const emailAddr = 'a@email.com'
+    await crudUsers.generateResetCode(emailAddr)
+    const user = await userModel.getByUK(emailAddr)
+    expect(user?.resetCode).toBeTruthy()
+    expect(user?.resetSentAt).toBeTruthy()
+
+    const emails = await emailModel.getAll()
+    const email = emails[0]
+    expect(email.sendTo).toBe(emailAddr)
+    expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
+    expect(email.title).toBe(localeTool.getTranslation('email.resetPassword'))
+    expect(email.content).toBe(emailLogic.buildResetPasswordEmail(user!))
+    expect(email.status).toBe(constants.Email.Status.Pending)
+  })
+
+  test('do nothing if user not exists', async () => {
+    const update = jest.fn()
+    jest.spyOn(userModel, 'update')
+      .mockImplementation(async () => update())
+    await crudUsers.generateResetCode('null@email.com')
+    expect(update).toBeCalledTimes(0)
   })
 })
