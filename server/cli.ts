@@ -71,7 +71,7 @@ const run = async () => {
         throw new Error('Task does not exist')
     }
   } catch (e) {
-    console.error(`Error occured:`)
+    console.error('Error occured:')
     console.error(e)
   } finally {
     process.exit(0)
