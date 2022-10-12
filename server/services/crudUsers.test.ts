@@ -165,9 +165,127 @@ describe('#generateResetCode', () => {
 
   test('do nothing if user not exists', async () => {
     const update = jest.fn()
-    jest.spyOn(userModel, 'update')
+    const spy = jest.spyOn(userModel, 'update')
       .mockImplementation(async () => update())
     await crudUsers.generateResetCode('null@email.com')
     expect(update).toBeCalledTimes(0)
+    spy.mockRestore()
+  })
+})
+
+describe('#updatePassword', () => {
+  jest.spyOn(generateTool, 'buildEncryptedPassword')
+    .mockImplementation((password) => password)
+
+  test('could update password', async () => {
+    await crudUsers.updatePassword(1, 'abc', 'abc123')
+    const user = await userModel.getByPK(1)
+    expect(user?.password).toBe('abc123')
+  })
+
+  test('throw error if can not find by user id or password', async () => {
+    await expect(async () => await crudUsers.updatePassword(10, 'abc', 'abc123'))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotFound)
+
+    await expect(async () => await crudUsers.updatePassword(1, '123', 'abc123'))
+      .rejects
+      .toBe(errorEnum.Custom.UserNotFound)
+  })
+})
+
+describe('#resetPassword', () => {
+  jest.spyOn(generateTool, 'buildEncryptedPassword')
+    .mockImplementation((password) => password)
+
+  test('could reset password and activation status, reset status, deletedAt', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await userModel.update(1, {
+      resetCode: 'xxx',
+      resetSentAt: new Date(),
+      activationCode: 'yyy',
+      activationSentAt: new Date(),
+      deletedAt: new Date(),
+    }, transaction)
+    await transaction.commit()
+    await crudUsers.resetPassword('a@email.com', '123456', 'xxx')
+    const user = await userModel.getByPK(1)
+    expect(user?.activationCode).toBeNull()
+    expect(user?.activationSentAt).toBeNull()
+    expect(user?.resetCode).toBeNull()
+    expect(user?.resetSentAt).toBeNull()
+    expect(user?.deletedAt).toBeNull()
+    expect(user?.password).toBe('123456')
+  })
+
+  test('do nothing if user or reset code not match', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await userModel.update(1, {
+      resetCode: 'xxx',
+      resetSentAt: new Date(),
+    }, transaction)
+    await transaction.commit()
+
+    const update = jest.fn()
+    const spy = jest.spyOn(userModel, 'update')
+      .mockImplementation(async () => update())
+
+    await crudUsers.resetPassword('null@email.com', '123456', 'xxx')
+    expect(update).toBeCalledTimes(0)
+
+    await crudUsers.resetPassword('a@email.com', '123456', 'yyy')
+    expect(update).toBeCalledTimes(0)
+
+    spy.mockRestore()
+  })
+
+  test('do nothing if password is the same for active user', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await userModel.update(1, {
+      password: '123456',
+      resetCode: 'xxx',
+      resetSentAt: new Date(),
+      activationCode: null,
+      activationSentAt: null,
+      deletedAt: null,
+    }, transaction)
+    await transaction.commit()
+
+    const update = jest.fn()
+    const spy = jest.spyOn(userModel, 'update')
+      .mockImplementation(async () => update())
+
+    await crudUsers.resetPassword('a@email.com', '123456', 'xxx')
+    expect(update).toBeCalledTimes(0)
+
+    spy.mockRestore()
+  })
+})
+
+describe('#lockAccess', () => {
+  test('could lock user access', async () => {
+    await crudUsers.lockAccess(1)
+
+    const user = await userModel.getByPK(1)
+    expect(user?.deletedAt).toBeTruthy()
+  })
+})
+
+describe('#activateUser', () => {
+  test('could activate user', async () => {
+    await crudUsers.activateUser('xyz')
+    const user = await userModel.getByPK(1)
+    expect(user?.activationCode).toBeNull()
+    expect(user?.activationSentAt).toBeNull()
+  })
+
+  test('do nothing if can not find user', async ( ) => {
+    const update = jest.fn()
+    const spy = jest.spyOn(userModel, 'update')
+      .mockImplementation(async () => update())
+
+    await crudUsers.activateUser('123xyz')
+    expect(update).toBeCalledTimes(0)
+    spy.mockRestore()
   })
 })
