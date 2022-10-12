@@ -55,6 +55,13 @@ afterAll(async () => {
   await connection.destroy()
 })
 
+describe('#getAll', () => {
+  test('could get all emails', async () => {
+    const emails = await email.getAll()
+    expect(emails.length).toBe(3)
+  })
+})
+
 describe('#batchUpdate', () => {
   test('could batch update emails', async () => {
     const transaction = await databaseAdapter.createTransaction()

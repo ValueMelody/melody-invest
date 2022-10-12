@@ -87,7 +87,7 @@ export const getUserOverall = async (
   }
 }
 
-export const generateActivationEmail = async (
+const generateActivationEmail = async (
   user: interfaces.userModel.Record,
   transaction: Knex.Transaction,
 ) => {
@@ -102,7 +102,8 @@ export const generateActivationEmail = async (
 }
 
 export const createUser = async (
-  email: string, password: string,
+  email: string,
+  password: string,
 ) => {
   let user = await userModel.getByUK(email)
 
@@ -110,6 +111,7 @@ export const createUser = async (
   try {
     if (user && user.activationCode) {
       user = await userModel.update(user.id, {
+        password: generateTool.buildEncryptedPassword(password),
         activationCode: generateTool.buildAccessCode(),
         activationSentAt: new Date(),
       }, transaction)
@@ -295,6 +297,7 @@ export const resetPassword = async (
       resetCode: null,
       resetSentAt: null,
       activationCode: null,
+      activationSentAt: null,
       deletedAt: null,
     }, transaction)
     await transaction.commit()
@@ -329,6 +332,7 @@ export const activateUser = async (
   try {
     await userModel.update(user.id, {
       activationCode: null,
+      activationSentAt: null,
     }, transaction)
     await transaction.commit()
   } catch (error) {
