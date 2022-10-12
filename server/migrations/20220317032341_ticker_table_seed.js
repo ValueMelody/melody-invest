@@ -372,7 +372,6 @@ exports.up = (knex) => {
     { symbol: 'MOS', region: 'US', name: 'Mosaic Company' },
     { symbol: 'FTV', region: 'US', name: 'Fortive Corp' },
     { symbol: 'ULTA', region: 'US', name: 'Ulta Beauty Inc.' },
-    { symbol: 'DRE', region: 'US', name: 'Duke Realty Corporation' },
     { symbol: 'SYF', region: 'US', name: 'Synchrony Financial' },
     { symbol: 'IR', region: 'US', name: 'ingersoll Rand Inc.' },
     { symbol: 'PPL', region: 'US', name: 'PPL Corporation' },

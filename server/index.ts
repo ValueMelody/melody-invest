@@ -42,5 +42,6 @@ try {
     console.info(`Connected successfully on port ${port}`)
   })
 } catch (error) {
-  console.error(`Error occured: ${error}`)
+  console.error('Error occured:')
+  console.error(error)
 }
