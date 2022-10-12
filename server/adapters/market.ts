@@ -18,6 +18,9 @@ export const getTickerPrices = async (
   })
   const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
   const result = await axios.get(url)
+
+  if (result?.data && result.data['Error Message']) throw new Error(result.data['Error Message'])
+
   return result.data
 }
 
