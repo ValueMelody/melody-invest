@@ -1,17 +1,10 @@
-<<<<<<< HEAD
-import * as interfaces from '@shared/interfaces'
-=======
->>>>>>> af3dd16e0a3e164ba2dfb13893d96f416ca12930
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
 import * as emailModel from 'models/email'
 import * as userModel from 'models/user'
 import * as adapterEnum from 'enums/adapter'
-<<<<<<< HEAD
-=======
 import * as errorEnum from 'enums/error'
->>>>>>> af3dd16e0a3e164ba2dfb13893d96f416ca12930
 import * as emailLogic from 'logics/email'
 import * as localeTool from 'tools/locale'
 import * as generateTool from 'tools/generate'
