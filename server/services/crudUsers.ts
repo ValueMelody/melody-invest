@@ -297,6 +297,7 @@ export const resetPassword = async (
       resetCode: null,
       resetSentAt: null,
       activationCode: null,
+      activationSentAt: null,
       deletedAt: null,
     }, transaction)
     await transaction.commit()
@@ -331,6 +332,7 @@ export const activateUser = async (
   try {
     await userModel.update(user.id, {
       activationCode: null,
+      activationSentAt: null,
     }, transaction)
     await transaction.commit()
   } catch (error) {

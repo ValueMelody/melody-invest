@@ -16,6 +16,14 @@ exports.seed = (knex) => {
       createdAt: '2022-03-03',
       updatedAt: '2022-03-03',
     },
+    {
+      email: 'deleted@email.com',
+      type: 1,
+      password: 'aabbcc123',
+      createdAt: '2022-03-03',
+      updatedAt: '2022-03-03',
+      deletedAt: '2022-03-05',
+    },
   ])
 }
 
