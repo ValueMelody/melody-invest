@@ -279,7 +279,7 @@ describe('#activateUser', () => {
     expect(user?.activationSentAt).toBeNull()
   })
 
-  test('do nothing if can not find user', async ( ) => {
+  test('do nothing if can not find user', async () => {
     const update = jest.fn()
     const spy = jest.spyOn(userModel, 'update')
       .mockImplementation(async () => update())
