@@ -70,7 +70,7 @@ describe('#create', () => {
 })
 
 describe('#update', () => {
-  test('could throw error', async () => {
+  test('do not throw error if nothing updated', async () => {
     await expect(async () => {
       const transaction = await database.createTransaction()
       await database.update({
@@ -83,9 +83,11 @@ describe('#update', () => {
       })
       await transaction.commit()
     })
-      .rejects
-      .toStrictEqual(errorEnum.Custom.UpdationFailed)
+      .not
+      .toThrowError()
+  })
 
+  test('could throw error', async () => {
     await expect(async () => {
       const transaction = await database.createTransaction()
       await database.update({

@@ -59,6 +59,14 @@ describe('#getAll', () => {
   test('could get all emails', async () => {
     const emails = await email.getAll()
     expect(emails.length).toBe(3)
+
+    const limitedEmails = await email.getAll({ total: 2 })
+    expect(limitedEmails.length).toBe(2)
+
+    const conditionalEmails = await email.getAll({
+      conditions: [{ key: 'sendTo', value: 'a@company.com' }],
+    })
+    expect(conditionalEmails.length).toBe(1)
   })
 })
 
@@ -68,7 +76,6 @@ describe('#batchUpdate', () => {
     const updated = await email.batchUpdate(
       { status: 1 },
       [{ key: 'status', value: 0 }],
-      20,
       transaction,
     )
     await transaction.commit()

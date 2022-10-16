@@ -11,7 +11,7 @@ interface OrderBy {
 
 export interface Condition {
   key: string;
-  value: string | number | boolean | null | number[];
+  value: string | number | boolean | null | number[] | string[];
   type?: string;
 }
 
@@ -42,7 +42,6 @@ interface Update {
   values: object;
   conditions: Condition[];
   transaction: Knex.Transaction;
-  limit?: number;
   orderBy?: OrderBy[];
 }
 
@@ -160,7 +159,6 @@ export const update = async ({
   values,
   conditions,
   transaction,
-  limit,
   orderBy,
 }: Update) => {
   const db = getConnection()
@@ -170,8 +168,6 @@ export const update = async ({
     .clone()
     .update(values)
     .returning('*')
-
-  if (limit) query.limit(limit)
 
   if (orderBy) query.orderBy(orderBy)
 
@@ -187,7 +183,7 @@ export const update = async ({
   try {
     const records = await query
 
-    if (!records || records.length === 0) {
+    if (!records) {
       await transaction.rollback()
       throw errorEnum.Custom.UpdationFailed
     }
@@ -229,4 +225,18 @@ export const createTransaction = async (): Promise<Knex.Transaction> => {
   return new Promise((resolve) => {
     return db.transaction(resolve)
   })
+}
+
+export const runWithTransaction = async (
+  func: (transaction: Knex.Transaction) => any,
+): Promise<any> => {
+  const transaction = await createTransaction()
+  try {
+    const result = await func(transaction)
+    await transaction.commit()
+    return result
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }
