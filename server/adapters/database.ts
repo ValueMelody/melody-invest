@@ -182,11 +182,6 @@ export const update = async ({
 
   try {
     const records = await query
-
-    if (!records) {
-      await transaction.rollback()
-      throw errorEnum.Custom.UpdationFailed
-    }
     return records
   } catch (e) {
     await transaction.rollback()
