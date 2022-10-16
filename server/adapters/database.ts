@@ -220,11 +220,23 @@ export const destroy = async ({
   return true
 }
 
-export type Transaction = Knex.Transaction
-
 export const createTransaction = async (): Promise<Knex.Transaction> => {
   const db = getConnection()
   return new Promise((resolve) => {
     return db.transaction(resolve)
   })
+}
+
+export const runWithTransaction = async (
+  func: (transaction: Knex.Transaction) => any,
+): Promise<any> => {
+  const transaction = await createTransaction()
+  try {
+    const result = await func(transaction)
+    await transaction.commit()
+    return result
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }

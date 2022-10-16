@@ -24,17 +24,3 @@ export const asyncMap = async (items: any[], mapFunc: Function) => {
   }
   return results
 }
-
-export const withTransaction = async (
-  func: (transaction: databaseAdapter.Transaction) => any,
-): Promise<any> => {
-  const transaction = await databaseAdapter.createTransaction()
-  try {
-    const result = await func(transaction)
-    await transaction.commit()
-    return result
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
-}

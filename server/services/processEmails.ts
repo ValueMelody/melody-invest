@@ -2,6 +2,7 @@ import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as emailModel from 'models/email'
 import * as emailAdapter from 'adapters/email'
+import * as databaseAdapter from 'adapters/database'
 import * as runTool from 'tools/run'
 
 const getPendingEmails = async (
@@ -19,7 +20,7 @@ const getPendingEmails = async (
   if (!emails.length) return []
 
   const ids = emails.map((email) => email.id)
-  return runTool.withTransaction(async (transaction) => {
+  return databaseAdapter.runWithTransaction(async (transaction) => {
     const emails = await emailModel.batchUpdate(
       { status: constants.Email.Status.Sending },
       [{ key: 'id', type: 'IN', value: ids }],
@@ -44,7 +45,7 @@ export const sendPendingEmails = async (total: number) => {
       html: email.content,
     })
 
-    await runTool.withTransaction(async (transaction) => {
+    await databaseAdapter.runWithTransaction(async (transaction) => {
       const status = response?.accepted?.length && response?.accepted[0] === email.sendTo
         ? constants.Email.Status.Completed
         : constants.Email.Status.Failed
