@@ -1,5 +1,4 @@
 import * as run from './run'
-import * as databaseAdapter from 'adapters/database'
 
 describe('#sleep', () => {
   test('could sleep by seconds', async () => {
