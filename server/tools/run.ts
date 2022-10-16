@@ -1,3 +1,5 @@
+import * as databaseAdapter from 'adapters/database'
+
 export const sleep = (seconds: number) => {
   return new Promise((resolve) => {
     setTimeout(resolve, seconds * 1000)
@@ -21,4 +23,18 @@ export const asyncMap = async (items: any[], mapFunc: Function) => {
     results.push(result)
   }
   return results
+}
+
+export const withTransaction = async (
+  func: (transaction: databaseAdapter.Transaction) => any,
+): Promise<any> => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const result = await func(transaction)
+    await transaction.commit()
+    return result
+  } catch (error) {
+    await transaction.rollback()
+    throw error
+  }
 }

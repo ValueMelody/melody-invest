@@ -5,27 +5,34 @@ import * as databaseAdapter from 'adapters/database'
 import * as emailAdapter from 'adapters/email'
 import * as runTool from 'tools/run'
 
-const getPendingEmails = async (): Promise<
+const getPendingEmails = async (
+  total: number,
+): Promise<
   interfaces.emailModel.Record[]
 > => {
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  const emails = await emailModel.getAll({
+    total,
+    conditions: [
+      { key: 'status', value: constants.Email.Status.Pending },
+    ],
+  })
+
+  if (!emails.length) return []
+
+  const ids = emails.map((email) => email.id)
+  return runTool.withTransaction(async (transaction) => {
     const emails = await emailModel.batchUpdate(
       { status: constants.Email.Status.Sending },
-      [{ key: 'status', value: constants.Email.Status.Pending }],
-      20,
+      [{ key: 'id', type: 'IN', value: ids }],
       transaction,
     )
-    await transaction.commit()
     return emails
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
-export const sendPendingEmails = async () => {
-  const emails = await getPendingEmails()
+export const sendPendingEmails = async (total: number) => {
+  const emails = await getPendingEmails(total)
+
   if (!emails.length) return
 
   const transporter = emailAdapter.initTransporter()
@@ -38,8 +45,7 @@ export const sendPendingEmails = async () => {
       html: email.content,
     })
 
-    const transaction = await databaseAdapter.createTransaction()
-    try {
+    await runTool.withTransaction(async (transaction) => {
       const status = response?.accepted?.length && response?.accepted[0] === email.sendTo
         ? constants.Email.Status.Completed
         : constants.Email.Status.Failed
@@ -49,11 +55,6 @@ export const sendPendingEmails = async () => {
         response,
         sentAt: new Date(),
       }, transaction)
-
-      await transaction.commit()
-    } catch (error) {
-      await transaction.rollback()
-      throw error
-    }
+    })
   })
 }
