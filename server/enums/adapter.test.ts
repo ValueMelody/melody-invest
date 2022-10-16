@@ -73,6 +73,7 @@ describe('#MailerConfig', () => {
       Port: 587,
       Email: 'test@test.com',
       Password: '123',
+      BatchSize: 20,
     })
   })
 })
