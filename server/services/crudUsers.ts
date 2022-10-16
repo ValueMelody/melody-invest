@@ -107,8 +107,7 @@ export const createUser = async (
 ) => {
   let user = await userModel.getByUK(email)
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  return databaseAdapter.runWithTransaction(async (transaction) => {
     if (user && user.activationCode) {
       user = await userModel.update(user.id, {
         password: generateTool.buildEncryptedPassword(password),
@@ -129,13 +128,8 @@ export const createUser = async (
       await generateActivationEmail(user, transaction)
     }
 
-    await transaction.commit()
-
     return user
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
 export const createUserToken = async (
@@ -169,8 +163,7 @@ export const createSubscription = async (
 
   const userType = isProPlan ? constants.User.Type.Pro : constants.User.Type.Premium
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  const updatedUser = await databaseAdapter.runWithTransaction(async (transaction) => {
     const updatedUser = await userModel.update(userId, {
       type: userType,
     }, transaction)
@@ -182,17 +175,14 @@ export const createSubscription = async (
       startAtUTC: dateTool.toUTCFormat(moment()),
     }, transaction)
 
-    await transaction.commit()
+    return updatedUser
+  })
 
-    const expiresIn = '12h'
-    const jwtToken = generateTool.encodeJWT({
-      id: userId, email: updatedUser.email, type: updatedUser.type,
-    }, expiresIn)
-    return { jwtToken, expiresIn }
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  const expiresIn = '12h'
+  const jwtToken = generateTool.encodeJWT({
+    id: userId, email: updatedUser.email, type: updatedUser.type,
+  }, expiresIn)
+  return { jwtToken, expiresIn }
 }
 
 export const deleteSubscription = async (
@@ -215,18 +205,12 @@ export const deleteSubscription = async (
   }, 0)
   const endTime = moment(subscription.startAtUTC).add(totalCycles, 'months')
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
     await userSubscriptionModel.update(subscription.id, {
       status: constants.User.SubscriptionStatus.Cancelled,
       endAtUTC: dateTool.toUTCFormat(endTime),
     }, transaction)
-
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
 export const generateResetCode = async (
@@ -235,8 +219,7 @@ export const generateResetCode = async (
   const user = await userModel.getByUK(email)
   if (!user) return
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
     const updatedUser = await userModel.update(user.id, {
       resetCode: generateTool.buildAccessCode(),
       resetSentAt: new Date(),
@@ -250,12 +233,7 @@ export const generateResetCode = async (
       content,
       status: constants.Email.Status.Pending,
     }, transaction)
-
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
 export const updatePassword = async (
@@ -269,14 +247,13 @@ export const updatePassword = async (
   if (user.password !== encryptedCurrentPassword) throw errorEnum.Custom.UserNotFound
   const encryptedNewPassword = generateTool.buildEncryptedPassword(newPassword)
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
-    await userModel.update(userId, { password: encryptedNewPassword }, transaction)
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  await databaseAdapter.runWithTransaction(async (transaction) => {
+    await userModel.update(
+      userId,
+      { password: encryptedNewPassword },
+      transaction,
+    )
+  })
 }
 
 export const resetPassword = async (
@@ -290,8 +267,7 @@ export const resetPassword = async (
   const encryptedNewPassword = generateTool.buildEncryptedPassword(password)
   if (user.password === encryptedNewPassword && !user.deletedAt && !user.activationCode) return
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
     await userModel.update(user.id, {
       password: encryptedNewPassword,
       resetCode: null,
@@ -300,26 +276,17 @@ export const resetPassword = async (
       activationSentAt: null,
       deletedAt: null,
     }, transaction)
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
 export const lockAccess = async (
   userId: number,
 ) => {
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
     await userModel.update(userId, {
       deletedAt: new Date(),
     }, transaction)
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
 
 export const activateUser = async (
@@ -328,15 +295,10 @@ export const activateUser = async (
   const user = await userModel.getByActivationCode(code)
   if (!user) return
 
-  const transaction = await databaseAdapter.createTransaction()
-  try {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
     await userModel.update(user.id, {
       activationCode: null,
       activationSentAt: null,
     }, transaction)
-    await transaction.commit()
-  } catch (error) {
-    await transaction.rollback()
-    throw error
-  }
+  })
 }
