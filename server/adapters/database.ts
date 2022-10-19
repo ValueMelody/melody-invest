@@ -50,6 +50,7 @@ interface Destroy {
   tableName: string;
   conditions?: Condition[];
   transaction: Knex.Transaction;
+  join?: Join;
 }
 
 let _db: Knex | null = null
@@ -202,6 +203,7 @@ export const destroy = async ({
   tableName,
   conditions,
   transaction,
+  join,
 }: Destroy) => {
   const db = getConnection()
   const query = db
@@ -209,6 +211,8 @@ export const destroy = async ({
     .transacting(transaction)
     .clone()
     .delete()
+
+  if (join) query.join(join.joinTable, join.foreignKey, join.joinKey)
 
   conditions?.forEach((condition, index) => {
     const { key, type = '=', value } = condition

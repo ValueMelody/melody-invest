@@ -3,15 +3,7 @@ import * as vendorTool from 'tools/vendor'
 import useUserRequest from 'requests/useUserRequest'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 
-const useStyles = vendorTool.jss.createUseStyles(({
-  input: {
-    marginTop: '2rem !important',
-  },
-}))
-
 const UnsubscribeButton = () => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
 
   const { cancelUserSubscription, fetchUserOverall } = useUserRequest()
@@ -46,14 +38,14 @@ const UnsubscribeButton = () => {
         <h4>{localeTool.t('setting.unsubscribeDesc')}</h4>
         <vendorTool.ui.Button
           color='blue'
-          className={classes.input}
+          className='mt-2'
           onClick={handleConfirmUnsubscribe}
         >
           {localeTool.t('common.confirm')}
         </vendorTool.ui.Button>
       </ConfirmModal>
       <vendorTool.ui.Button
-        className={classes.input}
+        className='mt-2'
         onClick={handleOpenModal}
       >
         {localeTool.t('common.unsubscribe')}
