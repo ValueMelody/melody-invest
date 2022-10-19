@@ -1,5 +1,8 @@
 {
   "translation": {
+    "unwatchEnv.title": "Unwatch this environment",
+    "unwatchEnv.desc": "Unwatch this environment will automatically unwatch all the trader profiles you followed from this environment as well. Do you want to continue?",
+
     "common.profile": "Profile",
     "common.date": "Date",
     "common.cash": "Cash",

@@ -9,8 +9,8 @@ import useTraderStyle from 'styles/useTraderStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
+import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
-import WatchButton from 'containers/traders/elements/WatchButton'
 
 const useStyles = vendorTool.jss.createUseStyles((
   theme: interfaces.common.Theme,
@@ -40,25 +40,19 @@ const EnvDetail = () => {
   const { commonClasses } = useCommonStyle()
 
   const { getTraderEnv } = useTraderState()
-  const { fetchTraderEnv, deleteTraderEnv } = useTraderRequest()
+  const { fetchTraderEnv } = useTraderRequest()
   const { getTickerIdentity } = useResourceState()
 
   const envId = params.envId ? parseInt(params.envId) : null
   const traderEnv = getTraderEnv(envId)
   const topTraderProfiles = traderEnv?.tops
+  const envRecord = traderEnv?.record
 
   const bestOverall = topTraderProfiles?.yearly[0] || null
   const bestPastYear = topTraderProfiles?.pastYear[0] || null
   const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
   const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
   const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
-
-  // ------------------------------------------------------------ Handler --
-
-  const handleUnwatch = async () => {
-    if (!envId) return
-    await deleteTraderEnv(envId)
-  }
 
   // ------------------------------------------------------------ Effect --
 
@@ -68,10 +62,10 @@ const EnvDetail = () => {
   }, [])
 
   vendorTool.react.useEffect(() => {
-    if (!envId || topTraderProfiles) return
+    if (!envId || !envRecord || topTraderProfiles) return
     fetchTraderEnv(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [envId, topTraderProfiles])
+  }, [envId, envRecord, topTraderProfiles])
 
   // ------------------------------------------------------------ Handler --
 
@@ -106,10 +100,7 @@ const EnvDetail = () => {
             commonClasses.rowAround,
             classes.watch,
           )}>
-            <WatchButton
-              isWatched={true}
-              onToggle={handleUnwatch}
-            />
+            <UnwatchEnvButton traderEnv={traderEnv.record} />
           </div>
         )}
       </aside>

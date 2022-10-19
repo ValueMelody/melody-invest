@@ -41,8 +41,8 @@ export const getProfileDetail = async (
 
   const holdings = await traderHoldingModel.getAll(trader.id)
   const traders = await traderModel.getByPatternId(trader.traderPatternId)
-  const filterredTraders = traders.filter((trader) => envIds.includes(trader.traderEnvId))
-  const profileEnvs = filterredTraders.map((trader) => ({
+  const filteredTraders = traders.filter((trader) => envIds.includes(trader.traderEnvId))
+  const profileEnvs = filteredTraders.map((trader) => ({
     traderId: trader.id,
     traderEnvId: trader.traderEnvId,
     traderPatternId: trader.traderPatternId,
@@ -288,6 +288,17 @@ export const deleteFollowedEnv = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     await traderEnvFollowerModel.destroy(userId, envId, transaction)
+
+    const userFollowedTraders = await traderFollowerModel.getUserFollowed(userId)
+    const traderIds = userFollowedTraders.map((followed) => followed.traderId)
+    const traders = await traderModel.getInPKs(traderIds)
+    const filteredTraders = traders.filter((trader) => trader.traderEnvId === envId)
+    const targetTraderIds = filteredTraders.map((trader) => trader.id)
+
+    if (targetTraderIds.length) {
+      await traderFollowerModel.destroyUserFollowedTraders(userId, targetTraderIds, transaction)
+    }
+
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()

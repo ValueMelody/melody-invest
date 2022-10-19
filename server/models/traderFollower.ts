@@ -60,3 +60,19 @@ export const destroy = async (
   })
   return true
 }
+
+export const destroyUserFollowedTraders = async (
+  userId: number,
+  traderIds: number[],
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.destroy({
+    tableName: TableName,
+    conditions: [
+      { key: 'userId', value: userId },
+      { key: 'traderId', type: 'IN', value: traderIds },
+    ],
+    transaction,
+  })
+  return true
+}
