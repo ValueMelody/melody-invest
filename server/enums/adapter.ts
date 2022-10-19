@@ -62,6 +62,7 @@ export const MailerConfig = Object.freeze({
   Port: Number(process.env.EMAIL_PORT!),
   Email: process.env.EMAIL_SENDER!,
   Password: process.env.EMAIL_PASS!,
+  BatchSize: Number(process.env.EMAIL_BATCH_SIZE!),
 })
 
 export const HostConfig = Object.freeze({

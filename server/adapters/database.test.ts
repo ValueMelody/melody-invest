@@ -3,7 +3,7 @@ import * as traderEnv from 'models/traderEnv'
 import * as adapterEnum from 'enums/adapter'
 import * as errorEnum from 'enums/error'
 
-beforeAll(async () => {
+beforeEach(async () => {
   database.initConnection()
   const connection = database.getConnection()
   await connection.migrate.up({
@@ -16,7 +16,7 @@ beforeAll(async () => {
   })
 })
 
-afterAll(async () => {
+afterEach(async () => {
   const connection = database.getConnection()
   await connection.destroy()
 })
@@ -70,7 +70,7 @@ describe('#create', () => {
 })
 
 describe('#update', () => {
-  test('could throw error', async () => {
+  test('do not throw error if nothing updated', async () => {
     await expect(async () => {
       const transaction = await database.createTransaction()
       await database.update({
@@ -83,9 +83,11 @@ describe('#update', () => {
       })
       await transaction.commit()
     })
-      .rejects
-      .toStrictEqual(errorEnum.Custom.UpdationFailed)
+      .not
+      .toThrowError()
+  })
 
+  test('could throw error', async () => {
     await expect(async () => {
       const transaction = await database.createTransaction()
       await database.update({
@@ -100,5 +102,44 @@ describe('#update', () => {
     })
       .rejects
       .toStrictEqual(errorEnum.Custom.UpdationFailed)
+  })
+})
+
+describe('#runWithTransaction', () => {
+  test('could run with transaction', async () => {
+    const records = await database.runWithTransaction(async (transaction) => {
+      return database.update({
+        tableName: adapterEnum.DatabaseTable.TraderEnv,
+        values: { name: 'test run' },
+        conditions: [
+          { key: 'id', value: 1 },
+        ],
+        transaction,
+      })
+    })
+
+    const updatedEnvs = await traderEnv.getAll()
+    expect(updatedEnvs[0].name).toBe('test run')
+    expect(records[0].name).toBe('test run')
+  })
+
+  test('could trigger rollback', async () => {
+    await expect(async () => {
+      await database.runWithTransaction(async (transaction) => {
+        return database.update({
+          tableName: adapterEnum.DatabaseTable.TraderEnv,
+          values: { name: 'test run with long name that causing error' },
+          conditions: [
+            { key: 'id', value: 1 },
+          ],
+          transaction,
+        })
+      })
+    })
+      .rejects
+      .toStrictEqual(errorEnum.Custom.UpdationFailed)
+
+    const updatedEnvs = await traderEnv.getAll()
+    expect(updatedEnvs[0].name).toBe('traderEnv.default')
   })
 })

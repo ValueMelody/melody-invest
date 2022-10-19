@@ -5,11 +5,20 @@ import * as databaseAdapter from 'adapters/database'
 
 const TableName = adapterEnum.DatabaseTable.Email
 
-export const getAll = async (): Promise<
+interface GetAllParams {
+  conditions?: databaseAdapter.Condition[];
+  total?: number;
+}
+
+export const getAll = async (params?: GetAllParams): Promise<
   interfaces.emailModel.Record[]
 > => {
+  const conditions = params?.conditions
+  const total = params?.total
   const emails = await databaseAdapter.findAll({
     tableName: TableName,
+    limit: total,
+    conditions,
     orderBy: [{ column: 'createdAt', order: 'desc' }],
   })
   return emails
@@ -46,7 +55,6 @@ export const update = async (
 export const batchUpdate = async (
   values: interfaces.emailModel.Update,
   conditions: databaseAdapter.Condition[],
-  limit: number,
   transaction: Knex.Transaction,
 ): Promise<interfaces.emailModel.Record[]> => {
   const updatedEmails = await databaseAdapter.update({
@@ -54,7 +62,6 @@ export const batchUpdate = async (
     values,
     conditions,
     transaction,
-    limit,
     orderBy: [{ column: 'createdAt', order: 'asc' }],
   })
   return updatedEmails
