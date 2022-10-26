@@ -15,7 +15,7 @@ const SubscribeModal = () => {
   const { commonClasses } = useCommonStyle()
 
   const [isOpen, setIsOpen] = useState(false)
-  const [planType, setPlanType] = useState(constants.User.Type.Pro)
+  const [planType, setPlanType] = useState<number>(constants.User.Type.Pro)
 
   const selectedProType = planType === constants.User.Type.Pro
   const selectedPremiumType = planType === constants.User.Type.Premium

@@ -1,4 +1,4 @@
-import dom from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'react-jss'
 import { Loader } from 'semantic-ui-react'
@@ -32,9 +32,9 @@ const App = () => {
   )
 }
 
-dom.render(
+const root = ReactDOM.createRoot(document.getElementById('root')!)
+root.render(
   <BrowserRouter>
     <App />
   </BrowserRouter>,
-  document.getElementById('root'),
 )

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
 

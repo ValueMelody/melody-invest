@@ -44,7 +44,7 @@ const BehaviorEditor = ({
   const { commonClasses } = useCommonStyle()
 
   const options = constants.BehaviorValue.Options[behavior]
-  const hasValue = behaviorValue !== null && options.includes(behaviorValue)
+  const hasValue = behaviorValue !== null && options.some((option) => option === behaviorValue)
   const selectOptions = options.map((option) => ({
     key: option, value: option, text: parseTool.behaviorValue(behavior, option),
   }))
