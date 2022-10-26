@@ -11,8 +11,8 @@ describe('#generateSystemEndpointKey', () => {
   test('could generate cache key for system endpoint', () => {
     expect(cache.generateSystemEndpointKey('top-trader-profiles'))
       .toEqual('systemEndpoint-[top-trader-profiles]')
-    expect(cache.generateSystemEndpointKey('top-trader-combos'))
-      .toEqual('systemEndpoint-[top-trader-combos]')
+    expect(cache.generateSystemEndpointKey('default-trader-combos'))
+      .toEqual('systemEndpoint-[default-trader-combos]')
   })
 })
 

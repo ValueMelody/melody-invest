@@ -8,18 +8,30 @@ import * as dailyTickersModel from 'models/dailyTickers'
 import * as traderEnvModel from 'models/traderEnv'
 import * as policyModel from 'models/policy'
 import * as runTool from 'tools/run'
+import * as cacheTool from 'tools/cache'
+import * as cacheAdapter from 'adapters/cache'
 import buildTopTraderProfiles from './shared/buildTopTraderProfiles'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
 import buildComboEntities from './shared/buildComboEntities'
 
-export const getSystemPolicy = async (
+const buildSystemPolicy = async (
   type: number,
 ): Promise<interfaces.policyModel.Record | null> => {
   const record = await policyModel.getLatest(type)
   return record
 }
 
-const getSystemTopTraderCombo = async (
+export const getSystemPolicy = async (
+  type: number,
+): Promise<interfaces.policyModel.Record | null> => {
+  return cacheAdapter.returnBuild(
+    cacheTool.generateSystemEndpointKey(`policy-${type}`),
+    '1d',
+    async () => await buildSystemPolicy(type),
+  )
+}
+
+const generateSystemTopTraderCombo = async (
   traderEnvId: number,
   combo: interfaces.traderComboModel.Identity,
   total: number,
@@ -70,30 +82,7 @@ const SystemCombos: interfaces.traderComboModel.Identity[] = [
   },
 ]
 
-const getSystemTraderCombos = async (): Promise<
-  interfaces.response.ComboProfile[]
-> => {
-  const comboProfiles = await runTool.asyncMap(SystemCombos, async (
-    combo: interfaces.traderComboModel.Identity,
-  ) => {
-    switch (combo.name) {
-      case 'systemCombo.default5': {
-        const comboProfile = await getSystemTopTraderCombo(1, combo, 5)
-        return comboProfile
-      }
-      case 'systemCombo.bigTech5': {
-        const comboProfile = await getSystemTopTraderCombo(2, combo, 5)
-        return comboProfile
-      }
-      default:
-        throw errorEnum.Default.Forbidden
-    }
-  })
-
-  return comboProfiles
-}
-
-export const getDefaults = async (): Promise<
+const buildDefaults = async (): Promise<
   interfaces.response.SystemDefaults
 > => {
   const systemTraderEnvs = await traderEnvModel.getSystemDefined()
@@ -116,7 +105,17 @@ export const getDefaults = async (): Promise<
   }
 }
 
-export const getTopTraderProfiles = async (): Promise<
+export const getDefaults = async (): Promise<
+  interfaces.response.SystemDefaults
+> => {
+  return cacheAdapter.returnBuild(
+    cacheTool.generateSystemEndpointKey('defaults'),
+    '1d',
+    buildDefaults,
+  )
+}
+
+const buildCurrentTopTraderProfiles = async (): Promise<
   interfaces.response.TopTraderProfiles
 > => {
   const topTraders = await traderModel.getTops(5)
@@ -124,9 +123,45 @@ export const getTopTraderProfiles = async (): Promise<
   return topTraderProfiles
 }
 
-export const getTopTraderCombos = async (): Promise<
+export const getTopTraderProfiles = async (): Promise<
+  interfaces.response.TopTraderProfiles
+> => {
+  return cacheAdapter.returnBuild(
+    cacheTool.generateSystemEndpointKey('top-trader-profiles'),
+    '1d',
+    buildCurrentTopTraderProfiles,
+  )
+}
+
+const buildDefaultTraderCombos = async (): Promise<
   interfaces.response.ComboProfile[]
 > => {
-  const combos = await getSystemTraderCombos()
-  return combos
+  const comboProfiles = await runTool.asyncMap(SystemCombos, async (
+    combo: interfaces.traderComboModel.Identity,
+  ) => {
+    switch (combo.name) {
+      case 'systemCombo.default5': {
+        const comboProfile = await generateSystemTopTraderCombo(1, combo, 5)
+        return comboProfile
+      }
+      case 'systemCombo.bigTech5': {
+        const comboProfile = await generateSystemTopTraderCombo(2, combo, 5)
+        return comboProfile
+      }
+      default:
+        throw errorEnum.Default.Forbidden
+    }
+  })
+
+  return comboProfiles
+}
+
+export const getDefaultTraderCombos = async (): Promise<
+  interfaces.response.ComboProfile[]
+> => {
+  return cacheAdapter.returnBuild(
+    cacheTool.generateSystemEndpointKey('trader-combos'),
+    '1d',
+    buildDefaultTraderCombos,
+  )
 }

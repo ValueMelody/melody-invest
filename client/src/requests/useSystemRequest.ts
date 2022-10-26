@@ -145,7 +145,7 @@ const useSystemRequest = () => {
   }
 
   const fetchSystemTraderCombos = async () => {
-    const endpoint = `${routerEnum.Endpoint.Systems}/top-trader-combos`
+    const endpoint = `${routerEnum.Endpoint.Systems}/default-trader-combos`
     store.startLoading()
     try {
       const combos = await requestAdapter.sendGetRequest(endpoint)
