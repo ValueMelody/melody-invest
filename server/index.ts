@@ -9,6 +9,7 @@ import usersRouter from './routers/users'
 import tradersRouter from './routers/traders'
 import * as errorEnum from './enums/error'
 import * as adapterEnum from './enums/adapter'
+import * as cron from 'cron'
 
 const app = express()
 export default app
@@ -38,6 +39,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 try {
+  cron.init()
+
   app.listen(port, host, (): void => {
     console.info(`Connected successfully on port ${port}`)
   })
