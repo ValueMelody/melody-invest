@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+import { Header } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -12,7 +16,7 @@ import EachTops from 'containers/traders/blocks/EachTops'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   desc: {
@@ -28,8 +32,8 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const BehaviorDetail = () => {
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -57,12 +61,12 @@ const BehaviorDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (behaviorDetail || !validBehavior || !envId) return
     fetchTraderBehavior(envId, validBehavior)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,7 +86,7 @@ const BehaviorDetail = () => {
   return (
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
-        <header className={vendorTool.classNames(
+        <header className={classNames(
           commonClasses.rowStart,
           classes.header,
         )}>
@@ -91,7 +95,7 @@ const BehaviorDetail = () => {
             {parseTool.behaviorDesc(validBehavior)}
           </h4>
         </header>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='star'
           content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}

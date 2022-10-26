@@ -1,5 +1,8 @@
+import { useState, ChangeEvent, FormEvent } from 'react'
+import classNames from 'classnames'
+import { Input, Message, Button } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
@@ -9,7 +12,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   row: {
     width: 400,
     marginBottom: '2rem',
@@ -34,8 +37,8 @@ const ComboBuilder = () => {
   const classes = useStyles()
   const { commonClasses } = useCommonStyle()
 
-  const [selectedTraderIds, setSelectedTraderIds] = vendorTool.react.useState<number[]>([])
-  const [envName, setEnvName] = vendorTool.react.useState('')
+  const [selectedTraderIds, setSelectedTraderIds] = useState<number[]>([])
+  const [envName, setEnvName] = useState('')
 
   const { createTraderCombo } = useTraderRequest()
   const { getTraderProfile, getTraderCombos } = useTraderState()
@@ -69,13 +72,13 @@ const ComboBuilder = () => {
   }
 
   const handleChangeName = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setEnvName(e.target.value)
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     await createTraderCombo(envName, selectedTraderIds)
@@ -85,23 +88,23 @@ const ComboBuilder = () => {
 
   return (
     <section className={commonClasses.columnCenter}>
-      <header className={vendorTool.classNames(
+      <header className={classNames(
         commonClasses.rowAround,
         classes.row,
       )}>
         <h2>{localeTool.t('comboBuilder.title')}</h2>
       </header>
-      <section className={vendorTool.classNames(
+      <section className={classNames(
         commonClasses.rowBetween,
         classes.row,
       )}>
         <RequiredLabel title={localeTool.t('comboBuilder.name')} />
-        <vendorTool.ui.Input
+        <Input
           value={envName}
           onChange={handleChangeName}
         />
       </section>
-      <section className={vendorTool.classNames(
+      <section className={classNames(
         commonClasses.columnCenter,
         classes.profileTitle,
       )}>
@@ -112,9 +115,9 @@ const ComboBuilder = () => {
         <RequiredLabel title={localeTool.t('comboBuilder.minTraderRequired')} />
       </section>
       {profiles.length < 2 && (
-        <vendorTool.ui.Message error className={classes.warningMsg}>
+        <Message error className={classes.warningMsg}>
           {localeTool.t('comboBuilder.noEnoughProfiles')}
-        </vendorTool.ui.Message>
+        </Message>
       )}
       <section className={commonClasses.rowAround}>
         {profiles.map((profile, index) => (
@@ -128,25 +131,25 @@ const ComboBuilder = () => {
         ))}
       </section>
       {hasDuplicatedName && (
-        <vendorTool.ui.Message negative>
+        <Message negative>
           {localeTool.t('comboBuilder.duplicatedName')}
-        </vendorTool.ui.Message>
+        </Message>
       )}
       {hasDuplicatedCombo && (
-        <vendorTool.ui.Message negative>
+        <Message negative>
           {localeTool.t('comboBuilder.duplicatedCombo')}
-        </vendorTool.ui.Message>
+        </Message>
       )}
       <form onSubmit={handleSubmit}>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             type='submit'
             color='blue'
             className={classes.confirmButton}
             disabled={!hasValidName || !hasValidTraders || hasDuplicatedName}
           >
             {localeTool.t('common.confirmAndWatch')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
     </section>

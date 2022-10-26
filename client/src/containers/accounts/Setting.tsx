@@ -1,5 +1,7 @@
+import { useState, useMemo, ChangeEvent, FormEvent } from 'react'
+import { Input, Button, Card, CardContent, CardHeader, CardDescription } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as commonEnum from 'enums/common'
 import useUserRequest from 'requests/useUserRequest'
@@ -12,7 +14,7 @@ import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   input: {
     marginTop: '2rem !important',
     display: 'block !important',
@@ -33,14 +35,14 @@ const Setting = () => {
   const { getUser, removeUser } = useUserState()
   const { addMessage } = useCommonState()
 
-  const [currentPassword, setCurrentPassword] = vendorTool.react.useState('')
-  const [newPassword, setNewPassword] = vendorTool.react.useState('')
-  const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
-  const [showConfirmLock, setShowConfirmLock] = vendorTool.react.useState(false)
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
+  const [retypePassword, setRetypePassword] = useState('')
+  const [showConfirmLock, setShowConfirmLock] = useState(false)
 
   const user = getUser()
 
-  const userTypeText = vendorTool.react.useMemo(() => {
+  const userTypeText = useMemo(() => {
     switch (user.userType) {
       case constants.User.Type.Premium:
         return commonEnum.Plan.Premium
@@ -55,25 +57,25 @@ const Setting = () => {
   // ------------------------------------------------------------ Handler --
 
   const handleChangeCurrentPassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setCurrentPassword(e.target.value)
   }
 
   const handleChangeNewPassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setNewPassword(e.target.value)
   }
 
   const handleChangeRetypePassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setRetypePassword(e.target.value)
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     const parsedCurrentPassword = currentPassword.trim()
@@ -113,43 +115,43 @@ const Setting = () => {
         onClose={handleToggleConfirmLock}
       >
         <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
-        <vendorTool.ui.Button
+        <Button
           color='blue'
           className={classes.input}
           onClick={handleConfirmLock}
         >
           {localeTool.t('common.confirm')}
-        </vendorTool.ui.Button>
+        </Button>
       </ConfirmModal>
-      <vendorTool.ui.CardGroup>
-        <vendorTool.ui.Card>
-          <vendorTool.ui.CardContent>
-            <vendorTool.ui.CardHeader>
+      <Card.Group>
+        <Card>
+          <CardContent>
+            <CardHeader>
               <h3>{localeTool.t('setting.accountInfo')}</h3>
-            </vendorTool.ui.CardHeader>
-            <vendorTool.ui.CardDescription>
+            </CardHeader>
+            <CardDescription>
               <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
-              <vendorTool.ui.Button
+              <Button
                 className={classes.input}
                 onClick={handleSignOut}
               >
                 {localeTool.t('setting.signOut')}
-              </vendorTool.ui.Button>
-              <vendorTool.ui.Button
+              </Button>
+              <Button
                 className={classes.input}
                 onClick={handleToggleConfirmLock}
               >
                 {localeTool.t('setting.lockAccess')}
-              </vendorTool.ui.Button>
-            </vendorTool.ui.CardDescription>
-          </vendorTool.ui.CardContent>
-        </vendorTool.ui.Card>
-        <vendorTool.ui.Card>
-          <vendorTool.ui.CardContent>
-            <vendorTool.ui.CardHeader>
+              </Button>
+            </CardDescription>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent>
+            <CardHeader>
               <h3>{localeTool.t('setting.accountType')}</h3>
-            </vendorTool.ui.CardHeader>
-            <vendorTool.ui.CardDescription>
+            </CardHeader>
+            <CardDescription>
               <h4>
                 {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
               </h4>
@@ -169,55 +171,55 @@ const Setting = () => {
                   {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
                 </h5>
               )}
-            </vendorTool.ui.CardDescription>
-          </vendorTool.ui.CardContent>
+            </CardDescription>
+          </CardContent>
           {user.userType === constants.User.Type.Basic && (
-            <vendorTool.ui.CardContent extra>
+            <CardContent extra>
               <SubscribeModal />
-            </vendorTool.ui.CardContent>
+            </CardContent>
           )}
-        </vendorTool.ui.Card>
-        <vendorTool.ui.Card>
-          <vendorTool.ui.CardContent>
-            <vendorTool.ui.CardHeader>
+        </Card>
+        <Card>
+          <CardContent>
+            <CardHeader>
               <h3>{localeTool.t('setting.changePassword')}</h3>
-            </vendorTool.ui.CardHeader>
-            <vendorTool.ui.CardDescription>
+            </CardHeader>
+            <CardDescription>
               <form onSubmit={handleSubmit}>
                 <RequiredLabel title={localeTool.t('common.currentPassword')} />
-                <vendorTool.ui.Input
+                <Input
                   type='password'
                   value={currentPassword}
                   onChange={handleChangeCurrentPassword}
                   className={classes.input}
                 />
                 <RequiredLabel title={localeTool.t('common.newPassword')} />
-                <vendorTool.ui.Input
+                <Input
                   type='password'
                   value={newPassword}
                   onChange={handleChangeNewPassword}
                   className={classes.input}
                 />
                 <RequiredLabel title={localeTool.t('common.retypePassword')} />
-                <vendorTool.ui.Input
+                <Input
                   type='password'
                   value={retypePassword}
                   onChange={handleChangeRetypePassword}
                   className={classes.input}
                 />
-                <vendorTool.ui.Button
+                <Button
                   type='submit'
                   color='blue'
                   disabled={!currentPassword || !newPassword || !retypePassword}
                   className={classes.input}
                 >
                   {localeTool.t('setting.changePassword')}
-                </vendorTool.ui.Button>
+                </Button>
               </form>
-            </vendorTool.ui.CardDescription>
-          </vendorTool.ui.CardContent>
-        </vendorTool.ui.Card>
-      </vendorTool.ui.CardGroup>
+            </CardDescription>
+          </CardContent>
+        </Card>
+      </Card.Group>
     </div>
   )
 }

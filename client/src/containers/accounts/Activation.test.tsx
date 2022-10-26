@@ -1,8 +1,8 @@
+import { Routes, Route } from 'react-router-dom'
 import Activation from './Activation'
 import { render } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
-import * as vendorTool from 'tools/vendor'
 import * as routerTool from 'tools/router'
 import * as useUserRequest from 'requests/useUserRequest'
 import * as usePublicGuard from 'handlers/usePublicGuard'
@@ -26,12 +26,12 @@ describe('#Activation', () => {
   test('could hanlde invalid code', () => {
     const history = createMemoryHistory({ initialEntries: [`${routerEnum.Nav.Activation}/112233`] })
     render(
-      <vendorTool.router.Routes>
-        <vendorTool.router.Route
+      <Routes>
+        <Route
           path={`${routerEnum.Nav.Activation}/:code`}
           element={<Activation />}
         />
-      </vendorTool.router.Routes>,
+      </Routes>,
       { history },
     )
     expect(history.location.pathname).toBe(routerTool.signInRoute())
@@ -46,12 +46,12 @@ describe('#Activation', () => {
 
     const history = createMemoryHistory({ initialEntries: [`${routerEnum.Nav.Activation}/${code}`] })
     render(
-      <vendorTool.router.Routes>
-        <vendorTool.router.Route
+      <Routes>
+        <Route
           path={`${routerEnum.Nav.Activation}/:code`}
           element={<Activation />}
         />
-      </vendorTool.router.Routes>,
+      </Routes>,
       { history },
     )
     expect(activateUser).toBeCalledTimes(1)

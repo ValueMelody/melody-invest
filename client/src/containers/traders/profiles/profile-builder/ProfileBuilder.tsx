@@ -1,6 +1,8 @@
+import { useState, FormEvent } from 'react'
+import { Segment, Button } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useTraderRequest from 'requests/useTraderRequest'
 import useTraderState from 'states/useTraderState'
@@ -11,7 +13,7 @@ import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   confirmButton: {
     marginTop: '2rem !important',
   },
@@ -41,14 +43,14 @@ const ProfileBuilder = () => {
   const classes = useStyles()
   const { commonClasses } = useCommonStyle()
 
-  const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = vendorTool.react.useState(false)
-  const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = vendorTool.react.useState(false)
-  const [isPreferenceBehaviorsExtended, setIsPreferenceBehaviorsExtended] = vendorTool.react.useState(false)
-  const [isAllocateBehaviorsExtended, setIsAllocateBehaviorsExtended] = vendorTool.react.useState(false)
-  const [isFrequencyBehaviorsExtended, setIsFrequencyBehaviorsExtended] = vendorTool.react.useState(false)
-  const [currentEditingBehavior, setCurrentEditingBehavior] = vendorTool.react.useState<ActiveBehavior>(null)
-  const [behaviorValues, setBehaviorValues] = vendorTool.react.useState<BehaviorValues>({})
-  const [selectedTraderEnvId, setSelectedTraderEnvId] = vendorTool.react.useState(1)
+  const [isBuyBehaviorsExtended, setIsBuyBehaviorsExtended] = useState(false)
+  const [isSellBehaviorsExtended, setIsSellBehaviorsExtended] = useState(false)
+  const [isPreferenceBehaviorsExtended, setIsPreferenceBehaviorsExtended] = useState(false)
+  const [isAllocateBehaviorsExtended, setIsAllocateBehaviorsExtended] = useState(false)
+  const [isFrequencyBehaviorsExtended, setIsFrequencyBehaviorsExtended] = useState(false)
+  const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
+  const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
+  const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const { getTraderEnvs } = useTraderState()
   const { createTraderProfile } = useTraderRequest()
@@ -186,7 +188,7 @@ const ProfileBuilder = () => {
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     // @ts-ignore
@@ -209,8 +211,8 @@ const ProfileBuilder = () => {
       <header className={commonClasses.rowAround}>
         <h2>{localeTool.t('profileBuilder.title')}</h2>
       </header>
-      <vendorTool.ui.Segment.Group>
-        <vendorTool.ui.Segment>
+      <Segment.Group>
+        <Segment>
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.buyBehaviors')}
             isExtended={isBuyBehaviorsExtended}
@@ -234,8 +236,8 @@ const ProfileBuilder = () => {
               ))}
             </div>
           )}
-        </vendorTool.ui.Segment>
-        <vendorTool.ui.Segment>
+        </Segment>
+        <Segment>
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.sellBehaviors')}
             isExtended={isSellBehaviorsExtended}
@@ -259,8 +261,8 @@ const ProfileBuilder = () => {
               ))}
             </div>
           )}
-        </vendorTool.ui.Segment>
-        <vendorTool.ui.Segment>
+        </Segment>
+        <Segment>
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.preferenceBehaviors')}
             activeCount={activePreferenceBehaviorCount}
@@ -270,7 +272,7 @@ const ProfileBuilder = () => {
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
           />
           {isPreferenceBehaviorsExtended && (
-            <vendorTool.ui.Segment secondary>
+            <Segment secondary>
               {constants.Behavior.PreferenceBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
@@ -281,10 +283,10 @@ const ProfileBuilder = () => {
                   onSelect={handleSelectValue}
                 />
               ))}
-            </vendorTool.ui.Segment>
+            </Segment>
           )}
-        </vendorTool.ui.Segment>
-        <vendorTool.ui.Segment>
+        </Segment>
+        <Segment>
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.allocateBehaviors')}
             activeCount={activeAllocateBehaviorCount}
@@ -294,7 +296,7 @@ const ProfileBuilder = () => {
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
           />
           {isAllocateBehaviorsExtended && (
-            <vendorTool.ui.Segment secondary>
+            <Segment secondary>
               {constants.Behavior.AllocateBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
@@ -305,10 +307,10 @@ const ProfileBuilder = () => {
                   onSelect={handleSelectValue}
                 />
               ))}
-            </vendorTool.ui.Segment>
+            </Segment>
           )}
-        </vendorTool.ui.Segment>
-        <vendorTool.ui.Segment>
+        </Segment>
+        <Segment>
           <ProfileBuilderHeader
             title={localeTool.t('profileBuilder.frequencyBehaviors')}
             activeCount={activeFrequencyBehaviorCount}
@@ -318,7 +320,7 @@ const ProfileBuilder = () => {
             invalidMessage={localeTool.t('profileBuilder.requireAll')}
           />
           {isFrequencyBehaviorsExtended && (
-            <vendorTool.ui.Segment secondary>
+            <Segment secondary>
               {constants.Behavior.FrequencyBehaviors.map((behavior) => (
                 <BehaviorEditor
                   key={behavior}
@@ -329,10 +331,10 @@ const ProfileBuilder = () => {
                   onSelect={handleSelectValue}
                 />
               ))}
-            </vendorTool.ui.Segment>
+            </Segment>
           )}
-        </vendorTool.ui.Segment>
-      </vendorTool.ui.Segment.Group>
+        </Segment>
+      </Segment.Group>
       <h4>{localeTool.t('common.selectEnvironment')}:</h4>
       <div className={commonClasses.rowStart}>
         {traderEnvs.map((traderEnv) => (
@@ -346,7 +348,7 @@ const ProfileBuilder = () => {
       </div>
       <form onSubmit={handleSubmit}>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             type='submit'
             color='blue'
             className={classes.confirmButton}
@@ -359,7 +361,7 @@ const ProfileBuilder = () => {
             }
           >
             {localeTool.t('common.confirmAndWatch')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
     </section>

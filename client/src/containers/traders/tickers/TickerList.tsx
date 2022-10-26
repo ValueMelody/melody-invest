@@ -1,5 +1,8 @@
+import { useState, ChangeEvent } from 'react'
+import { Input } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useResourceState from 'states/useResourceState'
@@ -8,7 +11,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import VariationList from 'containers/traders/elements/VariationList'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
+const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
   section: {
     marginBottom: '1rem',
   },
@@ -26,7 +29,7 @@ const isSearchedTicker = (
 }
 
 const TickerList = () => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -34,8 +37,8 @@ const TickerList = () => {
   const { commonClasses } = useCommonStyle()
   const { traderClasses } = useTraderStyle()
 
-  const [selectedCategory, setSelectedCategory] = vendorTool.react.useState(1)
-  const [searchText, setSearchText] = vendorTool.react.useState('')
+  const [selectedCategory, setSelectedCategory] = useState(1)
+  const [searchText, setSearchText] = useState('')
 
   const { getTickerIdentities, getTickerCategories } = useResourceState()
 
@@ -61,7 +64,7 @@ const TickerList = () => {
   }
 
   const handleChangeSearchText = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchText(e.target.value)
   }
@@ -72,7 +75,7 @@ const TickerList = () => {
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
         <header className={classes.section}>
-          <vendorTool.ui.Input
+          <Input
             icon='search'
             placeholder={localeTool.t('common.search')}
             value={searchText}

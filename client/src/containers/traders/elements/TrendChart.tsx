@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import * as chart from 'recharts'
 
 const TrendChart = ({
   data,
@@ -21,19 +21,19 @@ const TrendChart = ({
   if (data.length <= 1 || !stats) return null
 
   return (
-    <vendorTool.chart.AreaChart
+    <chart.AreaChart
       data={data}
       width={280}
       height={80}
     >
-      <vendorTool.chart.Area
+      <chart.Area
         type='monotone'
         dataKey='value'
         stroke='#8884d8'
         strokeWidth={2}
         isAnimationActive={false}
       />
-      <vendorTool.chart.YAxis
+      <chart.YAxis
         type='number'
         domain={[stats.min, stats.max]}
         axisLine={false}
@@ -42,16 +42,16 @@ const TrendChart = ({
       />
 
       {title && (
-        <vendorTool.chart.XAxis tick={false} axisLine={false} height={20}>
-          <vendorTool.chart.Label
+        <chart.XAxis tick={false} axisLine={false} height={20}>
+          <chart.Label
             orientation='bottom'
             value={title}
             offset={0}
             position='insideBottomRight'
           />
-        </vendorTool.chart.XAxis>
+        </chart.XAxis>
       )}
-    </vendorTool.chart.AreaChart>
+    </chart.AreaChart>
   )
 }
 

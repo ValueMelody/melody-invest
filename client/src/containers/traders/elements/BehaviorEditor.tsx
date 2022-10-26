@@ -1,12 +1,15 @@
+import { SyntheticEvent } from 'react'
+import classNames from 'classnames'
+import { Dropdown, DropdownProps } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   container: {
@@ -51,8 +54,8 @@ const BehaviorEditor = ({
   const handleClick = () => onClick(behavior)
 
   const handleSelect = (
-    e: vendorTool.react.SyntheticEvent,
-    data: vendorTool.ui.DropdownProps,
+    e: SyntheticEvent,
+    data: DropdownProps,
   ) => {
     const value = data.value === '' ? null : Number(data.value)
     onSelect(behavior, value)
@@ -74,7 +77,7 @@ const BehaviorEditor = ({
   return (
     <div
       data-testid='behaviorEditor'
-      className={vendorTool.classNames(
+      className={classNames(
         commonClasses.columnStart,
         classes.container,
       )}
@@ -89,7 +92,7 @@ const BehaviorEditor = ({
           {parseTool.behaviorDesc(behavior)}
         </h5>
       </div>
-      <vendorTool.ui.Dropdown
+      <Dropdown
         selection
         clearable
         className={classes.select}

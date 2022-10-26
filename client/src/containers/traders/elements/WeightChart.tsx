@@ -1,7 +1,8 @@
-import * as vendorTool from 'tools/vendor'
+import { MouseEvent } from 'react'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import * as themeEnum from 'enums/theme'
+import * as chart from 'recharts'
 
 interface DataPoint {
   label: string;
@@ -53,7 +54,7 @@ const ActiveShape = ({
           {weight}
         </tspan>
       </text>
-      <vendorTool.chart.Sector
+      <chart.Sector
         cx={cx}
         cy={cy}
         innerRadius={innerRadius}
@@ -62,7 +63,7 @@ const ActiveShape = ({
         endAngle={endAngle}
         fill={fill}
       />
-      <vendorTool.chart.Sector
+      <chart.Sector
         cx={cx}
         cy={cy}
         startAngle={startAngle}
@@ -87,7 +88,7 @@ const WeightChart = ({
   // ------------------------------------------------------------ Handler --
 
   const handleMouseEnter = (
-    e: vendorTool.react.MouseEvent,
+    e: MouseEvent,
     index: number,
   ) => {
     onMouseEnter(index)
@@ -98,8 +99,8 @@ const WeightChart = ({
   if (!data.length) return null
 
   return (
-    <vendorTool.chart.PieChart width={200} height={200}>
-      <vendorTool.chart.Pie
+    <chart.PieChart width={200} height={200}>
+      <chart.Pie
         onMouseEnter={handleMouseEnter}
         activeIndex={activeIndex}
         activeShape={ActiveShape}
@@ -114,15 +115,15 @@ const WeightChart = ({
         isAnimationActive={false}
       >
         {data.map((entry, index) => (
-          <vendorTool.chart.Cell
+          <chart.Cell
             key={entry.value}
             fill={
               index === activeIndex ? themeEnum.Basic.PrimaryColor : themeEnum.Basic.SecondaryColor
             }
           />
         ))}
-      </vendorTool.chart.Pie>
-    </vendorTool.chart.PieChart>
+      </chart.Pie>
+    </chart.PieChart>
   )
 }
 

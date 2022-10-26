@@ -1,8 +1,12 @@
+import { useEffect } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import classNames from 'classnames'
+import { Header } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
 import useResourceState from 'states/useResourceState'
 import useTraderRequest from 'requests/useTraderRequest'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderStyle from 'styles/useTraderStyle'
@@ -12,7 +16,7 @@ import EachTops from 'containers/traders/blocks/EachTops'
 import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   tickers: {
@@ -30,8 +34,8 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const EnvDetail = () => {
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -56,12 +60,12 @@ const EnvDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!envId) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!envId || !envRecord || topTraderProfiles) return
     fetchTraderEnv(envId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -96,7 +100,7 @@ const EnvDetail = () => {
           ))}
         </div>
         {!traderEnv.record.isSystem && (
-          <div className={vendorTool.classNames(
+          <div className={classNames(
             commonClasses.rowAround,
             classes.watch,
           )}>
@@ -105,7 +109,7 @@ const EnvDetail = () => {
         )}
       </aside>
       <section className={traderClasses.main}>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='star'
           content={localeTool.t('traderEnv.topProfiles')}

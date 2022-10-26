@@ -1,9 +1,9 @@
+import { Routes, Route } from 'react-router-dom'
 import Reset from './Reset'
 import { fireEvent, render, screen } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as useUserRequest from 'requests/useUserRequest'
 import * as useCommonState from 'states/useCommonState'
@@ -38,12 +38,12 @@ describe('#Forgot', () => {
   test('could go to signIn', () => {
     const history = createMemoryHistory({ initialEntries: [`${routerEnum.Nav.Reset}/112233`] })
     render(
-      <vendorTool.router.Routes>
-        <vendorTool.router.Route
+      <Routes>
+        <Route
           path={`${routerEnum.Nav.Reset}/:code`}
           element={<Reset />}
         />
-      </vendorTool.router.Routes>,
+      </Routes>,
       { history },
     )
     const signInButton = screen.getByTestId('loginButton')
@@ -55,12 +55,12 @@ describe('#Forgot', () => {
   test('could trigger reset', () => {
     const history = createMemoryHistory({ initialEntries: [`${routerEnum.Nav.Reset}/112233`] })
     const { container } = render(
-      <vendorTool.router.Routes>
-        <vendorTool.router.Route
+      <Routes>
+        <Route
           path={`${routerEnum.Nav.Reset}/:code`}
           element={<Reset />}
         />
-      </vendorTool.router.Routes>,
+      </Routes>,
       { history },
     )
 
@@ -99,12 +99,12 @@ describe('#Forgot', () => {
   test('could trigger validation message', () => {
     const history = createMemoryHistory({ initialEntries: [`${routerEnum.Nav.Reset}/112233`] })
     const { container } = render(
-      <vendorTool.router.Routes>
-        <vendorTool.router.Route
+      <Routes>
+        <Route
           path={`${routerEnum.Nav.Reset}/:code`}
           element={<Reset />}
         />
-      </vendorTool.router.Routes>,
+      </Routes>,
       { history },
     )
 

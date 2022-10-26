@@ -1,9 +1,10 @@
-import * as vendorTool from 'tools/vendor'
+import classNames from 'classnames'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 import ValueChangePercents from './ValueChangePercents'
 import ValueChangeCharts from './ValueChangeCharts'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   root: {
     width: '100%',
   },
@@ -52,7 +53,7 @@ const ValueChangePanel = ({
   if (!showPercents && !showCharts) return null
 
   return (
-    <section className={vendorTool.classNames(
+    <section className={classNames(
       commonClasses.rowAround,
       classes.root,
     )}>

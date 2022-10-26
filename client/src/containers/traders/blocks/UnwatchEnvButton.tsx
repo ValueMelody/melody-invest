@@ -1,5 +1,6 @@
+import { useState } from 'react'
+import { Button } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import WatchButton from '../elements/WatchButton'
 import useTraderRequest from 'requests/useTraderRequest'
@@ -12,7 +13,7 @@ const UnwatchEnvButton = ({
 }) => {
   const { deleteTraderEnv } = useTraderRequest()
 
-  const [isDeleting, setIsDeleting] = vendorTool.react.useState(false)
+  const [isDeleting, setIsDeleting] = useState(false)
 
   const handleClickUnwatch = () => {
     setIsDeleting(true)
@@ -34,13 +35,13 @@ const UnwatchEnvButton = ({
         onClose={handleCancelUnwatch}
       >
         <h4>{localeTool.t('unwatchEnv.desc')}</h4>
-        <vendorTool.ui.Button
+        <Button
           color='blue'
           onClick={handleConfirmUnwatch}
           className='mt-2'
         >
           {localeTool.t('common.confirm')}
-        </vendorTool.ui.Button>
+        </Button>
       </ConfirmModal>
       <WatchButton isWatched onToggle={handleClickUnwatch} />
     </>

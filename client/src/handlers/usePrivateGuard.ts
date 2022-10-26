@@ -1,9 +1,10 @@
+import { useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import useUserState from 'states/useUserState'
 import * as routerTool from 'tools/router'
-import * as vendorTool from 'tools/vendor'
 
 const usePrivateGuard = () => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ state --
 
@@ -12,7 +13,7 @@ const usePrivateGuard = () => {
 
   // ------------------------------------------------------------ effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!user.hasLogin) navigate(routerTool.signInRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.hasLogin])

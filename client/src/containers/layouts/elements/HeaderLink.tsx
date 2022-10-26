@@ -1,6 +1,9 @@
-import * as vendorTool from 'tools/vendor'
+import classNames from 'classnames'
+import { SemanticICONS, Label, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
+import { createUseStyles } from 'react-jss'
 
-const useStyles = vendorTool.jss.createUseStyles({
+const useStyles = createUseStyles({
   label: {
     marginLeft: '0.5rem !important',
     marginRight: '0.5rem !important',
@@ -17,21 +20,21 @@ const HeaderLink = ({
 }: {
   title?: string,
   route: string,
-  icon: vendorTool.ui.SemanticICONS,
+  icon: SemanticICONS,
 }) => {
   // ------------------------------------------------------------ State --
   const classes = useStyles()
 
   return (
-    <vendorTool.router.Link to={route}>
-      <vendorTool.ui.Label className={classes.label}>
-        <vendorTool.ui.Icon
+    <Link to={route}>
+      <Label className={classes.label}>
+        <Icon
           name={icon}
-          className={vendorTool.classNames({ [classes.icon]: !!title })}
+          className={classNames({ [classes.icon]: !!title })}
         />
         {title || ''}
-      </vendorTool.ui.Label>
-    </vendorTool.router.Link>
+      </Label>
+    </Link>
   )
 }
 

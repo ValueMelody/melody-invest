@@ -1,10 +1,13 @@
+import { SyntheticEvent } from 'react'
+import classNames from 'classnames'
+import { Button } from 'semantic-ui-react'
 import TrendChart from './TrendChart'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   root: {
     margin: '1rem 0',
   },
@@ -35,12 +38,12 @@ const ValueChangeCharts = ({
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClickDecadeChart = (e: vendorTool.react.SyntheticEvent) => {
+  const handleClickDecadeChart = (e: SyntheticEvent) => {
     e.stopPropagation()
     onChangeChart(0)
   }
 
-  const handleClickYearChart = (e: vendorTool.react.SyntheticEvent) => {
+  const handleClickYearChart = (e: SyntheticEvent) => {
     e.stopPropagation()
     onChangeChart(1)
   }
@@ -52,7 +55,7 @@ const ValueChangeCharts = ({
   return (
     <section
       data-testid='valueChangeCharts'
-      className={vendorTool.classNames(
+      className={classNames(
         classes.root,
         commonClasses.columnCenter,
       )}
@@ -62,20 +65,20 @@ const ValueChangeCharts = ({
           data={activeChartIndex === 0 ? decadeTrends : yearTrends}
         />
       </div>
-      <vendorTool.ui.Button.Group compact>
-        <vendorTool.ui.Button
+      <Button.Group compact>
+        <Button
           onClick={handleClickDecadeChart}
           color={activeChartIndex === 0 ? 'blue' : undefined}
         >
           {localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })}
-        </vendorTool.ui.Button>
-        <vendorTool.ui.Button
+        </Button>
+        <Button
           onClick={handleClickYearChart}
           color={activeChartIndex === 1 ? 'blue' : undefined}
         >
           {localeTool.t('common.daysTrends', { num: 30 * (yearTrends.length - 1) })}
-        </vendorTool.ui.Button>
-      </vendorTool.ui.Button.Group>
+        </Button>
+      </Button.Group>
     </section>
   )
 }

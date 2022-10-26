@@ -1,5 +1,8 @@
+import { useState } from 'react'
+import classNames from 'classnames'
+import { Segment, Label, Divider, Button } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useResourceState from 'states/useResourceState'
@@ -7,7 +10,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import ValueDiffer from 'containers/traders/elements/ValueDiffer'
 import HoldingShare from 'containers/traders/elements/HoldingShare'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   container: {
     minWidth: '28rem',
   },
@@ -35,7 +38,7 @@ const HoldingCard = ({
   const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentity } = useResourceState()
-  const [showAllHoldings, setShowAllHoldings] = vendorTool.react.useState(false)
+  const [showAllHoldings, setShowAllHoldings] = useState(false)
   const orderedHoldingItems = holding.items.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
   const displayedHoldingItems = showAllHoldings ? orderedHoldingItems : orderedHoldingItems.slice(0, 10)
 
@@ -48,12 +51,12 @@ const HoldingCard = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.ui.Segment className={classes.container}>
+    <Segment className={classes.container}>
       <div className={commonClasses.columnStart}>
         <div className={commonClasses.rowStart}>
-          <vendorTool.ui.Label>
+          <Label>
             {localeTool.t('common.date')}: {holding.date}
-          </vendorTool.ui.Label>
+          </Label>
           {holding.totalValue !== null && (
             <h5 className={classes.totalValue}>
               <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
@@ -67,7 +70,7 @@ const HoldingCard = ({
             </h5>
           )}
         </div>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowStart,
           classes.differRow,
         )}>
@@ -85,7 +88,7 @@ const HoldingCard = ({
           />
         </div>
       </div>
-      <vendorTool.ui.Divider />
+      <Divider />
       {displayedHoldingItems.map((holdingItem) => {
         const identity = getTickerIdentity(holdingItem.tickerId)
         return (
@@ -100,12 +103,12 @@ const HoldingCard = ({
       })}
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button onClick={handleClickShowMore}>
+          <Button onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       )}
-    </vendorTool.ui.Segment>
+    </Segment>
   )
 }
 

@@ -1,10 +1,12 @@
-import * as vendorTool from 'tools/vendor'
+import classNames from 'classnames'
+import { Label, Icon } from 'semantic-ui-react'
+import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import * as themeEnum from 'enums/theme'
 import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   container: {
     marginRight: '2rem !important',
   },
@@ -40,23 +42,23 @@ const ValueDiffer = ({
   return (
     <div
       data-testid='valueDiffer'
-      className={vendorTool.classNames(
+      className={classNames(
         commonClasses.rowStart,
         classes.container,
       )}
     >
       {title && <h5>{title}:</h5>}
-      <vendorTool.ui.Label
+      <Label
         className={classes.label}
         color={isPositive ? themeEnum.theme.IncreaseColor : themeEnum.theme.DecreaseColor}
         title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
       >
         {parseTool.floatToPercent(differ)}
-        <vendorTool.ui.Icon
+        <Icon
           className={classes.icon}
           name={isPositive ? 'level up' : 'level down'}
         />
-      </vendorTool.ui.Label>
+      </Label>
     </div>
   )
 }

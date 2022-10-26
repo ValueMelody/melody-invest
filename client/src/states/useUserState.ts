@@ -1,11 +1,11 @@
+import { useContext, useMemo } from 'react'
 import * as constants from '@shared/constants'
 import { context, Context, TraderEnv, TraderCombo } from 'context'
-import * as vendorTool from 'tools/vendor'
 
 const useUserState = () => {
-  const store: Context = vendorTool.react.useContext(context)
+  const store: Context = useContext(context)
 
-  const limits = vendorTool.react.useMemo(() => {
+  const limits = useMemo(() => {
     switch (store.resources.userType) {
       case constants.User.Type.Premium:
         return constants.User.PlanLimit.Premium

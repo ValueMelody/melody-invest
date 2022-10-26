@@ -1,8 +1,10 @@
+import classNames from 'classnames'
+import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   label: {
     alignSelf: 'flex-start',
     margin: '0.25rem 0.125rem !important',
@@ -16,7 +18,7 @@ const TickerLabel = ({
 }: {
   ticker: interfaces.tickerModel.Identity | null;
   onClick?: (tickerId: number) => void;
-  color: vendorTool.ui.SemanticCOLORS;
+  color: SemanticCOLORS;
 }) => {
   // ------------------------------------------------------------ State --
 
@@ -35,17 +37,17 @@ const TickerLabel = ({
   if (!ticker) return null
 
   return (
-    <vendorTool.ui.Label
+    <Label
       data-testid='tickerLabel'
       color={color}
-      className={vendorTool.classNames(classes.label, {
+      className={classNames(classes.label, {
         [commonClasses.cursorClickable]: !!onClick,
       })}
       title={ticker.name}
       onClick={handleClick}
     >
       {ticker.symbol}
-    </vendorTool.ui.Label>
+    </Label>
   )
 }
 

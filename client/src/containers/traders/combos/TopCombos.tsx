@@ -1,9 +1,13 @@
+import { useEffect, useState } from 'react'
+import { Header } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import useCommonState from 'states/useCommonState'
 import useTraderState from 'states/useTraderState'
 import useSystemRequest from 'requests/useSystemRequest'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderStyle from 'styles/useTraderStyle'
@@ -14,7 +18,7 @@ import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   header: {
@@ -32,7 +36,7 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const TopCombos = () => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -40,7 +44,7 @@ const TopCombos = () => {
   const { commonClasses } = useCommonStyle()
   const { traderClasses } = useTraderStyle()
 
-  const [focusedComboId, setFocusedComboId] = vendorTool.react.useState(-1)
+  const [focusedComboId, setFocusedComboId] = useState(-1)
   const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
 
   const { fetchSystemTraderCombos } = useSystemRequest()
@@ -61,7 +65,7 @@ const TopCombos = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (focusedCombo) return
     fetchSystemTraderCombos()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -88,7 +92,7 @@ const TopCombos = () => {
 
   return (
     <section className={commonClasses.columnStart}>
-      <header className={vendorTool.classNames(
+      <header className={classNames(
         commonClasses.rowStart,
         classes.header,
       )}>
@@ -117,7 +121,7 @@ const TopCombos = () => {
             showPercents
             showCharts
           />
-          <vendorTool.ui.Header
+          <Header
             as='h3'
             icon='history'
             content={localeTool.t('topCombos.history')}
@@ -132,7 +136,7 @@ const TopCombos = () => {
           ))}
         </section>
         <section className={traderClasses.aside}>
-          <vendorTool.ui.Header
+          <Header
             as='h3'
             icon='star'
             content={localeTool.t('traderCombo.includedProfiles')}
@@ -148,7 +152,7 @@ const TopCombos = () => {
               />
             ))}
           </div>
-          <vendorTool.ui.Header
+          <Header
             as='h3'
             icon='pie chart'
             content={localeTool.t('traderCombo.profilePortion')}
