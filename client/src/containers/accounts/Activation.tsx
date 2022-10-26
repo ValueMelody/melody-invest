@@ -1,12 +1,13 @@
-import * as vendorTool from 'tools/vendor'
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
 import usePublicGuard from 'handlers/usePublicGuard'
 
 const Activation = () => {
   usePublicGuard()
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -16,7 +17,7 @@ const Activation = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!accessCode || accessCode.length !== 64) {
       navigate(routerTool.signInRoute())
       return

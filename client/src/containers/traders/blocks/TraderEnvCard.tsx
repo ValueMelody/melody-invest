@@ -1,5 +1,6 @@
+import classNames from 'classnames'
+import { Card, Label } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
@@ -40,23 +41,23 @@ const TraderEnvCard = ({
   if (!traderEnv) return null
 
   return (
-    <vendorTool.ui.Card
+    <Card
       data-testid='traderEnvCard'
-      className={vendorTool.classNames(cardClasses.container, {
+      className={classNames(cardClasses.container, {
         [cardClasses.isActive]: isActive,
         [cardClasses.disabled]: disabled,
       })}
       onClick={!disabled ? handleClickEnv : undefined}
     >
-      <vendorTool.ui.Card.Content>
-        <vendorTool.ui.Card.Header
+      <Card.Content>
+        <Card.Header
           content={(
             <div className={commonClasses.rowBetween}>
               <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
               {traderEnv.isSystem && (
-                <vendorTool.ui.Label title={localeTool.t('traderEnv.systemDesc')}>
+                <Label title={localeTool.t('traderEnv.systemDesc')}>
                   {localeTool.t('common.system')}
-                </vendorTool.ui.Label>
+                </Label>
               )}
               {disabled && (
                 <UnwatchEnvButton traderEnv={traderEnv} />
@@ -64,16 +65,16 @@ const TraderEnvCard = ({
             </div>
           )}
         />
-        <vendorTool.ui.Card.Meta
+        <Card.Meta
           content={parseTool.traderEnvStartDate(traderEnv)}
         />
-        <vendorTool.ui.Card.Description
+        <Card.Description
           content={
             disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)
           }
         />
-      </vendorTool.ui.Card.Content>
-    </vendorTool.ui.Card>
+      </Card.Content>
+    </Card>
   )
 }
 

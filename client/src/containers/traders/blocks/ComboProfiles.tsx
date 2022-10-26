@@ -1,6 +1,6 @@
+import { useState } from 'react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
@@ -41,7 +41,7 @@ const ComboProfiles = ({
     return curr.value < dataset.value ? index : currentIndex
   }, 0)
 
-  const [activeIndex, setActiveIndex] = vendorTool.react.useState(largestIndex)
+  const [activeIndex, setActiveIndex] = useState(largestIndex)
 
   // ------------------------------------------------------------ Handler --
 

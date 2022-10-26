@@ -1,6 +1,10 @@
+import { useEffect } from 'react'
+import { Header, Segment } from 'semantic-ui-react'
+import { useParams, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderRequest from 'requests/useTraderRequest'
@@ -17,7 +21,7 @@ import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import WatchButton from 'containers/traders/elements/WatchButton'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
+const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
   combo: {
     width: '100%',
     paddingBottom: '2rem !important',
@@ -38,8 +42,8 @@ const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme
 const ComboDetail = () => {
   usePrivateGuard()
 
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -68,9 +72,10 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!matchedCombo || matchedCombo?.detail) return
     fetchTraderCombo(matchedCombo.identity.id)
+    // eslint-disable-next-line
   }, [matchedCombo])
 
   // ------------------------------------------------------------ Handler --
@@ -96,7 +101,7 @@ const ComboDetail = () => {
   return (
     <section className={traderClasses.root}>
       <aside className={traderClasses.aside}>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           classes.combo,
           commonClasses.columnCenter,
         )}>
@@ -110,7 +115,7 @@ const ComboDetail = () => {
             />
           )}
         </div>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='star'
           className={classes.profileTitle}
@@ -126,7 +131,7 @@ const ComboDetail = () => {
             />
           ))}
         </div>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='pie chart'
           className={classes.portionTitle}
@@ -152,15 +157,15 @@ const ComboDetail = () => {
           showPercents
           showCharts
         />
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='history'
           content={localeTool.t('traderCombo.history')}
         />
         {!displayedHoldings.length && (
-          <vendorTool.ui.Segment>
+          <Segment>
             {localeTool.t('traderCombo.noResultYet')}
-          </vendorTool.ui.Segment>
+          </Segment>
         )}
         {displayedHoldings.map((detail, index) => (
           <HoldingCard

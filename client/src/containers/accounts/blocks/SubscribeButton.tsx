@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
+import * as paypal from '@paypal/react-paypal-js'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
 import useUserRequest from 'requests/useUserRequest'
 import * as commonEnum from 'enums/common'
 
@@ -16,7 +17,7 @@ const Button = ({
 
   const { createUserSubscription } = useUserRequest()
 
-  const [{ options }, dispatch] = vendorTool.paypal.usePayPalScriptReducer()
+  const [{ options }, dispatch] = paypal.usePayPalScriptReducer()
 
   const planId = planType === constants.User.Type.Pro
     ? commonEnum.Env.PayPalProPlanId
@@ -24,7 +25,7 @@ const Button = ({
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     dispatch({
       type: 'resetOptions',
       value: {
@@ -32,6 +33,7 @@ const Button = ({
         intent: 'subscription',
       },
     })
+    // eslint-disable-next-line
   }, [])
 
   // ------------------------------------------------------------ Handler --
@@ -48,7 +50,7 @@ const Button = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.paypal.PayPalButtons
+    <paypal.PayPalButtons
       createSubscription={async (data, actions) => actions.subscription.create({ plan_id: planId })}
       onApprove={async (data) => {
         await handleApproved(data.subscriptionID!)
@@ -74,7 +76,7 @@ const SubscribeButton = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.paypal.PayPalScriptProvider
+    <paypal.PayPalScriptProvider
       options={{
         'client-id': commonEnum.Env.PayPalClientId,
         components: 'buttons',
@@ -83,7 +85,7 @@ const SubscribeButton = ({
       }}
     >
       <Button planType={planType} onCloseModal={handleCloseModal} />
-    </vendorTool.paypal.PayPalScriptProvider>
+    </paypal.PayPalScriptProvider>
   )
 }
 

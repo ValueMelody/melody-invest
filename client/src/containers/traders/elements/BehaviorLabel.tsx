@@ -1,9 +1,12 @@
+import { MouseEvent } from 'react'
+import classNames from 'classnames'
+import { Label, SemanticCOLORS } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles({
+const useStyles = createUseStyles({
   container: {
     margin: '0.25rem 0.125rem !important',
   },
@@ -16,7 +19,7 @@ const BehaviorLabel = ({
   onClick,
 }: {
   behavior: interfaces.traderPatternModel.Behavior;
-  color: vendorTool.ui.SemanticCOLORS;
+  color: SemanticCOLORS;
   value?: number | null;
   onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
@@ -32,7 +35,7 @@ const BehaviorLabel = ({
 
   // ------------------------------------------------------------ Handler --
 
-  const handleClick = (e: vendorTool.react.MouseEvent<HTMLElement>) => {
+  const handleClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     if (!onClick) return
     onClick(behavior)
@@ -41,9 +44,9 @@ const BehaviorLabel = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.ui.Label
+    <Label
       data-testid='behaviorLabel'
-      className={vendorTool.classNames(classes.container, {
+      className={classNames(classes.container, {
         [commonClasses.cursorInfo]: !onClick,
         [commonClasses.cursorClickable]: !!onClick,
       })}
@@ -52,7 +55,7 @@ const BehaviorLabel = ({
       onClick={handleClick}
     >
       {hasValue ? `${behaviorTitle}: ${behaviorValue}` : behaviorTitle}
-    </vendorTool.ui.Label>
+    </Label>
   )
 }
 

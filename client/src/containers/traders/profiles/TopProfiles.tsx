@@ -1,8 +1,9 @@
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
 import useResourceState from 'states/useResourceState'
 import useSystemRequest from 'requests/useSystemRequest'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderStyle from 'styles/useTraderStyle'
@@ -11,7 +12,7 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import VariationList from 'containers/traders/elements/VariationList'
 
 const TopProfiles = () => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -21,7 +22,7 @@ const TopProfiles = () => {
   const { fetchOverallTopTraderProfiles } = useSystemRequest()
   const { getOverallTopTraderProfiles } = useResourceState()
   const { getTraderProfile } = useTraderState()
-  const [focusType, setFocusType] = vendorTool.react.useState('YEARLY')
+  const [focusType, setFocusType] = useState('YEARLY')
 
   const topTraderProfiles = getOverallTopTraderProfiles()
 
@@ -62,7 +63,7 @@ const TopProfiles = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (topTraderProfiles) return
     fetchOverallTopTraderProfiles()
     // eslint-disable-next-line react-hooks/exhaustive-deps

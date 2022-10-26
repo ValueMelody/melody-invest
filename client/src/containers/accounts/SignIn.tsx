@@ -1,4 +1,8 @@
-import * as vendorTool from 'tools/vendor'
+import { useState, ChangeEvent, FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+import { Input, Checkbox, Button } from 'semantic-ui-react'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
@@ -9,7 +13,7 @@ import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   input: {
     width: 280,
   },
@@ -20,7 +24,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const SignIn = () => {
   usePublicGuard()
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -31,20 +35,20 @@ const SignIn = () => {
   const { addMessage } = useCommonState()
   const { createUserToken } = useUserRequest()
 
-  const [email, setEmail] = vendorTool.react.useState('')
-  const [password, setPassword] = vendorTool.react.useState('')
-  const [shouldRemember, setShouldRemember] = vendorTool.react.useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [shouldRemember, setShouldRemember] = useState(false)
 
   // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(e.target.value)
   }
 
   const handleChangePassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setPassword(e.target.value)
   }
@@ -62,7 +66,7 @@ const SignIn = () => {
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
@@ -83,54 +87,54 @@ const SignIn = () => {
         {localeTool.t('signIn.title')}
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <vendorTool.ui.Input
+          <Input
             className={classes.input}
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <vendorTool.ui.Input
+          <Input
             className={classes.input}
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           accountClasses.row,
           commonClasses.rowAround,
         )}>
-          <vendorTool.ui.Checkbox
+          <Checkbox
             label={localeTool.t('signIn.remember')}
             checked={shouldRemember}
             onChange={handleToggleRemember}
           />
         </div>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             data-testid='signInButton'
             type='submit'
             color='blue'
             disabled={!email || !password}
           >
             {localeTool.t('signIn.button')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
       <div className={accountClasses.row}>
         <div className={commonClasses.columnCenter}>
-          <vendorTool.ui.Button
+          <Button
             data-testid='signUpButton'
             className={accountClasses.routerButton}
             icon='right arrow'
@@ -138,7 +142,7 @@ const SignIn = () => {
             content={localeTool.t('signIn.toSignUp')}
             onClick={handleClickSignUp}
           />
-          <vendorTool.ui.Button
+          <Button
             data-testid='forgotButton'
             className={classes.forgotButton}
             icon='right arrow'

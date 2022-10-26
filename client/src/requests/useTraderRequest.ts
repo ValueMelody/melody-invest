@@ -1,15 +1,16 @@
+import { useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import { context, Context } from 'context'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
-import * as vendorTool from 'tools/vendor'
 import * as routerTool from 'tools/router'
 import groupTraderProfiles from './shared/groupTraderProfiles'
 import stripTopProfiles from './shared/stripTopProfiles'
 
 const useTraderRequest = () => {
-  const store: Context = vendorTool.react.useContext(context)
-  const navigate = vendorTool.router.useNavigate()
+  const store: Context = useContext(context)
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ store --
 

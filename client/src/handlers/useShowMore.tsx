@@ -1,4 +1,5 @@
-import * as vendorTool from 'tools/vendor'
+import { useState } from 'react'
+import { Button } from 'semantic-ui-react'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
 
@@ -6,7 +7,7 @@ const useShowMore = () => {
   // ------------------------------------------------------------ state --
 
   const { commonClasses } = useCommonStyle()
-  const [displayedTotal, setDisplayedTotal] = vendorTool.react.useState(5)
+  const [displayedTotal, setDisplayedTotal] = useState(5)
 
   // ------------------------------------------------------------ handler --
 
@@ -18,9 +19,9 @@ const useShowMore = () => {
 
   const renderShowMoreButton = () => (
     <div className={commonClasses.rowAround} data-testid='showMore'>
-      <vendorTool.ui.Button onClick={handleClickShowMore}>
+      <Button onClick={handleClickShowMore}>
         {localeTool.t('common.showMoreHistory')}
-      </vendorTool.ui.Button>
+      </Button>
     </div>
   )
 

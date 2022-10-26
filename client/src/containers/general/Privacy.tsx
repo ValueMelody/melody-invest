@@ -1,5 +1,6 @@
+import { useEffect } from 'react'
+import { TextArea } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import useSystemRequest from 'requests/useSystemRequest'
 import useResourceState from 'states/useResourceState'
@@ -15,8 +16,9 @@ const Privacy = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!policy.privacyPolicy) fetchSystemPolicy(constants.Content.PolicyType.Privacy)
+    // eslint-disable-next-line
   }, [policy.privacyPolicy])
 
   // ------------------------------------------------------------ UI --
@@ -26,7 +28,7 @@ const Privacy = () => {
       <h2 className={contentClasses.pageTitle}>
         {localeTool.t('page.privacyPolicy')}
       </h2>
-      <vendorTool.ui.TextArea
+      <TextArea
         data-testid='privacy-content'
         className={contentClasses.contentTextarea}
         disabled

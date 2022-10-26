@@ -1,5 +1,6 @@
+import classNames from 'classnames'
+import { Card } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
@@ -48,16 +49,16 @@ const TraderComboCard = ({
   if (!traderCombo) return null
 
   return (
-    <vendorTool.ui.Card
+    <Card
       data-testid='traderComboCard'
-      className={vendorTool.classNames(cardClasses.container, {
+      className={classNames(cardClasses.container, {
         [cardClasses.isActive]: isActive,
         [cardClasses.disabled]: disabled,
       })}
       onClick={!disabled ? handleClickCombo : undefined}
     >
-      <vendorTool.ui.Card.Content>
-        <vendorTool.ui.Card.Header
+      <Card.Content>
+        <Card.Header
           content={(
             <div className={commonClasses.rowBetween}>
               <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
@@ -67,13 +68,13 @@ const TraderComboCard = ({
             </div>
           )}
         />
-        <vendorTool.ui.Card.Description
+        <Card.Description
           content={
             disabled ? localeTool.t('permission.limited') : parseTool.traderComboTraders(traderCombo)
           }
         />
-      </vendorTool.ui.Card.Content>
-    </vendorTool.ui.Card>
+      </Card.Content>
+    </Card>
   )
 }
 

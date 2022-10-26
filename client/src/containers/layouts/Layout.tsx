@@ -1,4 +1,7 @@
-import * as vendorTool from 'tools/vendor'
+import { FunctionComponent, useEffect } from 'react'
+import classNames from 'classnames'
+import { Message, Icon } from 'semantic-ui-react'
+import { createUseStyles } from 'react-jss'
 import useSystemRequest from 'requests/useSystemRequest'
 import useUserRequest from 'requests/useUserRequest'
 import useCommonState from 'states/useCommonState'
@@ -7,7 +10,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import Header from 'containers/layouts/blocks/Header'
 import Footer from 'containers/layouts/blocks/Footer'
 
-const useStyles = vendorTool.jss.createUseStyles({
+const useStyles = createUseStyles({
   main: {
     paddingTop: '3rem',
     minHeight: '100vh',
@@ -29,7 +32,7 @@ const useStyles = vendorTool.jss.createUseStyles({
   },
 })
 
-const Layout: vendorTool.react.FunctionComponent = ({
+const Layout: FunctionComponent = ({
   children,
 }) => {
   // ------------------------------------------------------------ State --
@@ -46,18 +49,18 @@ const Layout: vendorTool.react.FunctionComponent = ({
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     fetchSystemDefaults()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!user.hasLogin || user.userType) return
     fetchUserOverall()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.hasLogin, user.userType])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!messages.length) return
     const clearMessage = setTimeout(() => {
       const msgId = messages[0].id
@@ -79,7 +82,7 @@ const Layout: vendorTool.react.FunctionComponent = ({
       {!!messages.length && (
         <div className={classes.messages}>
           {messages.map((message) => (
-            <vendorTool.ui.Message
+            <Message
               data-testid='message'
               key={message.id}
               info={message.type === 'info'}
@@ -88,20 +91,20 @@ const Layout: vendorTool.react.FunctionComponent = ({
               warning={message.type === 'warning'}
             >
               <div>
-                <vendorTool.ui.Message.Header>
+                <Message.Header>
                   {message.title}
-                </vendorTool.ui.Message.Header>
+                </Message.Header>
                 {message.desc && <p>{message.desc}</p>}
               </div>
-              <vendorTool.ui.Icon
+              <Icon
                 name='close'
                 onClick={() => handleRemoveMessage(message.id)}
               />
-            </vendorTool.ui.Message>
+            </Message>
           ))}
         </div>
       )}
-      <main className={vendorTool.classNames(
+      <main className={classNames(
         classes.main,
         commonClasses.columnCenter,
       )}>

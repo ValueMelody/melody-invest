@@ -1,8 +1,12 @@
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import classNames from 'classnames'
+import { Header } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
 import useTraderStyle from 'styles/useTraderStyle'
@@ -11,7 +15,7 @@ import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   desc: {
@@ -27,8 +31,8 @@ const useStyles = vendorTool.jss.createUseStyles((
 }))
 
 const TickerDetail = () => {
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -59,12 +63,12 @@ const TickerDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!tickerId || !envId) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (tickerDetail || !tickerId || !envId) return
     fetchTraderTicker(envId, tickerId)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -85,7 +89,7 @@ const TickerDetail = () => {
   return (
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
-        <header className={vendorTool.classNames(
+        <header className={classNames(
           commonClasses.rowStart,
           classes.header,
         )}>
@@ -94,7 +98,7 @@ const TickerDetail = () => {
             {tickerIdentity.name}
           </h4>
         </header>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='star'
           content={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}

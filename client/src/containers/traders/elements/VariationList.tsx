@@ -1,4 +1,6 @@
-import * as vendorTool from 'tools/vendor'
+import classNames from 'classnames'
+import { Label } from 'semantic-ui-react'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 
 type Value = string | number
@@ -9,7 +11,7 @@ interface Option {
   onClick: (value?: Value) => void;
 }
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   label: {
     marginTop: '1rem !important',
     width: '100%',
@@ -41,9 +43,9 @@ const VariationList = ({
         }
 
         return (
-          <vendorTool.ui.Label
+          <Label
             key={option.value}
-            className={vendorTool.classNames(
+            className={classNames(
               classes.label,
               commonClasses.cursorClickable,
               { [classes.active]: option.value === activeValue })}
@@ -52,7 +54,7 @@ const VariationList = ({
             onClick={handleClick}
           >
             {option.label}
-          </vendorTool.ui.Label>
+          </Label>
         )
       })}
     </section>

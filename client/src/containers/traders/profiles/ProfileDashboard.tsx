@@ -1,7 +1,10 @@
+import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
+import { Header, Button, Icon } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderStyle from 'styles/useTraderStyle'
@@ -11,7 +14,7 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   header: {
     marginBottom: '1rem',
   },
@@ -25,7 +28,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
 const ProfileDashboard = () => {
   usePrivateGuard()
 
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -78,11 +81,11 @@ const ProfileDashboard = () => {
   return (
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
-        <header className={vendorTool.classNames(
+        <header className={classNames(
           commonClasses.rowBetween,
           classes.header,
         )}>
-          <vendorTool.ui.Header
+          <Header
             as='h3'
             icon='star'
             content={localeTool.t('dashboard.watchedProfiles')}
@@ -93,16 +96,16 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <vendorTool.ui.Button
+            <Button
               icon
               labelPosition='left'
               color='blue'
               onClick={handleClickAddProfile}
               disabled={!user.canFollowTrader}
             >
-              <vendorTool.ui.Icon name='plus' />
+              <Icon name='plus' />
               {localeTool.t('common.new')}
-            </vendorTool.ui.Button>
+            </Button>
           </div>
         </header>
         {user.userTraderIds.map((traderId) => (
@@ -116,12 +119,12 @@ const ProfileDashboard = () => {
         ))}
       </section>
       <aside className={traderClasses.aside}>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='bookmark'
           content={localeTool.t('dashboard.watchedEnvs')}
         />
-        <section className={vendorTool.classNames(
+        <section className={classNames(
           commonClasses.rowCenter,
           classes.card,
         )}>
@@ -138,24 +141,24 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <vendorTool.ui.Button
+            <Button
               icon
               labelPosition='left'
               color='blue'
               onClick={handleClickAddEnv}
               disabled={!user.canFollowEnv}
             >
-              <vendorTool.ui.Icon name='plus' />
+              <Icon name='plus' />
               {localeTool.t('common.new')}
-            </vendorTool.ui.Button>
+            </Button>
           </div>
         </section>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='boxes'
           content={localeTool.t('dashboard.watchedCombos')}
         />
-        <section className={vendorTool.classNames(
+        <section className={classNames(
           commonClasses.rowCenter,
           classes.card,
         )}>
@@ -172,16 +175,16 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <vendorTool.ui.Button
+            <Button
               icon
               labelPosition='left'
               color='blue'
               onClick={handleClickAddCombo}
               disabled={!user.canFollowCombo}
             >
-              <vendorTool.ui.Icon name='plus' />
+              <Icon name='plus' />
               {localeTool.t('common.new')}
-            </vendorTool.ui.Button>
+            </Button>
           </div>
         </section>
       </aside>

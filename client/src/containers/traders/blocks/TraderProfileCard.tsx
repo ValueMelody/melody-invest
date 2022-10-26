@@ -1,6 +1,8 @@
+import classNames from 'classnames'
+import { Segment } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
 import useCommonState from 'states/useCommonState'
@@ -12,7 +14,7 @@ import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   pattern: {
@@ -117,9 +119,9 @@ const TraderProfileCard = ({
   if (!trader || !pattern || !traderEnv) return null
 
   return (
-    <vendorTool.ui.Segment
+    <Segment
       data-testid='traderProfileCard'
-      className={vendorTool.classNames(commonClasses.rowAround, classes.pattern, {
+      className={classNames(commonClasses.rowAround, classes.pattern, {
         [commonClasses.cursorClickable]: isClickable,
         [cardClasses.disabled]: disabled,
         [cardClasses.isActive]: !!isActive,
@@ -128,12 +130,12 @@ const TraderProfileCard = ({
       padded
     >
       <header
-        className={vendorTool.classNames(
+        className={classNames(
           commonClasses.rowBetween,
           classes.header,
         )}
       >
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowStart,
           classes.label,
         )}>
@@ -184,7 +186,7 @@ const TraderProfileCard = ({
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
         )}
       </div>
-    </vendorTool.ui.Segment>
+    </Segment>
   )
 }
 

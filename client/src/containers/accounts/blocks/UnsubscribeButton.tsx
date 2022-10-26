@@ -1,5 +1,6 @@
+import { useState } from 'react'
+import { Button } from 'semantic-ui-react'
 import * as localeTool from 'tools/locale'
-import * as vendorTool from 'tools/vendor'
 import useUserRequest from 'requests/useUserRequest'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 
@@ -8,7 +9,7 @@ const UnsubscribeButton = () => {
 
   const { cancelUserSubscription, fetchUserOverall } = useUserRequest()
 
-  const [showModal, setShowModal] = vendorTool.react.useState(false)
+  const [showModal, setShowModal] = useState(false)
 
   // ------------------------------------------------------------ State --
 
@@ -36,20 +37,20 @@ const UnsubscribeButton = () => {
         onClose={handleCloseModal}
       >
         <h4>{localeTool.t('setting.unsubscribeDesc')}</h4>
-        <vendorTool.ui.Button
+        <Button
           color='blue'
           className='mt-2'
           onClick={handleConfirmUnsubscribe}
         >
           {localeTool.t('common.confirm')}
-        </vendorTool.ui.Button>
+        </Button>
       </ConfirmModal>
-      <vendorTool.ui.Button
+      <Button
         className='mt-2'
         onClick={handleOpenModal}
       >
         {localeTool.t('common.unsubscribe')}
-      </vendorTool.ui.Button>
+      </Button>
     </>
   )
 }

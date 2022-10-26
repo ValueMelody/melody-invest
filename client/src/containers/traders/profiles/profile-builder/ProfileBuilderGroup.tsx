@@ -1,8 +1,9 @@
+import { Segment } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 
-const useStyles = vendorTool.jss.createUseStyles({
+const useStyles = createUseStyles({
   segment: {
     padding: '0.5rem !important',
   },
@@ -50,7 +51,7 @@ const ProfileBuilderGroup = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.ui.Segment secondary className={classes.segment}>
+    <Segment secondary className={classes.segment}>
       <h5 className={classes.groupTitle}>
         {title}
       </h5>
@@ -64,7 +65,7 @@ const ProfileBuilderGroup = ({
           onSelect={handleSelectValue}
         />
       ))}
-    </vendorTool.ui.Segment>
+    </Segment>
   )
 }
 

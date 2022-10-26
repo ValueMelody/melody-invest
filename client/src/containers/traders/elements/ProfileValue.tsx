@@ -1,11 +1,12 @@
+import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
 import ProfileLabel from './ProfileLabel'
 import ValueDiffer from './ValueDiffer'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   container: {
     marginBottom: '1rem',
   },
@@ -37,7 +38,7 @@ const ProfileValue = ({
   return (
     <div
       data-testid='profileValue'
-      className={vendorTool.classNames(
+      className={classNames(
         commonClasses.rowStart,
         classes.container,
         { [commonClasses.cursorClickable]: !!onClick },

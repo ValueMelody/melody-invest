@@ -1,12 +1,14 @@
+import classNames from 'classnames'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as themeEnum from 'enums/theme'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as routerTool from 'tools/router'
 import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
 
-const useStyles = vendorTool.jss.createUseStyles({
+const useStyles = createUseStyles({
   container: {
     marginTop: '1rem',
   },
@@ -19,7 +21,7 @@ const PatternBehaviors = ({
   pattern: interfaces.traderPatternModel.Public;
   envId: number;
 }) => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -46,7 +48,7 @@ const PatternBehaviors = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(
+    <div className={classNames(
       commonClasses.rowStart,
       classes.container,
     )}>

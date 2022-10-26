@@ -1,4 +1,5 @@
-import * as vendorTool from 'tools/vendor'
+import { ReactNode } from 'react'
+import { Modal, Button } from 'semantic-ui-react'
 import * as localeTool from 'tools/locale'
 
 const ConfirmModal = ({
@@ -8,7 +9,7 @@ const ConfirmModal = ({
   onClose,
 }: {
   title: string;
-  children?: vendorTool.react.ReactNode;
+  children?: ReactNode;
   isOpen: boolean;
   onClose: () => void;
 }) => {
@@ -21,23 +22,23 @@ const ConfirmModal = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <vendorTool.ui.Modal
+    <Modal
       data-testid='confirmModal'
       open={isOpen}
       onClose={handleCloseModal}
     >
-      <vendorTool.ui.Modal.Header>
+      <Modal.Header>
         {title}
-      </vendorTool.ui.Modal.Header>
-      <vendorTool.ui.Modal.Content>
+      </Modal.Header>
+      <Modal.Content>
         {children}
-      </vendorTool.ui.Modal.Content>
-      <vendorTool.ui.Modal.Actions>
-        <vendorTool.ui.Button color='grey' onClick={handleCloseModal}>
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color='grey' onClick={handleCloseModal}>
           {localeTool.t('common.close')}
-        </vendorTool.ui.Button>
-      </vendorTool.ui.Modal.Actions>
-    </vendorTool.ui.Modal>
+        </Button>
+      </Modal.Actions>
+    </Modal>
   )
 }
 

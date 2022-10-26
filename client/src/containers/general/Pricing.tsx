@@ -1,11 +1,13 @@
+import classNames from 'classnames'
+import { Link } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as commonEnum from 'enums/common'
 import useCommonStyle from 'styles/useCommonStyle'
 
-const useStyles = vendorTool.jss.createUseStyles((theme: interfaces.common.Theme) => ({
+const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
   table: {
     alignItems: 'flex-start',
     width: '100%',
@@ -73,7 +75,7 @@ const Header = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <header className={vendorTool.classNames(classes.header, className)}>
+    <header className={classNames(classes.header, className)}>
       <h2>{title}</h2>
     </header>
   )
@@ -91,7 +93,7 @@ const Price = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(classes.row, classes.highlight)}>
+    <div className={classNames(classes.row, classes.highlight)}>
       <h3>{title}</h3>
     </div>
   )
@@ -109,7 +111,7 @@ const Item = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={vendorTool.classNames(classes.row)}>
+    <div className={classNames(classes.row)}>
       <h4>{title}</h4>
     </div>
   )
@@ -128,19 +130,19 @@ const Pricing = () => {
       <h2 className={classes.title}>
         {localeTool.t('pricing.title')}:
       </h2>
-      <section className={vendorTool.classNames(
+      <section className={classNames(
         commonClasses.rowBetween,
         classes.table,
       )}>
         <section
-          className={vendorTool.classNames(
+          className={classNames(
             commonClasses.columnCenter,
             classes.column,
           )}
         >
           <Header
             title={commonEnum.Plan.Basic.Title}
-            className={vendorTool.classNames(classes.basicHeader)}
+            className={classNames(classes.basicHeader)}
           />
           <Price title={commonEnum.Plan.Basic.Price} />
           {commonEnum.Plan.Basic.Services.map((service) => (
@@ -155,22 +157,22 @@ const Pricing = () => {
           <Item title='' />
           <Item title='' />
           <div
-            className={vendorTool.classNames(
+            className={classNames(
               classes.row,
               classes.highlight,
               commonClasses.rowAround,
             )}
           >
-            <vendorTool.router.Link
+            <Link
               to={routerTool.signUpRoute()}
               className={classes.signUp}
             >
               {localeTool.t('common.signUp')}
-            </vendorTool.router.Link>
+            </Link>
           </div>
         </section>
         <section
-          className={vendorTool.classNames(
+          className={classNames(
             commonClasses.columnCenter,
             classes.column,
           )}
@@ -194,7 +196,7 @@ const Pricing = () => {
           <Item title='' />
         </section>
         <section
-          className={vendorTool.classNames(
+          className={classNames(
             commonClasses.columnCenter,
             classes.column,
           )}

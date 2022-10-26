@@ -1,7 +1,7 @@
+import axios from 'axios'
 import { createMemoryHistory } from 'history'
 import { renderHook, act } from 'test.utils'
 import store from './store'
-import * as vendorTool from 'tools/vendor'
 import * as localeTool from 'tools/locale'
 import * as storageAdapter from 'adapters/storage'
 import * as routerEnum from 'enums/router'
@@ -197,8 +197,8 @@ describe('#cleanUserState', () => {
     act(() => result.current.setTraderEnvs(state.traderEnvs))
     act(() => result.current.setTraderCombos(state.traderCombos))
 
-    vendorTool.request.defaults.headers.common.Authorization = 'Bearer 123ABC'
-    expect(vendorTool.request.defaults.headers.common.Authorization).toBe('Bearer 123ABC')
+    axios.defaults.headers.common.Authorization = 'Bearer 123ABC'
+    expect(axios.defaults.headers.common.Authorization).toBe('Bearer 123ABC')
     storageAdapter.set('authToken', '123456')
     expect(storageAdapter.get('authToken')).toBe('123456')
 
@@ -219,7 +219,7 @@ describe('#cleanUserState', () => {
     expect(result.current.traderEnvs).toStrictEqual({ 1: { record: { id: 1, isSystem: true } } })
     expect(result.current.traderCombos).toStrictEqual({ 2: { identity: { id: 2, isSystem: true } } })
 
-    expect(vendorTool.request.defaults.headers.common.Authorization).toBe('')
+    expect(axios.defaults.headers.common.Authorization).toBe('')
     expect(storageAdapter.get('authToken')).toBe(null)
   })
 })

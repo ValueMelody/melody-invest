@@ -1,5 +1,9 @@
+import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
+import classNames from 'classnames'
+import { Input, TextArea, Button, Checkbox } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
@@ -12,7 +16,7 @@ import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   policy: {
     padding: '1rem',
     height: 280,
@@ -22,7 +26,7 @@ const useStyles = vendorTool.jss.createUseStyles(({
 
 const SignUp = () => {
   usePublicGuard()
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -37,33 +41,34 @@ const SignUp = () => {
   const { getPolicy } = useResourceState()
   const policy = getPolicy()
 
-  const [email, setEmail] = vendorTool.react.useState('')
-  const [password, setPassword] = vendorTool.react.useState('')
-  const [retypePassword, setRetypePassword] = vendorTool.react.useState('')
-  const [isConfirmed, setIsConfirmed] = vendorTool.react.useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [retypePassword, setRetypePassword] = useState('')
+  const [isConfirmed, setIsConfirmed] = useState(false)
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!policy.termsPolicy) fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions)
+    // eslint-disable-next-line
   }, [policy.termsPolicy])
 
   // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(e.target.value)
   }
 
   const handleChangePassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setPassword(e.target.value)
   }
 
   const handleChangeRetypePassword = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setRetypePassword(e.target.value)
   }
@@ -77,7 +82,7 @@ const SignUp = () => {
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
@@ -101,65 +106,65 @@ const SignUp = () => {
         {localeTool.t('signUp.title')}
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <vendorTool.ui.Input
+          <Input
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <vendorTool.ui.Input
+          <Input
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
         </div>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
-          <vendorTool.ui.Input
+          <Input
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
         </div>
         <div className={accountClasses.row}>
-          <vendorTool.ui.TextArea
+          <TextArea
             className={classes.policy}
             disabled
             value={policy.termsPolicy || ''}
           />
         </div>
         <div className={accountClasses.row}>
-          <vendorTool.ui.Checkbox
+          <Checkbox
             label={localeTool.t('signUp.terms')}
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
         </div>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             data-testid='signUpButton'
             type='submit'
             color='blue'
             disabled={!email || !password || !retypePassword || !isConfirmed}
           >
             {localeTool.t('common.signUp')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
-      <vendorTool.ui.Button
+      <Button
         data-testid='signInButton'
         className={accountClasses.routerButton}
         icon='right arrow'

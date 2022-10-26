@@ -1,3 +1,6 @@
+import { BrowserRouter, Router } from 'react-router-dom'
+import { FC, ReactNode, ReactElement } from 'react'
+import { ThemeProvider } from 'react-jss'
 import {
   render as defaultRender,
   screen,
@@ -9,17 +12,16 @@ import {
   act,
 } from '@testing-library/react-hooks'
 import '@testing-library/jest-dom'
-import * as vendorTool from './tools/vendor'
 import * as themeEnum from './enums/theme'
 import { context } from 'context'
 import useStore from 'states/store'
 import { MemoryHistory } from 'history'
 
-const WithThemeProvider: vendorTool.react.FC = ({ children }) => {
+const WithThemeProvider: FC = ({ children }) => {
   return (
-      <vendorTool.jss.ThemeProvider theme={themeEnum.theme}>
+      <ThemeProvider theme={themeEnum.theme}>
         {children}
-      </vendorTool.jss.ThemeProvider>
+      </ThemeProvider>
   )
 }
 
@@ -29,7 +31,7 @@ const WithStoreProvider = ({
   store = {},
 }: {
   disabled?: boolean;
-  children?: vendorTool.react.ReactNode;
+  children?: ReactNode;
   store?: object;
 }) => {
   const defaultStore = useStore({
@@ -68,21 +70,21 @@ const WithRouterProvider = ({
   children,
   history,
 }: {
-  children: vendorTool.react.ReactNode;
+  children: ReactNode;
   history?: MemoryHistory;
 }) => {
   if (!history) {
     return (
-      <vendorTool.router.BrowserRouter>
+      <BrowserRouter>
         {children}
-      </vendorTool.router.BrowserRouter>
+      </BrowserRouter>
     )
   }
 
   return (
-    <vendorTool.router.Router location={history?.location} navigator={history}>
+    <Router location={history?.location} navigator={history}>
       {children}
-    </vendorTool.router.Router>
+    </Router>
   )
 }
 
@@ -91,7 +93,7 @@ const InterfaceBase = ({
   store,
   history,
 }: {
-  children: vendorTool.react.ReactNode;
+  children: ReactNode;
   store?: object;
   history?: MemoryHistory;
 }) => {
@@ -107,7 +109,7 @@ const InterfaceBase = ({
 }
 
 const render = (
-  ui: vendorTool.react.ReactElement,
+  ui: ReactElement,
   options?: object,
 ) => defaultRender(ui, {
   wrapper: (props) => <InterfaceBase {...props} {...options} />,
@@ -119,7 +121,7 @@ const HookBase = ({
   store,
   disableStore = false,
 }: {
-  children?: vendorTool.react.ReactNode;
+  children?: ReactNode;
   history?: MemoryHistory;
   store?: object;
   disableStore?: boolean;

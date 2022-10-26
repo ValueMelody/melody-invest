@@ -1,8 +1,8 @@
-import * as vendorTool from 'tools/vendor'
+import PasswordValidator from 'password-validator'
 import * as localeTool from 'tools/locale'
 
 const usePasswordValidator = () => {
-  const passwordSchema = new vendorTool.PasswordValidator()
+  const passwordSchema = new PasswordValidator()
   passwordSchema
     .has().min(10, localeTool.t('error.password.requireMin', { num: 10 }))
     .has().uppercase(1, localeTool.t('error.password.requireUpper'))

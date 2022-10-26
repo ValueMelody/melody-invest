@@ -1,19 +1,19 @@
-import * as vendorTool from 'tools/vendor'
+import axios from 'axios'
 import * as localeTool from 'tools/locale'
 
-vendorTool.request.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://127.0.0.1:3100'
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = 'http://127.0.0.1:3100'
 
 export const setAuthToken = (token: string) => {
   if (!token) {
-    vendorTool.request.defaults.headers.common.Authorization = ''
+    axios.defaults.headers.common.Authorization = ''
   } else {
-    vendorTool.request.defaults.headers.common.Authorization = `Bearer ${token}`
+    axios.defaults.headers.common.Authorization = `Bearer ${token}`
   }
 }
 
 export const sendGetRequest = async (endpoint: string) => {
   try {
-    const res = await vendorTool.request.get(endpoint)
+    const res = await axios.get(endpoint)
     return res ? res.data : null
   } catch (e: any) {
     handleRequestError(e)
@@ -22,7 +22,7 @@ export const sendGetRequest = async (endpoint: string) => {
 
 export const sendPostRequest = async (endpoint: string, params?: object) => {
   try {
-    const res = await vendorTool.request.post(endpoint, params)
+    const res = await axios.post(endpoint, params)
     return res ? res.data : null
   } catch (e: any) {
     handleRequestError(e)
@@ -31,7 +31,7 @@ export const sendPostRequest = async (endpoint: string, params?: object) => {
 
 export const sendPutRequest = async (endpoint: string, params?: object) => {
   try {
-    const res = await vendorTool.request.put(endpoint, params)
+    const res = await axios.put(endpoint, params)
     return res ? res.data : null
   } catch (e: any) {
     handleRequestError(e)
@@ -40,7 +40,7 @@ export const sendPutRequest = async (endpoint: string, params?: object) => {
 
 export const sendDeleteRequest = async (endpoint: string) => {
   try {
-    await vendorTool.request.delete(endpoint)
+    await axios.delete(endpoint)
   } catch (e: any) {
     handleRequestError(e)
   }

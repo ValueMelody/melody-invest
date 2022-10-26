@@ -1,6 +1,9 @@
+import { useState, ChangeEvent } from 'react'
+import { Input } from 'semantic-ui-react'
+import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
@@ -8,7 +11,7 @@ import useTraderStyle from 'styles/useTraderStyle'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 import VariationList from 'containers/traders/elements/VariationList'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   header: {
     marginBottom: '1rem',
   },
@@ -27,15 +30,15 @@ const isSearchedBehavior = (
 }
 
 const BehaviorList = () => {
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
   const { traderClasses } = useTraderStyle()
 
-  const [searchText, setSearchText] = vendorTool.react.useState('')
-  const [focusedType, setFocusedType] = vendorTool.react.useState('buyBehaviors')
+  const [searchText, setSearchText] = useState('')
+  const [focusedType, setFocusedType] = useState('buyBehaviors')
 
   const buyBehaviors = constants.Behavior.BuyBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
   const sellBehaviors = constants.Behavior.SellBehaviors.filter((behavior) => isSearchedBehavior(behavior, searchText))
@@ -76,7 +79,7 @@ const BehaviorList = () => {
   }
 
   const handleChangeSearchText = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setSearchText(e.target.value)
   }
@@ -89,7 +92,7 @@ const BehaviorList = () => {
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
         <header className={classes.header}>
-          <vendorTool.ui.Input
+          <Input
             icon='search'
             placeholder={localeTool.t('common.search')}
             value={searchText}

@@ -1,6 +1,6 @@
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   root: {
     display: 'flex',
     flexDirection: 'row',

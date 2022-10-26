@@ -1,5 +1,5 @@
+import { createContext, Dispatch } from 'react'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from './tools/vendor'
 
 export interface Message {
   id: number;
@@ -85,7 +85,7 @@ export interface TraderEnvs {
 
 export interface Context {
   common: Common;
-  setCommon: vendorTool.react.Dispatch<React.SetStateAction<Common>>;
+  setCommon: Dispatch<React.SetStateAction<Common>>;
   startLoading: () => void;
   stopLoading: () => void;
   addMessage: (message: Message) => void;
@@ -93,20 +93,20 @@ export interface Context {
   showRequestError: (err: any) => void;
   cleanUserState: () => void;
   resources: Resources;
-  setResources: vendorTool.react.Dispatch<React.SetStateAction<Resources>>;
+  setResources: Dispatch<React.SetStateAction<Resources>>;
   traderProfiles: TraderProfiles;
-  setTraderProfiles: vendorTool.react.Dispatch<React.SetStateAction<TraderProfiles>>;
+  setTraderProfiles: Dispatch<React.SetStateAction<TraderProfiles>>;
   traderBehaviors: TraderBehaviors;
-  setTraderBehaviors: vendorTool.react.Dispatch<React.SetStateAction<TraderBehaviors>>;
+  setTraderBehaviors: Dispatch<React.SetStateAction<TraderBehaviors>>;
   traderTickers: TraderTickers;
-  setTraderTickers: vendorTool.react.Dispatch<React.SetStateAction<TraderTickers>>;
+  setTraderTickers: Dispatch<React.SetStateAction<TraderTickers>>;
   traderEnvs: TraderEnvs;
-  setTraderEnvs: vendorTool.react.Dispatch<React.SetStateAction<TraderEnvs>>;
+  setTraderEnvs: Dispatch<React.SetStateAction<TraderEnvs>>;
   traderCombos: TraderCombos;
-  setTraderCombos: vendorTool.react.Dispatch<React.SetStateAction<TraderCombos>>;
+  setTraderCombos: Dispatch<React.SetStateAction<TraderCombos>>;
 }
 
 // @ts-ignore
-const store: React.Context<Context> = vendorTool.react.createContext({})
+const store: React.Context<Context> = createContext({})
 
 export const context = store

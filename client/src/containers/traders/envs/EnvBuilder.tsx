@@ -1,5 +1,9 @@
+import { useState, SyntheticEvent, ChangeEvent, FormEvent } from 'react'
+import { Dropdown, DropdownProps, DropdownItemProps, Input, Message, Button, Checkbox } from 'semantic-ui-react'
+import classNames from 'classnames'
+import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
@@ -7,7 +11,7 @@ import useTraderRequest from 'requests/useTraderRequest'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   row: {
     width: 620,
     marginBottom: '2rem',
@@ -66,10 +70,10 @@ const EnvBuilder = () => {
   const { getTraderEnvs } = useTraderState()
   const { createTraderEnv } = useTraderRequest()
 
-  const [startYear, setStartYear] = vendorTool.react.useState('')
-  const [startMonth, setStartMonth] = vendorTool.react.useState('01-01')
-  const [tickerIds, setTickerIds] = vendorTool.react.useState<number[] | null>(null)
-  const [envName, setEnvName] = vendorTool.react.useState('')
+  const [startYear, setStartYear] = useState('')
+  const [startMonth, setStartMonth] = useState('01-01')
+  const [tickerIds, setTickerIds] = useState<number[] | null>(null)
+  const [envName, setEnvName] = useState('')
 
   const traderEnvs = getTraderEnvs()
 
@@ -107,8 +111,8 @@ const EnvBuilder = () => {
   }
 
   const handleSelectStartMonth = (
-    e: vendorTool.react.SyntheticEvent,
-    data: vendorTool.ui.DropdownProps,
+    e: SyntheticEvent,
+    data: DropdownProps,
   ) => {
     setStartMonth(typeof data.value === 'string' ? data.value : '')
   }
@@ -118,28 +122,28 @@ const EnvBuilder = () => {
   }
 
   const handleSelectTickers = (
-    e: vendorTool.react.SyntheticEvent,
-    data: vendorTool.ui.DropdownProps,
+    e: SyntheticEvent,
+    data: DropdownProps,
   ) => {
     const values = Array.isArray(data.value) ? data.value : []
     setTickerIds(values.map((value) => Number(value)))
   }
 
   const handleChangeName = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setEnvName(e.target.value)
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
   }
 
   const handleSearch = (
-    options: vendorTool.ui.DropdownItemProps[],
+    options: DropdownItemProps[],
     value: string,
   ) => {
     const formattedValue = value.trim().toUpperCase()
@@ -153,37 +157,37 @@ const EnvBuilder = () => {
 
   return (
     <section className={commonClasses.columnCenter}>
-      <header className={vendorTool.classNames(
+      <header className={classNames(
         commonClasses.rowAround,
         classes.row,
       )}>
         <h2>{localeTool.t('envBuilder.title')}</h2>
       </header>
       <section
-        className={vendorTool.classNames(
+        className={classNames(
           commonClasses.rowBetween,
           classes.row,
         )}
         title={localeTool.t('envBuilder.startDateDesc')}
       >
         <h5><b>{localeTool.t('envBuilder.startDate')}:</b></h5>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowBetween,
           classes.input,
         )}>
           <div className={classes.dropdown}>
-            <vendorTool.DatePicker
+            <DatePicker
               minDate={minDate}
               maxDate={maxDate}
               selected={selectedDate}
               onChange={handleChangeStartYear}
               showYearPicker
               dateFormat='yyyy'
-              customInput={<vendorTool.ui.Input />}
+              customInput={<Input />}
               className={classes.dropdown}
             />
           </div>
-          <vendorTool.ui.Dropdown
+          <Dropdown
             selection
             className={classes.dropdown}
             value={startMonth}
@@ -193,14 +197,14 @@ const EnvBuilder = () => {
         </div>
       </section>
       <section
-        className={vendorTool.classNames(
+        className={classNames(
           commonClasses.rowBetween,
           classes.row,
         )}
         title={localeTool.t('traderEnv.allTickers')}
       >
         <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
-        <vendorTool.ui.Checkbox
+        <Checkbox
           toggle
           checked={!tickerIds}
           onChange={handleToggleAllTickers}
@@ -208,14 +212,14 @@ const EnvBuilder = () => {
       </section>
       {tickerIds && (
         <section
-          className={vendorTool.classNames(
+          className={classNames(
             commonClasses.rowBetween,
             classes.row,
           )}
           title={localeTool.t('envBuilder.targetTickersDesc')}
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
-          <vendorTool.ui.Dropdown
+          <Dropdown
             className={classes.input}
             multiple
             search={handleSearch}
@@ -226,37 +230,37 @@ const EnvBuilder = () => {
           />
         </section>
       )}
-      <section className={vendorTool.classNames(
+      <section className={classNames(
         commonClasses.rowBetween,
         classes.row,
       )}>
         <RequiredLabel title={localeTool.t('envBuilder.name')} />
-        <vendorTool.ui.Input
+        <Input
           className={classes.input}
           value={envName}
           onChange={handleChangeName}
         />
       </section>
       {hasDuplicatedName && (
-        <vendorTool.ui.Message negative>
+        <Message negative>
           {localeTool.t('envBuilder.duplicatedName')}
-        </vendorTool.ui.Message>
+        </Message>
       )}
       {hasDuplicatedEnv && (
-        <vendorTool.ui.Message negative>
+        <Message negative>
           {localeTool.t('envBuilder.duplicatedEnv')}
-        </vendorTool.ui.Message>
+        </Message>
       )}
       <form onSubmit={handleSubmit}>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             type='submit'
             color='blue'
             className={classes.confirmButton}
             disabled={!couldCreate}
           >
             {localeTool.t('common.confirmAndWatch')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
     </section>

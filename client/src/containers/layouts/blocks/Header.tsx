@@ -1,12 +1,13 @@
+import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserState from 'states/useUserState'
 import useCommonStyle from 'styles/useCommonStyle'
 import HeaderLink from 'containers/layouts/elements/HeaderLink'
 
-const useStyles = vendorTool.jss.createUseStyles((
+const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
 ) => ({
   header: {
@@ -42,7 +43,7 @@ const Header = () => {
   return (
     <header
       data-testid='header'
-      className={vendorTool.classNames(
+      className={classNames(
         commonClasses.rowBetween,
         classes.header,
       )}

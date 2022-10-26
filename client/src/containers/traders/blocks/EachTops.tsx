@@ -1,11 +1,13 @@
+import { useNavigate } from 'react-router-dom'
+import { Message } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderProfileCard from './TraderProfileCard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   card: {
     width: '28rem',
     margin: '1rem',
@@ -32,7 +34,7 @@ const EachTops = ({
   bestPastWeek: number | null,
 }) => {
   const classes = useStyles()
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -50,9 +52,9 @@ const EachTops = ({
 
   if (!hasResult) {
     return (
-      <vendorTool.ui.Message compact className={classes.noResult}>
+      <Message compact className={classes.noResult}>
         {localeTool.t('traderEnv.noResultYet')}
-      </vendorTool.ui.Message>
+      </Message>
     )
   }
 

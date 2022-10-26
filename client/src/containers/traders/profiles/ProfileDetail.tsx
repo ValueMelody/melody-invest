@@ -1,7 +1,11 @@
+import { useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { Header, Segment } from 'semantic-ui-react'
+import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import useTraderRequest from 'requests/useTraderRequest'
 import useTraderState from 'states/useTraderState'
-import * as vendorTool from 'tools/vendor'
+import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useShowMore from 'handlers/useShowMore'
@@ -10,7 +14,7 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 
-const useStyles = vendorTool.jss.createUseStyles(({
+const useStyles = createUseStyles(({
   container: {
     alignItems: 'flex-start',
   },
@@ -28,8 +32,8 @@ const useStyles = vendorTool.jss.createUseStyles(({
 }))
 
 const ProfileDetail = () => {
-  const params = vendorTool.router.useParams()
-  const navigate = vendorTool.router.useNavigate()
+  const params = useParams()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -54,13 +58,13 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ Effect --
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerTool.notFoundRoute())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  vendorTool.react.useEffect(() => {
+  useEffect(() => {
     if (!traderId || !accessCode) return
     if (!profileDetail) {
       fetchTraderProfile(traderId, accessCode)
@@ -82,7 +86,7 @@ const ProfileDetail = () => {
   if (!profileDetail || !profileDetail || !traderEnv) return null
 
   return (
-    <div className={vendorTool.classNames(
+    <div className={classNames(
       commonClasses.rowBetween,
       classes.container,
     )}>
@@ -108,15 +112,15 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <vendorTool.ui.Header
+        <Header
           as='h3'
           icon='history'
           content={localeTool.t('profile.history')}
         />
         {!displayedHoldings.length && (
-          <vendorTool.ui.Segment>
+          <Segment>
             {localeTool.t('profile.noResultYet')}
-          </vendorTool.ui.Segment>
+          </Segment>
         )}
         {displayedHoldings.map((holding, index) => (
           <HoldingCard

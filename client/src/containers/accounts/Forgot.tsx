@@ -1,4 +1,7 @@
-import * as vendorTool from 'tools/vendor'
+import { useNavigate } from 'react-router-dom'
+import { useState, ChangeEvent, FormEvent } from 'react'
+import { Input, Button } from 'semantic-ui-react'
+import classNames from 'classnames'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
@@ -9,7 +12,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 
 const Forgot = () => {
   usePublicGuard()
-  const navigate = vendorTool.router.useNavigate()
+  const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
@@ -17,12 +20,12 @@ const Forgot = () => {
   const { commonClasses } = useCommonStyle()
   const { createResetEmail } = useUserRequest()
 
-  const [email, setEmail] = vendorTool.react.useState('')
+  const [email, setEmail] = useState('')
 
   // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
-    e: vendorTool.react.ChangeEvent<HTMLInputElement>,
+    e: ChangeEvent<HTMLInputElement>,
   ) => {
     setEmail(e.target.value)
   }
@@ -32,7 +35,7 @@ const Forgot = () => {
   }
 
   const handleSubmit = async (
-    e: vendorTool.react.FormEvent<HTMLFormElement>,
+    e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
@@ -47,28 +50,28 @@ const Forgot = () => {
         {localeTool.t('forgot.title')}
       </h2>
       <form onSubmit={handleSubmit}>
-        <div className={vendorTool.classNames(
+        <div className={classNames(
           commonClasses.rowAround,
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <vendorTool.ui.Input
+          <Input
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
         <div className={commonClasses.rowAround}>
-          <vendorTool.ui.Button
+          <Button
             type='submit'
             color='blue'
             disabled={!email}
           >
             {localeTool.t('forgot.button')}
-          </vendorTool.ui.Button>
+          </Button>
         </div>
       </form>
-      <vendorTool.ui.Button
+      <Button
         className={accountClasses.routerButton}
         icon='right arrow'
         labelPosition='right'

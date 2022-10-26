@@ -1,15 +1,15 @@
+import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import { context, Context } from 'context'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import * as parseTool from 'tools/parse'
-import * as vendorTool from 'tools/vendor'
 import groupTraderProfiles from './shared/groupTraderProfiles'
 import stripTopProfiles from './shared/stripTopProfiles'
 
 const useSystemRequest = () => {
-  const store: Context = vendorTool.react.useContext(context)
+  const store: Context = useContext(context)
 
   // ------------------------------------------------------------ store --
 
