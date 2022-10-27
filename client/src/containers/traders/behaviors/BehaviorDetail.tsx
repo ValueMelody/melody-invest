@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-import { Header } from 'semantic-ui-react'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
@@ -15,6 +14,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import EachTops from 'containers/traders/blocks/EachTops'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
@@ -95,11 +95,9 @@ const BehaviorDetail = () => {
             {parseTool.behaviorDesc(validBehavior)}
           </h4>
         </header>
-        <Header
-          as='h3'
-          icon='star'
-          content={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}
+        <PageTitle
           className={classes.leftTitle}
+          title={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}
         />
         <section className={commonClasses.rowStart}>
           <EachTops

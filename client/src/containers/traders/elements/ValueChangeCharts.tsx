@@ -1,6 +1,6 @@
 import { SyntheticEvent } from 'react'
 import classNames from 'classnames'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'flowbite-react'
 import TrendChart from './TrendChart'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
@@ -65,16 +65,16 @@ const ValueChangeCharts = ({
           data={activeChartIndex === 0 ? decadeTrends : yearTrends}
         />
       </div>
-      <Button.Group compact>
+      <Button.Group>
         <Button
           onClick={handleClickDecadeChart}
-          color={activeChartIndex === 0 ? 'blue' : undefined}
+          color={activeChartIndex === 0 ? undefined : 'gray'}
         >
           {localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })}
         </Button>
         <Button
           onClick={handleClickYearChart}
-          color={activeChartIndex === 1 ? 'blue' : undefined}
+          color={activeChartIndex === 1 ? undefined : 'gray'}
         >
           {localeTool.t('common.daysTrends', { num: 30 * (yearTrends.length - 1) })}
         </Button>

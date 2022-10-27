@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import useUserRequest from 'requests/useUserRequest'
 import ConfirmModal from 'containers/elements/ConfirmModal'
@@ -38,7 +38,6 @@ const UnsubscribeButton = () => {
       >
         <h4>{localeTool.t('setting.unsubscribeDesc')}</h4>
         <Button
-          color='blue'
           className='mt-2'
           onClick={handleConfirmUnsubscribe}
         >
@@ -46,6 +45,7 @@ const UnsubscribeButton = () => {
         </Button>
       </ConfirmModal>
       <Button
+        color='gray'
         className='mt-2'
         onClick={handleOpenModal}
       >

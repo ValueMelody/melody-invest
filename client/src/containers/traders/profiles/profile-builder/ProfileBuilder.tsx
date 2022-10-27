@@ -1,5 +1,5 @@
 import { useState, FormEvent } from 'react'
-import { Segment, Button } from 'semantic-ui-react'
+import { Button, Accordion } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import { createUseStyles } from 'react-jss'
@@ -211,17 +211,19 @@ const ProfileBuilder = () => {
       <header className={commonClasses.rowAround}>
         <h2>{localeTool.t('profileBuilder.title')}</h2>
       </header>
-      <Segment.Group>
-        <Segment>
-          <ProfileBuilderHeader
-            title={localeTool.t('profileBuilder.buyBehaviors')}
-            isExtended={isBuyBehaviorsExtended}
-            onExtend={handleToggleBuyBehaviors}
-            activeCount={activeBuyBehaviorCount}
-            isValid={isValidBuyBehavior}
-            invalidMessage={localeTool.t('profileBuilder.requireOne')}
-          />
-          {isBuyBehaviorsExtended && (
+      <Accordion alwaysOpen className='mb-12'>
+        <Accordion.Panel>
+          <Accordion.Title>
+            <ProfileBuilderHeader
+              title={localeTool.t('profileBuilder.buyBehaviors')}
+              isExtended={isBuyBehaviorsExtended}
+              onExtend={handleToggleBuyBehaviors}
+              activeCount={activeBuyBehaviorCount}
+              isValid={isValidBuyBehavior}
+              invalidMessage={localeTool.t('profileBuilder.requireOne')}
+            />
+          </Accordion.Title>
+          <Accordion.Content>
             <div>
               {BUY_GROUPS.map((buyGroup) => (
                 <ProfileBuilderGroup
@@ -235,18 +237,20 @@ const ProfileBuilder = () => {
                 />
               ))}
             </div>
-          )}
-        </Segment>
-        <Segment>
-          <ProfileBuilderHeader
-            title={localeTool.t('profileBuilder.sellBehaviors')}
-            isExtended={isSellBehaviorsExtended}
-            onExtend={handleToggleSellBehaviors}
-            activeCount={activeSellBehaviorCount}
-            isValid={isValidSellBehavior}
-            invalidMessage={localeTool.t('profileBuilder.requireOne')}
-          />
-          {isSellBehaviorsExtended && (
+          </Accordion.Content>
+        </Accordion.Panel>
+        <Accordion.Panel>
+          <Accordion.Title>
+            <ProfileBuilderHeader
+              title={localeTool.t('profileBuilder.sellBehaviors')}
+              isExtended={isSellBehaviorsExtended}
+              onExtend={handleToggleSellBehaviors}
+              activeCount={activeSellBehaviorCount}
+              isValid={isValidSellBehavior}
+              invalidMessage={localeTool.t('profileBuilder.requireOne')}
+            />
+          </Accordion.Title>
+          <Accordion.Content>
             <div>
               {SELL_GROUPS.map((sellGroup) => (
                 <ProfileBuilderGroup
@@ -260,81 +264,81 @@ const ProfileBuilder = () => {
                 />
               ))}
             </div>
-          )}
-        </Segment>
-        <Segment>
-          <ProfileBuilderHeader
-            title={localeTool.t('profileBuilder.preferenceBehaviors')}
-            activeCount={activePreferenceBehaviorCount}
-            isValid={isValidPreferenceBehavior}
-            isExtended={isPreferenceBehaviorsExtended}
-            onExtend={handleTogglePreferenceBehaviors}
-            invalidMessage={localeTool.t('profileBuilder.requireAll')}
-          />
-          {isPreferenceBehaviorsExtended && (
-            <Segment secondary>
-              {constants.Behavior.PreferenceBehaviors.map((behavior) => (
-                <BehaviorEditor
-                  key={behavior}
-                  behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] || null}
-                  isEditing={currentEditingBehavior === behavior}
-                  onClick={handleClickBehavior}
-                  onSelect={handleSelectValue}
-                />
-              ))}
-            </Segment>
-          )}
-        </Segment>
-        <Segment>
-          <ProfileBuilderHeader
-            title={localeTool.t('profileBuilder.allocateBehaviors')}
-            activeCount={activeAllocateBehaviorCount}
-            isValid={isValidAllocateBehavior}
-            isExtended={isAllocateBehaviorsExtended}
-            onExtend={handleToggleAllocateBehaviors}
-            invalidMessage={localeTool.t('profileBuilder.requireAll')}
-          />
-          {isAllocateBehaviorsExtended && (
-            <Segment secondary>
-              {constants.Behavior.AllocateBehaviors.map((behavior) => (
-                <BehaviorEditor
-                  key={behavior}
-                  behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] || null}
-                  isEditing={currentEditingBehavior === behavior}
-                  onClick={handleClickBehavior}
-                  onSelect={handleSelectValue}
-                />
-              ))}
-            </Segment>
-          )}
-        </Segment>
-        <Segment>
-          <ProfileBuilderHeader
-            title={localeTool.t('profileBuilder.frequencyBehaviors')}
-            activeCount={activeFrequencyBehaviorCount}
-            isValid={isValidFrequencyBehavior}
-            isExtended={isFrequencyBehaviorsExtended}
-            onExtend={handleToggleFrequencyBehaviors}
-            invalidMessage={localeTool.t('profileBuilder.requireAll')}
-          />
-          {isFrequencyBehaviorsExtended && (
-            <Segment secondary>
-              {constants.Behavior.FrequencyBehaviors.map((behavior) => (
-                <BehaviorEditor
-                  key={behavior}
-                  behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] ?? null}
-                  isEditing={currentEditingBehavior === behavior}
-                  onClick={handleClickBehavior}
-                  onSelect={handleSelectValue}
-                />
-              ))}
-            </Segment>
-          )}
-        </Segment>
-      </Segment.Group>
+          </Accordion.Content>
+        </Accordion.Panel>
+        <Accordion.Panel>
+          <Accordion.Title>
+            <ProfileBuilderHeader
+              title={localeTool.t('profileBuilder.preferenceBehaviors')}
+              activeCount={activePreferenceBehaviorCount}
+              isValid={isValidPreferenceBehavior}
+              isExtended={isPreferenceBehaviorsExtended}
+              onExtend={handleTogglePreferenceBehaviors}
+              invalidMessage={localeTool.t('profileBuilder.requireAll')}
+            />
+          </Accordion.Title>
+          <Accordion.Content>
+            {constants.Behavior.PreferenceBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                behavior={behavior}
+                behaviorValue={behaviorValues[behavior] || null}
+                isEditing={currentEditingBehavior === behavior}
+                onClick={handleClickBehavior}
+                onSelect={handleSelectValue}
+              />
+            ))}
+          </Accordion.Content>
+        </Accordion.Panel>
+        <Accordion.Panel>
+          <Accordion.Title>
+            <ProfileBuilderHeader
+              title={localeTool.t('profileBuilder.allocateBehaviors')}
+              activeCount={activeAllocateBehaviorCount}
+              isValid={isValidAllocateBehavior}
+              isExtended={isAllocateBehaviorsExtended}
+              onExtend={handleToggleAllocateBehaviors}
+              invalidMessage={localeTool.t('profileBuilder.requireAll')}
+            />
+          </Accordion.Title>
+          <Accordion.Content>
+            {constants.Behavior.AllocateBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                behavior={behavior}
+                behaviorValue={behaviorValues[behavior] || null}
+                isEditing={currentEditingBehavior === behavior}
+                onClick={handleClickBehavior}
+                onSelect={handleSelectValue}
+              />
+            ))}
+          </Accordion.Content>
+        </Accordion.Panel>
+        <Accordion.Panel>
+          <Accordion.Title>
+            <ProfileBuilderHeader
+              title={localeTool.t('profileBuilder.frequencyBehaviors')}
+              activeCount={activeFrequencyBehaviorCount}
+              isValid={isValidFrequencyBehavior}
+              isExtended={isFrequencyBehaviorsExtended}
+              onExtend={handleToggleFrequencyBehaviors}
+              invalidMessage={localeTool.t('profileBuilder.requireAll')}
+            />
+          </Accordion.Title>
+          <Accordion.Content>
+            {constants.Behavior.FrequencyBehaviors.map((behavior) => (
+              <BehaviorEditor
+                key={behavior}
+                behavior={behavior}
+                behaviorValue={behaviorValues[behavior] ?? null}
+                isEditing={currentEditingBehavior === behavior}
+                onClick={handleClickBehavior}
+                onSelect={handleSelectValue}
+              />
+            ))}
+          </Accordion.Content>
+        </Accordion.Panel>
+      </Accordion>
       <h4>{localeTool.t('common.selectEnvironment')}:</h4>
       <div className={commonClasses.rowStart}>
         {traderEnvs.map((traderEnv) => (
@@ -350,7 +354,6 @@ const ProfileBuilder = () => {
         <div className={commonClasses.rowAround}>
           <Button
             type='submit'
-            color='blue'
             className={classes.confirmButton}
             disabled={
               !isValidBuyBehavior ||

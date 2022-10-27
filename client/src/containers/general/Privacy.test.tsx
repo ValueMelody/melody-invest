@@ -27,9 +27,8 @@ describe('#Privacy', () => {
     render(
       <Privacy />,
     )
-    const content = await waitFor(() => screen.queryByTestId('privacy-content'))
-    expect(content?.innerHTML).toBe('This is about privacy')
-    expect(fetchMock).toBeCalledTimes(1)
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(1))
+    await waitFor(() => screen.queryByText('This is about privacy'))
   })
 
   test('do not fetch if content exists', async () => {

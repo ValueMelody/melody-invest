@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
-import { Input, Button } from 'semantic-ui-react'
+import { Button, TextInput } from 'flowbite-react'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -12,6 +12,7 @@ import usePublicGuard from 'handlers/usePublicGuard'
 import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
+import GoToButton from './elements/GoToButton'
 
 const useStyles = createUseStyles(({
   input: {
@@ -95,7 +96,7 @@ const Reset = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <TextInput
             className={classes.input}
             type='email'
             value={email}
@@ -107,7 +108,7 @@ const Reset = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.newPassword')} />
-          <Input
+          <TextInput
             className={classes.input}
             type='password'
             value={password}
@@ -119,7 +120,7 @@ const Reset = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
-          <Input
+          <TextInput
             className={classes.input}
             type='password'
             value={retypePassword}
@@ -129,21 +130,20 @@ const Reset = () => {
         <div className={commonClasses.rowAround}>
           <Button
             type='submit'
-            color='blue'
+            data-testid='resetButton'
             disabled={!email || !password || !retypePassword}
           >
             {localeTool.t('reset.button')}
           </Button>
         </div>
       </form>
-      <Button
-        data-testid='loginButton'
-        className={accountClasses.routerButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('common.backToLogin')}
-        onClick={handleClickSignIn}
-      />
+      <footer className='mt-16 flex justify-center'>
+        <GoToButton
+          data-testid='loginButton'
+          title={localeTool.t('common.backToLogin')}
+          onClick={handleClickSignIn}
+        />
+      </footer>
     </div>
   )
 }

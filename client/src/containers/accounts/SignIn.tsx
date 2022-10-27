@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
-import { Input, Checkbox, Button } from 'semantic-ui-react'
+import { Button, TextInput, Checkbox, Label } from 'flowbite-react'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -12,6 +12,7 @@ import usePasswordValidator from 'handlers/usePasswordValidator'
 import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
+import GoToButton from './elements/GoToButton'
 
 const useStyles = createUseStyles(({
   input: {
@@ -92,7 +93,7 @@ const SignIn = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <TextInput
             className={classes.input}
             type='email'
             value={email}
@@ -104,7 +105,7 @@ const SignIn = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <Input
+          <TextInput
             className={classes.input}
             type='password'
             value={password}
@@ -113,19 +114,20 @@ const SignIn = () => {
         </div>
         <div className={classNames(
           accountClasses.row,
-          commonClasses.rowAround,
+          'items-center',
         )}>
           <Checkbox
-            label={localeTool.t('signIn.remember')}
+            data-testid='checkbox'
+            className='mr-2'
             checked={shouldRemember}
             onChange={handleToggleRemember}
           />
+          <Label>{localeTool.t('signIn.remember')}</Label>
         </div>
         <div className={commonClasses.rowAround}>
           <Button
             data-testid='signInButton'
             type='submit'
-            color='blue'
             disabled={!email || !password}
           >
             {localeTool.t('signIn.button')}
@@ -134,20 +136,16 @@ const SignIn = () => {
       </form>
       <div className={accountClasses.row}>
         <div className={commonClasses.columnCenter}>
-          <Button
+          <GoToButton
             data-testid='signUpButton'
-            className={accountClasses.routerButton}
-            icon='right arrow'
-            labelPosition='right'
-            content={localeTool.t('signIn.toSignUp')}
+            className='mt-8'
+            title={localeTool.t('signIn.toSignUp')}
             onClick={handleClickSignUp}
           />
-          <Button
+          <GoToButton
             data-testid='forgotButton'
-            className={classes.forgotButton}
-            icon='right arrow'
-            labelPosition='right'
-            content={localeTool.t('signIn.toReset')}
+            className='mt-8'
+            title={localeTool.t('signIn.toReset')}
             onClick={handleClickForgot}
           />
         </div>

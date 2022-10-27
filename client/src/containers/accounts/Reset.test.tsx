@@ -73,10 +73,9 @@ describe('#Forgot', () => {
     expect(passInput.value).toBe('')
     expect(confirmPassInput.value).toBe('')
 
-    const resetText = localeTool.t('reset.button')
-    const resetButton = screen.getByText(resetText)
+    const resetButton = screen.getByTestId('resetButton')
 
-    expect(resetButton.classList).toContain('disabled')
+    expect(resetButton).toBeDisabled()
 
     fireEvent.change(emailInput, { target: { value: ' AbC@email.Com ' } })
     expect(emailInput.value).toBe('AbC@email.Com')
@@ -89,7 +88,7 @@ describe('#Forgot', () => {
     fireEvent.change(confirmPassInput, { target: { value: pass } })
     expect(confirmPassInput.value).toBe(pass)
 
-    expect(resetButton.classList).not.toContain('disabled')
+    expect(resetButton).not.toBeDisabled()
 
     fireEvent.click(resetButton)
     expect(resetUserPassword).toBeCalledTimes(1)

@@ -34,13 +34,13 @@ describe('#Header', () => {
   test('could render as guest', () => {
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
-    const { container } = render(<Header />, { history })
+    render(<Header />, { history })
 
     const dashboardText = localeTool.t('dashboard.title')
     const dashboardButton = screen.queryByText(dashboardText)
     expect(dashboardButton).toBeFalsy()
 
-    const userButton = container.querySelector('.circle')
+    const userButton = screen.queryByTestId('user')
     fireEvent.click(userButton!)
     expect(history.location.pathname).toBe(routerTool.signInRoute())
   })
@@ -54,7 +54,7 @@ describe('#Header', () => {
       },
     }
 
-    const { container } = render(<Header />, { history, store })
+    render(<Header />, { history, store })
 
     const dashboardText = localeTool.t('dashboard.title')
     const dashboardButton = screen.queryByText(dashboardText)
@@ -62,7 +62,7 @@ describe('#Header', () => {
     fireEvent.click(dashboardButton!)
     expect(history.location.pathname).toBe(routerTool.dashboardRoute())
 
-    const userButton = container.querySelector('.circle')
+    const userButton = screen.queryByTestId('user')
     fireEvent.click(userButton!)
     expect(history.location.pathname).toBe(routerTool.settingRoute())
   })
