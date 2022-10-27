@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { Message } from 'semantic-ui-react'
+import { Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
 import { createUseStyles } from 'react-jss'
@@ -52,9 +52,9 @@ const EachTops = ({
 
   if (!hasResult) {
     return (
-      <Message compact className={classes.noResult}>
+      <Alert color='warning' className={classes.noResult}>
         {localeTool.t('traderEnv.noResultYet')}
-      </Message>
+      </Alert>
     )
   }
 

@@ -93,7 +93,7 @@ const SignUp = () => {
       ? localeTool.t('error.password.requireSame')
       : validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'error', title: error })
+      addMessage({ id: Math.random(), type: 'failure', title: error })
       return
     }
     await createUser(parsedEmail, parsedPassword, isConfirmed)

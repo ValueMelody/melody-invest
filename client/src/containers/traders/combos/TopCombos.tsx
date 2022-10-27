@@ -126,14 +126,17 @@ const TopCombos = () => {
             icon='history'
             content={localeTool.t('topCombos.history')}
           />
-          {comboHoldings.map((detail, index) => (
-            <HoldingCard
-              key={detail.date}
-              holding={detail}
-              previousHolding={index < comboHoldings.length - 1 ? comboHoldings[index + 1] : null}
-              initialValue={constants.Trader.Initial.Cash * 10}
-            />
-          ))}
+          <section className='flex flex-wrap'>
+            {comboHoldings.map((detail, index) => (
+              <HoldingCard
+                key={detail.date}
+                className='mt-6 w-full'
+                holding={detail}
+                previousHolding={index < comboHoldings.length - 1 ? comboHoldings[index + 1] : null}
+                initialValue={constants.Trader.Initial.Cash * 10}
+              />
+            ))}
+          </section>
         </section>
         <section className={traderClasses.aside}>
           <Header

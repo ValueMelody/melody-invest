@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { Header, Segment } from 'semantic-ui-react'
+import { Alert } from 'flowbite-react'
 import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import useTraderRequest from 'requests/useTraderRequest'
@@ -13,6 +13,7 @@ import useCommonStyle from 'styles/useCommonStyle'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles(({
   container: {
@@ -112,19 +113,16 @@ const ProfileDetail = () => {
         </div>
       </div>
       <div className={classes.holdings}>
-        <Header
-          as='h3'
-          icon='history'
-          content={localeTool.t('profile.history')}
-        />
+        <PageTitle icon='history' title={localeTool.t('profile.history')} />
         {!displayedHoldings.length && (
-          <Segment>
+          <Alert color='warning' className='mt-4'>
             {localeTool.t('profile.noResultYet')}
-          </Segment>
+          </Alert>
         )}
         {displayedHoldings.map((holding, index) => (
           <HoldingCard
             key={holding.id}
+            className='mt-6'
             holding={holding}
             previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
             initialValue={constants.Trader.Initial.Cash}

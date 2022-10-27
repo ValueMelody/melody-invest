@@ -22,24 +22,18 @@ describe('#VariationList', () => {
     expect(container.childNodes[1].textContent).toBe('b')
     expect(container.childNodes[2].textContent).toBe('c')
 
-    expect(container.childNodes[1]).toHaveClass('blue')
-    expect(container.childNodes[1]).toHaveClass('left')
-    expect(container.childNodes[1]).toHaveClass('pointing')
+    expect(container.childNodes[1].childNodes[0]).toHaveClass('bg-blue-700')
 
-    expect(container.childNodes[0]).not.toHaveClass('blue')
-    expect(container.childNodes[0]).not.toHaveClass('left')
-    expect(container.childNodes[0]).not.toHaveClass('pointing')
+    expect(container.childNodes[0].childNodes[0]).not.toHaveClass('bg-blue-700')
 
-    expect(container.childNodes[2]).not.toHaveClass('blue')
-    expect(container.childNodes[2]).not.toHaveClass('left')
-    expect(container.childNodes[2]).not.toHaveClass('pointing')
+    expect(container.childNodes[2].childNodes[0]).not.toHaveClass('bg-blue-700')
 
-    fireEvent.click(container.childNodes[0])
+    fireEvent.click(container.childNodes[0].childNodes[0])
     expect(onClickFirst).toBeCalledTimes(1)
     expect(onClickSecond).toBeCalledTimes(0)
     expect(onClickThird).toBeCalledTimes(0)
 
-    fireEvent.click(container.childNodes[2])
+    fireEvent.click(container.childNodes[2].childNodes[0])
     expect(onClickFirst).toBeCalledTimes(1)
     expect(onClickSecond).toBeCalledTimes(0)
     expect(onClickThird).toBeCalledTimes(1)

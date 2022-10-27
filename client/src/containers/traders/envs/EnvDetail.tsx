@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import classNames from 'classnames'
-import { Header } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
 import useResourceState from 'states/useResourceState'
@@ -15,6 +14,7 @@ import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
@@ -109,10 +109,8 @@ const EnvDetail = () => {
         )}
       </aside>
       <section className={traderClasses.main}>
-        <Header
-          as='h3'
-          icon='star'
-          content={localeTool.t('traderEnv.topProfiles')}
+        <PageTitle
+          title={localeTool.t('traderEnv.topProfiles')}
           className={classes.rightTitle}
         />
         <section className={commonClasses.rowStart}>

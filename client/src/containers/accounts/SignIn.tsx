@@ -74,7 +74,7 @@ const SignIn = () => {
     const parsedPassword = password.trim()
     const error = validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'error', title: error })
+      addMessage({ id: Math.random(), type: 'failure', title: error })
       return
     }
     await createUserToken(parsedEmail, parsedPassword, shouldRemember)

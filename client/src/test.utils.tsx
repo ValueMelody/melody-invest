@@ -6,11 +6,9 @@ import {
   screen,
   fireEvent,
   waitFor,
-} from '@testing-library/react'
-import {
   renderHook as defaultRenderHook,
   act,
-} from '@testing-library/react-hooks'
+} from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as themeEnum from './enums/theme'
 import { context } from 'context'

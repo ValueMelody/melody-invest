@@ -95,7 +95,7 @@ const TickerList = () => {
         </section>
       </section>
       <aside className={traderClasses.aside}>
-        <h3>{localeTool.t('tickerList.categories')}:</h3>
+        <h3 className='mb-4'>{localeTool.t('tickerList.categories')}:</h3>
         <VariationList
           options={categoryOptions}
           activeValue={selectedCategory}

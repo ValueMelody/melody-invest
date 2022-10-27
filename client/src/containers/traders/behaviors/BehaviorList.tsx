@@ -112,7 +112,7 @@ const BehaviorList = () => {
         </section>
       </section>
       <aside className={traderClasses.aside}>
-        <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
+        <h2 className='mb-4'>{localeTool.t('tradeBehaviors.type')}:</h2>
         <VariationList
           options={focusOptions}
           activeValue={focusedType}

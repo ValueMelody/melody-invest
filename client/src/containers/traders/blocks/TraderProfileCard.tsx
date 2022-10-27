@@ -47,6 +47,7 @@ const TraderProfileCard = ({
   profile: interfaces.response.TraderProfile | null;
   isActive?: boolean,
   simple?: boolean;
+  className?: string;
   disabled?: boolean;
   disabledUnwatch?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
@@ -91,7 +92,7 @@ const TraderProfileCard = ({
       addMessage({
         id: Math.random(),
         title: localeTool.t('error.guest'),
-        type: 'error',
+        type: 'failure',
       })
       return
     }
@@ -99,7 +100,7 @@ const TraderProfileCard = ({
       addMessage({
         id: Math.random(),
         title: localeTool.t('permission.limited'),
-        type: 'error',
+        type: 'failure',
       })
       return
     }
@@ -130,10 +131,7 @@ const TraderProfileCard = ({
       padded
     >
       <header
-        className={classNames(
-          commonClasses.rowBetween,
-          classes.header,
-        )}
+        className='flex items-center justify-between w-full'
       >
         <div className={classNames(
           commonClasses.rowStart,

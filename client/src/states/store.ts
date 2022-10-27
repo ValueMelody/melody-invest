@@ -132,7 +132,7 @@ const useStore = (defaultState?: {
       addMessage({
         id: Math.random(),
         title: message,
-        type: 'error',
+        type: 'failure',
       })
     }
     if (message === localeTool.t('error.401')) {

@@ -1,6 +1,6 @@
 import { FunctionComponent, useEffect } from 'react'
 import classNames from 'classnames'
-import { Message, Icon } from 'semantic-ui-react'
+import { Alert } from 'flowbite-react'
 import { createUseStyles } from 'react-jss'
 import useSystemRequest from 'requests/useSystemRequest'
 import useUserRequest from 'requests/useUserRequest'
@@ -82,25 +82,18 @@ const Layout: FunctionComponent = ({
       {!!messages.length && (
         <div className={classes.messages}>
           {messages.map((message) => (
-            <Message
+            <Alert
+              className='mb-4'
               data-testid='message'
               key={message.id}
-              info={message.type === 'info'}
-              success={message.type === 'success'}
-              negative={message.type === 'error'}
-              warning={message.type === 'warning'}
+              color={message.type}
+              onDismiss={() => handleRemoveMessage(message.id)}
+              additionalContent={message.desc && <p className='mt-2 mb-4'>{message.desc}</p>}
             >
-              <div>
-                <Message.Header>
-                  {message.title}
-                </Message.Header>
-                {message.desc && <p>{message.desc}</p>}
-              </div>
-              <Icon
-                name='close'
-                onClick={() => handleRemoveMessage(message.id)}
-              />
-            </Message>
+              <h4>
+                {message.title}
+              </h4>
+            </Alert>
           ))}
         </div>
       )}

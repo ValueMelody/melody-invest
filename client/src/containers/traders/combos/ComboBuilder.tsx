@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
-import { Input, Message, Button } from 'semantic-ui-react'
+import { Button, TextInput, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
@@ -99,7 +99,7 @@ const ComboBuilder = () => {
         classes.row,
       )}>
         <RequiredLabel title={localeTool.t('comboBuilder.name')} />
-        <Input
+        <TextInput
           value={envName}
           onChange={handleChangeName}
         />
@@ -115,11 +115,11 @@ const ComboBuilder = () => {
         <RequiredLabel title={localeTool.t('comboBuilder.minTraderRequired')} />
       </section>
       {profiles.length < 2 && (
-        <Message error className={classes.warningMsg}>
+        <Alert color='failure' className={classes.warningMsg}>
           {localeTool.t('comboBuilder.noEnoughProfiles')}
-        </Message>
+        </Alert>
       )}
-      <section className={commonClasses.rowAround}>
+      <section className='flex items-top justify-around flex-wrap'>
         {profiles.map((profile, index) => (
           <TraderProfileCard
             key={profile?.trader.id || `index-${index}`}
@@ -131,20 +131,19 @@ const ComboBuilder = () => {
         ))}
       </section>
       {hasDuplicatedName && (
-        <Message negative>
+        <Alert color='failure' className='mb-4'>
           {localeTool.t('comboBuilder.duplicatedName')}
-        </Message>
+        </Alert>
       )}
       {hasDuplicatedCombo && (
-        <Message negative>
+        <Alert color='failure' className='mb-4'>
           {localeTool.t('comboBuilder.duplicatedCombo')}
-        </Message>
+        </Alert>
       )}
       <form onSubmit={handleSubmit}>
         <div className={commonClasses.rowAround}>
           <Button
             type='submit'
-            color='blue'
             className={classes.confirmButton}
             disabled={!hasValidName || !hasValidTraders || hasDuplicatedName}
           >

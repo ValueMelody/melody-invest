@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'react-jss'
-import { Loader } from 'semantic-ui-react'
+import { Spinner } from 'flowbite-react'
 import Router from './containers/Router'
 import { context } from './context'
 import useStore from './states/store'
@@ -22,7 +22,11 @@ const App = () => {
 
   return (
     <>
-      <Loader active={store.common.isLoading} size='large' />
+      {store.common.isLoading && (
+        <div className='fixed h-screen w-full flex items-center justify-center'>
+          <Spinner size='xl' />
+        </div>
+      )}
       <context.Provider value={store}>
         <ThemeProvider theme={themeEnum.theme}>
           <Router />
