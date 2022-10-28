@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import * as themeEnum from 'enums/theme'
 import { createUseStyles } from 'react-jss'
 import * as routerTool from 'tools/router'
 import useCommonStyle from 'styles/useCommonStyle'
@@ -57,7 +56,7 @@ const PatternBehaviors = ({
           key={behavior}
           behavior={behavior}
           value={pattern[behavior]}
-          color={themeEnum.theme.IncreaseColor}
+          color='success'
           onClick={handleClickBehavior}
         />
       ))}
@@ -66,7 +65,7 @@ const PatternBehaviors = ({
           key={behavior}
           behavior={behavior}
           value={pattern[behavior]}
-          color={themeEnum.theme.DecreaseColor}
+          color='failure'
           onClick={handleClickBehavior}
         />
       ))}
@@ -75,7 +74,7 @@ const PatternBehaviors = ({
           key={behavior}
           behavior={behavior}
           value={pattern[behavior]}
-          color='grey'
+          color='gray'
           onClick={handleClickBehavior}
         />
       ))}

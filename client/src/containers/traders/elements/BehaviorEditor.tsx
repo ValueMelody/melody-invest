@@ -1,6 +1,6 @@
-import { SyntheticEvent } from 'react'
+import { ChangeEvent } from 'react'
 import classNames from 'classnames'
-import { Dropdown, DropdownProps } from 'semantic-ui-react'
+import { Select } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import { createUseStyles } from 'react-jss'
@@ -44,7 +44,7 @@ const BehaviorEditor = ({
   const { commonClasses } = useCommonStyle()
 
   const options = constants.BehaviorValue.Options[behavior]
-  const hasValue = behaviorValue !== null && options.includes(behaviorValue)
+  const hasValue = behaviorValue !== null && options.some((option) => option === behaviorValue)
   const selectOptions = options.map((option) => ({
     key: option, value: option, text: parseTool.behaviorValue(behavior, option),
   }))
@@ -54,10 +54,9 @@ const BehaviorEditor = ({
   const handleClick = () => onClick(behavior)
 
   const handleSelect = (
-    e: SyntheticEvent,
-    data: DropdownProps,
+    e: ChangeEvent<HTMLSelectElement>,
   ) => {
-    const value = data.value === '' ? null : Number(data.value)
+    const value = e.target.value === '' ? null : Number(e.target.value)
     onSelect(behavior, value)
   }
 
@@ -67,7 +66,7 @@ const BehaviorEditor = ({
     return (
       <BehaviorLabel
         behavior={behavior}
-        color={hasValue ? 'blue' : 'grey'}
+        color={hasValue ? 'info' : 'gray'}
         value={behaviorValue}
         onClick={handleClick}
       />
@@ -80,27 +79,37 @@ const BehaviorEditor = ({
       className={classNames(
         commonClasses.columnStart,
         classes.container,
+        'w-full',
       )}
     >
       <div className={commonClasses.rowStart}>
         <BehaviorLabel
           behavior={behavior}
-          color='black'
+          color='indigo'
           onClick={handleClick}
         />
         <h5 className={classes.desc}>
           {parseTool.behaviorDesc(behavior)}
         </h5>
       </div>
-      <Dropdown
-        selection
-        clearable
-        className={classes.select}
-        placeholder={localeTool.t('profileBuilder.select')}
-        options={selectOptions}
+      <Select
+        data-testid='select'
+        className={classNames(classes.select, 'w-64')}
         value={behaviorValue || ''}
         onChange={handleSelect}
-      />
+      >
+        <option value=''>
+          {localeTool.t('profileBuilder.notSet')}
+        </option>
+        {selectOptions.map((option) => (
+          <option
+            key={option.value}
+            value={option.value}
+          >
+            {option.text}
+          </option>
+        ))}
+      </Select>
     </div>
   )
 }

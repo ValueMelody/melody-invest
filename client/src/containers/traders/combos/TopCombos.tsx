@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { Header } from 'semantic-ui-react'
 import { useNavigate } from 'react-router-dom'
 import classNames from 'classnames'
 import * as constants from '@shared/constants'
@@ -17,6 +16,7 @@ import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles((
   theme: interfaces.common.Theme,
@@ -121,25 +121,25 @@ const TopCombos = () => {
             showPercents
             showCharts
           />
-          <Header
-            as='h3'
+          <PageTitle
             icon='history'
-            content={localeTool.t('topCombos.history')}
+            title={localeTool.t('topCombos.history')}
           />
-          {comboHoldings.map((detail, index) => (
-            <HoldingCard
-              key={detail.date}
-              holding={detail}
-              previousHolding={index < comboHoldings.length - 1 ? comboHoldings[index + 1] : null}
-              initialValue={constants.Trader.Initial.Cash * 10}
-            />
-          ))}
+          <section className='flex flex-wrap'>
+            {comboHoldings.map((detail, index) => (
+              <HoldingCard
+                key={detail.date}
+                className='mt-6 w-full'
+                holding={detail}
+                previousHolding={index < comboHoldings.length - 1 ? comboHoldings[index + 1] : null}
+                initialValue={constants.Trader.Initial.Cash * 10}
+              />
+            ))}
+          </section>
         </section>
         <section className={traderClasses.aside}>
-          <Header
-            as='h3'
-            icon='star'
-            content={localeTool.t('traderCombo.includedProfiles')}
+          <PageTitle
+            title={localeTool.t('traderCombo.includedProfiles')}
             className={classes.valueTitle}
           />
           <div className={commonClasses.columnCenter}>
@@ -152,11 +152,9 @@ const TopCombos = () => {
               />
             ))}
           </div>
-          <Header
-            as='h3'
-            icon='pie chart'
-            content={localeTool.t('traderCombo.profilePortion')}
-            className={classes.portionTitle}
+          <PageTitle
+            icon='pie'
+            title={localeTool.t('traderCombo.profilePortion')}
           />
           <ComboProfiles
             profilesWithEnvs={profilesWithEnvs}

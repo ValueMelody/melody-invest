@@ -251,7 +251,7 @@ describe('#showRequestError', () => {
     }))
 
     expect(result.current.common.messages.length).toBe(1)
-    expect(result.current.common.messages[0].type).toBe('error')
+    expect(result.current.common.messages[0].type).toBe('failure')
     expect(result.current.common.messages[0].title).toBe('error message 1')
     expect(history.location.pathname).toBe('/user')
     expect(result.current.resources.hasLogin).toBe(true)
@@ -273,7 +273,7 @@ describe('#showRequestError', () => {
     }))
 
     expect(result.current.common.messages.length).toBe(1)
-    expect(result.current.common.messages[0].type).toBe('error')
+    expect(result.current.common.messages[0].type).toBe('failure')
     expect(result.current.common.messages[0].title).toBe(unAuthorizedError)
     expect(history.location.pathname).toBe(routerEnum.Nav.SignIn)
     expect(result.current.resources.hasLogin).toBe(false)

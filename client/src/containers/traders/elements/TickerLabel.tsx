@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Label, SemanticCOLORS } from 'semantic-ui-react'
+import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import useCommonStyle from 'styles/useCommonStyle'
@@ -18,7 +18,7 @@ const TickerLabel = ({
 }: {
   ticker: interfaces.tickerModel.Identity | null;
   onClick?: (tickerId: number) => void;
-  color: SemanticCOLORS;
+  color: 'info' | 'gray';
 }) => {
   // ------------------------------------------------------------ State --
 
@@ -37,7 +37,8 @@ const TickerLabel = ({
   if (!ticker) return null
 
   return (
-    <Label
+    <Badge
+      size='sm'
       data-testid='tickerLabel'
       color={color}
       className={classNames(classes.label, {
@@ -47,7 +48,7 @@ const TickerLabel = ({
       onClick={handleClick}
     >
       {ticker.symbol}
-    </Label>
+    </Badge>
   )
 }
 

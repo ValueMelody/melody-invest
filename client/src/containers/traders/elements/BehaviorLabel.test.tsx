@@ -9,15 +9,16 @@ describe('#BehaviorLabel', () => {
       <BehaviorLabel
         behavior={behavior}
         value={3}
-        color='green'
+        color='info'
       />,
     )
     const container = screen.getByTestId('behaviorLabel')
     expect(container).toBeTruthy()
-    expect(container.innerHTML).toBe(`${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`)
+    expect(container.children[0].innerHTML).toBe(
+      `${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`,
+    )
     expect(container.className).toContain('cursorInfo')
     expect(container.className).not.toContain('cursorClickable')
-    expect(container.classList).toContain('green')
     expect(container.getAttribute('title')).toBe(parseTool.behaviorDesc(behavior))
 
     fireEvent.click(container)
@@ -28,23 +29,22 @@ describe('#BehaviorLabel', () => {
       <BehaviorLabel
         behavior={behavior}
         value={3}
-        color='red'
+        color='gray'
       />,
     )
     const container = screen.getByTestId('behaviorLabel')
-    expect(container.classList).toContain('red')
-    expect(container.classList).not.toContain('green')
+    expect(container.classList).toContain('bg-gray-100')
   })
 
   test('could render without value', () => {
     render(
       <BehaviorLabel
         behavior={behavior}
-        color='red'
+        color='gray'
       />,
     )
     const container = screen.getByTestId('behaviorLabel')
-    expect(container.innerHTML).toBe(parseTool.behaviorTitle(behavior))
+    expect(container.children[0].innerHTML).toBe(parseTool.behaviorTitle(behavior))
   })
 
   test('could render as clickable', () => {
@@ -54,7 +54,7 @@ describe('#BehaviorLabel', () => {
       <BehaviorLabel
         behavior={behavior}
         value={3}
-        color='green'
+        color='info'
         onClick={onClick}
       />,
     )

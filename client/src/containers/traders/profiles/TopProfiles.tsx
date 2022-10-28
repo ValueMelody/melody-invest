@@ -97,7 +97,7 @@ const TopProfiles = () => {
         </section>
       </section>
       <aside className={traderClasses.aside}>
-        <h2>{localeTool.t('bestReturn.type')}:</h2>
+        <h2 className='mb-4'>{localeTool.t('bestReturn.type')}:</h2>
         <VariationList
           options={topOptions}
           activeValue={focusType}

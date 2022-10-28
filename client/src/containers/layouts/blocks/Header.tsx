@@ -1,5 +1,9 @@
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
+import {
+  ChartBarIcon, ArchiveBoxIcon, BookmarkIcon,
+  TicketIcon, TableCellsIcon, UserCircleIcon,
+} from '@heroicons/react/24/solid'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -48,39 +52,40 @@ const Header = () => {
         classes.header,
       )}
     >
-      <nav>
+      <nav className='flex'>
         <HeaderLink
           route={routerTool.topProfilesRoute()}
           title={localeTool.t('topProfiles.title')}
-          icon='chart line'
+          icon={ChartBarIcon}
         />
         <HeaderLink
           route={routerTool.topCombosRoute()}
           title={localeTool.t('topCombos.title')}
-          icon='boxes'
+          icon={ArchiveBoxIcon}
         />
         <HeaderLink
           route={routerTool.behaviorListRoute()}
           title={localeTool.t('tradeBehaviors.title')}
-          icon='certificate'
+          icon={BookmarkIcon}
         />
         <HeaderLink
           route={routerTool.tickerListRoute()}
           title={localeTool.t('availableTickers.title')}
-          icon='ticket'
+          icon={TicketIcon}
         />
       </nav>
-      <nav>
+      <nav className='flex items-center'>
         {user.hasLogin && (
           <HeaderLink
             route={routerTool.dashboardRoute()}
             title={localeTool.t('dashboard.title')}
-            icon='table'
+            icon={TableCellsIcon}
           />
         )}
         <HeaderLink
+          data-testid='user'
           route={user.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
-          icon='user circle'
+          icon={UserCircleIcon}
         />
       </nav>
     </header>

@@ -1,6 +1,6 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
 import classNames from 'classnames'
-import { Input, TextArea, Button, Checkbox } from 'semantic-ui-react'
+import { TextInput, Button, Textarea, Checkbox, Label } from 'flowbite-react'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import { createUseStyles } from 'react-jss'
@@ -15,6 +15,7 @@ import usePasswordValidator from 'handlers/usePasswordValidator'
 import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
+import GoToButton from './elements/GoToButton'
 
 const useStyles = createUseStyles(({
   policy: {
@@ -92,7 +93,7 @@ const SignUp = () => {
       ? localeTool.t('error.password.requireSame')
       : validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'error', title: error })
+      addMessage({ id: Math.random(), type: 'failure', title: error })
       return
     }
     await createUser(parsedEmail, parsedPassword, isConfirmed)
@@ -111,7 +112,7 @@ const SignUp = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <TextInput
             type='email'
             value={email}
             onChange={handleChangeEmail}
@@ -122,7 +123,7 @@ const SignUp = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.password')} />
-          <Input
+          <TextInput
             type='password'
             value={password}
             onChange={handleChangePassword}
@@ -133,14 +134,14 @@ const SignUp = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.retypePassword')} />
-          <Input
+          <TextInput
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
         </div>
         <div className={accountClasses.row}>
-          <TextArea
+          <Textarea
             className={classes.policy}
             disabled
             value={policy.termsPolicy || ''}
@@ -148,30 +149,30 @@ const SignUp = () => {
         </div>
         <div className={accountClasses.row}>
           <Checkbox
-            label={localeTool.t('signUp.terms')}
+            data-testid='checkbox'
+            className='mr-2'
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
+          <Label>{localeTool.t('signUp.terms')}</Label>
         </div>
         <div className={commonClasses.rowAround}>
           <Button
             data-testid='signUpButton'
             type='submit'
-            color='blue'
             disabled={!email || !password || !retypePassword || !isConfirmed}
           >
             {localeTool.t('common.signUp')}
           </Button>
         </div>
       </form>
-      <Button
-        data-testid='signInButton'
-        className={accountClasses.routerButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('signUp.toSignIn')}
-        onClick={handleClickSignIn}
-      />
+      <footer className='mt-16 flex justify-center'>
+        <GoToButton
+          data-testid='signInButton'
+          title={localeTool.t('signUp.toSignIn')}
+          onClick={handleClickSignIn}
+        />
+      </footer>
     </div>
   )
 }

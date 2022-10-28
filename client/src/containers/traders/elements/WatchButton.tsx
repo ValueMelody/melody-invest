@@ -1,5 +1,6 @@
 import { MouseEvent } from 'react'
-import { Button, Icon } from 'semantic-ui-react'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import { Button } from 'flowbite-react'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 
@@ -27,16 +28,19 @@ const WatchButton = ({
     onToggle()
   }
 
+  const Icon = isWatched ? EyeSlashIcon : EyeIcon
+
   // ------------------------------------------------------------ UI --
 
   return (
     <Button
       data-testid='watchButton'
+      size='xs'
       className={classes.action}
-      color={isWatched ? 'grey' : 'blue'}
+      color={isWatched ? 'gray' : undefined}
       onClick={handleToggle}
     >
-      <Icon name={isWatched ? 'eye slash' : 'eye'} />
+      <Icon className='w-4 h-4 mr-4' />
       {localeTool.t(isWatched ? 'common.unwatch' : 'common.watch')}
     </Button>
   )

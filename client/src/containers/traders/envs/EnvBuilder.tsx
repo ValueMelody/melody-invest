@@ -1,5 +1,6 @@
-import { useState, SyntheticEvent, ChangeEvent, FormEvent } from 'react'
-import { Dropdown, DropdownProps, DropdownItemProps, Input, Message, Button, Checkbox } from 'semantic-ui-react'
+import { useState, ChangeEvent, FormEvent } from 'react'
+import ReactSelect, { MultiValue } from 'react-select'
+import { Button, TextInput, Alert, ToggleSwitch, Select } from 'flowbite-react'
 import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
@@ -83,10 +84,8 @@ const EnvBuilder = () => {
 
   const tickerIdentities = getTickerIdentities()
   const selectableTickers = tickerIdentities.map((identity) => ({
-    key: identity.id,
-    text: identity.name,
+    label: `${identity.name} (${identity.symbol})`,
     value: identity.id,
-    symbol: identity.symbol,
   }))
 
   const dateString = `${startYear}-${startMonth}`
@@ -111,10 +110,9 @@ const EnvBuilder = () => {
   }
 
   const handleSelectStartMonth = (
-    e: SyntheticEvent,
-    data: DropdownProps,
+    e: ChangeEvent<HTMLSelectElement>,
   ) => {
-    setStartMonth(typeof data.value === 'string' ? data.value : '')
+    setStartMonth(typeof e.target.value === 'string' ? e.target.value : '')
   }
 
   const handleToggleAllTickers = () => {
@@ -122,11 +120,9 @@ const EnvBuilder = () => {
   }
 
   const handleSelectTickers = (
-    e: SyntheticEvent,
-    data: DropdownProps,
+    data: MultiValue<{ label: string; value: number; }>,
   ) => {
-    const values = Array.isArray(data.value) ? data.value : []
-    setTickerIds(values.map((value) => Number(value)))
+    setTickerIds(data.map((option) => option.value))
   }
 
   const handleChangeName = (
@@ -142,16 +138,16 @@ const EnvBuilder = () => {
     await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
   }
 
-  const handleSearch = (
-    options: DropdownItemProps[],
-    value: string,
-  ) => {
-    const formattedValue = value.trim().toUpperCase()
-    return selectableTickers.filter((option) => {
-      const label = option.text.toUpperCase()
-      return label.includes(formattedValue) || option.symbol.includes(formattedValue)
-    })
-  }
+  // const handleSearch = (
+  //   options: DropdownItemProps[],
+  //   value: string,
+  // ) => {
+  //   const formattedValue = value.trim().toUpperCase()
+  //   return selectableTickers.filter((option) => {
+  //     const label = option.text.toUpperCase()
+  //     return label.includes(formattedValue) || option.symbol.includes(formattedValue)
+  //   })
+  // }
 
   // ------------------------------------------------------------ UI --
 
@@ -183,17 +179,21 @@ const EnvBuilder = () => {
               onChange={handleChangeStartYear}
               showYearPicker
               dateFormat='yyyy'
-              customInput={<Input />}
+              customInput={<TextInput />}
               className={classes.dropdown}
             />
           </div>
-          <Dropdown
-            selection
+          <Select
             className={classes.dropdown}
             value={startMonth}
             onChange={handleSelectStartMonth}
-            options={MonthOptions}
-          />
+          >
+            {MonthOptions.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.text}
+              </option>
+            ))}
+          </Select>
         </div>
       </section>
       <section
@@ -204,10 +204,10 @@ const EnvBuilder = () => {
         title={localeTool.t('traderEnv.allTickers')}
       >
         <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
-        <Checkbox
-          toggle
+        <ToggleSwitch
           checked={!tickerIds}
           onChange={handleToggleAllTickers}
+          label=''
         />
       </section>
       {tickerIds && (
@@ -219,14 +219,13 @@ const EnvBuilder = () => {
           title={localeTool.t('envBuilder.targetTickersDesc')}
         >
           <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
-          <Dropdown
-            className={classes.input}
-            multiple
-            search={handleSearch}
-            selection
-            value={tickerIds}
-            onChange={handleSelectTickers}
+          <ReactSelect
+            value={selectableTickers.filter((ticker) => tickerIds.includes(ticker.value))}
+            isMulti
             options={selectableTickers}
+            className={classes.input}
+            isSearchable
+            onChange={handleSelectTickers}
           />
         </section>
       )}
@@ -235,27 +234,26 @@ const EnvBuilder = () => {
         classes.row,
       )}>
         <RequiredLabel title={localeTool.t('envBuilder.name')} />
-        <Input
+        <TextInput
           className={classes.input}
           value={envName}
           onChange={handleChangeName}
         />
       </section>
       {hasDuplicatedName && (
-        <Message negative>
+        <Alert color='failure' className='mb-4'>
           {localeTool.t('envBuilder.duplicatedName')}
-        </Message>
+        </Alert>
       )}
       {hasDuplicatedEnv && (
-        <Message negative>
+        <Alert color='failure' className='mb-4'>
           {localeTool.t('envBuilder.duplicatedEnv')}
-        </Message>
+        </Alert>
       )}
       <form onSubmit={handleSubmit}>
         <div className={commonClasses.rowAround}>
           <Button
             type='submit'
-            color='blue'
             className={classes.confirmButton}
             disabled={!couldCreate}
           >

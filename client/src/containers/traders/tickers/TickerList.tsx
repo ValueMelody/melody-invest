@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from 'react'
-import { Input } from 'semantic-ui-react'
+import { TextInput } from 'flowbite-react'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
@@ -75,8 +76,8 @@ const TickerList = () => {
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
         <header className={classes.section}>
-          <Input
-            icon='search'
+          <TextInput
+            icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
             value={searchText}
             onChange={handleChangeSearchText}
@@ -85,7 +86,7 @@ const TickerList = () => {
         <section className={commonClasses.rowStart}>
           {availableTickers.map((ticker) => (
             <TickerLabel
-              color='grey'
+              color='gray'
               key={ticker.id}
               ticker={ticker}
               onClick={handleClickTicker}
@@ -94,7 +95,7 @@ const TickerList = () => {
         </section>
       </section>
       <aside className={traderClasses.aside}>
-        <h3>{localeTool.t('tickerList.categories')}:</h3>
+        <h3 className='mb-4'>{localeTool.t('tickerList.categories')}:</h3>
         <VariationList
           options={categoryOptions}
           activeValue={selectedCategory}

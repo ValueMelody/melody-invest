@@ -3,7 +3,7 @@ import * as interfaces from '@shared/interfaces'
 
 export interface Message {
   id: number;
-  type: 'success' | 'info' | 'warning' | 'error';
+  type: 'success' | 'info' | 'warning' | 'failure';
   title: string;
   desc?: string;
 }

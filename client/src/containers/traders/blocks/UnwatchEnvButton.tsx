@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Button } from 'semantic-ui-react'
+import { Button } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import WatchButton from '../elements/WatchButton'
@@ -36,7 +36,6 @@ const UnwatchEnvButton = ({
       >
         <h4>{localeTool.t('unwatchEnv.desc')}</h4>
         <Button
-          color='blue'
           onClick={handleConfirmUnwatch}
           className='mt-2'
         >

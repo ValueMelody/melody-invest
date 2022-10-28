@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { TextArea } from 'semantic-ui-react'
+import { Textarea } from 'flowbite-react'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import useSystemRequest from 'requests/useSystemRequest'
@@ -28,7 +28,7 @@ const Privacy = () => {
       <h2 className={contentClasses.pageTitle}>
         {localeTool.t('page.privacyPolicy')}
       </h2>
-      <TextArea
+      <Textarea
         data-testid='privacy-content'
         className={contentClasses.contentTextarea}
         disabled

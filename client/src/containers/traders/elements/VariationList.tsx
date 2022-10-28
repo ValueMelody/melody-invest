@@ -1,7 +1,4 @@
-import classNames from 'classnames'
-import { Label } from 'semantic-ui-react'
-import { createUseStyles } from 'react-jss'
-import useCommonStyle from 'styles/useCommonStyle'
+import { ListGroup } from 'flowbite-react'
 
 type Value = string | number
 
@@ -11,17 +8,6 @@ interface Option {
   onClick: (value?: Value) => void;
 }
 
-const useStyles = createUseStyles(({
-  label: {
-    marginTop: '1rem !important',
-    width: '100%',
-    minWidth: 160,
-  },
-  active: {
-    marginLeft: '0 !important',
-  },
-}))
-
 const VariationList = ({
   options,
   activeValue,
@@ -29,35 +15,26 @@ const VariationList = ({
   options: Option[];
   activeValue: Value;
 }) => {
-  // ------------------------------------------------------------ State --
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-
   // ------------------------------------------------------------ UI --
 
   return (
-    <section data-testid='variationList' className={commonClasses.columnStart}>
+    <ListGroup data-testid='variationList'>
       {options.map((option) => {
         const handleClick = () => {
           option.onClick(option.value)
         }
 
         return (
-          <Label
+          <ListGroup.Item
             key={option.value}
-            className={classNames(
-              classes.label,
-              commonClasses.cursorClickable,
-              { [classes.active]: option.value === activeValue })}
-            pointing={option.value === activeValue ? 'left' : undefined}
-            color={option.value === activeValue ? 'blue' : undefined}
+            active={option.value === activeValue}
             onClick={handleClick}
           >
-            {option.label}
-          </Label>
+            <h4 className='m-6'>{option.label}</h4>
+          </ListGroup.Item>
         )
       })}
-    </section>
+    </ListGroup>
   )
 }
 

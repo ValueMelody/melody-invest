@@ -1,12 +1,11 @@
 import classNames from 'classnames'
-import { Card } from 'semantic-ui-react'
+import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
 import useTraderRequest from 'requests/useTraderRequest'
 import useCardStyle from 'styles/useCardStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import WatchButton from '../elements/WatchButton'
 
 const TraderComboCard = ({
@@ -21,7 +20,6 @@ const TraderComboCard = ({
   // ------------------------------------------------------------ State --
 
   const { cardClasses } = useCardStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -52,28 +50,21 @@ const TraderComboCard = ({
     <Card
       data-testid='traderComboCard'
       className={classNames(cardClasses.container, {
+        'cursor-pointer': !disabled && !!onClick,
         [cardClasses.isActive]: isActive,
         [cardClasses.disabled]: disabled,
       })}
       onClick={!disabled ? handleClickCombo : undefined}
     >
-      <Card.Content>
-        <Card.Header
-          content={(
-            <div className={commonClasses.rowBetween}>
-              <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
-              {disabled && (
-                <WatchButton isWatched onToggle={handleUnfollow} />
-              )}
-            </div>
-          )}
-        />
-        <Card.Description
-          content={
-            disabled ? localeTool.t('permission.limited') : parseTool.traderComboTraders(traderCombo)
-          }
-        />
-      </Card.Content>
+      <header className='flex justify-between items-center'>
+        <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
+        {disabled && (
+          <WatchButton isWatched onToggle={handleUnfollow} />
+        )}
+      </header>
+      <h5>
+        {disabled ? localeTool.t('permission.limited') : parseTool.traderComboTraders(traderCombo)}
+      </h5>
     </Card>
   )
 }

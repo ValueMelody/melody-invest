@@ -71,11 +71,11 @@ describe('#SignIn', () => {
 
     expect(emailInput.value).toBe('')
     expect(passInput.value).toBe('')
-    const checkboxContainer = container.querySelector('.checkbox')!
-    expect(checkboxContainer.classList).not.toContain('checked')
+    const checkboxContainer = screen.getByTestId('checkbox')
+    expect(checkboxContainer).not.toBeChecked()
 
     const signInButton = screen.getByTestId('signInButton')
-    expect(signInButton.classList).toContain('disabled')
+    expect(signInButton).toBeDisabled()
 
     fireEvent.change(emailInput, { target: { value: ' AbC@email.Com ' } })
     expect(emailInput.value).toBe('AbC@email.Com')
@@ -85,9 +85,9 @@ describe('#SignIn', () => {
     expect(passInput.value).toBe(pass)
 
     fireEvent.click(checkboxInput)
-    expect(checkboxContainer.classList).toContain('checked')
+    expect(checkboxContainer).toBeChecked()
 
-    expect(signInButton.classList).not.toContain('disabled')
+    expect(signInButton).not.toBeDisabled()
     fireEvent.click(signInButton)
 
     expect(createUserToken).toBeCalledTimes(1)

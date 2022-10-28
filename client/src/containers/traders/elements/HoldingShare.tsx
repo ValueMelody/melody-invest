@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Label } from 'semantic-ui-react'
+import { Card, Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
@@ -45,32 +45,36 @@ const HoldingShare = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <Label
+    <Card
       data-testid='holdingShare'
-      basic
       title={tickerIdentity?.name}
       className={classes.ticker}
     >
-      {tickerIdentity?.symbol}&nbsp;
-      {parseTool.floatToPercent(holdingItem.value / totalValue)}&nbsp;
-      {!!shareDiffer && (
-        <span
-          className={classNames(classes.differ, {
-            [classes.increaseColor]: shareDiffer > 0,
-            [classes.decreaseColor]: shareDiffer < 0,
-          })}
-        >
-          {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
-        </span>
-      )}
-      {!!previousDetail && !previousItem && (
-        <span
-          className={classNames(classes.differ, classes.increaseColor)}
-        >
-          {localeTool.t('common.new')}
-        </span>
-      )}
-    </Label>
+      <div className='flex items-center'>
+        <h5>
+          {tickerIdentity?.symbol}&nbsp;
+          {parseTool.floatToPercent(holdingItem.value / totalValue)}&nbsp;
+        </h5>
+        {!!shareDiffer && (
+          <span
+            className={classNames(classes.differ, {
+              [classes.increaseColor]: shareDiffer > 0,
+              [classes.decreaseColor]: shareDiffer < 0,
+            })}
+          >
+            {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
+          </span>
+        )}
+        {!!previousDetail && !previousItem && (
+          <Badge
+            color='success'
+            className='ml-2'
+          >
+            {localeTool.t('common.new')}
+          </Badge>
+        )}
+      </div>
+    </Card>
   )
 }
 

@@ -1,4 +1,4 @@
-import { Segment } from 'semantic-ui-react'
+import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
@@ -51,21 +51,23 @@ const ProfileBuilderGroup = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <Segment secondary className={classes.segment}>
+    <Card className={classes.segment}>
       <h5 className={classes.groupTitle}>
         {title}
       </h5>
-      {behaviors.map((behavior) => (
-        <BehaviorEditor
-          key={behavior}
-          behavior={behavior}
-          behaviorValue={behaviorValues[behavior] ?? null}
-          isEditing={behavior === currentBehavior}
-          onClick={handleClickBehavior}
-          onSelect={handleSelectValue}
-        />
-      ))}
-    </Segment>
+      <section className='flex flex-wrap'>
+        {behaviors.map((behavior) => (
+          <BehaviorEditor
+            key={behavior}
+            behavior={behavior}
+            behaviorValue={behaviorValues[behavior] ?? null}
+            isEditing={behavior === currentBehavior}
+            onClick={handleClickBehavior}
+            onSelect={handleSelectValue}
+          />
+        ))}
+      </section>
+    </Card>
   )
 }
 

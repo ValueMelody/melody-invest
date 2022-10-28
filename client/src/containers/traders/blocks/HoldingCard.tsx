@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import classNames from 'classnames'
-import { Segment, Label, Divider, Button } from 'semantic-ui-react'
+import { Button, Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
@@ -14,9 +14,6 @@ const useStyles = createUseStyles(({
   container: {
     minWidth: '28rem',
   },
-  differRow: {
-    marginTop: '1rem',
-  },
   totalValue: {
     marginLeft: '2rem !important',
     marginRight: '1rem !important',
@@ -27,10 +24,12 @@ const HoldingCard = ({
   holding,
   previousHolding,
   initialValue,
+  className,
 }: {
-  holding: interfaces.traderHoldingModel.Detail,
-  previousHolding: interfaces.traderHoldingModel.Detail | null,
-  initialValue: number,
+  holding: interfaces.traderHoldingModel.Detail;
+  previousHolding: interfaces.traderHoldingModel.Detail | null;
+  initialValue: number;
+  className?: string;
 }) => {
   // ------------------------------------------------------------ State --
 
@@ -51,12 +50,12 @@ const HoldingCard = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <Segment className={classes.container}>
-      <div className={commonClasses.columnStart}>
+    <Card className={classNames(classes.container, className)}>
+      <header className='flex justify-between items-center'>
         <div className={commonClasses.rowStart}>
-          <Label>
+          <Badge color='indigo'>
             {localeTool.t('common.date')}: {holding.date}
-          </Label>
+          </Badge>
           {holding.totalValue !== null && (
             <h5 className={classes.totalValue}>
               <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
@@ -70,10 +69,7 @@ const HoldingCard = ({
             </h5>
           )}
         </div>
-        <div className={classNames(
-          commonClasses.rowStart,
-          classes.differRow,
-        )}>
+        <div className={commonClasses.rowStart}>
           {previousHolding && (
             <ValueDiffer
               title={localeTool.t('common.sinceLast')}
@@ -87,28 +83,30 @@ const HoldingCard = ({
             compareValue={initialValue}
           />
         </div>
-      </div>
-      <Divider />
-      {displayedHoldingItems.map((holdingItem) => {
-        const identity = getTickerIdentity(holdingItem.tickerId)
-        return (
-          <HoldingShare
-            key={holdingItem.tickerId}
-            tickerIdentity={identity}
-            totalValue={holding.totalValue}
-            holdingItem={holdingItem}
-            previousDetail={previousHolding}
-          />
-        )
-      })}
+      </header>
+      <div className='border border-gray-200 my-4' />
+      <section className='flex flex-wrap'>
+        {displayedHoldingItems.map((holdingItem) => {
+          const identity = getTickerIdentity(holdingItem.tickerId)
+          return (
+            <HoldingShare
+              key={holdingItem.tickerId}
+              tickerIdentity={identity}
+              totalValue={holding.totalValue}
+              holdingItem={holdingItem}
+              previousDetail={previousHolding}
+            />
+          )
+        })}
+      </section>
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
         <div className={commonClasses.rowAround}>
-          <Button onClick={handleClickShowMore}>
+          <Button color='gray' onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}
           </Button>
         </div>
       )}
-    </Segment>
+    </Card>
   )
 }
 

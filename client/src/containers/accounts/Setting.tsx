@@ -1,5 +1,5 @@
 import { useState, useMemo, ChangeEvent, FormEvent } from 'react'
-import { Input, Button, Card, CardContent, CardHeader, CardDescription } from 'semantic-ui-react'
+import { TextInput, Button, Card } from 'flowbite-react'
 import * as constants from '@shared/constants'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
@@ -13,6 +13,8 @@ import RequiredLabel from 'containers/elements/RequiredLabel'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
+
+const cardClass = 'w-96 mb-6 mx-4'
 
 const useStyles = createUseStyles(({
   input: {
@@ -87,7 +89,7 @@ const Setting = () => {
       ? localeTool.t('error.password.requireSame')
       : formatError
     if (error) {
-      addMessage({ id: Math.random(), type: 'error', title: error })
+      addMessage({ id: Math.random(), type: 'failure', title: error })
       return
     }
     updateUserPassword(parsedCurrentPassword, parsedNewPassword)
@@ -116,110 +118,90 @@ const Setting = () => {
       >
         <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
         <Button
-          color='blue'
           className={classes.input}
           onClick={handleConfirmLock}
         >
           {localeTool.t('common.confirm')}
         </Button>
       </ConfirmModal>
-      <Card.Group>
-        <Card>
-          <CardContent>
-            <CardHeader>
-              <h3>{localeTool.t('setting.accountInfo')}</h3>
-            </CardHeader>
-            <CardDescription>
-              <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
-              <Button
-                className={classes.input}
-                onClick={handleSignOut}
-              >
-                {localeTool.t('setting.signOut')}
-              </Button>
-              <Button
-                className={classes.input}
-                onClick={handleToggleConfirmLock}
-              >
-                {localeTool.t('setting.lockAccess')}
-              </Button>
-            </CardDescription>
-          </CardContent>
+      <section className='flex flex-wrap w-full'>
+        <Card className={cardClass}>
+          <h3>{localeTool.t('setting.accountInfo')}</h3>
+          <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
+            <Button
+              color='gray'
+              className={classes.input}
+              onClick={handleSignOut}
+            >
+              {localeTool.t('setting.signOut')}
+            </Button>
+            <Button
+              color='gray'
+              className={classes.input}
+              onClick={handleToggleConfirmLock}
+            >
+              {localeTool.t('setting.lockAccess')}
+            </Button>
         </Card>
-        <Card>
-          <CardContent>
-            <CardHeader>
-              <h3>{localeTool.t('setting.accountType')}</h3>
-            </CardHeader>
-            <CardDescription>
-              <h4>
-                {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
-              </h4>
-              {userTypeText.Services.map((service) => (
-                <h5 key={service}>- {service}</h5>
-              ))}
-              {user.userType !== constants.User.Type.Basic && !user.planEndAtUTC && (
-                <UnsubscribeButton />
-              )}
-              {user.planStartAtUTC && (
-                <h5 className={classes.planDate}>
-                  {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
-                </h5>
-              )}
-              {user.planEndAtUTC && (
-                <h5 className={classes.planDate}>
-                  {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
-                </h5>
-              )}
-            </CardDescription>
-          </CardContent>
+        <Card className={cardClass}>
+          <h3>{localeTool.t('setting.accountType')}</h3>
+          <h4>
+            {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
+          </h4>
+          {userTypeText.Services.map((service) => (
+            <h5 key={service}>- {service}</h5>
+          ))}
+          {user.userType !== constants.User.Type.Basic && !user.planEndAtUTC && (
+            <UnsubscribeButton />
+          )}
+          {user.planStartAtUTC && (
+            <h5 className={classes.planDate}>
+              {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
+            </h5>
+          )}
+          {user.planEndAtUTC && (
+            <h5 className={classes.planDate}>
+              {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
+            </h5>
+          )}
           {user.userType === constants.User.Type.Basic && (
-            <CardContent extra>
-              <SubscribeModal />
-            </CardContent>
+            <SubscribeModal />
           )}
         </Card>
-        <Card>
-          <CardContent>
-            <CardHeader>
-              <h3>{localeTool.t('setting.changePassword')}</h3>
-            </CardHeader>
-            <CardDescription>
-              <form onSubmit={handleSubmit}>
-                <RequiredLabel title={localeTool.t('common.currentPassword')} />
-                <Input
-                  type='password'
-                  value={currentPassword}
-                  onChange={handleChangeCurrentPassword}
-                  className={classes.input}
-                />
-                <RequiredLabel title={localeTool.t('common.newPassword')} />
-                <Input
-                  type='password'
-                  value={newPassword}
-                  onChange={handleChangeNewPassword}
-                  className={classes.input}
-                />
-                <RequiredLabel title={localeTool.t('common.retypePassword')} />
-                <Input
-                  type='password'
-                  value={retypePassword}
-                  onChange={handleChangeRetypePassword}
-                  className={classes.input}
-                />
-                <Button
-                  type='submit'
-                  color='blue'
-                  disabled={!currentPassword || !newPassword || !retypePassword}
-                  className={classes.input}
-                >
-                  {localeTool.t('setting.changePassword')}
-                </Button>
-              </form>
-            </CardDescription>
-          </CardContent>
+        <Card className={cardClass}>
+          <h3>{localeTool.t('setting.changePassword')}</h3>
+          <form onSubmit={handleSubmit}>
+            <RequiredLabel title={localeTool.t('common.currentPassword')} />
+            <TextInput
+              type='password'
+              value={currentPassword}
+              onChange={handleChangeCurrentPassword}
+              className={classes.input}
+            />
+            <RequiredLabel title={localeTool.t('common.newPassword')} />
+            <TextInput
+              type='password'
+              value={newPassword}
+              onChange={handleChangeNewPassword}
+              className={classes.input}
+            />
+            <RequiredLabel title={localeTool.t('common.retypePassword')} />
+            <TextInput
+              type='password'
+              value={retypePassword}
+              onChange={handleChangeRetypePassword}
+              className={classes.input}
+            />
+            <Button
+              type='submit'
+              disabled={!currentPassword || !newPassword || !retypePassword}
+              className={classes.input}
+            >
+              {localeTool.t('setting.changePassword')}
+            </Button>
+          </form>
         </Card>
-      </Card.Group>
+      </section>
     </div>
   )
 }

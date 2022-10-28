@@ -21,7 +21,7 @@ describe('#ValueChangeCharts', () => {
 
     const decadeText = localeTool.t('common.yearsTrends', { num: 6 })
     const decadeButton = screen.getByText(decadeText)
-    expect(decadeButton.classList).toContain('blue')
+    expect(decadeButton.parentElement?.classList).toContain('bg-blue-700')
 
     fireEvent.click(decadeButton)
     expect(onChange).toBeCalledTimes(1)
@@ -29,7 +29,7 @@ describe('#ValueChangeCharts', () => {
 
     const yearText = localeTool.t('common.daysTrends', { num: 150 })
     const yearButton = screen.getByText(yearText)
-    expect(yearButton.classList).not.toContain('blue')
+    expect(yearButton.parentElement?.classList).not.toContain('bg-blue-700')
 
     fireEvent.click(yearButton)
     expect(onChange).toBeCalledTimes(2)
@@ -52,10 +52,10 @@ describe('#ValueChangeCharts', () => {
 
     const decadeText = localeTool.t('common.yearsTrends', { num: 6 })
     const decadeButton = screen.getByText(decadeText)
-    expect(decadeButton.classList).not.toContain('blue')
+    expect(decadeButton.parentElement?.classList).not.toContain('bg-blue-700')
     const yearText = localeTool.t('common.daysTrends', { num: 150 })
     const yearButton = screen.getByText(yearText)
-    expect(yearButton.classList).toContain('blue')
+    expect(yearButton.parentElement?.classList).toContain('bg-blue-700')
   })
 
   test('could render as empty', async () => {

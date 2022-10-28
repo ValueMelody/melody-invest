@@ -1,6 +1,6 @@
 import { MouseEvent } from 'react'
 import classNames from 'classnames'
-import { Label, SemanticCOLORS } from 'semantic-ui-react'
+import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
 import { createUseStyles } from 'react-jss'
@@ -19,7 +19,7 @@ const BehaviorLabel = ({
   onClick,
 }: {
   behavior: interfaces.traderPatternModel.Behavior;
-  color: SemanticCOLORS;
+  color: 'info' | 'gray' | 'indigo' | 'success' | 'failure';
   value?: number | null;
   onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
@@ -44,8 +44,9 @@ const BehaviorLabel = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <Label
+    <Badge
       data-testid='behaviorLabel'
+      size='sm'
       className={classNames(classes.container, {
         [commonClasses.cursorInfo]: !onClick,
         [commonClasses.cursorClickable]: !!onClick,
@@ -55,7 +56,7 @@ const BehaviorLabel = ({
       onClick={handleClick}
     >
       {hasValue ? `${behaviorTitle}: ${behaviorValue}` : behaviorTitle}
-    </Label>
+    </Badge>
   )
 }
 

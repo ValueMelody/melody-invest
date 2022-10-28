@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import { Header, Segment } from 'semantic-ui-react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { Alert } from 'flowbite-react'
 import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
@@ -20,6 +20,7 @@ import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import WatchButton from 'containers/traders/elements/WatchButton'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
   combo: {
@@ -115,12 +116,7 @@ const ComboDetail = () => {
             />
           )}
         </div>
-        <Header
-          as='h3'
-          icon='star'
-          className={classes.profileTitle}
-          content={localeTool.t('traderCombo.includedProfiles')}
-        />
+        <PageTitle title={localeTool.t('traderCombo.includedProfiles')} className='mb-4' />
         <div className={commonClasses.columnCenter}>
           {profilesWithEnvs.map((profileWithEnv) => (
             <ProfileValue
@@ -131,12 +127,7 @@ const ComboDetail = () => {
             />
           ))}
         </div>
-        <Header
-          as='h3'
-          icon='pie chart'
-          className={classes.portionTitle}
-          content={localeTool.t('traderCombo.profilePortion')}
-        />
+        <PageTitle icon='pie' title={localeTool.t('traderCombo.profilePortion')} />
         <ComboProfiles
           profilesWithEnvs={profilesWithEnvs}
           onClickProfile={handleClickProfile}
@@ -157,19 +148,16 @@ const ComboDetail = () => {
           showPercents
           showCharts
         />
-        <Header
-          as='h3'
-          icon='history'
-          content={localeTool.t('traderCombo.history')}
-        />
+        <PageTitle icon='history' title={localeTool.t('traderCombo.history')} />
         {!displayedHoldings.length && (
-          <Segment>
+          <Alert color='warning' className='mt-4'>
             {localeTool.t('traderCombo.noResultYet')}
-          </Segment>
+          </Alert>
         )}
         {displayedHoldings.map((detail, index) => (
           <HoldingCard
             key={detail.date}
+            className='mt-6'
             holding={detail}
             previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
             initialValue={constants.Trader.Initial.Cash * matchedCombo.identity.traderIds.length}

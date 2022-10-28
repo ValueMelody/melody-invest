@@ -1,22 +1,20 @@
 import HeaderLink from './HeaderLink'
 import { createMemoryHistory } from 'history'
+import { StarIcon } from '@heroicons/react/24/solid'
 import { fireEvent, render, screen } from 'test.utils'
 
 describe('#HeaderLink', () => {
   test('could render Footer', () => {
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
-    const { container } = render(
+    render(
       <HeaderLink
         title='test title'
         route='/testheaderlink'
-        icon='audio description'
+        icon={StarIcon}
       />,
       { history },
     )
-
-    expect(container.querySelector('.audio')).toBeTruthy()
-    expect(container.querySelector('.description')).toBeTruthy()
 
     const link = screen.getByText('test title')
     fireEvent.click(link)

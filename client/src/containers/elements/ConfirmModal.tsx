@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import { Modal, Button } from 'semantic-ui-react'
+import { Button, Modal } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 
 const ConfirmModal = ({
@@ -24,20 +24,20 @@ const ConfirmModal = ({
   return (
     <Modal
       data-testid='confirmModal'
-      open={isOpen}
+      show={isOpen}
       onClose={handleCloseModal}
     >
       <Modal.Header>
         {title}
       </Modal.Header>
-      <Modal.Content>
+      <Modal.Body>
         {children}
-      </Modal.Content>
-      <Modal.Actions>
-        <Button color='grey' onClick={handleCloseModal}>
+      </Modal.Body>
+      <Modal.Footer className='flex justify-end'>
+        <Button color='gray' onClick={handleCloseModal}>
           {localeTool.t('common.close')}
         </Button>
-      </Modal.Actions>
+      </Modal.Footer>
     </Modal>
   )
 }

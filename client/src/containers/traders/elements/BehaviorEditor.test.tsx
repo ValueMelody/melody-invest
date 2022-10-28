@@ -1,6 +1,5 @@
 import BehaviorEditor from './BehaviorEditor'
 import { fireEvent, render, screen } from 'test.utils'
-import * as localeTool from 'tools/locale'
 
 describe('#BehaviorEditor', () => {
   test('could render as behavior label', () => {
@@ -41,7 +40,7 @@ describe('#BehaviorEditor', () => {
 
   test('could render with dropdown', () => {
     const onSelect = jest.fn()
-    const { container } = render(
+    render(
       <BehaviorEditor
         behavior='priceDailyIncreaseBuy'
         isEditing
@@ -53,39 +52,20 @@ describe('#BehaviorEditor', () => {
     expect(screen.queryByTestId('behaviorEditor')).toBeTruthy()
 
     const options = screen.queryAllByRole('option')
-    expect(options.length).toBe(4)
+    expect(options.length).toBe(5)
 
-    fireEvent.click(options[3])
+    const select = screen.getByTestId('select')
+
+    fireEvent.change(select, {
+      target: { value: 5 },
+    })
     expect(onSelect).toBeCalledTimes(1)
     expect(onSelect).toBeCalledWith('priceDailyIncreaseBuy', 5)
 
-    const selected = screen.queryByRole('alert')
-    expect(selected?.innerHTML).toBe('1')
-
-    const clearButton = container.querySelector('.clear')
-    fireEvent.click(clearButton!)
+    fireEvent.change(select, {
+      target: { value: '' },
+    })
     expect(onSelect).toBeCalledTimes(2)
     expect(onSelect).toBeCalledWith('priceDailyIncreaseBuy', null)
-  })
-
-  test('could render with no value', () => {
-    const onSelect = jest.fn()
-    render(
-      <BehaviorEditor
-        behavior='priceDailyIncreaseBuy'
-        isEditing
-        behaviorValue={null}
-        onClick={() => {}}
-        onSelect={onSelect}
-      />,
-    )
-    expect(screen.queryByTestId('behaviorEditor')).toBeTruthy()
-
-    const options = screen.queryAllByRole('option')
-    expect(options.length).toBe(4)
-
-    const selected = screen.queryByRole('alert')
-    const placeholderText = localeTool.t('profileBuilder.select')
-    expect(selected?.innerHTML).toBe(placeholderText)
   })
 })

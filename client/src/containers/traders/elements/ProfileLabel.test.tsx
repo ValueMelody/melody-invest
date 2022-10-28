@@ -20,13 +20,14 @@ describe('#ProfileLabel', () => {
       <ProfileLabel
         trader={trader}
         traderEnv={traderEnv}
-        color='green'
+        color='info'
       />,
     )
     const container = screen.getByTestId('profileLabel')
     expect(container).toBeTruthy()
-    expect(container.classList).toContain('green')
-    expect(container.innerHTML).toBe(`${parseTool.profileName(12)} - test env ${localeTool.t('common.env')}`)
+    expect(container.children[0].innerHTML).toBe(
+      `${parseTool.profileName(12)} - test env ${localeTool.t('common.env')}`,
+    )
   })
 
   test('could render color', () => {
@@ -34,11 +35,10 @@ describe('#ProfileLabel', () => {
       <ProfileLabel
         trader={trader}
         traderEnv={traderEnv}
-        color='red'
+        color='gray'
       />,
     )
     const container = screen.getByTestId('profileLabel')
-    expect(container.classList).toContain('red')
-    expect(container.classList).not.toContain('green')
+    expect(container.classList).toContain('bg-gray-100')
   })
 })

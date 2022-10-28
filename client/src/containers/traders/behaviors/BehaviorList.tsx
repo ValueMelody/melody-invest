@@ -1,5 +1,6 @@
 import { useState, ChangeEvent } from 'react'
-import { Input } from 'semantic-ui-react'
+import { TextInput } from 'flowbite-react'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
@@ -92,26 +93,26 @@ const BehaviorList = () => {
     <section className={traderClasses.root}>
       <section className={traderClasses.main}>
         <header className={classes.header}>
-          <Input
-            icon='search'
+          <TextInput
+            icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
             value={searchText}
             onChange={handleChangeSearchText}
           />
         </header>
-        <section>
+        <section className='flex flex-wrap'>
           {focusedOption.behaviors.map((behavior) => (
             <BehaviorLabel
               key={behavior}
               behavior={behavior}
-              color='grey'
+              color='gray'
               onClick={handleClickLabel}
             />
           ))}
         </section>
       </section>
       <aside className={traderClasses.aside}>
-        <h2>{localeTool.t('tradeBehaviors.type')}:</h2>
+        <h2 className='mb-4'>{localeTool.t('tradeBehaviors.type')}:</h2>
         <VariationList
           options={focusOptions}
           activeValue={focusedType}

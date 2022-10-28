@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, ChangeEvent, FormEvent } from 'react'
-import { Input, Button } from 'semantic-ui-react'
+import { TextInput, Button } from 'flowbite-react'
 import classNames from 'classnames'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -9,6 +9,7 @@ import RequiredLabel from 'containers/elements/RequiredLabel'
 import usePublicGuard from 'handlers/usePublicGuard'
 import useAccountStyle from 'styles/useAccountStyle'
 import useCommonStyle from 'styles/useCommonStyle'
+import GoToButton from './elements/GoToButton'
 
 const Forgot = () => {
   usePublicGuard()
@@ -55,29 +56,28 @@ const Forgot = () => {
           accountClasses.row,
         )}>
           <RequiredLabel title={localeTool.t('common.email')} />
-          <Input
+          <TextInput
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
         </div>
         <div className={commonClasses.rowAround}>
+
           <Button
             type='submit'
-            color='blue'
             disabled={!email}
           >
             {localeTool.t('forgot.button')}
           </Button>
         </div>
       </form>
-      <Button
-        className={accountClasses.routerButton}
-        icon='right arrow'
-        labelPosition='right'
-        content={localeTool.t('signUp.toSignIn')}
-        onClick={handleClickSignIn}
-      />
+      <footer className='mt-16 flex justify-center'>
+        <GoToButton
+          title={localeTool.t('signUp.toSignIn')}
+          onClick={handleClickSignIn}
+        />
+      </footer>
     </div>
   )
 }

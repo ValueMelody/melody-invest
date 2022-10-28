@@ -1,5 +1,6 @@
 import classNames from 'classnames'
-import { SemanticICONS, Label, Icon } from 'semantic-ui-react'
+import { FC } from 'react'
+import { Badge } from 'flowbite-react'
 import { Link } from 'react-router-dom'
 import { createUseStyles } from 'react-jss'
 
@@ -17,23 +18,26 @@ const HeaderLink = ({
   title,
   route,
   icon,
+  'data-testid': dataTestId,
 }: {
-  title?: string,
-  route: string,
-  icon: SemanticICONS,
+  title?: string;
+  route: string;
+  icon: FC<React.SVGProps<SVGSVGElement>>;
+  ['data-testid']?: string;
 }) => {
   // ------------------------------------------------------------ State --
   const classes = useStyles()
 
   return (
-    <Link to={route}>
-      <Label className={classes.label}>
-        <Icon
-          name={icon}
-          className={classNames({ [classes.icon]: !!title })}
-        />
+    <Link to={route} data-testid={dataTestId}>
+      <Badge
+        className={classNames(classes.label, 'cursor-pointer')}
+        color='gray'
+        size='sm'
+        icon={icon}
+      >
         {title || ''}
-      </Label>
+      </Badge>
     </Link>
   )
 }

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Segment } from 'semantic-ui-react'
+import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { createUseStyles } from 'react-jss'
@@ -14,9 +14,7 @@ import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
 
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
+const useStyles = createUseStyles({
   pattern: {
     margin: '0 0 2rem 0 !important',
     minWidth: '24rem',
@@ -34,7 +32,7 @@ const useStyles = createUseStyles((
   desc: {
     marginLeft: '1rem !important',
   },
-}))
+})
 
 const TraderProfileCard = ({
   profile,
@@ -47,6 +45,7 @@ const TraderProfileCard = ({
   profile: interfaces.response.TraderProfile | null;
   isActive?: boolean,
   simple?: boolean;
+  className?: string;
   disabled?: boolean;
   disabledUnwatch?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
@@ -91,7 +90,7 @@ const TraderProfileCard = ({
       addMessage({
         id: Math.random(),
         title: localeTool.t('error.guest'),
-        type: 'error',
+        type: 'failure',
       })
       return
     }
@@ -99,7 +98,7 @@ const TraderProfileCard = ({
       addMessage({
         id: Math.random(),
         title: localeTool.t('permission.limited'),
-        type: 'error',
+        type: 'failure',
       })
       return
     }
@@ -119,7 +118,7 @@ const TraderProfileCard = ({
   if (!trader || !pattern || !traderEnv) return null
 
   return (
-    <Segment
+    <Card
       data-testid='traderProfileCard'
       className={classNames(commonClasses.rowAround, classes.pattern, {
         [commonClasses.cursorClickable]: isClickable,
@@ -127,20 +126,16 @@ const TraderProfileCard = ({
         [cardClasses.isActive]: !!isActive,
       })}
       onClick={isClickable ? handleClick : undefined}
-      padded
     >
       <header
-        className={classNames(
-          commonClasses.rowBetween,
-          classes.header,
-        )}
+        className='flex flex-wrap items-center justify-between w-full'
       >
         <div className={classNames(
           commonClasses.rowStart,
           classes.label,
         )}>
           <ProfileLabel
-            color='blue'
+            color='info'
             trader={trader}
             traderEnv={traderEnv.record}
           />
@@ -186,7 +181,7 @@ const TraderProfileCard = ({
           <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
         )}
       </div>
-    </Segment>
+    </Card>
   )
 }
 

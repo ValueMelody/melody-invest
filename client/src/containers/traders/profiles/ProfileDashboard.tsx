@@ -1,6 +1,5 @@
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
-import { Header, Button, Icon } from 'semantic-ui-react'
 import * as interfaces from '@shared/interfaces'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
@@ -13,6 +12,8 @@ import usePrivateGuard from 'handlers/usePrivateGuard'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
+import AddButton from 'containers/traders/elements/AddButton'
+import PageTitle from 'containers/elements/PageTitle'
 
 const useStyles = createUseStyles(({
   header: {
@@ -85,10 +86,8 @@ const ProfileDashboard = () => {
           commonClasses.rowBetween,
           classes.header,
         )}>
-          <Header
-            as='h3'
-            icon='star'
-            content={localeTool.t('dashboard.watchedProfiles')}
+          <PageTitle
+            title={localeTool.t('dashboard.watchedProfiles')}
           />
           <div
             data-tooltip={
@@ -96,16 +95,11 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <Button
-              icon
-              labelPosition='left'
-              color='blue'
+            <AddButton
               onClick={handleClickAddProfile}
               disabled={!user.canFollowTrader}
-            >
-              <Icon name='plus' />
-              {localeTool.t('common.new')}
-            </Button>
+              title={localeTool.t('common.new')}
+            />
           </div>
         </header>
         {user.userTraderIds.map((traderId) => (
@@ -119,10 +113,9 @@ const ProfileDashboard = () => {
         ))}
       </section>
       <aside className={traderClasses.aside}>
-        <Header
-          as='h3'
-          icon='bookmark'
-          content={localeTool.t('dashboard.watchedEnvs')}
+        <PageTitle
+         icon='bookmark'
+         title={localeTool.t('dashboard.watchedEnvs')}
         />
         <section className={classNames(
           commonClasses.rowCenter,
@@ -141,22 +134,16 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <Button
-              icon
-              labelPosition='left'
-              color='blue'
+            <AddButton
               onClick={handleClickAddEnv}
               disabled={!user.canFollowEnv}
-            >
-              <Icon name='plus' />
-              {localeTool.t('common.new')}
-            </Button>
+              title={localeTool.t('common.new')}
+            />
           </div>
         </section>
-        <Header
-          as='h3'
-          icon='boxes'
-          content={localeTool.t('dashboard.watchedCombos')}
+        <PageTitle
+         icon='boxes'
+         title={localeTool.t('dashboard.watchedCombos')}
         />
         <section className={classNames(
           commonClasses.rowCenter,
@@ -175,16 +162,11 @@ const ProfileDashboard = () => {
             }
             data-position='bottom center'
           >
-            <Button
-              icon
-              labelPosition='left'
-              color='blue'
+            <AddButton
               onClick={handleClickAddCombo}
               disabled={!user.canFollowCombo}
-            >
-              <Icon name='plus' />
-              {localeTool.t('common.new')}
-            </Button>
+              title={localeTool.t('common.new')}
+            />
           </div>
         </section>
       </aside>

@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Icon } from 'semantic-ui-react'
+import { CheckIcon } from '@heroicons/react/24/solid'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useCommonStyle from 'styles/useCommonStyle'
@@ -54,21 +54,15 @@ const ProfileBuilderHeader = ({
       className={classNames(
         commonClasses.rowStart,
         commonClasses.cursorClickable,
-        { [classes.segmentHeader]: isExtended },
       )}
     >
       <h3 className={classes.segmentTitle}>
         {title}
       </h3>
-      <Icon
-        size='large'
-        color='blue'
-        name={isExtended ? 'caret down' : 'caret right'}
-      />
       <h5 className={classes.count}>
         {localeTool.t('common.numSelected', { num: activeCount })}
       </h5>
-      {isValid && <Icon name='checkmark' color='green' />}
+      {isValid && <CheckIcon color='green' className='w-4 h-4' />}
       {!isValid && <h5 className={classes.invalidMessage}>* {invalidMessage}</h5>}
     </header>
   )

@@ -42,7 +42,8 @@
     "nodemailer": "^6.7.5",
     "pg": "^8.7.1",
     "pg-mem": "^2.3.5",
-    "qs": "^6.10.1"
+    "qs": "^6.10.1",
+    "node-cron": "^3.0.2"
   },
   "devDependencies": {
     "@shared/interfaces": "*",
@@ -57,7 +58,8 @@
     "@types/nodemailer": "^6.4.4",
     "clinic": "^11.1.0",
     "compression": "^1.7.4",
-    "ts-node": "^10.7.0",
+    "ts-node": "^10.9.1",
+    "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.0.0"
   }
 }

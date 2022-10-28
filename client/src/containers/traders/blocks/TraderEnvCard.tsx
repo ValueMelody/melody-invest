@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import { Card, Label } from 'semantic-ui-react'
+import { Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
@@ -49,31 +49,19 @@ const TraderEnvCard = ({
       })}
       onClick={!disabled ? handleClickEnv : undefined}
     >
-      <Card.Content>
-        <Card.Header
-          content={(
-            <div className={commonClasses.rowBetween}>
-              <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
-              {traderEnv.isSystem && (
-                <Label title={localeTool.t('traderEnv.systemDesc')}>
-                  {localeTool.t('common.system')}
-                </Label>
-              )}
-              {disabled && (
-                <UnwatchEnvButton traderEnv={traderEnv} />
-              )}
-            </div>
-          )}
-        />
-        <Card.Meta
-          content={parseTool.traderEnvStartDate(traderEnv)}
-        />
-        <Card.Description
-          content={
-            disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)
-          }
-        />
-      </Card.Content>
+      <header className={commonClasses.rowBetween}>
+        <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
+        {traderEnv.isSystem && (
+          <Badge color='gray' title={localeTool.t('traderEnv.systemDesc')}>
+            {localeTool.t('common.system')}
+          </Badge>
+        )}
+        {disabled && (
+          <UnwatchEnvButton traderEnv={traderEnv} />
+        )}
+      </header>
+      <h5>{parseTool.traderEnvStartDate(traderEnv)}</h5>
+      <h5>{disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)}</h5>
     </Card>
   )
 }
