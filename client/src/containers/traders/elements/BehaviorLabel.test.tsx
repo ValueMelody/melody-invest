@@ -15,7 +15,7 @@ describe('#BehaviorLabel', () => {
     const container = screen.getByTestId('behaviorLabel')
     expect(container).toBeTruthy()
     expect(container.children[0].innerHTML).toBe(
-      `${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`
+      `${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`,
     )
     expect(container.className).toContain('cursorInfo')
     expect(container.className).not.toContain('cursorClickable')

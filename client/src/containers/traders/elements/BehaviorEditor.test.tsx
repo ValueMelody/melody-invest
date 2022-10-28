@@ -1,6 +1,5 @@
 import BehaviorEditor from './BehaviorEditor'
 import { fireEvent, render, screen } from 'test.utils'
-import * as localeTool from 'tools/locale'
 
 describe('#BehaviorEditor', () => {
   test('could render as behavior label', () => {
@@ -41,7 +40,7 @@ describe('#BehaviorEditor', () => {
 
   test('could render with dropdown', () => {
     const onSelect = jest.fn()
-    const { container } = render(
+    render(
       <BehaviorEditor
         behavior='priceDailyIncreaseBuy'
         isEditing
