@@ -92,7 +92,7 @@ const EnvDetail = () => {
         <div className={classes.tickers}>
           {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (
             <TickerLabel
-              color='blue'
+              color='info'
               key={tickerId}
               ticker={getTickerIdentity(tickerId)}
               onClick={handleClickTicker}

@@ -100,12 +100,12 @@ const BehaviorList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section>
+        <section className='flex flex-wrap'>
           {focusedOption.behaviors.map((behavior) => (
             <BehaviorLabel
               key={behavior}
               behavior={behavior}
-              color='grey'
+              color='gray'
               onClick={handleClickLabel}
             />
           ))}

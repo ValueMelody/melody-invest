@@ -46,7 +46,7 @@ const ProfileValue = ({
       onClick={handleClick}
     >
       <ProfileLabel
-        color='grey'
+        color='gray'
         trader={trader}
         traderEnv={env}
       />

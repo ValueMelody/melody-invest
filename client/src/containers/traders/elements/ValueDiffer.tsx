@@ -1,9 +1,9 @@
 import classNames from 'classnames'
-import { Label, Icon } from 'semantic-ui-react'
+import { Badge } from 'flowbite-react'
+import { ArrowTrendingUpIcon, ArrowTrendingDownIcon } from '@heroicons/react/24/solid'
 import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import * as themeEnum from 'enums/theme'
 import useCommonStyle from 'styles/useCommonStyle'
 
 const useStyles = createUseStyles(({
@@ -48,17 +48,14 @@ const ValueDiffer = ({
       )}
     >
       {title && <h5>{title}:</h5>}
-      <Label
+      <Badge
+        color={isPositive ? 'success' : 'failure'}
         className={classes.label}
-        color={isPositive ? themeEnum.theme.IncreaseColor : themeEnum.theme.DecreaseColor}
+        icon={isPositive ? ArrowTrendingUpIcon : ArrowTrendingDownIcon}
         title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
       >
         {parseTool.floatToPercent(differ)}
-        <Icon
-          className={classes.icon}
-          name={isPositive ? 'level up' : 'level down'}
-        />
-      </Label>
+      </Badge>
     </div>
   )
 }

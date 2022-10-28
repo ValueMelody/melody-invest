@@ -86,7 +86,7 @@ const TickerList = () => {
         <section className={commonClasses.rowStart}>
           {availableTickers.map((ticker) => (
             <TickerLabel
-              color='grey'
+              color='gray'
               key={ticker.id}
               ticker={ticker}
               onClick={handleClickTicker}

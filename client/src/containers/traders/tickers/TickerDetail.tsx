@@ -93,7 +93,7 @@ const TickerDetail = () => {
           commonClasses.rowStart,
           classes.header,
         )}>
-          <TickerLabel ticker={tickerIdentity} color='grey' />
+          <TickerLabel ticker={tickerIdentity} color='gray' />
           <h4 className={classes.desc}>
             {tickerIdentity.name}
           </h4>

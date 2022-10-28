@@ -90,7 +90,7 @@ const BehaviorDetail = () => {
           commonClasses.rowStart,
           classes.header,
         )}>
-          <BehaviorLabel behavior={validBehavior} color='blue' />
+          <BehaviorLabel behavior={validBehavior} color='info' />
           <h4 className={classes.desc}>
             {parseTool.behaviorDesc(validBehavior)}
           </h4>

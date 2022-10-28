@@ -7,7 +7,7 @@ describe('#tickerLabel', () => {
     render(
       <TickerLabel
         ticker={null}
-        color='green'
+        color='info'
       />,
     )
     const container = screen.queryByTestId('tickerLabel')
@@ -25,30 +25,27 @@ describe('#tickerLabel', () => {
     render(
       <TickerLabel
         ticker={ticker}
-        color='green'
+        color='info'
       />,
     )
     const container = screen.getByTestId('tickerLabel')
     expect(container).toBeTruthy()
     expect(screen.getByText(ticker.symbol)).toBeTruthy()
     expect(container.getAttribute('title')).toBe(ticker.name)
-    expect(container.classList).toContain('green')
-    expect(container.classList).not.toContain('red')
     expect(container.className).not.toContain('cursorClickable')
 
     fireEvent.click(container)
   })
 
-  test('could render as red', () => {
+  test('could render as gray', () => {
     render(
       <TickerLabel
         ticker={ticker}
-        color='red'
+        color='gray'
       />,
     )
     const container = screen.getByTestId('tickerLabel')
-    expect(container.classList).toContain('red')
-    expect(container.classList).not.toContain('green')
+    expect(container.classList).toContain('bg-gray-100')
   })
 
   test('could be clickable', () => {
@@ -56,7 +53,7 @@ describe('#tickerLabel', () => {
     render(
       <TickerLabel
         ticker={ticker}
-        color='red'
+        color='gray'
         onClick={onClick}
       />,
     )

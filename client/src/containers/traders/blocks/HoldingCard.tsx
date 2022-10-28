@@ -14,9 +14,6 @@ const useStyles = createUseStyles(({
   container: {
     minWidth: '28rem',
   },
-  differRow: {
-    marginTop: '1rem',
-  },
   totalValue: {
     marginLeft: '2rem !important',
     marginRight: '1rem !important',
@@ -72,10 +69,7 @@ const HoldingCard = ({
             </h5>
           )}
         </div>
-        <div className={classNames(
-          commonClasses.rowStart,
-          classes.differRow,
-        )}>
+        <div className={commonClasses.rowStart}>
           {previousHolding && (
             <ValueDiffer
               title={localeTool.t('common.sinceLast')}

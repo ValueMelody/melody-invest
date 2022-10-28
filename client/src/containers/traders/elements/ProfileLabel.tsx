@@ -1,4 +1,4 @@
-import { Label, SemanticCOLORS } from 'semantic-ui-react'
+import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
@@ -8,17 +8,18 @@ const ProfileLabel = ({
   traderEnv,
   color,
 }: {
-  color: SemanticCOLORS;
+  color: 'info' | 'gray';
   trader: interfaces.traderModel.Record;
   traderEnv: interfaces.traderEnvModel.Record;
 }) => {
   return (
-    <Label
+    <Badge
+      size='sm'
       color={color}
       data-testid='profileLabel'
     >
       {parseTool.profileName(trader.traderPatternId)} - {traderEnv.name} {localeTool.t('common.env')}
-    </Label>
+    </Badge>
   )
 }
 

@@ -166,7 +166,7 @@
     "profileBuilder.preferenceBehaviors": "Stock Preference",
     "profileBuilder.allocateBehaviors": "Stock Allocation",
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
-    "profileBuilder.select": "Select a behavior",
+    "profileBuilder.notSet": "Do not set",
 
     "comboBuilder.title": "Combo Builder",
     "comboBuilder.name": "Combo Name",
