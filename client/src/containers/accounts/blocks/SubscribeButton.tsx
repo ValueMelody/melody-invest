@@ -4,7 +4,7 @@ import * as constants from '@shared/constants'
 import useUserRequest from 'requests/useUserRequest'
 import * as commonEnum from 'enums/common'
 
-type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
+export type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
 
 const Button = ({
   planType,

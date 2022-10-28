@@ -14,6 +14,8 @@ import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 
+const cardClass = 'w-96 mb-6 mx-4'
+
 const useStyles = createUseStyles(({
   input: {
     marginTop: '2rem !important',
@@ -123,7 +125,7 @@ const Setting = () => {
         </Button>
       </ConfirmModal>
       <section className='flex flex-wrap w-full'>
-        <Card className='w-96'>
+        <Card className={cardClass}>
           <h3>{localeTool.t('setting.accountInfo')}</h3>
           <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
             <Button
@@ -141,7 +143,7 @@ const Setting = () => {
               {localeTool.t('setting.lockAccess')}
             </Button>
         </Card>
-        <Card className='mx-8 w-96'>
+        <Card className={cardClass}>
           <h3>{localeTool.t('setting.accountType')}</h3>
           <h4>
             {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
@@ -166,7 +168,7 @@ const Setting = () => {
             <SubscribeModal />
           )}
         </Card>
-        <Card className='w-96'>
+        <Card className={cardClass}>
           <h3>{localeTool.t('setting.changePassword')}</h3>
           <form onSubmit={handleSubmit}>
             <RequiredLabel title={localeTool.t('common.currentPassword')} />

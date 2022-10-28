@@ -11,7 +11,6 @@ import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
 
 import './index.css'
-import 'semantic-ui-css/semantic.min.css'
 import 'react-datepicker/dist/react-datepicker.css'
 
 const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)

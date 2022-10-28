@@ -18,9 +18,7 @@
     "react-jss": "^10.9.0",
     "react-router-dom": "^6.2.2",
     "react-scripts": "5.0.1",
-    "recharts": "^2.1.9",
-    "semantic-ui-css": "git+https://github.com/Semantic-Org/Semantic-UI-CSS.git",
-    "semantic-ui-react": "^2.1.2"
+    "recharts": "^2.1.9"
   },
   "devDependencies": {
     "@shared/interfaces": "*",
