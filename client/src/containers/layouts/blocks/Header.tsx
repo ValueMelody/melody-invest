@@ -21,7 +21,7 @@ const Header = () => {
   return (
     <header
       data-testid='header'
-      className='fixed h-12 z-50 flex justify-between w-full bg-primary top-0'
+      className='fixed h-12 z-50 flex justify-between w-full bg-primary top-0 px-4'
     >
       <nav className={navClass}>
         <HeaderLink

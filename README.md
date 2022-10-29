@@ -8,10 +8,6 @@ npm start
 
 # Project Structure:
 ```
-docs -> docs about conventions, syntaxs, and file templates
-  templates -> templates for different module
-  coventions -> conventions for coding styles
-
 scripts -> scripts for maintain project
   mocks -> mocks for vendor libraries for testing purpose
 
@@ -27,7 +23,6 @@ client -> React.js hosted Frontend site for general customers
   enums -> constants used for client only
   locales -> translation files for client only
   states -> state management by hooks
-  styles -> shared UI styles by hooks
   handlers -> functions to handle specific target by hooks
   requests -> api requests by hooks
     shared -> single purpose state sync functions

@@ -74,6 +74,7 @@ const TickerList = () => {
           {availableTickers.map((ticker) => (
             <TickerLabel
               key={ticker.id}
+              className='mx-2 my-1'
               color='gray'
               ticker={ticker}
               onClick={handleClickTicker}
@@ -83,7 +84,7 @@ const TickerList = () => {
       </section>
       <aside className='page-aside'>
         <h1 className='mb-4 font-bold'>
-          {localeTool.t('tickerList.categories')}:
+          {localeTool.t('tickerList.categories')}
         </h1>
         <VariationList
           options={categoryOptions}

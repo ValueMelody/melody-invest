@@ -1,29 +1,10 @@
 import { ChangeEvent } from 'react'
-import classNames from 'classnames'
 import { Select } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
-
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  container: {
-    margin: '1rem',
-    paddingLeft: '1rem',
-    borderLeft: `2px solid ${theme.SecondaryColor}`,
-  },
-  desc: {
-    margin: '0 0.5rem !important',
-  },
-  select: {
-    marginTop: '0.5rem',
-  },
-}))
 
 const BehaviorEditor = ({
   behavior,
@@ -39,9 +20,6 @@ const BehaviorEditor = ({
   onSelect: (behavior: interfaces.traderPatternModel.Behavior, value: number | null) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const options = constants.BehaviorValue.Options[behavior]
   const hasValue = behaviorValue !== null && options.some((option) => option === behaviorValue)
@@ -65,6 +43,7 @@ const BehaviorEditor = ({
   if (!isEditing) {
     return (
       <BehaviorLabel
+        className='mx-2 my-1'
         behavior={behavior}
         color={hasValue ? 'info' : 'gray'}
         value={behaviorValue}
@@ -74,27 +53,23 @@ const BehaviorEditor = ({
   }
 
   return (
-    <div
+    <section
       data-testid='behaviorEditor'
-      className={classNames(
-        commonClasses.columnStart,
-        classes.container,
-        'w-full',
-      )}
+      className='w-full my-4 bg-blue-100 p-4 rounded-md'
     >
-      <div className={commonClasses.rowStart}>
+      <header className='flex mb-2'>
         <BehaviorLabel
           behavior={behavior}
           color='indigo'
           onClick={handleClick}
         />
-        <h5 className={classes.desc}>
+        <h5>
           {parseTool.behaviorDesc(behavior)}
         </h5>
-      </div>
+      </header>
       <Select
         data-testid='select'
-        className={classNames(classes.select, 'w-64')}
+        className='w-64'
         value={behaviorValue || ''}
         onChange={handleSelect}
       >
@@ -110,7 +85,7 @@ const BehaviorEditor = ({
           </option>
         ))}
       </Select>
-    </div>
+    </section>
   )
 }
 

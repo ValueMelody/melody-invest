@@ -6,10 +6,12 @@ const TickerLabel = ({
   ticker,
   onClick,
   color,
+  className,
 }: {
   ticker: interfaces.tickerModel.Identity | null;
   onClick?: (tickerId: number) => void;
   color: 'info' | 'gray';
+  className?: string;
 }) => {
   // ------------------------------------------------------------ Handler --
 
@@ -27,7 +29,7 @@ const TickerLabel = ({
       size='sm'
       data-testid='tickerLabel'
       color={color}
-      className={classNames('mx-2 my-1', {
+      className={classNames(className, {
         'cursor-pointer': !!onClick,
       })}
       title={ticker.name}

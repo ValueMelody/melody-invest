@@ -1,47 +1,21 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import classNames from 'classnames'
-import * as interfaces from '@shared/interfaces'
 import useTraderState from 'states/useTraderState'
 import useResourceState from 'states/useResourceState'
 import useTraderRequest from 'requests/useTraderRequest'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import PageTitle from 'containers/elements/PageTitle'
 
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  tickers: {
-    width: 290,
-    paddingBottom: '1rem',
-    marginBottom: '1rem',
-    borderBottom: `1px solid ${theme.PrimaryColor}`,
-  },
-  watch: {
-    width: 290,
-  },
-  rightTitle: {
-    marginLeft: '0.5rem !important',
-  },
-}))
-
 const EnvDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { traderClasses } = useTraderStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { getTraderEnv } = useTraderState()
   const { fetchTraderEnv } = useTraderRequest()
@@ -84,36 +58,12 @@ const EnvDetail = () => {
   if (!traderEnv || !topTraderProfiles) return null
 
   return (
-    <section className={traderClasses.root}>
-      <aside className={traderClasses.aside}>
-        <TraderEnvCard
-          traderEnv={traderEnv.record}
-        />
-        <div className={classes.tickers}>
-          {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (
-            <TickerLabel
-              color='info'
-              key={tickerId}
-              ticker={getTickerIdentity(tickerId)}
-              onClick={handleClickTicker}
-            />
-          ))}
-        </div>
-        {!traderEnv.record.isSystem && (
-          <div className={classNames(
-            commonClasses.rowAround,
-            classes.watch,
-          )}>
-            <UnwatchEnvButton traderEnv={traderEnv.record} />
-          </div>
-        )}
-      </aside>
-      <section className={traderClasses.main}>
+    <section className='page-root'>
+      <section className='page-main'>
         <PageTitle
           title={localeTool.t('traderEnv.topProfiles')}
-          className={classes.rightTitle}
         />
-        <section className={commonClasses.rowStart}>
+        <section>
           <EachTops
             bestOverall={bestOverall}
             bestPastYear={bestPastYear}
@@ -123,6 +73,28 @@ const EnvDetail = () => {
           />
         </section>
       </section>
+      <aside className='page-aside'>
+        <TraderEnvCard
+          className='w-80 mb-4'
+          traderEnv={traderEnv.record}
+        />
+        <div className='flex flex-wrap mb-4'>
+          {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (
+            <TickerLabel
+              color='info'
+              className='m-2'
+              key={tickerId}
+              ticker={getTickerIdentity(tickerId)}
+              onClick={handleClickTicker}
+            />
+          ))}
+        </div>
+        {!traderEnv.record.isSystem && (
+          <div>
+            <UnwatchEnvButton traderEnv={traderEnv.record} />
+          </div>
+        )}
+      </aside>
     </section>
   )
 }

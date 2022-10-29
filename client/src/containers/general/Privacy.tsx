@@ -4,12 +4,10 @@ import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import useSystemRequest from 'requests/useSystemRequest'
 import useResourceState from 'states/useResourceState'
-import useContentStyle from 'styles/useContentStyle'
 
 const Privacy = () => {
   // ------------------------------------------------------------ State --
 
-  const { contentClasses } = useContentStyle()
   const { fetchSystemPolicy } = useSystemRequest()
   const { getPolicy } = useResourceState()
   const policy = getPolicy()
@@ -24,17 +22,19 @@ const Privacy = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <>
-      <h2 className={contentClasses.pageTitle}>
+    <section className='flex flex-col items-center'>
+      <h1 className='font-bold text-2xl mb-6'>
         {localeTool.t('page.privacyPolicy')}
-      </h2>
-      <Textarea
-        data-testid='privacy-content'
-        className={contentClasses.contentTextarea}
-        disabled
-        value={policy.privacyPolicy || ''}
-      />
-    </>
+      </h1>
+      <section className='p-8 w-full'>
+        <Textarea
+          data-testid='privacy-content'
+          style={{ height: 'calc(100vh - 300px)', minHeight: 300 }}
+          disabled
+          value={policy.privacyPolicy || ''}
+        />
+      </section>
+    </section>
   )
 }
 

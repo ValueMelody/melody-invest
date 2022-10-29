@@ -9,10 +9,12 @@ import WatchButton from '../elements/WatchButton'
 
 const TraderComboCard = ({
   traderCombo,
+  className,
   onClick,
   isActive = false,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
+  className?: string;
   isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
@@ -47,6 +49,7 @@ const TraderComboCard = ({
     <Card
       data-testid='traderComboCard'
       className={classNames(
+        className,
         '[&>div]:p-2 [&>div]:gap-2',
         {
           'cursor-pointer': !disabled && !!onClick,

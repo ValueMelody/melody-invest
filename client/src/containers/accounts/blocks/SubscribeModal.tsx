@@ -4,15 +4,10 @@ import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as commonEnum from 'enums/common'
-import useCardStyle from 'styles/useCardStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import SubscribeButton, { PlanType } from './SubscribeButton'
 
 const SubscribeModal = () => {
   // ------------------------------------------------------------ State --
-
-  const { cardClasses } = useCardStyle()
-  const { commonClasses } = useCommonStyle()
 
   const [isOpen, setIsOpen] = useState(false)
   const [planType, setPlanType] = useState<PlanType | null>(null)
@@ -54,8 +49,8 @@ const SubscribeModal = () => {
           <section className='flex justify-around'>
             <Card
               className={classNames(
-                [commonClasses.cursorClickable],
-                { [cardClasses.isActive]: selectedProType },
+                'cursor-pointer',
+                { 'card-active': selectedProType },
               )}
               onClick={() => handleSelectType(constants.User.Type.Pro)}
             >
@@ -67,16 +62,16 @@ const SubscribeModal = () => {
             </Card>
             <Card
               className={classNames(
-                [commonClasses.cursorClickable],
-                { [cardClasses.isActive]: selectedPremiumType },
+                'cursor-pointer',
+                { 'card-active': selectedPremiumType },
               )}
               onClick={() => handleSelectType(constants.User.Type.Premium)}
             >
               <h4>{commonEnum.Plan.Premium.Title}</h4>
               <h5><b>{commonEnum.Plan.Premium.Price}</b></h5>
-                {commonEnum.Plan.Premium.Services.map((service) => (
-                  <h5 key={service}>{service}</h5>
-                ))}
+              {commonEnum.Plan.Premium.Services.map((service) => (
+                <h5 key={service}>{service}</h5>
+              ))}
             </Card>
           </section>
           {planType !== null && (

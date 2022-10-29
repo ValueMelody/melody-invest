@@ -27,7 +27,7 @@ const ValueDiffer = ({
   return (
     <section
       data-testid='valueDiffer'
-      className={classNames('flex', className)}
+      className={classNames('flex items-center', className)}
     >
       {title && <h5 className='mr-2'>{title}:</h5>}
       <Badge

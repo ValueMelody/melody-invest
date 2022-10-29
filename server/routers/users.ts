@@ -8,8 +8,6 @@ import * as authMiddleware from 'middlewares/auth'
 const usersRouter = Router()
 export default usersRouter
 
-// ------------------------------------------------------------ Validate --
-
 const validateEmail = (email: string) => {
   if (!email) throw errorEnum.Custom.MissingParams
   if (email.length > 100) throw errorEnum.Custom.EmailTooLong

@@ -1,8 +1,10 @@
 import classNames from 'classnames'
 import { useMemo } from 'react'
-import { StarIcon, ChartPieIcon, CircleStackIcon, BookmarkIcon, PuzzlePieceIcon } from '@heroicons/react/24/solid'
+import {
+  StarIcon, ChartPieIcon, CircleStackIcon, BookmarkIcon, PuzzlePieceIcon, PresentationChartLineIcon,
+} from '@heroicons/react/24/solid'
 
-type Icon = 'star' | 'history' | 'pie' | 'bookmark' | 'boxes'
+type Icon = 'star' | 'history' | 'pie' | 'bookmark' | 'boxes' | 'performance'
 
 const PageTitle = ({
   className,
@@ -15,6 +17,8 @@ const PageTitle = ({
 }) => {
   const IconElement = useMemo(() => {
     switch (icon) {
+      case 'performance':
+        return PresentationChartLineIcon
       case 'boxes':
         return PuzzlePieceIcon
       case 'bookmark':
@@ -30,7 +34,7 @@ const PageTitle = ({
   }, [icon])
 
   return (
-    <h2 className={classNames(className, 'flex items-center font-semibold')}>
+    <h2 className={classNames(className, 'flex items-center font-semibold text-xl')}>
       <IconElement className='mr-2 w-6 h-6' />
       {title}
     </h2>

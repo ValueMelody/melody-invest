@@ -1,7 +1,6 @@
 import { MouseEvent } from 'react'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import * as themeEnum from 'enums/theme'
 import * as chart from 'recharts'
 
 interface DataPoint {
@@ -111,14 +110,14 @@ const WeightChart = ({
         data={data}
         innerRadius={60}
         outerRadius={80}
-        fill={themeEnum.Basic.PrimaryColor}
+        className='fill-primary'
         isAnimationActive={false}
       >
         {data.map((entry, index) => (
           <chart.Cell
             key={entry.value}
-            fill={
-              index === activeIndex ? themeEnum.Basic.PrimaryColor : themeEnum.Basic.SecondaryColor
+            className={
+              index === activeIndex ? 'fill-primary' : 'fill-secondary'
             }
           />
         ))}

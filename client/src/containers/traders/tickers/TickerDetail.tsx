@@ -66,7 +66,11 @@ const TickerDetail = () => {
     <section className='page-root'>
       <section className='page-main'>
         <header className='detail-header'>
-          <TickerLabel ticker={tickerIdentity} color='gray' />
+          <TickerLabel
+            className='mr-4'
+            ticker={tickerIdentity}
+            color='gray'
+          />
           <h1 className='font-bold text-xl'>
             {tickerIdentity.name}
           </h1>
@@ -74,20 +78,19 @@ const TickerDetail = () => {
         <PageTitle
           title={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}
         />
-        <section>
-          <EachTops
-            bestOverall={bestOverall}
-            bestPastYear={bestPastYear}
-            bestPastQuarter={bestPastQuarter}
-            bestPastMonth={bestPastMonth}
-            bestPastWeek={bestPastWeek}
-          />
-        </section>
+        <EachTops
+          bestOverall={bestOverall}
+          bestPastYear={bestPastYear}
+          bestPastQuarter={bestPastQuarter}
+          bestPastMonth={bestPastMonth}
+          bestPastWeek={bestPastWeek}
+        />
       </section>
       <aside className='page-aside'>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.record.id}
+            className='w-80 mb-4'
             traderEnv={traderEnv.record}
             isActive={envId === traderEnv.record.id}
             onClick={handleClickEnv}

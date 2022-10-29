@@ -4,7 +4,6 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useResourceState from 'states/useResourceState'
-import useCommonStyle from 'styles/useCommonStyle'
 import ValueDiffer from 'containers/traders/elements/ValueDiffer'
 import HoldingShare from 'containers/traders/elements/HoldingShare'
 
@@ -20,8 +19,6 @@ const HoldingCard = ({
   className?: string;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentity } = useResourceState()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
@@ -41,7 +38,7 @@ const HoldingCard = ({
       className={className}
     >
       <header className='flex justify-between items-center'>
-        <div className={commonClasses.rowStart}>
+        <section className='flex items-center'>
           <Badge className='mr-4' color='indigo'>
             {localeTool.t('common.date')}: {holding.date}
           </Badge>
@@ -57,8 +54,8 @@ const HoldingCard = ({
               {parseTool.holdingValue(holding.totalCash)}
             </h5>
           )}
-        </div>
-        <div className={commonClasses.rowStart}>
+        </section>
+        <section className='flex items-center'>
           {previousHolding && (
             <ValueDiffer
               className='mr-4'
@@ -72,7 +69,7 @@ const HoldingCard = ({
             currentValue={holding.totalValue}
             compareValue={initialValue}
           />
-        </div>
+        </section>
       </header>
       <div className='border border-gray-200 my-4' />
       <section className='flex flex-wrap'>
@@ -90,7 +87,7 @@ const HoldingCard = ({
         })}
       </section>
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
-        <div className={commonClasses.rowAround}>
+        <div className='flex justify-center'>
           <Button color='gray' onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}
           </Button>

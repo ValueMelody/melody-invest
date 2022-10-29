@@ -1,45 +1,22 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
-import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import useTraderRequest from 'requests/useTraderRequest'
 import useTraderState from 'states/useTraderState'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useShowMore from 'handlers/useShowMore'
-import useCommonStyle from 'styles/useCommonStyle'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import PageTitle from 'containers/elements/PageTitle'
-
-const useStyles = createUseStyles(({
-  container: {
-    alignItems: 'flex-start',
-  },
-  left: {
-    width: '28rem',
-  },
-  holdings: {
-    width: 'calc(100% - 32rem)',
-    minWidth: '28rem',
-  },
-  envContainer: {
-    paddingLeft: '1rem !important',
-    paddingRight: '1rem !important',
-  },
-}))
 
 const ProfileDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const { getTraderProfile, getTraderEnv } = useTraderState()
   const { fetchTraderProfile, fetchProfileDetail } = useTraderRequest()
@@ -87,33 +64,13 @@ const ProfileDetail = () => {
   if (!profileDetail || !profileDetail || !traderEnv) return null
 
   return (
-    <div className={classNames(
-      commonClasses.rowBetween,
-      classes.container,
-    )}>
-      <div className={classes.left}>
-        <TraderProfileCard
-          profile={profileDetail}
+    <section className='page-root'>
+      <section className='page-main'>
+        <PageTitle
+          icon='history'
+          title={localeTool.t('profile.history')}
+          className='mb-4'
         />
-        <div className={classes.envContainer}>
-          <h4>{localeTool.t('common.environments')}:</h4>
-          {profileEnvs.map((profileEnv) => {
-            const traderEnv = getTraderEnv(profileEnv.traderEnvId)
-            if (!traderEnv) return null
-
-            return (
-              <TraderEnvCard
-                key={profileEnv.traderEnvId}
-                traderEnv={traderEnv.record}
-                isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
-                onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
-              />
-            )
-          })}
-        </div>
-      </div>
-      <div className={classes.holdings}>
-        <PageTitle icon='history' title={localeTool.t('profile.history')} />
         {!displayedHoldings.length && (
           <Alert color='warning' className='mt-4'>
             {localeTool.t('profile.noResultYet')}
@@ -122,15 +79,39 @@ const ProfileDetail = () => {
         {displayedHoldings.map((holding, index) => (
           <HoldingCard
             key={holding.id}
-            className='mt-6'
+            className='mb-6'
             holding={holding}
             previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
             initialValue={constants.Trader.Initial.Cash}
           />
         ))}
         {displayedTotal < holdings.length && renderShowMoreButton()}
-      </div>
-    </div>
+      </section>
+      <aside className='page-aside'>
+        <TraderProfileCard
+          className='w-80'
+          profile={profileDetail}
+        />
+        <PageTitle
+          title={localeTool.t('common.environments')}
+          className='my-4'
+        />
+        {profileEnvs.map((profileEnv) => {
+          const traderEnv = getTraderEnv(profileEnv.traderEnvId)
+          if (!traderEnv) return null
+
+          return (
+            <TraderEnvCard
+              key={profileEnv.traderEnvId}
+              className='w-80 mb-4'
+              traderEnv={traderEnv.record}
+              isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
+              onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
+            />
+          )
+        })}
+      </aside>
+    </section>
   )
 }
 

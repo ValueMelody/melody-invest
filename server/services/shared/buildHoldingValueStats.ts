@@ -74,7 +74,7 @@ const buildHoldingValueStats = async (
   return {
     totalValue,
     totalDays,
-    grossPercentNumber: grossPercentNumber,
+    grossPercentNumber,
     yearlyPercentNumber: grossPercentNumber ? Math.floor(grossPercentNumber * 365 / totalDays) : null,
     pastWeekPercentNumber,
     pastMonthPercentNumber,

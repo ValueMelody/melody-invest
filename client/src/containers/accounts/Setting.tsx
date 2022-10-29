@@ -1,7 +1,6 @@
 import { useState, useMemo, ChangeEvent, FormEvent } from 'react'
 import { TextInput, Button, Card } from 'flowbite-react'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as commonEnum from 'enums/common'
 import useUserRequest from 'requests/useUserRequest'
@@ -15,23 +14,13 @@ import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 
 const cardClass = 'w-96 mb-6 mx-4'
-
-const useStyles = createUseStyles(({
-  input: {
-    marginTop: '2rem !important',
-    display: 'block !important',
-  },
-  planDate: {
-    marginTop: '1rem !important',
-  },
-}))
+const titleClass = 'font-bold text-xl mb-4'
 
 const Setting = () => {
   usePrivateGuard()
 
   // ------------------------------------------------------------ State --
 
-  const classes = useStyles()
   const { validatePassword } = usePasswordValidator()
   const { updateUserPassword, lockUserAccount } = useUserRequest()
   const { getUser, removeUser } = useUserState()
@@ -116,35 +105,42 @@ const Setting = () => {
         isOpen={showConfirmLock}
         onClose={handleToggleConfirmLock}
       >
-        <h4>{localeTool.t('setting.lockAccessDesc')}</h4>
+        <h4>
+          {localeTool.t('setting.lockAccessDesc')}
+        </h4>
         <Button
-          className={classes.input}
           onClick={handleConfirmLock}
+          className='mt-4'
         >
           {localeTool.t('common.confirm')}
         </Button>
       </ConfirmModal>
       <section className='flex flex-wrap w-full'>
         <Card className={cardClass}>
-          <h3>{localeTool.t('setting.accountInfo')}</h3>
-          <h4>{localeTool.t('common.email')}: {user.userEmail}</h4>
-            <Button
-              color='gray'
-              className={classes.input}
-              onClick={handleSignOut}
-            >
-              {localeTool.t('setting.signOut')}
-            </Button>
-            <Button
-              color='gray'
-              className={classes.input}
-              onClick={handleToggleConfirmLock}
-            >
-              {localeTool.t('setting.lockAccess')}
-            </Button>
+          <h2 className={titleClass}>
+            {localeTool.t('setting.accountInfo')}
+          </h2>
+          <h4 className='mb-4'>
+            {localeTool.t('common.email')}: {user.userEmail}
+          </h4>
+          <Button
+            color='gray'
+            onClick={handleSignOut}
+            className='mb-4'
+          >
+            {localeTool.t('setting.signOut')}
+          </Button>
+          <Button
+            color='gray'
+            onClick={handleToggleConfirmLock}
+          >
+            {localeTool.t('setting.lockAccess')}
+          </Button>
         </Card>
         <Card className={cardClass}>
-          <h3>{localeTool.t('setting.accountType')}</h3>
+          <h2 className={titleClass}>
+            {localeTool.t('setting.accountType')}
+          </h2>
           <h4>
             {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
           </h4>
@@ -155,47 +151,59 @@ const Setting = () => {
             <UnsubscribeButton />
           )}
           {user.planStartAtUTC && (
-            <h5 className={classes.planDate}>
+            <h5>
               {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
             </h5>
           )}
           {user.planEndAtUTC && (
-            <h5 className={classes.planDate}>
+            <h5>
               {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
             </h5>
           )}
-          {user.userType === constants.User.Type.Basic && (
-            <SubscribeModal />
-          )}
+          <div className='mt-4'>
+            {user.userType === constants.User.Type.Basic && (
+              <SubscribeModal />
+            )}
+          </div>
         </Card>
         <Card className={cardClass}>
-          <h3>{localeTool.t('setting.changePassword')}</h3>
+          <h2 className={titleClass}>
+            {localeTool.t('setting.accountCredential')}
+          </h2>
           <form onSubmit={handleSubmit}>
-            <RequiredLabel title={localeTool.t('common.currentPassword')} />
+            <RequiredLabel
+              className='mb-2'
+              title={localeTool.t('common.currentPassword')}
+            />
             <TextInput
+              className='mb-4'
               type='password'
               value={currentPassword}
               onChange={handleChangeCurrentPassword}
-              className={classes.input}
             />
-            <RequiredLabel title={localeTool.t('common.newPassword')} />
+            <RequiredLabel
+              className='mb-2'
+              title={localeTool.t('common.newPassword')}
+            />
             <TextInput
+              className='mb-4'
               type='password'
               value={newPassword}
               onChange={handleChangeNewPassword}
-              className={classes.input}
             />
-            <RequiredLabel title={localeTool.t('common.retypePassword')} />
+            <RequiredLabel
+              className='mb-2'
+              title={localeTool.t('common.retypePassword')}
+            />
             <TextInput
+              className='mb-4'
               type='password'
               value={retypePassword}
               onChange={handleChangeRetypePassword}
-              className={classes.input}
             />
             <Button
               type='submit'
               disabled={!currentPassword || !newPassword || !retypePassword}
-              className={classes.input}
             >
               {localeTool.t('setting.changePassword')}
             </Button>

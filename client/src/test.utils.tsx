@@ -1,6 +1,5 @@
 import { BrowserRouter, Router } from 'react-router-dom'
-import { FC, ReactNode, ReactElement } from 'react'
-import { ThemeProvider } from 'react-jss'
+import { ReactNode, ReactElement } from 'react'
 import {
   render as defaultRender,
   screen,
@@ -10,18 +9,9 @@ import {
   act,
 } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import * as themeEnum from './enums/theme'
 import { context } from 'context'
 import useStore from 'states/store'
 import { MemoryHistory } from 'history'
-
-const WithThemeProvider: FC = ({ children }) => {
-  return (
-      <ThemeProvider theme={themeEnum.theme}>
-        {children}
-      </ThemeProvider>
-  )
-}
 
 const WithStoreProvider = ({
   children,
@@ -97,11 +87,9 @@ const InterfaceBase = ({
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithThemeProvider>
-        <WithStoreProvider store={store}>
-          {children}
-        </WithStoreProvider>
-      </WithThemeProvider>
+      <WithStoreProvider store={store}>
+        {children}
+      </WithStoreProvider>
     </WithRouterProvider>
   )
 }
@@ -127,9 +115,7 @@ const HookBase = ({
   return (
     <WithRouterProvider history={history}>
       <WithStoreProvider store={store} disabled={disableStore}>
-        <WithThemeProvider>
-          {children}
-        </WithThemeProvider>
+        {children}
       </WithStoreProvider>
     </WithRouterProvider>
   )

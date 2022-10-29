@@ -99,7 +99,7 @@ export const getRealGDP = async (
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.GDP,
-    interval: interval,
+    interval,
     apikey: adapterEnum.MarketConfig.Key,
   })
   const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`

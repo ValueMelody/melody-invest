@@ -46,6 +46,7 @@ const TraderEnvCard = ({
         {
           'card-active': isActive,
           'card-disabled': disabled,
+          'cursor-pointer': !disabled,
         },
       )}
       onClick={!disabled ? handleClickEnv : undefined}

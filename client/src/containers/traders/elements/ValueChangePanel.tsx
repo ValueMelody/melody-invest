@@ -1,5 +1,6 @@
 import ValueChangePercents from './ValueChangePercents'
 import ValueChangeCharts from './ValueChangeCharts'
+import classNames from 'classnames'
 
 const ValueChangePanel = ({
   yearlyPercentNumber,
@@ -14,6 +15,7 @@ const ValueChangePanel = ({
   onChangeChart,
   showPercents,
   showCharts,
+  className,
 }: {
   yearlyPercentNumber: number | null;
   pastYearPercentNumber: number | null;
@@ -27,6 +29,7 @@ const ValueChangePanel = ({
   onChangeChart: (index: number) => void;
   showPercents?: boolean;
   showCharts?: boolean;
+  className?: string;
 }) => {
   // ------------------------------------------------------------ Handler --
 
@@ -39,7 +42,7 @@ const ValueChangePanel = ({
   if (!showPercents && !showCharts) return null
 
   return (
-    <section className='flex flex-wrap items-center justify-around'>
+    <section className={classNames('flex flex-wrap items-center justify-around', className)}>
       {showPercents && (
         <ValueChangePercents
           yearlyPercentNumber={yearlyPercentNumber}

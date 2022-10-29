@@ -1,10 +1,8 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
-import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderRequest from 'requests/useTraderRequest'
@@ -12,8 +10,6 @@ import useCommonState from 'states/useCommonState'
 import useTraderState from 'states/useTraderState'
 import useShowMore from 'handlers/useShowMore'
 import usePrivateGuard from 'handlers/usePrivateGuard'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
@@ -22,24 +18,6 @@ import ProfileValue from 'containers/traders/elements/ProfileValue'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import PageTitle from 'containers/elements/PageTitle'
 
-const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
-  combo: {
-    width: '100%',
-    paddingBottom: '2rem !important',
-    marginBottom: '2rem !important',
-    borderBottom: `1px solid ${theme.PrimaryColor}`,
-  },
-  profileTitle: {
-    margin: '1rem 0 !important',
-  },
-  portionTitle: {
-    marginTop: '2rem !important',
-  },
-  profiles: {
-    padding: '1rem',
-  },
-}))
-
 const ComboDetail = () => {
   usePrivateGuard()
 
@@ -47,10 +25,6 @@ const ComboDetail = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const { traderClasses } = useTraderStyle()
-  const { commonClasses } = useCommonStyle()
-  const classes = useStyles()
 
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
@@ -100,40 +74,12 @@ const ComboDetail = () => {
   if (!matchedCombo?.detail) return null
 
   return (
-    <section className={traderClasses.root}>
-      <aside className={traderClasses.aside}>
-        <div className={classNames(
-          classes.combo,
-          commonClasses.columnCenter,
-        )}>
-          <TraderComboCard
-            traderCombo={matchedCombo.identity}
-          />
-          {!matchedCombo.identity.isSystem && (
-            <WatchButton
-              isWatched={true}
-              onToggle={handleUnwatch}
-            />
-          )}
-        </div>
-        <PageTitle title={localeTool.t('traderCombo.includedProfiles')} className='mb-4' />
-        <div className={commonClasses.columnCenter}>
-          {profilesWithEnvs.map((profileWithEnv) => (
-            <ProfileValue
-              key={profileWithEnv.profile?.trader.id}
-              trader={profileWithEnv.profile?.trader || null}
-              env={profileWithEnv.env || null}
-              onClick={handleClickProfile}
-            />
-          ))}
-        </div>
-        <PageTitle icon='pie' title={localeTool.t('traderCombo.profilePortion')} />
-        <ComboProfiles
-          profilesWithEnvs={profilesWithEnvs}
-          onClickProfile={handleClickProfile}
+    <section className='page-root'>
+      <section className='page-main'>
+        <PageTitle
+          icon='performance'
+          title={localeTool.t('common.pastPerformance')}
         />
-      </aside>
-      <section className={traderClasses.main}>
         <ValueChangePanel
           yearlyPercentNumber={matchedCombo?.detail?.yearlyPercentNumber || null}
           pastYearPercentNumber={matchedCombo?.detail?.pastYearPercentNumber || null}
@@ -165,6 +111,43 @@ const ComboDetail = () => {
         ))}
         {displayedTotal < holdings.length && renderShowMoreButton()}
       </section>
+      <aside className='page-aside'>
+        <header className='pb-4 mb-4 flex flex-col'>
+          <TraderComboCard
+            className='mb-4'
+            traderCombo={matchedCombo.identity}
+          />
+          {!matchedCombo.identity.isSystem && (
+            <WatchButton
+              isWatched={true}
+              onToggle={handleUnwatch}
+            />
+          )}
+        </header>
+        <PageTitle
+          title={localeTool.t('traderCombo.includedProfiles')}
+          className='mb-4'
+        />
+        <section className='mb-4'>
+          {profilesWithEnvs.map((profileWithEnv) => (
+            <ProfileValue
+              key={profileWithEnv.profile?.trader.id}
+              className='mb-4'
+              trader={profileWithEnv.profile?.trader || null}
+              env={profileWithEnv.env || null}
+              onClick={handleClickProfile}
+            />
+          ))}
+        </section>
+        <PageTitle
+          icon='pie'
+          title={localeTool.t('traderCombo.profilePortion')}
+        />
+        <ComboProfiles
+          profilesWithEnvs={profilesWithEnvs}
+          onClickProfile={handleClickProfile}
+        />
+      </aside>
     </section>
   )
 }

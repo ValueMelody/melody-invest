@@ -5,7 +5,6 @@ import * as interfaces from '@shared/interfaces'
 import useCommonState from 'states/useCommonState'
 import useTraderState from 'states/useTraderState'
 import useSystemRequest from 'requests/useSystemRequest'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
@@ -15,29 +14,10 @@ import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import PageTitle from 'containers/elements/PageTitle'
 
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  header: {
-    width: '100%',
-    borderBottom: `3px solid ${theme.PrimaryColor}`,
-    paddingBottom: '1.5rem',
-    marginBottom: '1rem',
-  },
-  portionTitle: {
-    marginTop: '2rem !important',
-  },
-  valueTitle: {
-    marginBottom: '1rem !important',
-  },
-}))
-
 const TopCombos = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
   const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
@@ -100,7 +80,13 @@ const TopCombos = () => {
       </header>
       <section className='page-root'>
         <section className='page-main'>
+          <PageTitle
+            className='mb-4'
+            icon='performance'
+            title={localeTool.t('common.pastPerformance')}
+          />
           <ValueChangePanel
+            className='mb-4'
             yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
             pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
             pastQuarterPercentNumber={focusedCombo?.detail?.pastQuarterPercentNumber || null}
@@ -133,7 +119,7 @@ const TopCombos = () => {
         <section className='page-aside'>
           <PageTitle
             title={localeTool.t('traderCombo.includedProfiles')}
-            className={classes.valueTitle}
+            className='mb-4'
           />
           <section className='flex flex-col mb-4'>
             {profilesWithEnvs.map((profileWithEnv) => (

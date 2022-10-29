@@ -46,6 +46,7 @@
     "common.unsubscribe": "Unsubscribe",
     "common.close": "Close",
     "common.select": "Select",
+    "common.pastPerformance": "Past Performance",
 
     "page.privacyPolicy": "Privacy Policy",
     "page.termsPolicy": "Terms and Conditions",
@@ -75,6 +76,7 @@
     "setting.signOut": "Sign Out",
     "setting.accountType": "Account Type",
     "setting.accountInfo": "Account Info",
+    "setting.accountCredential": "Account Credential",
     "setting.selectPlan": "Upgrade your plan",
     "setting.subscribeSucceed": "Your plan has been upgraded successfully",
     "setting.subscribeFailed": "Can not verify your subscription, please contact {{email}} if your card has been charged",
@@ -159,6 +161,7 @@
     "profile.value.decreased": "Total value decreased compare to previous",
 
     "profileBuilder.title": "Profile Builder",
+    "profileBuilder.selectBehaviors": "Select trading behaviors for your profile",
     "profileBuilder.requireOne": "Please config one or multiple of the following behaviors",
     "profileBuilder.requireAll": "Please config all of the following behaviors",
     "profileBuilder.buyBehaviors": "Buy Criterion",

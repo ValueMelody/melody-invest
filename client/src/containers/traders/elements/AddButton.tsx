@@ -5,10 +5,12 @@ const AddButton = ({
   onClick,
   disabled = false,
   title,
+  tooltip,
 }: {
   onClick: () => void;
   disabled?: boolean;
   title: string;
+  tooltip?: string;
 }) => {
   const handleClick = () => {
     onClick()
@@ -18,6 +20,7 @@ const AddButton = ({
     <Button
       onClick={handleClick}
       disabled={disabled}
+      title={tooltip}
     >
       <PlusIcon className='w-4 h-4 mr-4' />
       {title}
