@@ -32,7 +32,7 @@ describe('#tickerLabel', () => {
     expect(container).toBeTruthy()
     expect(screen.getByText(ticker.symbol)).toBeTruthy()
     expect(container.getAttribute('title')).toBe(ticker.name)
-    expect(container.className).not.toContain('cursorClickable')
+    expect(container.className).not.toContain('cursor-pointer')
 
     fireEvent.click(container)
   })
@@ -58,7 +58,7 @@ describe('#tickerLabel', () => {
       />,
     )
     const container = screen.getByTestId('tickerLabel')
-    expect(container.className).toContain('cursorClickable')
+    expect(container.className).toContain('cursor-pointer')
 
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(1)

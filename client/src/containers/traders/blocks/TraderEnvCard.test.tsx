@@ -60,7 +60,7 @@ describe('#traderComboCard', () => {
     expect(screen.getByText('Trade based on selected 5 stocks')).toBeTruthy()
     expect(screen.queryByText('Trade based on all stocks available')).toBeFalsy()
 
-    expect(container.className).not.toContain('isActive')
+    expect(container.className).not.toContain('card-active')
 
     const watchButton = screen.queryByTestId('watchButton')
     expect(watchButton).toBeFalsy()
@@ -94,7 +94,7 @@ describe('#traderComboCard', () => {
       { store },
     )
     const container = screen.getByTestId('traderEnvCard')
-    expect(container?.className).toContain('isActive')
+    expect(container?.className).toContain('card-active')
   })
 
   test('could render as clickable', () => {
@@ -127,7 +127,7 @@ describe('#traderComboCard', () => {
       { store },
     )
     const container = screen.getByTestId('traderEnvCard')
-    expect(container?.className).toContain('disabled')
+    expect(container?.className).toContain('card-disabled')
     const limitText = localeTool.t('permission.limited')
     expect(screen.getByText(limitText)).toBeTruthy()
 

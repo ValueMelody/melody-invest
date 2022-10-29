@@ -13,6 +13,6 @@ describe('#RequiredLabel', () => {
     expect(screen.getByText('test title')).toBeTruthy()
     const mark = screen.getByText('*')
     expect(mark).toBeTruthy()
-    expect(mark.className).toContain('required')
+    expect(mark.className).toContain('text-red-600')
   })
 })

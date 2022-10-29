@@ -1,41 +1,18 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
 import { Button, TextInput, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import usePrivateGuard from 'handlers/usePrivateGuard'
-import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
-
-const useStyles = createUseStyles(({
-  row: {
-    width: 400,
-    marginBottom: '2rem',
-  },
-  profileTitle: {
-    marginTop: '2rem !important',
-    marginBottom: '2rem !important',
-  },
-  confirmButton: {
-    marginTop: '2rem !important',
-  },
-  warningMsg: {
-    marginBottom: '2rem !important',
-  },
-}))
 
 const ComboBuilder = () => {
   usePrivateGuard()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const [selectedTraderIds, setSelectedTraderIds] = useState<number[]>([])
   const [envName, setEnvName] = useState('')
@@ -87,47 +64,47 @@ const ComboBuilder = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className={commonClasses.columnCenter}>
-      <header className={classNames(
-        commonClasses.rowAround,
-        classes.row,
-      )}>
-        <h2>{localeTool.t('comboBuilder.title')}</h2>
-      </header>
-      <section className={classNames(
-        commonClasses.rowBetween,
-        classes.row,
-      )}>
-        <RequiredLabel title={localeTool.t('comboBuilder.name')} />
+    <section className='flex flex-col items-center'>
+      <h1 className='builder-title'>
+        {localeTool.t('comboBuilder.title')}
+      </h1>
+      <section className='flex items-center'>
+        <RequiredLabel
+          className='w-60'
+          title={localeTool.t('comboBuilder.name')}
+        />
         <TextInput
+          className='w-96'
           value={envName}
           onChange={handleChangeName}
         />
       </section>
-      <section className={classNames(
-        commonClasses.columnCenter,
-        classes.profileTitle,
-      )}>
-        <h4>
-          {localeTool.t('comboBuilder.selectProfiles')}:&nbsp;
-          ({selectedTraderIds.length} / {profiles.length})
-        </h4>
-        <RequiredLabel title={localeTool.t('comboBuilder.minTraderRequired')} />
-      </section>
+      <h2 className='font-bold mt-4 mb-2'>
+        {localeTool.t('comboBuilder.selectProfiles')}:&nbsp;
+        ({selectedTraderIds.length} / {profiles.length})
+      </h2>
+      <RequiredLabel
+        className='mb-6'
+        title={localeTool.t('comboBuilder.minTraderRequired')}
+      />
       {profiles.length < 2 && (
-        <Alert color='failure' className={classes.warningMsg}>
+        <Alert color='failure' className='mb-4'>
           {localeTool.t('comboBuilder.noEnoughProfiles')}
         </Alert>
       )}
-      <section className='flex items-top justify-around flex-wrap'>
+      <section className='flex items-center justify-around flex-wrap mb-8'>
         {profiles.map((profile, index) => (
-          <TraderProfileCard
+          <div
+            className='w-1/2 px-8 py-4'
             key={profile?.trader.id || `index-${index}`}
-            profile={profile}
-            isActive={selectedTraderIds.some((id) => id === profile?.trader.id)}
-            onClick={handleClickProfile}
-            simple
-          />
+          >
+            <TraderProfileCard
+              profile={profile}
+              isActive={selectedTraderIds.some((id) => id === profile?.trader.id)}
+              onClick={handleClickProfile}
+              simple
+            />
+          </div>
         ))}
       </section>
       {hasDuplicatedName && (
@@ -141,15 +118,14 @@ const ComboBuilder = () => {
         </Alert>
       )}
       <form onSubmit={handleSubmit}>
-        <div className={commonClasses.rowAround}>
+        <footer className='flex justify-center'>
           <Button
             type='submit'
-            className={classes.confirmButton}
             disabled={!hasValidName || !hasValidTraders || hasDuplicatedName}
           >
             {localeTool.t('common.confirmAndWatch')}
           </Button>
-        </div>
+        </footer>
       </form>
     </section>
   )

@@ -1,16 +1,12 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import useCommonState from 'states/useCommonState'
 import useTraderState from 'states/useTraderState'
 import useSystemRequest from 'requests/useSystemRequest'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
@@ -18,31 +14,10 @@ import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import PageTitle from 'containers/elements/PageTitle'
 
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  header: {
-    width: '100%',
-    borderBottom: `3px solid ${theme.PrimaryColor}`,
-    paddingBottom: '1.5rem',
-    marginBottom: '1rem',
-  },
-  portionTitle: {
-    marginTop: '2rem !important',
-  },
-  valueTitle: {
-    marginBottom: '1rem !important',
-  },
-}))
-
 const TopCombos = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-  const { traderClasses } = useTraderStyle()
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
   const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
@@ -91,23 +66,27 @@ const TopCombos = () => {
   if (!focusedCombo || !focusedCombo.detail) return null
 
   return (
-    <section className={commonClasses.columnStart}>
-      <header className={classNames(
-        commonClasses.rowStart,
-        classes.header,
-      )}>
+    <>
+      <header className='flex border-b-4 border-primary mb-4 pb-4'>
         {systemCombos.map((combo) => (
+          <div key={combo.identity.id} className='m-2'>
             <TraderComboCard
-              key={combo.identity.id}
               traderCombo={combo.identity}
               isActive={combo.identity.id === focusedComboId}
               onClick={handleClickCombo}
             />
+          </div>
         ))}
       </header>
-      <section className={traderClasses.root}>
-        <section className={traderClasses.main}>
+      <section className='page-root'>
+        <section className='page-main'>
+          <PageTitle
+            className='mb-4'
+            icon='performance'
+            title={localeTool.t('common.pastPerformance')}
+          />
           <ValueChangePanel
+            className='mb-4'
             yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
             pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
             pastQuarterPercentNumber={focusedCombo?.detail?.pastQuarterPercentNumber || null}
@@ -125,7 +104,7 @@ const TopCombos = () => {
             icon='history'
             title={localeTool.t('topCombos.history')}
           />
-          <section className='flex flex-wrap'>
+          <section className='flex flex-col'>
             {comboHoldings.map((detail, index) => (
               <HoldingCard
                 key={detail.date}
@@ -137,21 +116,22 @@ const TopCombos = () => {
             ))}
           </section>
         </section>
-        <section className={traderClasses.aside}>
+        <section className='page-aside'>
           <PageTitle
             title={localeTool.t('traderCombo.includedProfiles')}
-            className={classes.valueTitle}
+            className='mb-4'
           />
-          <div className={commonClasses.columnCenter}>
+          <section className='flex flex-col mb-4'>
             {profilesWithEnvs.map((profileWithEnv) => (
               <ProfileValue
                 key={profileWithEnv.profile?.trader.id}
+                className='mb-4'
                 trader={profileWithEnv.profile?.trader || null}
                 env={profileWithEnv.env || null}
                 onClick={handleClickProfile}
               />
             ))}
-          </div>
+          </section>
           <PageTitle
             icon='pie'
             title={localeTool.t('traderCombo.profilePortion')}
@@ -162,7 +142,7 @@ const TopCombos = () => {
           />
         </section>
       </section>
-    </section>
+    </>
   )
 }
 

@@ -3,20 +3,11 @@ import { TextInput } from 'flowbite-react'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useResourceState from 'states/useResourceState'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import VariationList from 'containers/traders/elements/VariationList'
-
-const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
-  section: {
-    marginBottom: '1rem',
-  },
-}))
 
 const isSearchedTicker = (
   ticker: interfaces.tickerModel.Identity,
@@ -33,10 +24,6 @@ const TickerList = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-  const { traderClasses } = useTraderStyle()
 
   const [selectedCategory, setSelectedCategory] = useState(1)
   const [searchText, setSearchText] = useState('')
@@ -73,9 +60,9 @@ const TickerList = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className={traderClasses.root}>
-      <section className={traderClasses.main}>
-        <header className={classes.section}>
+    <section className='page-root'>
+      <section className='page-main'>
+        <header className='mb-4'>
           <TextInput
             icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
@@ -83,19 +70,22 @@ const TickerList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section className={commonClasses.rowStart}>
+        <section className='flex flex-wrap'>
           {availableTickers.map((ticker) => (
             <TickerLabel
-              color='gray'
               key={ticker.id}
+              className='mx-2 my-1'
+              color='gray'
               ticker={ticker}
               onClick={handleClickTicker}
             />
           ))}
         </section>
       </section>
-      <aside className={traderClasses.aside}>
-        <h3 className='mb-4'>{localeTool.t('tickerList.categories')}:</h3>
+      <aside className='page-aside'>
+        <h1 className='mb-4 font-bold'>
+          {localeTool.t('tickerList.categories')}
+        </h1>
         <VariationList
           options={categoryOptions}
           activeValue={selectedCategory}

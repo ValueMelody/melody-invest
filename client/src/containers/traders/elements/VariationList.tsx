@@ -30,7 +30,7 @@ const VariationList = ({
             active={option.value === activeValue}
             onClick={handleClick}
           >
-            <h4 className='m-6'>{option.label}</h4>
+            <h2 className='m-2'>{option.label}</h2>
           </ListGroup.Item>
         )
       })}

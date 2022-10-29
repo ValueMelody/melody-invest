@@ -1,36 +1,21 @@
-import classNames from 'classnames'
 import { Badge } from 'flowbite-react'
 import { ArrowTrendingUpIcon, ArrowTrendingDownIcon } from '@heroicons/react/24/solid'
-import { createUseStyles } from 'react-jss'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import useCommonStyle from 'styles/useCommonStyle'
-
-const useStyles = createUseStyles(({
-  container: {
-    marginRight: '2rem !important',
-  },
-  label: {
-    marginLeft: '0.5rem !important',
-  },
-  icon: {
-    marginLeft: '0.5rem !important',
-  },
-}))
+import classNames from 'classnames'
 
 const ValueDiffer = ({
   title,
+  className,
   currentValue,
   compareValue,
 }: {
   title: string,
   currentValue: number;
   compareValue: number;
+  className?: string;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const differ = (currentValue - compareValue) / compareValue
   const isPositive = differ > 0
@@ -40,23 +25,19 @@ const ValueDiffer = ({
   if (!differ) return null
 
   return (
-    <div
+    <section
       data-testid='valueDiffer'
-      className={classNames(
-        commonClasses.rowStart,
-        classes.container,
-      )}
+      className={classNames('flex items-center', className)}
     >
-      {title && <h5>{title}:</h5>}
+      {title && <h5 className='mr-2'>{title}:</h5>}
       <Badge
         color={isPositive ? 'success' : 'failure'}
-        className={classes.label}
         icon={isPositive ? ArrowTrendingUpIcon : ArrowTrendingDownIcon}
         title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
       >
         {parseTool.floatToPercent(differ)}
       </Badge>
-    </div>
+    </section>
   )
 }
 

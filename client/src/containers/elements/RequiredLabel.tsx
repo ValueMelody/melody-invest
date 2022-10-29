@@ -1,27 +1,24 @@
-import { createUseStyles } from 'react-jss'
-
-const useStyles = createUseStyles(({
-  required: {
-    color: 'red',
-  },
-}))
+import Info from 'containers/elements/Info'
+import classNames from 'classnames'
 
 const RequiredLabel = ({
   title,
+  className,
+  tooltip,
 }: {
   title: string;
+  className?: string;
+  tooltip?: string;
 }) => {
-  const classes = useStyles()
-
-  // ------------------------------------------------------------ UI --
-
   return (
-    <h5 data-testid='requiredLabel'>
-      <b>
-        {title}&nbsp;
-        <span className={classes.required}>*</span>
-      </b>
-    </h5>
+    <h3
+      data-testid='requiredLabel'
+      className={classNames(className, 'font-semibold')}
+    >
+      {title}
+      {tooltip && <Info title={tooltip} />}
+      <span className='text-red-600'>*</span>
+    </h3>
   )
 }
 

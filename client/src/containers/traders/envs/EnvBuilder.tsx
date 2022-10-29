@@ -1,32 +1,15 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import ReactSelect, { MultiValue } from 'react-select'
 import { Button, TextInput, Alert, ToggleSwitch, Select } from 'flowbite-react'
-import classNames from 'classnames'
 import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
-import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
-
-const useStyles = createUseStyles(({
-  row: {
-    width: 620,
-    marginBottom: '2rem',
-  },
-  confirmButton: {
-    marginTop: '2rem !important',
-  },
-  input: {
-    width: 420,
-  },
-  dropdown: {
-    width: 200,
-  },
-}))
+import Info from 'containers/elements/Info'
+import classNames from 'classnames'
 
 interface PlainDate {
   year: number;
@@ -61,11 +44,12 @@ const minDate = getDateFromString(initialDate)
 const maxYear = getMaxYear()
 const maxDate = getDateFromString(maxYear)
 
+const rowClass = 'flex items-center mb-6'
+const leftClass = 'w-60 font-semibold flex items-center'
+const rightClass = 'w-96'
+
 const EnvBuilder = () => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentities } = useResourceState()
   const { getTraderEnvs } = useTraderState()
@@ -152,39 +136,29 @@ const EnvBuilder = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <section className={commonClasses.columnCenter}>
-      <header className={classNames(
-        commonClasses.rowAround,
-        classes.row,
-      )}>
-        <h2>{localeTool.t('envBuilder.title')}</h2>
-      </header>
-      <section
-        className={classNames(
-          commonClasses.rowBetween,
-          classes.row,
-        )}
-        title={localeTool.t('envBuilder.startDateDesc')}
-      >
-        <h5><b>{localeTool.t('envBuilder.startDate')}:</b></h5>
-        <div className={classNames(
-          commonClasses.rowBetween,
-          classes.input,
-        )}>
-          <div className={classes.dropdown}>
-            <DatePicker
-              minDate={minDate}
-              maxDate={maxDate}
-              selected={selectedDate}
-              onChange={handleChangeStartYear}
-              showYearPicker
-              dateFormat='yyyy'
-              customInput={<TextInput />}
-              className={classes.dropdown}
-            />
-          </div>
+    <section className='flex flex-col items-center'>
+      <h1 className='builder-title'>
+        {localeTool.t('envBuilder.title')}
+      </h1>
+      <section className={rowClass}>
+        <RequiredLabel
+          className={leftClass}
+          tooltip={localeTool.t('envBuilder.startDateDesc')}
+          title={localeTool.t('envBuilder.startDate')}
+        />
+        <div className={classNames('flex items-center', rightClass)}>
+          <DatePicker
+            className='mt-1 mr-4'
+            minDate={minDate}
+            maxDate={maxDate}
+            selected={selectedDate}
+            onChange={handleChangeStartYear}
+            showYearPicker
+            dateFormat='yyyy'
+            customInput={<TextInput />}
+          />
           <Select
-            className={classes.dropdown}
+            className='w-60'
             value={startMonth}
             onChange={handleSelectStartMonth}
           >
@@ -196,46 +170,42 @@ const EnvBuilder = () => {
           </Select>
         </div>
       </section>
-      <section
-        className={classNames(
-          commonClasses.rowBetween,
-          classes.row,
-        )}
-        title={localeTool.t('traderEnv.allTickers')}
-      >
-        <h5><b>{localeTool.t('envBuilder.allTickers')}:</b></h5>
+      <section className={rowClass}>
+        <h3 className={leftClass}>
+          {localeTool.t('envBuilder.allTickers')}
+          <Info title={localeTool.t('traderEnv.allTickers')} />
+        </h3>
         <ToggleSwitch
+          className={rightClass}
           checked={!tickerIds}
           onChange={handleToggleAllTickers}
           label=''
         />
       </section>
       {tickerIds && (
-        <section
-          className={classNames(
-            commonClasses.rowBetween,
-            classes.row,
-          )}
-          title={localeTool.t('envBuilder.targetTickersDesc')}
-        >
-          <RequiredLabel title={localeTool.t('envBuilder.targetTickers')} />
+        <section className={rowClass}>
+          <RequiredLabel
+            className={leftClass}
+            tooltip={localeTool.t('envBuilder.targetTickersDesc')}
+            title={localeTool.t('envBuilder.targetTickers')}
+          />
           <ReactSelect
+            className={rightClass}
             value={selectableTickers.filter((ticker) => tickerIds.includes(ticker.value))}
             isMulti
             options={selectableTickers}
-            className={classes.input}
             isSearchable
             onChange={handleSelectTickers}
           />
         </section>
       )}
-      <section className={classNames(
-        commonClasses.rowBetween,
-        classes.row,
-      )}>
-        <RequiredLabel title={localeTool.t('envBuilder.name')} />
+      <section className={rowClass}>
+        <RequiredLabel
+          className={leftClass}
+          title={localeTool.t('envBuilder.name')}
+        />
         <TextInput
-          className={classes.input}
+          className={rightClass}
           value={envName}
           onChange={handleChangeName}
         />
@@ -251,10 +221,9 @@ const EnvBuilder = () => {
         </Alert>
       )}
       <form onSubmit={handleSubmit}>
-        <div className={commonClasses.rowAround}>
+        <div>
           <Button
             type='submit'
-            className={classes.confirmButton}
             disabled={!couldCreate}
           >
             {localeTool.t('common.confirmAndWatch')}

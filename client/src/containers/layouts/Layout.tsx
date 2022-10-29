@@ -1,43 +1,16 @@
 import { FunctionComponent, useEffect } from 'react'
-import classNames from 'classnames'
 import { Alert } from 'flowbite-react'
-import { createUseStyles } from 'react-jss'
 import useSystemRequest from 'requests/useSystemRequest'
 import useUserRequest from 'requests/useUserRequest'
 import useCommonState from 'states/useCommonState'
 import useUserState from 'states/useUserState'
-import useCommonStyle from 'styles/useCommonStyle'
 import Header from 'containers/layouts/blocks/Header'
 import Footer from 'containers/layouts/blocks/Footer'
-
-const useStyles = createUseStyles({
-  main: {
-    paddingTop: '3rem',
-    minHeight: '100vh',
-  },
-  children: {
-    paddingTop: '1.5rem',
-    paddingLeft: '1.5rem',
-    paddingRight: '1.5rem',
-    paddingBottom: '2rem',
-    minHeight: 'calc(100vh - 7rem)',
-    width: '100%',
-  },
-  messages: {
-    position: 'fixed',
-    top: '4rem',
-    left: '1rem',
-    right: '1rem',
-    zIndex: 1000,
-  },
-})
 
 const Layout: FunctionComponent = ({
   children,
 }) => {
   // ------------------------------------------------------------ State --
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const { getMessages, removeMessage } = useCommonState()
   const { getUser } = useUserState()
@@ -80,7 +53,7 @@ const Layout: FunctionComponent = ({
     <>
       <Header />
       {!!messages.length && (
-        <div className={classes.messages}>
+        <section className='fixed top-16 left-4 right-4 z-50'>
           {messages.map((message) => (
             <Alert
               className='mb-4'
@@ -95,13 +68,13 @@ const Layout: FunctionComponent = ({
               </h4>
             </Alert>
           ))}
-        </div>
+        </section>
       )}
-      <main className={classNames(
-        classes.main,
-        commonClasses.columnCenter,
-      )}>
-        <section className={classes.children}>
+      <main className='pt-12 flex flex-col'>
+        <section
+          className='p-6 w-full'
+          style={{ minHeight: 'calc(100vh - 7rem)' }}
+        >
           {children}
         </section>
         <Footer />

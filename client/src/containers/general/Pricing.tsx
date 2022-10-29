@@ -1,65 +1,8 @@
 import classNames from 'classnames'
 import { Link } from 'react-router-dom'
-import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as commonEnum from 'enums/common'
-import useCommonStyle from 'styles/useCommonStyle'
-
-const useStyles = createUseStyles((theme: interfaces.common.Theme) => ({
-  table: {
-    alignItems: 'flex-start',
-    width: '100%',
-  },
-  title: {
-    marginBottom: '2rem !important',
-  },
-  column: {
-    width: '31%',
-    border: '1px solid #eee',
-    margin: 0,
-    padding: 0,
-    borderRadius: theme.BorderRadius,
-    '&:hover': {
-      boxShadow: '0 8px 12px 0 rgba(0,0,0,0.2)',
-    },
-  },
-  basicHeader: {
-    backgroundColor: theme.Gray,
-  },
-  proHeader: {
-    backgroundColor: theme.PrimaryColor,
-  },
-  premiumHeader: {
-    backgroundColor: theme.IncreaseColor,
-  },
-  header: {
-    color: theme.White,
-    width: '100%',
-    textAlign: 'center',
-    padding: '0.5rem',
-    borderRadius: `${theme.BorderRadius}px ${theme.BorderRadius}px 0 0`,
-  },
-  highlight: {
-    backgroundColor: theme.LightGray,
-  },
-  row: {
-    padding: '0.5rem',
-    width: '100%',
-    textAlign: 'center',
-  },
-  signUp: {
-    backgroundColor: theme.PrimaryColor,
-    padding: '0.5rem 1rem',
-    color: theme.LightGray,
-    margin: '0.5rem 0 !important',
-    borderRadius: theme.BorderRadius,
-    '&:hover': {
-      color: theme.LightGray,
-    },
-  },
-}))
 
 const Header = ({
   title,
@@ -68,14 +11,10 @@ const Header = ({
   title: string,
   className: string,
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-
-  // ------------------------------------------------------------ UI --
-
   return (
-    <header className={classNames(classes.header, className)}>
+    <header
+      className={classNames('text-white w-full text-center p-4 rounded', className)}
+    >
       <h2>{title}</h2>
     </header>
   )
@@ -86,15 +25,11 @@ const Price = ({
 }: {
   title: string,
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-
-  // ------------------------------------------------------------ UI --
-
   return (
-    <div className={classNames(classes.row, classes.highlight)}>
-      <h3>{title}</h3>
+    <div className='bg-gray-300 w-full p-4'>
+      <h3 className='text-center'>
+        {title}
+      </h3>
     </div>
   )
 }
@@ -104,45 +39,26 @@ const Item = ({
 }: {
   title: string,
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-
-  // ------------------------------------------------------------ UI --
-
   return (
-    <div className={classNames(classes.row)}>
+    <div className='w-full text-center p-4'>
       <h4>{title}</h4>
     </div>
   )
 }
 
+const sectionClass = 'flex flex-col items-center w-96'
+
 const Pricing = () => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-
-  // ------------------------------------------------------------ UI --
-
   return (
-    <section className={commonClasses.columnStart}>
-      <h2 className={classes.title}>
-        {localeTool.t('pricing.title')}:
-      </h2>
-      <section className={classNames(
-        commonClasses.rowBetween,
-        classes.table,
-      )}>
-        <section
-          className={classNames(
-            commonClasses.columnCenter,
-            classes.column,
-          )}
-        >
+    <section className='flex flex-col items-center'>
+      <h1 className='font-bold text-2xl mb-6'>
+        {localeTool.t('pricing.title')}
+      </h1>
+      <section className='flex justify-around w-full'>
+        <section className={sectionClass}>
           <Header
             title={commonEnum.Plan.Basic.Title}
-            className={classNames(classes.basicHeader)}
+            className='bg-slate-600'
           />
           <Price title={commonEnum.Plan.Basic.Price} />
           {commonEnum.Plan.Basic.Services.map((service) => (
@@ -156,30 +72,19 @@ const Pricing = () => {
           <Item title='' />
           <Item title='' />
           <Item title='' />
-          <div
-            className={classNames(
-              classes.row,
-              classes.highlight,
-              commonClasses.rowAround,
-            )}
-          >
+          <div className='w-full bg-slate-100 flex justify-center p-4'>
             <Link
               to={routerTool.signUpRoute()}
-              className={classes.signUp}
+              className='bg-primary text-white rounded px-4 py-2'
             >
               {localeTool.t('common.signUp')}
             </Link>
           </div>
         </section>
-        <section
-          className={classNames(
-            commonClasses.columnCenter,
-            classes.column,
-          )}
-        >
+        <section className={sectionClass}>
           <Header
             title={commonEnum.Plan.Pro.Title}
-            className={classes.proHeader}
+            className='bg-primary'
           />
           <Price title={commonEnum.Plan.Pro.Price} />
           {commonEnum.Plan.Pro.Services.map((service) => (
@@ -195,15 +100,10 @@ const Pricing = () => {
           <Item title='' />
           <Item title='' />
         </section>
-        <section
-          className={classNames(
-            commonClasses.columnCenter,
-            classes.column,
-          )}
-        >
+        <section className={sectionClass}>
           <Header
             title={commonEnum.Plan.Premium.Title}
-            className={classes.premiumHeader}
+            className='bg-green-600'
           />
           <Price title={commonEnum.Plan.Premium.Price} />
           {commonEnum.Plan.Premium.Services.map((service) => (

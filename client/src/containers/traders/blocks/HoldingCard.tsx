@@ -1,24 +1,11 @@
 import { useState } from 'react'
-import classNames from 'classnames'
 import { Button, Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useResourceState from 'states/useResourceState'
-import useCommonStyle from 'styles/useCommonStyle'
 import ValueDiffer from 'containers/traders/elements/ValueDiffer'
 import HoldingShare from 'containers/traders/elements/HoldingShare'
-
-const useStyles = createUseStyles(({
-  container: {
-    minWidth: '28rem',
-  },
-  totalValue: {
-    marginLeft: '2rem !important',
-    marginRight: '1rem !important',
-  },
-}))
 
 const HoldingCard = ({
   holding,
@@ -32,9 +19,6 @@ const HoldingCard = ({
   className?: string;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const { getTickerIdentity } = useResourceState()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
@@ -50,14 +34,16 @@ const HoldingCard = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <Card className={classNames(classes.container, className)}>
+    <Card
+      className={className}
+    >
       <header className='flex justify-between items-center'>
-        <div className={commonClasses.rowStart}>
-          <Badge color='indigo'>
+        <section className='flex items-center'>
+          <Badge className='mr-4' color='indigo'>
             {localeTool.t('common.date')}: {holding.date}
           </Badge>
           {holding.totalValue !== null && (
-            <h5 className={classes.totalValue}>
+            <h5 className='mr-4'>
               <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
               {parseTool.holdingValue(holding.totalValue)}
             </h5>
@@ -68,10 +54,11 @@ const HoldingCard = ({
               {parseTool.holdingValue(holding.totalCash)}
             </h5>
           )}
-        </div>
-        <div className={commonClasses.rowStart}>
+        </section>
+        <section className='flex items-center'>
           {previousHolding && (
             <ValueDiffer
+              className='mr-4'
               title={localeTool.t('common.sinceLast')}
               currentValue={holding.totalValue}
               compareValue={previousHolding.totalValue}
@@ -82,7 +69,7 @@ const HoldingCard = ({
             currentValue={holding.totalValue}
             compareValue={initialValue}
           />
-        </div>
+        </section>
       </header>
       <div className='border border-gray-200 my-4' />
       <section className='flex flex-wrap'>
@@ -100,7 +87,7 @@ const HoldingCard = ({
         })}
       </section>
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
-        <div className={commonClasses.rowAround}>
+        <div className='flex justify-center'>
           <Button color='gray' onClick={handleClickShowMore}>
             {localeTool.t('profile.showAllHoldings')}
           </Button>

@@ -1,14 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { TextInput, Button } from 'flowbite-react'
-import classNames from 'classnames'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import usePublicGuard from 'handlers/usePublicGuard'
-import useAccountStyle from 'styles/useAccountStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import GoToButton from './elements/GoToButton'
 
 const Forgot = () => {
@@ -17,10 +14,7 @@ const Forgot = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { accountClasses } = useAccountStyle()
-  const { commonClasses } = useCommonStyle()
   const { createResetEmail } = useUserRequest()
-
   const [email, setEmail] = useState('')
 
   // ------------------------------------------------------------ Handler --
@@ -46,24 +40,24 @@ const Forgot = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={accountClasses.container}>
-      <h2 className={accountClasses.title}>
+    <section className='account-root'>
+      <h1 className='account-title'>
         {localeTool.t('forgot.title')}
-      </h2>
+      </h1>
       <form onSubmit={handleSubmit}>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.email')} />
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.email')}
+          />
           <TextInput
+            className='account-right'
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
-        </div>
-        <div className={commonClasses.rowAround}>
-
+        </section>
+        <div className='flex flex-col items-center'>
           <Button
             type='submit'
             disabled={!email}
@@ -72,13 +66,13 @@ const Forgot = () => {
           </Button>
         </div>
       </form>
-      <footer className='mt-16 flex justify-center'>
+      <footer className='account-footer'>
         <GoToButton
           title={localeTool.t('signUp.toSignIn')}
           onClick={handleClickSignIn}
         />
       </footer>
-    </div>
+    </section>
   )
 }
 

@@ -1,38 +1,15 @@
 import classNames from 'classnames'
-import { Card } from 'flowbite-react'
+import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import { createUseStyles } from 'react-jss'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
 import useCommonState from 'states/useCommonState'
 import useTraderRequest from 'requests/useTraderRequest'
-import useCardStyle from 'styles/useCardStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
-
-const useStyles = createUseStyles({
-  pattern: {
-    margin: '0 0 2rem 0 !important',
-    minWidth: '24rem',
-    padding: '0 !important',
-  },
-  header: {
-    width: '100%',
-  },
-  body: {
-    padding: '1rem',
-  },
-  label: {
-    alignSelf: 'flex-start',
-  },
-  desc: {
-    marginLeft: '1rem !important',
-  },
-})
 
 const TraderProfileCard = ({
   profile,
@@ -40,6 +17,7 @@ const TraderProfileCard = ({
   simple = false,
   disabled = false,
   disabledUnwatch = false,
+  className,
   onClick,
 }: {
   profile: interfaces.response.TraderProfile | null;
@@ -51,10 +29,6 @@ const TraderProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { cardClasses } = useCardStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -120,29 +94,27 @@ const TraderProfileCard = ({
   return (
     <Card
       data-testid='traderProfileCard'
-      className={classNames(commonClasses.rowAround, classes.pattern, {
-        [commonClasses.cursorClickable]: isClickable,
-        [cardClasses.disabled]: disabled,
-        [cardClasses.isActive]: !!isActive,
+      className={classNames(className, {
+        'cursor-pointer': isClickable,
+        'card-disabled': disabled,
+        'card-active': !!isActive,
       })}
       onClick={isClickable ? handleClick : undefined}
     >
       <header
         className='flex flex-wrap items-center justify-between w-full'
       >
-        <div className={classNames(
-          commonClasses.rowStart,
-          classes.label,
-        )}>
+        <section className='flex flex-wrap'>
           <ProfileLabel
             color='info'
+            className='mr-4'
             trader={trader}
             traderEnv={traderEnv.record}
           />
-          <h5 className={classes.desc}>
+          <h5>
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
           </h5>
-        </div>
+        </section>
         {!!user.userType && !simple && showToggle && (
           <WatchButton
             isWatched={isWatched}
@@ -151,36 +123,32 @@ const TraderProfileCard = ({
         )}
       </header>
 
-      <div className={classes.body}>
-        {disabled && (
-          <h4>
-            {localeTool.t('permission.limited')}
-          </h4>
-        )}
+      {disabled && (
+        <Alert color='warning'>
+          {localeTool.t('permission.limited')}
+        </Alert>
+      )}
 
-        {!disabled && (
-          <section className={commonClasses.rowAround}>
-            <ValueChangePanel
-              yearlyPercentNumber={trader.yearlyPercentNumber}
-              pastYearPercentNumber={trader.pastYearPercentNumber}
-              pastQuarterPercentNumber={trader.pastQuarterPercentNumber}
-              pastMonthPercentNumber={trader.pastMonthPercentNumber}
-              pastWeekPercentNumber={trader.pastWeekPercentNumber}
-              oneDecadeTrends={trader.oneDecadeTrends}
-              oneYearTrends={trader.oneYearTrends}
-              totalValue={trader.totalValue}
-              activeChartIndex={activeChartIndex}
-              onChangeChart={handleChangeChartIndex}
-              showCharts={!simple}
-              showPercents
-            />
-          </section>
-        )}
+      {!disabled && (
+        <ValueChangePanel
+          yearlyPercentNumber={trader.yearlyPercentNumber}
+          pastYearPercentNumber={trader.pastYearPercentNumber}
+          pastQuarterPercentNumber={trader.pastQuarterPercentNumber}
+          pastMonthPercentNumber={trader.pastMonthPercentNumber}
+          pastWeekPercentNumber={trader.pastWeekPercentNumber}
+          oneDecadeTrends={trader.oneDecadeTrends}
+          oneYearTrends={trader.oneYearTrends}
+          totalValue={trader.totalValue}
+          activeChartIndex={activeChartIndex}
+          onChangeChart={handleChangeChartIndex}
+          showCharts={!simple}
+          showPercents
+        />
+      )}
 
-        {!simple && !disabled && (
-          <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
-        )}
-      </div>
+      {!simple && !disabled && (
+        <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
+      )}
     </Card>
   )
 }

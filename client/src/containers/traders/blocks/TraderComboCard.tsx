@@ -5,21 +5,20 @@ import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
 import useTraderRequest from 'requests/useTraderRequest'
-import useCardStyle from 'styles/useCardStyle'
 import WatchButton from '../elements/WatchButton'
 
 const TraderComboCard = ({
   traderCombo,
+  className,
   onClick,
   isActive = false,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
+  className?: string;
   isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const { cardClasses } = useCardStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -49,15 +48,21 @@ const TraderComboCard = ({
   return (
     <Card
       data-testid='traderComboCard'
-      className={classNames(cardClasses.container, {
-        'cursor-pointer': !disabled && !!onClick,
-        [cardClasses.isActive]: isActive,
-        [cardClasses.disabled]: disabled,
-      })}
+      className={classNames(
+        className,
+        '[&>div]:p-2 [&>div]:gap-2',
+        {
+          'cursor-pointer': !disabled && !!onClick,
+          'card-active': isActive,
+          'card-disabled': disabled,
+        },
+      )}
       onClick={!disabled ? handleClickCombo : undefined}
     >
       <header className='flex justify-between items-center'>
-        <b>{localeTool.t('common.combo')}: {traderCombo.name}</b>
+        <h3 className='font-bold'>
+          {localeTool.t('common.combo')}: {traderCombo.name}
+        </h3>
         {disabled && (
           <WatchButton isWatched onToggle={handleUnfollow} />
         )}

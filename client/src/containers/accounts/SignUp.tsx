@@ -1,9 +1,7 @@
 import { useState, useEffect, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
 import { TextInput, Button, Textarea, Checkbox, Label } from 'flowbite-react'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
@@ -12,18 +10,8 @@ import useCommonState from 'states/useCommonState'
 import useResourceState from 'states/useResourceState'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
-import useAccountStyle from 'styles/useAccountStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import GoToButton from './elements/GoToButton'
-
-const useStyles = createUseStyles(({
-  policy: {
-    padding: '1rem',
-    height: 280,
-    width: '100%',
-  },
-}))
 
 const SignUp = () => {
   usePublicGuard()
@@ -31,10 +19,6 @@ const SignUp = () => {
 
   // ------------------------------------------------------------ State --
 
-  const classes = useStyles()
-
-  const { accountClasses } = useAccountStyle()
-  const { commonClasses } = useCommonStyle()
   const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { createUser } = useUserRequest()
@@ -102,61 +86,66 @@ const SignUp = () => {
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={accountClasses.container}>
-      <h2 className={accountClasses.title}>
+    <section className='account-root'>
+      <h1 className='account-title'>
         {localeTool.t('signUp.title')}
-      </h2>
+      </h1>
       <form onSubmit={handleSubmit}>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.email')} />
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.email')}
+          />
           <TextInput
+            className='account-right'
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
-        </div>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.password')} />
+        </section>
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.password')}
+          />
           <TextInput
+            className='account-right'
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
-        </div>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.retypePassword')} />
+        </section>
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.retypePassword')}
+          />
           <TextInput
+            className='account-right'
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
-        </div>
-        <div className={accountClasses.row}>
+        </section>
+        <section className='account-row'>
           <Textarea
-            className={classes.policy}
+            className='h-60'
             disabled
             value={policy.termsPolicy || ''}
           />
-        </div>
-        <div className={accountClasses.row}>
+        </section>
+        <div className='flex justify-center items-center mb-4'>
           <Checkbox
             data-testid='checkbox'
             className='mr-2'
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
-          <Label>{localeTool.t('signUp.terms')}</Label>
+          <Label>
+            {localeTool.t('signUp.terms')}
+          </Label>
         </div>
-        <div className={commonClasses.rowAround}>
+        <div className='flex flex-col items-center'>
           <Button
             data-testid='signUpButton'
             type='submit'
@@ -166,14 +155,14 @@ const SignUp = () => {
           </Button>
         </div>
       </form>
-      <footer className='mt-16 flex justify-center'>
+      <footer className='account-footer'>
         <GoToButton
           data-testid='signInButton'
           title={localeTool.t('signUp.toSignIn')}
           onClick={handleClickSignIn}
         />
       </footer>
-    </div>
+    </section>
   )
 }
 

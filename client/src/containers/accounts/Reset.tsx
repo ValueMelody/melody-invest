@@ -1,24 +1,14 @@
 import { useNavigate, useParams } from 'react-router-dom'
 import { useState, ChangeEvent, FormEvent } from 'react'
-import classNames from 'classnames'
 import { Button, TextInput } from 'flowbite-react'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useCommonState from 'states/useCommonState'
 import useUserRequest from 'requests/useUserRequest'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePublicGuard from 'handlers/usePublicGuard'
-import useAccountStyle from 'styles/useAccountStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import GoToButton from './elements/GoToButton'
-
-const useStyles = createUseStyles(({
-  input: {
-    width: 280,
-  },
-}))
 
 const Reset = () => {
   usePublicGuard()
@@ -27,9 +17,6 @@ const Reset = () => {
 
   // ------------------------------------------------------------ State --
 
-  const classes = useStyles()
-  const { accountClasses } = useAccountStyle()
-  const { commonClasses } = useCommonStyle()
   const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { resetUserPassword } = useUserRequest()
@@ -86,48 +73,48 @@ const Reset = () => {
   if (!resetCode) return null
 
   return (
-    <div className={accountClasses.container}>
-      <h2 className={accountClasses.title}>
+    <section className='account-root'>
+      <h1 className='account-title'>
         {localeTool.t('reset.title')}
-      </h2>
+      </h1>
       <form onSubmit={handleSubmit}>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.email')} />
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.email')}
+          />
           <TextInput
-            className={classes.input}
+            className='account-right'
             type='email'
             value={email}
             onChange={handleChangeEmail}
           />
-        </div>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.newPassword')} />
+        </section>
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.newPassword')}
+          />
           <TextInput
-            className={classes.input}
+            className='account-right'
             type='password'
             value={password}
             onChange={handleChangePassword}
           />
-        </div>
-        <div className={classNames(
-          commonClasses.rowAround,
-          accountClasses.row,
-        )}>
-          <RequiredLabel title={localeTool.t('common.retypePassword')} />
+        </section>
+        <section className='account-row'>
+          <RequiredLabel
+            className='account-left'
+            title={localeTool.t('common.retypePassword')}
+          />
           <TextInput
-            className={classes.input}
+            className='account-right'
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
           />
-        </div>
-        <div className={commonClasses.rowAround}>
+        </section>
+        <div className='flex flex-col items-center'>
           <Button
             type='submit'
             data-testid='resetButton'
@@ -137,14 +124,14 @@ const Reset = () => {
           </Button>
         </div>
       </form>
-      <footer className='mt-16 flex justify-center'>
+      <footer className='account-footer'>
         <GoToButton
           data-testid='loginButton'
           title={localeTool.t('common.backToLogin')}
           onClick={handleClickSignIn}
         />
       </footer>
-    </div>
+    </section>
   )
 }
 

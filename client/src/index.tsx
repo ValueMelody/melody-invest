@@ -1,11 +1,9 @@
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from 'react-jss'
 import { Spinner } from 'flowbite-react'
 import Router from './containers/Router'
 import { context } from './context'
 import useStore from './states/store'
-import * as themeEnum from './enums/theme'
 import * as commonEnum from './enums/common'
 import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
@@ -27,9 +25,7 @@ const App = () => {
         </div>
       )}
       <context.Provider value={store}>
-        <ThemeProvider theme={themeEnum.theme}>
-          <Router />
-        </ThemeProvider>
+        <Router />
       </context.Provider>
     </>
   )

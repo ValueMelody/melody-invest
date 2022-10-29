@@ -1,17 +1,8 @@
 import { SyntheticEvent } from 'react'
-import classNames from 'classnames'
 import { Button } from 'flowbite-react'
 import TrendChart from './TrendChart'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
-import { createUseStyles } from 'react-jss'
-import useCommonStyle from 'styles/useCommonStyle'
-
-const useStyles = createUseStyles(({
-  root: {
-    margin: '1rem 0',
-  },
-}))
 
 const ValueChangeCharts = ({
   oneDecadeTrends,
@@ -27,9 +18,6 @@ const ValueChangeCharts = ({
   onChangeChart: (index: number) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const hasNoTrends = !oneYearTrends?.length && !oneDecadeTrends?.length
 
@@ -55,24 +43,21 @@ const ValueChangeCharts = ({
   return (
     <section
       data-testid='valueChangeCharts'
-      className={classNames(
-        classes.root,
-        commonClasses.columnCenter,
-      )}
+      className='flex flex-col items-center'
     >
-      <div className={commonClasses.rowAround}>
-        <TrendChart
-          data={activeChartIndex === 0 ? decadeTrends : yearTrends}
-        />
-      </div>
+      <TrendChart
+        data={activeChartIndex === 0 ? decadeTrends : yearTrends}
+      />
       <Button.Group>
         <Button
+          size='xs'
           onClick={handleClickDecadeChart}
           color={activeChartIndex === 0 ? undefined : 'gray'}
         >
           {localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })}
         </Button>
         <Button
+          size='xs'
           onClick={handleClickYearChart}
           color={activeChartIndex === 1 ? undefined : 'gray'}
         >

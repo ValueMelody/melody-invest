@@ -88,7 +88,7 @@ describe('#HoldingShare', () => {
     )
     const container = screen.getByTestId('holdingShare')
     const differ = container.querySelector('span')
-    expect(differ?.className).toContain('increaseColor')
+    expect(differ?.className).toContain('text-green-600')
     expect(differ?.innerHTML).toContain('+ 50')
 
     const newText = localeTool.t('common.new')
@@ -117,7 +117,7 @@ describe('#HoldingShare', () => {
     )
     const container = screen.getByTestId('holdingShare')
     const differ = container.querySelector('span')
-    expect(differ?.className).toContain('decreaseColor')
+    expect(differ?.className).toContain('text-red-600')
     expect(differ?.innerHTML).toContain('- 100')
 
     const newText = localeTool.t('common.new')

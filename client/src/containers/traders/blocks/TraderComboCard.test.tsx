@@ -57,7 +57,7 @@ describe('#traderComboCard', () => {
     expect(container).toBeTruthy()
     expect(screen.getByText(`Combo: ${traderCombo.name}`)).toBeTruthy()
     expect(screen.getByText(parseTool.traderComboTraders(traderCombo))).toBeTruthy()
-    expect(container?.className).not.toContain('isActive')
+    expect(container?.className).not.toContain('card-active')
 
     const watchButton = screen.queryByTestId('watchButton')
     expect(watchButton).toBeFalsy()
@@ -74,7 +74,7 @@ describe('#traderComboCard', () => {
       { store },
     )
     const container = screen.getByTestId('traderComboCard')
-    expect(container?.className).toContain('isActive')
+    expect(container?.className).toContain('card-active')
   })
 
   test('could render as clickable', () => {
@@ -107,7 +107,7 @@ describe('#traderComboCard', () => {
       { store },
     )
     const container = screen.getByTestId('traderComboCard')
-    expect(container?.className).toContain('disabled')
+    expect(container?.className).toContain('card-disabled')
     const limitText = localeTool.t('permission.limited')
     expect(screen.getByText(limitText)).toBeTruthy()
 

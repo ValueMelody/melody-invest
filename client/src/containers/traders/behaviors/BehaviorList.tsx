@@ -4,19 +4,11 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
-import useTraderStyle from 'styles/useTraderStyle'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 import VariationList from 'containers/traders/elements/VariationList'
-
-const useStyles = createUseStyles(({
-  header: {
-    marginBottom: '1rem',
-  },
-}))
 
 const isSearchedBehavior = (
   behavior: interfaces.traderPatternModel.Behavior,
@@ -34,9 +26,6 @@ const BehaviorList = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { traderClasses } = useTraderStyle()
 
   const [searchText, setSearchText] = useState('')
   const [focusedType, setFocusedType] = useState('buyBehaviors')
@@ -90,9 +79,9 @@ const BehaviorList = () => {
   if (!focusedOption) return null
 
   return (
-    <section className={traderClasses.root}>
-      <section className={traderClasses.main}>
-        <header className={classes.header}>
+    <section className='page-root'>
+      <section className='page-main'>
+        <header className='mb-4'>
           <TextInput
             icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
@@ -104,6 +93,7 @@ const BehaviorList = () => {
           {focusedOption.behaviors.map((behavior) => (
             <BehaviorLabel
               key={behavior}
+              className='mx-2 my-1'
               behavior={behavior}
               color='gray'
               onClick={handleClickLabel}
@@ -111,8 +101,10 @@ const BehaviorList = () => {
           ))}
         </section>
       </section>
-      <aside className={traderClasses.aside}>
-        <h2 className='mb-4'>{localeTool.t('tradeBehaviors.type')}:</h2>
+      <aside className='page-aside'>
+        <h1 className='mb-4 font-bold'>
+          {localeTool.t('tradeBehaviors.type')}
+        </h1>
         <VariationList
           options={focusOptions}
           activeValue={focusedType}

@@ -3,30 +3,21 @@ import classNames from 'classnames'
 import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
-import { createUseStyles } from 'react-jss'
-import useCommonStyle from 'styles/useCommonStyle'
-
-const useStyles = createUseStyles({
-  container: {
-    margin: '0.25rem 0.125rem !important',
-  },
-})
 
 const BehaviorLabel = ({
   behavior,
   value,
   color,
+  className,
   onClick,
 }: {
   behavior: interfaces.traderPatternModel.Behavior;
   color: 'info' | 'gray' | 'indigo' | 'success' | 'failure';
   value?: number | null;
+  className?: string;
   onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const behaviorTitle = parseTool.behaviorTitle(behavior)
   const behaviorDesc = parseTool.behaviorDesc(behavior)
@@ -47,9 +38,9 @@ const BehaviorLabel = ({
     <Badge
       data-testid='behaviorLabel'
       size='sm'
-      className={classNames(classes.container, {
-        [commonClasses.cursorInfo]: !onClick,
-        [commonClasses.cursorClickable]: !!onClick,
+      className={classNames(className, {
+        'cursor-info': !onClick,
+        'cursor-pointer': !!onClick,
       })}
       color={color}
       title={behaviorDesc}
