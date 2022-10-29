@@ -17,8 +17,8 @@ describe('#BehaviorLabel', () => {
     expect(container.children[0].innerHTML).toBe(
       `${parseTool.behaviorTitle(behavior)}: ${parseTool.behaviorValue(behavior, 3)}`,
     )
-    expect(container.className).toContain('cursorInfo')
-    expect(container.className).not.toContain('cursorClickable')
+    expect(container.className).toContain('cursor-info')
+    expect(container.className).not.toContain('cursor-pointer')
     expect(container.getAttribute('title')).toBe(parseTool.behaviorDesc(behavior))
 
     fireEvent.click(container)
@@ -59,8 +59,8 @@ describe('#BehaviorLabel', () => {
       />,
     )
     const container = screen.getByTestId('behaviorLabel')
-    expect(container.className).toContain('cursorClickable')
-    expect(container.classList).not.toContain('cursorInfo')
+    expect(container.className).toContain('cursor-pointer')
+    expect(container.classList).not.toContain('cursor-info')
 
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(1)

@@ -1,17 +1,10 @@
-import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
 import * as routerTool from 'tools/router'
-import useCommonStyle from 'styles/useCommonStyle'
 import BehaviorLabel from './BehaviorLabel'
 
-const useStyles = createUseStyles({
-  container: {
-    marginTop: '1rem',
-  },
-})
+const labelClass = 'mx-2 my-1 w-auto'
 
 const PatternBehaviors = ({
   pattern,
@@ -23,9 +16,6 @@ const PatternBehaviors = ({
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
 
   const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
     ...constants.Behavior.AllocateBehaviors,
@@ -47,13 +37,11 @@ const PatternBehaviors = ({
   // ------------------------------------------------------------ UI --
 
   return (
-    <div className={classNames(
-      commonClasses.rowStart,
-      classes.container,
-    )}>
+    <div className='flex flex-wrap'>
       {activeBuyBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
+          className={labelClass}
           behavior={behavior}
           value={pattern[behavior]}
           color='success'
@@ -63,6 +51,7 @@ const PatternBehaviors = ({
       {activeSellBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
+          className={labelClass}
           behavior={behavior}
           value={pattern[behavior]}
           color='failure'
@@ -72,6 +61,7 @@ const PatternBehaviors = ({
       {otherBehaviors.map((behavior) => (
         <BehaviorLabel
           key={behavior}
+          className={labelClass}
           behavior={behavior}
           value={pattern[behavior]}
           color='gray'

@@ -1,31 +1,20 @@
 import classNames from 'classnames'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
-import { createUseStyles } from 'react-jss'
-import useCommonStyle from 'styles/useCommonStyle'
 import ProfileLabel from './ProfileLabel'
 import ValueDiffer from './ValueDiffer'
-
-const useStyles = createUseStyles(({
-  container: {
-    marginBottom: '1rem',
-  },
-}))
 
 const ProfileValue = ({
   trader,
   env,
   onClick,
+  className,
 }: {
   trader: interfaces.traderModel.Record | null;
   env: interfaces.traderEnvModel.Record | null;
   onClick?: (trader: interfaces.traderModel.Record) => void;
+  className?: string;
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-
   // ------------------------------------------------------------ Handler --
   const handleClick = () => {
     if (!trader || !onClick) return
@@ -36,17 +25,18 @@ const ProfileValue = ({
   if (!trader || !env) return null
 
   return (
-    <div
+    <section
       data-testid='profileValue'
       className={classNames(
-        commonClasses.rowStart,
-        classes.container,
-        { [commonClasses.cursorClickable]: !!onClick },
+        'flex justify-around',
+        className,
+        { 'cursor-pointer': !!onClick },
       )}
       onClick={handleClick}
     >
       <ProfileLabel
         color='gray'
+        className='mr-2'
         trader={trader}
         traderEnv={env}
       />
@@ -55,7 +45,7 @@ const ProfileValue = ({
         currentValue={trader.totalValue || constants.Trader.Initial.Cash}
         compareValue={constants.Trader.Initial.Cash}
       />
-    </div>
+    </section>
   )
 }
 

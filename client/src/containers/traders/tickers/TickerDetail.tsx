@@ -1,44 +1,20 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
-import * as interfaces from '@shared/interfaces'
 import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
-import { createUseStyles } from 'react-jss'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
-
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  desc: {
-    marginLeft: '1rem !important',
-  },
-  header: {
-    borderBottom: `3px solid ${theme.PrimaryColor}`,
-    paddingBottom: '1.5rem',
-  },
-  leftTitle: {
-    margin: '2rem 0 1rem 0.5rem !important',
-  },
-}))
 
 const TickerDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { traderClasses } = useTraderStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { fetchTraderTicker } = useTraderRequest()
   const { getTickerIdentities } = useResourceState()
@@ -87,22 +63,18 @@ const TickerDetail = () => {
   if (!tickerIdentity || !traderEnv) return null
 
   return (
-    <section className={traderClasses.root}>
-      <section className={traderClasses.main}>
-        <header className={classNames(
-          commonClasses.rowStart,
-          classes.header,
-        )}>
+    <section className='page-root'>
+      <section className='page-main'>
+        <header className='detail-header'>
           <TickerLabel ticker={tickerIdentity} color='gray' />
-          <h4 className={classes.desc}>
+          <h1 className='font-bold text-xl'>
             {tickerIdentity.name}
-          </h4>
+          </h1>
         </header>
         <PageTitle
-          className={classes.leftTitle}
           title={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}
         />
-        <section className={commonClasses.rowStart}>
+        <section>
           <EachTops
             bestOverall={bestOverall}
             bestPastYear={bestPastYear}
@@ -112,7 +84,7 @@ const TickerDetail = () => {
           />
         </section>
       </section>
-      <aside className={traderClasses.aside}>
+      <aside className='page-aside'>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.record.id}

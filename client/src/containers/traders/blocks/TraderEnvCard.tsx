@@ -4,23 +4,20 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
-import useCardStyle from 'styles/useCardStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import UnwatchEnvButton from './UnwatchEnvButton'
 
 const TraderEnvCard = ({
   traderEnv,
   isActive = false,
   onClick,
+  className,
 }: {
   traderEnv: interfaces.traderEnvModel.Record | null;
   isActive?: boolean;
   onClick?: (envId: number) => void;
+  className?: string;
 }) => {
   // ------------------------------------------------------------ State --
-
-  const { cardClasses } = useCardStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { getUser } = useUserState()
   const user = getUser()
@@ -43,14 +40,25 @@ const TraderEnvCard = ({
   return (
     <Card
       data-testid='traderEnvCard'
-      className={classNames(cardClasses.container, {
-        [cardClasses.isActive]: isActive,
-        [cardClasses.disabled]: disabled,
-      })}
+      className={classNames(
+        className,
+        '[&>div]:p-4 [&>div]:gap-2',
+        {
+          'card-active': isActive,
+          'card-disabled': disabled,
+        },
+      )}
       onClick={!disabled ? handleClickEnv : undefined}
     >
-      <header className={commonClasses.rowBetween}>
-        <b>{localeTool.t('common.env')}: {traderEnv.name}</b>
+      <header className='flex justify-between'>
+        <section>
+          <h3 className='font-bold'>
+            {localeTool.t('common.env')}: {traderEnv.name}
+          </h3>
+          <h5 className='text-sm italic'>
+            {parseTool.traderEnvStartDate(traderEnv)}
+          </h5>
+        </section>
         {traderEnv.isSystem && (
           <Badge color='gray' title={localeTool.t('traderEnv.systemDesc')}>
             {localeTool.t('common.system')}
@@ -60,8 +68,9 @@ const TraderEnvCard = ({
           <UnwatchEnvButton traderEnv={traderEnv} />
         )}
       </header>
-      <h5>{parseTool.traderEnvStartDate(traderEnv)}</h5>
-      <h5>{disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)}</h5>
+      <h5 className='text-sm'>
+        {disabled ? localeTool.t('permission.limited') : parseTool.traderEnvTickers(traderEnv)}
+      </h5>
     </Card>
   )
 }

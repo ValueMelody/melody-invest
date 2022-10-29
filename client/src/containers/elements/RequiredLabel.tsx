@@ -1,25 +1,13 @@
-import { createUseStyles } from 'react-jss'
-
-const useStyles = createUseStyles(({
-  required: {
-    color: 'red',
-  },
-}))
-
 const RequiredLabel = ({
   title,
 }: {
   title: string;
 }) => {
-  const classes = useStyles()
-
-  // ------------------------------------------------------------ UI --
-
   return (
     <h5 data-testid='requiredLabel'>
       <b>
         {title}&nbsp;
-        <span className={classes.required}>*</span>
+        <span className='text-red-600'>*</span>
       </b>
     </h5>
   )

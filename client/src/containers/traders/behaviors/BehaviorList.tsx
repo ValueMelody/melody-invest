@@ -90,7 +90,7 @@ const BehaviorList = () => {
   if (!focusedOption) return null
 
   return (
-    <section className={traderClasses.root}>
+    <section className='page-root'>
       <section className={traderClasses.main}>
         <header className={classes.header}>
           <TextInput

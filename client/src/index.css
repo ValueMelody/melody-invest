@@ -12,62 +12,27 @@ body {
   width: 100%;
 }
 
-h1 {
-  font-size: 1.75rem !important;
-  font-weight: 700 !important;
+.page-root {
+  @apply flex flex-wrap items-start justify-between;
 }
 
-h2 {
-  font-size: 1.55rem !important;
-  font-weight: 700 !important;
+.page-aside {
+  @apply w-96 flex flex-col items-center;
 }
 
-h3 {
-  font-size: 1.35rem !important;
-  font-weight: 700 !important;
+.page-main {
+  @apply flex flex-col;
+  width: calc(100% - 26rem);
 }
 
-h4, .card > .content > .header {
-  font-size: 1.15rem !important;
-  font-weight: 500 !important;
+.detail-header {
+  @apply flex items-center pb-4 mb-4 border-b-4 border-primary;
 }
 
-h5, a {
-  font-size: 0.95rem !important;
-  font-weight: 500 !important;
+.card-active {
+  @apply border-primary border-4;
 }
 
-h6 {
-  font-size: 0.75rem !important;
-  font-weight: 500 !important;
-}
-
-h1, h2, h3 {
-  padding: 0 !important;
-  margin: 0.25rem 0 !important;
-}
-
-h4, h5, h6 {
-  padding: 0 !important;
-  margin: 0.25rem 0 !important;
-}
-
-#root .ui.label > .icon {
-  margin: 0;
-}
-
-#root button {
-  font-size: 12px;
-}
-
-#root .header > .icon {
-  font-size: 18px;
-}
-
-.ui.page.modals {
-  z-index: 999;
-}
-
-.mt-2 {
-  margin-top: 2rem !important;
+.card-disabled {
+  @apply bg-slate-300;
 }

@@ -6,8 +6,6 @@ import useResourceState from 'states/useResourceState'
 import useSystemRequest from 'requests/useSystemRequest'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import VariationList from 'containers/traders/elements/VariationList'
 
@@ -15,9 +13,6 @@ const TopProfiles = () => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
-
-  const { traderClasses } = useTraderStyle()
-  const { commonClasses } = useCommonStyle()
 
   const { fetchOverallTopTraderProfiles } = useSystemRequest()
   const { getOverallTopTraderProfiles } = useResourceState()
@@ -83,21 +78,21 @@ const TopProfiles = () => {
   if (!topTraderProfiles || !focusedTop) return null
 
   return (
-    <section className={traderClasses.root}>
-      <section className={traderClasses.main}>
-        <section className={commonClasses.rowStart}>
-          {focusedTop.traders.map((traderId) => (
-            <div key={traderId}>
-              <TraderProfileCard
-                profile={getTraderProfile(traderId)}
-                onClick={handleClickProfile}
-              />
-            </div>
-          ))}
-        </section>
+    <section className='page-root'>
+      <section className='page-main'>
+        {focusedTop.traders.map((traderId) => (
+          <TraderProfileCard
+            key={traderId}
+            className='mb-6'
+            profile={getTraderProfile(traderId)}
+            onClick={handleClickProfile}
+          />
+        ))}
       </section>
-      <aside className={traderClasses.aside}>
-        <h2 className='mb-4'>{localeTool.t('bestReturn.type')}:</h2>
+      <aside className='page-aside'>
+        <h3 className='mb-4 font-bold'>
+          {localeTool.t('bestReturn.type')}
+        </h3>
         <VariationList
           options={topOptions}
           activeValue={focusType}

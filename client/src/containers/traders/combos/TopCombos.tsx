@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import classNames from 'classnames'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import useCommonState from 'states/useCommonState'
@@ -9,8 +8,6 @@ import useSystemRequest from 'requests/useSystemRequest'
 import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderStyle from 'styles/useTraderStyle'
-import useCommonStyle from 'styles/useCommonStyle'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
@@ -41,8 +38,6 @@ const TopCombos = () => {
   // ------------------------------------------------------------ State --
 
   const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-  const { traderClasses } = useTraderStyle()
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
   const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
@@ -91,22 +86,20 @@ const TopCombos = () => {
   if (!focusedCombo || !focusedCombo.detail) return null
 
   return (
-    <section className={commonClasses.columnStart}>
-      <header className={classNames(
-        commonClasses.rowStart,
-        classes.header,
-      )}>
+    <>
+      <header className='flex border-b-4 border-primary mb-4 pb-4'>
         {systemCombos.map((combo) => (
+          <div key={combo.identity.id} className='m-2'>
             <TraderComboCard
-              key={combo.identity.id}
               traderCombo={combo.identity}
               isActive={combo.identity.id === focusedComboId}
               onClick={handleClickCombo}
             />
+          </div>
         ))}
       </header>
-      <section className={traderClasses.root}>
-        <section className={traderClasses.main}>
+      <section className='page-root'>
+        <section className='page-main'>
           <ValueChangePanel
             yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
             pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
@@ -125,7 +118,7 @@ const TopCombos = () => {
             icon='history'
             title={localeTool.t('topCombos.history')}
           />
-          <section className='flex flex-wrap'>
+          <section className='flex flex-col'>
             {comboHoldings.map((detail, index) => (
               <HoldingCard
                 key={detail.date}
@@ -137,21 +130,22 @@ const TopCombos = () => {
             ))}
           </section>
         </section>
-        <section className={traderClasses.aside}>
+        <section className='page-aside'>
           <PageTitle
             title={localeTool.t('traderCombo.includedProfiles')}
             className={classes.valueTitle}
           />
-          <div className={commonClasses.columnCenter}>
+          <section className='flex flex-col mb-4'>
             {profilesWithEnvs.map((profileWithEnv) => (
               <ProfileValue
                 key={profileWithEnv.profile?.trader.id}
+                className='mb-4'
                 trader={profileWithEnv.profile?.trader || null}
                 env={profileWithEnv.env || null}
                 onClick={handleClickProfile}
               />
             ))}
-          </div>
+          </section>
           <PageTitle
             icon='pie'
             title={localeTool.t('traderCombo.profilePortion')}
@@ -162,7 +156,7 @@ const TopCombos = () => {
           />
         </section>
       </section>
-    </section>
+    </>
   )
 }
 

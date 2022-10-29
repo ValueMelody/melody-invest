@@ -30,10 +30,10 @@ const PageTitle = ({
   }, [icon])
 
   return (
-    <h3 className={classNames(className, 'flex items-center')}>
+    <h2 className={classNames(className, 'flex items-center font-semibold')}>
       <IconElement className='mr-2 w-6 h-6' />
       {title}
-    </h3>
+    </h2>
   )
 }
 

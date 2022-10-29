@@ -1,26 +1,8 @@
 import classNames from 'classnames'
 import { Card, Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
-import { createUseStyles } from 'react-jss'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-
-const useStyles = createUseStyles((
-  theme: interfaces.common.Theme,
-) => ({
-  ticker: {
-    margin: '0.5rem !important',
-  },
-  differ: {
-    marginLeft: '0.5rem',
-  },
-  increaseColor: {
-    color: theme.IncreaseColor,
-  },
-  decreaseColor: {
-    color: theme.DecreaseColor,
-  },
-}))
 
 const HoldingShare = ({
   holdingItem,
@@ -33,8 +15,6 @@ const HoldingShare = ({
   previousDetail: interfaces.traderHoldingModel.Detail | null;
   totalValue: number;
 }) => {
-  const classes = useStyles()
-
   // ------------------------------------------------------------ State --
 
   const previousItem = previousDetail?.items.find((previous) => previous.tickerId === holdingItem.tickerId)
@@ -48,7 +28,7 @@ const HoldingShare = ({
     <Card
       data-testid='holdingShare'
       title={tickerIdentity?.name}
-      className={classes.ticker}
+      className='text-xs [&>div]:p-2 mx-2 my-1'
     >
       <div className='flex items-center'>
         <h5>
@@ -57,9 +37,9 @@ const HoldingShare = ({
         </h5>
         {!!shareDiffer && (
           <span
-            className={classNames(classes.differ, {
-              [classes.increaseColor]: shareDiffer > 0,
-              [classes.decreaseColor]: shareDiffer < 0,
+            className={classNames('ml-2', {
+              'text-green-600': shareDiffer > 0,
+              'text-red-600': shareDiffer < 0,
             })}
           >
             {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}

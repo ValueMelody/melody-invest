@@ -67,12 +67,14 @@ const ValueChangeCharts = ({
       </div>
       <Button.Group>
         <Button
+          size='xs'
           onClick={handleClickDecadeChart}
           color={activeChartIndex === 0 ? undefined : 'gray'}
         >
           {localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })}
         </Button>
         <Button
+          size='xs'
           onClick={handleClickYearChart}
           color={activeChartIndex === 1 ? undefined : 'gray'}
         >

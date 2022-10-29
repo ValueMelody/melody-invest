@@ -1,14 +1,5 @@
-import classNames from 'classnames'
-import { createUseStyles } from 'react-jss'
-import useCommonStyle from 'styles/useCommonStyle'
 import ValueChangePercents from './ValueChangePercents'
 import ValueChangeCharts from './ValueChangeCharts'
-
-const useStyles = createUseStyles(({
-  root: {
-    width: '100%',
-  },
-}))
 
 const ValueChangePanel = ({
   yearlyPercentNumber,
@@ -37,11 +28,6 @@ const ValueChangePanel = ({
   showPercents?: boolean;
   showCharts?: boolean;
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const classes = useStyles()
-  const { commonClasses } = useCommonStyle()
-
   // ------------------------------------------------------------ Handler --
 
   const handleChangeChartIndex = (index: number) => {
@@ -53,10 +39,7 @@ const ValueChangePanel = ({
   if (!showPercents && !showCharts) return null
 
   return (
-    <section className={classNames(
-      commonClasses.rowAround,
-      classes.root,
-    )}>
+    <section className='flex flex-wrap items-center justify-around'>
       {showPercents && (
         <ValueChangePercents
           yearlyPercentNumber={yearlyPercentNumber}
