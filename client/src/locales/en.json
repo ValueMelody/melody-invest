@@ -138,6 +138,7 @@
     "tickerCategory.utility": "Utilities",
     "tickerCategory.material": "Basic Materials",
     "tickerCategory.realEstate": "Real Estate",
+    "tickerCategory.etf": "ETF",
 
     "tradeBehaviors.title": "Available Behaviors",
     "tradeBehaviors.type": "Type of Trade Behaviors",

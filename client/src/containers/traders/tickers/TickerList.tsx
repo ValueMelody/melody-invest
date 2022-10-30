@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useResourceState from 'states/useResourceState'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import VariationList from 'containers/traders/elements/VariationList'
 import * as selectors from 'selectors'
@@ -30,8 +29,8 @@ const TickerList = () => {
   const [selectedCategory, setSelectedCategory] = useState(1)
   const [searchText, setSearchText] = useState('')
 
-  const { getTickerCategories } = useResourceState()
   const tickers = useSelector(selectors.selectTickerIdentityBases())
+  const categories = useSelector(selectors.selectTickerCategoryBases())
 
   const availableTickers = tickers.filter((ticker) => {
     const matchCategory = ticker.tickerCategoryId === selectedCategory
@@ -39,9 +38,8 @@ const TickerList = () => {
     return matchCategory && matchSearch
   })
 
-  const categories = getTickerCategories()
   const categoryOptions = categories.map((category) => ({
-    label: category.name,
+    label: localeTool.t(category.name),
     value: category.id,
     onClick: () => setSelectedCategory(category.id),
   }))

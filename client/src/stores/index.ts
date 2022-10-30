@@ -2,6 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import globalReducer from './global'
 import contentReducer from './content'
 import traderEnvReducer from './traderEnv'
+import tickerCategoryReducer from './tickerCategory'
 import tickerIdentityReducer from './tickerIdentity'
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     global: globalReducer,
     content: contentReducer,
     traderEnv: traderEnvReducer,
+    tickerCategory: tickerCategoryReducer,
     tickerIdentity: tickerIdentityReducer,
   },
   middleware: (getDefaultMddleWare) => getDefaultMddleWare({
