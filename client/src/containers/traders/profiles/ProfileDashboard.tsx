@@ -91,9 +91,9 @@ const ProfileDashboard = () => {
       </section>
       <aside className='page-aside'>
         <PageTitle
-         icon='bookmark'
-         title={localeTool.t('dashboard.watchedEnvs')}
-         className='mb-4'
+          icon='bookmark'
+          title={localeTool.t('dashboard.watchedEnvs')}
+          className='mb-4'
         />
         {envs.map((env) => (
           <TraderEnvCard
@@ -114,9 +114,9 @@ const ProfileDashboard = () => {
           }
         />
         <PageTitle
-         icon='boxes'
-         title={localeTool.t('dashboard.watchedCombos')}
-         className='my-4'
+          icon='boxes'
+          title={localeTool.t('dashboard.watchedCombos')}
+          className='my-4'
         />
         {userCombos.map((combo) => (
           <TraderComboCard

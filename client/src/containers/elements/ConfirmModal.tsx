@@ -34,7 +34,10 @@ const ConfirmModal = ({
         {children}
       </Modal.Body>
       <Modal.Footer className='flex justify-end'>
-        <Button color='gray' onClick={handleCloseModal}>
+        <Button
+          color='gray'
+          onClick={handleCloseModal}
+        >
           {localeTool.t('common.close')}
         </Button>
       </Modal.Footer>

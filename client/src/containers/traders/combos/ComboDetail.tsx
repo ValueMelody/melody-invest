@@ -94,9 +94,15 @@ const ComboDetail = () => {
           showPercents
           showCharts
         />
-        <PageTitle icon='history' title={localeTool.t('traderCombo.history')} />
+        <PageTitle
+          icon='history'
+          title={localeTool.t('traderCombo.history')}
+        />
         {!displayedHoldings.length && (
-          <Alert color='warning' className='mt-4'>
+          <Alert
+            color='warning'
+            className='mt-4'
+          >
             {localeTool.t('traderCombo.noResultYet')}
           </Alert>
         )}

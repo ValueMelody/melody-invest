@@ -72,7 +72,10 @@ const ProfileDetail = () => {
           className='mb-4'
         />
         {!displayedHoldings.length && (
-          <Alert color='warning' className='mt-4'>
+          <Alert
+            color='warning'
+            className='mt-4'
+          >
             {localeTool.t('profile.noResultYet')}
           </Alert>
         )}

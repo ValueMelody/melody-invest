@@ -147,7 +147,10 @@ const TraderProfileCard = ({
       )}
 
       {!simple && !disabled && (
-        <PatternBehaviors envId={trader.traderEnvId} pattern={pattern} />
+        <PatternBehaviors
+          envId={trader.traderEnvId}
+          pattern={pattern}
+        />
       )}
     </Card>
   )

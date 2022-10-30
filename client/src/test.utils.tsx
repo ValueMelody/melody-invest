@@ -70,7 +70,10 @@ const WithRouterProvider = ({
   }
 
   return (
-    <Router location={history?.location} navigator={history}>
+    <Router
+      location={history?.location}
+      navigator={history}
+    >
       {children}
     </Router>
   )
@@ -98,7 +101,10 @@ const render = (
   ui: ReactElement,
   options?: object,
 ) => defaultRender(ui, {
-  wrapper: (props) => <InterfaceBase {...props} {...options} />,
+  wrapper: (props) => <InterfaceBase
+    {...props}
+    {...options}
+                      />,
 })
 
 const HookBase = ({
@@ -114,7 +120,10 @@ const HookBase = ({
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithStoreProvider store={store} disabled={disableStore}>
+      <WithStoreProvider
+        store={store}
+        disabled={disableStore}
+      >
         {children}
       </WithStoreProvider>
     </WithRouterProvider>
@@ -125,7 +134,10 @@ const renderHook = (
   hook: () => any,
   options?: object,
 ) => defaultRenderHook(hook, {
-  wrapper: (props) => <HookBase {...props} {...options} />,
+  wrapper: (props) => <HookBase
+    {...props}
+    {...options}
+                      />,
 })
 
 export {

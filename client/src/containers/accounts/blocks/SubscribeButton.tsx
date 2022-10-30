@@ -84,7 +84,10 @@ const SubscribeButton = ({
         vault: true,
       }}
     >
-      <Button planType={planType} onCloseModal={handleCloseModal} />
+      <Button
+        planType={planType}
+        onCloseModal={handleCloseModal}
+      />
     </paypal.PayPalScriptProvider>
   )
 }

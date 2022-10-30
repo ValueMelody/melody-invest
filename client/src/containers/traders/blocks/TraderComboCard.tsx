@@ -64,7 +64,10 @@ const TraderComboCard = ({
           {localeTool.t('common.combo')}: {traderCombo.name}
         </h3>
         {disabled && (
-          <WatchButton isWatched onToggle={handleUnfollow} />
+          <WatchButton
+            isWatched
+            onToggle={handleUnfollow}
+          />
         )}
       </header>
       <h5>

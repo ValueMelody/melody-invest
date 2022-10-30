@@ -190,7 +190,10 @@ const ProfileBuilder = () => {
       <h2 className={subTitleClass}>
         {localeTool.t('profileBuilder.selectBehaviors')}
       </h2>
-      <Accordion alwaysOpen className='mb-12'>
+      <Accordion
+        alwaysOpen
+        className='mb-12'
+      >
         <Accordion.Panel>
           <Accordion.Title>
             <ProfileBuilderHeader

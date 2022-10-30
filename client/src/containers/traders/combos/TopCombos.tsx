@@ -69,7 +69,10 @@ const TopCombos = () => {
     <>
       <header className='flex border-b-4 border-primary mb-4 pb-4'>
         {systemCombos.map((combo) => (
-          <div key={combo.identity.id} className='m-2'>
+          <div
+            key={combo.identity.id}
+            className='m-2'
+          >
             <TraderComboCard
               traderCombo={combo.identity}
               isActive={combo.identity.id === focusedComboId}
