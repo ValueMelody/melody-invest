@@ -11,6 +11,8 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const ProfileDetail = () => {
   const params = useParams()
@@ -18,7 +20,7 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderProfile, getTraderEnv } = useTraderState()
+  const { getTraderProfile } = useTraderState()
   const { fetchTraderProfile, fetchProfileDetail } = useTraderRequest()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
@@ -28,8 +30,9 @@ const ProfileDetail = () => {
 
   const profileDetail = getTraderProfile(traderId)
 
-  const envId = profileDetail?.trader?.traderEnvId || null
-  const traderEnv = getTraderEnv(envId)
+  const envId = profileDetail?.trader?.traderEnvId || undefined
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
+  const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
@@ -100,14 +103,14 @@ const ProfileDetail = () => {
           className='my-4'
         />
         {profileEnvs.map((profileEnv) => {
-          const traderEnv = getTraderEnv(profileEnv.traderEnvId)
+          const traderEnv = traderEnvDict[profileEnv.traderEnvId]
           if (!traderEnv) return null
 
           return (
             <TraderEnvCard
               key={profileEnv.traderEnvId}
               className='w-80 mb-4'
-              traderEnv={traderEnv.record}
+              traderEnv={traderEnv}
               isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
               onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
             />

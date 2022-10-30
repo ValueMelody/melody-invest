@@ -54,7 +54,7 @@ const TraderEnvCard = ({
       <header className='flex justify-between'>
         <section>
           <h3 className='font-bold'>
-            {localeTool.t('common.env')}: {traderEnv.name}
+            {localeTool.t('common.env')}: {parseTool.traderEnvName(traderEnv)}
           </h3>
           <h5 className='text-sm italic'>
             {parseTool.traderEnvStartDate(traderEnv)}

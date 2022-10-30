@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 import * as interfaces from '@shared/interfaces'
-import { context, Context, TraderCombo, TraderEnv } from 'context'
+import { context, Context, TraderCombo } from 'context'
 
 const useTraderState = () => {
   const store: Context = useContext(context)
@@ -14,10 +14,6 @@ const useTraderState = () => {
   const getTraderCombo = (comboId: number | null) => {
     if (comboId === null) return null
     return store.traderCombos[comboId] || null
-  }
-
-  const getTraderEnvs = (): TraderEnv[] => {
-    return Object.values(store.traderEnvs)
   }
 
   const getTraderEnv = (envId: number | null) => {
@@ -51,7 +47,6 @@ const useTraderState = () => {
   return {
     getTraderCombos,
     getTraderCombo,
-    getTraderEnvs,
     getTraderEnv,
     getTraderBehavior,
     getTraderTicker,

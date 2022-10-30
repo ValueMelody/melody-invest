@@ -54,6 +54,10 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchSystemDefaults.pending, startLoading)
     builder.addCase(actions.fetchSystemDefaults.fulfilled, stopLoading)
     builder.addCase(actions.fetchSystemDefaults.rejected, onRequestRejected)
+
+    builder.addCase(actions.fetchUserOverall.pending, startLoading)
+    builder.addCase(actions.fetchUserOverall.fulfilled, stopLoading)
+    builder.addCase(actions.fetchUserOverall.rejected, onRequestRejected)
   },
 })
 

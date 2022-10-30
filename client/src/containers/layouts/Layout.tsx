@@ -1,6 +1,5 @@
 import { FunctionComponent, useEffect } from 'react'
 import { Alert } from 'flowbite-react'
-import useSystemRequest from 'requests/useSystemRequest'
 import useUserRequest from 'requests/useUserRequest'
 import useUserState from 'states/useUserState'
 import Header from 'containers/layouts/blocks/Header'
@@ -20,7 +19,6 @@ const Layout: FunctionComponent = ({
   const { messages } = useSelector(selectors.selectGlobal())
 
   const { getUser } = useUserState()
-  const { fetchSystemDefaults } = useSystemRequest()
   const { fetchUserOverall } = useUserRequest()
 
   const user = getUser()
@@ -28,14 +26,13 @@ const Layout: FunctionComponent = ({
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    fetchSystemDefaults()
     dispatch(actions.fetchSystemDefaults())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [dispatch])
 
   useEffect(() => {
     if (!user.hasLogin || user.userType) return
     fetchUserOverall()
+    dispatch(actions.fetchUserOverall())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.hasLogin, user.userType])
 

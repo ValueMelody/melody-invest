@@ -17,6 +17,8 @@ import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const ComboDetail = () => {
   usePrivateGuard()
@@ -30,8 +32,10 @@ const ComboDetail = () => {
   const activeChartIndex = getActiveChartIndex()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
-  const { getTraderProfile, getTraderCombo, getTraderEnv } = useTraderState()
+  const { getTraderProfile, getTraderCombo } = useTraderState()
   const { fetchTraderCombo, deleteTraderCombo } = useTraderRequest()
+
+  const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
 
   const comboId = params.comboId ? parseInt(params.comboId) : null
   const matchedCombo = getTraderCombo(comboId)
@@ -41,8 +45,10 @@ const ComboDetail = () => {
 
   const profilesWithEnvs = matchedCombo?.identity.traderIds.map((traderId) => {
     const profile = getTraderProfile(traderId)
-    const env = getTraderEnv(profile?.trader.traderEnvId || null)
-    return { profile, env: env?.record || null }
+    const env = profile?.trader.traderEnvId
+      ? traderEnvDict[profile?.trader.traderEnvId]
+      : null
+    return { profile, env }
   }) || []
 
   // ------------------------------------------------------------ Effect --

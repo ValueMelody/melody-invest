@@ -4,6 +4,7 @@ import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
@@ -18,18 +19,17 @@ const TickerDetail = () => {
   // ------------------------------------------------------------ State --
 
   const { fetchTraderTicker } = useTraderRequest()
-  const { getTraderTicker, getTraderEnv, getTraderEnvs } = useTraderState()
+  const { getTraderTicker } = useTraderState()
 
   const tickerId = params.tickerId ? parseInt(params.tickerId) : undefined
   const envId = params.envId ? parseInt(params.envId) : 1
 
-  const traderEnvs = getTraderEnvs()
-
+  const traderEnvs = useSelector(selectors.selectTraderEnvBases())
   const tickerIdentity = useSelector(selectors.selectTickerIdentityBaseById(tickerId))
 
   const tickerDetail = getTraderTicker(envId, tickerId)
   const topTraderProfiles = tickerDetail?.tops
-  const traderEnv = getTraderEnv(envId)
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
 
   const bestOverall = topTraderProfiles?.yearly[0] || null
   const bestPastYear = topTraderProfiles?.pastYear[0] || null
@@ -76,7 +76,7 @@ const TickerDetail = () => {
           </h1>
         </header>
         <PageTitle
-          title={localeTool.t('availableTickers.topProfiles', { name: traderEnv.record.name })}
+          title={localeTool.t('availableTickers.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
         />
         <EachTops
           bestOverall={bestOverall}
@@ -89,10 +89,10 @@ const TickerDetail = () => {
       <aside className='page-aside'>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnv.record.id}
+            key={traderEnv.id}
             className='w-80 mb-4'
-            traderEnv={traderEnv.record}
-            isActive={envId === traderEnv.record.id}
+            traderEnv={traderEnv}
+            isActive={envId === traderEnv.id}
             onClick={handleClickEnv}
           />
         ))}

@@ -10,6 +10,8 @@ import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import AddButton from 'containers/traders/elements/AddButton'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const ProfileDashboard = () => {
   usePrivateGuard()
@@ -19,10 +21,10 @@ const ProfileDashboard = () => {
   // ------------------------------------------------------------ State --
 
   const { getUser } = useUserState()
-  const { getTraderProfile, getTraderCombos, getTraderEnvs } = useTraderState()
+  const { getTraderProfile, getTraderCombos } = useTraderState()
 
   const user = getUser()
-  const envs = getTraderEnvs()
+  const envs = useSelector(selectors.selectTraderEnvBases())
   const combos = getTraderCombos()
 
   const userCombos = combos.filter((combo) => !combo.identity.isSystem)
@@ -97,9 +99,9 @@ const ProfileDashboard = () => {
         />
         {envs.map((env) => (
           <TraderEnvCard
-            key={env.record.id}
+            key={env.id}
             className='w-80 mb-4'
-            traderEnv={env.record}
+            traderEnv={env}
             onClick={handleClickEnv}
           />
         ))}

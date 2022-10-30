@@ -13,6 +13,8 @@ import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const TopCombos = () => {
   const navigate = useNavigate()
@@ -20,11 +22,13 @@ const TopCombos = () => {
   // ------------------------------------------------------------ State --
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
-  const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
+  const { getTraderProfile, getTraderCombos } = useTraderState()
 
   const { fetchSystemTraderCombos } = useSystemRequest()
   const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
   const activeChartIndex = getActiveChartIndex()
+
+  const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
 
   const traderCombos = getTraderCombos()
   const systemCombos = traderCombos.filter((combo) => combo.identity.isSystem)
@@ -32,8 +36,8 @@ const TopCombos = () => {
 
   const profilesWithEnvs = focusedCombo?.identity.traderIds.map((traderId) => {
     const profile = getTraderProfile(traderId)
-    const env = getTraderEnv(profile?.trader.traderEnvId || null)
-    return { profile, env: env?.record || null }
+    const env = profile?.trader.traderEnvId ? traderEnvDict[profile?.trader.traderEnvId] : null
+    return { profile, env }
   }) || []
 
   const comboHoldings = focusedCombo?.detail?.holdings || []

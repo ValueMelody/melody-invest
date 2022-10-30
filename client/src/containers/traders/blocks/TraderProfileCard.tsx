@@ -3,13 +3,14 @@ import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
 import useCommonState from 'states/useCommonState'
 import useTraderRequest from 'requests/useTraderRequest'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const TraderProfileCard = ({
   profile,
@@ -33,7 +34,6 @@ const TraderProfileCard = ({
   const { getUser } = useUserState()
   const user = getUser()
 
-  const { getTraderEnv } = useTraderState()
   const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
   const { addMessage, getActiveChartIndex, setActiveChartIndex } = useCommonState()
@@ -41,10 +41,10 @@ const TraderProfileCard = ({
 
   const trader = profile?.trader || null
   const pattern = profile?.pattern || null
-  const traderEnvId = trader?.traderEnvId || null
+  const traderEnvId = trader?.traderEnvId
   const traderId = trader?.id || null
 
-  const traderEnv = getTraderEnv(traderEnvId)
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(traderEnvId))
 
   const isWatched = !!user.userType && !!traderId && user.userTraderIds.includes(traderId)
   const showToggle = !isWatched || !disabledUnwatch
@@ -109,7 +109,7 @@ const TraderProfileCard = ({
             color='info'
             className='mr-4'
             trader={trader}
-            traderEnv={traderEnv.record}
+            traderEnv={traderEnv}
           />
           <h5>
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}

@@ -39,47 +39,6 @@ const useSystemRequest = () => {
     }))
   }
 
-  const storeSystemDefaults = (
-    systemDefaults: interfaces.response.SystemDefaults,
-  ) => {
-    const tickerIdentities = systemDefaults.tickerIdentities.reduce((identities, identity) => ({
-      ...identities,
-      [identity.id]: identity,
-    }), {})
-    const tickerCategories = systemDefaults.tickerCategories.reduce((categories, category) => ({
-      ...categories,
-      [category.id]: {
-        ...category,
-        name: parseTool.tickerCategoryName(category),
-      },
-    }), {})
-    store.setResources((resources) => ({
-      ...resources,
-      tickerIdentities: {
-        ...resources.tickerIdentities,
-        ...tickerIdentities,
-      },
-      tickerCategories: {
-        ...resources.tickerCategories,
-        ...tickerCategories,
-      },
-    }))
-
-    const parsedEnvs = systemDefaults.traderEnvs.reduce((envs, env) => ({
-      ...envs,
-      [env.id]: {
-        record: {
-          ...env,
-          name: parseTool.traderEnvName(env),
-        },
-      },
-    }), {})
-    store.setTraderEnvs((envs) => ({
-      ...envs,
-      ...parsedEnvs,
-    }))
-  }
-
   const storeTopTraderProfiles = (
     topProfiles: interfaces.response.TopTraderProfiles,
   ) => {
@@ -131,19 +90,6 @@ const useSystemRequest = () => {
     }
   }
 
-  const fetchSystemDefaults = async () => {
-    const endpoint = `${routerEnum.Endpoint.Systems}/defaults`
-    store.startLoading()
-    try {
-      const defaults = await requestAdapter.sendGetRequest(endpoint)
-      storeSystemDefaults(defaults)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   const fetchSystemTraderCombos = async () => {
     const endpoint = `${routerEnum.Endpoint.Systems}/default-trader-combos`
     store.startLoading()
@@ -174,7 +120,6 @@ const useSystemRequest = () => {
 
   return {
     fetchSystemPolicy,
-    fetchSystemDefaults,
     fetchSystemTraderCombos,
     fetchOverallTopTraderProfiles,
   }

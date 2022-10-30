@@ -2,7 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 
-interface TickerIdentityBase {
+export interface TickerIdentityBase {
   [tickerId: number]: interfaces.tickerModel.Identity;
 }
 
