@@ -61,7 +61,10 @@ const TraderEnvCard = ({
           </h5>
         </section>
         {traderEnv.isSystem && (
-          <Badge color='gray' title={localeTool.t('traderEnv.systemDesc')}>
+          <Badge
+            color='gray'
+            title={localeTool.t('traderEnv.systemDesc')}
+          >
             {localeTool.t('common.system')}
           </Badge>
         )}

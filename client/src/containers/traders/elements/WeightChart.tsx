@@ -42,14 +42,28 @@ const ActiveShape = ({
 
   return (
     <g>
-      <text y={cy - 25} textAnchor='middle' fontSize={12} fill={fill}>
-        <tspan x={cx} dy={15}>
+      <text
+        y={cy - 25}
+        textAnchor='middle'
+        fontSize={12}
+        fill={fill}
+      >
+        <tspan
+          x={cx}
+          dy={15}
+        >
           {payload.label}
         </tspan>
-        <tspan x={cx} dy={15}>
+        <tspan
+          x={cx}
+          dy={15}
+        >
           {payload.desc}
         </tspan>
-        <tspan x={cx} dy={15}>
+        <tspan
+          x={cx}
+          dy={15}
+        >
           {weight}
         </tspan>
       </text>
@@ -98,7 +112,10 @@ const WeightChart = ({
   if (!data.length) return null
 
   return (
-    <chart.PieChart width={200} height={200}>
+    <chart.PieChart
+      width={200}
+      height={200}
+    >
       <chart.Pie
         onMouseEnter={handleMouseEnter}
         activeIndex={activeIndex}

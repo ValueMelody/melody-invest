@@ -84,7 +84,10 @@ const SubscribeModal = () => {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button color='gray' onClick={handleCloseModal}>
+          <Button
+            color='gray'
+            onClick={handleCloseModal}
+          >
             {localeTool.t('common.close')}
           </Button>
         </Modal.Footer>

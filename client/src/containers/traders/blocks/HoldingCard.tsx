@@ -39,7 +39,10 @@ const HoldingCard = ({
     >
       <header className='flex justify-between items-center'>
         <section className='flex items-center'>
-          <Badge className='mr-4' color='indigo'>
+          <Badge
+            className='mr-4'
+            color='indigo'
+          >
             {localeTool.t('common.date')}: {holding.date}
           </Badge>
           {holding.totalValue !== null && (
@@ -88,7 +91,10 @@ const HoldingCard = ({
       </section>
       {!showAllHoldings && orderedHoldingItems.length > 10 && (
         <div className='flex justify-center'>
-          <Button color='gray' onClick={handleClickShowMore}>
+          <Button
+            color='gray'
+            onClick={handleClickShowMore}
+          >
             {localeTool.t('profile.showAllHoldings')}
           </Button>
         </div>

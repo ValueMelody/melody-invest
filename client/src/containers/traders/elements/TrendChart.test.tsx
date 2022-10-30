@@ -4,20 +4,22 @@ import { render, screen } from 'test.utils'
 describe('#VariationList', () => {
   test('could render', async () => {
     const { container } = render(
-      <TrendChart data={[
-        {
-          label: 'aaa', value: 10,
-        },
-        {
-          label: 'bbb', value: 20,
-        },
-        {
-          label: 'ccc', value: 0,
-        },
-        {
-          label: 'ddd', value: -5,
-        },
-      ]} />,
+      <TrendChart
+        data={[
+          {
+            label: 'aaa', value: 10,
+          },
+          {
+            label: 'bbb', value: 20,
+          },
+          {
+            label: 'ccc', value: 0,
+          },
+          {
+            label: 'ddd', value: -5,
+          },
+        ]}
+      />,
     )
 
     const area = container.querySelector('.recharts-area-area')
@@ -31,11 +33,13 @@ describe('#VariationList', () => {
 
   test('could render as empty', async () => {
     const { container } = render(
-      <TrendChart data={[
-        {
-          label: 'aaa', value: 10,
-        },
-      ]} />,
+      <TrendChart
+        data={[
+          {
+            label: 'aaa', value: 10,
+          },
+        ]}
+      />,
     )
     const area = container.querySelector('.recharts-area-area')
     expect(area).toBeFalsy()

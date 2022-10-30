@@ -88,7 +88,10 @@ const ComboBuilder = () => {
         title={localeTool.t('comboBuilder.minTraderRequired')}
       />
       {profiles.length < 2 && (
-        <Alert color='failure' className='mb-4'>
+        <Alert
+          color='failure'
+          className='mb-4'
+        >
           {localeTool.t('comboBuilder.noEnoughProfiles')}
         </Alert>
       )}
@@ -108,12 +111,18 @@ const ComboBuilder = () => {
         ))}
       </section>
       {hasDuplicatedName && (
-        <Alert color='failure' className='mb-4'>
+        <Alert
+          color='failure'
+          className='mb-4'
+        >
           {localeTool.t('comboBuilder.duplicatedName')}
         </Alert>
       )}
       {hasDuplicatedCombo && (
-        <Alert color='failure' className='mb-4'>
+        <Alert
+          color='failure'
+          className='mb-4'
+        >
           {localeTool.t('comboBuilder.duplicatedCombo')}
         </Alert>
       )}

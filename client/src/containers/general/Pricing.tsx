@@ -62,7 +62,10 @@ const Pricing = () => {
           />
           <Price title={commonEnum.Plan.Basic.Price} />
           {commonEnum.Plan.Basic.Services.map((service) => (
-            <Item key={service} title={service} />
+            <Item
+              key={service}
+              title={service}
+            />
           ))}
           <Item title='' />
           <Item title='' />
@@ -88,7 +91,10 @@ const Pricing = () => {
           />
           <Price title={commonEnum.Plan.Pro.Price} />
           {commonEnum.Plan.Pro.Services.map((service) => (
-            <Item key={service} title={service} />
+            <Item
+              key={service}
+              title={service}
+            />
           ))}
           <Item title='' />
           <Item title='' />
@@ -107,7 +113,10 @@ const Pricing = () => {
           />
           <Price title={commonEnum.Plan.Premium.Price} />
           {commonEnum.Plan.Premium.Services.map((service) => (
-            <Item key={service} title={service} />
+            <Item
+              key={service}
+              title={service}
+            />
           ))}
           <Item title='' />
           <Item title='' />

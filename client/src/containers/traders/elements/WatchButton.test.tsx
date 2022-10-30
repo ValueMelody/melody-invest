@@ -7,7 +7,10 @@ describe('#WatchButton', () => {
     const onClick = jest.fn()
 
     render(
-      <WatchButton isWatched onToggle={onClick} />,
+      <WatchButton
+        isWatched
+        onToggle={onClick}
+      />,
     )
     const container = screen.getByTestId('watchButton')
     expect(container).toBeTruthy()
@@ -21,7 +24,10 @@ describe('#WatchButton', () => {
     const onClick = jest.fn()
 
     render(
-      <WatchButton isWatched={false} onToggle={onClick} />,
+      <WatchButton
+        isWatched={false}
+        onToggle={onClick}
+      />,
     )
     const container = screen.getByTestId('watchButton')
     expect(container).toBeTruthy()

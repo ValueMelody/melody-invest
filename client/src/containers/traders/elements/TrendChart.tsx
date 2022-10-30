@@ -42,7 +42,11 @@ const TrendChart = ({
       />
 
       {title && (
-        <chart.XAxis tick={false} axisLine={false} height={20}>
+        <chart.XAxis
+          tick={false}
+          axisLine={false}
+          height={20}
+        >
           <chart.Label
             orientation='bottom'
             value={title}

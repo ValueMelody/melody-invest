@@ -4,7 +4,9 @@
     "es2021": true
   },
   "extends": [
-    "standard", "react-app", "plugin:react/recommended"
+    "standard",
+    "react-app",
+    "plugin:react/recommended"
   ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
@@ -15,12 +17,17 @@
     "@typescript-eslint"
   ],
   "rules": {
-    "max-len": ["error", { "code": 120, "tabWidth": 2 }],
+    "react/jsx-closing-bracket-location": "error",
+    "react/jsx-max-props-per-line": "error",
+    "react/jsx-indent-props": ["error", 2],
+    "react/jsx-first-prop-new-line": ["error",  "multiline"],
     "react/jsx-indent": ["error", 2],
+    "react/jsx-closing-tag-location": "error",
+    "jsx-quotes": ["error", "prefer-single"],
+    "max-len": ["error", { "code": 120, "tabWidth": 2 }],
     "react/prop-types": "off",
     "react/react-in-jsx-scope": "off",
     "arrow-parens": "error",
-    "jsx-quotes": ["error", "prefer-single"],
     "object-shorthand": "error",
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",

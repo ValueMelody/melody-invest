@@ -12,7 +12,10 @@ describe('#VariationList', () => {
       { label: 'c', value: 3, onClick: onClickThird },
     ]
     render(
-      <VariationList options={options} activeValue={2} />,
+      <VariationList
+        options={options}
+        activeValue={2}
+      />,
     )
     const container = screen.getByTestId('variationList')
     expect(container).toBeTruthy()

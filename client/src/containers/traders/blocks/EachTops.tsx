@@ -40,7 +40,10 @@ const EachTops = ({
 
   if (!hasResult) {
     return (
-      <Alert color='warning' className='mt-4'>
+      <Alert
+        color='warning'
+        className='mt-4'
+      >
         {localeTool.t('traderEnv.noResultYet')}
       </Alert>
     )

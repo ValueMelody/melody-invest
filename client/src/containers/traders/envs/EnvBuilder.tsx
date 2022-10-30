@@ -163,7 +163,10 @@ const EnvBuilder = () => {
             onChange={handleSelectStartMonth}
           >
             {MonthOptions.map((option) => (
-              <option key={option.value} value={option.value}>
+              <option
+                key={option.value}
+                value={option.value}
+              >
                 {option.text}
               </option>
             ))}
@@ -211,12 +214,18 @@ const EnvBuilder = () => {
         />
       </section>
       {hasDuplicatedName && (
-        <Alert color='failure' className='mb-4'>
+        <Alert
+          color='failure'
+          className='mb-4'
+        >
           {localeTool.t('envBuilder.duplicatedName')}
         </Alert>
       )}
       {hasDuplicatedEnv && (
-        <Alert color='failure' className='mb-4'>
+        <Alert
+          color='failure'
+          className='mb-4'
+        >
           {localeTool.t('envBuilder.duplicatedEnv')}
         </Alert>
       )}

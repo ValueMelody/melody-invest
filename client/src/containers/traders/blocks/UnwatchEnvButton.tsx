@@ -42,7 +42,10 @@ const UnwatchEnvButton = ({
           {localeTool.t('common.confirm')}
         </Button>
       </ConfirmModal>
-      <WatchButton isWatched onToggle={handleClickUnwatch} />
+      <WatchButton
+        isWatched
+        onToggle={handleClickUnwatch}
+      />
     </>
   )
 }
