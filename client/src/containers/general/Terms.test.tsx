@@ -2,6 +2,8 @@ import { render, screen, waitFor } from 'test.utils'
 import Terms from './Terms'
 import * as requestAdapter from 'adapters/request'
 import * as constants from '@shared/constants'
+import { store } from 'stores'
+import { contentSlice } from 'stores/content'
 
 const fetchMock = jest.fn(async (url: string) => {
   const baseUrl = 'http://127.0.0.1:3100/system/policy'
@@ -32,18 +34,17 @@ describe('#Terms', () => {
   })
 
   test('do not fetch if content exists', async () => {
-    render(
-      <Terms />,
-      {
-        store: {
-          resources: {
-            termsPolicy: 'Terms already fetched',
-          },
-        },
-      },
-    )
+    store.dispatch(contentSlice.actions.storePolicy({
+      id: 1,
+      type: 2,
+      content: 'Terms already fetched',
+      createdAt: new Date(),
+    }))
+    render(<Terms />)
     const content = await waitFor(() => screen.queryByTestId('terms-content'))
-    expect(content?.innerHTML).toBe('Terms already fetched')
-    expect(fetchMock).toBeCalledTimes(0)
+    waitFor(() => {
+      expect(content?.innerHTML).toBe('Terms already fetched')
+      expect(fetchMock).toBeCalledTimes(0)
+    })
   })
 })

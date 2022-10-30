@@ -12,6 +12,8 @@ import '@testing-library/jest-dom'
 import { context } from 'context'
 import useStore from 'states/store'
 import { MemoryHistory } from 'history'
+import { store as reduxStore } from 'stores'
+import { Provider } from 'react-redux'
 
 const WithStoreProvider = ({
   children,
@@ -90,9 +92,11 @@ const InterfaceBase = ({
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithStoreProvider store={store}>
-        {children}
-      </WithStoreProvider>
+      <Provider store={reduxStore}>
+        <WithStoreProvider store={store}>
+          {children}
+        </WithStoreProvider>
+      </Provider>
     </WithRouterProvider>
   )
 }
@@ -116,16 +120,19 @@ const HookBase = ({
   children?: ReactNode;
   history?: MemoryHistory;
   store?: object;
+  reduxStore?: object;
   disableStore?: boolean;
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithStoreProvider
-        store={store}
-        disabled={disableStore}
-      >
-        {children}
-      </WithStoreProvider>
+      <Provider store={reduxStore}>
+        <WithStoreProvider
+          store={store}
+          disabled={disableStore}
+        >
+          {children}
+        </WithStoreProvider>
+      </Provider>
     </WithRouterProvider>
   )
 }

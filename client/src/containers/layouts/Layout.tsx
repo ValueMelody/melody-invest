@@ -2,28 +2,34 @@ import { FunctionComponent, useEffect } from 'react'
 import { Alert } from 'flowbite-react'
 import useSystemRequest from 'requests/useSystemRequest'
 import useUserRequest from 'requests/useUserRequest'
-import useCommonState from 'states/useCommonState'
 import useUserState from 'states/useUserState'
 import Header from 'containers/layouts/blocks/Header'
 import Footer from 'containers/layouts/blocks/Footer'
+import { useSelector, useDispatch } from 'react-redux'
+import { removeMessage } from 'stores/global'
+import * as actions from 'actions'
+import * as selectors from 'selectors'
 
 const Layout: FunctionComponent = ({
   children,
 }) => {
+  const dispatch = useDispatch<AppDispatch>()
+
   // ------------------------------------------------------------ State --
 
-  const { getMessages, removeMessage } = useCommonState()
+  const { messages } = useSelector(selectors.selectGlobal())
+
   const { getUser } = useUserState()
   const { fetchSystemDefaults } = useSystemRequest()
   const { fetchUserOverall } = useUserRequest()
 
   const user = getUser()
-  const messages = getMessages()
 
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     fetchSystemDefaults()
+    dispatch(actions.fetchSystemDefaults())
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
@@ -37,15 +43,17 @@ const Layout: FunctionComponent = ({
     if (!messages.length) return
     const clearMessage = setTimeout(() => {
       const msgId = messages[0].id
-      removeMessage(msgId)
-    }, 10000)
+      dispatch(removeMessage(msgId))
+    }, 8000)
     return () => clearTimeout(clearMessage)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
   // ------------------------------------------------------------ Handler --
 
-  const handleRemoveMessage = (id: number) => removeMessage(id)
+  const handleRemoveMessage = (id: string) => {
+    dispatch(removeMessage(id))
+  }
 
   // ------------------------------------------------------------ UI --
 

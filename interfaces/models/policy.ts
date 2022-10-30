@@ -1,5 +1,5 @@
 export interface Record {
-  id: string;
+  id: number;
   type: number;
   content: string;
   createdAt: Date;
