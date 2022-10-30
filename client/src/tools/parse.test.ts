@@ -45,9 +45,8 @@ describe('#behaviorTitle', () => {
     expect(parseTool.behaviorTitle('tickerMaxPercent')).toBe(localeTool.t('behaviorTitle.tickerMaxPercent'))
     expect(parseTool.behaviorTitle('tradeFrequency')).toBe(localeTool.t('behaviorTitle.tradeFrequency'))
     expect(parseTool.behaviorTitle('buyPreference')).toBe(localeTool.t('behaviorTitle.buyPreference'))
-    expect(
-      parseTool.behaviorTitle('priceYearlyDecreaseSell')).toBe(localeTool.t('behaviorTitle.priceYearlyDecreaseSell'),
-    )
+    expect(parseTool.behaviorTitle('priceYearlyDecreaseSell'))
+      .toBe(localeTool.t('behaviorTitle.priceYearlyDecreaseSell'))
   })
 })
 
