@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import useTraderState from 'states/useTraderState'
-import useTraderRequest from 'requests/useTraderRequest'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
@@ -10,29 +8,29 @@ import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import PageTitle from 'containers/elements/PageTitle'
 import * as selectors from 'selectors'
-import { useSelector } from 'react-redux'
+import * as actions from 'actions'
+import { useSelector, useDispatch } from 'react-redux'
 
 const EnvDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderEnv } = useTraderState()
-  const { fetchTraderEnv } = useTraderRequest()
-
   const tickerIdentityBaseDict = useSelector(selectors.selectTickerIdentityBaseDict())
 
-  const envId = params.envId ? parseInt(params.envId) : null
-  const traderEnv = getTraderEnv(envId)
-  const topTraderProfiles = traderEnv?.tops
-  const envRecord = traderEnv?.record
+  const envId = params.envId ? parseInt(params.envId) : undefined
+  const envRecord = useSelector(selectors.selectTraderEnvBaseById(envId))
+  const envDetail = useSelector(selectors.selectTraderEnvDetailById(envId))
 
-  const bestOverall = topTraderProfiles?.yearly[0] || null
-  const bestPastYear = topTraderProfiles?.pastYear[0] || null
-  const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
-  const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
-  const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
+  const topTraderProfiles = envDetail?.topProfiles
+
+  const bestOverall = topTraderProfiles?.yearly[0]
+  const bestPastYear = topTraderProfiles?.pastYear[0]
+  const bestPastQuarter = topTraderProfiles?.pastQuarter[0]
+  const bestPastMonth = topTraderProfiles?.pastMonth[0]
+  const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
   // ------------------------------------------------------------ Effect --
 
@@ -43,7 +41,7 @@ const EnvDetail = () => {
 
   useEffect(() => {
     if (!envId || !envRecord || topTraderProfiles) return
-    fetchTraderEnv(envId)
+    dispatch(actions.fetchTraderEnvDetail(envId))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [envId, envRecord, topTraderProfiles])
 
@@ -57,7 +55,7 @@ const EnvDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!traderEnv || !topTraderProfiles) return null
+  if (!envRecord || !topTraderProfiles) return null
 
   return (
     <section className='page-root'>
@@ -78,10 +76,10 @@ const EnvDetail = () => {
       <aside className='page-aside'>
         <TraderEnvCard
           className='w-80 mb-4'
-          traderEnv={traderEnv.record}
+          traderEnv={envRecord}
         />
         <div className='flex flex-wrap mb-4'>
-          {traderEnv.record.tickerIds && traderEnv.record.tickerIds.map((tickerId) => (
+          {envRecord.tickerIds && envRecord.tickerIds.map((tickerId) => (
             <TickerLabel
               color='info'
               className='m-2'
@@ -91,9 +89,9 @@ const EnvDetail = () => {
             />
           ))}
         </div>
-        {!traderEnv.record.isSystem && (
+        {!envRecord.isSystem && (
           <div>
-            <UnwatchEnvButton traderEnv={traderEnv.record} />
+            <UnwatchEnvButton traderEnv={envRecord} />
           </div>
         )}
       </aside>

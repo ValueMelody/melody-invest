@@ -16,11 +16,6 @@ const useTraderState = () => {
     return store.traderCombos[comboId] || null
   }
 
-  const getTraderEnv = (envId: number | null) => {
-    if (envId === null) return null
-    return store.traderEnvs[envId] || null
-  }
-
   const getTraderBehavior = (
     traderEnvId: number | null,
     behavior: interfaces.traderPatternModel.Behavior | null,
@@ -37,7 +32,7 @@ const useTraderState = () => {
     return store.traderTickers[`${traderEnvId}-${tickerId}`] || null
   }
 
-  const getTraderProfile = (traderId: number | null) => {
+  const getTraderProfile = (traderId: number | null | undefined) => {
     if (!traderId) return null
     return store.traderProfiles[traderId] || null
   }
@@ -47,7 +42,6 @@ const useTraderState = () => {
   return {
     getTraderCombos,
     getTraderCombo,
-    getTraderEnv,
     getTraderBehavior,
     getTraderTicker,
     getTraderProfile,

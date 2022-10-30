@@ -88,27 +88,6 @@ const useTraderRequest = () => {
     }
   }
 
-  const storeTraderEnvDetail = (
-    envId: number,
-    envDetail: interfaces.response.EnvDetail,
-  ) => {
-    const { topProfiles } = envDetail
-    const traderProfiles = groupTraderProfiles([
-      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
-      ...topProfiles.pastMonth, ...topProfiles.pastWeek,
-    ])
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
-
-    const tops = stripTopProfiles(topProfiles)
-    store.setTraderEnvs((envs) => ({
-      ...envs,
-      [envId]: {
-        ...envs[envId],
-        tops,
-      },
-    }))
-  }
-
   const storeTraderProfile = (profile: interfaces.response.TraderProfile) => {
     store.setTraderProfiles((profiles) => ({
       ...profiles,
@@ -197,19 +176,6 @@ const useTraderRequest = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeTraderTicker(traderEnvId, tickerId, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const fetchTraderEnv = async (envId: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderEnvDetail(envId, detail)
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -379,7 +345,6 @@ const useTraderRequest = () => {
     fetchTraderCombo,
     fetchTraderBehavior,
     fetchTraderTicker,
-    fetchTraderEnv,
     fetchTraderProfile,
     fetchProfileDetail,
     createTraderEnv,

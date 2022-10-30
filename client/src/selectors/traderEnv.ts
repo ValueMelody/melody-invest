@@ -21,8 +21,17 @@ const selectTraderEnvBaseById = (id?: number) => (
   return env
 }
 
+const selectTraderEnvDetailById = (id?: number) => (
+  state: AppState,
+): { topProfiles: TopTraderProfileIds } | undefined => {
+  if (!id) return undefined
+  const detail = state.traderEnv.detail[id]
+  return detail
+}
+
 export {
   selectTraderEnvBaseDict,
   selectTraderEnvBases,
   selectTraderEnvBaseById,
+  selectTraderEnvDetailById,
 }

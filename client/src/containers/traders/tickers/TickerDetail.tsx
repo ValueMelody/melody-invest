@@ -31,11 +31,11 @@ const TickerDetail = () => {
   const topTraderProfiles = tickerDetail?.tops
   const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
 
-  const bestOverall = topTraderProfiles?.yearly[0] || null
-  const bestPastYear = topTraderProfiles?.pastYear[0] || null
-  const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
-  const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
-  const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
+  const bestOverall = topTraderProfiles?.yearly[0]
+  const bestPastYear = topTraderProfiles?.pastYear[0]
+  const bestPastQuarter = topTraderProfiles?.pastQuarter[0]
+  const bestPastMonth = topTraderProfiles?.pastMonth[0]
+  const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
   // ------------------------------------------------------------ Effect --
 

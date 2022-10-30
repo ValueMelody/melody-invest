@@ -1,17 +1,26 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderEnvBase {
   [envId: number]: interfaces.traderEnvModel.Record;
 }
 
+export interface TraderEnvDetail {
+  [envId: number]: {
+    topProfiles: TopTraderProfileIds
+  }
+}
+
 export interface TraderEnvState {
   base: TraderEnvBase;
+  detail: TraderEnvDetail;
 }
 
 const initialState: TraderEnvState = {
   base: {},
+  detail: {},
 }
 
 const storeFromSystemDefaults = (
@@ -32,6 +41,14 @@ const storeFromUserOverall = (
   })
 }
 
+const storeFromEnvDetail = (
+  state: TraderEnvState,
+  action: PayloadAction<{ detail: interfaces.response.EnvDetail, id: number }>,
+) => {
+  const topProfiles = stripTopProfiles(action.payload.detail.topProfiles)
+  state.detail[action.payload.id] = { topProfiles }
+}
+
 export const traderEnvSlice = createSlice({
   name: 'traderEnv',
   initialState,
@@ -39,6 +56,7 @@ export const traderEnvSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemDefaults.fulfilled, storeFromSystemDefaults)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
+    builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromEnvDetail)
   },
 })
 
