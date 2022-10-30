@@ -1,9 +1,7 @@
-import { RootState } from 'stores'
-
-const selectTraderEnvs = () => (state: RootState) => {
-  return Object.values(state.traderEnv)
+const selectTraderEnvBases = () => (state: AppState) => {
+  return Object.values(state.traderEnv.base)
 }
 
 export {
-  selectTraderEnvs,
+  selectTraderEnvBases,
 }

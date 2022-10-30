@@ -21,11 +21,6 @@ const useResourceState = () => {
     return identities[tickerId] || null
   }
 
-  const getTickerIdentities = (): interfaces.tickerModel.Identity[] => {
-    const tickers = Object.values(store.resources.tickerIdentities)
-    return tickers.sort((prev, curr) => curr.symbol > prev.symbol ? -1 : 1)
-  }
-
   const getTickerCategory = (
     categoryId: number,
   ): interfaces.tickerCategoryModel.Record | null => {
@@ -47,7 +42,6 @@ const useResourceState = () => {
   return {
     getPolicy,
     getTickerIdentity,
-    getTickerIdentities,
     getTickerCategory,
     getTickerCategories,
     getOverallTopTraderProfiles,

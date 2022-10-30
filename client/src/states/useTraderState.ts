@@ -35,7 +35,7 @@ const useTraderState = () => {
 
   const getTraderTicker = (
     traderEnvId: number | null,
-    tickerId: number | null,
+    tickerId: number | null | undefined,
   ) => {
     if (!traderEnvId || !tickerId) return null
     return store.traderTickers[`${traderEnvId}-${tickerId}`] || null

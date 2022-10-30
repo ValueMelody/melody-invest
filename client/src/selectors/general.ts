@@ -1,10 +1,8 @@
-import { RootState } from 'stores'
-
-const selectContent = () => (state: RootState) => {
+const selectContent = () => (state: AppState) => {
   return state.content
 }
 
-const selectGlobal = () => (state:RootState) => {
+const selectGlobal = () => (state: AppState) => {
   return state.global
 }
 

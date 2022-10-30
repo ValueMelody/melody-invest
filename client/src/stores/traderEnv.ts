@@ -2,18 +2,24 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 
-export interface TraderEnvState {
+interface TraderEnvBase {
   [envId: number]: interfaces.traderEnvModel.Record;
 }
 
-const initialState: TraderEnvState = {}
+export interface TraderEnvState {
+  base: TraderEnvBase;
+}
 
-const storeEnvs = (
+const initialState: TraderEnvState = {
+  base: {},
+}
+
+const storeEnvBases = (
   state: TraderEnvState,
   action: PayloadAction<interfaces.response.SystemDefaults>,
 ) => {
   action.payload.traderEnvs.forEach((env) => {
-    state[env.id] = env
+    state.base[env.id] = env
   })
 }
 
@@ -22,7 +28,7 @@ export const traderEnvSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(actions.fetchSystemDefaults.fulfilled, storeEnvs)
+    builder.addCase(actions.fetchSystemDefaults.fulfilled, storeEnvBases)
   },
 })
 

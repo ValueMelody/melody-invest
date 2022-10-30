@@ -1,6 +1,5 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import * as routerTool from 'tools/router'
@@ -9,6 +8,8 @@ import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const TickerDetail = () => {
   const params = useParams()
@@ -17,15 +18,14 @@ const TickerDetail = () => {
   // ------------------------------------------------------------ State --
 
   const { fetchTraderTicker } = useTraderRequest()
-  const { getTickerIdentities } = useResourceState()
   const { getTraderTicker, getTraderEnv, getTraderEnvs } = useTraderState()
 
-  const tickerId = params.tickerId ? parseInt(params.tickerId) : null
+  const tickerId = params.tickerId ? parseInt(params.tickerId) : undefined
   const envId = params.envId ? parseInt(params.envId) : 1
 
   const traderEnvs = getTraderEnvs()
-  const tickerIdentities = getTickerIdentities()
-  const tickerIdentity = tickerIdentities.find((identity) => identity.id === tickerId) || null
+
+  const tickerIdentity = useSelector(selectors.selectTickerIdentityBaseById(tickerId))
 
   const tickerDetail = getTraderTicker(envId, tickerId)
   const topTraderProfiles = tickerDetail?.tops

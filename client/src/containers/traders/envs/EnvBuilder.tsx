@@ -4,12 +4,13 @@ import { Button, TextInput, Alert, ToggleSwitch, Select } from 'flowbite-react'
 import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import useResourceState from 'states/useResourceState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import Info from 'containers/elements/Info'
 import classNames from 'classnames'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 interface PlainDate {
   year: number;
@@ -51,7 +52,6 @@ const rightClass = 'w-96'
 const EnvBuilder = () => {
   // ------------------------------------------------------------ State --
 
-  const { getTickerIdentities } = useResourceState()
   const { getTraderEnvs } = useTraderState()
   const { createTraderEnv } = useTraderRequest()
 
@@ -66,7 +66,7 @@ const EnvBuilder = () => {
   const hasValidName = !!parsedEnvName
   const hasValidTickers = !tickerIds || !!tickerIds.length
 
-  const tickerIdentities = getTickerIdentities()
+  const tickerIdentities = useSelector(selectors.selectTickerIdentityBases())
   const selectableTickers = tickerIdentities.map((identity) => ({
     label: `${identity.name} (${identity.symbol})`,
     value: identity.id,
