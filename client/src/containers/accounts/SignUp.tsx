@@ -5,26 +5,27 @@ import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
-import useSystemRequest from 'requests/useSystemRequest'
 import useCommonState from 'states/useCommonState'
-import useResourceState from 'states/useResourceState'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import GoToButton from './elements/GoToButton'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const SignUp = () => {
   usePublicGuard()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
   const { addMessage } = useCommonState()
   const { createUser } = useUserRequest()
-  const { fetchSystemPolicy } = useSystemRequest()
-  const { getPolicy } = useResourceState()
-  const policy = getPolicy()
+
+  const { termsPolicy } = useSelector(selectors.selectContent())
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -34,9 +35,8 @@ const SignUp = () => {
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    if (!policy.termsPolicy) fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions)
-    // eslint-disable-next-line
-  }, [policy.termsPolicy])
+    if (!termsPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions))
+  }, [termsPolicy, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
@@ -131,7 +131,7 @@ const SignUp = () => {
           <Textarea
             className='h-60'
             disabled
-            value={policy.termsPolicy || ''}
+            value={termsPolicy?.content || ''}
           />
         </section>
         <div className='flex justify-center items-center mb-4'>

@@ -1,7 +1,6 @@
 import { useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import useTraderState from 'states/useTraderState'
-import useResourceState from 'states/useResourceState'
 import useTraderRequest from 'requests/useTraderRequest'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -10,6 +9,8 @@ import EachTops from 'containers/traders/blocks/EachTops'
 import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import PageTitle from 'containers/elements/PageTitle'
+import * as selectors from 'selectors'
+import { useSelector } from 'react-redux'
 
 const EnvDetail = () => {
   const params = useParams()
@@ -19,7 +20,8 @@ const EnvDetail = () => {
 
   const { getTraderEnv } = useTraderState()
   const { fetchTraderEnv } = useTraderRequest()
-  const { getTickerIdentity } = useResourceState()
+
+  const tickerIdentityBaseDict = useSelector(selectors.selectTickerIdentityBaseDict())
 
   const envId = params.envId ? parseInt(params.envId) : null
   const traderEnv = getTraderEnv(envId)
@@ -84,7 +86,7 @@ const EnvDetail = () => {
               color='info'
               className='m-2'
               key={tickerId}
-              ticker={getTickerIdentity(tickerId)}
+              ticker={tickerIdentityBaseDict[tickerId]}
               onClick={handleClickTicker}
             />
           ))}
