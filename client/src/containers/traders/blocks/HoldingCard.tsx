@@ -22,7 +22,7 @@ const HoldingCard = ({
   // ------------------------------------------------------------ State --
 
   const [showAllHoldings, setShowAllHoldings] = useState(false)
-  const orderedHoldingItems = holding.items.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
+  const orderedHoldingItems = [...holding.items].sort((prev, curr) => curr.value < prev.value ? -1 : 1)
   const displayedHoldingItems = showAllHoldings ? orderedHoldingItems : orderedHoldingItems.slice(0, 10)
   const tickerIdentityBaseDict = useSelector(selectors.selectTickerIdentityBaseDict())
 

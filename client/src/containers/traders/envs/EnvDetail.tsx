@@ -36,14 +36,12 @@ const EnvDetail = () => {
 
   useEffect(() => {
     if (!envId) navigate(routerTool.notFoundRoute())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [envId, navigate])
 
   useEffect(() => {
     if (!envId || !envRecord || topTraderProfiles) return
     dispatch(actions.fetchTraderEnvDetail(envId))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [envId, envRecord, topTraderProfiles])
+  }, [envId, envRecord, topTraderProfiles, dispatch])
 
   // ------------------------------------------------------------ Handler --
 

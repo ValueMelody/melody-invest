@@ -62,6 +62,14 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchTraderEnvDetail.pending, startLoading)
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, stopLoading)
     builder.addCase(actions.fetchTraderEnvDetail.rejected, onRequestRejected)
+
+    builder.addCase(actions.fetchTraderTickerDetail.pending, startLoading)
+    builder.addCase(actions.fetchTraderTickerDetail.fulfilled, stopLoading)
+    builder.addCase(actions.fetchTraderTickerDetail.rejected, onRequestRejected)
+
+    builder.addCase(actions.fetchTraderComboDetail.pending, startLoading)
+    builder.addCase(actions.fetchTraderComboDetail.fulfilled, stopLoading)
+    builder.addCase(actions.fetchTraderComboDetail.rejected, onRequestRejected)
   },
 })
 

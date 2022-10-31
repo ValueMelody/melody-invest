@@ -17,12 +17,14 @@ import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import PageTitle from 'containers/elements/PageTitle'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const ComboDetail = () => {
   usePrivateGuard()
 
+  const dispatch = useDispatch<AppDispatch>()
   const params = useParams()
   const navigate = useNavigate()
 
@@ -32,18 +34,19 @@ const ComboDetail = () => {
   const activeChartIndex = getActiveChartIndex()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
-  const { getTraderProfile, getTraderCombo } = useTraderState()
-  const { fetchTraderCombo, deleteTraderCombo } = useTraderRequest()
+  const { getTraderProfile } = useTraderState()
+  const { deleteTraderCombo } = useTraderRequest()
 
   const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
 
-  const comboId = params.comboId ? parseInt(params.comboId) : null
-  const matchedCombo = getTraderCombo(comboId)
+  const comboId = params.comboId ? parseInt(params.comboId) : undefined
+  const matchedBase = useSelector(selectors.selectTraderComboBaseById(comboId))
+  const matchedDetail = useSelector(selectors.selectTraderComboDetailById(comboId))
 
-  const holdings = matchedCombo?.detail?.holdings || []
+  const holdings = matchedDetail?.holdings || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
-  const profilesWithEnvs = matchedCombo?.identity.traderIds.map((traderId) => {
+  const profilesWithEnvs = matchedBase?.traderIds.map((traderId) => {
     const profile = getTraderProfile(traderId)
     const env = profile?.trader.traderEnvId
       ? traderEnvDict[profile?.trader.traderEnvId]
@@ -54,10 +57,9 @@ const ComboDetail = () => {
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    if (!matchedCombo || matchedCombo?.detail) return
-    fetchTraderCombo(matchedCombo.identity.id)
-    // eslint-disable-next-line
-  }, [matchedCombo])
+    if (!matchedBase || matchedDetail) return
+    dispatch(actions.fetchTraderComboDetail(matchedBase.id))
+  }, [matchedBase, matchedDetail, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
@@ -77,7 +79,7 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!matchedCombo?.detail) return null
+  if (!matchedBase || !matchedDetail) return null
 
   return (
     <section className='page-root'>
@@ -87,14 +89,14 @@ const ComboDetail = () => {
           title={localeTool.t('common.pastPerformance')}
         />
         <ValueChangePanel
-          yearlyPercentNumber={matchedCombo?.detail?.yearlyPercentNumber || null}
-          pastYearPercentNumber={matchedCombo?.detail?.pastYearPercentNumber || null}
-          pastQuarterPercentNumber={matchedCombo?.detail?.pastQuarterPercentNumber || null}
-          pastMonthPercentNumber={matchedCombo?.detail?.pastMonthPercentNumber || null}
-          pastWeekPercentNumber={matchedCombo?.detail?.pastWeekPercentNumber || null}
-          oneDecadeTrends={matchedCombo?.detail?.oneDecadeTrends || null}
-          oneYearTrends={matchedCombo?.detail?.oneYearTrends || null}
-          totalValue={matchedCombo?.detail?.totalValue || null}
+          yearlyPercentNumber={matchedDetail?.yearlyPercentNumber}
+          pastYearPercentNumber={matchedDetail?.pastYearPercentNumber}
+          pastQuarterPercentNumber={matchedDetail?.pastQuarterPercentNumber}
+          pastMonthPercentNumber={matchedDetail?.pastMonthPercentNumber}
+          pastWeekPercentNumber={matchedDetail?.pastWeekPercentNumber}
+          oneDecadeTrends={matchedDetail?.oneDecadeTrends}
+          oneYearTrends={matchedDetail?.oneYearTrends}
+          totalValue={matchedDetail?.totalValue}
           activeChartIndex={activeChartIndex}
           onChangeChart={handleChangeChartIndex}
           showPercents
@@ -118,7 +120,7 @@ const ComboDetail = () => {
             className='mt-6'
             holding={detail}
             previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
-            initialValue={constants.Trader.Initial.Cash * matchedCombo.identity.traderIds.length}
+            initialValue={constants.Trader.Initial.Cash * matchedBase.traderIds.length}
           />
         ))}
         {displayedTotal < holdings.length && renderShowMoreButton()}
@@ -127,9 +129,9 @@ const ComboDetail = () => {
         <header className='pb-4 mb-4 flex flex-col'>
           <TraderComboCard
             className='mb-4'
-            traderCombo={matchedCombo.identity}
+            traderCombo={matchedBase}
           />
-          {!matchedCombo.identity.isSystem && (
+          {!matchedBase.isSystem && (
             <WatchButton
               isWatched={true}
               onToggle={handleUnwatch}

@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import useTraderState from 'states/useTraderState'
-import useTraderRequest from 'requests/useTraderRequest'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
@@ -9,26 +7,25 @@ import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const TickerDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
-
-  const { fetchTraderTicker } = useTraderRequest()
-  const { getTraderTicker } = useTraderState()
 
   const tickerId = params.tickerId ? parseInt(params.tickerId) : undefined
   const envId = params.envId ? parseInt(params.envId) : 1
 
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
   const tickerIdentity = useSelector(selectors.selectTickerIdentityBaseById(tickerId))
+  const tickerDetail = useSelector(selectors.selectTickerIdentityDetail(envId, tickerId))
 
-  const tickerDetail = getTraderTicker(envId, tickerId)
-  const topTraderProfiles = tickerDetail?.tops
+  const topTraderProfiles = tickerDetail?.topProfiles
   const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
 
   const bestOverall = topTraderProfiles?.yearly[0]
@@ -41,14 +38,12 @@ const TickerDetail = () => {
 
   useEffect(() => {
     if (!tickerId || !envId) navigate(routerTool.notFoundRoute())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [tickerId, envId, navigate])
 
   useEffect(() => {
     if (tickerDetail || !tickerId || !envId) return
-    fetchTraderTicker(envId, tickerId)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tickerDetail])
+    dispatch(actions.fetchTraderTickerDetail({ envId, tickerId }))
+  }, [tickerDetail, tickerId, envId, dispatch])
 
   // ------------------------------------------------------------ Handler --
 

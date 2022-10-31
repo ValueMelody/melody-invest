@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import globalReducer from './global'
 import contentReducer from './content'
+import traderComboReducer from './traderCombo'
 import traderEnvReducer from './traderEnv'
 import traderProfileReducer from './traderProfile'
 import tickerCategoryReducer from './tickerCategory'
@@ -10,6 +11,7 @@ export const store = configureStore({
   reducer: {
     global: globalReducer,
     content: contentReducer,
+    traderCombo: traderComboReducer,
     traderEnv: traderEnvReducer,
     traderProfile: traderProfileReducer,
     tickerCategory: tickerCategoryReducer,

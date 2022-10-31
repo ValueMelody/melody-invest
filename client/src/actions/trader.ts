@@ -17,3 +17,40 @@ export const fetchTraderEnvDetail = createAsyncThunk(
     }
   },
 )
+
+export const fetchTraderTickerDetail = createAsyncThunk(
+  'trader/fetchTraderTickerDetail',
+  async ({
+    envId,
+    tickerId,
+  }: {
+    envId: number;
+    tickerId: number;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/tickers/${tickerId}`
+    const res: interfaces.response.TickerDetail = await requestAdapter.sendGetRequest(endpoint)
+
+    if (!res) rejectWithValue(res)
+
+    return {
+      detail: res,
+      envId,
+      tickerId,
+    }
+  },
+)
+
+export const fetchTraderComboDetail = createAsyncThunk(
+  'trader/fetchTraderComboDetail',
+  async (comboId: number, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${comboId}`
+    const res: interfaces.response.ComboDetail = await requestAdapter.sendGetRequest(endpoint)
+
+    if (!res) rejectWithValue(res)
+
+    return {
+      detail: res,
+      id: comboId,
+    }
+  },
+)

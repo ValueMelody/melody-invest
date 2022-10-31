@@ -24,22 +24,6 @@ const useTraderRequest = () => {
     }
   }
 
-  const storeTraderComboDetail = (
-    id: number,
-    comboDetail: interfaces.response.ComboDetail,
-  ) => {
-    const traderProfiles = groupTraderProfiles(comboDetail.profiles)
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
-
-    store.setTraderCombos((combos) => ({
-      ...combos,
-      [id]: {
-        ...combos[id],
-        detail: comboDetail,
-      },
-    }))
-  }
-
   const storeTraderBehavior = (
     envId: number,
     behavior: interfaces.traderPatternModel.Behavior,
@@ -56,25 +40,6 @@ const useTraderRequest = () => {
     store.setTraderBehaviors((resources) => ({
       ...resources,
       [`${envId}-${behavior}`]: { tops },
-    }))
-  }
-
-  const storeTraderTicker = (
-    envId: number,
-    tickerId: number,
-    tickerDetail: interfaces.response.TickerDetail,
-  ) => {
-    const { topProfiles } = tickerDetail
-    const traderProfiles = groupTraderProfiles([
-      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
-      ...topProfiles.pastMonth, ...topProfiles.pastWeek,
-    ])
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
-
-    const tops = stripTopProfiles(topProfiles)
-    store.setTraderTickers((resources) => ({
-      ...resources,
-      [`${envId}-${tickerId}`]: { tops },
     }))
   }
 
@@ -140,19 +105,6 @@ const useTraderRequest = () => {
 
   // ------------------------------------------------------------ fetch --
 
-  const fetchTraderCombo = async (id: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${id}`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderComboDetail(id, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   const fetchTraderBehavior = async (
     traderEnvId: number, behavior: interfaces.traderPatternModel.Behavior,
   ) => {
@@ -161,21 +113,6 @@ const useTraderRequest = () => {
     try {
       const detail = await requestAdapter.sendGetRequest(endpoint)
       storeTraderBehavior(traderEnvId, behavior, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const fetchTraderTicker = async (
-    traderEnvId: number, tickerId: number,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}/tickers/${tickerId}`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderTicker(traderEnvId, tickerId, detail)
     } catch (e) {
       store.showRequestError(e)
     } finally {
@@ -342,9 +279,7 @@ const useTraderRequest = () => {
   // ------------------------------------------------------------ Export --
 
   return {
-    fetchTraderCombo,
     fetchTraderBehavior,
-    fetchTraderTicker,
     fetchTraderProfile,
     fetchProfileDetail,
     createTraderEnv,

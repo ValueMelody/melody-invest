@@ -21,13 +21,13 @@ const ProfileDashboard = () => {
   // ------------------------------------------------------------ State --
 
   const { getUser } = useUserState()
-  const { getTraderProfile, getTraderCombos } = useTraderState()
+  const { getTraderProfile } = useTraderState()
 
   const user = getUser()
   const envs = useSelector(selectors.selectTraderEnvBases())
-  const combos = getTraderCombos()
+  const combos = useSelector(selectors.selectTraderComboBases())
 
-  const userCombos = combos.filter((combo) => !combo.identity.isSystem)
+  const userCombos = combos.filter((combo) => !combo.isSystem)
 
   // ------------------------------------------------------------ Handler --
 
@@ -122,9 +122,9 @@ const ProfileDashboard = () => {
         />
         {userCombos.map((combo) => (
           <TraderComboCard
-            key={combo.identity.id}
+            key={combo.id}
             className='w-80 mb-4'
-            traderCombo={combo.identity}
+            traderCombo={combo}
             onClick={handleClickCombo}
           />
         ))}

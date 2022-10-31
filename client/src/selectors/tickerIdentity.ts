@@ -22,8 +22,17 @@ const selectTickerIdentityBaseById = (id?: number) => (
   return ticker
 }
 
+const selectTickerIdentityDetail = (envId: number, tickerId?: number) => (
+  state: AppState,
+): { topProfiles: TopTraderProfileIds } | undefined => {
+  if (!envId || !tickerId) return undefined
+  const detail = state.tickerIdentity.detail[`${envId}-${tickerId}`]
+  return detail
+}
+
 export {
   selectTickerIdentityBaseDict,
   selectTickerIdentityBases,
   selectTickerIdentityBaseById,
+  selectTickerIdentityDetail,
 }

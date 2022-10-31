@@ -2,12 +2,15 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { Button, TextInput, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
 import useUserState from 'states/useUserState'
 import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const ComboBuilder = () => {
   usePrivateGuard()
@@ -18,7 +21,7 @@ const ComboBuilder = () => {
   const [envName, setEnvName] = useState('')
 
   const { createTraderCombo } = useTraderRequest()
-  const { getTraderProfile, getTraderCombos } = useTraderState()
+  const { getTraderProfile } = useTraderState()
   const { getUser } = useUserState()
   const user = getUser()
   const profiles = user.userTraderIds.map((traderId) => getTraderProfile(traderId)) || []
@@ -27,11 +30,14 @@ const ComboBuilder = () => {
   const hasValidName = !!parsedName.trim()
   const hasValidTraders = selectedTraderIds.length >= 2
 
-  const traderCombos = getTraderCombos()
+  const traderCombos = useSelector(selectors.selectTraderComboBases())
 
-  const hasDuplicatedName = traderCombos.some((combo) => combo.identity.name.toLowerCase() === parsedName)
+  const hasDuplicatedName = traderCombos.some((combo) => {
+    const name = parseTool.traderComboName(combo)
+    return name.toLowerCase() === parsedName
+  })
   const hasDuplicatedCombo = traderCombos.some((combo) => {
-    const currentIds = combo.identity.traderIds.join(',')
+    const currentIds = combo.traderIds.join(',')
     const buildIds = selectedTraderIds.join(',')
     return currentIds === buildIds
   })
