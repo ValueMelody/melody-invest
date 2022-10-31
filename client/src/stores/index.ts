@@ -4,6 +4,7 @@ import contentReducer from './content'
 import traderComboReducer from './traderCombo'
 import traderEnvReducer from './traderEnv'
 import traderProfileReducer from './traderProfile'
+import traderBehaviorReducer from './traderBehavior'
 import tickerCategoryReducer from './tickerCategory'
 import tickerIdentityReducer from './tickerIdentity'
 
@@ -14,6 +15,7 @@ export const store = configureStore({
     traderCombo: traderComboReducer,
     traderEnv: traderEnvReducer,
     traderProfile: traderProfileReducer,
+    traderBehavior: traderBehaviorReducer,
     tickerCategory: tickerCategoryReducer,
     tickerIdentity: tickerIdentityReducer,
   },

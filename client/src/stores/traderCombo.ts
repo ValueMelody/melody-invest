@@ -36,6 +36,16 @@ const storeFromComboDetail = (
   state.detail[action.payload.id] = action.payload.detail
 }
 
+const storeFromSystemCombos = (
+  state: TraderComboState,
+  action: PayloadAction<interfaces.response.ComboProfile[]>,
+) => {
+  action.payload.forEach((comboProfile) => {
+    state.base[comboProfile.identity.id] = comboProfile.identity
+    state.detail[comboProfile.identity.id] = comboProfile.detail
+  })
+}
+
 export const traderComboSlice = createSlice({
   name: 'traderCombo',
   initialState,
@@ -43,6 +53,7 @@ export const traderComboSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
+    builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
   },
 })
 

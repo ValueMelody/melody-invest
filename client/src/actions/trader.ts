@@ -40,6 +40,28 @@ export const fetchTraderTickerDetail = createAsyncThunk(
   },
 )
 
+export const fetchTraderBehaviorDetail = createAsyncThunk(
+  'trader/fetchTraderBehaviorDetail',
+  async ({
+    envId,
+    behavior,
+  }: {
+    envId: number;
+    behavior: interfaces.traderPatternModel.Behavior;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/behaviors/${behavior}`
+    const res: interfaces.response.BehaviorDetail = await requestAdapter.sendGetRequest(endpoint)
+
+    if (!res) rejectWithValue(res)
+
+    return {
+      detail: res,
+      envId,
+      behavior,
+    }
+  },
+)
+
 export const fetchTraderComboDetail = createAsyncThunk(
   'trader/fetchTraderComboDetail',
   async (comboId: number, { rejectWithValue }) => {

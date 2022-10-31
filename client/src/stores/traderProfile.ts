@@ -38,15 +38,28 @@ const storeFromComboDetail = (
   })
 }
 
-export const tickerIdentitySlice = createSlice({
+const storeFromSystemCombos = (
+  state: TraderProfileState,
+  action: PayloadAction<interfaces.response.ComboProfile[]>,
+) => {
+  action.payload.forEach((comboProfile) => {
+    comboProfile.detail.profiles.forEach((profile) => {
+      state.base[profile.trader.id] = profile
+    })
+  })
+}
+
+export const traderProfileSlice = createSlice({
   name: 'tickerIdentity',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromDetail)
     builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetail)
+    builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetail)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
+    builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
   },
 })
 
-export default tickerIdentitySlice.reducer
+export default traderProfileSlice.reducer

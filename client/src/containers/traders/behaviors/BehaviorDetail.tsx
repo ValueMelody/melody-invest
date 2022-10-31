@@ -4,29 +4,26 @@ import * as constants from '@shared/constants'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderRequest from 'requests/useTraderRequest'
-import useTraderState from 'states/useTraderState'
 import EachTops from 'containers/traders/blocks/EachTops'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 import PageTitle from 'containers/elements/PageTitle'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const BehaviorDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderBehavior } = useTraderState()
-  const { fetchTraderBehavior } = useTraderRequest()
-
-  const behavior = params.behavior || null
+  const behavior = params.behavior
   const envId = params.envId ? parseInt(params.envId) : 1
-  const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior) || null
-  const behaviorDetail = getTraderBehavior(envId, validBehavior)
-  const topTraderProfiles = behaviorDetail?.tops
+  const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior)
+  const behaviorDetail = useSelector(selectors.selectTraderBehaviorDetail(envId, validBehavior))
+  const topTraderProfiles = behaviorDetail?.topProfiles
 
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
   const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
@@ -41,14 +38,12 @@ const BehaviorDetail = () => {
 
   useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [navigate, validBehavior])
 
   useEffect(() => {
     if (behaviorDetail || !validBehavior || !envId) return
-    fetchTraderBehavior(envId, validBehavior)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [behaviorDetail])
+    dispatch(actions.fetchTraderBehaviorDetail({ envId, behavior: validBehavior }))
+  }, [behaviorDetail, validBehavior, envId, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
