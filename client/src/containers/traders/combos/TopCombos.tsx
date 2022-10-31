@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import useCommonState from 'states/useCommonState'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
@@ -14,6 +13,7 @@ import PageTitle from 'containers/elements/PageTitle'
 import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
 import * as actions from 'actions'
+import { contentSlice } from 'stores/content'
 
 const TopCombos = () => {
   const dispatch = useDispatch<AppDispatch>()
@@ -23,8 +23,7 @@ const TopCombos = () => {
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
 
-  const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const activeChartIndex = getActiveChartIndex()
+  const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
   const traderCombos = useSelector(selectors.selectTraderComboBases())
@@ -61,7 +60,7 @@ const TopCombos = () => {
   }
 
   const handleChangeChartIndex = (index: number) => {
-    setActiveChartIndex(index)
+    dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
   // ------------------------------------------------------------ UI --

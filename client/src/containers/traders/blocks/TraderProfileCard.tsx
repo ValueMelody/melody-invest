@@ -9,8 +9,9 @@ import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import { contentSlice } from 'stores/content'
 
 const TraderProfileCard = ({
   profile,
@@ -30,14 +31,14 @@ const TraderProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   // ------------------------------------------------------------ State --
-
+  const dispatch = useDispatch<AppDispatch>()
   const { getUser } = useUserState()
   const user = getUser()
 
   const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
-  const { addMessage, getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const activeChartIndex = getActiveChartIndex()
+  const { addMessage } = useCommonState()
+  const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const trader = profile?.trader || null
   const pattern = profile?.pattern || null
@@ -84,7 +85,7 @@ const TraderProfileCard = ({
   }
 
   const handleChangeChartIndex = (index: number) => {
-    setActiveChartIndex(index)
+    dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
   // ------------------------------------------------------------ UI --

@@ -6,7 +6,6 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderRequest from 'requests/useTraderRequest'
-import useCommonState from 'states/useCommonState'
 import useTraderState from 'states/useTraderState'
 import useShowMore from 'handlers/useShowMore'
 import usePrivateGuard from 'handlers/usePrivateGuard'
@@ -20,6 +19,7 @@ import PageTitle from 'containers/elements/PageTitle'
 import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
 import * as actions from 'actions'
+import { contentSlice } from 'stores/content'
 
 const ComboDetail = () => {
   usePrivateGuard()
@@ -30,8 +30,7 @@ const ComboDetail = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const activeChartIndex = getActiveChartIndex()
+  const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
   const { getTraderProfile } = useTraderState()
@@ -69,7 +68,7 @@ const ComboDetail = () => {
   }
 
   const handleChangeChartIndex = (index: number) => {
-    setActiveChartIndex(index)
+    dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
   const handleUnwatch = async () => {

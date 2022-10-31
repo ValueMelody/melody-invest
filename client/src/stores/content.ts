@@ -6,9 +6,12 @@ import * as interfaces from '@shared/interfaces'
 export interface ContentState {
   privacyPolicy?: interfaces.policyModel.Record;
   termsPolicy?: interfaces.policyModel.Record;
+  activeTraderChartIndex: number;
 }
 
-const initialState: ContentState = {}
+const initialState: ContentState = {
+  activeTraderChartIndex: 0,
+}
 
 const storePolicy = (
   state: ContentState,
@@ -21,11 +24,19 @@ const storePolicy = (
   }
 }
 
+const changeActiveTraderChartIndex = (
+  state: ContentState,
+  action: PayloadAction<number>,
+) => {
+  state.activeTraderChartIndex = action.payload
+}
+
 export const contentSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
     storePolicy,
+    changeActiveTraderChartIndex,
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemPolicy.fulfilled, storePolicy)
