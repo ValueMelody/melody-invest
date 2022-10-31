@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderProfileBase {
   [traderId: number]: interfaces.response.TraderProfile;
@@ -8,6 +9,7 @@ export interface TraderProfileBase {
 
 export interface TraderProfileState {
   base: TraderProfileBase;
+  systemTops?: TopTraderProfileIds;
 }
 
 const initialState: TraderProfileState = {
@@ -49,6 +51,21 @@ const storeFromSystemCombos = (
   })
 }
 
+const storeFromSystemTops = (
+  state: TraderProfileState,
+  action: PayloadAction<interfaces.response.TopTraderProfiles>,
+) => {
+  const profiles = [
+    ...action.payload.yearly, ...action.payload.pastYear, ...action.payload.pastQuarter,
+    ...action.payload.pastMonth, ...action.payload.pastWeek,
+  ]
+  profiles.forEach((profile) => {
+    state.base[profile.trader.id] = profile
+  })
+  const tops = stripTopProfiles(action.payload)
+  state.systemTops = tops
+}
+
 export const traderProfileSlice = createSlice({
   name: 'tickerIdentity',
   initialState,
@@ -59,6 +76,7 @@ export const traderProfileSlice = createSlice({
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetail)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
+    builder.addCase(actions.fetchSystemTopTraders.fulfilled, storeFromSystemTops)
   },
 })
 

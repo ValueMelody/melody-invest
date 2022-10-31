@@ -5,8 +5,6 @@ import { context, Context } from 'context'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import groupTraderProfiles from './shared/groupTraderProfiles'
-import stripTopProfiles from './shared/stripTopProfiles'
 
 const useTraderRequest = () => {
   const store: Context = useContext(context)
@@ -22,25 +20,6 @@ const useTraderRequest = () => {
         [combo.id]: { identity: combo },
       }))
     }
-  }
-
-  const storeTraderBehavior = (
-    envId: number,
-    behavior: interfaces.traderPatternModel.Behavior,
-    behaviorDetail: interfaces.response.BehaviorDetail,
-  ) => {
-    const { topProfiles } = behaviorDetail
-    const traderProfiles = groupTraderProfiles([
-      ...topProfiles.yearly, ...topProfiles.pastYear, ...topProfiles.pastQuarter,
-      ...topProfiles.pastMonth, ...topProfiles.pastWeek,
-    ])
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
-
-    const tops = stripTopProfiles(topProfiles)
-    store.setTraderBehaviors((resources) => ({
-      ...resources,
-      [`${envId}-${behavior}`]: { tops },
-    }))
   }
 
   const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
@@ -104,21 +83,6 @@ const useTraderRequest = () => {
   }
 
   // ------------------------------------------------------------ fetch --
-
-  const fetchTraderBehavior = async (
-    traderEnvId: number, behavior: interfaces.traderPatternModel.Behavior,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}/behaviors/${behavior}`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderBehavior(traderEnvId, behavior, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
 
   const fetchTraderProfile = async (id: number, accessCode: string) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}`
@@ -279,7 +243,6 @@ const useTraderRequest = () => {
   // ------------------------------------------------------------ Export --
 
   return {
-    fetchTraderBehavior,
     fetchTraderProfile,
     fetchProfileDetail,
     createTraderEnv,

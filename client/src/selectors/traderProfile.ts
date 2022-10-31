@@ -6,6 +6,13 @@ const selectTraderProfileBaseDict = () => (
   return state.traderProfile.base
 }
 
+const selectSystemTopTraders = () => (
+  state: AppState,
+): TopTraderProfileIds | undefined => {
+  return state.traderProfile.systemTops
+}
+
 export {
   selectTraderProfileBaseDict,
+  selectSystemTopTraders,
 }
