@@ -3,9 +3,10 @@ import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useUserState from 'states/useUserState'
 import useTraderRequest from 'requests/useTraderRequest'
 import WatchButton from '../elements/WatchButton'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const TraderComboCard = ({
   traderCombo,
@@ -20,13 +21,12 @@ const TraderComboCard = ({
 }) => {
   // ------------------------------------------------------------ State --
 
-  const { getUser } = useUserState()
-  const user = getUser()
+  const user = useSelector(selectors.selectUser())
 
   const { deleteTraderCombo } = useTraderRequest()
 
   const disabled = traderCombo && (
-    !traderCombo.isSystem && !user.accessibleComboIds.includes(traderCombo.id)
+    !traderCombo.isSystem && !user.access.accessibleComboIds.includes(traderCombo.id)
   )
 
   // ------------------------------------------------------------ Handler --

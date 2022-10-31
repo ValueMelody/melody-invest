@@ -1,7 +1,5 @@
 import { FunctionComponent, useEffect } from 'react'
 import { Alert } from 'flowbite-react'
-import useUserRequest from 'requests/useUserRequest'
-import useUserState from 'states/useUserState'
 import Header from 'containers/layouts/blocks/Header'
 import Footer from 'containers/layouts/blocks/Footer'
 import { useSelector, useDispatch } from 'react-redux'
@@ -14,16 +12,8 @@ const Layout: FunctionComponent = ({
 }) => {
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const { messages } = useSelector(selectors.selectGlobal())
-
-  const { getUser } = useUserState()
-  const { fetchUserOverall } = useUserRequest()
-
-  const user = getUser()
-
-  // ------------------------------------------------------------ Effect --
+  const user = useSelector(selectors.selectUser())
 
   useEffect(() => {
     dispatch(actions.fetchSystemDefaults())
@@ -31,10 +21,8 @@ const Layout: FunctionComponent = ({
 
   useEffect(() => {
     if (!user.hasLogin || user.userType) return
-    fetchUserOverall()
     dispatch(actions.fetchUserOverall())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.hasLogin, user.userType])
+  }, [user.hasLogin, user.userType, dispatch])
 
   useEffect(() => {
     if (!messages.length) return
@@ -46,13 +34,9 @@ const Layout: FunctionComponent = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
-  // ------------------------------------------------------------ Handler --
-
   const handleRemoveMessage = (id: string) => {
     dispatch(removeMessage(id))
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <>

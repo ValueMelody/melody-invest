@@ -48,22 +48,6 @@ const useTraderRequest = () => {
     store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
   }
 
-  const storeProfileDetail = (
-    traderId: number,
-    detail: interfaces.response.ProfileDetail,
-  ) => {
-    if (!store.traderProfiles[traderId]) return
-    store.setTraderProfiles((details) => (
-      {
-        ...details,
-        [traderId]: {
-          ...details[traderId],
-          ...detail,
-        },
-      }
-    ))
-  }
-
   const removeWatchedProfile = (traderId: number) => {
     const traderIds = store.resources.userTraderIds
     const remainingTraderIds = traderIds.filter((id) => id !== traderId)
@@ -80,34 +64,6 @@ const useTraderRequest = () => {
     const traderCombos = { ...store.traderCombos }
     delete traderCombos[traderComboId]
     store.setTraderCombos(traderCombos)
-  }
-
-  // ------------------------------------------------------------ fetch --
-
-  const fetchTraderProfile = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}`
-    store.startLoading()
-    try {
-      const profile = await requestAdapter.sendGetRequest(endpoint)
-      storeTraderProfile(profile)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const fetchProfileDetail = async (id: number, accessCode: string) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}/detail`
-    store.startLoading()
-    try {
-      const detail = await requestAdapter.sendGetRequest(endpoint)
-      storeProfileDetail(id, detail)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
   }
 
   // ------------------------------------------------------------ Create --
@@ -243,8 +199,6 @@ const useTraderRequest = () => {
   // ------------------------------------------------------------ Export --
 
   return {
-    fetchTraderProfile,
-    fetchProfileDetail,
     createTraderEnv,
     createTraderCombo,
     createTraderProfile,

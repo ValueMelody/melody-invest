@@ -4,19 +4,15 @@ import {
 } from '@heroicons/react/24/solid'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useUserState from 'states/useUserState'
 import HeaderLink from 'containers/layouts/elements/HeaderLink'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const navClass = 'flex items-center'
 const headerClass = 'mx-2'
 
 const Header = () => {
-  // ------------------------------------------------------------ State --
-
-  const { getUser } = useUserState()
-  const user = getUser()
-
-  // ------------------------------------------------------------ UI --
+  const user = useSelector(selectors.selectUser())
 
   return (
     <header

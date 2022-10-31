@@ -36,11 +36,13 @@ describe('#Privacy', () => {
   })
 
   test('do not fetch if content exists', async () => {
-    store.dispatch(contentSlice.actions.storePolicy({
-      id: 1,
-      type: 1,
-      content: 'Privacy already fetched',
-      createdAt: new Date(),
+    store.dispatch(contentSlice.actions._updateForTest({
+      privacyPolicy: {
+        id: 1,
+        type: 1,
+        content: 'Privacy already fetched',
+        createdAt: new Date(),
+      },
     }))
     render(<Privacy />)
     const content = screen.queryByTestId('privacy-content')

@@ -3,6 +3,47 @@ import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import * as interfaces from '@shared/interfaces'
 
+export const fetchTraderProfile = createAsyncThunk(
+  'trader/fetchTraderProfile',
+  async ({
+    id,
+    accessCode,
+  }: {
+    id: number;
+    accessCode: string;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}`
+    const res: interfaces.response.TraderProfile = await requestAdapter.sendGetRequest(endpoint)
+
+    if (!res) rejectWithValue(res)
+
+    return {
+      detail: res,
+    }
+  },
+)
+
+export const fetchTraderProfileDetail = createAsyncThunk(
+  'trader/fetchTraderProfileDetail',
+  async ({
+    id,
+    accessCode,
+  }: {
+    id: number;
+    accessCode: string;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}/detail`
+    const res: interfaces.response.ProfileDetail = await requestAdapter.sendGetRequest(endpoint)
+
+    if (!res) rejectWithValue(res)
+
+    return {
+      id,
+      detail: res,
+    }
+  },
+)
+
 export const fetchTraderEnvDetail = createAsyncThunk(
   'trader/fetchTraderEnvDetail',
   async (envId: number, { rejectWithValue }) => {

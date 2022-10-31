@@ -3,6 +3,12 @@ import Header from './Header'
 import { fireEvent, render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import { store } from 'stores'
+import { userSlice } from 'stores/user'
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 describe('#Header', () => {
   test('could render common Header', () => {
@@ -46,15 +52,10 @@ describe('#Header', () => {
   })
 
   test('could render as loggedin user', () => {
+    store.dispatch(userSlice.actions._updateForTest({ hasLogin: true }))
     const history = createMemoryHistory({ initialEntries: ['/test'] })
-    const store = {
-      resources: {
-        hasLogin: true,
-        userTraderIds: [],
-      },
-    }
 
-    render(<Header />, { history, store })
+    render(<Header />, { history })
 
     const dashboardText = localeTool.t('dashboard.title')
     const dashboardButton = screen.queryByText(dashboardText)

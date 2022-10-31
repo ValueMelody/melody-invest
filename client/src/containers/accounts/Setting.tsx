@@ -12,6 +12,8 @@ import RequiredLabel from 'containers/elements/RequiredLabel'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const cardClass = 'w-96 mb-6 mx-4'
 const titleClass = 'font-bold text-xl mb-4'
@@ -23,7 +25,7 @@ const Setting = () => {
 
   const { validatePassword } = usePasswordValidator()
   const { updateUserPassword, lockUserAccount } = useUserRequest()
-  const { getUser, removeUser } = useUserState()
+  const { removeUser } = useUserState()
   const { addMessage } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = useState('')
@@ -31,7 +33,7 @@ const Setting = () => {
   const [retypePassword, setRetypePassword] = useState('')
   const [showConfirmLock, setShowConfirmLock] = useState(false)
 
-  const user = getUser()
+  const user = useSelector(selectors.selectUser())
 
   const userTypeText = useMemo(() => {
     switch (user.userType) {

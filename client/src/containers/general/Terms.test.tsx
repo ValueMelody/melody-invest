@@ -34,11 +34,13 @@ describe('#Terms', () => {
   })
 
   test('do not fetch if content exists', async () => {
-    store.dispatch(contentSlice.actions.storePolicy({
-      id: 1,
-      type: 2,
-      content: 'Terms already fetched',
-      createdAt: new Date(),
+    store.dispatch(contentSlice.actions._updateForTest({
+      termsPolicy: {
+        id: 1,
+        type: 2,
+        content: 'Terms already fetched',
+        createdAt: new Date(),
+      },
     }))
     render(<Terms />)
     const content = await waitFor(() => screen.queryByTestId('terms-content'))

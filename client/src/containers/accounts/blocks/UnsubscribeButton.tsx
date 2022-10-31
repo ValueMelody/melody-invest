@@ -3,11 +3,14 @@ import { Button } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import useUserRequest from 'requests/useUserRequest'
 import ConfirmModal from 'containers/elements/ConfirmModal'
+import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
 
 const UnsubscribeButton = () => {
   // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
 
-  const { cancelUserSubscription, fetchUserOverall } = useUserRequest()
+  const { cancelUserSubscription } = useUserRequest()
 
   const [showModal, setShowModal] = useState(false)
 
@@ -23,7 +26,7 @@ const UnsubscribeButton = () => {
 
   const handleConfirmUnsubscribe = async () => {
     await cancelUserSubscription()
-    await fetchUserOverall()
+    dispatch(actions.fetchUserOverall())
     handleCloseModal()
   }
 

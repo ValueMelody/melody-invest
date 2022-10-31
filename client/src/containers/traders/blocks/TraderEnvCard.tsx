@@ -3,8 +3,9 @@ import { Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useUserState from 'states/useUserState'
 import UnwatchEnvButton from './UnwatchEnvButton'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const TraderEnvCard = ({
   traderEnv,
@@ -19,11 +20,10 @@ const TraderEnvCard = ({
 }) => {
   // ------------------------------------------------------------ State --
 
-  const { getUser } = useUserState()
-  const user = getUser()
+  const user = useSelector(selectors.selectUser())
 
   const disabled = traderEnv && (
-    !traderEnv.isSystem && !user.accessibleEnvIds.includes(traderEnv.id)
+    !traderEnv.isSystem && !user.access.accessibleEnvIds.includes(traderEnv.id)
   )
 
   // ------------------------------------------------------------ Handler --

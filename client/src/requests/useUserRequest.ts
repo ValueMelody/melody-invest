@@ -8,11 +8,13 @@ import * as routerEnum from 'enums/router'
 import * as commonEnum from 'enums/common'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import groupTraderProfiles from './shared/groupTraderProfiles'
+import { useDispatch } from 'react-redux'
+import { userSlice } from 'stores/user'
 
 const useUserRequest = () => {
   const store: Context = useContext(context)
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ Store --
 
@@ -24,59 +26,7 @@ const useUserRequest = () => {
       ...resources,
       hasLogin: true,
     }))
-  }
-
-  const storeUserOverall = (overall: interfaces.response.UserOverall) => {
-    const {
-      traderProfiles: profiles,
-      traderEnvs: envs,
-      traderCombos: combos,
-      email,
-      type,
-      planStartAtUTC,
-      planEndAtUTC,
-    } = overall
-
-    const traderIds = profiles.map((profile) => profile.trader.id)
-
-    store.setResources((resources) => ({
-      ...resources,
-      userEmail: email,
-      userType: type,
-      userTraderIds: traderIds,
-      planStartAtUTC,
-      planEndAtUTC,
-    }))
-
-    const traderCombos = combos.reduce((combos, combo) => ({
-      ...combos,
-      [combo.id]: { identity: combo },
-    }), {})
-    store.setTraderCombos((combos) => ({ ...combos, ...traderCombos }))
-
-    const traderEnvs = envs.reduce((envs, env) => ({
-      ...envs,
-      [env.id]: { record: env },
-    }), {})
-    store.setTraderEnvs((envs) => ({ ...envs, ...traderEnvs }))
-
-    const traderProfiles = groupTraderProfiles(profiles)
-    store.setTraderProfiles((profiles) => ({ ...profiles, ...traderProfiles }))
-  }
-
-  // ------------------------------------------------------------ Fetch --
-
-  const fetchUserOverall = async () => {
-    const endpoint = `${routerEnum.Endpoint.Users}/overall`
-    store.startLoading()
-    try {
-      const overall = await requestAdapter.sendGetRequest(endpoint)
-      storeUserOverall(overall)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
+    dispatch(userSlice.actions.updateUserLoginState(true))
   }
 
   // ------------------------------------------------------------ Create --
@@ -290,7 +240,6 @@ const useUserRequest = () => {
   // ------------------------------------------------------------ Export --
 
   return {
-    fetchUserOverall,
     createUser,
     createUserToken,
     createUserSubscription,

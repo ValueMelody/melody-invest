@@ -46,10 +46,21 @@ const storeFromSystemCombos = (
   })
 }
 
+const _updateForTest = (
+  state: any,
+  action: any,
+) => {
+  Object.keys(action.payload).forEach((key) => {
+    state[key] = action.payload[key]
+  })
+}
+
 export const traderComboSlice = createSlice({
   name: 'traderCombo',
   initialState,
-  reducers: {},
+  reducers: {
+    _updateForTest,
+  },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)

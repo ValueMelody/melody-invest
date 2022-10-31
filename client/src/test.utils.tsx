@@ -105,10 +105,12 @@ const render = (
   ui: ReactElement,
   options?: object,
 ) => defaultRender(ui, {
-  wrapper: (props) => <InterfaceBase
-    {...props}
-    {...options}
-                      />,
+  wrapper: (props) => (
+    <InterfaceBase
+      {...props}
+      {...options}
+    />
+  ),
 })
 
 const HookBase = ({
@@ -141,10 +143,12 @@ const renderHook = (
   hook: () => any,
   options?: object,
 ) => defaultRenderHook(hook, {
-  wrapper: (props) => <HookBase
-    {...props}
-    {...options}
-                      />,
+  wrapper: (props) => (
+    <HookBase
+      {...props}
+      {...options}
+    />
+  ),
 })
 
 export {

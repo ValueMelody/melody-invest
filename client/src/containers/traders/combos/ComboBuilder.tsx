@@ -3,8 +3,6 @@ import { Button, TextInput, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
 import useTraderRequest from 'requests/useTraderRequest'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
@@ -21,10 +19,9 @@ const ComboBuilder = () => {
   const [envName, setEnvName] = useState('')
 
   const { createTraderCombo } = useTraderRequest()
-  const { getTraderProfile } = useTraderState()
-  const { getUser } = useUserState()
-  const user = getUser()
-  const profiles = user.userTraderIds.map((traderId) => getTraderProfile(traderId)) || []
+  const user = useSelector(selectors.selectUser())
+  const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
+  const profiles = user.userTraderIds.map((traderId) => profileDict[traderId]) || []
 
   const parsedName = envName.trim().toLowerCase()
   const hasValidName = !!parsedName.trim()

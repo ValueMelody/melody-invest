@@ -6,7 +6,6 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useTraderRequest from 'requests/useTraderRequest'
-import useTraderState from 'states/useTraderState'
 import useShowMore from 'handlers/useShowMore'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
@@ -33,10 +32,10 @@ const ComboDetail = () => {
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
-  const { getTraderProfile } = useTraderState()
   const { deleteTraderCombo } = useTraderRequest()
 
   const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
+  const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
   const comboId = params.comboId ? parseInt(params.comboId) : undefined
   const matchedBase = useSelector(selectors.selectTraderComboBaseById(comboId))
@@ -46,7 +45,7 @@ const ComboDetail = () => {
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
   const profilesWithEnvs = matchedBase?.traderIds.map((traderId) => {
-    const profile = getTraderProfile(traderId)
+    const profile = traderProfileDict[traderId]
     const env = profile?.trader.traderEnvId
       ? traderEnvDict[profile?.trader.traderEnvId]
       : null

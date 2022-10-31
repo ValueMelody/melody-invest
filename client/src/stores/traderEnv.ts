@@ -49,10 +49,21 @@ const storeFromEnvDetail = (
   state.detail[action.payload.id] = { topProfiles }
 }
 
+const _updateForTest = (
+  state: any,
+  action: any,
+) => {
+  Object.keys(action.payload).forEach((key) => {
+    state[key] = action.payload[key]
+  })
+}
+
 export const traderEnvSlice = createSlice({
   name: 'traderEnv',
   initialState,
-  reducers: {},
+  reducers: {
+    _updateForTest,
+  },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemDefaults.fulfilled, storeFromSystemDefaults)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)

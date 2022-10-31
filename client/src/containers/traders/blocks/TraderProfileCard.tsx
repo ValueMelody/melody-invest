@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import useUserState from 'states/useUserState'
 import useCommonState from 'states/useCommonState'
 import useTraderRequest from 'requests/useTraderRequest'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
@@ -32,8 +31,7 @@ const TraderProfileCard = ({
 }) => {
   // ------------------------------------------------------------ State --
   const dispatch = useDispatch<AppDispatch>()
-  const { getUser } = useUserState()
-  const user = getUser()
+  const user = useSelector(selectors.selectUser())
 
   const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
@@ -69,7 +67,7 @@ const TraderProfileCard = ({
       })
       return
     }
-    if (!user.canFollowTrader && !isWatched) {
+    if (!user.access.canFollowTrader && !isWatched) {
       addMessage({
         id: Math.random(),
         title: localeTool.t('permission.limited'),

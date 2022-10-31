@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import usePrivateGuard from 'handlers/usePrivateGuard'
@@ -20,12 +18,10 @@ const ProfileDashboard = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getUser } = useUserState()
-  const { getTraderProfile } = useTraderState()
-
-  const user = getUser()
   const envs = useSelector(selectors.selectTraderEnvBases())
   const combos = useSelector(selectors.selectTraderComboBases())
+  const user = useSelector(selectors.selectUser())
+  const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
   const userCombos = combos.filter((combo) => !combo.isSystem)
 
@@ -71,10 +67,10 @@ const ProfileDashboard = () => {
           />
           <AddButton
             onClick={handleClickAddProfile}
-            disabled={!user.canFollowTrader}
+            disabled={!user.access.canFollowTrader}
             title={localeTool.t('common.new')}
             tooltip={
-              user.canFollowTrader
+              user.access.canFollowTrader
                 ? localeTool.t('dashboard.newProfileDesc')
                 : localeTool.t('permission.limited')
             }
@@ -84,9 +80,9 @@ const ProfileDashboard = () => {
           <TraderProfileCard
             key={traderId}
             className='mb-6'
-            disabledUnwatch={user.accessibleTraderIds.includes(traderId)}
-            disabled={!user.accessibleTraderIds.includes(traderId)}
-            profile={getTraderProfile(traderId)}
+            disabledUnwatch={user.access.accessibleTraderIds.includes(traderId)}
+            disabled={!user.access.accessibleTraderIds.includes(traderId)}
+            profile={profileDict[traderId]}
             onClick={handleClickRow}
           />
         ))}
@@ -107,10 +103,10 @@ const ProfileDashboard = () => {
         ))}
         <AddButton
           onClick={handleClickAddEnv}
-          disabled={!user.canFollowEnv}
+          disabled={!user.access.canFollowEnv}
           title={localeTool.t('common.new')}
           tooltip={
-            user.canFollowEnv
+            user.access.canFollowEnv
               ? localeTool.t('dashboard.newEnvDesc')
               : localeTool.t('permission.limited')
           }
@@ -130,10 +126,10 @@ const ProfileDashboard = () => {
         ))}
         <AddButton
           onClick={handleClickAddCombo}
-          disabled={!user.canFollowCombo}
+          disabled={!user.access.canFollowCombo}
           title={localeTool.t('common.new')}
           tooltip={
-            user.canFollowCombo
+            user.access.canFollowCombo
               ? localeTool.t('dashboard.newComboDesc')
               : localeTool.t('permission.limited')
           }

@@ -31,12 +31,22 @@ const changeActiveTraderChartIndex = (
   state.activeTraderChartIndex = action.payload
 }
 
+const _updateForTest = (
+  state: any,
+  action: any,
+) => {
+  Object.keys(action.payload).forEach((key) => {
+    state[key] = action.payload[key]
+  })
+}
+
 export const contentSlice = createSlice({
-  name: 'global',
+  name: 'content',
   initialState,
   reducers: {
     storePolicy,
     changeActiveTraderChartIndex,
+    _updateForTest,
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemPolicy.fulfilled, storePolicy)

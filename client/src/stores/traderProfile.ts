@@ -7,16 +7,22 @@ export interface TraderProfileBase {
   [traderId: number]: interfaces.response.TraderProfile;
 }
 
+export interface TraderProfileDetail {
+  [traderId: number]: interfaces.response.ProfileDetail;
+}
+
 export interface TraderProfileState {
   base: TraderProfileBase;
+  detail: TraderProfileDetail;
   systemTops?: TopTraderProfileIds;
 }
 
 const initialState: TraderProfileState = {
   base: {},
+  detail: {},
 }
 
-const storeFromDetail = (
+const storeFromDetailTops = (
   state: TraderProfileState,
   action: PayloadAction<{ detail: { topProfiles: interfaces.response.TopTraderProfiles } }>,
 ) => {
@@ -66,17 +72,43 @@ const storeFromSystemTops = (
   state.systemTops = tops
 }
 
+const storeFromUserOverall = (
+  state: TraderProfileState,
+  action: PayloadAction<interfaces.response.UserOverall>,
+) => {
+  action.payload.traderProfiles.forEach((profile) => {
+    state.base[profile.trader.id] = profile
+  })
+}
+
+const storeFromTraderProfile = (
+  state: TraderProfileState,
+  action: PayloadAction<{ detail: interfaces.response.TraderProfile; }>,
+) => {
+  state.base[action.payload.detail.trader.id] = action.payload.detail
+}
+
+const storeFromProfileDetail = (
+  state: TraderProfileState,
+  action: PayloadAction<{ id: number; detail: interfaces.response.ProfileDetail; }>,
+) => {
+  state.detail[action.payload.id] = action.payload.detail
+}
+
 export const traderProfileSlice = createSlice({
   name: 'tickerIdentity',
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromDetail)
-    builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetail)
-    builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetail)
+    builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromDetailTops)
+    builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetailTops)
+    builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
     builder.addCase(actions.fetchSystemTopTraders.fulfilled, storeFromSystemTops)
+    builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
+    builder.addCase(actions.fetchTraderProfile.fulfilled, storeFromTraderProfile)
+    builder.addCase(actions.fetchTraderProfileDetail.fulfilled, storeFromProfileDetail)
   },
 })
 
