@@ -7,10 +7,38 @@ export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',
   async (params, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/overall`
-    const res: interfaces.response.UserOverall = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
+    try {
+      const res: interfaces.response.UserOverall = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
 
-    return res
+export const createUserToken = createAsyncThunk(
+  'user/createUserToken',
+  async ({
+    email,
+    password,
+    shouldRemember,
+  }: {
+    email: string;
+    password: string;
+    shouldRemember: boolean;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/token`
+
+    try {
+      const res: interfaces.response.UserToken = await requestAdapter.sendPostRequest(endpoint, {
+        email,
+        password,
+        remember: shouldRemember,
+      })
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   },
 )

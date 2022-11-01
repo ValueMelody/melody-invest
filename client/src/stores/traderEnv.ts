@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import stripTopProfiles from './shared/stripTopProfiles'
+import { _updateForTest, _resetForTest } from 'tools/store'
 
 export interface TraderEnvBase {
   [envId: number]: interfaces.traderEnvModel.Record;
@@ -49,13 +50,9 @@ const storeFromEnvDetail = (
   state.detail[action.payload.id] = { topProfiles }
 }
 
-const _updateForTest = (
-  state: any,
-  action: any,
-) => {
-  Object.keys(action.payload).forEach((key) => {
-    state[key] = action.payload[key]
-  })
+const reset = (state: TraderEnvState) => {
+  state.base = {}
+  state.detail = {}
 }
 
 export const traderEnvSlice = createSlice({
@@ -63,11 +60,13 @@ export const traderEnvSlice = createSlice({
   initialState,
   reducers: {
     _updateForTest,
+    _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemDefaults.fulfilled, storeFromSystemDefaults)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromEnvDetail)
+    builder.addCase(actions.logout, reset)
   },
 })
 

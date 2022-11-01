@@ -5,7 +5,6 @@ import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useUserRequest from 'requests/useUserRequest'
-import useCommonState from 'states/useCommonState'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import RequiredLabel from 'containers/elements/RequiredLabel'
@@ -13,6 +12,7 @@ import GoToButton from './elements/GoToButton'
 import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
 import * as actions from 'actions'
+import { globalSlice } from 'stores/global'
 
 const SignUp = () => {
   usePublicGuard()
@@ -22,7 +22,6 @@ const SignUp = () => {
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { addMessage } = useCommonState()
   const { createUser } = useUserRequest()
 
   const { termsPolicy } = useSelector(selectors.selectContent())
@@ -77,7 +76,10 @@ const SignUp = () => {
       ? localeTool.t('error.password.requireSame')
       : validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'failure', title: error })
+      dispatch(globalSlice.actions.addMessage({
+        title: error,
+        type: 'failure',
+      }))
       return
     }
     await createUser(parsedEmail, parsedPassword, isConfirmed)

@@ -1,10 +1,13 @@
-import { nanoid, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { nanoid, createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
+import { _updateForTest, _resetForTest } from 'tools/store'
+
+type MessageType = 'success' | 'info' | 'warning' | 'failure'
 
 export interface Message {
   id: string;
-  type: 'success' | 'info' | 'warning' | 'failure';
+  type: MessageType;
   title: string;
   desc?: string;
 }
@@ -27,24 +30,44 @@ const stopLoading = (state: GlobalState) => {
   state.isLoading = false
 }
 
-const onRequestRejected = (state: GlobalState) => {
+const onRequestRejected = (state: GlobalState, action: AnyAction) => {
+  console.log(action.payload)
   const message = localeTool.t('error.500')
   state.isLoading = false
-  state.messages.push({
-    id: nanoid(),
-    title: message,
-    type: 'failure',
-  })
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: message,
+      type: 'failure',
+    },
+  ]
+}
+
+const addMessage = (
+  state: GlobalState,
+  action: PayloadAction<{ title: string; type: MessageType; }>,
+) => {
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: action.payload.title,
+      type: action.payload.type,
+    },
+  ]
+}
+
+const removeMessage = (state: GlobalState, action: PayloadAction<string>) => {
+  const messages = state.messages.filter((message) => message.id !== action.payload)
+  state.messages = messages
 }
 
 export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    removeMessage: (state: GlobalState, action: PayloadAction<string>) => {
-      const messages = state.messages.filter((message) => message.id !== action.payload)
-      state.messages = messages
-    },
+    removeMessage, addMessage, _updateForTest, _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemPolicy.pending, startLoading)
@@ -86,9 +109,11 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchTraderProfileDetail.pending, startLoading)
     builder.addCase(actions.fetchTraderProfileDetail.fulfilled, stopLoading)
     builder.addCase(actions.fetchTraderProfileDetail.rejected, onRequestRejected)
+
+    builder.addCase(actions.createUserToken.pending, startLoading)
+    builder.addCase(actions.createUserToken.fulfilled, stopLoading)
+    builder.addCase(actions.createUserToken.rejected, onRequestRejected)
   },
 })
-
-export const { removeMessage } = globalSlice.actions
 
 export default globalSlice.reducer

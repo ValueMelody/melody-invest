@@ -3,22 +3,23 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { Button, TextInput } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useCommonState from 'states/useCommonState'
 import useUserRequest from 'requests/useUserRequest'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePublicGuard from 'handlers/usePublicGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import GoToButton from './elements/GoToButton'
+import { useDispatch } from 'react-redux'
+import { globalSlice } from 'stores/global'
 
 const Reset = () => {
   usePublicGuard()
   const navigate = useNavigate()
   const params = useParams()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { addMessage } = useCommonState()
   const { resetUserPassword } = useUserRequest()
 
   const [email, setEmail] = useState('')
@@ -62,7 +63,10 @@ const Reset = () => {
       ? localeTool.t('error.password.requireSame')
       : validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'failure', title: error })
+      dispatch(globalSlice.actions.addMessage({
+        type: 'failure',
+        title: error,
+      }))
       return
     }
     await resetUserPassword(parsedEmail, parsedPassword, resetCode)

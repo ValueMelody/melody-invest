@@ -122,7 +122,6 @@ const HookBase = ({
   children?: ReactNode;
   history?: MemoryHistory;
   store?: object;
-  reduxStore?: object;
   disableStore?: boolean;
 }) => {
   return (

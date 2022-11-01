@@ -20,7 +20,6 @@ const selectUser = () => (state: AppState): UserState => {
   const limits = getLimit(user.userType)
 
   const envs = Object.values(state.traderEnv.base)
-  console.log(user)
   const userEnvs = envs.filter((env) => !env.isSystem)
   const combos = Object.values(state.traderCombo.base)
   const userCombos = combos.filter((combo) => !combo.isSystem)

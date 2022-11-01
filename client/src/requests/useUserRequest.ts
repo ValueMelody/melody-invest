@@ -89,27 +89,6 @@ const useUserRequest = () => {
     }
   }
 
-  const createUserToken = async (
-    email: string,
-    password: string,
-    shouldRemember: boolean,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/token`
-    store.startLoading()
-    try {
-      const userToken = await requestAdapter.sendPostRequest(endpoint, {
-        email,
-        password,
-        remember: shouldRemember,
-      })
-      storeUserToken(userToken)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   const createResetEmail = async (
     email: string,
   ) => {
@@ -241,7 +220,6 @@ const useUserRequest = () => {
 
   return {
     createUser,
-    createUserToken,
     createUserSubscription,
     createResetEmail,
     activateUser,

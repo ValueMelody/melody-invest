@@ -7,16 +7,10 @@ import { userSlice } from 'stores/user'
 
 afterEach(() => {
   jest.clearAllMocks()
+  store.dispatch(userSlice.actions._resetForTest())
 })
 
 describe('#usePublicGuard', () => {
-  test('should not trigger public guard when not login', () => {
-    const history = createMemoryHistory({ initialEntries: ['/test'] })
-
-    renderHook(usePublicGuard, { history })
-    expect(history.location.pathname).toBe('/test')
-  })
-
   test('could trigger public guard when login', () => {
     store.dispatch(userSlice.actions._updateForTest({
       hasLogin: true,
@@ -29,7 +23,14 @@ describe('#usePublicGuard', () => {
 
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
-    renderHook(usePublicGuard, { history })
+    renderHook(usePublicGuard, { history, initStore: store })
     expect(history.location.pathname).toBe(routerTool.dashboardRoute())
+  })
+
+  test('should not trigger public guard when not login', () => {
+    const history = createMemoryHistory({ initialEntries: ['/test'] })
+
+    renderHook(usePublicGuard, { history, initStore: store })
+    expect(history.location.pathname).toBe('/test')
   })
 })

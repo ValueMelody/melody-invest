@@ -2,7 +2,6 @@ import classNames from 'classnames'
 import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import useCommonState from 'states/useCommonState'
 import useTraderRequest from 'requests/useTraderRequest'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
@@ -11,6 +10,7 @@ import ProfileLabel from 'containers/traders/elements/ProfileLabel'
 import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
 import { contentSlice } from 'stores/content'
+import { globalSlice } from 'stores/global'
 
 const TraderProfileCard = ({
   profile,
@@ -35,7 +35,6 @@ const TraderProfileCard = ({
 
   const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
-  const { addMessage } = useCommonState()
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const trader = profile?.trader || null
@@ -60,19 +59,17 @@ const TraderProfileCard = ({
   const handleToggleWatch = () => {
     if (!trader) return
     if (!user.userType) {
-      addMessage({
-        id: Math.random(),
+      dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('error.guest'),
         type: 'failure',
-      })
+      }))
       return
     }
     if (!user.access.canFollowTrader && !isWatched) {
-      addMessage({
-        id: Math.random(),
+      dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('permission.limited'),
         type: 'failure',
-      })
+      }))
       return
     }
     if (isWatched) {

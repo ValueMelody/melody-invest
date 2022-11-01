@@ -3,22 +3,23 @@ import { useNavigate } from 'react-router-dom'
 import { Button, TextInput, Checkbox, Label } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useUserRequest from 'requests/useUserRequest'
-import useCommonState from 'states/useCommonState'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import GoToButton from './elements/GoToButton'
+import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
+import { globalSlice } from 'stores/global'
 
 const SignIn = () => {
   usePublicGuard()
+
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { addMessage } = useCommonState()
-  const { createUserToken } = useUserRequest()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -58,10 +59,17 @@ const SignIn = () => {
     const parsedPassword = password.trim()
     const error = validatePassword(parsedPassword)
     if (error) {
-      addMessage({ id: Math.random(), type: 'failure', title: error })
+      dispatch(globalSlice.actions.addMessage({
+        type: 'failure',
+        title: error,
+      }))
       return
     }
-    await createUserToken(parsedEmail, parsedPassword, shouldRemember)
+    dispatch(actions.createUserToken({
+      email: parsedEmail,
+      password: parsedPassword,
+      shouldRemember,
+    }))
   }
 
   // ------------------------------------------------------------ UI --

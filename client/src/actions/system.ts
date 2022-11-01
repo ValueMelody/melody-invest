@@ -7,11 +7,13 @@ export const fetchSystemDefaults = createAsyncThunk(
   'system/fetchSystemDefaults',
   async (params, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Systems}/defaults`
-    const res: interfaces.response.SystemDefaults = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return res
+    try {
+      const res: interfaces.response.SystemDefaults = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   },
 )
 
@@ -19,11 +21,13 @@ export const fetchSystemPolicy = createAsyncThunk(
   'system/fetchSystemPolicy',
   async (type: number, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Systems}/policy/${type}`
-    const res: interfaces.policyModel.Record = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return res
+    try {
+      const res: interfaces.policyModel.Record = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   },
 )
 
@@ -31,11 +35,13 @@ export const fetchSystemTraderCombos = createAsyncThunk(
   'system/fetchSystemTraderCombos',
   async (params, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Systems}/default-trader-combos`
-    const res: interfaces.response.ComboProfile[] = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return res
+    try {
+      const res: interfaces.response.ComboProfile[] = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   },
 )
 
@@ -43,10 +49,12 @@ export const fetchSystemTopTraders = createAsyncThunk(
   'system/fetchSystemTopTraders',
   async (params, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Systems}/top-trader-profiles`
-    const res: interfaces.response.TopTraderProfiles = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return res
+    try {
+      const res: interfaces.response.TopTraderProfiles = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
   },
 )

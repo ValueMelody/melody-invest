@@ -3,7 +3,9 @@ import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as actions from 'actions'
 import * as storageAdapter from 'adapters/storage'
+import * as requestAdapter from 'adapters/request'
 import * as commonEnum from 'enums/common'
+import { _updateForTest, _resetForTest } from 'tools/store'
 
 const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
 
@@ -61,13 +63,23 @@ const updateUserLoginState = (
   state.hasLogin = action.payload
 }
 
-const _updateForTest = (
-  state: any,
-  action: any,
+const storeFromCreateUserToken = (
+  state: UserState,
+  action: PayloadAction<interfaces.response.UserToken>,
 ) => {
-  Object.keys(action.payload).forEach((key) => {
-    state[key] = action.payload[key]
-  })
+  const { jwtToken } = action.payload
+  requestAdapter.setAuthToken(jwtToken)
+  storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
+  state.hasLogin = true
+}
+
+const reset = (state: UserState) => {
+  state.hasLogin = false
+  state.userEmail = ''
+  state.userType = constants.User.Type.Guest
+  state.userTraderIds = []
+  state.planStartAtUTC = null
+  state.planEndAtUTC = null
 }
 
 export const userSlice = createSlice({
@@ -76,9 +88,12 @@ export const userSlice = createSlice({
   reducers: {
     updateUserLoginState,
     _updateForTest,
+    _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
+    builder.addCase(actions.createUserToken.fulfilled, storeFromCreateUserToken)
+    builder.addCase(actions.logout, reset)
   },
 })
 

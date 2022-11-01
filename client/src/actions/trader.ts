@@ -13,12 +13,14 @@ export const fetchTraderProfile = createAsyncThunk(
     accessCode: string;
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}`
-    const res: interfaces.response.TraderProfile = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      detail: res,
+    try {
+      const res: interfaces.response.TraderProfile = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        detail: res,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
@@ -33,13 +35,15 @@ export const fetchTraderProfileDetail = createAsyncThunk(
     accessCode: string;
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${id}/${accessCode}/detail`
-    const res: interfaces.response.ProfileDetail = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      id,
-      detail: res,
+    try {
+      const res: interfaces.response.ProfileDetail = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        id,
+        detail: res,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
@@ -48,13 +52,15 @@ export const fetchTraderEnvDetail = createAsyncThunk(
   'trader/fetchTraderEnvDetail',
   async (envId: number, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}`
-    const res: interfaces.response.EnvDetail = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      detail: res,
-      id: envId,
+    try {
+      const res: interfaces.response.EnvDetail = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        detail: res,
+        id: envId,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
@@ -69,14 +75,16 @@ export const fetchTraderTickerDetail = createAsyncThunk(
     tickerId: number;
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/tickers/${tickerId}`
-    const res: interfaces.response.TickerDetail = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      detail: res,
-      envId,
-      tickerId,
+    try {
+      const res: interfaces.response.TickerDetail = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        detail: res,
+        envId,
+        tickerId,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
@@ -91,14 +99,16 @@ export const fetchTraderBehaviorDetail = createAsyncThunk(
     behavior: interfaces.traderPatternModel.Behavior;
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/behaviors/${behavior}`
-    const res: interfaces.response.BehaviorDetail = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      detail: res,
-      envId,
-      behavior,
+    try {
+      const res: interfaces.response.BehaviorDetail = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        detail: res,
+        envId,
+        behavior,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
@@ -107,13 +117,15 @@ export const fetchTraderComboDetail = createAsyncThunk(
   'trader/fetchTraderComboDetail',
   async (comboId: number, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos/${comboId}`
-    const res: interfaces.response.ComboDetail = await requestAdapter.sendGetRequest(endpoint)
 
-    if (!res) rejectWithValue(res)
-
-    return {
-      detail: res,
-      id: comboId,
+    try {
+      const res: interfaces.response.ComboDetail = await requestAdapter.sendGetRequest(endpoint)
+      return {
+        detail: res,
+        id: comboId,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
     }
   },
 )
