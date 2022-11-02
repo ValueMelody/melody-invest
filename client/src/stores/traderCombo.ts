@@ -47,9 +47,20 @@ const storeFromSystemCombos = (
   })
 }
 
-const reset = (state: TraderComboState) => {
-  state.base = {}
-  state.detail = {}
+const removeUserFollowed = (state: TraderComboState) => {
+  Object.keys(state.base).forEach((key: string) => {
+    const numKey = Number(key)
+    const value = state.base[numKey]
+    if (!value.isSystem) {
+      delete state.base[numKey]
+      delete state.detail[numKey]
+    }
+  })
+}
+
+const removeById = (state: TraderComboState, action: PayloadAction<number>) => {
+  delete state.base[action.payload]
+  delete state.detail[action.payload]
 }
 
 export const traderComboSlice = createSlice({
@@ -63,7 +74,8 @@ export const traderComboSlice = createSlice({
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
-    builder.addCase(actions.logout, reset)
+    builder.addCase(actions.deleteTraderCombo.fulfilled, removeById)
+    builder.addCase(actions.logout, removeUserFollowed)
   },
 })
 

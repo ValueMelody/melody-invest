@@ -113,6 +113,26 @@ export const globalSlice = createSlice({
     builder.addCase(actions.createUserToken.pending, startLoading)
     builder.addCase(actions.createUserToken.fulfilled, stopLoading)
     builder.addCase(actions.createUserToken.rejected, onRequestRejected)
+
+    builder.addCase(actions.deleteTraderCombo.pending, startLoading)
+    builder.addCase(actions.deleteTraderCombo.fulfilled, stopLoading)
+    builder.addCase(actions.deleteTraderCombo.rejected, onRequestRejected)
+
+    builder.addCase(actions.deleteTraderEnv.pending, startLoading)
+    builder.addCase(actions.deleteTraderEnv.fulfilled, stopLoading)
+    builder.addCase(actions.deleteTraderEnv.rejected, onRequestRejected)
+
+    builder.addCase(actions.deleteWatchedProfile.pending, startLoading)
+    builder.addCase(actions.deleteWatchedProfile.fulfilled, stopLoading)
+    builder.addCase(actions.deleteWatchedProfile.rejected, onRequestRejected)
+
+    builder.addCase(actions.createWatchedProfile.pending, startLoading)
+    builder.addCase(actions.createWatchedProfile.fulfilled, stopLoading)
+    builder.addCase(actions.createWatchedProfile.rejected, onRequestRejected)
+
+    builder.addCase(actions.createTraderEnv.pending, startLoading)
+    builder.addCase(actions.createTraderEnv.fulfilled, stopLoading)
+    builder.addCase(actions.createTraderEnv.rejected, onRequestRejected)
   },
 })
 

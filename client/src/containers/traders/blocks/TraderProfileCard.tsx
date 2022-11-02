@@ -2,13 +2,13 @@ import classNames from 'classnames'
 import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import useTraderRequest from 'requests/useTraderRequest'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
 import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 import { contentSlice } from 'stores/content'
 import { globalSlice } from 'stores/global'
 
@@ -29,11 +29,8 @@ const TraderProfileCard = ({
   disabledUnwatch?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
-  // ------------------------------------------------------------ State --
   const dispatch = useDispatch<AppDispatch>()
   const user = useSelector(selectors.selectUser())
-
-  const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
 
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
@@ -48,8 +45,6 @@ const TraderProfileCard = ({
   const showToggle = !isWatched || !disabledUnwatch
 
   const isClickable = !!onClick && !disabled
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClick = () => {
     if (!onClick || !trader) return
@@ -73,17 +68,15 @@ const TraderProfileCard = ({
       return
     }
     if (isWatched) {
-      deleteWatchedProfile(trader.id)
+      dispatch(actions.deleteWatchedProfile(trader.id))
     } else {
-      createWatchedProfile(trader.id)
+      dispatch(actions.createWatchedProfile(trader.id))
     }
   }
 
   const handleChangeChartIndex = (index: number) => {
     dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!trader || !pattern || !traderEnv) return null
 

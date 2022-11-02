@@ -129,3 +129,87 @@ export const fetchTraderComboDetail = createAsyncThunk(
     }
   },
 )
+
+export const deleteTraderCombo = createAsyncThunk(
+  'trader/deleteTraderCombo',
+  async (comboId: number, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${comboId}`
+
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      return comboId
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const deleteTraderEnv = createAsyncThunk(
+  'trader/deleteTraderEnv',
+  async (envId: number, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}`
+
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      return envId
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const deleteWatchedProfile = createAsyncThunk(
+  'trader/deleteWatchedProfile',
+  async (traderId: number, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
+
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      return traderId
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const createWatchedProfile = createAsyncThunk(
+  'trader/createWatchedProfile',
+  async (traderId: number, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
+
+    try {
+      await requestAdapter.sendPostRequest(endpoint)
+      return traderId
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const createTraderEnv = createAsyncThunk(
+  'trader/createTraderEnv',
+  async ({
+    name,
+    startDate,
+    tickerIds,
+  }: {
+    name: string;
+    startDate: string;
+    tickerIds: number[] | null;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/envs`
+    const reqs: interfaces.request.TraderEnvCreation = {
+      name, startDate, tickerIds,
+    }
+
+    try {
+      const env: interfaces.traderEnvModel.Record = await requestAdapter.sendPostRequest(
+        endpoint,
+        reqs,
+      )
+      return env
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)

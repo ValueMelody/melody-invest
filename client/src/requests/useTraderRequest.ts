@@ -22,16 +22,6 @@ const useTraderRequest = () => {
     }
   }
 
-  const storeTraderEnv = (env: interfaces.traderEnvModel.Record) => {
-    const isSame = !!store.traderEnvs[env.id]
-    if (!isSame) {
-      store.setTraderEnvs((envs) => ({
-        ...envs,
-        [env.id]: { record: env },
-      }))
-    }
-  }
-
   const storeTraderProfile = (profile: interfaces.response.TraderProfile) => {
     store.setTraderProfiles((profiles) => ({
       ...profiles,
@@ -48,49 +38,7 @@ const useTraderRequest = () => {
     store.setResources((resources) => ({ ...resources, userTraderIds: traderIds }))
   }
 
-  const removeWatchedProfile = (traderId: number) => {
-    const traderIds = store.resources.userTraderIds
-    const remainingTraderIds = traderIds.filter((id) => id !== traderId)
-    store.setResources((resources) => ({ ...resources, userTraderIds: remainingTraderIds }))
-  }
-
-  const removeWatchedEnv = (traderEnvId: number) => {
-    const traderEnvs = { ...store.traderEnvs }
-    delete traderEnvs[traderEnvId]
-    store.setTraderEnvs(traderEnvs)
-  }
-
-  const removeWatchedCombo = (traderComboId: number) => {
-    const traderCombos = { ...store.traderCombos }
-    delete traderCombos[traderComboId]
-    store.setTraderCombos(traderCombos)
-  }
-
   // ------------------------------------------------------------ Create --
-
-  const createTraderEnv = async (
-    name: string,
-    startDate: string,
-    tickerIds: number[] | null,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs`
-    store.startLoading()
-    const reqs: interfaces.request.TraderEnvCreation = {
-      name, startDate, tickerIds,
-    }
-    try {
-      const env: interfaces.traderEnvModel.Record = await requestAdapter.sendPostRequest(
-        endpoint, reqs,
-      )
-      storeTraderEnv(env)
-      const link = routerTool.envDetailRoute(env.id)
-      navigate(link)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
 
   const createTraderCombo = async (
     name: string,
@@ -137,75 +85,9 @@ const useTraderRequest = () => {
     }
   }
 
-  const createWatchedProfile = async (traderId: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPostRequest(endpoint)
-      storeWatchedProfile(traderId)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  // ------------------------------------------------------------ Export --
-
-  const deleteWatchedProfile = async (traderId: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-      removeWatchedProfile(traderId)
-      return true
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const deleteTraderCombo = async (traderComboId: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/combos/${traderComboId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-      removeWatchedCombo(traderComboId)
-      const link = routerTool.dashboardRoute()
-      navigate(link)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const deleteTraderEnv = async (traderEnvId: number) => {
-    const endpoint = `${routerEnum.Endpoint.Traders}/envs/${traderEnvId}`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-      removeWatchedEnv(traderEnvId)
-      const link = routerTool.dashboardRoute()
-      navigate(link)
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  // ------------------------------------------------------------ Export --
-
   return {
-    createTraderEnv,
     createTraderCombo,
     createTraderProfile,
-    createWatchedProfile,
-    deleteWatchedProfile,
-    deleteTraderEnv,
-    deleteTraderCombo,
   }
 }
 

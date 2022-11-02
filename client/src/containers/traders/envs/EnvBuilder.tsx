@@ -1,16 +1,18 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import ReactSelect, { MultiValue } from 'react-select'
+import { useNavigate } from 'react-router-dom'
 import { Button, TextInput, Alert, ToggleSwitch, Select } from 'flowbite-react'
 import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useTraderRequest from 'requests/useTraderRequest'
+import * as routerTool from 'tools/router'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import Info from 'containers/elements/Info'
 import classNames from 'classnames'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 interface PlainDate {
   year: number;
@@ -50,9 +52,8 @@ const leftClass = 'w-60 font-semibold flex items-center'
 const rightClass = 'w-96'
 
 const EnvBuilder = () => {
-  // ------------------------------------------------------------ State --
-
-  const { createTraderEnv } = useTraderRequest()
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const [startYear, setStartYear] = useState('')
   const [startMonth, setStartMonth] = useState('01-01')
@@ -87,8 +88,6 @@ const EnvBuilder = () => {
 
   const couldCreate = hasValidName && hasValidTickers && !hasDuplicatedName && !hasDuplicatedEnv
 
-  // ------------------------------------------------------------ Handler --
-
   const handleChangeStartYear = (date: Date | null) => {
     if (!date) return
     const selected = date.toISOString().slice(0, 4)
@@ -117,25 +116,21 @@ const EnvBuilder = () => {
     setEnvName(e.target.value)
   }
 
-  const handleSubmit = async (
+  const handleSubmit = (
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
+    dispatch(actions.createTraderEnv({
+      name: envName,
+      startDate: `${startYear}-${startMonth}`,
+      tickerIds,
+    })).then((res: any) => {
+      if (res?.payload?.id) {
+        const link = routerTool.envDetailRoute(res.payload.id)
+        navigate(link)
+      }
+    })
   }
-
-  // const handleSearch = (
-  //   options: DropdownItemProps[],
-  //   value: string,
-  // ) => {
-  //   const formattedValue = value.trim().toUpperCase()
-  //   return selectableTickers.filter((option) => {
-  //     const label = option.text.toUpperCase()
-  //     return label.includes(formattedValue) || option.symbol.includes(formattedValue)
-  //   })
-  // }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col items-center'>

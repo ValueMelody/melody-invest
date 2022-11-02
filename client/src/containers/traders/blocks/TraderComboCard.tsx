@@ -3,10 +3,10 @@ import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useTraderRequest from 'requests/useTraderRequest'
 import WatchButton from '../elements/WatchButton'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const TraderComboCard = ({
   traderCombo,
@@ -19,17 +19,13 @@ const TraderComboCard = ({
   isActive?: boolean;
   onClick?: (comboId: number) => void;
 }) => {
-  // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
 
   const user = useSelector(selectors.selectUser())
-
-  const { deleteTraderCombo } = useTraderRequest()
 
   const disabled = traderCombo && (
     !traderCombo.isSystem && !user.access.accessibleComboIds.includes(traderCombo.id)
   )
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickCombo = () => {
     if (!traderCombo || !onClick) return
@@ -38,10 +34,8 @@ const TraderComboCard = ({
 
   const handleUnfollow = async () => {
     if (!traderCombo) return
-    await deleteTraderCombo(traderCombo.id)
+    dispatch(actions.deleteTraderCombo(traderCombo.id))
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!traderCombo) return null
 

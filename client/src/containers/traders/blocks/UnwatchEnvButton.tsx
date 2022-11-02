@@ -1,17 +1,21 @@
 import { useState } from 'react'
 import { Button } from 'flowbite-react'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
 import WatchButton from '../elements/WatchButton'
-import useTraderRequest from 'requests/useTraderRequest'
 import ConfirmModal from 'containers/elements/ConfirmModal'
+import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
 
 const UnwatchEnvButton = ({
   traderEnv,
 }: {
   traderEnv: interfaces.traderEnvModel.Record,
 }) => {
-  const { deleteTraderEnv } = useTraderRequest()
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const [isDeleting, setIsDeleting] = useState(false)
 
@@ -19,8 +23,12 @@ const UnwatchEnvButton = ({
     setIsDeleting(true)
   }
 
-  const handleConfirmUnwatch = async () => {
-    await deleteTraderEnv(traderEnv.id)
+  const handleConfirmUnwatch = () => {
+    dispatch(actions.deleteTraderEnv(traderEnv.id))
+      .then(() => {
+        const link = routerTool.dashboardRoute()
+        navigate(link)
+      })
   }
 
   const handleCancelUnwatch = () => {

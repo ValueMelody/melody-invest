@@ -42,6 +42,13 @@ const storeFromUserOverall = (
   })
 }
 
+const storeFromEnvBase = (
+  state: TraderEnvState,
+  action: PayloadAction<interfaces.traderEnvModel.Record>,
+) => {
+  state.base[action.payload.id] = action.payload
+}
+
 const storeFromEnvDetail = (
   state: TraderEnvState,
   action: PayloadAction<{ detail: interfaces.response.EnvDetail, id: number }>,
@@ -50,9 +57,20 @@ const storeFromEnvDetail = (
   state.detail[action.payload.id] = { topProfiles }
 }
 
-const reset = (state: TraderEnvState) => {
-  state.base = {}
-  state.detail = {}
+const removeUserFollowed = (state: TraderEnvState) => {
+  Object.keys(state.base).forEach((key: string) => {
+    const numKey = Number(key)
+    const value = state.base[numKey]
+    if (!value.isSystem) {
+      delete state.base[numKey]
+      delete state.detail[numKey]
+    }
+  })
+}
+
+const deleteById = (state: TraderEnvState, action: PayloadAction<number>) => {
+  delete state.base[action.payload]
+  delete state.detail[action.payload]
 }
 
 export const traderEnvSlice = createSlice({
@@ -66,7 +84,9 @@ export const traderEnvSlice = createSlice({
     builder.addCase(actions.fetchSystemDefaults.fulfilled, storeFromSystemDefaults)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromEnvDetail)
-    builder.addCase(actions.logout, reset)
+    builder.addCase(actions.createTraderEnv.fulfilled, storeFromEnvBase)
+    builder.addCase(actions.deleteTraderEnv.fulfilled, deleteById)
+    builder.addCase(actions.logout, removeUserFollowed)
   },
 })
 

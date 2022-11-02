@@ -73,6 +73,15 @@ const storeFromCreateUserToken = (
   state.hasLogin = true
 }
 
+const addTraderById = (state: UserState, action: PayloadAction<number>) => {
+  if (state.userTraderIds.includes(action.payload)) return
+  state.userTraderIds = [...state.userTraderIds, action.payload]
+}
+
+const removeTraderById = (state: UserState, action: PayloadAction<number>) => {
+  state.userTraderIds = state.userTraderIds.filter((id) => id !== action.payload)
+}
+
 const reset = (state: UserState) => {
   state.hasLogin = false
   state.userEmail = ''
@@ -93,6 +102,8 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.createUserToken.fulfilled, storeFromCreateUserToken)
+    builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
+    builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
     builder.addCase(actions.logout, reset)
   },
 })

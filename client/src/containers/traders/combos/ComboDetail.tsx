@@ -5,7 +5,6 @@ import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderRequest from 'requests/useTraderRequest'
 import useShowMore from 'handlers/useShowMore'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
@@ -32,7 +31,6 @@ const ComboDetail = () => {
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
-  const { deleteTraderCombo } = useTraderRequest()
 
   const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
   const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
@@ -70,9 +68,13 @@ const ComboDetail = () => {
     dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
-  const handleUnwatch = async () => {
+  const handleUnwatch = () => {
     if (!comboId) return
-    await deleteTraderCombo(comboId)
+    dispatch(actions.deleteTraderCombo(comboId))
+      .then(() => {
+        const link = routerTool.dashboardRoute()
+        navigate(link)
+      })
   }
 
   // ------------------------------------------------------------ UI --
@@ -102,6 +104,7 @@ const ComboDetail = () => {
         />
         <PageTitle
           icon='history'
+          className='my-8'
           title={localeTool.t('traderCombo.history')}
         />
         {!displayedHoldings.length && (
@@ -115,7 +118,7 @@ const ComboDetail = () => {
         {displayedHoldings.map((detail, index) => (
           <HoldingCard
             key={detail.date}
-            className='mt-6'
+            className='mb-6'
             holding={detail}
             previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
             initialValue={constants.Trader.Initial.Cash * matchedBase.traderIds.length}
