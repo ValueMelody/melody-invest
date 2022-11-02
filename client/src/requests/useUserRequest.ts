@@ -89,26 +89,6 @@ const useUserRequest = () => {
     }
   }
 
-  const createResetEmail = async (
-    email: string,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/reset`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPostRequest(endpoint, { email })
-      navigate(routerTool.signInRoute())
-      store.addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('reset.emailSent'),
-      })
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
   // ------------------------------------------------------------ Update --
 
   const activateUser = async (
@@ -221,7 +201,6 @@ const useUserRequest = () => {
   return {
     createUser,
     createUserSubscription,
-    createResetEmail,
     activateUser,
     updateUserPassword,
     resetUserPassword,

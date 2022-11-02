@@ -42,3 +42,16 @@ export const createUserToken = createAsyncThunk(
     }
   },
 )
+
+export const createResetEmail = createAsyncThunk(
+  'user/createResetEmail',
+  async (email: string, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/reset`
+
+    try {
+      await requestAdapter.sendPostRequest(endpoint, { email })
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)

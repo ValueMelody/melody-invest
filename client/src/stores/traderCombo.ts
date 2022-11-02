@@ -47,6 +47,13 @@ const storeFromSystemCombos = (
   })
 }
 
+const storeFromComboBase = (
+  state: TraderComboState,
+  action: PayloadAction<interfaces.traderComboModel.Identity>,
+) => {
+  state.base[action.payload.id] = action.payload
+}
+
 const removeUserFollowed = (state: TraderComboState) => {
   Object.keys(state.base).forEach((key: string) => {
     const numKey = Number(key)
@@ -74,6 +81,7 @@ export const traderComboSlice = createSlice({
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
+    builder.addCase(actions.createTraderCombo.fulfilled, storeFromComboBase)
     builder.addCase(actions.deleteTraderCombo.fulfilled, removeById)
     builder.addCase(actions.logout, removeUserFollowed)
   },

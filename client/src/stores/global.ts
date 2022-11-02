@@ -1,4 +1,4 @@
-import { nanoid, createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
+import { nanoid, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import { _updateForTest, _resetForTest } from 'tools/store'
@@ -30,8 +30,7 @@ const stopLoading = (state: GlobalState) => {
   state.isLoading = false
 }
 
-const onRequestRejected = (state: GlobalState, action: AnyAction) => {
-  console.log(action.payload)
+const onRequestRejected = (state: GlobalState) => {
   const message = localeTool.t('error.500')
   state.isLoading = false
   state.messages = [
@@ -40,6 +39,20 @@ const onRequestRejected = (state: GlobalState, action: AnyAction) => {
       id: nanoid(),
       title: message,
       type: 'failure',
+    },
+  ]
+}
+
+const createResetEmailSuccess = (
+  state: GlobalState,
+) => {
+  state.isLoading = false
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: localeTool.t('reset.emailSent'),
+      type: 'success',
     },
   ]
 }
@@ -133,6 +146,18 @@ export const globalSlice = createSlice({
     builder.addCase(actions.createTraderEnv.pending, startLoading)
     builder.addCase(actions.createTraderEnv.fulfilled, stopLoading)
     builder.addCase(actions.createTraderEnv.rejected, onRequestRejected)
+
+    builder.addCase(actions.createTraderCombo.pending, startLoading)
+    builder.addCase(actions.createTraderCombo.fulfilled, stopLoading)
+    builder.addCase(actions.createTraderCombo.rejected, onRequestRejected)
+
+    builder.addCase(actions.createTraderProfile.pending, startLoading)
+    builder.addCase(actions.createTraderProfile.fulfilled, stopLoading)
+    builder.addCase(actions.createTraderProfile.rejected, onRequestRejected)
+
+    builder.addCase(actions.createResetEmail.pending, startLoading)
+    builder.addCase(actions.createResetEmail.fulfilled, createResetEmailSuccess)
+    builder.addCase(actions.createResetEmail.rejected, onRequestRejected)
   },
 })
 

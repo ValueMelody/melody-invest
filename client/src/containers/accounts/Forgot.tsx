@@ -1,20 +1,22 @@
 import { useNavigate } from 'react-router-dom'
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { TextInput, Button } from 'flowbite-react'
+import { useDispatch } from 'react-redux'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useUserRequest from 'requests/useUserRequest'
+import * as actions from 'actions'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import usePublicGuard from 'handlers/usePublicGuard'
 import GoToButton from './elements/GoToButton'
 
 const Forgot = () => {
   usePublicGuard()
+
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { createResetEmail } = useUserRequest()
   const [email, setEmail] = useState('')
 
   // ------------------------------------------------------------ Handler --
@@ -29,12 +31,15 @@ const Forgot = () => {
     navigate(routerTool.signInRoute())
   }
 
-  const handleSubmit = async (
+  const handleSubmit = (
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
-    await createResetEmail(parsedEmail)
+    dispatch(actions.createResetEmail(parsedEmail))
+      .then(() => {
+        navigate(routerTool.signInRoute())
+      })
   }
 
   // ------------------------------------------------------------ UI --

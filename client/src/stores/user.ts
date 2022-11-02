@@ -78,6 +78,11 @@ const addTraderById = (state: UserState, action: PayloadAction<number>) => {
   state.userTraderIds = [...state.userTraderIds, action.payload]
 }
 
+const addTraderFromProfile = (state: UserState, action: PayloadAction<interfaces.response.TraderProfile>) => {
+  if (state.userTraderIds.includes(action.payload.trader.id)) return
+  state.userTraderIds = [...state.userTraderIds, action.payload.trader.id]
+}
+
 const removeTraderById = (state: UserState, action: PayloadAction<number>) => {
   state.userTraderIds = state.userTraderIds.filter((id) => id !== action.payload)
 }
@@ -103,6 +108,7 @@ export const userSlice = createSlice({
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.createUserToken.fulfilled, storeFromCreateUserToken)
     builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
+    builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
     builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
     builder.addCase(actions.logout, reset)
   },

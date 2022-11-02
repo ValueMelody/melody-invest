@@ -83,9 +83,9 @@ const storeFromUserOverall = (
 
 const storeFromTraderProfile = (
   state: TraderProfileState,
-  action: PayloadAction<{ detail: interfaces.response.TraderProfile; }>,
+  action: PayloadAction<interfaces.response.TraderProfile>,
 ) => {
-  state.base[action.payload.detail.trader.id] = action.payload.detail
+  state.base[action.payload.trader.id] = action.payload
 }
 
 const storeFromProfileDetail = (
@@ -108,6 +108,7 @@ export const traderProfileSlice = createSlice({
     builder.addCase(actions.fetchSystemTopTraders.fulfilled, storeFromSystemTops)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderProfile.fulfilled, storeFromTraderProfile)
+    builder.addCase(actions.createTraderProfile.fulfilled, storeFromTraderProfile)
     builder.addCase(actions.fetchTraderProfileDetail.fulfilled, storeFromProfileDetail)
   },
 })

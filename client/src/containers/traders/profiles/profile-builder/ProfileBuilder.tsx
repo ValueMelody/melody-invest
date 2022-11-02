@@ -1,16 +1,18 @@
 import { useState, FormEvent } from 'react'
 import { Button, Accordion } from 'flowbite-react'
+import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import useTraderRequest from 'requests/useTraderRequest'
+import * as routerTool from 'tools/router'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
@@ -103,13 +105,15 @@ const subTitleClass = 'text-center font-semibold text-lg mb-4'
 const ProfileBuilder = () => {
   usePrivateGuard()
 
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
   // ------------------------------------------------------------ State --
 
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
-  const { createTraderProfile } = useTraderRequest()
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
 
   const activeBuyBehaviorCount = getActiveBehaviorCount(
@@ -163,7 +167,7 @@ const ProfileBuilder = () => {
     setSelectedTraderEnvId(envId)
   }
 
-  const handleSubmit = async (
+  const handleSubmit = (
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
@@ -177,7 +181,15 @@ const ProfileBuilder = () => {
         ...values,
         [behavior]: behaviorValues[behavior],
       }), defaultValues)
-    await createTraderProfile(selectedTraderEnvId, traderPattern)
+    dispatch(actions.createTraderProfile({
+      traderEnvId: selectedTraderEnvId,
+      traderPattern,
+    })).then((res: any) => {
+      if (res?.payload?.trader?.id && res?.payload?.trader?.accessCode) {
+        const link = routerTool.profileDetailRoute(res.payload.trader.id, res.payload.trader.accessCode)
+        navigate(link)
+      }
+    })
   }
 
   // ------------------------------------------------------------ UI --
