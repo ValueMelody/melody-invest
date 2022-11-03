@@ -22,7 +22,7 @@ client -> React.js hosted Frontend site for general customers
     elements -> smaller reusable components do not depend on state
   enums -> constants used for client only
   locales -> translation files for client only
-  handlers -> functions to handle specific target by hooks
+  hooks -> functions to handle specific task by hooks
   stores -> state management by redux
     shared -> single purpose function to handle store data
   actions -> api requests
