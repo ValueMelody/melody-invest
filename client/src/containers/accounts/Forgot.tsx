@@ -6,7 +6,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as actions from 'actions'
 import RequiredLabel from 'containers/elements/RequiredLabel'
-import usePublicGuard from 'handlers/usePublicGuard'
+import usePublicGuard from 'hooks/usePublicGuard'
 import GoToButton from './elements/GoToButton'
 
 const Forgot = () => {

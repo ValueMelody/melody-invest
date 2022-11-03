@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import * as actions from 'actions'
 import * as routerTool from 'tools/router'
-import usePublicGuard from 'handlers/usePublicGuard'
+import usePublicGuard from 'hooks/usePublicGuard'
 
 const Activation = () => {
   usePublicGuard()

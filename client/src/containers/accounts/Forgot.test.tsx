@@ -3,7 +3,7 @@ import { fireEvent, render, screen } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import * as usePublicGuard from 'handlers/usePublicGuard'
+import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 

@@ -4,7 +4,7 @@ import { render } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as usePublicGuard from 'handlers/usePublicGuard'
+import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
