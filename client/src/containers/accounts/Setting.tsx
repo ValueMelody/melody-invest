@@ -3,7 +3,6 @@ import { TextInput, Button, Card } from 'flowbite-react'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as commonEnum from 'enums/common'
-import useUserRequest from 'requests/useUserRequest'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
@@ -26,7 +25,6 @@ const Setting = () => {
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { updateUserPassword, lockUserAccount } = useUserRequest()
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
@@ -86,7 +84,10 @@ const Setting = () => {
       }))
       return
     }
-    updateUserPassword(parsedCurrentPassword, parsedNewPassword)
+    dispatch(actions.updateUserPassword({
+      currentPassword: parsedCurrentPassword,
+      newPassword: parsedNewPassword,
+    }))
   }
 
   const handleSignOut = () => {
@@ -94,7 +95,7 @@ const Setting = () => {
   }
 
   const handleConfirmLock = () => {
-    lockUserAccount()
+    dispatch(actions.lockUserAccount())
   }
 
   const handleToggleConfirmLock = () => {

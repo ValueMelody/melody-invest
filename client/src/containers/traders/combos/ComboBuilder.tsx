@@ -69,10 +69,7 @@ const ComboBuilder = () => {
       name: comboName,
       traderIds: selectedTraderIds,
     })).then((res: any) => {
-      if (res?.payload?.id) {
-        const link = routerTool.comboDetailRoute(res.payload.id)
-        navigate(link)
-      }
+      if (res?.payload?.id) navigate(routerTool.comboDetailRoute(res.payload.id))
     })
   }
 

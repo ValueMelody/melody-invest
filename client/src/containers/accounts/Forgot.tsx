@@ -37,8 +37,8 @@ const Forgot = () => {
     e.preventDefault()
     const parsedEmail = email.trim().toLowerCase()
     dispatch(actions.createResetEmail(parsedEmail))
-      .then(() => {
-        navigate(routerTool.signInRoute())
+      .then((res: any) => {
+        if (!res.error) navigate(routerTool.signInRoute())
       })
   }
 

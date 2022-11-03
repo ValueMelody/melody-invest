@@ -3,7 +3,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { Button, TextInput } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useUserRequest from 'requests/useUserRequest'
+import * as actions from 'actions'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePublicGuard from 'handlers/usePublicGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
@@ -13,6 +13,7 @@ import { globalSlice } from 'stores/global'
 
 const Reset = () => {
   usePublicGuard()
+
   const navigate = useNavigate()
   const params = useParams()
   const dispatch = useDispatch<AppDispatch>()
@@ -20,7 +21,6 @@ const Reset = () => {
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { resetUserPassword } = useUserRequest()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -69,7 +69,13 @@ const Reset = () => {
       }))
       return
     }
-    await resetUserPassword(parsedEmail, parsedPassword, resetCode)
+    dispatch(actions.resetUserPassword({
+      email: parsedEmail,
+      password: parsedPassword,
+      resetCode,
+    })).then((res: any) => {
+      if (!res.error) navigate(routerTool.signInRoute())
+    })
   }
 
   // ------------------------------------------------------------ UI --

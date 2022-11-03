@@ -87,13 +87,16 @@ const removeTraderById = (state: UserState, action: PayloadAction<number>) => {
   state.userTraderIds = state.userTraderIds.filter((id) => id !== action.payload)
 }
 
-const reset = (state: UserState) => {
+const logout = (state: UserState) => {
   state.hasLogin = false
   state.userEmail = ''
   state.userType = constants.User.Type.Guest
   state.userTraderIds = []
   state.planStartAtUTC = null
   state.planEndAtUTC = null
+
+  requestAdapter.setAuthToken('')
+  storageAdapter.remove(commonEnum.StorageKey.AuthToken)
 }
 
 export const userSlice = createSlice({
@@ -110,7 +113,8 @@ export const userSlice = createSlice({
     builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
     builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
     builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
-    builder.addCase(actions.logout, reset)
+    builder.addCase(actions.lockUserAccount.fulfilled, logout)
+    builder.addCase(actions.logout, logout)
   },
 })
 

@@ -84,6 +84,7 @@ export const traderComboSlice = createSlice({
     builder.addCase(actions.createTraderCombo.fulfilled, storeFromComboBase)
     builder.addCase(actions.deleteTraderCombo.fulfilled, removeById)
     builder.addCase(actions.logout, removeUserFollowed)
+    builder.addCase(actions.lockUserAccount.fulfilled, removeUserFollowed)
   },
 })
 

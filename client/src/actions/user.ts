@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import * as interfaces from '@shared/interfaces'
+import * as localeTool from 'tools/locale'
 
 export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',
@@ -50,6 +51,91 @@ export const createResetEmail = createAsyncThunk(
 
     try {
       await requestAdapter.sendPostRequest(endpoint, { email })
+      return {
+        msg: localeTool.t('reset.emailSent'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const updateUserPassword = createAsyncThunk(
+  'user/updateUserPassword',
+  async ({
+    currentPassword,
+    newPassword,
+  }: {
+    currentPassword: string;
+    newPassword: string;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/password`
+
+    try {
+      await requestAdapter.sendPutRequest(endpoint, {
+        currentPassword, newPassword,
+      })
+      return {
+        msg: localeTool.t('common.passwordUpdated'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const lockUserAccount = createAsyncThunk(
+  'user/lockUserAccount',
+  async (params, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/lock`
+
+    try {
+      await requestAdapter.sendPutRequest(endpoint)
+      return {
+        msg: localeTool.t('setting.lockAccessSuccess'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const resetUserPassword = createAsyncThunk(
+  'user/resetUserPassword',
+  async ({
+    email,
+    password,
+    resetCode,
+  }: {
+    email: string;
+    password: string;
+    resetCode: string;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/reset`
+
+    try {
+      await requestAdapter.sendPutRequest(endpoint, {
+        email, password, resetCode,
+      })
+      return {
+        msg: localeTool.t('common.passwordUpdated'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const cancelUserSubscription = createAsyncThunk(
+  'user/cancelUserSubscription',
+  async (params, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+
+    try {
+      await requestAdapter.sendDeleteRequest(endpoint)
+      return {
+        msg: localeTool.t('setting.unsubscribeSuccess'),
+      }
     } catch (e) {
       return rejectWithValue(e)
     }

@@ -1,17 +1,22 @@
 import Forgot from './Forgot'
-import { act, fireEvent, render, screen, waitFor } from 'test.utils'
+import { fireEvent, render, screen } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
 import * as usePublicGuard from 'handlers/usePublicGuard'
-import * as requestAdapter from 'adapters/request'
+import * as userAction from 'actions/user'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createResetEmail = jest.fn()
-jest.spyOn(requestAdapter, 'sendPostRequest').mockImplementation(createResetEmail)
+jest.spyOn(userAction, 'createResetEmail')
+  .mockImplementation(createAsyncThunk(
+    'test/createResetEmailTest',
+    createResetEmail,
+  ))
 
 describe('#Forgot', () => {
   test('has public guard', () => {
@@ -43,12 +48,7 @@ describe('#Forgot', () => {
 
     expect(createResetEmail).toBeCalledTimes(1)
     expect(createResetEmail).toBeCalledWith(
-      'http://127.0.0.1:3100/users/reset',
-      { email: 'abc@email.com' },
+      'abc@email.com', expect.anything(),
     )
-
-    await waitFor(() => {
-      expect(history.location.pathname).toBe(routerTool.signInRoute())
-    })
   })
 })

@@ -125,10 +125,7 @@ const EnvBuilder = () => {
       startDate: `${startYear}-${startMonth}`,
       tickerIds,
     })).then((res: any) => {
-      if (res?.payload?.id) {
-        const link = routerTool.envDetailRoute(res.payload.id)
-        navigate(link)
-      }
+      if (res?.payload?.id) navigate(routerTool.envDetailRoute(res.payload.id))
     })
   }
 

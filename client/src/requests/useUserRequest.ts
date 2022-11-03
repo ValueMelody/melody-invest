@@ -111,101 +111,10 @@ const useUserRequest = () => {
     }
   }
 
-  const updateUserPassword = async (
-    currentPassword: string,
-    newPassword: string,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/password`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPutRequest(endpoint, {
-        currentPassword, newPassword,
-      })
-      store.addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('common.passwordUpdated'),
-      })
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const resetUserPassword = async (
-    email: string,
-    password: string,
-    resetCode: string,
-  ) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/reset`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPutRequest(endpoint, {
-        email, password, resetCode,
-      })
-      store.addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('common.passwordUpdated'),
-      })
-      navigate(routerTool.signInRoute())
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  const lockUserAccount = async () => {
-    const endpoint = `${routerEnum.Endpoint.Users}/lock`
-    store.startLoading()
-    try {
-      await requestAdapter.sendPutRequest(endpoint)
-      store.cleanUserState()
-      store.addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('setting.lockAccessSuccess'),
-      })
-      navigate(routerTool.signInRoute())
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  // ------------------------------------------------------------ Delete --
-
-  const cancelUserSubscription = async () => {
-    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
-    store.startLoading()
-    try {
-      await requestAdapter.sendDeleteRequest(endpoint)
-
-      store.addMessage({
-        id: Math.random(),
-        type: 'success',
-        title: localeTool.t('setting.unsubscribeSuccess'),
-      })
-    } catch (e) {
-      store.showRequestError(e)
-    } finally {
-      store.stopLoading()
-    }
-  }
-
-  // ------------------------------------------------------------ Export --
-
   return {
     createUser,
     createUserSubscription,
     activateUser,
-    updateUserPassword,
-    resetUserPassword,
-    lockUserAccount,
-    cancelUserSubscription,
   }
 }
 

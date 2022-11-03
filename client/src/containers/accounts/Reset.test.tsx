@@ -5,19 +5,21 @@ import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import * as useUserRequest from 'requests/useUserRequest'
 import * as usePublicGuard from 'handlers/usePublicGuard'
 import { store } from 'stores'
+import * as userAction from 'actions/user'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const resetUserPassword = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  resetUserPassword,
-}))
+jest.spyOn(userAction, 'resetUserPassword')
+  .mockImplementation(createAsyncThunk(
+    'test/resetUserPasswordTest',
+    resetUserPassword,
+  ))
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -86,7 +88,9 @@ describe('#Forgot', () => {
 
     fireEvent.click(resetButton)
     expect(resetUserPassword).toBeCalledTimes(1)
-    expect(resetUserPassword).toBeCalledWith('abc@email.com', pass, '112233')
+    expect(resetUserPassword).toBeCalledWith({
+      email: 'abc@email.com', password: pass, resetCode: '112233',
+    }, expect.anything())
   })
 
   test('could trigger validation message', () => {

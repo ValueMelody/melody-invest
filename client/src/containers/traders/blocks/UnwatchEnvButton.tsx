@@ -25,9 +25,8 @@ const UnwatchEnvButton = ({
 
   const handleConfirmUnwatch = () => {
     dispatch(actions.deleteTraderEnv(traderEnv.id))
-      .then(() => {
-        const link = routerTool.dashboardRoute()
-        navigate(link)
+      .then((res: any) => {
+        if (!res.error) navigate(routerTool.dashboardRoute())
       })
   }
 

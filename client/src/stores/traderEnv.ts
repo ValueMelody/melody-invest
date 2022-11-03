@@ -87,6 +87,7 @@ export const traderEnvSlice = createSlice({
     builder.addCase(actions.createTraderEnv.fulfilled, storeFromEnvBase)
     builder.addCase(actions.deleteTraderEnv.fulfilled, deleteById)
     builder.addCase(actions.logout, removeUserFollowed)
+    builder.addCase(actions.lockUserAccount.fulfilled, removeUserFollowed)
   },
 })
 

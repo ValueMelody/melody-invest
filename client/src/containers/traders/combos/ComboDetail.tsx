@@ -71,9 +71,8 @@ const ComboDetail = () => {
   const handleUnwatch = () => {
     if (!comboId) return
     dispatch(actions.deleteTraderCombo(comboId))
-      .then(() => {
-        const link = routerTool.dashboardRoute()
-        navigate(link)
+      .then((res: any) => {
+        if (!res.error) navigate(routerTool.dashboardRoute())
       })
   }
 

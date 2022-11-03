@@ -1,4 +1,4 @@
-import { nanoid, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { nanoid, createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import { _updateForTest, _resetForTest } from 'tools/store'
@@ -30,8 +30,9 @@ const stopLoading = (state: GlobalState) => {
   state.isLoading = false
 }
 
-const onRequestRejected = (state: GlobalState) => {
-  const message = localeTool.t('error.500')
+const onRequestRejected = (state: GlobalState, action: AnyAction) => {
+  let message = action?.payload?.message || localeTool.t('error.500')
+  if (message === 'Unauthorized') message = localeTool.t('error.401')
   state.isLoading = false
   state.messages = [
     ...state.messages,
@@ -43,15 +44,16 @@ const onRequestRejected = (state: GlobalState) => {
   ]
 }
 
-const createResetEmailSuccess = (
+const successWithMessage = (
   state: GlobalState,
+  action: PayloadAction<{ msg: string; }>,
 ) => {
   state.isLoading = false
   state.messages = [
     ...state.messages,
     {
       id: nanoid(),
-      title: localeTool.t('reset.emailSent'),
+      title: action.payload.msg,
       type: 'success',
     },
   ]
@@ -156,8 +158,24 @@ export const globalSlice = createSlice({
     builder.addCase(actions.createTraderProfile.rejected, onRequestRejected)
 
     builder.addCase(actions.createResetEmail.pending, startLoading)
-    builder.addCase(actions.createResetEmail.fulfilled, createResetEmailSuccess)
+    builder.addCase(actions.createResetEmail.fulfilled, successWithMessage)
     builder.addCase(actions.createResetEmail.rejected, onRequestRejected)
+
+    builder.addCase(actions.updateUserPassword.pending, startLoading)
+    builder.addCase(actions.updateUserPassword.fulfilled, successWithMessage)
+    builder.addCase(actions.updateUserPassword.rejected, onRequestRejected)
+
+    builder.addCase(actions.lockUserAccount.pending, startLoading)
+    builder.addCase(actions.lockUserAccount.fulfilled, successWithMessage)
+    builder.addCase(actions.lockUserAccount.rejected, onRequestRejected)
+
+    builder.addCase(actions.resetUserPassword.pending, startLoading)
+    builder.addCase(actions.resetUserPassword.fulfilled, successWithMessage)
+    builder.addCase(actions.resetUserPassword.rejected, onRequestRejected)
+
+    builder.addCase(actions.cancelUserSubscription.pending, startLoading)
+    builder.addCase(actions.cancelUserSubscription.fulfilled, successWithMessage)
+    builder.addCase(actions.cancelUserSubscription.rejected, onRequestRejected)
   },
 })
 
