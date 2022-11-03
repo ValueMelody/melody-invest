@@ -1,9 +1,11 @@
 import * as constants from '@shared/constants'
 import { render, screen, fireEvent } from 'test.utils'
-import { Context } from 'context'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import TraderEnvCard from './TraderEnvCard'
+import { store } from 'stores'
+import { userSlice } from 'stores/user'
+import { traderEnvSlice } from 'stores/traderEnv'
 
 const traderEnv = {
   id: 123,
@@ -14,52 +16,46 @@ const traderEnv = {
   activeTotal: 100,
 }
 
-// @ts-ignore
-const store: Context = {
-  // @ts-ignore
-  resources: {
+const setupStore = () => {
+  store.dispatch(userSlice.actions._updateForTest({
     userType: constants.User.Type.Pro,
-    userTraderIds: [],
-  },
-  traderCombos: {
-  },
-  traderEnvs: {
-    // @ts-ignore
-    123: {
-      // @ts-ignore
-      record: traderEnv,
-    },
-  },
+  }))
+  store.dispatch(traderEnvSlice.actions._updateForTest({
+    base: { 123: traderEnv },
+  }))
 }
 
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 describe('#traderComboCard', () => {
-  test('do not render if there is no combo', () => {
+  test('do not render if there is no env', () => {
     render(
       <TraderEnvCard
         traderEnv={null}
         isActive
       />,
-      { store },
     )
     const container = screen.queryByTestId('traderEnvCard')
     expect(container).toBeFalsy()
   })
 
   test('could render', () => {
+    setupStore()
     render(
       <TraderEnvCard
         traderEnv={traderEnv}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
+
     expect(screen.getByText(`Env: ${traderEnv.name}`)).toBeTruthy()
     expect(screen.getByText(parseTool.traderEnvStartDate(traderEnv))).toBeTruthy()
     expect(screen.queryByText('System')).toBeFalsy()
-    expect(screen.getByText('Trade based on selected 5 stocks')).toBeTruthy()
+    expect(screen.queryByText('Trade based on selected 5 stocks')).toBeTruthy()
     expect(screen.queryByText('Trade based on all stocks available')).toBeFalsy()
-
     expect(container.className).not.toContain('card-active')
 
     const watchButton = screen.queryByTestId('watchButton')
@@ -77,7 +73,6 @@ describe('#traderComboCard', () => {
           tickerIds: null,
         }}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
@@ -91,13 +86,13 @@ describe('#traderComboCard', () => {
         traderEnv={traderEnv}
         isActive
       />,
-      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('card-active')
   })
 
   test('could render as clickable', () => {
+    setupStore()
     const onClick = jest.fn()
     render(
       <TraderEnvCard
@@ -105,7 +100,6 @@ describe('#traderComboCard', () => {
         isActive
         onClick={onClick}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
 
@@ -124,7 +118,6 @@ describe('#traderComboCard', () => {
         }}
         onClick={onClick}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container?.className).toContain('card-disabled')

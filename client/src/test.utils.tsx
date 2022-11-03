@@ -9,50 +9,9 @@ import {
   act,
 } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { context } from 'context'
-import useStore from 'states/store'
 import { MemoryHistory } from 'history'
-
-const WithStoreProvider = ({
-  children,
-  disabled = false,
-  store = {},
-}: {
-  disabled?: boolean;
-  children?: ReactNode;
-  store?: object;
-}) => {
-  const defaultStore = useStore({
-    // @ts-ignore
-    initCommon: store?.common,
-    // @ts-ignore
-    initResources: store?.resources,
-    // @ts-ignore
-    initTraderBehaviors: store?.traderBehaviors,
-    // @ts-ignore
-    initTraderEnvs: store?.traderEnvs,
-    // @ts-ignore
-    initTraderCombos: store?.traderCombos,
-    // @ts-ignore
-    initTraderProfiles: store?.traderProfiles,
-    // @ts-ignore
-    initTraderTickers: store?.traderTickers,
-  })
-
-  if (disabled) {
-    return (
-      <>
-        {children}
-      </>
-    )
-  }
-
-  return (
-    <context.Provider value={defaultStore}>
-      {children}
-    </context.Provider>
-  )
-}
+import { store as reduxStore } from 'stores'
+import { Provider } from 'react-redux'
 
 const WithRouterProvider = ({
   children,
@@ -81,7 +40,6 @@ const WithRouterProvider = ({
 
 const InterfaceBase = ({
   children,
-  store,
   history,
 }: {
   children: ReactNode;
@@ -90,9 +48,9 @@ const InterfaceBase = ({
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithStoreProvider store={store}>
+      <Provider store={reduxStore}>
         {children}
-      </WithStoreProvider>
+      </Provider>
     </WithRouterProvider>
   )
 }
@@ -101,31 +59,26 @@ const render = (
   ui: ReactElement,
   options?: object,
 ) => defaultRender(ui, {
-  wrapper: (props) => <InterfaceBase
-    {...props}
-    {...options}
-                      />,
+  wrapper: (props) => (
+    <InterfaceBase
+      {...props}
+      {...options}
+    />
+  ),
 })
 
 const HookBase = ({
   children,
   history,
-  store,
-  disableStore = false,
 }: {
   children?: ReactNode;
   history?: MemoryHistory;
-  store?: object;
-  disableStore?: boolean;
 }) => {
   return (
     <WithRouterProvider history={history}>
-      <WithStoreProvider
-        store={store}
-        disabled={disableStore}
-      >
+      <Provider store={reduxStore}>
         {children}
-      </WithStoreProvider>
+      </Provider>
     </WithRouterProvider>
   )
 }
@@ -134,10 +87,12 @@ const renderHook = (
   hook: () => any,
   options?: object,
 ) => defaultRenderHook(hook, {
-  wrapper: (props) => <HookBase
-    {...props}
-    {...options}
-                      />,
+  wrapper: (props) => (
+    <HookBase
+      {...props}
+      {...options}
+    />
+  ),
 })
 
 export {

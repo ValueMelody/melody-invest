@@ -2,24 +2,18 @@ import { useEffect } from 'react'
 import { Textarea } from 'flowbite-react'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import useSystemRequest from 'requests/useSystemRequest'
-import useResourceState from 'states/useResourceState'
+import { useSelector, useDispatch } from 'react-redux'
+import * as actions from 'actions'
+import * as selectors from 'selectors'
 
 const Terms = () => {
-  // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
 
-  const { fetchSystemPolicy } = useSystemRequest()
-  const { getPolicy } = useResourceState()
-  const policy = getPolicy()
-
-  // ------------------------------------------------------------ Effect --
+  const { termsPolicy } = useSelector(selectors.selectContent())
 
   useEffect(() => {
-    if (!policy.termsPolicy) fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions)
-    // eslint-disable-next-line
-  }, [policy.termsPolicy])
-
-  // ------------------------------------------------------------ UI --
+    if (!termsPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions))
+  }, [termsPolicy, dispatch])
 
   return (
     <section className='flex flex-col items-center'>
@@ -31,7 +25,7 @@ const Terms = () => {
           data-testid='terms-content'
           style={{ height: 'calc(100vh - 300px)', minHeight: 300 }}
           disabled
-          value={policy.termsPolicy || ''}
+          value={termsPolicy?.content || ''}
         />
       </section>
     </section>

@@ -1,10 +1,11 @@
 import { useNavigate } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
-import useTraderState from 'states/useTraderState'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderProfileCard from './TraderProfileCard'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const cardClass = 'w-96 m-4'
 const titleClass = 'font-semibold mb-4'
@@ -16,17 +17,17 @@ const EachTops = ({
   bestPastMonth,
   bestPastWeek,
 }: {
-  bestOverall: number | null,
-  bestPastYear: number | null,
-  bestPastQuarter: number | null,
-  bestPastMonth: number | null,
-  bestPastWeek: number | null,
+  bestOverall?: number,
+  bestPastYear?: number,
+  bestPastQuarter?: number,
+  bestPastMonth?: number,
+  bestPastWeek?: number,
 }) => {
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderProfile } = useTraderState()
+  const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
 
   // ------------------------------------------------------------ Handler --
@@ -56,7 +57,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.yearlyTitle')}:
         </h3>
         <TraderProfileCard
-          profile={getTraderProfile(bestOverall)}
+          profile={traderProfileDict[bestOverall || 0]}
           onClick={handleClickCard}
         />
       </div>
@@ -65,7 +66,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastYearTitle')}:
         </h3>
         <TraderProfileCard
-          profile={getTraderProfile(bestPastYear)}
+          profile={traderProfileDict[bestPastYear || 0]}
           onClick={handleClickCard}
         />
       </div>
@@ -74,7 +75,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastQuarterTitle')}:
         </h3>
         <TraderProfileCard
-          profile={getTraderProfile(bestPastQuarter)}
+          profile={traderProfileDict[bestPastQuarter || 0]}
           onClick={handleClickCard}
         />
       </div>
@@ -83,7 +84,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastMonthTitle')}:
         </h3>
         <TraderProfileCard
-          profile={getTraderProfile(bestPastMonth)}
+          profile={traderProfileDict[bestPastMonth || 0]}
           onClick={handleClickCard}
         />
       </div>
@@ -92,7 +93,7 @@ const EachTops = ({
           {localeTool.t('bestReturn.pastWeekTitle')}:
         </h3>
         <TraderProfileCard
-          profile={getTraderProfile(bestPastWeek)}
+          profile={traderProfileDict[bestPastWeek || 0]}
           onClick={handleClickCard}
         />
       </div>

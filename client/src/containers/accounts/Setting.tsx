@@ -3,15 +3,16 @@ import { TextInput, Button, Card } from 'flowbite-react'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as commonEnum from 'enums/common'
-import useUserRequest from 'requests/useUserRequest'
-import useCommonState from 'states/useCommonState'
-import useUserState from 'states/useUserState'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
 import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
+import { globalSlice } from 'stores/global'
 
 const cardClass = 'w-96 mb-6 mx-4'
 const titleClass = 'font-bold text-xl mb-4'
@@ -19,19 +20,18 @@ const titleClass = 'font-bold text-xl mb-4'
 const Setting = () => {
   usePrivateGuard()
 
+  const dispatch = useDispatch<AppDispatch>()
+
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { updateUserPassword, lockUserAccount } = useUserRequest()
-  const { getUser, removeUser } = useUserState()
-  const { addMessage } = useCommonState()
 
   const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [retypePassword, setRetypePassword] = useState('')
   const [showConfirmLock, setShowConfirmLock] = useState(false)
 
-  const user = getUser()
+  const user = useSelector(selectors.selectUser())
 
   const userTypeText = useMemo(() => {
     switch (user.userType) {
@@ -78,18 +78,24 @@ const Setting = () => {
       ? localeTool.t('error.password.requireSame')
       : formatError
     if (error) {
-      addMessage({ id: Math.random(), type: 'failure', title: error })
+      dispatch(globalSlice.actions.addMessage({
+        title: error,
+        type: 'failure',
+      }))
       return
     }
-    updateUserPassword(parsedCurrentPassword, parsedNewPassword)
+    dispatch(actions.updateUserPassword({
+      currentPassword: parsedCurrentPassword,
+      newPassword: parsedNewPassword,
+    }))
   }
 
   const handleSignOut = () => {
-    removeUser()
+    dispatch(actions.logout())
   }
 
   const handleConfirmLock = () => {
-    lockUserAccount()
+    dispatch(actions.lockUserAccount())
   }
 
   const handleToggleConfirmLock = () => {

@@ -1,53 +1,42 @@
 import { FunctionComponent, useEffect } from 'react'
 import { Alert } from 'flowbite-react'
-import useSystemRequest from 'requests/useSystemRequest'
-import useUserRequest from 'requests/useUserRequest'
-import useCommonState from 'states/useCommonState'
-import useUserState from 'states/useUserState'
 import Header from 'containers/layouts/blocks/Header'
 import Footer from 'containers/layouts/blocks/Footer'
+import { useSelector, useDispatch } from 'react-redux'
+import { globalSlice } from 'stores/global'
+import * as actions from 'actions'
+import * as selectors from 'selectors'
 
 const Layout: FunctionComponent = ({
   children,
 }) => {
-  // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
 
-  const { getMessages, removeMessage } = useCommonState()
-  const { getUser } = useUserState()
-  const { fetchSystemDefaults } = useSystemRequest()
-  const { fetchUserOverall } = useUserRequest()
-
-  const user = getUser()
-  const messages = getMessages()
-
-  // ------------------------------------------------------------ Effect --
+  const { messages } = useSelector(selectors.selectGlobal())
+  const user = useSelector(selectors.selectUser())
 
   useEffect(() => {
-    fetchSystemDefaults()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+    dispatch(actions.fetchSystemDefaults())
+  }, [dispatch])
 
   useEffect(() => {
     if (!user.hasLogin || user.userType) return
-    fetchUserOverall()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.hasLogin, user.userType])
+    dispatch(actions.fetchUserOverall())
+  }, [user.hasLogin, user.userType, dispatch])
 
   useEffect(() => {
     if (!messages.length) return
     const clearMessage = setTimeout(() => {
       const msgId = messages[0].id
-      removeMessage(msgId)
-    }, 10000)
+      dispatch(globalSlice.actions.removeMessage(msgId))
+    }, 8000)
     return () => clearTimeout(clearMessage)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [messages])
 
-  // ------------------------------------------------------------ Handler --
-
-  const handleRemoveMessage = (id: number) => removeMessage(id)
-
-  // ------------------------------------------------------------ UI --
+  const handleRemoveMessage = (id: string) => {
+    dispatch(globalSlice.actions.removeMessage(id))
+  }
 
   return (
     <>

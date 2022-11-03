@@ -3,25 +3,21 @@ import { fireEvent, render, screen } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as useUserRequest from 'requests/useUserRequest'
-import * as useCommonState from 'states/useCommonState'
 import * as usePublicGuard from 'handlers/usePublicGuard'
+import { store } from 'stores'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import * as userAction from 'actions/user'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createUserToken = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  createUserToken,
-}))
-
-const addMessage = jest.fn()
-// @ts-ignore
-jest.spyOn(useCommonState, 'default').mockImplementation(() => ({
-  addMessage,
-}))
+jest.spyOn(userAction, 'createUserToken')
+  .mockImplementation(createAsyncThunk(
+    'test/createUserTokenTest',
+    createUserToken,
+  ))
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -91,7 +87,9 @@ describe('#SignIn', () => {
     fireEvent.click(signInButton)
 
     expect(createUserToken).toBeCalledTimes(1)
-    expect(createUserToken).toBeCalledWith('abc@email.com', pass, true)
+    expect(createUserToken).toBeCalledWith({
+      email: 'abc@email.com', password: pass, shouldRemember: true,
+    }, expect.anything())
   })
 
   test('could trigger validation message', () => {
@@ -114,11 +112,8 @@ describe('#SignIn', () => {
     fireEvent.click(signInButton)
 
     expect(createUserToken).toBeCalledTimes(0)
-    expect(addMessage).toBeCalledTimes(1)
-    expect(addMessage).toBeCalledWith(
-      expect.objectContaining({
-        title: 'Password must include at least 1 lower case letter!',
-      }),
-    )
+
+    const messages = store.getState().global.messages
+    expect(messages[messages.length - 1].title).toBe('Password must include at least 1 lower case letter!')
   })
 })

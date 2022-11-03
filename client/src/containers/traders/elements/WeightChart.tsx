@@ -127,14 +127,14 @@ const WeightChart = ({
         data={data}
         innerRadius={60}
         outerRadius={80}
-        className='fill-primary'
         isAnimationActive={false}
+        fill='#2185d0'
       >
         {data.map((entry, index) => (
           <chart.Cell
             key={entry.value}
-            className={
-              index === activeIndex ? 'fill-primary' : 'fill-secondary'
+            fill={
+              index === activeIndex ? '#2185d0' : '#767676'
             }
           />
         ))}

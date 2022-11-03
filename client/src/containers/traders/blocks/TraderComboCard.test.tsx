@@ -1,9 +1,11 @@
 import * as constants from '@shared/constants'
 import { render, screen, fireEvent } from 'test.utils'
-import { Context } from 'context'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import TraderComboCard from './TraderComboCard'
+import { store } from 'stores'
+import { traderComboSlice } from 'stores/traderCombo'
+import { userSlice } from 'stores/user'
 
 const traderCombo = {
   id: 123,
@@ -12,25 +14,17 @@ const traderCombo = {
   isSystem: false,
 }
 
-// @ts-ignore
-const store: Context = {
-  // @ts-ignore
-  resources: {
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
+const setupStore = () => {
+  store.dispatch(userSlice.actions._updateForTest({
     userType: constants.User.Type.Pro,
-    userTraderIds: [],
-  },
-  traderCombos: {
-    123: {
-      identity: traderCombo,
-    },
-  },
-  traderEnvs: {
-    // @ts-ignore
-    1: {
-      // @ts-ignore
-      record: { isSystem: true },
-    },
-  },
+  }))
+  store.dispatch(traderComboSlice.actions._updateForTest({
+    base: { 123: traderCombo },
+  }))
 }
 
 describe('#traderComboCard', () => {
@@ -40,18 +34,17 @@ describe('#traderComboCard', () => {
         traderCombo={null}
         isActive
       />,
-      { store },
     )
     const container = screen.queryByTestId('traderComboCard')
     expect(container).toBeFalsy()
   })
 
   test('could render', () => {
+    setupStore()
     render(
       <TraderComboCard
         traderCombo={traderCombo}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container).toBeTruthy()
@@ -71,13 +64,13 @@ describe('#traderComboCard', () => {
         traderCombo={traderCombo}
         isActive
       />,
-      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('card-active')
   })
 
   test('could render as clickable', () => {
+    setupStore()
     const onClick = jest.fn()
     render(
       <TraderComboCard
@@ -85,7 +78,6 @@ describe('#traderComboCard', () => {
         isActive
         onClick={onClick}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderComboCard')
 
@@ -104,7 +96,6 @@ describe('#traderComboCard', () => {
         }}
         onClick={onClick}
       />,
-      { store },
     )
     const container = screen.getByTestId('traderComboCard')
     expect(container?.className).toContain('card-disabled')

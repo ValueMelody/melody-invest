@@ -3,18 +3,20 @@ import { fireEvent, render, screen } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import * as useUserRequest from 'requests/useUserRequest'
 import * as usePublicGuard from 'handlers/usePublicGuard'
+import * as userAction from 'actions/user'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createResetEmail = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  createResetEmail,
-}))
+jest.spyOn(userAction, 'createResetEmail')
+  .mockImplementation(createAsyncThunk(
+    'test/createResetEmailTest',
+    createResetEmail,
+  ))
 
 describe('#Forgot', () => {
   test('has public guard', () => {
@@ -32,8 +34,9 @@ describe('#Forgot', () => {
     expect(history.location.pathname).toBe(routerTool.signInRoute())
   })
 
-  test('could submit with correct email', () => {
-    const { container } = render(<Forgot />)
+  test('could submit with correct email', async () => {
+    const history = createMemoryHistory({ initialEntries: ['/test'] })
+    const { container } = render(<Forgot />, { history })
     const emailInput = container.querySelector('input')!
     expect(emailInput.value).toBe('')
 
@@ -42,7 +45,10 @@ describe('#Forgot', () => {
 
     const button = container.querySelector('button')!
     fireEvent.click(button)
+
     expect(createResetEmail).toBeCalledTimes(1)
-    expect(createResetEmail).toBeCalledWith('abc@email.com')
+    expect(createResetEmail).toBeCalledWith(
+      'abc@email.com', expect.anything(),
+    )
   })
 })

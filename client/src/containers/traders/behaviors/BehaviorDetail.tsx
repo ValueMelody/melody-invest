@@ -4,49 +4,46 @@ import * as constants from '@shared/constants'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useTraderRequest from 'requests/useTraderRequest'
-import useTraderState from 'states/useTraderState'
 import EachTops from 'containers/traders/blocks/EachTops'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const BehaviorDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderBehavior, getTraderEnv, getTraderEnvs } = useTraderState()
-  const { fetchTraderBehavior } = useTraderRequest()
-
-  const behavior = params.behavior || null
+  const behavior = params.behavior
   const envId = params.envId ? parseInt(params.envId) : 1
-  const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior) || null
-  const behaviorDetail = getTraderBehavior(envId, validBehavior)
-  const topTraderProfiles = behaviorDetail?.tops
+  const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior)
+  const behaviorDetail = useSelector(selectors.selectTraderBehaviorDetail(envId, validBehavior))
+  const topTraderProfiles = behaviorDetail?.topProfiles
 
-  const traderEnvs = getTraderEnvs()
-  const traderEnv = getTraderEnv(envId)
+  const traderEnvs = useSelector(selectors.selectTraderEnvBases())
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
 
-  const bestOverall = topTraderProfiles?.yearly[0] || null
-  const bestPastYear = topTraderProfiles?.pastYear[0] || null
-  const bestPastQuarter = topTraderProfiles?.pastQuarter[0] || null
-  const bestPastMonth = topTraderProfiles?.pastMonth[0] || null
-  const bestPastWeek = topTraderProfiles?.pastWeek[0] || null
+  const bestOverall = topTraderProfiles?.yearly[0]
+  const bestPastYear = topTraderProfiles?.pastYear[0]
+  const bestPastQuarter = topTraderProfiles?.pastQuarter[0]
+  const bestPastMonth = topTraderProfiles?.pastMonth[0]
+  const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [navigate, validBehavior])
 
   useEffect(() => {
     if (behaviorDetail || !validBehavior || !envId) return
-    fetchTraderBehavior(envId, validBehavior)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [behaviorDetail])
+    dispatch(actions.fetchTraderBehaviorDetail({ envId, behavior: validBehavior }))
+  }, [behaviorDetail, validBehavior, envId, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
@@ -73,7 +70,7 @@ const BehaviorDetail = () => {
           </h1>
         </header>
         <PageTitle
-          title={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.record.name })}
+          title={localeTool.t('tradeBehaviors.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
         />
         <EachTops
           bestOverall={bestOverall}
@@ -86,10 +83,10 @@ const BehaviorDetail = () => {
       <aside className='page-aside'>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
-            key={traderEnv.record.id}
+            key={traderEnv.id}
             className='w-80 mb-4'
-            traderEnv={traderEnv.record}
-            isActive={envId === traderEnv.record.id}
+            traderEnv={traderEnv}
+            isActive={envId === traderEnv.id}
             onClick={handleClickEnv}
           />
         ))}

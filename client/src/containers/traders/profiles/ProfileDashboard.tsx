@@ -1,7 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import usePrivateGuard from 'handlers/usePrivateGuard'
@@ -10,6 +8,8 @@ import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import AddButton from 'containers/traders/elements/AddButton'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const ProfileDashboard = () => {
   usePrivateGuard()
@@ -18,14 +18,12 @@ const ProfileDashboard = () => {
 
   // ------------------------------------------------------------ State --
 
-  const { getUser } = useUserState()
-  const { getTraderProfile, getTraderCombos, getTraderEnvs } = useTraderState()
+  const envs = useSelector(selectors.selectTraderEnvBases())
+  const combos = useSelector(selectors.selectTraderComboBases())
+  const user = useSelector(selectors.selectUser())
+  const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
-  const user = getUser()
-  const envs = getTraderEnvs()
-  const combos = getTraderCombos()
-
-  const userCombos = combos.filter((combo) => !combo.identity.isSystem)
+  const userCombos = combos.filter((combo) => !combo.isSystem)
 
   // ------------------------------------------------------------ Handler --
 
@@ -69,10 +67,10 @@ const ProfileDashboard = () => {
           />
           <AddButton
             onClick={handleClickAddProfile}
-            disabled={!user.canFollowTrader}
+            disabled={!user.access.canFollowTrader}
             title={localeTool.t('common.new')}
             tooltip={
-              user.canFollowTrader
+              user.access.canFollowTrader
                 ? localeTool.t('dashboard.newProfileDesc')
                 : localeTool.t('permission.limited')
             }
@@ -82,9 +80,9 @@ const ProfileDashboard = () => {
           <TraderProfileCard
             key={traderId}
             className='mb-6'
-            disabledUnwatch={user.accessibleTraderIds.includes(traderId)}
-            disabled={!user.accessibleTraderIds.includes(traderId)}
-            profile={getTraderProfile(traderId)}
+            disabledUnwatch={user.access.accessibleTraderIds.includes(traderId)}
+            disabled={!user.access.accessibleTraderIds.includes(traderId)}
+            profile={profileDict[traderId]}
             onClick={handleClickRow}
           />
         ))}
@@ -97,18 +95,18 @@ const ProfileDashboard = () => {
         />
         {envs.map((env) => (
           <TraderEnvCard
-            key={env.record.id}
+            key={env.id}
             className='w-80 mb-4'
-            traderEnv={env.record}
+            traderEnv={env}
             onClick={handleClickEnv}
           />
         ))}
         <AddButton
           onClick={handleClickAddEnv}
-          disabled={!user.canFollowEnv}
+          disabled={!user.access.canFollowEnv}
           title={localeTool.t('common.new')}
           tooltip={
-            user.canFollowEnv
+            user.access.canFollowEnv
               ? localeTool.t('dashboard.newEnvDesc')
               : localeTool.t('permission.limited')
           }
@@ -120,18 +118,18 @@ const ProfileDashboard = () => {
         />
         {userCombos.map((combo) => (
           <TraderComboCard
-            key={combo.identity.id}
+            key={combo.id}
             className='w-80 mb-4'
-            traderCombo={combo.identity}
+            traderCombo={combo}
             onClick={handleClickCombo}
           />
         ))}
         <AddButton
           onClick={handleClickAddCombo}
-          disabled={!user.canFollowCombo}
+          disabled={!user.access.canFollowCombo}
           title={localeTool.t('common.new')}
           tooltip={
-            user.canFollowCombo
+            user.access.canFollowCombo
               ? localeTool.t('dashboard.newComboDesc')
               : localeTool.t('permission.limited')
           }

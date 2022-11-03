@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
 import * as constants from '@shared/constants'
-import useTraderRequest from 'requests/useTraderRequest'
-import useTraderState from 'states/useTraderState'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import useShowMore from 'handlers/useShowMore'
@@ -11,25 +9,28 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const ProfileDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { getTraderProfile, getTraderEnv } = useTraderState()
-  const { fetchTraderProfile, fetchProfileDetail } = useTraderRequest()
-
   const { displayedTotal, renderShowMoreButton } = useShowMore()
 
-  const traderId = params.traderId ? parseInt(params.traderId) : null
+  const traderId = params.traderId ? parseInt(params.traderId) : undefined
   const accessCode = params?.accessCode || null
 
-  const profileDetail = getTraderProfile(traderId)
+  const profileBase = useSelector(selectors.selectTraderProfileBaseById(traderId))
+  const profileDetail = useSelector(selectors.selectTraderProfileDetailById(traderId))
 
-  const envId = profileDetail?.trader?.traderEnvId || null
-  const traderEnv = getTraderEnv(envId)
+  const envId = profileBase?.trader?.traderEnvId
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
+  const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
   const holdings = profileDetail?.holdings || []
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
@@ -39,18 +40,17 @@ const ProfileDetail = () => {
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerTool.notFoundRoute())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [accessCode, traderId, navigate])
 
   useEffect(() => {
     if (!traderId || !accessCode) return
-    if (!profileDetail) {
-      fetchTraderProfile(traderId, accessCode)
-    } else if (profileDetail && !profileDetail.holdings) {
-      fetchProfileDetail(traderId, accessCode)
+    if (!profileBase) {
+      dispatch(actions.fetchTraderProfile({ id: traderId, accessCode }))
+    } else if (profileBase && !profileDetail) {
+      dispatch(actions.fetchTraderProfileDetail({ id: traderId, accessCode }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileDetail])
+  }, [profileBase])
 
   // ------------------------------------------------------------ Handler --
 
@@ -61,7 +61,7 @@ const ProfileDetail = () => {
 
   // ------------------------------------------------------------ UI --
 
-  if (!profileDetail || !profileDetail || !traderEnv) return null
+  if (!profileBase || !profileDetail || !traderEnv) return null
 
   return (
     <section className='page-root'>
@@ -93,22 +93,22 @@ const ProfileDetail = () => {
       <aside className='page-aside'>
         <TraderProfileCard
           className='w-80'
-          profile={profileDetail}
+          profile={profileBase}
         />
         <PageTitle
           title={localeTool.t('common.environments')}
           className='my-4'
         />
         {profileEnvs.map((profileEnv) => {
-          const traderEnv = getTraderEnv(profileEnv.traderEnvId)
+          const traderEnv = traderEnvDict[profileEnv.traderEnvId]
           if (!traderEnv) return null
 
           return (
             <TraderEnvCard
               key={profileEnv.traderEnvId}
               className='w-80 mb-4'
-              traderEnv={traderEnv.record}
-              isActive={profileDetail.trader.traderEnvId === profileEnv.traderEnvId}
+              traderEnv={traderEnv}
+              isActive={profileBase.trader.traderEnvId === profileEnv.traderEnvId}
               onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
             />
           )

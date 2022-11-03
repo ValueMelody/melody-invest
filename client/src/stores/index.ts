@@ -1,0 +1,40 @@
+import { configureStore } from '@reduxjs/toolkit'
+import globalReducer from './global'
+import contentReducer from './content'
+import userReducer from './user'
+import traderComboReducer from './traderCombo'
+import traderEnvReducer from './traderEnv'
+import traderProfileReducer from './traderProfile'
+import traderBehaviorReducer from './traderBehavior'
+import tickerCategoryReducer from './tickerCategory'
+import tickerIdentityReducer from './tickerIdentity'
+
+export const store = configureStore({
+  reducer: {
+    global: globalReducer,
+    content: contentReducer,
+    user: userReducer,
+    traderCombo: traderComboReducer,
+    traderEnv: traderEnvReducer,
+    traderProfile: traderProfileReducer,
+    traderBehavior: traderBehaviorReducer,
+    tickerCategory: tickerCategoryReducer,
+    tickerIdentity: tickerIdentityReducer,
+  },
+  middleware: (getDefaultMddleWare) => getDefaultMddleWare({
+    serializableCheck: false,
+  }),
+})
+
+declare global {
+  type AppState = ReturnType<typeof store.getState>
+  type AppDispatch = typeof store.dispatch
+
+  interface TopTraderProfileIds {
+    yearly: number[];
+    pastYear: number[];
+    pastQuarter: number[];
+    pastMonth: number[];
+    pastWeek: number[];
+  }
+}

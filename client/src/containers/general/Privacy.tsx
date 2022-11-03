@@ -1,25 +1,19 @@
 import { useEffect } from 'react'
 import { Textarea } from 'flowbite-react'
 import * as constants from '@shared/constants'
+import { useDispatch, useSelector } from 'react-redux'
 import * as localeTool from 'tools/locale'
-import useSystemRequest from 'requests/useSystemRequest'
-import useResourceState from 'states/useResourceState'
+import * as actions from 'actions'
+import * as selectors from 'selectors'
 
 const Privacy = () => {
-  // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
 
-  const { fetchSystemPolicy } = useSystemRequest()
-  const { getPolicy } = useResourceState()
-  const policy = getPolicy()
-
-  // ------------------------------------------------------------ Effect --
+  const { privacyPolicy } = useSelector(selectors.selectContent())
 
   useEffect(() => {
-    if (!policy.privacyPolicy) fetchSystemPolicy(constants.Content.PolicyType.Privacy)
-    // eslint-disable-next-line
-  }, [policy.privacyPolicy])
-
-  // ------------------------------------------------------------ UI --
+    if (!privacyPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.Privacy))
+  }, [privacyPolicy, dispatch])
 
   return (
     <section className='flex flex-col items-center'>
@@ -31,7 +25,7 @@ const Privacy = () => {
           data-testid='privacy-content'
           style={{ height: 'calc(100vh - 300px)', minHeight: 300 }}
           disabled
-          value={policy.privacyPolicy || ''}
+          value={privacyPolicy?.content || ''}
         />
       </section>
     </section>

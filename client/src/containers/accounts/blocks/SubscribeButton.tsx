@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import * as paypal from '@paypal/react-paypal-js'
 import * as constants from '@shared/constants'
-import useUserRequest from 'requests/useUserRequest'
 import * as commonEnum from 'enums/common'
+import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
 
 export type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
 
@@ -13,17 +14,13 @@ const Button = ({
   planType: PlanType,
   onCloseModal: () => void,
 }) => {
-  // ------------------------------------------------------------ State --
-
-  const { createUserSubscription } = useUserRequest()
+  const reduxDispatch = useDispatch<AppDispatch>()
 
   const [{ options }, dispatch] = paypal.usePayPalScriptReducer()
 
   const planId = planType === constants.User.Type.Pro
     ? commonEnum.Env.PayPalProPlanId
     : commonEnum.Env.PayPalPremiumPlanId
-
-  // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     dispatch({
@@ -34,20 +31,18 @@ const Button = ({
       },
     })
     // eslint-disable-next-line
-  }, [])
-
-  // ------------------------------------------------------------ Handler --
+  }, [planType])
 
   const handleCloseModal = () => {
     onCloseModal()
   }
 
-  const handleApproved = async (subscriptionId: string) => {
-    await createUserSubscription(subscriptionId, planType)
-    handleCloseModal()
+  const handleApproved = (subscriptionId: string) => {
+    reduxDispatch(actions.createUserSubscription({
+      subscriptionId,
+      planType,
+    })).then(handleCloseModal)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <paypal.PayPalButtons

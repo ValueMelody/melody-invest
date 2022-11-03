@@ -10,7 +10,7 @@ const SubscribeModal = () => {
   // ------------------------------------------------------------ State --
 
   const [isOpen, setIsOpen] = useState(false)
-  const [planType, setPlanType] = useState<PlanType | null>(null)
+  const [planType, setPlanType] = useState<PlanType>(constants.User.Type.Pro)
 
   const selectedProType = planType === constants.User.Type.Pro
   const selectedPremiumType = planType === constants.User.Type.Premium
@@ -74,14 +74,12 @@ const SubscribeModal = () => {
               ))}
             </Card>
           </section>
-          {planType !== null && (
-            <section className='flex mt-4 justify-center'>
-              <SubscribeButton
-                planType={planType}
-                onCloseModal={handleCloseModal}
-              />
-            </section>
-          )}
+          <section className='flex mt-4 justify-center'>
+            <SubscribeButton
+              planType={planType}
+              onCloseModal={handleCloseModal}
+            />
+          </section>
         </Modal.Body>
         <Modal.Footer>
           <Button

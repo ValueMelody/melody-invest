@@ -3,9 +3,10 @@ import { Button, Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import useResourceState from 'states/useResourceState'
 import ValueDiffer from 'containers/traders/elements/ValueDiffer'
 import HoldingShare from 'containers/traders/elements/HoldingShare'
+import { useSelector } from 'react-redux'
+import * as selectors from 'selectors'
 
 const HoldingCard = ({
   holding,
@@ -20,10 +21,10 @@ const HoldingCard = ({
 }) => {
   // ------------------------------------------------------------ State --
 
-  const { getTickerIdentity } = useResourceState()
   const [showAllHoldings, setShowAllHoldings] = useState(false)
-  const orderedHoldingItems = holding.items.sort((prev, curr) => curr.value < prev.value ? -1 : 1)
+  const orderedHoldingItems = [...holding.items].sort((prev, curr) => curr.value < prev.value ? -1 : 1)
   const displayedHoldingItems = showAllHoldings ? orderedHoldingItems : orderedHoldingItems.slice(0, 10)
+  const tickerIdentityBaseDict = useSelector(selectors.selectTickerIdentityBaseDict())
 
   // ------------------------------------------------------------ Handler --
 
@@ -77,11 +78,10 @@ const HoldingCard = ({
       <div className='border border-gray-200 my-4' />
       <section className='flex flex-wrap'>
         {displayedHoldingItems.map((holdingItem) => {
-          const identity = getTickerIdentity(holdingItem.tickerId)
           return (
             <HoldingShare
               key={holdingItem.tickerId}
-              tickerIdentity={identity}
+              tickerIdentity={tickerIdentityBaseDict[holdingItem.tickerId]}
               totalValue={holding.totalValue}
               holdingItem={holdingItem}
               previousDetail={previousHolding}

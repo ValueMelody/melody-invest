@@ -1,37 +1,44 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Button, TextInput, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
-import useTraderRequest from 'requests/useTraderRequest'
+import * as parseTool from 'tools/parse'
+import * as routerTool from 'tools/router'
 import usePrivateGuard from 'handlers/usePrivateGuard'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const ComboBuilder = () => {
   usePrivateGuard()
 
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
   // ------------------------------------------------------------ State --
 
   const [selectedTraderIds, setSelectedTraderIds] = useState<number[]>([])
-  const [envName, setEnvName] = useState('')
+  const [comboName, setComboName] = useState('')
 
-  const { createTraderCombo } = useTraderRequest()
-  const { getTraderProfile, getTraderCombos } = useTraderState()
-  const { getUser } = useUserState()
-  const user = getUser()
-  const profiles = user.userTraderIds.map((traderId) => getTraderProfile(traderId)) || []
+  const user = useSelector(selectors.selectUser())
+  const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
+  const profiles = user.userTraderIds.map((traderId) => profileDict[traderId]) || []
 
-  const parsedName = envName.trim().toLowerCase()
+  const parsedName = comboName.trim().toLowerCase()
   const hasValidName = !!parsedName.trim()
   const hasValidTraders = selectedTraderIds.length >= 2
 
-  const traderCombos = getTraderCombos()
+  const traderCombos = useSelector(selectors.selectTraderComboBases())
 
-  const hasDuplicatedName = traderCombos.some((combo) => combo.identity.name.toLowerCase() === parsedName)
+  const hasDuplicatedName = traderCombos.some((combo) => {
+    const name = parseTool.traderComboName(combo)
+    return name.toLowerCase() === parsedName
+  })
   const hasDuplicatedCombo = traderCombos.some((combo) => {
-    const currentIds = combo.identity.traderIds.join(',')
+    const currentIds = combo.traderIds.join(',')
     const buildIds = selectedTraderIds.join(',')
     return currentIds === buildIds
   })
@@ -51,14 +58,19 @@ const ComboBuilder = () => {
   const handleChangeName = (
     e: ChangeEvent<HTMLInputElement>,
   ) => {
-    setEnvName(e.target.value)
+    setComboName(e.target.value)
   }
 
-  const handleSubmit = async (
+  const handleSubmit = (
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    await createTraderCombo(envName, selectedTraderIds)
+    dispatch(actions.createTraderCombo({
+      name: comboName,
+      traderIds: selectedTraderIds,
+    })).then((res: any) => {
+      if (res?.payload?.id) navigate(routerTool.comboDetailRoute(res.payload.id))
+    })
   }
 
   // ------------------------------------------------------------ UI --
@@ -75,7 +87,7 @@ const ComboBuilder = () => {
         />
         <TextInput
           className='w-96'
-          value={envName}
+          value={comboName}
           onChange={handleChangeName}
         />
       </section>

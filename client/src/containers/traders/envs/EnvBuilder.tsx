@@ -1,15 +1,18 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import ReactSelect, { MultiValue } from 'react-select'
+import { useNavigate } from 'react-router-dom'
 import { Button, TextInput, Alert, ToggleSwitch, Select } from 'flowbite-react'
 import DatePicker from 'react-datepicker'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import useResourceState from 'states/useResourceState'
-import useTraderState from 'states/useTraderState'
-import useTraderRequest from 'requests/useTraderRequest'
+import * as parseTool from 'tools/parse'
+import * as routerTool from 'tools/router'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import Info from 'containers/elements/Info'
 import classNames from 'classnames'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 interface PlainDate {
   year: number;
@@ -49,24 +52,21 @@ const leftClass = 'w-60 font-semibold flex items-center'
 const rightClass = 'w-96'
 
 const EnvBuilder = () => {
-  // ------------------------------------------------------------ State --
-
-  const { getTickerIdentities } = useResourceState()
-  const { getTraderEnvs } = useTraderState()
-  const { createTraderEnv } = useTraderRequest()
+  const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
 
   const [startYear, setStartYear] = useState('')
   const [startMonth, setStartMonth] = useState('01-01')
   const [tickerIds, setTickerIds] = useState<number[] | null>(null)
   const [envName, setEnvName] = useState('')
 
-  const traderEnvs = getTraderEnvs()
+  const traderEnvs = useSelector(selectors.selectTraderEnvBases())
 
   const parsedEnvName = envName.trim().toLowerCase()
   const hasValidName = !!parsedEnvName
   const hasValidTickers = !tickerIds || !!tickerIds.length
 
-  const tickerIdentities = getTickerIdentities()
+  const tickerIdentities = useSelector(selectors.selectTickerIdentityBases())
   const selectableTickers = tickerIdentities.map((identity) => ({
     label: `${identity.name} (${identity.symbol})`,
     value: identity.id,
@@ -76,16 +76,17 @@ const EnvBuilder = () => {
   const date = startYear ? parseDateString(dateString) : null
   const selectedDate = date ? getDateFromString(date) : null
 
-  const hasDuplicatedName = traderEnvs.some((env) => env.record.name?.toLowerCase() === parsedEnvName)
+  const hasDuplicatedName = traderEnvs.some((env) => {
+    const envName = parseTool.traderEnvName(env)
+    return envName?.toLowerCase() === parsedEnvName
+  })
   const hasDuplicatedEnv = traderEnvs.some((env) => {
-    const currentIds = env.record.tickerIds ? env.record.tickerIds.join(',') : null
+    const currentIds = env.tickerIds ? env.tickerIds.join(',') : null
     const buildIds = tickerIds ? tickerIds.join(',') : null
-    return dateString === env.record.startDate && currentIds === buildIds
+    return dateString === env.startDate && currentIds === buildIds
   })
 
   const couldCreate = hasValidName && hasValidTickers && !hasDuplicatedName && !hasDuplicatedEnv
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeStartYear = (date: Date | null) => {
     if (!date) return
@@ -115,25 +116,18 @@ const EnvBuilder = () => {
     setEnvName(e.target.value)
   }
 
-  const handleSubmit = async (
+  const handleSubmit = (
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    await createTraderEnv(envName, `${startYear}-${startMonth}`, tickerIds)
+    dispatch(actions.createTraderEnv({
+      name: envName,
+      startDate: `${startYear}-${startMonth}`,
+      tickerIds,
+    })).then((res: any) => {
+      if (res?.payload?.id) navigate(routerTool.envDetailRoute(res.payload.id))
+    })
   }
-
-  // const handleSearch = (
-  //   options: DropdownItemProps[],
-  //   value: string,
-  // ) => {
-  //   const formattedValue = value.trim().toUpperCase()
-  //   return selectableTickers.filter((option) => {
-  //     const label = option.text.toUpperCase()
-  //     return label.includes(formattedValue) || option.symbol.includes(formattedValue)
-  //   })
-  // }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col items-center'>

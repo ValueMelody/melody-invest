@@ -2,9 +2,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import useCommonState from 'states/useCommonState'
-import useTraderState from 'states/useTraderState'
-import useSystemRequest from 'requests/useSystemRequest'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
@@ -13,38 +10,43 @@ import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import PageTitle from 'containers/elements/PageTitle'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
+import { contentSlice } from 'stores/content'
 
 const TopCombos = () => {
+  const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   // ------------------------------------------------------------ State --
 
   const [focusedComboId, setFocusedComboId] = useState(-1)
-  const { getTraderProfile, getTraderCombos, getTraderEnv } = useTraderState()
 
-  const { fetchSystemTraderCombos } = useSystemRequest()
-  const { getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const activeChartIndex = getActiveChartIndex()
+  const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
-  const traderCombos = getTraderCombos()
-  const systemCombos = traderCombos.filter((combo) => combo.identity.isSystem)
-  const focusedCombo = systemCombos.find((combo) => combo.identity.id === focusedComboId) || null
+  const traderEnvDict = useSelector(selectors.selectTraderEnvBaseDict())
+  const traderCombos = useSelector(selectors.selectTraderComboBases())
+  const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
-  const profilesWithEnvs = focusedCombo?.identity.traderIds.map((traderId) => {
-    const profile = getTraderProfile(traderId)
-    const env = getTraderEnv(profile?.trader.traderEnvId || null)
-    return { profile, env: env?.record || null }
+  const systemCombos = traderCombos.filter((combo) => combo.isSystem)
+  const comboBase = systemCombos.find((combo) => combo.id === focusedComboId) || null
+  const comboDetail = useSelector(selectors.selectTraderComboDetailById(focusedComboId))
+
+  const profilesWithEnvs = comboBase?.traderIds.map((traderId) => {
+    const profile = traderProfileDict[traderId]
+    const env = profile?.trader.traderEnvId ? traderEnvDict[profile?.trader.traderEnvId] : null
+    return { profile, env }
   }) || []
 
-  const comboHoldings = focusedCombo?.detail?.holdings || []
+  const comboHoldings = comboDetail?.holdings || []
 
   // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
-    if (focusedCombo) return
-    fetchSystemTraderCombos()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [focusedCombo])
+    if (comboDetail) return
+    dispatch(actions.fetchSystemTraderCombos())
+  }, [comboDetail, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
@@ -58,24 +60,24 @@ const TopCombos = () => {
   }
 
   const handleChangeChartIndex = (index: number) => {
-    setActiveChartIndex(index)
+    dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
   // ------------------------------------------------------------ UI --
 
-  if (!focusedCombo || !focusedCombo.detail) return null
+  if (!comboBase || !comboDetail) return null
 
   return (
     <>
       <header className='flex border-b-4 border-primary mb-4 pb-4'>
         {systemCombos.map((combo) => (
           <div
-            key={combo.identity.id}
+            key={combo.id}
             className='m-2'
           >
             <TraderComboCard
-              traderCombo={combo.identity}
-              isActive={combo.identity.id === focusedComboId}
+              traderCombo={combo}
+              isActive={combo.id === focusedComboId}
               onClick={handleClickCombo}
             />
           </div>
@@ -90,14 +92,14 @@ const TopCombos = () => {
           />
           <ValueChangePanel
             className='mb-4'
-            yearlyPercentNumber={focusedCombo?.detail?.yearlyPercentNumber || null}
-            pastYearPercentNumber={focusedCombo?.detail?.pastYearPercentNumber || null}
-            pastQuarterPercentNumber={focusedCombo?.detail?.pastQuarterPercentNumber || null}
-            pastMonthPercentNumber={focusedCombo?.detail?.pastMonthPercentNumber || null}
-            pastWeekPercentNumber={focusedCombo?.detail?.pastWeekPercentNumber || null}
-            oneDecadeTrends={focusedCombo?.detail?.oneDecadeTrends || null}
-            oneYearTrends={focusedCombo?.detail?.oneYearTrends || null}
-            totalValue={focusedCombo?.detail?.totalValue || null}
+            yearlyPercentNumber={comboDetail?.yearlyPercentNumber}
+            pastYearPercentNumber={comboDetail?.pastYearPercentNumber}
+            pastQuarterPercentNumber={comboDetail?.pastQuarterPercentNumber}
+            pastMonthPercentNumber={comboDetail?.pastMonthPercentNumber}
+            pastWeekPercentNumber={comboDetail?.pastWeekPercentNumber}
+            oneDecadeTrends={comboDetail?.oneDecadeTrends}
+            oneYearTrends={comboDetail?.oneYearTrends}
+            totalValue={comboDetail?.totalValue}
             activeChartIndex={activeChartIndex}
             onChangeChart={handleChangeChartIndex}
             showPercents

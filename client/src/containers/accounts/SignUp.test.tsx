@@ -4,27 +4,25 @@ import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import * as useUserRequest from 'requests/useUserRequest'
-import * as useCommonState from 'states/useCommonState'
 import * as usePublicGuard from 'handlers/usePublicGuard'
+import { store } from 'stores'
+import { globalSlice } from 'stores/global'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import * as userAction from 'actions/user'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createUser = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  createUser,
-}))
-
-const addMessage = jest.fn()
-// @ts-ignore
-jest.spyOn(useCommonState, 'default').mockImplementation(() => ({
-  addMessage,
-}))
+jest.spyOn(userAction, 'createUser')
+  .mockImplementation(createAsyncThunk(
+    'test/createUserTest',
+    createUser,
+  ))
 
 afterEach(() => {
+  store.dispatch(globalSlice.actions._resetForTest())
   jest.clearAllMocks()
 })
 
@@ -85,10 +83,12 @@ describe('#SignUp', () => {
     fireEvent.click(signUpButton)
 
     expect(createUser).toBeCalledTimes(1)
-    expect(createUser).toBeCalledWith('abc@email.com', pass, true)
+    expect(createUser).toBeCalledWith({
+      email: 'abc@email.com', password: pass, isConfirmed: true,
+    }, expect.anything())
   })
 
-  test('could trigger validation message', () => {
+  test('could trigger validation message', async () => {
     const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.SignIn] })
     const { container } = render(
       <SignUp />,
@@ -110,21 +110,15 @@ describe('#SignUp', () => {
     const signUpButton = screen.getByTestId('signUpButton')
     fireEvent.click(signUpButton)
 
-    expect(addMessage).toBeCalledTimes(1)
-    expect(addMessage).toBeCalledWith(
-      expect.objectContaining({
-        title: localeTool.t('error.password.requireSame'),
-      }),
-    )
+    const messages = store.getState().global.messages
+    expect(messages[messages.length - 1].title).toBe(localeTool.t('error.password.requireSame'))
     expect(createUser).toBeCalledTimes(0)
 
     fireEvent.change(confirmPassInput, { target: { value: pass } })
     fireEvent.click(signUpButton)
-    expect(addMessage).toBeCalledTimes(2)
-    expect(addMessage).toBeCalledWith(
-      expect.objectContaining({
-        title: 'Password must include at least 1 lower case letter!',
-      }),
+    const updatedMessages = store.getState().global.messages
+    expect(updatedMessages[updatedMessages.length - 1].title).toBe(
+      'Password must include at least 1 lower case letter!',
     )
     expect(createUser).toBeCalledTimes(0)
   })

@@ -1,25 +1,24 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
-import useTraderState from 'states/useTraderState'
-import useResourceState from 'states/useResourceState'
-import useSystemRequest from 'requests/useSystemRequest'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import VariationList from 'containers/traders/elements/VariationList'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
 
 const TopProfiles = () => {
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
-  const { fetchOverallTopTraderProfiles } = useSystemRequest()
-  const { getOverallTopTraderProfiles } = useResourceState()
-  const { getTraderProfile } = useTraderState()
   const [focusType, setFocusType] = useState('YEARLY')
 
-  const topTraderProfiles = getOverallTopTraderProfiles()
+  const topTraderProfiles = useSelector(selectors.selectSystemTopTraders())
+  const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
   const topOptions = [
     {
@@ -60,9 +59,8 @@ const TopProfiles = () => {
 
   useEffect(() => {
     if (topTraderProfiles) return
-    fetchOverallTopTraderProfiles()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [topTraderProfiles])
+    dispatch(actions.fetchSystemTopTraders())
+  }, [topTraderProfiles, dispatch])
 
   // ------------------------------------------------------------ Handler --
 
@@ -84,7 +82,7 @@ const TopProfiles = () => {
           <TraderProfileCard
             key={traderId}
             className='mb-6'
-            profile={getTraderProfile(traderId)}
+            profile={traderProfileDict[traderId]}
             onClick={handleClickProfile}
           />
         ))}

@@ -2,14 +2,15 @@ import classNames from 'classnames'
 import { Card, Alert } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import useUserState from 'states/useUserState'
-import useTraderState from 'states/useTraderState'
-import useCommonState from 'states/useCommonState'
-import useTraderRequest from 'requests/useTraderRequest'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
 import ProfileLabel from 'containers/traders/elements/ProfileLabel'
+import { useSelector, useDispatch } from 'react-redux'
+import * as selectors from 'selectors'
+import * as actions from 'actions'
+import { contentSlice } from 'stores/content'
+import { globalSlice } from 'stores/global'
 
 const TraderProfileCard = ({
   profile,
@@ -20,7 +21,7 @@ const TraderProfileCard = ({
   className,
   onClick,
 }: {
-  profile: interfaces.response.TraderProfile | null;
+  profile?: interfaces.response.TraderProfile | null; // TODO: remove null here
   isActive?: boolean,
   simple?: boolean;
   className?: string;
@@ -28,30 +29,22 @@ const TraderProfileCard = ({
   disabledUnwatch?: boolean;
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
-  // ------------------------------------------------------------ State --
+  const dispatch = useDispatch<AppDispatch>()
+  const user = useSelector(selectors.selectUser())
 
-  const { getUser } = useUserState()
-  const user = getUser()
-
-  const { getTraderEnv } = useTraderState()
-  const { createWatchedProfile, deleteWatchedProfile } = useTraderRequest()
-
-  const { addMessage, getActiveChartIndex, setActiveChartIndex } = useCommonState()
-  const activeChartIndex = getActiveChartIndex()
+  const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const trader = profile?.trader || null
   const pattern = profile?.pattern || null
-  const traderEnvId = trader?.traderEnvId || null
+  const traderEnvId = trader?.traderEnvId
   const traderId = trader?.id || null
 
-  const traderEnv = getTraderEnv(traderEnvId)
+  const traderEnv = useSelector(selectors.selectTraderEnvBaseById(traderEnvId))
 
   const isWatched = !!user.userType && !!traderId && user.userTraderIds.includes(traderId)
   const showToggle = !isWatched || !disabledUnwatch
 
   const isClickable = !!onClick && !disabled
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClick = () => {
     if (!onClick || !trader) return
@@ -61,33 +54,29 @@ const TraderProfileCard = ({
   const handleToggleWatch = () => {
     if (!trader) return
     if (!user.userType) {
-      addMessage({
-        id: Math.random(),
+      dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('error.guest'),
         type: 'failure',
-      })
+      }))
       return
     }
-    if (!user.canFollowTrader && !isWatched) {
-      addMessage({
-        id: Math.random(),
+    if (!user.access.canFollowTrader && !isWatched) {
+      dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('permission.limited'),
         type: 'failure',
-      })
+      }))
       return
     }
     if (isWatched) {
-      deleteWatchedProfile(trader.id)
+      dispatch(actions.deleteWatchedProfile(trader.id))
     } else {
-      createWatchedProfile(trader.id)
+      dispatch(actions.createWatchedProfile(trader.id))
     }
   }
 
   const handleChangeChartIndex = (index: number) => {
-    setActiveChartIndex(index)
+    dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!trader || !pattern || !traderEnv) return null
 
@@ -109,7 +98,7 @@ const TraderProfileCard = ({
             color='info'
             className='mr-4'
             trader={trader}
-            traderEnv={traderEnv.record}
+            traderEnv={traderEnv}
           />
           <h5>
             {localeTool.t('profile.estimatedAt', { date: trader.estimatedAt })}
