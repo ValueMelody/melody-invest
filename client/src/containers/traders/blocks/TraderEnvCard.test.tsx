@@ -1,5 +1,5 @@
 import * as constants from '@shared/constants'
-import { render, screen, fireEvent, waitFor } from 'test.utils'
+import { render, screen, fireEvent } from 'test.utils'
 import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
 import TraderEnvCard from './TraderEnvCard'
