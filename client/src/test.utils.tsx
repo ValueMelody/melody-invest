@@ -9,52 +9,9 @@ import {
   act,
 } from '@testing-library/react'
 import '@testing-library/jest-dom'
-import { context } from 'context'
-import useStore from 'states/store'
 import { MemoryHistory } from 'history'
 import { store as reduxStore } from 'stores'
 import { Provider } from 'react-redux'
-
-const WithStoreProvider = ({
-  children,
-  disabled = false,
-  store = {},
-}: {
-  disabled?: boolean;
-  children?: ReactNode;
-  store?: object;
-}) => {
-  const defaultStore = useStore({
-    // @ts-ignore
-    initCommon: store?.common,
-    // @ts-ignore
-    initResources: store?.resources,
-    // @ts-ignore
-    initTraderBehaviors: store?.traderBehaviors,
-    // @ts-ignore
-    initTraderEnvs: store?.traderEnvs,
-    // @ts-ignore
-    initTraderCombos: store?.traderCombos,
-    // @ts-ignore
-    initTraderProfiles: store?.traderProfiles,
-    // @ts-ignore
-    initTraderTickers: store?.traderTickers,
-  })
-
-  if (disabled) {
-    return (
-      <>
-        {children}
-      </>
-    )
-  }
-
-  return (
-    <context.Provider value={defaultStore}>
-      {children}
-    </context.Provider>
-  )
-}
 
 const WithRouterProvider = ({
   children,
@@ -83,7 +40,6 @@ const WithRouterProvider = ({
 
 const InterfaceBase = ({
   children,
-  store,
   history,
 }: {
   children: ReactNode;
@@ -93,9 +49,7 @@ const InterfaceBase = ({
   return (
     <WithRouterProvider history={history}>
       <Provider store={reduxStore}>
-        <WithStoreProvider store={store}>
-          {children}
-        </WithStoreProvider>
+        {children}
       </Provider>
     </WithRouterProvider>
   )
@@ -116,23 +70,14 @@ const render = (
 const HookBase = ({
   children,
   history,
-  store,
-  disableStore = false,
 }: {
   children?: ReactNode;
   history?: MemoryHistory;
-  store?: object;
-  disableStore?: boolean;
 }) => {
   return (
     <WithRouterProvider history={history}>
       <Provider store={reduxStore}>
-        <WithStoreProvider
-          store={store}
-          disabled={disableStore}
-        >
-          {children}
-        </WithStoreProvider>
+        {children}
       </Provider>
     </WithRouterProvider>
   )

@@ -4,8 +4,6 @@ import { Spinner } from 'flowbite-react'
 import { Provider, useSelector } from 'react-redux'
 import { store } from 'stores'
 import Router from './containers/Router'
-import { context } from './context'
-import useStore from './states/store'
 import * as commonEnum from './enums/common'
 import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
@@ -18,7 +16,6 @@ const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
 if (authToken) requestAdapter.setAuthToken(authToken)
 
 const App = () => {
-  const store = useStore()
   const { isLoading } = useSelector(selectors.selectGlobal())
 
   return (
@@ -28,9 +25,7 @@ const App = () => {
           <Spinner size='xl' />
         </div>
       )}
-      <context.Provider value={store}>
-        <Router />
-      </context.Provider>
+      <Router />
     </>
   )
 }

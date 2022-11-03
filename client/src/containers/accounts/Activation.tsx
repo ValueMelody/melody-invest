@@ -1,21 +1,18 @@
 import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
 import * as routerTool from 'tools/router'
-import useUserRequest from 'requests/useUserRequest'
 import usePublicGuard from 'handlers/usePublicGuard'
 
 const Activation = () => {
   usePublicGuard()
+
+  const dispatch = useDispatch<AppDispatch>()
   const params = useParams()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const accessCode = params.code
-
-  const { activateUser } = useUserRequest()
-
-  // ------------------------------------------------------------ Effect --
 
   useEffect(() => {
     if (!accessCode || accessCode.length !== 64) {
@@ -23,12 +20,9 @@ const Activation = () => {
       return
     }
 
-    activateUser(accessCode)
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  // ------------------------------------------------------------ UI --
+    dispatch(actions.activateUser(accessCode))
+      .then(() => navigate(routerTool.signInRoute()))
+  }, [dispatch, navigate, accessCode])
 
   return (
     <div />

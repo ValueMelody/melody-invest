@@ -2,6 +2,7 @@ import { nanoid, createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import { _updateForTest, _resetForTest } from 'tools/store'
+import * as commonEnum from 'enums/common'
 
 type MessageType = 'success' | 'info' | 'warning' | 'failure'
 
@@ -39,6 +40,20 @@ const onRequestRejected = (state: GlobalState, action: AnyAction) => {
     {
       id: nanoid(),
       title: message,
+      type: 'failure',
+    },
+  ]
+}
+
+const onCreateSubscriptionFailed = (state: GlobalState) => {
+  state.isLoading = false
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: localeTool.t('setting.subscribeFailed', {
+        email: commonEnum.Env.ContactEmail,
+      }),
       type: 'failure',
     },
   ]
@@ -176,6 +191,18 @@ export const globalSlice = createSlice({
     builder.addCase(actions.cancelUserSubscription.pending, startLoading)
     builder.addCase(actions.cancelUserSubscription.fulfilled, successWithMessage)
     builder.addCase(actions.cancelUserSubscription.rejected, onRequestRejected)
+
+    builder.addCase(actions.createUser.pending, startLoading)
+    builder.addCase(actions.createUser.fulfilled, successWithMessage)
+    builder.addCase(actions.createUser.rejected, onRequestRejected)
+
+    builder.addCase(actions.activateUser.pending, startLoading)
+    builder.addCase(actions.activateUser.fulfilled, successWithMessage)
+    builder.addCase(actions.activateUser.rejected, onRequestRejected)
+
+    builder.addCase(actions.createUserSubscription.pending, startLoading)
+    builder.addCase(actions.createUserSubscription.fulfilled, successWithMessage)
+    builder.addCase(actions.createUserSubscription.rejected, onCreateSubscriptionFailed)
   },
 })
 

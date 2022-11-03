@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import useUserRequest from 'requests/useUserRequest'
 import usePublicGuard from 'handlers/usePublicGuard'
 import usePasswordValidator from 'handlers/usePasswordValidator'
 import RequiredLabel from 'containers/elements/RequiredLabel'
@@ -16,13 +15,13 @@ import { globalSlice } from 'stores/global'
 
 const SignUp = () => {
   usePublicGuard()
+
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
   // ------------------------------------------------------------ State --
 
   const { validatePassword } = usePasswordValidator()
-  const { createUser } = useUserRequest()
 
   const { termsPolicy } = useSelector(selectors.selectContent())
 
@@ -82,7 +81,13 @@ const SignUp = () => {
       }))
       return
     }
-    await createUser(parsedEmail, parsedPassword, isConfirmed)
+    dispatch(actions.createUser({
+      email: parsedEmail,
+      password: parsedPassword,
+      isConfirmed,
+    })).then((res: any) => {
+      if (!res.error) navigate(routerTool.signInRoute())
+    })
   }
 
   // ------------------------------------------------------------ UI --

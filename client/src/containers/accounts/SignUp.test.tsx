@@ -4,20 +4,22 @@ import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
-import * as useUserRequest from 'requests/useUserRequest'
 import * as usePublicGuard from 'handlers/usePublicGuard'
 import { store } from 'stores'
 import { globalSlice } from 'stores/global'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import * as userAction from 'actions/user'
 
 const publicGuard = jest.fn()
 // @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createUser = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  createUser,
-}))
+jest.spyOn(userAction, 'createUser')
+  .mockImplementation(createAsyncThunk(
+    'test/createUserTest',
+    createUser,
+  ))
 
 afterEach(() => {
   store.dispatch(globalSlice.actions._resetForTest())
@@ -81,7 +83,9 @@ describe('#SignUp', () => {
     fireEvent.click(signUpButton)
 
     expect(createUser).toBeCalledTimes(1)
-    expect(createUser).toBeCalledWith('abc@email.com', pass, true)
+    expect(createUser).toBeCalledWith({
+      email: 'abc@email.com', password: pass, isConfirmed: true,
+    }, expect.anything())
   })
 
   test('could trigger validation message', async () => {

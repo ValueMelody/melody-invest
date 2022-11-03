@@ -56,11 +56,9 @@ const storeFromUserOverall = (
   state.userTraderIds = action.payload.traderProfiles.map((profile) => profile.trader.id)
 }
 
-const updateUserLoginState = (
-  state: UserState,
-  action: PayloadAction<boolean>,
-) => {
-  state.hasLogin = action.payload
+const setJWTTOken = (jwtToken: string) => {
+  requestAdapter.setAuthToken(jwtToken)
+  storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
 }
 
 const storeFromCreateUserToken = (
@@ -68,9 +66,20 @@ const storeFromCreateUserToken = (
   action: PayloadAction<interfaces.response.UserToken>,
 ) => {
   const { jwtToken } = action.payload
-  requestAdapter.setAuthToken(jwtToken)
-  storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
+  setJWTTOken(jwtToken)
   state.hasLogin = true
+}
+
+const onCreateSubscriptionSuccess = (
+  state: UserState,
+  action: PayloadAction<{
+    userToken: interfaces.response.UserToken;
+    planType: number;
+  }>,
+) => {
+  state.userType = action.payload.planType
+  const { jwtToken } = action.payload.userToken
+  setJWTTOken(jwtToken)
 }
 
 const addTraderById = (state: UserState, action: PayloadAction<number>) => {
@@ -103,7 +112,6 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    updateUserLoginState,
     _updateForTest,
     _resetForTest: (state) => _resetForTest(state, initialState),
   },
@@ -114,6 +122,7 @@ export const userSlice = createSlice({
     builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
     builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
     builder.addCase(actions.lockUserAccount.fulfilled, logout)
+    builder.addCase(actions.createUserSubscription.fulfilled, onCreateSubscriptionSuccess)
     builder.addCase(actions.logout, logout)
   },
 })

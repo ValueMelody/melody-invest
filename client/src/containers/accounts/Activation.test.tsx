@@ -4,14 +4,16 @@ import { render } from 'test.utils'
 import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as useUserRequest from 'requests/useUserRequest'
 import * as usePublicGuard from 'handlers/usePublicGuard'
+import * as userAction from 'actions/user'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const activateUser = jest.fn()
-// @ts-ignore
-jest.spyOn(useUserRequest, 'default').mockImplementation(() => ({
-  activateUser,
-}))
+jest.spyOn(userAction, 'activateUser')
+  .mockImplementation(createAsyncThunk(
+    'test/activateUserTest',
+    activateUser,
+  ))
 
 const publicGuard = jest.fn()
 // @ts-ignore
@@ -55,6 +57,6 @@ describe('#Activation', () => {
       { history },
     )
     expect(activateUser).toBeCalledTimes(1)
-    expect(activateUser).toBeCalledWith(code)
+    expect(activateUser).toBeCalledWith(code, expect.anything())
   })
 })

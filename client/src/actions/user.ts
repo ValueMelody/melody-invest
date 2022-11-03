@@ -141,3 +141,73 @@ export const cancelUserSubscription = createAsyncThunk(
     }
   },
 )
+
+export const createUser = createAsyncThunk(
+  'user/createUser',
+  async ({
+    email,
+    password,
+    isConfirmed,
+  }: {
+    email: string;
+    password: string;
+    isConfirmed: boolean;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}`
+
+    try {
+      await requestAdapter.sendPostRequest(endpoint, {
+        email,
+        password,
+        isConfirmed,
+      })
+      return {
+        msg: localeTool.t('signUp.success'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const activateUser = createAsyncThunk(
+  'user/activateUser',
+  async (token: string, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/activate`
+
+    try {
+      await requestAdapter.sendPutRequest(endpoint, { token })
+      return {
+        msg: localeTool.t('activate.success'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const createUserSubscription = createAsyncThunk(
+  'user/createUserSubscription',
+  async ({
+    subscriptionId,
+    planType,
+  }: {
+    subscriptionId: string;
+    planType: number;
+  }, { rejectWithValue }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+
+    try {
+      const userToken: interfaces.response.UserToken = await requestAdapter.sendPostRequest(endpoint, {
+        subscriptionId,
+      })
+      return {
+        userToken,
+        planType,
+        msg: localeTool.t('setting.subscribeSucceed'),
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
