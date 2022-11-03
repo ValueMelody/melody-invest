@@ -31,7 +31,7 @@ const Button = ({
       },
     })
     // eslint-disable-next-line
-  }, [])
+  }, [planType])
 
   const handleCloseModal = () => {
     onCloseModal()
