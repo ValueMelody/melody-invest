@@ -6,6 +6,6 @@
     "@shared/interfaces": "*"
   },
   "scripts": {
-    "compile": "tsc"
+    "build": "tsc --build --clean && tsc --build"
   }
 }
