@@ -38,7 +38,7 @@
     "start": "PORT=3099 BROWSER=none react-scripts start",
     "build": "react-scripts build",
     "lint": "eslint ./ --ext .tsx --ext .ts",
-    "lint-fix": "eslint --fix ./ --ext .tsx --ext .ts",
+    "lint:fix": "eslint --fix ./ --ext .tsx --ext .ts",
     "tsc": "tsc"
   },
   "browserslist": {
