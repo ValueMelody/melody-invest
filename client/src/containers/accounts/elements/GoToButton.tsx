@@ -25,7 +25,7 @@ const GoToButton = ({
       pill
     >
       {title}
-      <ArrowRightIcon className='ml-2 h-5 w-5' />
+      <ArrowRightIcon className='ml-2 icon-size' />
     </Button>
   )
 }

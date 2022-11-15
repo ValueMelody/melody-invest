@@ -1,6 +1,6 @@
 import { useState, FormEvent } from 'react'
 import { Button, Accordion } from 'flowbite-react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
@@ -104,6 +104,8 @@ const subTitleClass = 'text-center font-semibold text-lg mb-4'
 
 const ProfileBuilder = () => {
   usePrivateGuard()
+  const location = useLocation()
+  const pattern = location.state as interfaces.traderPatternModel.Public | undefined
 
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
@@ -111,7 +113,7 @@ const ProfileBuilder = () => {
   // ------------------------------------------------------------ State --
 
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
-  const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>({})
+  const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>(pattern || {})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())

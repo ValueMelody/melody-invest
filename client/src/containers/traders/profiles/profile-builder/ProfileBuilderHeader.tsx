@@ -24,7 +24,7 @@ const ProfileBuilderHeader = ({
       </h5>
       {isValid && <CheckIcon
         color='green'
-        className='w-4 h-4'
+        className='icon-size'
                   />}
       {!isValid && <h5 className='text-red-600'>* {invalidMessage}</h5>}
     </header>
