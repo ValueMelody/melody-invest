@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
-import { render, screen } from 'test.utils'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { render, screen } from 'test.utils'
 import ProfileLabel from './ProfileLabel'
 
 describe('#ProfileLabel', () => {

@@ -1,6 +1,6 @@
+import * as localeTool from 'tools/locale'
 import { renderHook } from 'test.utils'
 import usePasswordValidator from './usePasswordValidator'
-import * as localeTool from 'tools/locale'
 
 describe('#usePasswordValidator', () => {
   test('could validate password', () => {

@@ -1,15 +1,15 @@
-import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import * as routerTool from 'tools/router'
+import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import TickerLabel from 'containers/traders/elements/TickerLabel'
-import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, useParams } from 'react-router-dom'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
-import { useSelector, useDispatch } from 'react-redux'
-import * as selectors from 'selectors'
-import * as actions from 'actions'
+import TickerLabel from 'containers/traders/elements/TickerLabel'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import { useEffect } from 'react'
 
 const TickerDetail = () => {
   const params = useParams()

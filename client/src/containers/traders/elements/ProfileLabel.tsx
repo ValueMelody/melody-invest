@@ -1,7 +1,7 @@
-import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { Badge } from 'flowbite-react'
 
 const ProfileLabel = ({
   trader,

@@ -1,12 +1,12 @@
-import classNames from 'classnames'
-import { Card } from 'flowbite-react'
+import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import WatchButton from '../elements/WatchButton'
-import { useSelector, useDispatch } from 'react-redux'
 import * as selectors from 'selectors'
-import * as actions from 'actions'
+import { useDispatch, useSelector } from 'react-redux'
+import { Card } from 'flowbite-react'
+import WatchButton from '../elements/WatchButton'
+import classNames from 'classnames'
 
 const TraderComboCard = ({
   traderCombo,

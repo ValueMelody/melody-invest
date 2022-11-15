@@ -1,6 +1,6 @@
-import ValueChangePanel from './ValueChangePanel'
-import { render, screen, fireEvent } from 'test.utils'
 import * as localeTool from 'tools/locale'
+import { fireEvent, render, screen } from 'test.utils'
+import ValueChangePanel from './ValueChangePanel'
 
 describe('#ValueChangePanel', () => {
   test('could render all', async () => {

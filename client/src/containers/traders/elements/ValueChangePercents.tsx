@@ -1,6 +1,6 @@
-import { Alert, Table } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
+import { Alert, Table } from 'flowbite-react'
 
 const ValueChangePercents = ({
   yearlyPercentNumber,

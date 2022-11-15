@@ -1,8 +1,8 @@
-import { MouseEvent } from 'react'
-import classNames from 'classnames'
-import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
+import { Badge } from 'flowbite-react'
+import { MouseEvent } from 'react'
+import classNames from 'classnames'
 
 const BehaviorLabel = ({
   behavior,

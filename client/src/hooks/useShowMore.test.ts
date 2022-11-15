@@ -1,4 +1,4 @@
-import { renderHook, fireEvent, render, screen, act } from 'test.utils'
+import { act, fireEvent, render, renderHook, screen } from 'test.utils'
 import useShowMore from './useShowMore'
 
 describe('#usePasswordValidator', () => {

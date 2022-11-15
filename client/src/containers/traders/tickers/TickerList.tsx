@@ -1,13 +1,13 @@
-import { useState, ChangeEvent } from 'react'
-import { TextInput } from 'flowbite-react'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
-import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
+import { ChangeEvent, useState } from 'react'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { TextInput } from 'flowbite-react'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import VariationList from 'containers/traders/elements/VariationList'
-import * as selectors from 'selectors'
+import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const isSearchedTicker = (

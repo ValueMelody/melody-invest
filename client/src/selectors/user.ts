@@ -1,5 +1,5 @@
-import { UserState } from 'stores/user'
 import * as constants from '@shared/constants'
+import { UserState } from 'stores/user'
 
 const getLimit = (userType: number) => {
   switch (userType) {

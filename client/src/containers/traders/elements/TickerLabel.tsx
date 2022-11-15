@@ -1,6 +1,6 @@
-import classNames from 'classnames'
-import { Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
+import { Badge } from 'flowbite-react'
+import classNames from 'classnames'
 
 const TickerLabel = ({
   ticker,

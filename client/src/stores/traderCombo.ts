@@ -1,7 +1,7 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
-import { _updateForTest, _resetForTest } from 'tools/store'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { _resetForTest, _updateForTest } from 'tools/store'
 
 export interface TraderComboBase {
   [comboId: number]: interfaces.traderComboModel.Identity;

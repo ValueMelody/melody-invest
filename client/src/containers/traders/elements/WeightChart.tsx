@@ -1,7 +1,7 @@
-import { MouseEvent } from 'react'
-import * as parseTool from 'tools/parse'
-import * as localeTool from 'tools/locale'
 import * as chart from 'recharts'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { MouseEvent } from 'react'
 
 interface DataPoint {
   label: string;

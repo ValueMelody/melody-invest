@@ -1,11 +1,11 @@
 import * as constants from '@shared/constants'
-import { render, screen, fireEvent } from 'test.utils'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { fireEvent, render, screen } from 'test.utils'
 import TraderEnvCard from './TraderEnvCard'
 import { store } from 'stores'
-import { userSlice } from 'stores/user'
 import { traderEnvSlice } from 'stores/traderEnv'
+import { userSlice } from 'stores/user'
 
 const traderEnv = {
   id: 123,

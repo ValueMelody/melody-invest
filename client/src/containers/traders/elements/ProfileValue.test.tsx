@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import ProfileValue from './ProfileValue'
 import { fireEvent, render, screen } from 'test.utils'
+import ProfileValue from './ProfileValue'
 
 describe('#ProfileValue', () => {
   // @ts-ignore
