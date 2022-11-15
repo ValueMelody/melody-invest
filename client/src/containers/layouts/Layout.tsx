@@ -31,8 +31,7 @@ const Layout: FunctionComponent = ({
       dispatch(globalSlice.actions.removeMessage(msgId))
     }, 8000)
     return () => clearTimeout(clearMessage)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages])
+  }, [messages, dispatch])
 
   const handleRemoveMessage = (id: string) => {
     dispatch(globalSlice.actions.removeMessage(id))

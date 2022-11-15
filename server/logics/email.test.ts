@@ -1,14 +1,14 @@
 import * as interfaces from '@shared/interfaces'
 import * as email from './email'
 import * as localeTool from 'tools/locale'
+import { mock, instance, when } from 'ts-mockito'
 
-// @ts-ignore
-const user: interfaces.userModel.Record = {
-  id: 1,
-  email: 'test@email.com',
-  activationCode: 'abcdefg',
-  resetCode: 'qwerty',
-}
+const userMock: interfaces.userModel.Record = mock({})
+when(userMock.id).thenReturn(1)
+when(userMock.email).thenReturn('test@email.com')
+when(userMock.activationCode).thenReturn('abcdefg')
+when(userMock.resetCode).thenReturn('qwerty')
+const user = instance(userMock)
 
 describe('#buildActivateUserEmail', () => {
   test('could build active user email', () => {

@@ -9,7 +9,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as userAction from 'actions/user'
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createUserToken = jest.fn()

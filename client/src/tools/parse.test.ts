@@ -171,7 +171,7 @@ describe('#holdingValue', () => {
     expect(parseTool.holdingValue(1000000)).toBe('$10,000.00')
     expect(parseTool.holdingValue(100000000)).toBe('$1,000,000.00')
     // @ts-ignore
-    Intl = null // eslint-disable-line
+    Intl = null // eslint-disable-line no-global-assign
     expect(parseTool.holdingValue(100000000)).toBe('1000000.00')
   })
 })

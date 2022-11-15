@@ -20,7 +20,7 @@ describe('#getPatternHashCode', () => {
     }
     expect(pattern.getPatternHashCode(pattern1))
       .toEqual(
-        // eslint-disable-next-line
+        // eslint-disable-next-line max-len
         'd592341948fd4682fde2031197e221aba127eb3106f051f13dbfff6373c0c912ac194a02b141ee21396be8fa8b8979d276133900db610003baa58e52dcc8c6d7',
       )
 
@@ -40,7 +40,7 @@ describe('#getPatternHashCode', () => {
     }
     expect(pattern.getPatternHashCode(pattern2))
       .toEqual(
-        // eslint-disable-next-line
+        // eslint-disable-next-line max-len
         '518c7e9a04d2e0d6a64f6b997819ab4ad7c2a13f73f70e01e0da78ea764910f95cfaa5ac020da4262bc15da62ff2a99f19602f79915d9d39c7bf0e0bde50ceec',
       )
   })
@@ -118,8 +118,6 @@ describe('#pickBehaviorValues', () => {
       { priceDailyDecreaseBuy: 1 },
     ).length).toBe(1)
   })
-
-  test.todo('could handle case when there is no subValues')
 })
 
 describe('#pickRandomBehaviorValue', () => {

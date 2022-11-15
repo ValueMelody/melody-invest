@@ -6,6 +6,8 @@ import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderFollowerModel from 'models/traderFollower'
 import * as traderEnvModel from 'models/traderEnv'
 import * as errorEnum from 'enums/error'
+import { mock, instance, when } from 'ts-mockito'
+import { Request, Response } from 'express'
 
 const getUserFollowedEnvMock = async (userId: number) => {
   let placeholders: interfaces.traderEnvFollowerModel.Record[] = []
@@ -55,8 +57,10 @@ const getUserFollowedProfileMock = async (userId: number) => {
 
 const getEnvMock = async (id: number) => {
   if (!id || id >= 999) return null
-  // @ts-ignore
-  const record: interfaces.traderEnvModel.Record = { id }
+
+  const recordMock : interfaces.traderEnvModel.Record = mock({})
+  when(recordMock.id).thenReturn(id)
+  const record = instance(recordMock)
 
   record.isSystem = id === 1
   return record
@@ -78,84 +82,93 @@ jest
   .spyOn(traderFollowerModel, 'getUserFollowed')
   .mockImplementation(getUserFollowedProfileMock)
 
+const resMock: Response = mock({})
+const res = instance(resMock)
+
 describe('#couldCreateEnv', () => {
   test('guest user can not create env', async () => {
     const next = jest.fn()
-    const req = { body: { auth: {} } }
-    // @ts-ignore
-    await expect(() => access.couldCreateEnv(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({ auth: {} })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldCreateEnv(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('basic user can not create env', async () => {
     const next = jest.fn()
-    const req = {
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateEnv(req, null, next))
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldCreateEnv(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify pro user create env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 3,
-          type: constants.User.Type.Pro,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 3,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateEnv(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateEnv(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateEnv(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify premium user create env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 5,
-          type: constants.User.Type.Premium,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 5,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateEnv(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Premium,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateEnv(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateEnv(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
@@ -164,81 +177,89 @@ describe('#couldCreateEnv', () => {
 describe('#couldCreateCombo', () => {
   test('guest user can not create combo', async () => {
     const next = jest.fn()
-    const req = { body: { auth: {} } }
-    // @ts-ignore
-    await expect(() => access.couldCreateCombo(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldCreateCombo(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('basic user can not create env', async () => {
     const next = jest.fn()
-    const req = {
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateCombo(req, null, next))
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldCreateCombo(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify pro user create combo access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 3,
-          type: constants.User.Type.Pro,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 3,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateCombo(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateCombo(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateCombo(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateCombo(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify premium user create env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 5,
-          type: constants.User.Type.Premium,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 5,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateCombo(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateCombo(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Premium,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateCombo(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateCombo(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
@@ -247,93 +268,101 @@ describe('#couldCreateCombo', () => {
 describe('#couldCreateProfile', () => {
   test('guest user can not create profile', async () => {
     const next = jest.fn()
-    const req = { body: { auth: {} } }
-    // @ts-ignore
-    await expect(() => access.couldCreateProfile(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldCreateProfile(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify basic user create profile access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateProfile(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateProfile(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 2,
-          type: constants.User.Type.Basic,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 2,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateProfile(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateProfile(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify pro user create profile access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 3,
-          type: constants.User.Type.Pro,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 3,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateProfile(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateProfile(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateProfile(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateProfile(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
 
   test('can verify premium user create profile access', async () => {
     const next = jest.fn()
-    const req1 = {
-      body: {
-        auth: {
-          id: 5,
-          type: constants.User.Type.Premium,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 5,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldCreateProfile(req1, null, next)
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldCreateProfile(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Premium,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldCreateProfile(req2, null, next))
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldCreateProfile(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Unauthorized)
   })
@@ -342,159 +371,173 @@ describe('#couldCreateProfile', () => {
 describe('#couldAccessEnv', () => {
   test('could verify props', async () => {
     const next = jest.fn()
-    const req = {
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessEnv(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Dev.WrongMiddleware)
   })
 
   test('could verify env', async () => {
     const next = jest.fn()
-    const req = {
-      params: { env_id: 999 },
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    when(reqMock.params).thenReturn({ env_id: '999' })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessEnv(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify guest user env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      params: { env_id: 1 },
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req1, null, next)
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {},
+    })
+    when(reqMock1.params).thenReturn({ env_id: '1' })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { env_id: 2 },
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req2, null, next))
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {},
+    })
+    when(reqMock2.params).thenReturn({ env_id: '2' })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldAccessEnv(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify basic user env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      params: { env_id: 1 },
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req1, null, next)
+    })
+    when(reqMock1.params).thenReturn({ env_id: '1' })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { env_id: 2 },
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req2, null, next))
+    })
+    when(reqMock2.params).thenReturn({ env_id: '2' })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldAccessEnv(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify pro user env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      params: { env_id: 1 },
-      body: {
-        auth: {
-          id: 3,
-          type: constants.User.Type.Pro,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 3,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req1, null, next)
+    })
+    when(reqMock1.params).thenReturn({ env_id: '1' })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { env_id: constants.User.PlanLimit.Pro.Envs },
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req2, null, next)
+    })
+    when(reqMock2.params).thenReturn({ env_id: constants.User.PlanLimit.Pro.Envs.toString() })
+    const req2 = instance(reqMock2)
+
+    await access.couldAccessEnv(req2, res, next)
     expect(next).toBeCalledTimes(2)
 
-    const req3 = {
-      params: { env_id: constants.User.PlanLimit.Pro.Envs },
-      body: {
-        auth: {
-          id: 3,
-          type: constants.User.Type.Basic,
-        },
+    const reqMock3: Request = mock({})
+    when(reqMock3.body).thenReturn({
+      auth: {
+        id: 3,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req3, null, next))
+    })
+    when(reqMock3.params).thenReturn({ env_id: constants.User.PlanLimit.Pro.Envs.toString() })
+    const req3 = instance(reqMock3)
+
+    await expect(() => access.couldAccessEnv(req3, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify premium user env access', async () => {
     const next = jest.fn()
-    const req1 = {
-      params: { env_id: 1 },
-      body: {
-        auth: {
-          id: 5,
-          type: constants.User.Type.Premium,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 5,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req1, null, next)
+    })
+    when(reqMock1.params).thenReturn({ env_id: '1' })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessEnv(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { env_id: constants.User.PlanLimit.Premium.Envs },
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Premium,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessEnv(req2, null, next)
+    })
+    when(reqMock2.params).thenReturn({ env_id: constants.User.PlanLimit.Premium.Envs.toString() })
+    const req2 = instance(reqMock2)
+
+    await access.couldAccessEnv(req2, res, next)
     expect(next).toBeCalledTimes(2)
 
-    const req3 = {
-      params: { env_id: constants.User.PlanLimit.Premium.Envs },
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock3: Request = mock({})
+    when(reqMock3.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessEnv(req3, null, next))
+    })
+    when(reqMock3.params).thenReturn({ env_id: constants.User.PlanLimit.Premium.Envs.toString() })
+    const req3 = instance(reqMock3)
+
+    await expect(() => access.couldAccessEnv(req3, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
@@ -503,70 +546,78 @@ describe('#couldAccessEnv', () => {
 describe('#couldAccessCombo', () => {
   test('could verify props', async () => {
     const next = jest.fn()
-    const req = {
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessCombo(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessCombo(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Dev.WrongMiddleware)
   })
 
   test('could verify guest user combo access', async () => {
     const next = jest.fn()
-    const req = {
-      params: { combo_id: 1 },
-      body: { auth: {} },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessCombo(req, null, next))
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {},
+    })
+    when(reqMock.params).thenReturn({ combo_id: '1' })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessCombo(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify basic user combo access', async () => {
     const next = jest.fn()
-    const req = {
-      params: { combo_id: 1 },
-      body: {
-        auth: {
-          id: 1,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {
+        id: 1,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessCombo(req, null, next))
+    })
+    when(reqMock.params).thenReturn({ combo_id: '1' })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessCombo(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
   test('could verify pro user combo access', async () => {
     const next = jest.fn()
-    const req1 = {
-      params: { combo_id: constants.User.PlanLimit.Pro.Combos },
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Pro,
-        },
+
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessCombo(req1, null, next)
+    })
+    when(reqMock1.params).thenReturn({ combo_id: constants.User.PlanLimit.Pro.Combos.toString() })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessCombo(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { combo_id: constants.User.PlanLimit.Pro.Combos },
-      body: {
-        auth: {
-          id: 4,
-          type: constants.User.Type.Basic,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 4,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessCombo(req2, null, next))
+    })
+    when(reqMock2.params).thenReturn({ combo_id: constants.User.PlanLimit.Pro.Combos.toString() })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldAccessCombo(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
@@ -574,30 +625,30 @@ describe('#couldAccessCombo', () => {
   test('could verify premium user combo access', async () => {
     const next = jest.fn()
 
-    const req1 = {
-      params: { combo_id: constants.User.PlanLimit.Premium.Combos },
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Premium,
-        },
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Premium,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessCombo(req1, null, next)
+    })
+    when(reqMock1.params).thenReturn({ combo_id: constants.User.PlanLimit.Premium.Combos.toString() })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessCombo(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      params: { combo_id: constants.User.PlanLimit.Premium.Combos },
-      body: {
-        auth: {
-          id: 6,
-          type: constants.User.Type.Pro,
-        },
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 6,
+        type: constants.User.Type.Pro,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessCombo(req2, null, next))
+    })
+    when(reqMock2.params).thenReturn({ combo_id: constants.User.PlanLimit.Premium.Combos.toString() })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldAccessCombo(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
@@ -606,16 +657,17 @@ describe('#couldAccessCombo', () => {
 describe('#couldAccessProfiles', () => {
   test('could verify props', async () => {
     const next = jest.fn()
-    const req = {
-      body: {
-        auth: {
-          id: 2,
-          type: constants.User.Type.Basic,
-        },
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {
+        id: 2,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessProfiles(req, null, next))
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessProfiles(req, res, next))
       .rejects
       .toStrictEqual(errorEnum.Dev.WrongMiddleware)
   })
@@ -623,36 +675,36 @@ describe('#couldAccessProfiles', () => {
   test('could verify if user could access profiles', async () => {
     const next = jest.fn()
 
-    const req1 = {
-      body: {
-        auth: {
-          id: 2,
-          type: constants.User.Type.Basic,
-        },
-        traderIds: [
-          constants.User.PlanLimit.Basic.Profiles - 1,
-          constants.User.PlanLimit.Basic.Profiles,
-        ],
+    const reqMock1: Request = mock({})
+    when(reqMock1.body).thenReturn({
+      auth: {
+        id: 2,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await access.couldAccessProfiles(req1, null, next)
+      traderIds: [
+        constants.User.PlanLimit.Basic.Profiles - 1,
+        constants.User.PlanLimit.Basic.Profiles,
+      ],
+    })
+    const req1 = instance(reqMock1)
+
+    await access.couldAccessProfiles(req1, res, next)
     expect(next).toBeCalledTimes(1)
 
-    const req2 = {
-      body: {
-        auth: {
-          id: 2,
-          type: constants.User.Type.Basic,
-        },
-        traderIds: [
-          constants.User.PlanLimit.Basic.Profiles,
-          constants.User.PlanLimit.Basic.Profiles + 1,
-        ],
+    const reqMock2: Request = mock({})
+    when(reqMock2.body).thenReturn({
+      auth: {
+        id: 2,
+        type: constants.User.Type.Basic,
       },
-    }
-    // @ts-ignore
-    await expect(() => access.couldAccessProfiles(req2, null, next))
+      traderIds: [
+        constants.User.PlanLimit.Basic.Profiles,
+        constants.User.PlanLimit.Basic.Profiles + 1,
+      ],
+    })
+    const req2 = instance(reqMock2)
+
+    await expect(() => access.couldAccessProfiles(req2, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.Forbidden)
   })

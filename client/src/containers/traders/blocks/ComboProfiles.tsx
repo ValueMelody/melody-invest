@@ -6,8 +6,8 @@ import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import WeightChart from '../elements/WeightChart'
 
 interface ProfileWithEnv {
-  profile: interfaces.response.TraderProfile | null;
-  env: interfaces.traderEnvModel.Record | null;
+  profile?: interfaces.response.TraderProfile;
+  env?: interfaces.traderEnvModel.Record;
 }
 
 const ComboProfiles = ({
@@ -17,8 +17,6 @@ const ComboProfiles = ({
   profilesWithEnvs: ProfileWithEnv[];
   onClickProfile: (trader: interfaces.traderModel.Record) => void;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const chartData = profilesWithEnvs.map((profileWithEnv) => {
     const label = profileWithEnv.profile
       ? parseTool.profileName(profileWithEnv.profile.pattern.id)
@@ -40,15 +38,11 @@ const ComboProfiles = ({
 
   const [activeIndex, setActiveIndex] = useState(largestIndex)
 
-  // ------------------------------------------------------------ Handler --
-
   const handleChangeActive = (index: number) => setActiveIndex(index)
 
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     onClickProfile(trader)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col items-center'>

@@ -30,7 +30,7 @@ const Button = ({
         intent: 'subscription',
       },
     })
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planType])
 
   const handleCloseModal = () => {

@@ -11,7 +11,6 @@ import * as userAction from 'actions/user'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const resetUserPassword = jest.fn()

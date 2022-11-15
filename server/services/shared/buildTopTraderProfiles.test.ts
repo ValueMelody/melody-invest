@@ -1,5 +1,7 @@
 import buildTopTraderProfiles from './buildTopTraderProfiles'
 import * as databaseAdapter from 'adapters/database'
+import * as interfaces from '@shared/interfaces'
+import { mock, instance, when } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -21,11 +23,36 @@ afterAll(async () => {
 
 describe('#buildTopTraderProfiles', () => {
   test('could build top trader profiles', async () => {
-    const trader1 = { id: 1, traderEnvId: 1, traderPatternId: 1 }
-    const trader2 = { id: 2, traderEnvId: 1, traderPatternId: 3 }
-    const trader3 = { id: 3, traderEnvId: 2, traderPatternId: 5 }
-    const trader11 = { id: 11, traderEnvId: 3, traderPatternId: 6 }
-    const trader12 = { id: 12, traderEnvId: 2, traderPatternId: 6 }
+    const traderMock1: interfaces.traderModel.Record = mock({})
+    when(traderMock1.id).thenReturn(1)
+    when(traderMock1.traderEnvId).thenReturn(1)
+    when(traderMock1.traderPatternId).thenReturn(1)
+    const trader1 = instance(traderMock1)
+
+    const traderMock2: interfaces.traderModel.Record = mock({})
+    when(traderMock2.id).thenReturn(2)
+    when(traderMock2.traderEnvId).thenReturn(1)
+    when(traderMock2.traderPatternId).thenReturn(3)
+    const trader2 = instance(traderMock2)
+
+    const traderMock3: interfaces.traderModel.Record = mock({})
+    when(traderMock3.id).thenReturn(3)
+    when(traderMock3.traderEnvId).thenReturn(2)
+    when(traderMock3.traderPatternId).thenReturn(5)
+    const trader3 = instance(traderMock3)
+
+    const traderMock11: interfaces.traderModel.Record = mock({})
+    when(traderMock11.id).thenReturn(11)
+    when(traderMock11.traderEnvId).thenReturn(3)
+    when(traderMock11.traderPatternId).thenReturn(6)
+    const trader11 = instance(traderMock11)
+
+    const traderMock12: interfaces.traderModel.Record = mock({})
+    when(traderMock12.id).thenReturn(12)
+    when(traderMock12.traderEnvId).thenReturn(2)
+    when(traderMock12.traderPatternId).thenReturn(6)
+    const trader12 = instance(traderMock12)
+
     const tops = {
       yearly: [trader1, trader2, trader3],
       pastYear: [trader11, trader1],
@@ -33,7 +60,6 @@ describe('#buildTopTraderProfiles', () => {
       pastMonth: [trader12],
       pastWeek: [],
     }
-    // @ts-ignore
     const result = await buildTopTraderProfiles(tops)
     expect(result.yearly.length).toBe(3)
     expect(result.yearly[0].trader).toStrictEqual(trader1)

@@ -1,28 +1,33 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as evaluation from './evaluation'
+import { mock, instance, when } from 'ts-mockito'
 
 describe('#getTickerPreferValue', () => {
-  // @ts-ignore
-  const tickerDaily1: interfaces.tickerDailyModel.Record = { closePrice: 100 }
-  // @ts-ignore
-  const tickerDaily2: interfaces.tickerDailyModel.Record = { closePrice: 10 }
-  // @ts-ignore
-  const tickerQuarterly1: interfaces.tickerQuarterlyModel.Record = {
-    eps: 20000,
-    ebitda: 300,
-    netIncome: 40000,
-    grossProfit: 50,
-    totalRevenue: 600,
-  }
-  // @ts-ignore
-  const tickerQuarterly2: interfaces.tickerQuarterlyModel.Record = {
-    eps: 2000,
-    ebitda: 30,
-    netIncome: 4000,
-    grossProfit: 5,
-    totalRevenue: 60,
-  }
+  const dailyMock1: interfaces.tickerDailyModel.Record = mock({})
+  when(dailyMock1.closePrice).thenReturn(100)
+  const tickerDaily1 = instance(dailyMock1)
+
+  const dailyMock2: interfaces.tickerDailyModel.Record = mock({})
+  when(dailyMock2.closePrice).thenReturn(10)
+  const tickerDaily2 = instance(dailyMock2)
+
+  const quarterlyMock1: interfaces.tickerQuarterlyModel.Record = mock({})
+  when(quarterlyMock1.eps).thenReturn(20000)
+  when(quarterlyMock1.ebitda).thenReturn(300)
+  when(quarterlyMock1.netIncome).thenReturn(40000)
+  when(quarterlyMock1.grossProfit).thenReturn(50)
+  when(quarterlyMock1.totalRevenue).thenReturn(600)
+  const tickerQuarterly1 = instance(quarterlyMock1)
+
+  const quarterlyMock2: interfaces.tickerQuarterlyModel.Record = mock({})
+  when(quarterlyMock2.eps).thenReturn(2000)
+  when(quarterlyMock2.ebitda).thenReturn(30)
+  when(quarterlyMock2.netIncome).thenReturn(4000)
+  when(quarterlyMock2.grossProfit).thenReturn(5)
+  when(quarterlyMock2.totalRevenue).thenReturn(60)
+  const tickerQuarterly2 = instance(quarterlyMock2)
+
   // @ts-ignore
   const tickerYearly1: interfaces.tickerYearlyModel.Record = {
     eps: 7000,

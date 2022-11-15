@@ -49,8 +49,7 @@ const ProfileDetail = () => {
     } else if (profileBase && !profileDetail) {
       dispatch(actions.fetchTraderProfileDetail({ id: traderId, accessCode }))
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileBase])
+  }, [profileBase, dispatch, traderId, accessCode, profileDetail])
 
   // ------------------------------------------------------------ Handler --
 
