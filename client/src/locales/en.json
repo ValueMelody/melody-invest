@@ -46,6 +46,7 @@
     "common.unsubscribe": "Unsubscribe",
     "common.close": "Close",
     "common.select": "Select",
+    "common.fork": "Fork",
     "common.pastPerformance": "Past Performance",
 
     "page.privacyPolicy": "Privacy Policy",
@@ -171,6 +172,7 @@
     "profileBuilder.allocateBehaviors": "Stock Allocation",
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
     "profileBuilder.notSet": "Do not set",
+    "profileBuilder.fork": "Build a new profile by using this profile as a template",
 
     "comboBuilder.title": "Combo Builder",
     "comboBuilder.name": "Combo Name",

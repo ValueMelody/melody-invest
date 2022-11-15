@@ -1,7 +1,10 @@
 import classNames from 'classnames'
-import { Card, Alert } from 'flowbite-react'
+import { Card, Alert, Button } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
+import { useNavigate } from 'react-router-dom'
+import { CodeBracketIcon } from '@heroicons/react/24/solid'
 import PatternBehaviors from 'containers/traders/elements/PatternBehaviors'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
 import WatchButton from 'containers/traders/elements/WatchButton'
@@ -30,6 +33,8 @@ const TraderProfileCard = ({
   onClick?: (record: interfaces.traderModel.Record) => void;
 }) => {
   const dispatch = useDispatch<AppDispatch>()
+  const navigate = useNavigate()
+
   const user = useSelector(selectors.selectUser())
 
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
@@ -74,6 +79,12 @@ const TraderProfileCard = ({
     }
   }
 
+  const handleFork = () => {
+    navigate(routerTool.profileBuildRoute(), {
+      state: pattern,
+    })
+  }
+
   const handleChangeChartIndex = (index: number) => {
     dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
@@ -105,10 +116,26 @@ const TraderProfileCard = ({
           </h5>
         </section>
         {!!user.userType && !simple && showToggle && (
-          <WatchButton
-            isWatched={isWatched}
-            onToggle={handleToggleWatch}
-          />
+          <section className='flex flex-start'>
+            <WatchButton
+              isWatched={isWatched}
+              onToggle={handleToggleWatch}
+            />
+            <Button
+              size='xs'
+              className='ml-4'
+              onClick={handleFork}
+              disabled={!user.access.canFollowTrader}
+              title={
+                user.access.canFollowTrader
+                  ? localeTool.t('profileBuilder.fork')
+                  : localeTool.t('permission.limited')
+              }
+            >
+              <CodeBracketIcon className='icon-size mr-2' />
+              {localeTool.t('common.fork')}
+            </Button>
+          </section>
         )}
       </header>
 

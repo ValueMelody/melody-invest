@@ -22,7 +22,7 @@ const AddButton = ({
       disabled={disabled}
       title={tooltip}
     >
-      <PlusIcon className='w-4 h-4 mr-4' />
+      <PlusIcon className='icon-size mr-4' />
       {title}
     </Button>
   )
