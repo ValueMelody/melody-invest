@@ -1,12 +1,12 @@
-import {
-  ChartBarIcon, ArchiveBoxIcon, BookmarkIcon,
-  TicketIcon, TableCellsIcon, UserCircleIcon,
-} from '@heroicons/react/24/solid'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
+import {
+  ArchiveBoxIcon, BookmarkIcon, ChartBarIcon,
+  TableCellsIcon, TicketIcon, UserCircleIcon,
+} from '@heroicons/react/24/solid'
 import HeaderLink from 'containers/layouts/elements/HeaderLink'
 import { useSelector } from 'react-redux'
-import * as selectors from 'selectors'
 
 const navClass = 'flex items-center'
 const headerClass = 'mx-2'

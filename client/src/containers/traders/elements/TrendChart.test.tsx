@@ -1,5 +1,5 @@
-import TrendChart from './TrendChart'
 import { render, screen } from 'test.utils'
+import TrendChart from './TrendChart'
 
 describe('#VariationList', () => {
   test('could render', async () => {

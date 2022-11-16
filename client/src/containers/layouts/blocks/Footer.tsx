@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import { Link } from 'react-router-dom'
 
 const linkClass = 'px-2 border-t-2 border-slate-400'
 

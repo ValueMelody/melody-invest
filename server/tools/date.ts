@@ -1,5 +1,5 @@
-import moment from 'moment'
 import * as constants from '@shared/constants'
+import moment from 'moment'
 
 const DATE_FORMAT = 'yyyy-MM-DD'
 const QUARTER_FORMAT = 'yyyy-MM'

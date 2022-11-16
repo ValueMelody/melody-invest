@@ -1,5 +1,6 @@
-import * as indicatorQuarterly from './indicatorQuarterly'
+
 import * as databaseAdapter from 'adapters/database'
+import * as indicatorQuarterly from './indicatorQuarterly'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

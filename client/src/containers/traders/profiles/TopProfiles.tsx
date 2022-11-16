@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import VariationList from 'containers/traders/elements/VariationList'
-import { useSelector, useDispatch } from 'react-redux'
-import * as selectors from 'selectors'
-import * as actions from 'actions'
+import { useNavigate } from 'react-router-dom'
 
 const TopProfiles = () => {
   const navigate = useNavigate()

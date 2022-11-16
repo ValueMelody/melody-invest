@@ -1,13 +1,13 @@
 import * as access from './access'
 import * as constants from '@shared/constants'
-import * as interfaces from '@shared/interfaces'
-import * as traderEnvFollowerModel from 'models/traderEnvFollower'
-import * as traderComboFollowerModel from 'models/traderComboFollower'
-import * as traderFollowerModel from 'models/traderFollower'
-import * as traderEnvModel from 'models/traderEnv'
 import * as errorEnum from 'enums/error'
-import { mock, instance, when } from 'ts-mockito'
+import * as interfaces from '@shared/interfaces'
+import * as traderComboFollowerModel from 'models/traderComboFollower'
+import * as traderEnvFollowerModel from 'models/traderEnvFollower'
+import * as traderEnvModel from 'models/traderEnv'
+import * as traderFollowerModel from 'models/traderFollower'
 import { Request, Response } from 'express'
+import { instance, mock, when } from 'ts-mockito'
 
 const getUserFollowedEnvMock = async (userId: number) => {
   let placeholders: interfaces.traderEnvFollowerModel.Record[] = []

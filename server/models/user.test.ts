@@ -1,5 +1,5 @@
-import * as user from './user'
 import * as databaseAdapter from 'adapters/database'
+import * as user from './user'
 
 const record1 = {
   id: 1,

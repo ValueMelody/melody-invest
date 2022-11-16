@@ -1,5 +1,6 @@
-import * as indicatorYearly from './indicatorYearly'
+
 import * as databaseAdapter from 'adapters/database'
+import * as indicatorYearly from './indicatorYearly'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

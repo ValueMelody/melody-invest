@@ -1,7 +1,7 @@
-import { Badge } from 'flowbite-react'
-import { ArrowTrendingUpIcon, ArrowTrendingDownIcon } from '@heroicons/react/24/solid'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { ArrowTrendingDownIcon, ArrowTrendingUpIcon } from '@heroicons/react/24/solid'
+import { Badge } from 'flowbite-react'
 import classNames from 'classnames'
 
 const ValueDiffer = ({

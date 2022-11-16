@@ -1,10 +1,10 @@
-import * as interfaces from '@shared/interfaces'
-import * as indicatorYearlyModel from 'models/indicatorYearly'
-import * as indicatorQuarterlyModel from 'models/indicatorQuarterly'
-import * as indicatorMonthlyModel from 'models/indicatorMonthly'
-import * as runTool from 'tools/run'
-import * as dateTool from 'tools/date'
 import * as databaseAdapter from 'adapters/database'
+import * as dateTool from 'tools/date'
+import * as indicatorMonthlyModel from 'models/indicatorMonthly'
+import * as indicatorQuarterlyModel from 'models/indicatorQuarterly'
+import * as indicatorYearlyModel from 'models/indicatorYearly'
+import * as interfaces from '@shared/interfaces'
+import * as runTool from 'tools/run'
 
 export const calcYearly = async () => {
   const indicators = await indicatorYearlyModel.getAll()

@@ -1,5 +1,6 @@
-import * as email from './email'
+
 import * as databaseAdapter from 'adapters/database'
+import * as email from './email'
 
 const record1 = {
   id: '5ed6d4c8-c159-4588-b966-364a4bdbd3a1',

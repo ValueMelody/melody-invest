@@ -1,5 +1,5 @@
-import * as tickerYearly from './tickerYearly'
 import * as databaseAdapter from 'adapters/database'
+import * as tickerYearly from './tickerYearly'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

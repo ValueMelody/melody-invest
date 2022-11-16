@@ -1,7 +1,7 @@
-import HeaderLink from './HeaderLink'
-import { createMemoryHistory } from 'history'
-import { StarIcon } from '@heroicons/react/24/solid'
 import { fireEvent, render, screen } from 'test.utils'
+import HeaderLink from './HeaderLink'
+import { StarIcon } from '@heroicons/react/24/solid'
+import { createMemoryHistory } from 'history'
 
 describe('#HeaderLink', () => {
   test('could render Footer', () => {

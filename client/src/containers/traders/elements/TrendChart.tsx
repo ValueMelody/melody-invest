@@ -1,5 +1,5 @@
-import * as interfaces from '@shared/interfaces'
 import * as chart from 'recharts'
+import * as interfaces from '@shared/interfaces'
 
 const TrendChart = ({
   data,

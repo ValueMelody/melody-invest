@@ -1,7 +1,7 @@
-import buildTopTraderProfiles from './buildTopTraderProfiles'
 import * as databaseAdapter from 'adapters/database'
 import * as interfaces from '@shared/interfaces'
-import { mock, instance, when } from 'ts-mockito'
+import { instance, mock, when } from 'ts-mockito'
+import buildTopTraderProfiles from './buildTopTraderProfiles'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

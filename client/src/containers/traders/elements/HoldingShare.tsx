@@ -1,8 +1,8 @@
-import classNames from 'classnames'
-import { Card, Badge } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
+import { Badge, Card } from 'flowbite-react'
+import classNames from 'classnames'
 
 const HoldingShare = ({
   holdingItem,

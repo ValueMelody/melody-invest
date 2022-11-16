@@ -1,6 +1,6 @@
-import { Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
+import { Card } from 'flowbite-react'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 

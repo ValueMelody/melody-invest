@@ -1,9 +1,9 @@
-import { useEffect } from 'react'
-import * as paypal from '@paypal/react-paypal-js'
-import * as constants from '@shared/constants'
-import * as commonEnum from 'enums/common'
-import { useDispatch } from 'react-redux'
 import * as actions from 'actions'
+import * as commonEnum from 'enums/common'
+import * as constants from '@shared/constants'
+import * as paypal from '@paypal/react-paypal-js'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 
 export type PlanType = typeof constants.User.Type.Pro | typeof constants.User.Type.Premium
 

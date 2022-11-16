@@ -1,7 +1,7 @@
 import * as constants from '@shared/constants'
-import * as interfaces from '@shared/interfaces'
 import * as evaluation from './evaluation'
-import { mock, instance, when } from 'ts-mockito'
+import * as interfaces from '@shared/interfaces'
+import { instance, mock, when } from 'ts-mockito'
 
 describe('#getTickerPreferValue', () => {
   const dailyMock1: interfaces.tickerDailyModel.Record = mock({})

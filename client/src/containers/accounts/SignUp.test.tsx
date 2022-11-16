@@ -1,14 +1,14 @@
-import SignUp from './SignUp'
-import { fireEvent, render, screen } from 'test.utils'
-import { createMemoryHistory } from 'history'
+import * as localeTool from 'tools/locale'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as localeTool from 'tools/locale'
 import * as usePublicGuard from 'hooks/usePublicGuard'
-import { store } from 'stores'
-import { globalSlice } from 'stores/global'
-import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as userAction from 'actions/user'
+import { fireEvent, render, screen } from 'test.utils'
+import SignUp from './SignUp'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createMemoryHistory } from 'history'
+import { globalSlice } from 'stores/global'
+import { store } from 'stores'
 
 const publicGuard = jest.fn()
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)

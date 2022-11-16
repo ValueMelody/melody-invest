@@ -1,6 +1,6 @@
-import { useState } from 'react'
-import { Button } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
+import { Button } from 'flowbite-react'
+import { useState } from 'react'
 
 const useShowMore = () => {
   // ------------------------------------------------------------ state --

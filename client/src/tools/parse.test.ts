@@ -1,5 +1,5 @@
-import * as parseTool from './parse'
 import * as localeTool from './locale'
+import * as parseTool from './parse'
 
 describe('#dbPercentNumber', () => {
   test('could parse db percent number to percent', () => {

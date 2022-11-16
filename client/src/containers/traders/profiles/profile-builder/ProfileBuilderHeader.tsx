@@ -1,5 +1,5 @@
-import { CheckIcon } from '@heroicons/react/24/solid'
 import * as localeTool from 'tools/locale'
+import { CheckIcon } from '@heroicons/react/24/solid'
 
 const ProfileBuilderHeader = ({
   title,

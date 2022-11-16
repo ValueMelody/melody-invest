@@ -1,5 +1,5 @@
-import { TraderProfileBase } from 'stores/traderProfile'
 import * as interfaces from '@shared/interfaces'
+import { TraderProfileBase } from 'stores/traderProfile'
 
 const selectTraderProfileBaseDict = () => (
   state: AppState,

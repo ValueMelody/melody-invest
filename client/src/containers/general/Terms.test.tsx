@@ -1,9 +1,9 @@
+import * as constants from '@shared/constants'
+import * as requestAdapter from 'adapters/request'
 import { render, screen, waitFor } from 'test.utils'
 import Terms from './Terms'
-import * as requestAdapter from 'adapters/request'
-import * as constants from '@shared/constants'
-import { store } from 'stores'
 import { contentSlice } from 'stores/content'
+import { store } from 'stores'
 
 const fetchMock = jest.fn(async (url: string) => {
   const baseUrl = 'http://127.0.0.1:3100/system/policy'

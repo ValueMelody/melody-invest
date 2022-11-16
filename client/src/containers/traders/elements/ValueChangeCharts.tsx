@@ -1,8 +1,8 @@
-import { SyntheticEvent } from 'react'
-import { Button } from 'flowbite-react'
-import TrendChart from './TrendChart'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import { Button } from 'flowbite-react'
+import { SyntheticEvent } from 'react'
+import TrendChart from './TrendChart'
 
 const ValueChangeCharts = ({
   oneDecadeTrends,

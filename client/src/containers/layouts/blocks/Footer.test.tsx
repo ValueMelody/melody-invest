@@ -1,8 +1,8 @@
-import { createMemoryHistory } from 'history'
-import Footer from './Footer'
-import { fireEvent, render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import { fireEvent, render, screen } from 'test.utils'
+import Footer from './Footer'
+import { createMemoryHistory } from 'history'
 
 describe('#Footer', () => {
   test('could render Footer', () => {

@@ -1,6 +1,6 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderBehaviorDetail {

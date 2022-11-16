@@ -1,13 +1,13 @@
+import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
-import * as emailModel from 'models/email'
-import * as userModel from 'models/user'
-import * as adapterEnum from 'enums/adapter'
-import * as errorEnum from 'enums/error'
 import * as emailLogic from 'logics/email'
-import * as localeTool from 'tools/locale'
+import * as emailModel from 'models/email'
+import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
+import * as localeTool from 'tools/locale'
+import * as userModel from 'models/user'
 
 beforeEach(async () => {
   databaseAdapter.initConnection()

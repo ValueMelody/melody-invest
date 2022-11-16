@@ -1,7 +1,7 @@
-import { MouseEvent } from 'react'
+import * as localeTool from 'tools/locale'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import { Button } from 'flowbite-react'
-import * as localeTool from 'tools/locale'
+import { MouseEvent } from 'react'
 
 const WatchButton = ({
   isWatched,

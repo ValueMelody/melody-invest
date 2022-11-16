@@ -1,11 +1,12 @@
-import { Request, Response, NextFunction } from 'express'
-import * as interfaces from '@shared/interfaces'
+
 import * as constants from '@shared/constants'
 import * as errorEnum from 'enums/error'
-import * as traderEnvModel from 'models/traderEnv'
-import * as traderEnvFollowerModel from 'models/traderEnvFollower'
+import * as interfaces from '@shared/interfaces'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
+import * as traderEnvFollowerModel from 'models/traderEnvFollower'
+import * as traderEnvModel from 'models/traderEnv'
 import * as traderFollowerModel from 'models/traderFollower'
+import { NextFunction, Request, Response } from 'express'
 
 const getLimits = (userType: number) => {
   switch (userType) {

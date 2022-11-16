@@ -1,8 +1,8 @@
-import ComboProfiles from './ComboProfiles'
-import { render, screen } from 'test.utils'
-import * as localeTool from 'tools/locale'
 import * as interfaces from '@shared/interfaces'
-import { mock, instance, when } from 'ts-mockito'
+import * as localeTool from 'tools/locale'
+import { instance, mock, when } from 'ts-mockito'
+import { render, screen } from 'test.utils'
+import ComboProfiles from './ComboProfiles'
 
 const traderMock1: interfaces.traderModel.Record = mock({})
 when(traderMock1.totalValue).thenReturn(200000)

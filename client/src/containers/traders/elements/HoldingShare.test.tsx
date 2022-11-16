@@ -1,7 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import HoldingShare from './HoldingShare'
-import { render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
+import { instance, mock, when } from 'ts-mockito'
+import { render, screen } from 'test.utils'
+import HoldingShare from './HoldingShare'
 
 describe('#HoldingShare', () => {
   const tickerIdentity = {
@@ -50,10 +51,9 @@ describe('#HoldingShare', () => {
   })
 
   test('could render new label', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [],
-    }
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    when(detailMock.items).thenReturn([])
+    const previousDetail = instance(detailMock)
     render(
       <HoldingShare
         holdingItem={holdingItem}

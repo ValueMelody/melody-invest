@@ -1,8 +1,8 @@
-import { useEffect } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import * as actions from 'actions'
 import * as routerTool from 'tools/router'
+import { useNavigate, useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useEffect } from 'react'
 import usePublicGuard from 'hooks/usePublicGuard'
 
 const Activation = () => {

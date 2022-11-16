@@ -1,5 +1,6 @@
-import * as indicatorMonthly from './indicatorMonthly'
+
 import * as databaseAdapter from 'adapters/database'
+import * as indicatorMonthly from './indicatorMonthly'
 
 const record1 = {
   id: 1,

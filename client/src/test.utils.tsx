@@ -1,17 +1,17 @@
-import { BrowserRouter, Router } from 'react-router-dom'
-import { ReactNode, ReactElement } from 'react'
-import {
-  render as defaultRender,
-  screen,
-  fireEvent,
-  waitFor,
-  renderHook as defaultRenderHook,
-  act,
-} from '@testing-library/react'
 import '@testing-library/jest-dom'
+import { BrowserRouter, Router } from 'react-router-dom'
+import { ReactElement, ReactNode } from 'react'
+import {
+  act,
+  render as defaultRender,
+  renderHook as defaultRenderHook,
+  fireEvent,
+  screen,
+  waitFor,
+} from '@testing-library/react'
 import { MemoryHistory } from 'history'
-import { store as reduxStore } from 'stores'
 import { Provider } from 'react-redux'
+import { store as reduxStore } from 'stores'
 
 const WithRouterProvider = ({
   children,

@@ -1,11 +1,11 @@
-import Forgot from './Forgot'
-import { fireEvent, render, screen } from 'test.utils'
-import { createMemoryHistory } from 'history'
-import * as routerTool from 'tools/router'
 import * as localeTool from 'tools/locale'
+import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
+import { fireEvent, render, screen } from 'test.utils'
+import Forgot from './Forgot'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createMemoryHistory } from 'history'
 
 const publicGuard = jest.fn()
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)

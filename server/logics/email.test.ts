@@ -1,5 +1,6 @@
-import * as interfaces from '@shared/interfaces'
+
 import * as email from './email'
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { mock, instance, when } from 'ts-mockito'
 
