@@ -1,5 +1,5 @@
-import * as tickerHolder from './tickerHolder'
 import * as databaseAdapter from 'adapters/database'
+import * as tickerHolder from './tickerHolder'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

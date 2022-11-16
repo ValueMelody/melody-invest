@@ -1,9 +1,9 @@
-import { useState } from 'react'
 import * as interfaces from '@shared/interfaces'
-import * as parseTool from 'tools/parse'
 import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import WeightChart from '../elements/WeightChart'
+import { useState } from 'react'
 
 interface ProfileWithEnv {
   profile: interfaces.response.TraderProfile | null;

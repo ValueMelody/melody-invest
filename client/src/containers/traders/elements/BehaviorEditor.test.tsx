@@ -1,5 +1,5 @@
-import BehaviorEditor from './BehaviorEditor'
 import { fireEvent, render, screen } from 'test.utils'
+import BehaviorEditor from './BehaviorEditor'
 
 describe('#BehaviorEditor', () => {
   test('could render as behavior label', () => {

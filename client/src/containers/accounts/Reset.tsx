@@ -1,15 +1,15 @@
-import { useNavigate, useParams } from 'react-router-dom'
-import { useState, ChangeEvent, FormEvent } from 'react'
-import { Button, TextInput } from 'flowbite-react'
+import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import * as actions from 'actions'
+import { Button, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
+import GoToButton from './elements/GoToButton'
+import RequiredLabel from 'containers/elements/RequiredLabel'
+import { globalSlice } from 'stores/global'
+import { useDispatch } from 'react-redux'
 import usePasswordValidator from 'hooks/usePasswordValidator'
 import usePublicGuard from 'hooks/usePublicGuard'
-import RequiredLabel from 'containers/elements/RequiredLabel'
-import GoToButton from './elements/GoToButton'
-import { useDispatch } from 'react-redux'
-import { globalSlice } from 'stores/global'
 
 const Reset = () => {
   usePublicGuard()

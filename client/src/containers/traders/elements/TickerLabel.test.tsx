@@ -1,5 +1,5 @@
 import * as interfaces from '@shared/interfaces'
-import { render, screen, fireEvent } from 'test.utils'
+import { fireEvent, render, screen } from 'test.utils'
 import TickerLabel from './TickerLabel'
 
 describe('#tickerLabel', () => {

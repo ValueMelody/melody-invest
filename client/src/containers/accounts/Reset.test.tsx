@@ -1,14 +1,14 @@
-import { Routes, Route } from 'react-router-dom'
-import Reset from './Reset'
-import { fireEvent, render, screen } from 'test.utils'
-import { createMemoryHistory } from 'history'
+import * as localeTool from 'tools/locale'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
-import * as localeTool from 'tools/locale'
 import * as usePublicGuard from 'hooks/usePublicGuard'
-import { store } from 'stores'
 import * as userAction from 'actions/user'
+import { Route, Routes } from 'react-router-dom'
+import { fireEvent, render, screen } from 'test.utils'
+import Reset from './Reset'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createMemoryHistory } from 'history'
+import { store } from 'stores'
 
 const publicGuard = jest.fn()
 // @ts-ignore

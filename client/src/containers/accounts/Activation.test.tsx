@@ -1,12 +1,12 @@
-import { Routes, Route } from 'react-router-dom'
-import Activation from './Activation'
-import { render } from 'test.utils'
-import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
+import { Route, Routes } from 'react-router-dom'
+import Activation from './Activation'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createMemoryHistory } from 'history'
+import { render } from 'test.utils'
 
 const activateUser = jest.fn()
 jest.spyOn(userAction, 'activateUser')

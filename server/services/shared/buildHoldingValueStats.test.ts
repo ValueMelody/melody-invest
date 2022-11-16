@@ -1,5 +1,5 @@
-import buildHoldingValueStats from './buildHoldingValueStats'
 import * as tickerDailyModel from 'models/tickerDaily'
+import buildHoldingValueStats from './buildHoldingValueStats'
 import getNearestPricesByDateMock from '../../../scripts/mocks/methods/getNearestPricesByDateMock'
 
 jest

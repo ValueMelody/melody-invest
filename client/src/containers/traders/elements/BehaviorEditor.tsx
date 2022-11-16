@@ -1,10 +1,10 @@
+import * as constants from '@shared/constants'
+import * as interfaces from '@shared/interfaces'
+import * as localeTool from 'tools/locale'
+import * as parseTool from 'tools/parse'
+import BehaviorLabel from './BehaviorLabel'
 import { ChangeEvent } from 'react'
 import { Select } from 'flowbite-react'
-import * as interfaces from '@shared/interfaces'
-import * as constants from '@shared/constants'
-import * as parseTool from 'tools/parse'
-import * as localeTool from 'tools/locale'
-import BehaviorLabel from './BehaviorLabel'
 
 const BehaviorEditor = ({
   behavior,

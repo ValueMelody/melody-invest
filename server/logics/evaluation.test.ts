@@ -1,6 +1,6 @@
 import * as constants from '@shared/constants'
-import * as interfaces from '@shared/interfaces'
 import * as evaluation from './evaluation'
+import * as interfaces from '@shared/interfaces'
 
 describe('#getTickerPreferValue', () => {
   // @ts-ignore

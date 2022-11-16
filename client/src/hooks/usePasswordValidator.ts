@@ -1,5 +1,5 @@
-import PasswordValidator from 'password-validator'
 import * as localeTool from 'tools/locale'
+import PasswordValidator from 'password-validator'
 
 const usePasswordValidator = () => {
   const passwordSchema = new PasswordValidator()

@@ -1,5 +1,5 @@
-import * as interfaces from '@shared/interfaces'
 import * as constants from '@shared/constants'
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from './locale'
 
 export const dbPercentNumber = (value: number | null): string => {

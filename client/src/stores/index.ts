@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import globalReducer from './global'
 import contentReducer from './content'
-import userReducer from './user'
+import globalReducer from './global'
+import tickerCategoryReducer from './tickerCategory'
+import tickerIdentityReducer from './tickerIdentity'
+import traderBehaviorReducer from './traderBehavior'
 import traderComboReducer from './traderCombo'
 import traderEnvReducer from './traderEnv'
 import traderProfileReducer from './traderProfile'
-import traderBehaviorReducer from './traderBehavior'
-import tickerCategoryReducer from './tickerCategory'
-import tickerIdentityReducer from './tickerIdentity'
+import userReducer from './user'
 
 export const store = configureStore({
   reducer: {

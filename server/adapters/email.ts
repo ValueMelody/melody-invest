@@ -1,5 +1,5 @@
-import nodemailer from 'nodemailer'
 import * as adpaterEnum from 'enums/adapter'
+import nodemailer from 'nodemailer'
 
 export const initTransporter = () => {
   return nodemailer.createTransport({

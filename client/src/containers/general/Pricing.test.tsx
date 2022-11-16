@@ -1,6 +1,6 @@
-import { screen, render } from 'test.utils'
-import Pricing from './Pricing'
 import * as commonEnum from 'enums/common'
+import { render, screen } from 'test.utils'
+import Pricing from './Pricing'
 
 describe('#Pricing', () => {
   test('could render pricing', () => {

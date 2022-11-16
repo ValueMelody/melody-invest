@@ -1,8 +1,8 @@
+import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
 import { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import * as routerTool from 'tools/router'
 import { useSelector } from 'react-redux'
-import * as selectors from 'selectors'
 
 const usePrivateGuard = () => {
   const navigate = useNavigate()

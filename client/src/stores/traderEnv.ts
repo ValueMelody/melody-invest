@@ -1,8 +1,8 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { _resetForTest, _updateForTest } from 'tools/store'
 import stripTopProfiles from './shared/stripTopProfiles'
-import { _updateForTest, _resetForTest } from 'tools/store'
 
 export interface TraderEnvBase {
   [envId: number]: interfaces.traderEnvModel.Record;

@@ -1,13 +1,13 @@
-import { useNavigate } from 'react-router-dom'
-import { useState, ChangeEvent, FormEvent } from 'react'
-import { TextInput, Button } from 'flowbite-react'
-import { useDispatch } from 'react-redux'
+import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import * as actions from 'actions'
-import RequiredLabel from 'containers/elements/RequiredLabel'
-import usePublicGuard from 'hooks/usePublicGuard'
+import { Button, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import GoToButton from './elements/GoToButton'
+import RequiredLabel from 'containers/elements/RequiredLabel'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import usePublicGuard from 'hooks/usePublicGuard'
 
 const Forgot = () => {
   usePublicGuard()

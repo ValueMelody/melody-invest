@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import { createMemoryHistory } from 'history'
-import PatternBehaviors from './PatternBehaviors'
-import { fireEvent, render, screen } from 'test.utils'
 import * as routerTool from 'tools/router'
+import { fireEvent, render, screen } from 'test.utils'
+import PatternBehaviors from './PatternBehaviors'
+import { createMemoryHistory } from 'history'
 
 describe('#PatternBehaviors', () => {
   const history = createMemoryHistory({ initialEntries: ['/test'] })

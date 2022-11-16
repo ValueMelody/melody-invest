@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from 'test.utils'
-import WeightChart from './WeightChart'
 import * as localeTool from 'tools/locale'
+import { fireEvent, render, screen } from 'test.utils'
+import WeightChart from './WeightChart'
 
 describe('#WeightChart', () => {
   const data = [

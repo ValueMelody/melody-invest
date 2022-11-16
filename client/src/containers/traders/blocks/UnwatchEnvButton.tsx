@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { Button } from 'flowbite-react'
-import { useNavigate } from 'react-router-dom'
+import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import WatchButton from '../elements/WatchButton'
+import { Button } from 'flowbite-react'
 import ConfirmModal from 'containers/elements/ConfirmModal'
+import WatchButton from '../elements/WatchButton'
 import { useDispatch } from 'react-redux'
-import * as actions from 'actions'
+import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 const UnwatchEnvButton = ({
   traderEnv,

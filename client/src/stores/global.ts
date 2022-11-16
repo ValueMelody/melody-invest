@@ -1,8 +1,8 @@
-import { nanoid, createSlice, PayloadAction, AnyAction } from '@reduxjs/toolkit'
 import * as actions from 'actions'
-import * as localeTool from 'tools/locale'
-import { _updateForTest, _resetForTest } from 'tools/store'
 import * as commonEnum from 'enums/common'
+import * as localeTool from 'tools/locale'
+import { AnyAction, PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
+import { _resetForTest, _updateForTest } from 'tools/store'
 
 type MessageType = 'success' | 'info' | 'warning' | 'failure'
 

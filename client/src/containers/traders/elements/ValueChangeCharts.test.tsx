@@ -1,6 +1,6 @@
-import ValueChangeCharts from './ValueChangeCharts'
-import { fireEvent, render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
+import { fireEvent, render, screen } from 'test.utils'
+import ValueChangeCharts from './ValueChangeCharts'
 
 describe('#ValueChangeCharts', () => {
   test('could render', async () => {

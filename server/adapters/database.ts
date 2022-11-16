@@ -1,8 +1,9 @@
+
+import * as adapterEnum from 'enums/adapter'
+import * as errorEnum from 'enums/error'
 import knex, { Knex } from 'knex'
 import pgMem, { DataType } from 'pg-mem'
 import { randomUUID } from 'crypto'
-import * as errorEnum from 'enums/error'
-import * as adapterEnum from 'enums/adapter'
 
 interface OrderBy {
   column: string;

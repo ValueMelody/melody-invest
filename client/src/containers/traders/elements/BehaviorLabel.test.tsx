@@ -1,6 +1,6 @@
-import { render, screen, fireEvent } from 'test.utils'
-import BehaviorLabel from './BehaviorLabel'
 import * as parseTool from 'tools/parse'
+import { fireEvent, render, screen } from 'test.utils'
+import BehaviorLabel from './BehaviorLabel'
 
 describe('#BehaviorLabel', () => {
   const behavior = 'priceDailyIncreaseBuy'

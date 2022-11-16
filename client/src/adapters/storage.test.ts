@@ -1,5 +1,5 @@
-import * as storage from './storage'
 import * as commonEnum from 'enums/common'
+import * as storage from './storage'
 
 describe('#get', () => {
   test('could get', () => {

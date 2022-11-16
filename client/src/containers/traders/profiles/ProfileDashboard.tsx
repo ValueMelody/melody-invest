@@ -1,15 +1,15 @@
-import { useNavigate } from 'react-router-dom'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import usePrivateGuard from 'hooks/usePrivateGuard'
-import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
-import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
-import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
+import * as selectors from 'selectors'
 import AddButton from 'containers/traders/elements/AddButton'
 import PageTitle from 'containers/elements/PageTitle'
+import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
+import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import { useNavigate } from 'react-router-dom'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 import { useSelector } from 'react-redux'
-import * as selectors from 'selectors'
 
 const ProfileDashboard = () => {
   usePrivateGuard()

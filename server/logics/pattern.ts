@@ -1,6 +1,7 @@
-import * as interfaces from '@shared/interfaces'
+
 import * as constants from '@shared/constants'
 import * as generateTool from 'tools/generate'
+import * as interfaces from '@shared/interfaces'
 
 const BehaviorGroups: interfaces.traderPatternModel.Behavior[][] = [
   constants.Behavior.BuyBehaviors,

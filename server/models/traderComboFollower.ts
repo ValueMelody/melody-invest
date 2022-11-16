@@ -1,7 +1,7 @@
-import { Knex } from 'knex'
-import * as interfaces from '@shared/interfaces'
 import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
+import * as interfaces from '@shared/interfaces'
+import { Knex } from 'knex'
 
 const TableName = adapterEnum.DatabaseTable.TraderComboFollower
 

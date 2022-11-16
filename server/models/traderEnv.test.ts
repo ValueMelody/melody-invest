@@ -1,5 +1,5 @@
-import * as traderEnv from './traderEnv'
 import * as databaseAdapter from 'adapters/database'
+import * as traderEnv from './traderEnv'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

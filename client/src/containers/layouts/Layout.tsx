@@ -1,11 +1,11 @@
-import { FunctionComponent, useEffect } from 'react'
-import { Alert } from 'flowbite-react'
-import Header from 'containers/layouts/blocks/Header'
-import Footer from 'containers/layouts/blocks/Footer'
-import { useSelector, useDispatch } from 'react-redux'
-import { globalSlice } from 'stores/global'
 import * as actions from 'actions'
 import * as selectors from 'selectors'
+import { FunctionComponent, useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Alert } from 'flowbite-react'
+import Footer from 'containers/layouts/blocks/Footer'
+import Header from 'containers/layouts/blocks/Header'
+import { globalSlice } from 'stores/global'
 
 const Layout: FunctionComponent = ({
   children,

@@ -1,8 +1,8 @@
+import * as routerTool from 'tools/router'
 import { createMemoryHistory } from 'history'
 import { renderHook } from 'test.utils'
-import usePrivateGuard from './usePrivateGuard'
-import * as routerTool from 'tools/router'
 import { store } from 'stores'
+import usePrivateGuard from './usePrivateGuard'
 import { userSlice } from 'stores/user'
 
 afterEach(() => {

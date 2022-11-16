@@ -1,11 +1,11 @@
 import * as access from './access'
 import * as constants from '@shared/constants'
-import * as interfaces from '@shared/interfaces'
-import * as traderEnvFollowerModel from 'models/traderEnvFollower'
-import * as traderComboFollowerModel from 'models/traderComboFollower'
-import * as traderFollowerModel from 'models/traderFollower'
-import * as traderEnvModel from 'models/traderEnv'
 import * as errorEnum from 'enums/error'
+import * as interfaces from '@shared/interfaces'
+import * as traderComboFollowerModel from 'models/traderComboFollower'
+import * as traderEnvFollowerModel from 'models/traderEnvFollower'
+import * as traderEnvModel from 'models/traderEnv'
+import * as traderFollowerModel from 'models/traderFollower'
 
 const getUserFollowedEnvMock = async (userId: number) => {
   let placeholders: interfaces.traderEnvFollowerModel.Record[] = []

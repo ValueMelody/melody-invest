@@ -1,14 +1,14 @@
-import { Knex } from 'knex'
+import * as databaseAdapter from 'adapters/database'
+import * as dateTool from 'tools/date'
 import * as interfaces from '@shared/interfaces'
 import * as marketAdapter from 'adapters/market'
-import * as dateTool from 'tools/date'
-import * as runTool from 'tools/run'
 import * as priceLogic from 'logics/price'
-import * as tickerModel from 'models/ticker'
+import * as runTool from 'tools/run'
 import * as tickerDailyModel from 'models/tickerDaily'
-import * as tickerYearlyModel from 'models/tickerYearly'
+import * as tickerModel from 'models/ticker'
 import * as tickerQuarterlyModel from 'models/tickerQuarterly'
-import * as databaseAdapter from 'adapters/database'
+import * as tickerYearlyModel from 'models/tickerYearly'
+import { Knex } from 'knex'
 
 export const syncPrices = async (
   ticker: interfaces.tickerModel.Record,

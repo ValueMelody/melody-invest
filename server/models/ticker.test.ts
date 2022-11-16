@@ -1,5 +1,6 @@
-import * as ticker from './ticker'
+
 import * as databaseAdapter from 'adapters/database'
+import * as ticker from './ticker'
 
 const emptyProps = {
   firstPriceDate: null,

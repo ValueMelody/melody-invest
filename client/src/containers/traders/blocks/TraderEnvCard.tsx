@@ -1,11 +1,11 @@
-import classNames from 'classnames'
-import { Badge, Card } from 'flowbite-react'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import UnwatchEnvButton from './UnwatchEnvButton'
-import { useSelector } from 'react-redux'
 import * as selectors from 'selectors'
+import { Badge, Card } from 'flowbite-react'
+import UnwatchEnvButton from './UnwatchEnvButton'
+import classNames from 'classnames'
+import { useSelector } from 'react-redux'
 
 const TraderEnvCard = ({
   traderEnv,

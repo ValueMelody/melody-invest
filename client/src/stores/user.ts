@@ -1,11 +1,11 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import * as actions from 'actions'
+import * as commonEnum from 'enums/common'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
-import * as actions from 'actions'
-import * as storageAdapter from 'adapters/storage'
 import * as requestAdapter from 'adapters/request'
-import * as commonEnum from 'enums/common'
-import { _updateForTest, _resetForTest } from 'tools/store'
+import * as storageAdapter from 'adapters/storage'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { _resetForTest, _updateForTest } from 'tools/store'
 
 const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
 

@@ -1,5 +1,5 @@
-import * as calcTickers from 'services/calcTickers'
 import * as calcIndicators from 'services/calcIndicators'
+import * as calcTickers from 'services/calcTickers'
 import * as calcTraders from 'services/calcTraders'
 
 export const calcPriceMovements = async () => {

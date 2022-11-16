@@ -1,8 +1,9 @@
+
+import * as adapterEnum from 'enums/adapter'
+import * as emailEnum from 'enums/email'
+import * as generateTool from 'tools/generate'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as generateTool from 'tools/generate'
-import * as emailEnum from 'enums/email'
-import * as adapterEnum from 'enums/adapter'
 
 export const buildActivateUserEmail = (
   user: interfaces.userModel.Record,

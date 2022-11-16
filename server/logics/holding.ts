@@ -1,5 +1,6 @@
-import * as interfaces from '@shared/interfaces'
+
 import * as constants from '@shared/constants'
+import * as interfaces from '@shared/interfaces'
 
 export const getHoldingTotalValue = (
   holdingDetail: interfaces.traderHoldingModel.Detail,

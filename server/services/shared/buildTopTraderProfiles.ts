@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import * as traderPatternModel from 'models/traderPattern'
 import * as traderLogic from 'logics/trader'
+import * as traderPatternModel from 'models/traderPattern'
 
 const buildTopTraderProfiles = async (
   tops: interfaces.traderModel.Tops,

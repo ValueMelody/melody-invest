@@ -1,5 +1,5 @@
-import buildTopTraderProfiles from './buildTopTraderProfiles'
 import * as databaseAdapter from 'adapters/database'
+import buildTopTraderProfiles from './buildTopTraderProfiles'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

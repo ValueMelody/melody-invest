@@ -1,16 +1,16 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, TextInput, Alert } from 'flowbite-react'
+import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
-import usePrivateGuard from 'hooks/usePrivateGuard'
+import * as selectors from 'selectors'
+import { Alert, Button, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
-import { useSelector, useDispatch } from 'react-redux'
-import * as selectors from 'selectors'
-import * as actions from 'actions'
+import { useNavigate } from 'react-router-dom'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 
 const ComboBuilder = () => {
   usePrivateGuard()

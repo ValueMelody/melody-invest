@@ -1,10 +1,10 @@
 import * as constants from '@shared/constants'
-import * as processEmail from './processEmails'
 import * as databaseAdapter from 'adapters/database'
 import * as emailAdapter from 'adapters/email'
-import { SendMailOptions } from 'nodemailer'
-import * as runTool from 'tools/run'
 import * as emailModel from 'models/email'
+import * as processEmail from './processEmails'
+import * as runTool from 'tools/run'
+import { SendMailOptions } from 'nodemailer'
 
 const emailMocks = [
   {
