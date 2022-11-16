@@ -1,6 +1,6 @@
-import cronJob from 'node-cron'
 import * as constants from '@shared/constants'
 import * as crudSystems from 'services/crudSystems'
+import cronJob from 'node-cron'
 
 const systemCache = cronJob.schedule('* */12 * * *', async () => {
   await crudSystems.getDefaults()

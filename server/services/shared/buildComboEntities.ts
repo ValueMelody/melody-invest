@@ -1,8 +1,8 @@
+import * as holdingLogic from 'logics/holding'
 import * as interfaces from '@shared/interfaces'
-import * as traderPatternModel from 'models/traderPattern'
 import * as traderHoldingModel from 'models/traderHolding'
 import * as traderLogic from 'logics/trader'
-import * as holdingLogic from 'logics/holding'
+import * as traderPatternModel from 'models/traderPattern'
 
 const buildComboEntities = async (
   traders: interfaces.traderModel.Record[],

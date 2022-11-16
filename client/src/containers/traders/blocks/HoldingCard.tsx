@@ -2,13 +2,11 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as selectors from 'selectors'
-import { useState } from 'react'
-import { Button, Badge, Card } from 'flowbite-react'
-
-import ValueDiffer from 'containers/traders/elements/ValueDiffer'
+import { Badge, Button, Card } from 'flowbite-react'
 import HoldingShare from 'containers/traders/elements/HoldingShare'
+import ValueDiffer from 'containers/traders/elements/ValueDiffer'
 import { useSelector } from 'react-redux'
-
+import { useState } from 'react'
 
 const HoldingCard = ({
   holding,

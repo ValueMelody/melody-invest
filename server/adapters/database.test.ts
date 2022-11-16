@@ -1,7 +1,8 @@
-import * as database from './database'
-import * as traderEnv from 'models/traderEnv'
+
 import * as adapterEnum from 'enums/adapter'
+import * as database from './database'
 import * as errorEnum from 'enums/error'
+import * as traderEnv from 'models/traderEnv'
 
 beforeEach(async () => {
   database.initConnection()

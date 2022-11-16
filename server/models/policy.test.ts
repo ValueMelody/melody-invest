@@ -1,6 +1,7 @@
+
 import * as constants from '@shared/constants'
-import * as policy from './policy'
 import * as databaseAdapter from 'adapters/database'
+import * as policy from './policy'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

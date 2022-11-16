@@ -1,6 +1,6 @@
-import ComboProfiles from './ComboProfiles'
-import { render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
+import { render, screen } from 'test.utils'
+import ComboProfiles from './ComboProfiles'
 
 describe('#ComboProfiles', () => {
   test('could render', () => {

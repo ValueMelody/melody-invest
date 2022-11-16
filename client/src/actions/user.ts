@@ -1,8 +1,8 @@
-import { createAsyncThunk } from '@reduxjs/toolkit'
-import * as requestAdapter from 'adapters/request'
-import * as routerEnum from 'enums/router'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import * as requestAdapter from 'adapters/request'
+import * as routerEnum from 'enums/router'
+import { createAsyncThunk } from '@reduxjs/toolkit'
 
 export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',

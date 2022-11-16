@@ -1,15 +1,16 @@
-import express, { Response, Request, NextFunction } from 'express'
-import compression from 'compression'
+
 import 'express-async-errors'
-import cors from 'cors'
-import { initConnection as initDatabase } from './adapters/database'
-import { initConnection as initCache } from './adapters/cache'
-import systemRouter from './routers/system'
-import usersRouter from './routers/users'
-import tradersRouter from './routers/traders'
-import * as errorEnum from './enums/error'
 import * as adapterEnum from './enums/adapter'
 import * as cron from 'cron'
+import * as errorEnum from './enums/error'
+import express, { NextFunction, Request, Response } from 'express'
+import compression from 'compression'
+import cors from 'cors'
+import { initConnection as initCache } from './adapters/cache'
+import { initConnection as initDatabase } from './adapters/database'
+import systemRouter from './routers/system'
+import tradersRouter from './routers/traders'
+import usersRouter from './routers/users'
 
 const app = express()
 export default app

@@ -1,5 +1,6 @@
-import * as interfaces from '@shared/interfaces'
+
 import * as holding from './holding'
+import * as interfaces from '@shared/interfaces'
 
 describe('getHoldingTotalValue', () => {
   const holdingDetail: interfaces.traderHoldingModel.Detail = {

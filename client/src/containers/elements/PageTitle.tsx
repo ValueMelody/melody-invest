@@ -1,8 +1,9 @@
+import {
+  BookmarkIcon, ChartPieIcon, CircleStackIcon,
+  PresentationChartLineIcon, PuzzlePieceIcon, StarIcon,
+} from '@heroicons/react/24/solid'
 import classNames from 'classnames'
 import { useMemo } from 'react'
-import {
-  StarIcon, ChartPieIcon, CircleStackIcon, BookmarkIcon, PuzzlePieceIcon, PresentationChartLineIcon,
-} from '@heroicons/react/24/solid'
 
 type Icon = 'star' | 'history' | 'pie' | 'bookmark' | 'boxes' | 'performance'
 

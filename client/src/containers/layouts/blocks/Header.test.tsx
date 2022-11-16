@@ -1,8 +1,9 @@
-import { createMemoryHistory } from 'history'
-import Header from './Header'
-import { fireEvent, render, screen } from 'test.utils'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import { fireEvent, render, screen } from 'test.utils'
+import Header from './Header'
+import { createMemoryHistory } from 'history'
+
 import { store } from 'stores'
 import { userSlice } from 'stores/user'
 

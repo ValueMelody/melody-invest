@@ -1,5 +1,5 @@
-import { Button } from 'flowbite-react'
 import { ArrowRightIcon } from '@heroicons/react/24/solid'
+import { Button } from 'flowbite-react'
 
 const GoToButton = ({
   onClick,

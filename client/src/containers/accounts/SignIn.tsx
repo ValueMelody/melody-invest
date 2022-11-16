@@ -1,15 +1,15 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, TextInput, Checkbox, Label } from 'flowbite-react'
+import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
-import usePublicGuard from 'hooks/usePublicGuard'
-import usePasswordValidator from 'hooks/usePasswordValidator'
-import RequiredLabel from 'containers/elements/RequiredLabel'
+import { Button, Checkbox, Label, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useState } from 'react'
 import GoToButton from './elements/GoToButton'
-import { useDispatch } from 'react-redux'
-import * as actions from 'actions'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 import { globalSlice } from 'stores/global'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import usePasswordValidator from 'hooks/usePasswordValidator'
+import usePublicGuard from 'hooks/usePublicGuard'
 
 const SignIn = () => {
   usePublicGuard()

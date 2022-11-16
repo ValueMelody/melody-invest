@@ -1,6 +1,6 @@
+import * as databaseAdapter from 'adapters/database'
 import * as interfaces from '@shared/interfaces'
 import * as traderPattern from './traderPattern'
-import * as databaseAdapter from 'adapters/database'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

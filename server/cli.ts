@@ -1,10 +1,11 @@
-import { initConnection as initDatabase } from './adapters/database'
-import { initConnection as initCache } from './adapters/cache'
-import * as runTool from './tools/run'
-import * as taskEnum from './enums/task'
-import * as syncTask from './tasks/sync'
+
 import * as calcTask from './tasks/calc'
 import * as emailTask from './tasks/email'
+import * as runTool from './tools/run'
+import * as syncTask from './tasks/sync'
+import * as taskEnum from './enums/task'
+import { initConnection as initCache } from './adapters/cache'
+import { initConnection as initDatabase } from './adapters/database'
 
 const run = async () => {
   try {

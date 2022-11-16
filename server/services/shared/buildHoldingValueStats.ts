@@ -1,9 +1,9 @@
-import * as interfaces from '@shared/interfaces'
-import * as tickerDailyModel from 'models/tickerDaily'
-import * as holdingLogic from 'logics/holding'
 import * as dateTool from 'tools/date'
-import * as runTool from 'tools/run'
 import * as generateTool from 'tools/generate'
+import * as holdingLogic from 'logics/holding'
+import * as interfaces from '@shared/interfaces'
+import * as runTool from 'tools/run'
+import * as tickerDailyModel from 'models/tickerDaily'
 
 const calHoldingValueByDate = async (
   date: string,

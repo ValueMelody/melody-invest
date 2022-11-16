@@ -1,14 +1,14 @@
-import { useState, ChangeEvent } from 'react'
-import { TextInput } from 'flowbite-react'
-import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
-import { useNavigate } from 'react-router-dom'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
+import { ChangeEvent, useState } from 'react'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
+import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
+import { TextInput } from 'flowbite-react'
 import VariationList from 'containers/traders/elements/VariationList'
+import { useNavigate } from 'react-router-dom'
 
 const isSearchedBehavior = (
   behavior: interfaces.traderPatternModel.Behavior,

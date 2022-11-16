@@ -1,5 +1,5 @@
-import * as traderCombo from './traderCombo'
 import * as databaseAdapter from 'adapters/database'
+import * as traderCombo from './traderCombo'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

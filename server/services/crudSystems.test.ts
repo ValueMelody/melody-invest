@@ -1,6 +1,6 @@
+import * as constants from '@shared/constants'
 import * as crudSystems from './crudSystems'
 import * as databaseAdapter from 'adapters/database'
-import * as constants from '@shared/constants'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

@@ -1,8 +1,8 @@
-import * as sync from './sync'
-import * as syncTickers from 'services/syncTickers'
-import * as syncIndicators from 'services/syncIndicators'
 import * as dateTool from 'tools/date'
 import * as marketEnum from 'enums/market'
+import * as sync from './sync'
+import * as syncIndicators from 'services/syncIndicators'
+import * as syncTickers from 'services/syncTickers'
 
 afterEach(() => {
   jest.clearAllMocks()

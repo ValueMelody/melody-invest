@@ -1,10 +1,10 @@
-import { useEffect } from 'react'
-import { Textarea } from 'flowbite-react'
+import * as actions from 'actions'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import { useSelector, useDispatch } from 'react-redux'
-import * as actions from 'actions'
 import * as selectors from 'selectors'
+import { useDispatch, useSelector } from 'react-redux'
+import { Textarea } from 'flowbite-react'
+import { useEffect } from 'react'
 
 const Terms = () => {
   const dispatch = useDispatch<AppDispatch>()

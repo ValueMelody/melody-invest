@@ -1,5 +1,5 @@
-import * as userSubscription from './userSubscription'
 import * as databaseAdapter from 'adapters/database'
+import * as userSubscription from './userSubscription'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()

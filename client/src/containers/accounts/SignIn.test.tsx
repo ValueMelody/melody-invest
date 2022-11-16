@@ -1,12 +1,12 @@
-import SignIn from './SignIn'
-import { fireEvent, render, screen } from 'test.utils'
-import { createMemoryHistory } from 'history'
 import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
-import { store } from 'stores'
-import { createAsyncThunk } from '@reduxjs/toolkit'
 import * as userAction from 'actions/user'
+import { fireEvent, render, screen } from 'test.utils'
+import SignIn from './SignIn'
+import { createAsyncThunk } from '@reduxjs/toolkit'
+import { createMemoryHistory } from 'history'
+import { store } from 'stores'
 
 const publicGuard = jest.fn()
 // @ts-ignore

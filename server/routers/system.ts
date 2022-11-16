@@ -1,8 +1,8 @@
-import { Router } from 'express'
-import * as verifyTool from 'tools/verify'
 import * as constants from '@shared/constants'
 import * as crudSystems from 'services/crudSystems'
 import * as errorEnum from 'enums/error'
+import * as verifyTool from 'tools/verify'
+import { Router } from 'express'
 
 const systemRouter = Router()
 export default systemRouter

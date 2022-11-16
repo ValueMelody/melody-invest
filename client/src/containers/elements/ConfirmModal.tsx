@@ -1,6 +1,6 @@
-import { ReactNode } from 'react'
-import { Button, Modal } from 'flowbite-react'
 import * as localeTool from 'tools/locale'
+import { Button, Modal } from 'flowbite-react'
+import { ReactNode } from 'react'
 
 const ConfirmModal = ({
   title,

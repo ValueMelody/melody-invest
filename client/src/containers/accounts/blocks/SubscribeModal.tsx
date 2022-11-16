@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { Button, Modal, Card } from 'flowbite-react'
-import classNames from 'classnames'
+import * as commonEnum from 'enums/common'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import * as commonEnum from 'enums/common'
+import { Button, Card, Modal } from 'flowbite-react'
 import SubscribeButton, { PlanType } from './SubscribeButton'
+import classNames from 'classnames'
+import { useState } from 'react'
 
 const SubscribeModal = () => {
   // ------------------------------------------------------------ State --
