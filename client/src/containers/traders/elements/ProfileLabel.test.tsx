@@ -1,19 +1,18 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
+import { instance, mock, when } from 'ts-mockito'
 import { render, screen } from 'test.utils'
 import ProfileLabel from './ProfileLabel'
 
 describe('#ProfileLabel', () => {
-  // @ts-ignore
-  const trader: interfaces.traderModel.Record = {
-    traderPatternId: 12,
-  }
+  const traderMock: interfaces.traderModel.Record = mock({})
+  when(traderMock.traderPatternId).thenReturn(12)
+  const trader = instance(traderMock)
 
-  // @ts-ignore
-  const traderEnv: interfaces.traderEnvModel.Record = {
-    name: 'test env',
-  }
+  const traderEnvMock: interfaces.traderEnvModel.Record = mock({})
+  when(traderEnvMock.name).thenReturn('test env')
+  const traderEnv = instance(traderEnvMock)
 
   test('could render', () => {
     render(

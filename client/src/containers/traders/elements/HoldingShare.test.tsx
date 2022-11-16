@@ -67,17 +67,14 @@ describe('#HoldingShare', () => {
   })
 
   test('could render positive differ', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [
-        {
-          tickerId: 12,
-          shares: 150,
-          splitMultiplier: 1,
-          value: 1500,
-        },
-      ],
-    }
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    when(detailMock.items).thenReturn([{
+      tickerId: 12,
+      shares: 150,
+      splitMultiplier: 1,
+      value: 1500,
+    }])
+    const previousDetail = instance(detailMock)
     render(
       <HoldingShare
         holdingItem={holdingItem}
@@ -96,17 +93,14 @@ describe('#HoldingShare', () => {
   })
 
   test('could render negative differ', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [
-        {
-          tickerId: 12,
-          shares: 100,
-          splitMultiplier: 3,
-          value: 3000,
-        },
-      ],
-    }
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    when(detailMock.items).thenReturn([{
+      tickerId: 12,
+      shares: 100,
+      splitMultiplier: 3,
+      value: 3000,
+    }])
+    const previousDetail = instance(detailMock)
     render(
       <HoldingShare
         holdingItem={holdingItem}
