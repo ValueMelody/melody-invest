@@ -18,8 +18,6 @@ const ProfileDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const { displayedTotal, renderShowMoreButton } = useShowMore()
 
   const traderId = params.traderId ? parseInt(params.traderId) : undefined
@@ -35,8 +33,6 @@ const ProfileDetail = () => {
   const profileEnvs = profileDetail?.profileEnvs || []
   const displayedHoldings = holdings.slice(0, displayedTotal)
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     const hasValidParam = traderId && accessCode && accessCode.length === 16
     if (!hasValidParam) navigate(routerTool.notFoundRoute())
@@ -51,14 +47,10 @@ const ProfileDetail = () => {
     }
   }, [profileBase, dispatch, traderId, accessCode, profileDetail])
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickEnv = (traderId: number, accessCode: string) => {
     const link = routerTool.profileDetailRoute(traderId, accessCode)
     navigate(link)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!profileBase || !profileDetail || !traderEnv) return null
 

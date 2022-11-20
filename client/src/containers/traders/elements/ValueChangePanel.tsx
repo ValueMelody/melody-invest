@@ -31,13 +31,9 @@ const ValueChangePanel = ({
   showCharts?: boolean;
   className?: string;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleChangeChartIndex = (index: number) => {
     onChangeChart(index)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!showPercents && !showCharts) return null
 

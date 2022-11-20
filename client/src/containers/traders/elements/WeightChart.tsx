@@ -32,13 +32,9 @@ const ActiveShape = ({
   percent: number;
   value: number;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const weight = payload.value
     ? `${localeTool.t('common.weight')}: ${parseTool.floatToPercent(percent)}`
     : ''
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <g>
@@ -98,16 +94,12 @@ const WeightChart = ({
   activeIndex: number;
   onMouseEnter: (index: number) => void;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleMouseEnter = (
     e: MouseEvent,
     index: number,
   ) => {
     onMouseEnter(index)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!data.length) return null
 

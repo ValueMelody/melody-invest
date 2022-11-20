@@ -17,14 +17,10 @@ const ValueChangeCharts = ({
   activeChartIndex: number;
   onChangeChart: (index: number) => void;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const hasNoTrends = !oneYearTrends?.length && !oneDecadeTrends?.length
 
   const decadeTrends = parseTool.chartTrends(oneDecadeTrends, totalValue)
   const yearTrends = parseTool.chartTrends(oneYearTrends, totalValue)
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickDecadeChart = (e: SyntheticEvent) => {
     e.stopPropagation()
@@ -35,8 +31,6 @@ const ValueChangeCharts = ({
     e.stopPropagation()
     onChangeChart(1)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!totalValue || hasNoTrends) return null
 

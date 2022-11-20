@@ -15,12 +15,8 @@ const ValueDiffer = ({
   compareValue: number;
   className?: string;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const differ = (currentValue - compareValue) / compareValue
   const isPositive = differ > 0
-
-  // ------------------------------------------------------------ UI --
 
   if (!differ) return null
 

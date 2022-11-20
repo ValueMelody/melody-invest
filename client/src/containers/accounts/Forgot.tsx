@@ -15,11 +15,7 @@ const Forgot = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const [email, setEmail] = useState('')
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
     e: ChangeEvent<HTMLInputElement>,
@@ -41,8 +37,6 @@ const Forgot = () => {
         if (!res.error) navigate(routerTool.signInRoute())
       })
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='account-root'>

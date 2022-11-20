@@ -10,8 +10,6 @@ import { Router } from 'express'
 const tradersRouter = Router()
 export default tradersRouter
 
-// ------------------------------------------------------------ Validate --
-
 const validateGetProfileParams = (id: number, accessCode: string) => {
   const hasValidParam = id && accessCode && accessCode.length === 16
   if (!hasValidParam) throw errorEnum.Custom.WrongAccessCode
@@ -41,8 +39,6 @@ const validateBehavior = (behavior: string): interfaces.traderPatternModel.Behav
   if (!matched) throw errorEnum.Default.Forbidden
   return matched
 }
-
-// ------------------------------------------------------------ Get --
 
 tradersRouter.get('/profiles/:id/:access_code', async (req, res) => {
   const id = parseInt(req.params.id)
@@ -127,8 +123,6 @@ tradersRouter.get(
   },
 )
 
-// ------------------------------------------------------------ Post --
-
 tradersRouter.post(
   '/profiles',
   authMiddleware.normalUser,
@@ -194,8 +188,6 @@ tradersRouter.post(
     return res.status(201).send(traderCombo)
   },
 )
-
-// ------------------------------------------------------------ Delete --
 
 tradersRouter.delete('/profiles/:trader_id', authMiddleware.normalUser, async (req, res) => {
   const traderId = parseInt(req.params.trader_id)

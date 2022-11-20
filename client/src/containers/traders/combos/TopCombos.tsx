@@ -19,8 +19,6 @@ const TopCombos = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [focusedComboId, setFocusedComboId] = useState(-1)
 
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
@@ -41,14 +39,10 @@ const TopCombos = () => {
 
   const comboHoldings = comboDetail?.holdings || []
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (comboDetail) return
     dispatch(actions.fetchSystemTraderCombos())
   }, [comboDetail, dispatch])
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickCombo = (comboId: number) => {
     setFocusedComboId(comboId)
@@ -62,8 +56,6 @@ const TopCombos = () => {
   const handleChangeChartIndex = (index: number) => {
     dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!comboBase || !comboDetail) return null
 

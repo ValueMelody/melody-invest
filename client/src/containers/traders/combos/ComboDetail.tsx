@@ -26,8 +26,6 @@ const ComboDetail = () => {
   const params = useParams()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const { activeTraderChartIndex: activeChartIndex } = useSelector(selectors.selectContent())
 
   const { displayedTotal, renderShowMoreButton } = useShowMore()
@@ -50,14 +48,10 @@ const ComboDetail = () => {
     return { profile, env }
   }) || []
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (!matchedBase || matchedDetail) return
     dispatch(actions.fetchTraderComboDetail(matchedBase.id))
   }, [matchedBase, matchedDetail, dispatch])
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
@@ -75,8 +69,6 @@ const ComboDetail = () => {
         if (!res.error) navigate(routerTool.dashboardRoute())
       })
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!matchedBase || !matchedDetail) return null
 

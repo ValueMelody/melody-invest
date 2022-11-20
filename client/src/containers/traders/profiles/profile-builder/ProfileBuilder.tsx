@@ -111,8 +111,6 @@ const ProfileBuilder = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>(pattern || {})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
@@ -143,8 +141,6 @@ const ProfileBuilder = () => {
     constants.Behavior.FrequencyBehaviors, behaviorValues,
   )
   const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.Behavior.FrequencyBehaviors.length
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
     if (behavior === currentEditingBehavior) {
@@ -196,8 +192,6 @@ const ProfileBuilder = () => {
       }
     })
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col'>

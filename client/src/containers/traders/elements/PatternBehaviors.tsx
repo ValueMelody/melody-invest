@@ -15,8 +15,6 @@ const PatternBehaviors = ({
 }) => {
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const otherBehaviors: interfaces.traderPatternModel.Behavior[] = [
     ...constants.Behavior.AllocateBehaviors,
     ...constants.Behavior.FrequencyBehaviors,
@@ -28,13 +26,10 @@ const PatternBehaviors = ({
   const activeSellBehaviors = constants.Behavior.SellBehaviors
     .filter((key) => pattern[key] !== null && pattern[key] !== undefined)
 
-  // ------------------------------------------------------------ Handler --
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
     const url = routerTool.behaviorDetailRoute(envId, behavior)
     navigate(url)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <div className='flex flex-wrap'>

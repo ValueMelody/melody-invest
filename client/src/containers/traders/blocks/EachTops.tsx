@@ -25,19 +25,13 @@ const EachTops = ({
 }) => {
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
   const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickCard = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!hasResult) {
     return (

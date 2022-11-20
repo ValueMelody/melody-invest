@@ -25,8 +25,6 @@ const ProfileBuilderGroup = ({
   onClickBehavior: (behavior: interfaces.traderPatternModel.Behavior) => void;
   onSelectValue: (behavior: interfaces.traderPatternModel.Behavior, value: SelectedValue) => void;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => onClickBehavior(behavior)
 
   const handleSelectValue = (
@@ -35,8 +33,6 @@ const ProfileBuilderGroup = ({
   ) => {
     onSelectValue(behavior, value)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <Card>

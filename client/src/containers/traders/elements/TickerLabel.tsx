@@ -13,14 +13,10 @@ const TickerLabel = ({
   color: 'info' | 'gray';
   className?: string;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleClick = () => {
     if (!ticker || !onClick) return
     onClick(ticker.id)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!ticker) return null
 

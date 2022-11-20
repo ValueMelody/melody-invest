@@ -15,16 +15,12 @@ const ValueChangePercents = ({
   pastMonthPercentNumber: number | null;
   pastWeekPercentNumber: number | null;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const hasValue =
     yearlyPercentNumber ||
     pastYearPercentNumber ||
     pastQuarterPercentNumber ||
     pastMonthPercentNumber ||
     pastWeekPercentNumber
-
-  // ------------------------------------------------------------ UI --
 
   if (!hasValue) {
     return (

@@ -18,8 +18,6 @@ const Reset = () => {
   const params = useParams()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const { validatePassword } = usePasswordValidator()
 
   const [email, setEmail] = useState('')
@@ -27,8 +25,6 @@ const Reset = () => {
   const [retypePassword, setRetypePassword] = useState('')
 
   const resetCode = params.code || ''
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
     e: ChangeEvent<HTMLInputElement>,
@@ -77,8 +73,6 @@ const Reset = () => {
       if (!res.error) navigate(routerTool.signInRoute())
     })
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!resetCode) return null
 

@@ -15,14 +15,10 @@ const HoldingShare = ({
   previousDetail: interfaces.traderHoldingModel.Detail | null;
   totalValue: number;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const previousItem = previousDetail?.items.find((previous) => previous.tickerId === holdingItem.tickerId)
   const currentShares = Math.floor(holdingItem.shares * holdingItem.splitMultiplier)
   const previousShares = previousItem ? Math.floor(previousItem.shares * previousItem.splitMultiplier) : null
   const shareDiffer = previousShares ? currentShares - previousShares : null
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <Card

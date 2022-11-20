@@ -22,8 +22,6 @@ const Setting = () => {
 
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const { validatePassword } = usePasswordValidator()
 
   const [currentPassword, setCurrentPassword] = useState('')
@@ -44,8 +42,6 @@ const Setting = () => {
         return commonEnum.Plan.Basic
     }
   }, [user.userType])
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeCurrentPassword = (
     e: ChangeEvent<HTMLInputElement>,
@@ -101,8 +97,6 @@ const Setting = () => {
   const handleToggleConfirmLock = () => {
     setShowConfirmLock(!showConfirmLock)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <div>

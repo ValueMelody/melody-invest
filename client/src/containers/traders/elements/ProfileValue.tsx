@@ -15,13 +15,11 @@ const ProfileValue = ({
   onClick?: (trader: interfaces.traderModel.Record) => void;
   className?: string;
 }) => {
-  // ------------------------------------------------------------ Handler --
   const handleClick = () => {
     if (!trader || !onClick) return
     onClick(trader)
   }
 
-  // ------------------------------------------------------------ UI --
   if (!trader || !env) return null
 
   return (

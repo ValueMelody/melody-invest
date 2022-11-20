@@ -8,8 +8,6 @@ const TrendChart = ({
   data: interfaces.common.Option[];
   title?: string;
 }) => {
-  // ------------------------------------------------------------ UI --
-
   const stats = data.length
     ? data.reduce((stats, option) => {
       const min = stats.min < option.value ? stats.min : option.value

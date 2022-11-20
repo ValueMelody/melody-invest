@@ -24,8 +24,6 @@ const isSearchedTicker = (
 const TickerList = () => {
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [selectedCategory, setSelectedCategory] = useState(1)
   const [searchText, setSearchText] = useState('')
 
@@ -44,8 +42,6 @@ const TickerList = () => {
     onClick: () => setSelectedCategory(category.id),
   }))
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickTicker = (tickerId: number) => {
     const url = routerTool.tickerDetailRoute(1, tickerId)
     navigate(url)
@@ -56,8 +52,6 @@ const TickerList = () => {
   ) => {
     setSearchText(e.target.value)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='page-root'>

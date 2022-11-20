@@ -62,13 +62,9 @@ const SubscribeButton = ({
   planType: PlanType,
   onCloseModal: () => void,
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleCloseModal = () => {
     onCloseModal()
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <paypal.PayPalScriptProvider

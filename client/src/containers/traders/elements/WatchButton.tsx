@@ -10,16 +10,12 @@ const WatchButton = ({
   isWatched: boolean;
   onToggle: () => void;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleToggle = (e: MouseEvent) => {
     e.stopPropagation()
     onToggle()
   }
 
   const Icon = isWatched ? EyeSlashIcon : EyeIcon
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <Button

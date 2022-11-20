@@ -19,8 +19,6 @@ const SignUp = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const { validatePassword } = usePasswordValidator()
 
   const { termsPolicy } = useSelector(selectors.selectContent())
@@ -30,13 +28,9 @@ const SignUp = () => {
   const [retypePassword, setRetypePassword] = useState('')
   const [isConfirmed, setIsConfirmed] = useState(false)
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (!termsPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions))
   }, [termsPolicy, dispatch])
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
     e: ChangeEvent<HTMLInputElement>,
@@ -89,8 +83,6 @@ const SignUp = () => {
       if (!res.error) navigate(routerTool.signInRoute())
     })
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='account-root'>

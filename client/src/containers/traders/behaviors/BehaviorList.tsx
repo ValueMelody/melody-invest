@@ -25,8 +25,6 @@ const isSearchedBehavior = (
 const BehaviorList = () => {
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [searchText, setSearchText] = useState('')
   const [focusedType, setFocusedType] = useState('buyBehaviors')
 
@@ -61,8 +59,6 @@ const BehaviorList = () => {
 
   const focusedOption = focusOptions.find((option) => option.value === focusedType)
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickLabel = (behavior: interfaces.traderPatternModel.Behavior) => {
     const url = routerTool.behaviorDetailRoute(1, behavior)
     navigate(url)
@@ -73,8 +69,6 @@ const BehaviorList = () => {
   ) => {
     setSearchText(e.target.value)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!focusedOption) return null
 

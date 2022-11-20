@@ -18,22 +18,16 @@ const TraderEnvCard = ({
   onClick?: (envId: number) => void;
   className?: string;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const user = useSelector(selectors.selectUser())
 
   const disabled = traderEnv && (
     !traderEnv.isSystem && !user.access.accessibleEnvIds.includes(traderEnv.id)
   )
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickEnv = () => {
     if (!traderEnv || !onClick) return
     onClick(traderEnv.id)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!traderEnv) return null
 
