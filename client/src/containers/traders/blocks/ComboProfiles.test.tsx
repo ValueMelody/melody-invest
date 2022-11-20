@@ -1,39 +1,41 @@
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { render, screen } from 'test.utils'
 import ComboProfiles from './ComboProfiles'
+import { mock } from 'ts-mockito'
+
+const traderMock: interfaces.traderModel.Record = mock({})
+const trader1 = { ...traderMock, totalValue: 200000 }
+const trader2 = { ...traderMock, totalValue: 300000 }
+const trader3 = { ...traderMock, totalValue: 100000 }
+
+const patternMock: interfaces.traderPatternModel.Public = mock({})
+const traderPattern1 = { ...patternMock, id: 1 }
+const traderPattern2 = { ...patternMock, id: 2 }
+
+const traderEnvMock: interfaces.traderEnvModel.Record = mock({})
+const traderEnv1 = { ...traderEnvMock, name: 'profile env 2' }
 
 describe('#ComboProfiles', () => {
   test('could render', () => {
     const profilesWithEnvs = [
       {
         profile: {
-          pattern: {
-            id: 1,
-          },
-          trader: {
-            totalValue: 200000,
-          },
+          pattern: traderPattern1,
+          trader: trader1,
         },
       },
       {
         profile: {
-          pattern: {
-            id: 2,
-          },
-          trader: {
-            totalValue: 300000,
-          },
+          pattern: traderPattern2,
+          trader: trader2,
         },
-        env: {
-          name: 'profile env 2',
-        },
+        env: traderEnv1,
       },
     ]
-
     const onClick = jest.fn()
     render(
       <ComboProfiles
-        // @ts-ignore
         profilesWithEnvs={profilesWithEnvs}
         onClickProfile={onClick}
       />,
@@ -52,33 +54,22 @@ describe('#ComboProfiles', () => {
     const profilesWithEnvs = [
       {
         profile: {
-          pattern: {
-            id: 1,
-          },
-          trader: {
-            totalValue: 200000,
-          },
+          pattern: traderPattern1,
+          trader: trader1,
         },
       },
       {
         profile: {
-          pattern: {
-            id: 2,
-          },
-          trader: {
-            totalValue: 100000,
-          },
+          pattern: traderPattern2,
+          trader: trader3,
         },
-        env: {
-          name: 'profile env 2',
-        },
+        env: traderEnv1,
       },
     ]
 
     const onClick = jest.fn()
     render(
       <ComboProfiles
-        // @ts-ignore
         profilesWithEnvs={profilesWithEnvs}
         onClickProfile={onClick}
       />,

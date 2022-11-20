@@ -30,7 +30,7 @@ const Button = ({
         intent: 'subscription',
       },
     })
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [planType])
 
   const handleCloseModal = () => {
@@ -62,13 +62,9 @@ const SubscribeButton = ({
   planType: PlanType,
   onCloseModal: () => void,
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleCloseModal = () => {
     onCloseModal()
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <paypal.PayPalScriptProvider

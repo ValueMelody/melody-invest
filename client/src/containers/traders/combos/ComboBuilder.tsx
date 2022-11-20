@@ -18,8 +18,6 @@ const ComboBuilder = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [selectedTraderIds, setSelectedTraderIds] = useState<number[]>([])
   const [comboName, setComboName] = useState('')
 
@@ -42,8 +40,6 @@ const ComboBuilder = () => {
     const buildIds = selectedTraderIds.join(',')
     return currentIds === buildIds
   })
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     const isSelected = selectedTraderIds.includes(trader.id)
@@ -72,8 +68,6 @@ const ComboBuilder = () => {
       if (res?.payload?.id) navigate(routerTool.comboDetailRoute(res.payload.id))
     })
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col items-center'>

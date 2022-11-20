@@ -12,6 +12,7 @@ import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import { mock } from 'ts-mockito'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
@@ -110,8 +111,6 @@ const ProfileBuilder = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const [currentEditingBehavior, setCurrentEditingBehavior] = useState<ActiveBehavior>(null)
   const [behaviorValues, setBehaviorValues] = useState<BehaviorValues>(pattern || {})
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
@@ -143,8 +142,6 @@ const ProfileBuilder = () => {
   )
   const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.Behavior.FrequencyBehaviors.length
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
     if (behavior === currentEditingBehavior) {
       setCurrentEditingBehavior(null)
@@ -173,8 +170,10 @@ const ProfileBuilder = () => {
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
-    // @ts-ignore
-    const defaultValues: interfaces.traderPatternModel.Create = { hashCode: '' }
+
+    const patternMock: interfaces.traderPatternModel.Create = mock({})
+    const defaultValues = { ...patternMock, hashCode: '' }
+
     const traderPattern = constants
       .Behavior.Behaviors.reduce((
         values: interfaces.traderPatternModel.Create,
@@ -193,8 +192,6 @@ const ProfileBuilder = () => {
       }
     })
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='flex flex-col'>

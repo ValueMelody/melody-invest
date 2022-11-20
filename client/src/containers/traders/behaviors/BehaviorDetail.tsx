@@ -17,8 +17,6 @@ const BehaviorDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const behavior = params.behavior
   const envId = params.envId ? parseInt(params.envId) : 1
   const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior)
@@ -34,8 +32,6 @@ const BehaviorDetail = () => {
   const bestPastMonth = topTraderProfiles?.pastMonth[0]
   const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
   }, [navigate, validBehavior])
@@ -45,14 +41,10 @@ const BehaviorDetail = () => {
     dispatch(actions.fetchTraderBehaviorDetail({ envId, behavior: validBehavior }))
   }, [behaviorDetail, validBehavior, envId, dispatch])
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickEnv = (traderEnvId: number) => {
     const url = routerTool.behaviorDetailRoute(traderEnvId, validBehavior!)
     navigate(url)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!validBehavior || !traderEnv) return null
 

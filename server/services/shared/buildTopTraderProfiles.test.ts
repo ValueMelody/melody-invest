@@ -1,5 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
+import * as interfaces from '@shared/interfaces'
 import buildTopTraderProfiles from './buildTopTraderProfiles'
+import { mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -21,11 +23,42 @@ afterAll(async () => {
 
 describe('#buildTopTraderProfiles', () => {
   test('could build top trader profiles', async () => {
-    const trader1 = { id: 1, traderEnvId: 1, traderPatternId: 1 }
-    const trader2 = { id: 2, traderEnvId: 1, traderPatternId: 3 }
-    const trader3 = { id: 3, traderEnvId: 2, traderPatternId: 5 }
-    const trader11 = { id: 11, traderEnvId: 3, traderPatternId: 6 }
-    const trader12 = { id: 12, traderEnvId: 2, traderPatternId: 6 }
+    const traderMock: interfaces.traderModel.Record = mock({})
+    const trader1 = {
+      ...traderMock,
+      id: 1,
+      traderEnvId: 1,
+      traderPatternId: 1,
+    }
+
+    const trader2 = {
+      ...traderMock,
+      id: 2,
+      traderEnvId: 1,
+      traderPatternId: 3,
+    }
+
+    const trader3 = {
+      ...traderMock,
+      id: 3,
+      traderEnvId: 2,
+      traderPatternId: 5,
+    }
+
+    const trader11 = {
+      ...traderMock,
+      id: 11,
+      traderEnvId: 3,
+      traderPatternId: 6,
+    }
+
+    const trader12 = {
+      ...traderMock,
+      id: 12,
+      traderEnvId: 2,
+      traderPatternId: 6,
+    }
+
     const tops = {
       yearly: [trader1, trader2, trader3],
       pastYear: [trader11, trader1],
@@ -33,7 +66,6 @@ describe('#buildTopTraderProfiles', () => {
       pastMonth: [trader12],
       pastWeek: [],
     }
-    // @ts-ignore
     const result = await buildTopTraderProfiles(tops)
     expect(result.yearly.length).toBe(3)
     expect(result.yearly[0].trader).toStrictEqual(trader1)
@@ -73,7 +105,7 @@ describe('#buildTopTraderProfiles', () => {
       pastMonth: [],
       pastWeek: [trader12],
     }
-    // @ts-ignore
+
     const result2 = await buildTopTraderProfiles(tops2)
     expect(result2.yearly.length).toBe(0)
     expect(result2.pastYear.length).toBe(0)

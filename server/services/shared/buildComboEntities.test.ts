@@ -1,5 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
+import * as interfaces from '@shared/interfaces'
 import buildComboEntities from './buildComboEntities'
+import { mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -44,13 +46,14 @@ afterAll(async () => {
 })
 
 describe('#buildComboEntities', () => {
+  const traderMock: interfaces.traderModel.Record = mock({})
+
   test('could build combo entities', async () => {
     const traders = [
-      { id: 2, traderPatternId: 2 },
-      { id: 1, traderPatternId: 1 },
-      { id: 3, traderPatternId: 3 },
+      { ...traderMock, id: 2, traderPatternId: 2 },
+      { ...traderMock, id: 1, traderPatternId: 1 },
+      { ...traderMock, id: 3, traderPatternId: 3 },
     ]
-    // @ts-ignore
     const result = await buildComboEntities(traders)
     expect(result.traderProfiles.length).toBe(3)
     expect(result.traderProfiles[2].trader).toStrictEqual(traders[2])

@@ -11,7 +11,6 @@ import { globalSlice } from 'stores/global'
 import { store } from 'stores'
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createUser = jest.fn()

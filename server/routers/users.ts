@@ -28,15 +28,11 @@ const validateSubscriptionId = (id: string) => {
   if (!id) throw errorEnum.Default.Forbidden
 }
 
-// ------------------------------------------------------------ Get --
-
 usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.request.Auth = req.body.auth
   const overall = await crudUsers.getUserOverall(auth.id)
   return res.status(200).send(overall)
 })
-
-// ------------------------------------------------------------ Post --
 
 usersRouter.post('/token', async (req, res) => {
   const email = req.body.email?.trim().toLowerCase()
@@ -81,8 +77,6 @@ usersRouter.post('/reset', async (req, res) => {
   return res.status(201).send()
 })
 
-// ------------------------------------------------------------ Put --
-
 usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
   const currentPassword = req.body.currentPassword?.trim()
   const newPassword = req.body.newPassword?.trim()
@@ -122,7 +116,6 @@ usersRouter.put('/reset', async (req, res) => {
   return res.status(204).send()
 })
 
-// ------------------------------------------------------------ Delete --
 usersRouter.delete('/subscription', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.deleteSubscription(auth.id)

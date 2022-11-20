@@ -13,13 +13,9 @@ const ConfirmModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  // ------------------------------------------------------------ Handler --
-
   const handleCloseModal = () => {
     onClose()
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <Modal

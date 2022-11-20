@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { render, screen } from 'test.utils'
 import HoldingShare from './HoldingShare'
+import { mock } from 'ts-mockito'
 
 describe('#HoldingShare', () => {
   const tickerIdentity = {
@@ -50,10 +51,8 @@ describe('#HoldingShare', () => {
   })
 
   test('could render new label', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [],
-    }
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    const previousDetail = { ...detailMock, items: [] }
     render(
       <HoldingShare
         holdingItem={holdingItem}
@@ -67,16 +66,15 @@ describe('#HoldingShare', () => {
   })
 
   test('could render positive differ', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [
-        {
-          tickerId: 12,
-          shares: 150,
-          splitMultiplier: 1,
-          value: 1500,
-        },
-      ],
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    const previousDetail = {
+      ...detailMock,
+      items: [{
+        tickerId: 12,
+        shares: 150,
+        splitMultiplier: 1,
+        value: 1500,
+      }],
     }
     render(
       <HoldingShare
@@ -96,16 +94,15 @@ describe('#HoldingShare', () => {
   })
 
   test('could render negative differ', () => {
-    // @ts-ignore
-    const previousDetail: interfaces.traderHoldingModel.Detail = {
-      items: [
-        {
-          tickerId: 12,
-          shares: 100,
-          splitMultiplier: 3,
-          value: 3000,
-        },
-      ],
+    const detailMock: interfaces.traderHoldingModel.Detail = mock({})
+    const previousDetail = {
+      ...detailMock,
+      items: [{
+        tickerId: 12,
+        shares: 100,
+        splitMultiplier: 3,
+        value: 3000,
+      }],
     }
     render(
       <HoldingShare

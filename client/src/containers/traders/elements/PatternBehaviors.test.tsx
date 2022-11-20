@@ -3,12 +3,14 @@ import * as routerTool from 'tools/router'
 import { fireEvent, render, screen } from 'test.utils'
 import PatternBehaviors from './PatternBehaviors'
 import { createMemoryHistory } from 'history'
+import { mock } from 'ts-mockito'
 
 describe('#PatternBehaviors', () => {
   const history = createMemoryHistory({ initialEntries: ['/test'] })
 
-  // @ts-ignore
-  const pattern: interfaces.traderPatternModel.Public = {
+  const patternMock: interfaces.traderPatternModel.Public = mock({})
+  const pattern = {
+    ...patternMock,
     priceDailyIncreaseBuy: 1,
     priceDailyIncreaseSell: 2,
     priceDailyDecreaseBuy: 3,

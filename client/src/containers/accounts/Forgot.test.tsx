@@ -8,7 +8,6 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createMemoryHistory } from 'history'
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const createResetEmail = jest.fn()

@@ -2,11 +2,13 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as pattern from './pattern'
+import { instance, mock } from 'ts-mockito'
 
 describe('#getPatternHashCode', () => {
   test('could get pattern hash code', () => {
-    // @ts-ignore
-    const pattern1: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern1 = {
+      ...patternMock,
       buyPreference: 1,
       sellPreference: 2,
       cashMaxPercent: 20,
@@ -19,14 +21,15 @@ describe('#getPatternHashCode', () => {
       priceDailyIncreaseBuy: 3,
       priceDailyDecreaseSell: 3,
     }
+
     expect(pattern.getPatternHashCode(pattern1))
       .toEqual(
-        // eslint-disable-next-line
+        // eslint-disable-next-line max-len
         'd592341948fd4682fde2031197e221aba127eb3106f051f13dbfff6373c0c912ac194a02b141ee21396be8fa8b8979d276133900db610003baa58e52dcc8c6d7',
       )
 
-    // @ts-ignore
-    const pattern2: interfaces.traderPatternModel.Record = {
+    const pattern2 = {
+      ...patternMock,
       buyPreference: 1,
       sellPreference: 2,
       cashMaxPercent: 50,
@@ -39,26 +42,30 @@ describe('#getPatternHashCode', () => {
       priceDailyIncreaseSell: 3,
       profitQuarterlyDecreaseBuy: 3,
     }
+
     expect(pattern.getPatternHashCode(pattern2))
       .toEqual(
-        // eslint-disable-next-line
+        // eslint-disable-next-line max-len
         '518c7e9a04d2e0d6a64f6b997819ab4ad7c2a13f73f70e01e0da78ea764910f95cfaa5ac020da4262bc15da62ff2a99f19602f79915d9d39c7bf0e0bde50ceec',
       )
   })
 })
 
 describe('#gatherPatternBehaviorValues', () => {
-  // @ts-ignore
-  const first: interfaces.traderPatternModel.Record = {
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
+  const first = {
+    ...patternMock,
     priceDailyIncreaseBuy: 1,
     priceWeeklyDecreaseSell: 2,
   }
-  // @ts-ignore
-  const second: interfaces.traderPatternModel.Record = {
+
+  const second = {
+    ...patternMock,
     epsQuarterlyBeatBuy: 1,
     epsQuarterlyMissBuy: 2,
     profitQuarterlyDecreaseSell: 3,
   }
+
   test('could gather pattern behaviors', () => {
     expect(pattern.gatherPatternBehaviorValues(
       constants.Behavior.BuyBehaviors,
@@ -74,53 +81,61 @@ describe('#gatherPatternBehaviorValues', () => {
 
 describe('#pickBehaviorValues', () => {
   test('could return empty', () => {
+    const patternMock1: interfaces.traderPatternModel.Record = mock({})
+    const first = instance(patternMock1)
+
+    const patternMock2: interfaces.traderPatternModel.Record = mock({})
+    const second = instance(patternMock2)
+
     expect(pattern.pickBehaviorValues(
       constants.Behavior.SellBehaviors,
-      // @ts-ignore
-      {},
-      // @ts-ignore
-      {},
+      first,
+      second,
     )).toStrictEqual([])
   })
 
   test('could pick values based on rules', () => {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern1 = {
+      ...patternMock,
+      priceDailyDecreaseBuy: 1,
+      priceWeeklyDecreaseBuy: 2,
+    }
+
+    const pattern2 = {
+      ...patternMock,
+      priceMonthlyDecreaseBuy: 2,
+      priceYearlyIncreaseBuy: 3,
+      priceQuarterlyDecreaseBuy: 1,
+    }
+
     const results = pattern.pickBehaviorValues(
       constants.Behavior.BuyBehaviors,
-      // @ts-ignore
-      {
-        priceDailyDecreaseBuy: 1,
-        priceWeeklyDecreaseBuy: 2,
-      },
-      // @ts-ignore
-      {
-        priceMonthlyDecreaseBuy: 2,
-        priceYearlyIncreaseBuy: 3,
-        priceQuarterlyDecreaseBuy: 1,
-      },
+      pattern1,
+      pattern2,
     )
     expect(results.length).toBeGreaterThanOrEqual(1)
     expect(results.length).toBeLessThanOrEqual(2)
   })
 
   test('should pick at lest one value', () => {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern1 = { ...patternMock, priceDailyDecreaseBuy: 1 }
+
+    const pattern2 = instance(patternMock)
+
     expect(pattern.pickBehaviorValues(
       constants.Behavior.BuyBehaviors,
-      // @ts-ignore
-      { priceDailyDecreaseBuy: 1 },
-      // @ts-ignore
-      {},
+      pattern1,
+      pattern2,
     ).length).toBe(1)
 
     expect(pattern.pickBehaviorValues(
       constants.Behavior.BuyBehaviors,
-      // @ts-ignore
-      {},
-      // @ts-ignore
-      { priceDailyDecreaseBuy: 1 },
+      pattern2,
+      pattern1,
     ).length).toBe(1)
   })
-
-  test.todo('could handle case when there is no subValues')
 })
 
 describe('#pickRandomBehaviorValue', () => {
@@ -132,13 +147,16 @@ describe('#pickRandomBehaviorValue', () => {
 
 describe('#mergeBehaviorValueToPattern', () => {
   test('could merge behavior value into pattern', () => {
+    const patternMock1: interfaces.traderPatternModel.Create = mock({})
+    const pattern1 = {
+      ...instance(patternMock1),
+      priceQuarterlyDecreaseBuy: null,
+      priceYearlyDecreaseSell: 0,
+      priceDailyDecreaseBuy: 1,
+    }
+
     const result = pattern.mergeBehaviorValueToPattern(
-      // @ts-ignore
-      {
-        priceDailyDecreaseBuy: 1,
-        priceQuarterlyDecreaseBuy: null,
-        priceYearlyDecreaseSell: 0,
-      },
+      pattern1,
       [
         { type: 'priceDailyDecreaseBuy', value: 2 },
         { type: 'priceMonthlyDecreaseBuy', value: 3 },
@@ -154,8 +172,9 @@ describe('#mergeBehaviorValueToPattern', () => {
 })
 
 describe('#generatePatternChild', () => {
-  // @ts-ignore
-  const first: interfaces.traderPatternModel.Record = {
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
+  const first = {
+    ...patternMock,
     priceDailyIncreaseBuy: 1,
     priceDailyDecreaseBuy: 2,
     priceWeeklyDecreaseSell: 3,
@@ -169,8 +188,9 @@ describe('#generatePatternChild', () => {
     buyPreference: 17,
     sellPreference: 18,
   }
-  // @ts-ignore
-  const second: interfaces.traderPatternModel.Record = {
+
+  const second = {
+    ...patternMock,
     priceDailyIncreaseBuy: 4,
     priceWeeklyDecreaseSell: 5,
     epsQuarterlyBeatSell: 1,
@@ -184,6 +204,7 @@ describe('#generatePatternChild', () => {
     buyPreference: 27,
     sellPreference: 28,
   }
+
   test('could generate pattern child', () => {
     const result1 = pattern.generatePatternChild(
       first,

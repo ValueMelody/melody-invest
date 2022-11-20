@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import { fireEvent, render, screen } from 'test.utils'
 import TickerLabel from './TickerLabel'
+import { mock } from 'ts-mockito'
 
 describe('#tickerLabel', () => {
   test('do not render if there is no ticker', () => {
@@ -14,8 +15,9 @@ describe('#tickerLabel', () => {
     expect(container).toBeFalsy()
   })
 
-  // @ts-ignore
-  const ticker: interfaces.tickerModel.Identity = {
+  const identityMock: interfaces.tickerModel.Identity = mock({})
+  const ticker = {
+    ...identityMock,
     id: 123,
     name: 'test name',
     symbol: 'test symbol',

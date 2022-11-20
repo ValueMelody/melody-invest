@@ -11,7 +11,6 @@ import { createMemoryHistory } from 'history'
 import { store } from 'stores'
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 const resetUserPassword = jest.fn()

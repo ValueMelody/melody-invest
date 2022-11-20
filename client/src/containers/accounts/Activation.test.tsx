@@ -16,7 +16,6 @@ jest.spyOn(userAction, 'activateUser')
   ))
 
 const publicGuard = jest.fn()
-// @ts-ignore
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 
 describe('#Activation', () => {

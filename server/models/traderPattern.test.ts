@@ -1,6 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
 import * as interfaces from '@shared/interfaces'
 import * as traderPattern from './traderPattern'
+import { instance, mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -55,28 +56,33 @@ describe('#getByUK', () => {
 
 describe('#getPublicByTraders', () => {
   test('could get public by traders', async () => {
+    const traderMock: interfaces.traderModel.Record = mock({})
+    const trader1 = {
+      ...instance(traderMock),
+      traderPatternId: 2,
+    }
+
+    const trader2 = {
+      ...instance(traderMock),
+      traderPatternId: 12,
+    }
+
+    const trader3 = {
+      ...instance(traderMock),
+      traderPatternId: 22,
+    }
+
     const traders: interfaces.traderModel.Record[] = [
-      // @ts-ignore
-      { traderPatternId: 2 },
-      // @ts-ignore
-      { traderPatternId: 12 },
-      // @ts-ignore
-      { traderPatternId: 22 },
+      trader1,
+      trader2,
+      trader3,
     ]
     const patterns = await traderPattern.getPublicByTraders(traders)
     expect(patterns.length).toBe(3)
 
     expect(patterns[0]?.id).toBe(2)
-    // @ts-ignore
-    expect(patterns[0]?.hashCode).toBe(undefined)
-
     expect(patterns[1]?.id).toBe(12)
-    // @ts-ignore
-    expect(patterns[1]?.hashCode).toBe(undefined)
-
     expect(patterns[2]?.id).toBe(22)
-    // @ts-ignore
-    expect(patterns[2]?.hashCode).toBe(undefined)
   })
 })
 
@@ -90,8 +96,11 @@ describe('#getAll', () => {
 describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    // @ts-ignore
+
+    const createMock: interfaces.traderPatternModel.Create = mock({})
+
     const created = await traderPattern.create({
+      ...instance(createMock),
       hashCode: 'PATTERN053',
       buyPreference: 5,
       sellPreference: 6,
@@ -120,8 +129,10 @@ describe('#create', () => {
 describe('#createIfEmpty', () => {
   test('could return existing record', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    // @ts-ignore
+    const createMock: interfaces.traderPatternModel.Create = mock({})
+
     const result = await traderPattern.createIfEmpty({
+      ...instance(createMock),
       hashCode: 'PATTERN053',
     }, transaction)
     await transaction.rollback()
@@ -131,8 +142,9 @@ describe('#createIfEmpty', () => {
 
   test('could return new record', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    // @ts-ignore
+    const createMock: interfaces.traderPatternModel.Create = mock({})
     const result = await traderPattern.createIfEmpty({
+      ...instance(createMock),
       hashCode: 'PATTERN054',
       buyPreference: 5,
       sellPreference: 6,

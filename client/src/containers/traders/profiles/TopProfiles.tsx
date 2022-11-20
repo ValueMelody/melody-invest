@@ -13,8 +13,6 @@ const TopProfiles = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const [focusType, setFocusType] = useState('YEARLY')
 
   const topTraderProfiles = useSelector(selectors.selectSystemTopTraders())
@@ -55,14 +53,10 @@ const TopProfiles = () => {
 
   const focusedTop = topOptions.find((option) => option.value === focusType)
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (topTraderProfiles) return
     dispatch(actions.fetchSystemTopTraders())
   }, [topTraderProfiles, dispatch])
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickProfile = (
     trader: interfaces.traderModel.Record,
@@ -70,8 +64,6 @@ const TopProfiles = () => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
     navigate(link)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!topTraderProfiles || !focusedTop) return null
 

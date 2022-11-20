@@ -17,15 +17,11 @@ const SignIn = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const { validatePassword } = usePasswordValidator()
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [shouldRemember, setShouldRemember] = useState(false)
-
-  // ------------------------------------------------------------ Handler --
 
   const handleChangeEmail = (
     e: ChangeEvent<HTMLInputElement>,
@@ -71,8 +67,6 @@ const SignIn = () => {
       shouldRemember,
     }))
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <section className='account-root'>

@@ -19,15 +19,11 @@ const BehaviorEditor = ({
   onClick: (behavior: interfaces.traderPatternModel.Behavior) => void;
   onSelect: (behavior: interfaces.traderPatternModel.Behavior, value: number | null) => void;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const options = constants.BehaviorValue.Options[behavior]
   const hasValue = behaviorValue !== null && options.some((option) => option === behaviorValue)
   const selectOptions = options.map((option) => ({
     key: option, value: option, text: parseTool.behaviorValue(behavior, option),
   }))
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClick = () => onClick(behavior)
 
@@ -37,8 +33,6 @@ const BehaviorEditor = ({
     const value = e.target.value === '' ? null : Number(e.target.value)
     onSelect(behavior, value)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!isEditing) {
     return (

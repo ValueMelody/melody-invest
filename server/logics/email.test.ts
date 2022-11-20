@@ -2,9 +2,11 @@
 import * as email from './email'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import { mock } from 'ts-mockito'
 
-// @ts-ignore
-const user: interfaces.userModel.Record = {
+const userMock: interfaces.userModel.Record = mock({})
+const user = {
+  ...userMock,
   id: 1,
   email: 'test@email.com',
   activationCode: 'abcdefg',

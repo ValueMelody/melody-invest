@@ -17,22 +17,16 @@ const BehaviorLabel = ({
   className?: string;
   onClick?: (behavior: interfaces.traderPatternModel.Behavior) => void;
 }) => {
-  // ------------------------------------------------------------ State --
-
   const behaviorTitle = parseTool.behaviorTitle(behavior)
   const behaviorDesc = parseTool.behaviorDesc(behavior)
   const hasValue = value !== null && value !== undefined
   const behaviorValue = hasValue ? parseTool.behaviorValue(behavior, value) : null
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClick = (e: MouseEvent<HTMLElement>) => {
     e.stopPropagation()
     if (!onClick) return
     onClick(behavior)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <Badge

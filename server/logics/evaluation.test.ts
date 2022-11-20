@@ -1,38 +1,44 @@
 import * as constants from '@shared/constants'
 import * as evaluation from './evaluation'
 import * as interfaces from '@shared/interfaces'
+import { instance, mock } from 'ts-mockito'
 
 describe('#getTickerPreferValue', () => {
-  // @ts-ignore
-  const tickerDaily1: interfaces.tickerDailyModel.Record = { closePrice: 100 }
-  // @ts-ignore
-  const tickerDaily2: interfaces.tickerDailyModel.Record = { closePrice: 10 }
-  // @ts-ignore
-  const tickerQuarterly1: interfaces.tickerQuarterlyModel.Record = {
+  const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+  const tickerDaily1 = { ...dailyMock, closePrice: 100 }
+  const tickerDaily2 = { ...dailyMock, closePrice: 10 }
+
+  const quarterlyMock: interfaces.tickerQuarterlyModel.Record = mock({})
+  const tickerQuarterly1 = {
+    ...quarterlyMock,
     eps: 20000,
     ebitda: 300,
     netIncome: 40000,
     grossProfit: 50,
     totalRevenue: 600,
   }
-  // @ts-ignore
-  const tickerQuarterly2: interfaces.tickerQuarterlyModel.Record = {
+
+  const tickerQuarterly2 = {
+    ...quarterlyMock,
     eps: 2000,
     ebitda: 30,
     netIncome: 4000,
     grossProfit: 5,
     totalRevenue: 60,
   }
-  // @ts-ignore
-  const tickerYearly1: interfaces.tickerYearlyModel.Record = {
+
+  const yearlyMock: interfaces.tickerYearlyModel.Record = mock({})
+  const tickerYearly1 = {
+    ...yearlyMock,
     eps: 7000,
     ebitda: 800,
     netIncome: 90,
     grossProfit: 100,
     totalRevenue: 1100,
   }
-  // @ts-ignore
-  const tickerYearly2: interfaces.tickerYearlyModel.Record = {
+
+  const tickerYearly2 = {
+    ...yearlyMock,
     eps: 700,
     ebitda: 80,
     netIncome: 9,
@@ -502,16 +508,19 @@ entry[0].includes('BelowBuy') || entry[0].includes('BelowSell'),
 
 describe('#getTickerMovementWeight', () => {
   test('could get weight when matches', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = {
+      ...dailyTickersMock,
       priceDailyIncrease: 2,
       priceDailyDecrease: 3,
       priceWeeklyIncrease: 2,
       priceWeeklyDecrease: 3,
       priceMonthlyIncrease: 5,
     }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyIncreaseBuy: 2,
       priceDailyIncreaseSell: 2,
       priceDailyDecreaseBuy: 4,
@@ -523,6 +532,7 @@ describe('#getTickerMovementWeight', () => {
       priceMonthlyIncreaseBuy: 2,
       priceMonthlyIncreaseSell: 2,
     }
+
     expect(evaluation.getTickerMovementWeight(
       tickerInfo, 'priceDailyIncrease', pattern, 'priceDailyIncreaseBuy',
     )).toBe(2)
@@ -556,16 +566,20 @@ describe('#getTickerMovementWeight', () => {
   })
 
   test('could get weight when there is no matches', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = {
+      ...dailyTickersMock,
       priceWeeklyIncrease: 2,
       priceWeeklyDecrease: 3,
     }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyIncreaseBuy: 2,
       priceDailyIncreaseSell: 2,
     }
+
     expect(evaluation.getTickerMovementWeight(
       tickerInfo, 'priceWeeklyIncrease', pattern, 'priceWeeklyIncreaseBuy',
     )).toBe(1)
@@ -581,13 +595,16 @@ describe('#getTickerMovementWeight', () => {
   })
 
   test('could get weight when there is matches with less value', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = {
+      ...dailyTickersMock,
       priceWeeklyIncrease: 2,
       priceWeeklyDecrease: 3,
     }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceWeeklyIncreaseBuy: 4,
       priceWeeklyIncreaseSell: 4,
       priceWeeklyDecreaseBuy: 4,
@@ -597,6 +614,7 @@ describe('#getTickerMovementWeight', () => {
       priceDailyDecreaseBuy: 2,
       priceDailyDecreaseSell: 2,
     }
+
     expect(evaluation.getTickerMovementWeight(
       tickerInfo, 'priceDailyIncrease', pattern, 'priceDailyIncreaseBuy',
     )).toBe(0)
@@ -626,13 +644,16 @@ describe('#getTickerMovementWeight', () => {
 
 describe('#getTickerCompareWeight', () => {
   test('could get weight when matches', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = {
+      ...dailyTickersMock,
       gdpYearlyChangePercent: 3,
       gdpQuarterlyChangePercent: -2,
     }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       gdpYearlyChangeAboveBuy: 1,
       gdpYearlyChangeAboveSell: 2,
       gdpYearlyChangeBelowBuy: 5,
@@ -642,6 +663,7 @@ describe('#getTickerCompareWeight', () => {
       gdpQuarterlyChangeBelowBuy: -1,
       gdpQuarterlyChangeBelowSell: 1,
     }
+
     expect(evaluation.getTickerCompareWeight(
       tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
     )).toBe(4)
@@ -669,17 +691,18 @@ describe('#getTickerCompareWeight', () => {
   })
 
   test('could get weight when there are no matches', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
-      gdpQuarterlyChangePercent: -2,
-    }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = { ...dailyTickersMock, gdpQuarterlyChangePercent: -2 }
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       gdpYearlyChangeAboveBuy: 1,
       gdpYearlyChangeAboveSell: 2,
       gdpYearlyChangeBelowBuy: 5,
       gdpYearlyChangeBelowSell: 4,
     }
+
     expect(evaluation.getTickerCompareWeight(
       tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
     )).toBe(1)
@@ -695,18 +718,22 @@ describe('#getTickerCompareWeight', () => {
   })
 
   test('could get weight when matches with less value', () => {
-    // @ts-ignore
-    const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
+    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo = {
+      ...dailyTickersMock,
       gdpYearlyChangePercent: 0,
       gdpQuarterlyChangePercent: -2,
     }
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       gdpYearlyChangeAboveBuy: 1,
       gdpYearlyChangeAboveSell: 2,
       gdpYearlyChangeBelowBuy: -1,
       gdpYearlyChangeBelowSell: -2,
     }
+
     expect(evaluation.getTickerCompareWeight(
       tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
     )).toBe(0)
@@ -723,63 +750,75 @@ describe('#getTickerCompareWeight', () => {
 })
 
 describe('#getMovementAndCompareWeights', () => {
-  // @ts-ignore
-  const tickerInfo1: interfaces.dailyTickersModel.TickerInfo = {
+  const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+  const tickerInfo1 = {
+    ...dailyTickersMock,
     priceDailyIncrease: 3,
     gdpYearlyChangePercent: 2,
   }
-  // @ts-ignore
-  const tickerInfo2: interfaces.dailyTickersModel.TickerInfo = {
+
+  const tickerInfo2 = {
+    ...dailyTickersMock,
     priceDailyIncrease: 3,
     priceWeeklyDecrease: 2,
     gdpYearlyChangePercent: 2,
   }
-  // @ts-ignore
-  const tickerInfo3: interfaces.dailyTickersModel.TickerInfo = {
+
+  const tickerInfo3 = {
+    ...dailyTickersMock,
     priceDailyIncrease: 3,
     gdpYearlyChangePercent: 2,
     gdpQuarterlyChangePercent: -1,
   }
-  // @ts-ignore
-  const pattern1: interfaces.traderPatternModel.Record = {
+
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
+  const pattern1 = {
+    ...patternMock,
     priceDailyIncreaseBuy: 1,
     gdpYearlyChangeAboveBuy: 1,
   }
-  // @ts-ignore
-  const pattern2: interfaces.traderPatternModel.Record = {
+
+  const pattern2 = {
+    ...patternMock,
     priceDailyIncreaseBuy: 2,
     gdpYearlyChangeAboveBuy: 1,
   }
-  // @ts-ignore
-  const pattern3: interfaces.traderPatternModel.Record = {
+
+  const pattern3 = {
+    ...patternMock,
     priceDailyIncreaseBuy: 2,
     priceWeeklyDecreaseBuy: 1,
     gdpYearlyChangeAboveBuy: 1,
   }
-  // @ts-ignore
-  const pattern4: interfaces.traderPatternModel.Record = {
+
+  const pattern4 = {
+    ...patternMock,
     priceDailyIncreaseBuy: 2,
     gdpYearlyChangeAboveBuy: 1,
     gdpQuarterlyChangeAboveBuy: -3,
   }
-  // @ts-ignore
-  const pattern5: interfaces.traderPatternModel.Record = {
+
+  const pattern5 = {
+    ...patternMock,
     priceDailyIncreaseSell: 1,
     gdpYearlyChangeAboveSell: 1,
   }
-  // @ts-ignore
-  const pattern6: interfaces.traderPatternModel.Record = {
+
+  const pattern6 = {
+    ...patternMock,
     priceDailyIncreaseSell: 2,
     gdpYearlyChangeAboveSell: 1,
   }
-  // @ts-ignore
-  const pattern7: interfaces.traderPatternModel.Record = {
+
+  const pattern7 = {
+    ...patternMock,
     priceDailyIncreaseSell: 2,
     priceWeeklyDecreaseSell: 1,
     gdpYearlyChangeAboveSell: 1,
   }
-  // @ts-ignore
-  const pattern8: interfaces.traderPatternModel.Record = {
+
+  const pattern8 = {
+    ...patternMock,
     priceDailyIncreaseSell: 2,
     gdpYearlyChangeAboveSell: 1,
     gdpQuarterlyChangeAboveSell: -3,
@@ -846,21 +885,18 @@ describe('#getMovementAndCompareWeights', () => {
   })
 
   test('if there is no weight for buy', () => {
-    // @ts-ignore
-    const tickerInfo1: interfaces.dailyTickersModel.TickerInfo = {
-      priceDailyIncrease: 3,
-    }
-    // @ts-ignore
-    const tickerInfo2: interfaces.dailyTickersModel.TickerInfo = {
-      gdpYearlyChangePercent: 2,
-    }
-    // @ts-ignore
-    const tickerInfo3: interfaces.dailyTickersModel.TickerInfo = {}
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const tickerInfoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo1 = { ...tickerInfoMock, priceDailyIncrease: 3 }
+    const tickerInfo2 = { ...tickerInfoMock, gdpYearlyChangePercent: 2 }
+    const tickerInfo3 = instance(tickerInfoMock)
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyIncreaseBuy: 1,
       gdpYearlyChangeAboveBuy: 1,
     }
+
     expect(evaluation.getMovementAndCompareWeights(
       pattern, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(0)
@@ -873,21 +909,17 @@ describe('#getMovementAndCompareWeights', () => {
   })
 
   test('if there is no weight for sell', () => {
-    // @ts-ignore
-    const tickerInfo1: interfaces.dailyTickersModel.TickerInfo = {
-      priceDailyIncrease: 3,
-    }
-    // @ts-ignore
-    const tickerInfo2: interfaces.dailyTickersModel.TickerInfo = {
-      gdpYearlyChangePercent: 2,
-    }
-    // @ts-ignore
-    const tickerInfo3: interfaces.dailyTickersModel.TickerInfo = {}
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const tickerInfoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const tickerInfo1 = { ...tickerInfoMock, priceDailyIncrease: 3 }
+    const tickerInfo2 = { ...tickerInfoMock, gdpYearlyChangePercent: 2 }
+    const tickerInfo3 = instance(tickerInfoMock)
+
+    const pattern = {
+      ...patternMock,
       priceDailyIncreaseSell: 1,
       gdpYearlyChangeAboveSell: 1,
     }
+
     expect(evaluation.getMovementAndCompareWeights(
       pattern, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(0)
@@ -902,18 +934,22 @@ describe('#getMovementAndCompareWeights', () => {
 
 describe('#getTickersWithSellEvaluation', () => {
   test('could get result', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseSell: 1,
       sellPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const dailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: { closePrice: 100 },
-      // @ts-ignore
-      info: { priceDailyDecrease: 2 },
-    }
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = { ...dailyMock, closePrice: 100 }
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = { ...infoMock, priceDailyDecrease: 2 }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = { ...dailyTickerMock, daily, info }
+
     expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toStrictEqual({
       tickerId: 1, preferValue: 100, weight: 3,
     })
@@ -923,61 +959,78 @@ describe('#getTickersWithSellEvaluation', () => {
   })
 
   test('if there is no daily ticker', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseSell: 1,
       sellPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
+
     expect(evaluation.getTickersWithSellEvaluation(1, pattern, null)).toBe(null)
   })
 
   test('if there is no prefer value', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseSell: 1,
       sellPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const dailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: {},
-      // @ts-ignore
-      info: { priceDailyDecrease: 2 },
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = instance(dailyMock)
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = {
+      ...infoMock,
+      priceDailyDecrease: 2,
     }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = { ...dailyTickerMock, daily, info }
+
     expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 
   test('if there is no weight', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseSell: 1,
       sellPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const dailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: { closePrice: 100 },
-      // @ts-ignore
-      info: { priceDailyDecrease: 0 },
-    }
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = { ...dailyMock, closePrice: 100 }
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = { ...infoMock, priceDailyDecrease: 0 }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = { ...dailyTickerMock, daily, info }
+
     expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 })
 
 describe('#getTickersWithBuyEvaluation', () => {
   test('could get result', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseBuy: 1,
       buyPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const dailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: { closePrice: 100 },
-      // @ts-ignore
-      info: { priceDailyDecrease: 2 },
-    }
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = { ...dailyMock, closePrice: 100 }
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = { ...infoMock, priceDailyDecrease: 2 }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = { ...dailyTickerMock, daily, info }
+
     expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toStrictEqual({
       tickerId: 1, preferValue: 100, weight: 3,
     })
@@ -987,40 +1040,58 @@ describe('#getTickersWithBuyEvaluation', () => {
   })
 
   test('if there is no daily ticker', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseBuy: 1,
       buyPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
+
     expect(evaluation.getTickersWithBuyEvaluation(1, pattern, null)).toBe(null)
   })
 
   test('if there is no prefer value', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseBuy: 1,
       buyPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const DailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: {}, info: { priceDailyDecrease: 2 },
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = instance(dailyMock)
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = { ...infoMock, priceDailyDecrease: 2 }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = {
+      ...dailyTickerMock, daily, info,
     }
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, DailyTicker)).toBe(null)
+
+    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 
   test('if there is no weight', () => {
-    // @ts-ignore
-    const pattern: interfaces.traderPatternModel.Record = {
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = {
+      ...patternMock,
       priceDailyDecreaseBuy: 1,
       buyPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
-    // @ts-ignore
-    const DailyTicker: interfaces.dailyTickersModel.DailyTicker = {
-      // @ts-ignore
-      daily: { closePrice: 100 }, info: { priceDailyDecrease: 0 },
+
+    const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+    const daily = { ...dailyMock, closePrice: 100 }
+
+    const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+    const info = { ...infoMock, priceDailyDecrease: 0 }
+
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = {
+      ...dailyTickerMock, daily, info,
     }
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, DailyTicker)).toBe(null)
+
+    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 })
 
@@ -1059,21 +1130,48 @@ describe('#getOrderedTickerEvaluations', () => {
   })
 })
 
+const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+const daily1 = { ...dailyMock, closePrice: 30 }
+const daily2 = { ...dailyMock, closePrice: 50 }
+
+const infoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+const info1 = { ...infoMock, priceDailyIncrease: 2 }
+const info2 = { ...infoMock, priceDailyIncrease: 3 }
+
+const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+
+const dailyTicker1 = {
+  ...dailyTickerMock,
+  daily: daily1,
+  info: info1,
+}
+
+const dailyTicker2 = {
+  ...dailyTickerMock,
+  daily: daily2,
+  info: info2,
+}
+
+const dailyTicker3 = {
+  ...dailyTickerMock,
+  daily: daily2,
+  info: info1,
+}
+
+const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
+  1: dailyTicker1,
+  3: dailyTicker2,
+  4: dailyTicker3,
+}
+
 describe('#getTickerBuyEaluations', () => {
-  // @ts-ignore
-  const pattern: interfaces.traderPatternModel.Record = {
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
+  const pattern = {
+    ...patternMock,
     priceDailyIncreaseBuy: 1,
     buyPreference: constants.BehaviorValue.Preference.HigherPrice,
   }
-  // @ts-ignore
-  const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 30 }, info: { priceDailyIncrease: 2 } },
-    // @ts-ignore
-    3: { daily: { closePrice: 50 }, info: { priceDailyIncrease: 3 } },
-    // @ts-ignore
-    4: { daily: { closePrice: 50 }, info: { priceDailyIncrease: 2 } },
-  }
+
   test('could get evaluation correctly', () => {
     expect(evaluation.getTickerBuyEaluations([1, 2, 3, 4], pattern, dailyTickers))
       .toStrictEqual([
@@ -1085,20 +1183,13 @@ describe('#getTickerBuyEaluations', () => {
 })
 
 describe('#getTickerSellEaluations', () => {
-  // @ts-ignore
-  const pattern: interfaces.traderPatternModel.Record = {
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
+  const pattern = {
+    ...patternMock,
     priceDailyIncreaseSell: 1,
     sellPreference: constants.BehaviorValue.Preference.LowerPrice,
   }
-  // @ts-ignore
-  const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 30 }, info: { priceDailyIncrease: 2 } },
-    // @ts-ignore
-    3: { daily: { closePrice: 50 }, info: { priceDailyIncrease: 3 } },
-    // @ts-ignore
-    4: { daily: { closePrice: 50 }, info: { priceDailyIncrease: 2 } },
-  }
+
   test('could get evaluation correctly', () => {
     expect(evaluation.getTickerSellEaluations([1, 2, 3, 4], pattern, dailyTickers))
       .toStrictEqual([

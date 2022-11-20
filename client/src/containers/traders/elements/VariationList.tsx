@@ -15,8 +15,6 @@ const VariationList = ({
   options: Option[];
   activeValue: Value;
 }) => {
-  // ------------------------------------------------------------ UI --
-
   return (
     <ListGroup data-testid='variationList'>
       {options.map((option) => {

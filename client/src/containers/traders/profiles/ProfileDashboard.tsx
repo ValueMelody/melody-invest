@@ -16,16 +16,12 @@ const ProfileDashboard = () => {
 
   const navigate = useNavigate()
 
-  // ------------------------------------------------------------ State --
-
   const envs = useSelector(selectors.selectTraderEnvBases())
   const combos = useSelector(selectors.selectTraderComboBases())
   const user = useSelector(selectors.selectUser())
   const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
   const userCombos = combos.filter((combo) => !combo.isSystem)
-
-  // ------------------------------------------------------------ Handler --
 
   const handleClickAddProfile = () => {
     navigate(routerTool.profileBuildRoute())
@@ -53,8 +49,6 @@ const ProfileDashboard = () => {
     const link = routerTool.comboDetailRoute(comboId)
     navigate(link)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!user.userType) return null
 

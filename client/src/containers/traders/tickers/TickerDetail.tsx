@@ -16,8 +16,6 @@ const TickerDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  // ------------------------------------------------------------ State --
-
   const tickerId = params.tickerId ? parseInt(params.tickerId) : undefined
   const envId = params.envId ? parseInt(params.envId) : 1
 
@@ -34,8 +32,6 @@ const TickerDetail = () => {
   const bestPastMonth = topTraderProfiles?.pastMonth[0]
   const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
-  // ------------------------------------------------------------ Effect --
-
   useEffect(() => {
     if (!tickerId || !envId) navigate(routerTool.notFoundRoute())
   }, [tickerId, envId, navigate])
@@ -45,15 +41,11 @@ const TickerDetail = () => {
     dispatch(actions.fetchTraderTickerDetail({ envId, tickerId }))
   }, [tickerDetail, tickerId, envId, dispatch])
 
-  // ------------------------------------------------------------ Handler --
-
   const handleClickEnv = (envId: number) => {
     if (!tickerId) return
     const url = routerTool.tickerDetailRoute(envId, tickerId)
     navigate(url)
   }
-
-  // ------------------------------------------------------------ UI --
 
   if (!tickerIdentity || !traderEnv) return null
 

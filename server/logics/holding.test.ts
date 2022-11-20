@@ -1,6 +1,7 @@
 
 import * as holding from './holding'
 import * as interfaces from '@shared/interfaces'
+import { instance, mock } from 'ts-mockito'
 
 describe('getHoldingTotalValue', () => {
   const holdingDetail: interfaces.traderHoldingModel.Detail = {
@@ -24,9 +25,13 @@ describe('getHoldingTotalValue', () => {
 })
 
 describe('#groupHoldingsByTraders', () => {
+  const holdingMock: interfaces.traderHoldingModel.Record = mock({})
+
   const holdings: interfaces.traderHoldingModel.Record[] = [
-    // @ts-ignore
-    { id: 'a', traderId: 1 }, { id: 'b', traderId: 1 }, { id: 'c', traderId: 2 }, { id: 'd', traderId: 3 },
+    { ...holdingMock, id: 'a', traderId: 1 },
+    { ...holdingMock, id: 'b', traderId: 1 },
+    { ...holdingMock, id: 'c', traderId: 2 },
+    { ...holdingMock, id: 'd', traderId: 3 },
   ]
   test('could group correctly', () => {
     expect(holding.groupHoldingsByTraders(holdings)).toStrictEqual({
@@ -38,9 +43,12 @@ describe('#groupHoldingsByTraders', () => {
 })
 
 describe('#getNearestHoldingByDate', () => {
+  const holdingMock: interfaces.traderHoldingModel.Record = mock({})
+
   const holdings: interfaces.traderHoldingModel.Record[] = [
-    // @ts-ignore
-    { traderId: 1, date: '2001-01-01' }, { traderId: 1, date: '2001-01-02' }, { traderId: 2, date: '2001-01-03' },
+    { ...holdingMock, traderId: 1, date: '2001-01-01' },
+    { ...holdingMock, traderId: 1, date: '2001-01-02' },
+    { ...holdingMock, traderId: 2, date: '2001-01-03' },
   ]
   expect(holding.getNearestHoldingByDate('2000-12-31', holdings)).toBe(null)
   expect(holding.getNearestHoldingByDate('2001-01-01', holdings)).toBe(holdings[0])
@@ -52,11 +60,20 @@ describe('#getNearestHoldingByDate', () => {
 describe('#groupTraderHoldingsByDate', () => {
   const dates = ['2001-01-05', '2001-01-06', '2001-01-07', '2001-01-08']
   const traderIds = [1, 2, 3]
+
+  const holdingMock: interfaces.traderHoldingModel.Record = mock({})
+  const holdingInstance = instance(holdingMock)
+
   const holdingsByTraders: holding.HoldingsByTraders = {
-    // @ts-ignore
-    1: [{ traderId: 1, date: '2001-01-06' }, { traderId: 1, date: '2001-01-07' }, { traderId: 1, date: '2001-01-08' }],
-    // @ts-ignore
-    2: [{ traderId: 2, date: '2001-01-07' }, { traderId: 2, date: '2001-01-09' }],
+    1: [
+      { ...holdingInstance, traderId: 1, date: '2001-01-06' },
+      { ...holdingInstance, traderId: 1, date: '2001-01-07' },
+      { ...holdingInstance, traderId: 1, date: '2001-01-08' },
+    ],
+    2: [
+      { ...holdingInstance, traderId: 2, date: '2001-01-07' },
+      { ...holdingInstance, traderId: 2, date: '2001-01-09' },
+    ],
   }
   test('could group correctly', () => {
     expect(holding.groupTraderHoldingsByDate(dates, traderIds, holdingsByTraders))
@@ -70,9 +87,13 @@ describe('#groupTraderHoldingsByDate', () => {
 })
 
 describe('#groupHoldingItemsByTickers', () => {
+  const holdingMock: interfaces.traderHoldingModel.Item = mock({})
+  const holdingInstance = instance(holdingMock)
+
   const holdingItems: interfaces.traderHoldingModel.Item[] = [
-    // @ts-ignore
-    { tickerId: 1, shares: 101 }, { tickerId: 2, shares: 102 }, { tickerId: 3, shares: 103 },
+    { ...holdingInstance, tickerId: 1, shares: 101 },
+    { ...holdingInstance, tickerId: 2, shares: 102 },
+    { ...holdingInstance, tickerId: 3, shares: 103 },
   ]
   test('could group holding items', () => {
     expect(holding.groupHoldingItemsByTickers(holdingItems))
@@ -100,16 +121,19 @@ describe('#mergeHoldingItems', () => {
 })
 
 describe('#getMergedHoldingItems', () => {
-  // @ts-ignore
+  const holdingMock: interfaces.traderHoldingModel.Detail = mock({})
+  const holdingInstance = instance(holdingMock)
+
   const firstHolding: interfaces.traderHoldingModel.Detail = {
+    ...holdingInstance,
     date: '2001-02-03',
     items: [
       { tickerId: 1, shares: 5, value: 100, splitMultiplier: 2 },
       { tickerId: 2, shares: 4, value: 200, splitMultiplier: 3 },
     ],
   }
-  // @ts-ignore
   const secondHolding: interfaces.traderHoldingModel.Detail = {
+    ...holdingInstance,
     date: '2001-02-04',
     items: [
       { tickerId: 1, shares: 7, value: 33, splitMultiplier: 4 },
@@ -125,8 +149,11 @@ describe('#getMergedHoldingItems', () => {
 })
 
 describe('#mergeTraderHoldingsByDate', () => {
-  // @ts-ignore
+  const holdingMock: interfaces.traderHoldingModel.Record = mock({})
+  const holdingInstance = instance(holdingMock)
+
   const traderHolding1: holding.TraderHolding = {
+    ...holdingInstance,
     date: '2001-02-03',
     totalValue: 82,
     totalCash: 12,
@@ -135,8 +162,9 @@ describe('#mergeTraderHoldingsByDate', () => {
       { tickerId: 2, value: 45, splitMultiplier: 3, shares: 5 },
     ],
   }
-  // @ts-ignore
+
   const traderHolding2: holding.TraderHolding = {
+    ...holdingInstance,
     date: '2001-02-02',
     totalValue: 43,
     totalCash: 32,

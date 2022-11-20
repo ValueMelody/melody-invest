@@ -7,15 +7,11 @@ import classNames from 'classnames'
 import { useState } from 'react'
 
 const SubscribeModal = () => {
-  // ------------------------------------------------------------ State --
-
   const [isOpen, setIsOpen] = useState(false)
   const [planType, setPlanType] = useState<PlanType>(constants.User.Type.Pro)
 
   const selectedProType = planType === constants.User.Type.Pro
   const selectedPremiumType = planType === constants.User.Type.Premium
-
-  // ------------------------------------------------------------ Handler --
 
   const handleOpenModal = () => {
     setIsOpen(true)
@@ -30,8 +26,6 @@ const SubscribeModal = () => {
   ) => {
     setPlanType(type)
   }
-
-  // ------------------------------------------------------------ UI --
 
   return (
     <>

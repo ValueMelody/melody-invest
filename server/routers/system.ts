@@ -7,8 +7,6 @@ import { Router } from 'express'
 const systemRouter = Router()
 export default systemRouter
 
-// ------------------------------------------------------------ Get --
-
 systemRouter.get('/policy/:type', async (req, res) => {
   const type = parseInt(req.params.type)
   if (!verifyTool.isGreaterThanZero(type)) throw errorEnum.Default.Forbidden
