@@ -12,7 +12,7 @@ const navClass = 'flex items-center'
 const headerClass = 'mx-2'
 
 const Header = () => {
-  const user = useSelector(selectors.selectUser())
+  const global = useSelector(selectors.selectGlobal())
 
   return (
     <header
@@ -46,7 +46,7 @@ const Header = () => {
         />
       </nav>
       <nav className={navClass}>
-        {user.hasLogin && (
+        {global.hasLogin && (
           <HeaderLink
             className={headerClass}
             route={routerTool.dashboardRoute()}
@@ -57,7 +57,7 @@ const Header = () => {
         <HeaderLink
           className={headerClass}
           data-testid='user'
-          route={user.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
+          route={global.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
           icon={UserCircleIcon}
         />
       </nav>

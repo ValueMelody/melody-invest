@@ -7,11 +7,11 @@ import { useSelector } from 'react-redux'
 const usePublicGuard = () => {
   const navigate = useNavigate()
 
-  const user = useSelector(selectors.selectUser())
+  const global = useSelector(selectors.selectGlobal())
 
   useEffect(() => {
-    if (user.hasLogin) navigate(routerTool.dashboardRoute())
-  }, [user.hasLogin, navigate])
+    if (global.hasLogin) navigate(routerTool.dashboardRoute())
+  }, [global.hasLogin, navigate])
 }
 
 export default usePublicGuard

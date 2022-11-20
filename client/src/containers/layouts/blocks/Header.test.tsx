@@ -3,9 +3,8 @@ import * as routerTool from 'tools/router'
 import { fireEvent, render, screen } from 'test.utils'
 import Header from './Header'
 import { createMemoryHistory } from 'history'
-
+import { globalSlice } from 'stores/global'
 import { store } from 'stores'
-import { userSlice } from 'stores/user'
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -53,7 +52,7 @@ describe('#Header', () => {
   })
 
   test('could render as loggedin user', () => {
-    store.dispatch(userSlice.actions._updateForTest({ hasLogin: true }))
+    store.dispatch(globalSlice.actions._updateForTest({ hasLogin: true }))
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
     render(<Header />, { history })
