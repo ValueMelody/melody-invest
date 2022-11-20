@@ -4,7 +4,8 @@ import * as emailAdapter from 'adapters/email'
 import * as emailModel from 'models/email'
 import * as processEmail from './processEmails'
 import * as runTool from 'tools/run'
-import { SendMailOptions } from 'nodemailer'
+import { SendMailOptions, Transporter } from 'nodemailer'
+import { instance, mock, when } from 'ts-mockito'
 
 const emailMocks = [
   {
@@ -69,19 +70,20 @@ afterEach(async () => {
 
 const sendMail = jest.fn()
 
-const initTransporterMock = () => {
+const transporter: Transporter = mock({})
+when(transporter.sendMail).thenReturn(async (options: SendMailOptions) => {
+  sendMail()
   return {
-    sendMail: async (options: SendMailOptions) => {
-      sendMail()
-      return {
-        accepted: [options.to],
-      }
-    },
+    accepted: [options.to],
   }
+})
+const transporterInstance = instance(transporter)
+
+const initTransporterMock = () => {
+  return transporterInstance
 }
 
 jest.spyOn(emailAdapter, 'initTransporter')
-  // @ts-ignore
   .mockImplementation(initTransporterMock)
 
 describe('#processEmail', () => {

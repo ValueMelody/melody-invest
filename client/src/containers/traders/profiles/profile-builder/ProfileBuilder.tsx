@@ -6,13 +6,13 @@ import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { Accordion, Button } from 'flowbite-react'
 import { FormEvent, useState } from 'react'
-import { instance, mock, when } from 'ts-mockito'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
+import { mock } from 'ts-mockito'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
@@ -176,8 +176,7 @@ const ProfileBuilder = () => {
     e.preventDefault()
 
     const patternMock: interfaces.traderPatternModel.Create = mock({})
-    when(patternMock.hashCode).thenReturn('')
-    const defaultValues = instance(patternMock)
+    const defaultValues = { ...patternMock, hashCode: '' }
 
     const traderPattern = constants
       .Behavior.Behaviors.reduce((

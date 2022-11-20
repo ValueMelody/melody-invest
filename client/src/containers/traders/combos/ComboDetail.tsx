@@ -46,7 +46,7 @@ const ComboDetail = () => {
     const profile = traderProfileDict[traderId]
     const env = profile?.trader.traderEnvId
       ? traderEnvDict[profile?.trader.traderEnvId]
-      : null
+      : undefined
     return { profile, env }
   }) || []
 

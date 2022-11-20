@@ -1,6 +1,7 @@
-
 import * as dailyTickers from './dailyTickers'
 import * as databaseAdapter from 'adapters/database'
+import * as interfaces from '@shared/interfaces'
+import { instance, mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -65,10 +66,11 @@ describe('#create', () => {
 describe('#update', () => {
   test('could update', async () => {
     const transaction = await databaseAdapter.createTransaction()
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+    const dailyTicker = instance(dailyTickerMock)
     const tickers = {
-      1: {},
+      1: dailyTicker,
     }
-    // @ts-ignore
     const updated = await dailyTickers.update(3, { tickers }, transaction)
     await transaction.commit()
     expect(updated.id).toBe(3)
@@ -85,11 +87,12 @@ describe('#update', () => {
 describe('#upsert', () => {
   test('could upsert', async () => {
     const transaction = await databaseAdapter.createTransaction()
+    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
+
     const tickers = {
-      1: {},
-      2: {},
+      1: instance(dailyTickerMock),
+      2: instance(dailyTickerMock),
     }
-    // @ts-ignore
     const updated = await dailyTickers.upsert('2022-01-02', { tickers }, transaction)
     await transaction.commit()
     expect(updated.id).toBe(3)
@@ -102,7 +105,6 @@ describe('#upsert', () => {
     expect(record?.tickers).toStrictEqual(JSON.stringify(tickers))
 
     const transaction1 = await databaseAdapter.createTransaction()
-    // @ts-ignore
     const created = await dailyTickers.upsert('2022-01-03', { tickers }, transaction1)
     await transaction1.commit()
     expect(created.id).toBe(4)

@@ -11,8 +11,5 @@ describe('#getTranslation', () => {
     translationKeys.forEach((key) => {
       expect(locale.getTranslation(key).length).not.toBe(0)
     })
-
-    // @ts-ignore
-    expect(locale.getTranslation('a random key')).toBe('')
   })
 })

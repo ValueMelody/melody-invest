@@ -1,7 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
 import * as interfaces from '@shared/interfaces'
-import { instance, mock, when } from 'ts-mockito'
 import buildTopTraderProfiles from './buildTopTraderProfiles'
+import { mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -23,35 +23,41 @@ afterAll(async () => {
 
 describe('#buildTopTraderProfiles', () => {
   test('could build top trader profiles', async () => {
-    const traderMock1: interfaces.traderModel.Record = mock({})
-    when(traderMock1.id).thenReturn(1)
-    when(traderMock1.traderEnvId).thenReturn(1)
-    when(traderMock1.traderPatternId).thenReturn(1)
-    const trader1 = instance(traderMock1)
+    const traderMock: interfaces.traderModel.Record = mock({})
+    const trader1 = {
+      ...traderMock,
+      id: 1,
+      traderEnvId: 1,
+      traderPatternId: 1,
+    }
 
-    const traderMock2: interfaces.traderModel.Record = mock({})
-    when(traderMock2.id).thenReturn(2)
-    when(traderMock2.traderEnvId).thenReturn(1)
-    when(traderMock2.traderPatternId).thenReturn(3)
-    const trader2 = instance(traderMock2)
+    const trader2 = {
+      ...traderMock,
+      id: 2,
+      traderEnvId: 1,
+      traderPatternId: 3,
+    }
 
-    const traderMock3: interfaces.traderModel.Record = mock({})
-    when(traderMock3.id).thenReturn(3)
-    when(traderMock3.traderEnvId).thenReturn(2)
-    when(traderMock3.traderPatternId).thenReturn(5)
-    const trader3 = instance(traderMock3)
+    const trader3 = {
+      ...traderMock,
+      id: 3,
+      traderEnvId: 2,
+      traderPatternId: 5,
+    }
 
-    const traderMock11: interfaces.traderModel.Record = mock({})
-    when(traderMock11.id).thenReturn(11)
-    when(traderMock11.traderEnvId).thenReturn(3)
-    when(traderMock11.traderPatternId).thenReturn(6)
-    const trader11 = instance(traderMock11)
+    const trader11 = {
+      ...traderMock,
+      id: 11,
+      traderEnvId: 3,
+      traderPatternId: 6,
+    }
 
-    const traderMock12: interfaces.traderModel.Record = mock({})
-    when(traderMock12.id).thenReturn(12)
-    when(traderMock12.traderEnvId).thenReturn(2)
-    when(traderMock12.traderPatternId).thenReturn(6)
-    const trader12 = instance(traderMock12)
+    const trader12 = {
+      ...traderMock,
+      id: 12,
+      traderEnvId: 2,
+      traderPatternId: 6,
+    }
 
     const tops = {
       yearly: [trader1, trader2, trader3],
@@ -99,7 +105,7 @@ describe('#buildTopTraderProfiles', () => {
       pastMonth: [],
       pastWeek: [trader12],
     }
-    // @ts-ignore
+
     const result2 = await buildTopTraderProfiles(tops2)
     expect(result2.yearly.length).toBe(0)
     expect(result2.pastYear.length).toBe(0)

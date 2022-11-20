@@ -1,36 +1,38 @@
 import * as interfaces from '@shared/interfaces'
+import { instance, mock } from 'ts-mockito'
 import stripTopProfiles from './stripTopProfiles'
 
 describe('#stripTopProfiles', () => {
   test('could stripTopProfiles', () => {
+    const traderMock: interfaces.traderModel.Record = mock({})
+    const trader1 = { ...traderMock, id: 1 }
+    const trader2 = { ...traderMock, id: 2 }
+    const trader3 = { ...traderMock, id: 3 }
+    const trader4 = { ...traderMock, id: 4 }
+    const trader5 = { ...traderMock, id: 5 }
+
+    const patternMock: interfaces.traderPatternModel.Record = mock({})
+    const pattern = instance(patternMock)
+
     const topProfiles: interfaces.response.TopTraderProfiles = {
       yearly: [
-        // @ts-ignore
-        { trader: { id: 1 } },
-        // @ts-ignore
-        { trader: { id: 3 } },
-        // @ts-ignore
-        { trader: { id: 5 } },
+        { trader: trader1, pattern },
+        { trader: trader3, pattern },
+        { trader: trader5, pattern },
       ],
       pastYear: [
-        // @ts-ignore
-        { trader: { id: 1 } },
+        { trader: trader1, pattern },
       ],
       pastQuarter: [
-        // @ts-ignore
-        { trader: { id: 1 } },
-        // @ts-ignore
-        { trader: { id: 2 } },
+        { trader: trader1, pattern },
+        { trader: trader2, pattern },
       ],
       pastWeek: [
-        // @ts-ignore
-        { trader: { id: 3 } },
+        { trader: trader3, pattern },
       ],
       pastMonth: [
-        // @ts-ignore
-        { trader: { id: 3 } },
-        // @ts-ignore
-        { trader: { id: 4 } },
+        { trader: trader3, pattern },
+        { trader: trader4, pattern },
       ],
     }
     const result = stripTopProfiles(topProfiles)

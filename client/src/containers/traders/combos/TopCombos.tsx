@@ -35,7 +35,7 @@ const TopCombos = () => {
 
   const profilesWithEnvs = comboBase?.traderIds.map((traderId) => {
     const profile = traderProfileDict[traderId]
-    const env = profile?.trader.traderEnvId ? traderEnvDict[profile?.trader.traderEnvId] : null
+    const env = profile?.trader.traderEnvId ? traderEnvDict[profile?.trader.traderEnvId] : undefined
     return { profile, env }
   }) || []
 

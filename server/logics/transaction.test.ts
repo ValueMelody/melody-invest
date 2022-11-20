@@ -1,16 +1,19 @@
 import * as interfaces from '@shared/interfaces'
 import * as transaction from './transaction'
+import { mock } from 'ts-mockito'
+
+const dailyMock: interfaces.tickerDailyModel.Record = mock({})
+const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
 
 describe('#refreshHoldingItemValue', () => {
   const items: interfaces.traderHoldingModel.Item[] = [
     { tickerId: 1, shares: 100, splitMultiplier: 10, value: 10000 },
     { tickerId: 2, shares: 200, splitMultiplier: 2, value: 4000 },
   ]
+
   const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 12, splitMultiplier: 12 } },
-    // @ts-ignore
-    2: { daily: { closePrice: 10, splitMultiplier: 3 } },
+    1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 12, splitMultiplier: 12 } },
+    2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 3 } },
   }
   test('could refresh value', () => {
     expect(transaction.refreshHoldingItemValue(items[0], dailyTickers[1]))
@@ -28,10 +31,8 @@ describe('#detailsFromCashAndHoldings', () => {
     { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
   ]
   const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 12, splitMultiplier: 12 } },
-    // @ts-ignore
-    2: { daily: { closePrice: 10, splitMultiplier: 3 } },
+    1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 12, splitMultiplier: 12 } },
+    2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 3 } },
   }
   test('could generate holdingDetail from cash adn items', () => {
     expect(transaction.detailFromCashAndItems(50, items, dailyTickers)).toEqual({
@@ -105,8 +106,11 @@ describe('#sellForMoreThanTickerMaxPercernt', () => {
     ],
   }
   test('could sell correctly', () => {
-    // @ts-ignore
-    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 12, splitMultiplier: 4 }
+    const tickerDaily: interfaces.tickerDailyModel.Record = {
+      ...dailyMock,
+      closePrice: 12,
+      splitMultiplier: 4,
+    }
     expect(transaction.sellForMoreThanTickerMaxPercernt(
       holding,
       { tickerId: 2, shares: 200, splitMultiplier: 3, value: 6000 },
@@ -126,8 +130,11 @@ describe('#sellForMoreThanTickerMaxPercernt', () => {
     })
   })
   test('should not sell if not match any condition', () => {
-    // @ts-ignore
-    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 12, splitMultiplier: 4 }
+    const tickerDaily: interfaces.tickerDailyModel.Record = {
+      ...dailyMock,
+      closePrice: 12,
+      splitMultiplier: 4,
+    }
     expect(transaction.sellForMoreThanTickerMaxPercernt(
       holding,
       { tickerId: 2, shares: 200, splitMultiplier: 3, value: 6000 },
@@ -167,10 +174,8 @@ describe('#detailAfterRebalance', () => {
     ],
   }
   const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 12, splitMultiplier: 12 } },
-    // @ts-ignore
-    3: { daily: { closePrice: 10, splitMultiplier: 1 } },
+    1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 12, splitMultiplier: 12 } },
+    3: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 1 } },
   }
   test('could refresh for min only', () => {
     expect(transaction.detailAfterRebalance(
@@ -296,8 +301,12 @@ describe('#sellForHoldingPercent', () => {
       { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
     ],
   }
-  // @ts-ignore
-  const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 10, splitMultiplier: 3 }
+
+  const tickerDaily: interfaces.tickerDailyModel.Record = {
+    ...dailyMock,
+    closePrice: 10,
+    splitMultiplier: 3,
+  }
   test('could sell based on percent', () => {
     expect(transaction.sellForHoldingPercent(
       holding,
@@ -375,10 +384,8 @@ describe('#detailAfterSell', () => {
     ],
   }
   const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-    // @ts-ignore
-    1: { daily: { closePrice: 12, splitMultiplier: 12 } },
-    // @ts-ignore
-    2: { daily: { closePrice: 10, splitMultiplier: 3 } },
+    1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 12, splitMultiplier: 12 } },
+    2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 3 } },
   }
   test('could refresh correctly after sell', () => {
     expect(transaction.detailAfterSell(
@@ -516,8 +523,11 @@ describe('#buyForHoldingPercent', () => {
     ],
   }
   test('could buy for new holding', () => {
-    // @ts-ignore
-    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 100, splitMultiplier: 2 }
+    const tickerDaily: interfaces.tickerDailyModel.Record = {
+      ...dailyMock,
+      closePrice: 100,
+      splitMultiplier: 2,
+    }
     expect(transaction.buyForHoldingPercent(
       holding,
       { tickerId: 4, shares: 0, splitMultiplier: 0, value: 0 },
@@ -569,8 +579,7 @@ describe('#buyForHoldingPercent', () => {
     expect(transaction.buyForHoldingPercent(
       holding,
       { tickerId: 4, shares: 0, splitMultiplier: 0, value: 0 },
-      // @ts-ignore
-      { closePrice: 10, splitMultiplier: 3 },
+      { ...dailyMock, closePrice: 10, splitMultiplier: 3 },
       1200,
       5,
     )).toStrictEqual({
@@ -586,8 +595,11 @@ describe('#buyForHoldingPercent', () => {
     })
   })
   test('could buy for old holding', () => {
-    // @ts-ignore
-    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 10, splitMultiplier: 1 }
+    const tickerDaily: interfaces.tickerDailyModel.Record = {
+      ...dailyMock,
+      closePrice: 10,
+      splitMultiplier: 1,
+    }
     expect(transaction.buyForHoldingPercent(
       holding,
       { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
@@ -637,8 +649,7 @@ describe('#buyForHoldingPercent', () => {
     expect(transaction.buyForHoldingPercent(
       holding,
       { tickerId: 2, shares: 200, splitMultiplier: 3, value: 6000 },
-      // @ts-ignore
-      { closePrice: 10, splitMultiplier: 3 },
+      { ...dailyMock, closePrice: 10, splitMultiplier: 3 },
       1200,
       30,
     )).toStrictEqual({
@@ -653,8 +664,11 @@ describe('#buyForHoldingPercent', () => {
     })
   })
   test('could buy nothing', () => {
-    // @ts-ignore
-    const tickerDaily: interfaces.tickerDailyModel.Record = { closePrice: 10, splitMultiplier: 1 }
+    const tickerDaily: interfaces.tickerDailyModel.Record = {
+      ...dailyMock,
+      closePrice: 10,
+      splitMultiplier: 1,
+    }
     expect(transaction.buyForHoldingPercent(
       {
         ...holding,
@@ -681,12 +695,9 @@ describe('#detailAfterBuy', () => {
       ],
     }
     const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
-      // @ts-ignore
-      1: { daily: { closePrice: 10, splitMultiplier: 1 } },
-      // @ts-ignore
-      2: { daily: { closePrice: 10, splitMultiplier: 2 } },
-      // @ts-ignore
-      4: { daily: { closePrice: 5, splitMultiplier: 2 } },
+      1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 1 } },
+      2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 2 } },
+      4: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 5, splitMultiplier: 2 } },
     }
     expect(transaction.detailAfterBuy(
       holding,

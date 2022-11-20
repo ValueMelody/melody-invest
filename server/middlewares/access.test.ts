@@ -60,7 +60,7 @@ const getEnvMock = async (id: number) => {
 
   const recordMock : interfaces.traderEnvModel.Record = mock({})
   when(recordMock.id).thenReturn(id)
-  const record = instance(recordMock)
+  const record = { ...recordMock, id }
 
   record.isSystem = id === 1
   return record

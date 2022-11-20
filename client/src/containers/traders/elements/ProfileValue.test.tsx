@@ -1,17 +1,18 @@
 import * as interfaces from '@shared/interfaces'
 import { fireEvent, render, screen } from 'test.utils'
-import { instance, mock, when } from 'ts-mockito'
 import ProfileValue from './ProfileValue'
+import { mock } from 'ts-mockito'
 
 describe('#ProfileValue', () => {
   const traderMock: interfaces.traderModel.Record = mock({})
-  when(traderMock.id).thenReturn(1)
-  when(traderMock.totalValue).thenReturn(20000000)
-  const trader = instance(traderMock)
+  const trader = {
+    ...traderMock,
+    id: 1,
+    totalValue: 20000000,
+  }
 
   const traderEnvMock: interfaces.traderEnvModel.Record = mock({})
-  when(traderEnvMock.id).thenReturn(2)
-  const env = instance(traderEnvMock)
+  const env = { ...traderEnvMock, id: 2 }
 
   test('could render', () => {
     render(

@@ -1,19 +1,21 @@
 import * as interfaces from '@shared/interfaces'
 import * as routerTool from 'tools/router'
 import { fireEvent, render, screen } from 'test.utils'
-import { instance, mock, when } from 'ts-mockito'
 import PatternBehaviors from './PatternBehaviors'
 import { createMemoryHistory } from 'history'
+import { mock } from 'ts-mockito'
 
 describe('#PatternBehaviors', () => {
   const history = createMemoryHistory({ initialEntries: ['/test'] })
 
   const patternMock: interfaces.traderPatternModel.Public = mock({})
-  when(patternMock.priceDailyIncreaseBuy).thenReturn(1)
-  when(patternMock.priceDailyIncreaseSell).thenReturn(2)
-  when(patternMock.priceDailyDecreaseBuy).thenReturn(3)
-  when(patternMock.priceDailyDecreaseSell).thenReturn(4)
-  const pattern = instance(patternMock)
+  const pattern = {
+    ...patternMock,
+    priceDailyIncreaseBuy: 1,
+    priceDailyIncreaseSell: 2,
+    priceDailyDecreaseBuy: 3,
+    priceDailyDecreaseSell: 4,
+  }
 
   test('could render', () => {
     render(

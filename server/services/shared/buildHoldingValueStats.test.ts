@@ -1,15 +1,21 @@
+import * as interfaces from '@shared/interfaces'
 import * as tickerDailyModel from 'models/tickerDaily'
 import buildHoldingValueStats from './buildHoldingValueStats'
 import getNearestPricesByDateMock from '../../../scripts/mocks/methods/getNearestPricesByDateMock'
+import { mock } from 'ts-mockito'
 
 jest
   .spyOn(tickerDailyModel, 'getNearestPricesByDate')
   .mockImplementation(getNearestPricesByDateMock)
 
+const holdingMock: interfaces.traderHoldingModel.Detail = mock({})
+const itemMock: interfaces.traderHoldingModel.Item = mock({})
+
 describe('#buildHoldingValueStats', () => {
   test('could build empty stats', async () => {
     const holdings = [
       {
+        ...holdingMock,
         date: '2001-02-01',
         totalCash: 100000,
         items: [],
@@ -19,7 +25,6 @@ describe('#buildHoldingValueStats', () => {
       '1990-01-01',
       '2000-12-31',
       100000,
-      // @ts-ignore
       holdings,
     )
     expect(result).toStrictEqual({
@@ -39,14 +44,15 @@ describe('#buildHoldingValueStats', () => {
   test('could build holding value stats', async () => {
     const holdings = [
       {
+        ...holdingMock,
         date: '2001-02-01',
         totalCash: 25679,
         items: [
-          { tickerId: 1, shares: 10000 },
-          { tickerId: 2, shares: 2000 },
-          { tickerId: 3, shares: 4000 },
-          { tickerId: 4, shares: 100 },
-          { tickerId: 5, shares: 500 },
+          { ...itemMock, tickerId: 1, shares: 10000 },
+          { ...itemMock, tickerId: 2, shares: 2000 },
+          { ...itemMock, tickerId: 3, shares: 4000 },
+          { ...itemMock, tickerId: 4, shares: 100 },
+          { ...itemMock, tickerId: 5, shares: 500 },
         ],
       },
     ]
@@ -54,7 +60,6 @@ describe('#buildHoldingValueStats', () => {
       '2001-01-01',
       '2010-12-31',
       100000,
-      // @ts-ignore
       holdings,
     )
     expect(result).toStrictEqual({
@@ -86,25 +91,27 @@ describe('#buildHoldingValueStats', () => {
   test('could build value for multi holdings', async () => {
     const holdings = [
       {
+        ...holdingMock,
         date: '2006-01-01',
         totalCash: 17514.4,
         items: [
-          { tickerId: 1, shares: 10030 },
-          { tickerId: 2, shares: 2100 },
-          { tickerId: 3, shares: 3000 },
-          { tickerId: 4, shares: 100 },
-          { tickerId: 5, shares: 1000 },
+          { ...itemMock, tickerId: 1, shares: 10030 },
+          { ...itemMock, tickerId: 2, shares: 2100 },
+          { ...itemMock, tickerId: 3, shares: 3000 },
+          { ...itemMock, tickerId: 4, shares: 100 },
+          { ...itemMock, tickerId: 5, shares: 1000 },
         ],
       },
       {
+        ...holdingMock,
         date: '2001-02-01',
         totalCash: 25679,
         items: [
-          { tickerId: 1, shares: 10000 },
-          { tickerId: 2, shares: 2000 },
-          { tickerId: 3, shares: 4000 },
-          { tickerId: 4, shares: 100 },
-          { tickerId: 5, shares: 500 },
+          { ...itemMock, tickerId: 1, shares: 10000 },
+          { ...itemMock, tickerId: 2, shares: 2000 },
+          { ...itemMock, tickerId: 3, shares: 4000 },
+          { ...itemMock, tickerId: 4, shares: 100 },
+          { ...itemMock, tickerId: 5, shares: 500 },
         ],
       },
     ]
@@ -112,7 +119,6 @@ describe('#buildHoldingValueStats', () => {
       '2001-01-01',
       '2010-12-31',
       100000,
-      // @ts-ignore
       holdings,
     )
     expect(result).toStrictEqual({

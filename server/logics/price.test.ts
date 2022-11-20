@@ -1,12 +1,14 @@
 import * as interfaces from '@shared/interfaces'
 import * as price from './price'
-import { instance, mock, when } from 'ts-mockito'
+import { mock } from 'ts-mockito'
 
 describe('#getSplitMultiplier', () => {
   test('could get correct value', () => {
     const dailyMock: interfaces.tickerDailyModel.Record = mock({})
-    when(dailyMock.splitMultiplier).thenReturn(5.2)
-    const daily = instance(dailyMock)
+    const daily = {
+      ...dailyMock,
+      splitMultiplier: 5.2,
+    }
 
     expect(price.getSplitMultiplier('1.11', daily).toFixed(3)).toEqual('5.772')
     expect(price.getSplitMultiplier('1.23', daily).toFixed(3)).toEqual('6.396')

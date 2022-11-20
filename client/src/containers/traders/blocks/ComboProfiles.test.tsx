@@ -1,32 +1,20 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import { instance, mock, when } from 'ts-mockito'
 import { render, screen } from 'test.utils'
 import ComboProfiles from './ComboProfiles'
+import { mock } from 'ts-mockito'
 
-const traderMock1: interfaces.traderModel.Record = mock({})
-when(traderMock1.totalValue).thenReturn(200000)
-const trader1 = instance(traderMock1)
+const traderMock: interfaces.traderModel.Record = mock({})
+const trader1 = { ...traderMock, totalValue: 200000 }
+const trader2 = { ...traderMock, totalValue: 300000 }
+const trader3 = { ...traderMock, totalValue: 100000 }
 
-const traderMock2: interfaces.traderModel.Record = mock({})
-when(traderMock2.totalValue).thenReturn(300000)
-const trader2 = instance(traderMock2)
+const patternMock: interfaces.traderPatternModel.Public = mock({})
+const traderPattern1 = { ...patternMock, id: 1 }
+const traderPattern2 = { ...patternMock, id: 2 }
 
-const traderMock3: interfaces.traderModel.Record = mock({})
-when(traderMock3.totalValue).thenReturn(100000)
-const trader3 = instance(traderMock3)
-
-const traderPatternMock1: interfaces.traderPatternModel.Public = mock({})
-when(traderPatternMock1.id).thenReturn(1)
-const traderPattern1 = instance(traderPatternMock1)
-
-const traderPatternMock2: interfaces.traderPatternModel.Public = mock({})
-when(traderPatternMock2.id).thenReturn(2)
-const traderPattern2 = instance(traderPatternMock2)
-
-const traderEnvMock1: interfaces.traderEnvModel.Record = mock({})
-when(traderEnvMock1.name).thenReturn('profile env 2')
-const traderEnv1 = instance(traderEnvMock1)
+const traderEnvMock: interfaces.traderEnvModel.Record = mock({})
+const traderEnv1 = { ...traderEnvMock, name: 'profile env 2' }
 
 describe('#ComboProfiles', () => {
   test('could render', () => {
