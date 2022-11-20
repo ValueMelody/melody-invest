@@ -14,15 +14,16 @@ const Layout: FunctionComponent = ({
 
   const { messages } = useSelector(selectors.selectGlobal())
   const user = useSelector(selectors.selectUser())
+  const global = useSelector(selectors.selectGlobal())
 
   useEffect(() => {
     dispatch(actions.fetchSystemDefaults())
   }, [dispatch])
 
   useEffect(() => {
-    if (!user.hasLogin || user.userType) return
+    if (!global.hasLogin || user.userType) return
     dispatch(actions.fetchUserOverall())
-  }, [user.hasLogin, user.userType, dispatch])
+  }, [global.hasLogin, user.userType, dispatch])
 
   useEffect(() => {
     if (!messages.length) return

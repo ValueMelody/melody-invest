@@ -1,6 +1,9 @@
 import * as actions from 'actions'
 import * as commonEnum from 'enums/common'
+import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
+import * as requestAdapter from 'adapters/request'
+import * as storageAdapter from 'adapters/storage'
 import { AnyAction, PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
 import { _resetForTest, _updateForTest } from 'tools/store'
 
@@ -14,11 +17,15 @@ export interface Message {
 }
 
 export interface GlobalState {
+  hasLogin: boolean;
   isLoading: boolean;
   messages: Message[];
 }
 
+const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
+
 const initialState: GlobalState = {
+  hasLogin: !!authToken,
   isLoading: false,
   messages: [],
 }
@@ -29,34 +36,6 @@ const startLoading = (state: GlobalState) => {
 
 const stopLoading = (state: GlobalState) => {
   state.isLoading = false
-}
-
-const onRequestRejected = (state: GlobalState, action: AnyAction) => {
-  let message = action?.payload?.message || localeTool.t('error.500')
-  if (message === 'Unauthorized') message = localeTool.t('error.401')
-  state.isLoading = false
-  state.messages = [
-    ...state.messages,
-    {
-      id: nanoid(),
-      title: message,
-      type: 'failure',
-    },
-  ]
-}
-
-const onCreateSubscriptionFailed = (state: GlobalState) => {
-  state.isLoading = false
-  state.messages = [
-    ...state.messages,
-    {
-      id: nanoid(),
-      title: localeTool.t('setting.subscribeFailed', {
-        email: commonEnum.Env.ContactEmail,
-      }),
-      type: 'failure',
-    },
-  ]
 }
 
 const successWithMessage = (
@@ -93,6 +72,76 @@ const removeMessage = (state: GlobalState, action: PayloadAction<string>) => {
   state.messages = messages
 }
 
+const logout = (state: GlobalState) => {
+  state.hasLogin = false
+  requestAdapter.setAuthToken('')
+  storageAdapter.remove(commonEnum.StorageKey.AuthToken)
+}
+
+const setJWTTOken = (jwtToken: string) => {
+  requestAdapter.setAuthToken(jwtToken)
+  storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
+}
+
+const lockUserAccount = (state: GlobalState, action: PayloadAction<{ msg: string; }>) => {
+  logout(state)
+  successWithMessage(state, action)
+}
+
+const onRequestRejected = (state: GlobalState, action: AnyAction) => {
+  const message = action?.payload?.message || localeTool.t('error.500')
+
+  if (message === localeTool.t('error.401')) logout(state)
+
+  state.isLoading = false
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: message,
+      type: 'failure',
+    },
+  ]
+}
+
+const onCreateSubscriptionFailed = (state: GlobalState) => {
+  state.isLoading = false
+  state.messages = [
+    ...state.messages,
+    {
+      id: nanoid(),
+      title: localeTool.t('setting.subscribeFailed', {
+        email: commonEnum.Env.ContactEmail,
+      }),
+      type: 'failure',
+    },
+  ]
+}
+
+const onCreateUserToken = (
+  state: GlobalState,
+  action: PayloadAction<interfaces.response.UserToken>,
+) => {
+  state.isLoading = false
+  state.hasLogin = true
+
+  const { jwtToken } = action.payload
+  setJWTTOken(jwtToken)
+}
+
+const onCreateSubscription = (
+  state: GlobalState,
+  action: PayloadAction<{
+    userToken: interfaces.response.UserToken;
+    msg: string;
+  }>,
+) => {
+  const { jwtToken } = action.payload.userToken
+  setJWTTOken(jwtToken)
+
+  successWithMessage(state, action)
+}
+
 export const globalSlice = createSlice({
   name: 'global',
   initialState,
@@ -100,6 +149,11 @@ export const globalSlice = createSlice({
     removeMessage, addMessage, _updateForTest, _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
+    builder.addCase(actions.createUserToken.fulfilled, onCreateUserToken)
+    builder.addCase(actions.createUserSubscription.fulfilled, onCreateSubscription)
+    builder.addCase(actions.lockUserAccount.fulfilled, lockUserAccount)
+    builder.addCase(actions.logout, logout)
+
     builder.addCase(actions.fetchSystemPolicy.pending, startLoading)
     builder.addCase(actions.fetchSystemPolicy.fulfilled, stopLoading)
     builder.addCase(actions.fetchSystemPolicy.rejected, onRequestRejected)
@@ -141,7 +195,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchTraderProfileDetail.rejected, onRequestRejected)
 
     builder.addCase(actions.createUserToken.pending, startLoading)
-    builder.addCase(actions.createUserToken.fulfilled, stopLoading)
     builder.addCase(actions.createUserToken.rejected, onRequestRejected)
 
     builder.addCase(actions.deleteTraderCombo.pending, startLoading)
@@ -181,7 +234,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.updateUserPassword.rejected, onRequestRejected)
 
     builder.addCase(actions.lockUserAccount.pending, startLoading)
-    builder.addCase(actions.lockUserAccount.fulfilled, successWithMessage)
     builder.addCase(actions.lockUserAccount.rejected, onRequestRejected)
 
     builder.addCase(actions.resetUserPassword.pending, startLoading)
@@ -201,7 +253,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.activateUser.rejected, onRequestRejected)
 
     builder.addCase(actions.createUserSubscription.pending, startLoading)
-    builder.addCase(actions.createUserSubscription.fulfilled, successWithMessage)
     builder.addCase(actions.createUserSubscription.rejected, onCreateSubscriptionFailed)
   },
 })
