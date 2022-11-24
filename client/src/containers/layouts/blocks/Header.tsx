@@ -6,6 +6,7 @@ import {
   TableCellsIcon, TicketIcon, UserCircleIcon,
 } from '@heroicons/react/24/solid'
 import HeaderLink from 'containers/layouts/elements/HeaderLink'
+import { useLocation } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 const navClass = 'flex items-center'
@@ -13,6 +14,7 @@ const headerClass = 'mx-2'
 
 const Header = () => {
   const global = useSelector(selectors.selectGlobal())
+  const location = useLocation()
 
   return (
     <header
@@ -21,24 +23,28 @@ const Header = () => {
     >
       <nav className={navClass}>
         <HeaderLink
+          isActive={location.pathname === routerTool.topProfilesRoute()}
           className={headerClass}
           route={routerTool.topProfilesRoute()}
           title={localeTool.t('topProfiles.title')}
           icon={ChartBarIcon}
         />
         <HeaderLink
+          isActive={location.pathname === routerTool.topCombosRoute()}
           className={headerClass}
           route={routerTool.topCombosRoute()}
           title={localeTool.t('topCombos.title')}
           icon={ArchiveBoxIcon}
         />
         <HeaderLink
+          isActive={location.pathname === routerTool.behaviorListRoute()}
           className={headerClass}
           route={routerTool.behaviorListRoute()}
           title={localeTool.t('tradeBehaviors.title')}
           icon={BookmarkIcon}
         />
         <HeaderLink
+          isActive={location.pathname === routerTool.tickerListRoute()}
           className={headerClass}
           route={routerTool.tickerListRoute()}
           title={localeTool.t('availableTickers.title')}
@@ -48,6 +54,7 @@ const Header = () => {
       <nav className={navClass}>
         {global.hasLogin && (
           <HeaderLink
+            isActive={location.pathname === routerTool.dashboardRoute()}
             className={headerClass}
             route={routerTool.dashboardRoute()}
             title={localeTool.t('dashboard.title')}
@@ -55,6 +62,7 @@ const Header = () => {
           />
         )}
         <HeaderLink
+          isActive={location.pathname === routerTool.settingRoute()}
           className={headerClass}
           data-testid='user'
           route={global.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
