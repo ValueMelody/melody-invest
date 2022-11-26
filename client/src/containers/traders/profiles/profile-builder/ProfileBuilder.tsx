@@ -5,7 +5,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { Accordion, Button } from 'flowbite-react'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
@@ -107,6 +107,7 @@ const ProfileBuilder = () => {
   usePrivateGuard()
   const location = useLocation()
   const pattern = location.state as interfaces.traderPatternModel.Public | undefined
+  const ref = useRef(null)
 
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
@@ -141,6 +142,15 @@ const ProfileBuilder = () => {
     constants.Behavior.FrequencyBehaviors, behaviorValues,
   )
   const isValidFrequencyBehavior = activeFrequencyBehaviorCount === constants.Behavior.FrequencyBehaviors.length
+
+  useEffect(() => {
+    if (!ref.current) return
+    const container = ref.current as HTMLElement
+    if (container?.childNodes?.length >= 3 && container?.childNodes[2]?.childNodes?.length) {
+      const button = container.childNodes[2].childNodes[0] as HTMLButtonElement
+      if (button?.click) button.click()
+    }
+  }, [ref])
 
   const handleClickBehavior = (behavior: interfaces.traderPatternModel.Behavior) => {
     if (behavior === currentEditingBehavior) {
@@ -194,7 +204,10 @@ const ProfileBuilder = () => {
   }
 
   return (
-    <section className='flex flex-col'>
+    <section
+      ref={ref}
+      className='flex flex-col'
+    >
       <h1 className='builder-title'>
         {localeTool.t('profileBuilder.title')}
       </h1>
