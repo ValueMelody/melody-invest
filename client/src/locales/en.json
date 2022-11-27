@@ -173,6 +173,7 @@
     "profileBuilder.frequencyBehaviors": "Trade Frequency",
     "profileBuilder.notSet": "Do not set",
     "profileBuilder.fork": "Build a new profile by using this profile as a template",
+    "profileBuilder.duplicatedProfile": "You have another profile use the same setup.",
 
     "comboBuilder.title": "Combo Builder",
     "comboBuilder.name": "Combo Name",
