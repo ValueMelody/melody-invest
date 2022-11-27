@@ -4,7 +4,7 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
-import { Accordion, Button } from 'flowbite-react'
+import { Accordion, Alert, Button } from 'flowbite-react'
 import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -117,6 +117,20 @@ const ProfileBuilder = () => {
   const [selectedTraderEnvId, setSelectedTraderEnvId] = useState(1)
 
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
+  const { userTraderIds } = useSelector(selectors.selectUser())
+  const traderDict = useSelector(selectors.selectTraderProfileBaseDict())
+  const userTraders = userTraderIds.map((id) => traderDict[id])
+  const currentPattern = JSON.stringify({
+    ...behaviorValues,
+    id: undefined,
+  })
+  const hasMatchedPattern = userTraders.some((trader) => {
+    const traderPattern = {
+      ...trader.pattern,
+      id: undefined,
+    }
+    return currentPattern === JSON.stringify(traderPattern) && selectedTraderEnvId === trader.trader.traderEnvId
+  })
 
   const activeBuyBehaviorCount = getActiveBehaviorCount(
     constants.Behavior.BuyBehaviors, behaviorValues,
@@ -351,6 +365,14 @@ const ProfileBuilder = () => {
           />
         ))}
       </section>
+      {hasMatchedPattern && (
+        <Alert
+          color='failure'
+          className='mt-8'
+        >
+          {localeTool.t('profileBuilder.duplicatedProfile')}
+        </Alert>
+      )}
       <form onSubmit={handleSubmit}>
         <footer className='flex flex-col items-center mt-6'>
           <Button
@@ -360,7 +382,8 @@ const ProfileBuilder = () => {
               !isValidSellBehavior ||
               !isValidAllocateBehavior ||
               !isValidFrequencyBehavior ||
-              !isValidPreferenceBehavior
+              !isValidPreferenceBehavior ||
+              hasMatchedPattern
             }
           >
             {localeTool.t('common.confirmAndWatch')}

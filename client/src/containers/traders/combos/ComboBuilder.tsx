@@ -136,7 +136,7 @@ const ComboBuilder = () => {
         <footer className='flex justify-center'>
           <Button
             type='submit'
-            disabled={!hasValidName || !hasValidTraders || hasDuplicatedName}
+            disabled={!hasValidName || !hasValidTraders || hasDuplicatedName || hasDuplicatedCombo}
           >
             {localeTool.t('common.confirmAndWatch')}
           </Button>
