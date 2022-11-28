@@ -12,8 +12,10 @@
   "author": "Baozier",
   "license": "UNLICENSED",
   "engines": {
-    "node": ">=16.13.2",
-    "npm": ">=8.1.2"
+    "node": "^18.12.1",
+    "npm": "^9.1.2",
+    "redis-server": "^6.0.16",
+    "psql": "^15.1"
   },
   "repository": {
     "type": "git",
