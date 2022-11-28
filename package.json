@@ -20,14 +20,18 @@
     "url": "git+https://github.com/ValueMelody/melody-app"
   },
   "scripts": {
+    "prepare": "npm run build --workspace=constants",
+
     "dev": "npm run build && concurrently \"npm run start --workspace=client\" \"npm run start --workspace=server\"",
+
     "test": "DOTENV_CONFIG_PATH=./.env.test jest",
+    "lint": "npm run lint --workspace=client && npm run lint --workspace=server",
+    "tsc": "npm run tsc --workspace=client && npm run tsc --workspace=server",
+
     "test:watch": "DOTENV_CONFIG_PATH=./.env.test jest --watch",
     "test:coverage": "DOTENV_CONFIG_PATH=./.env.test jest --coverage --silent",
-    "lint": "npm run lint --workspace=client && npm run lint --workspace=server",
     "lint:fix": "npm run lint:fix --workspace=client && npm run lint:fix --workspace=server",
-    "tsc": "npm run tsc --workspace=client && npm run tsc --workspace=server",
-    "build": "npm run build --workspace=constants",
+
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
     "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
     "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Backup/melody.bak",

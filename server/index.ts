@@ -1,7 +1,6 @@
 
 import 'express-async-errors'
 import * as adapterEnum from './enums/adapter'
-import * as cron from 'cron'
 import * as errorEnum from './enums/error'
 import express, { NextFunction, Request, Response } from 'express'
 import compression from 'compression'
@@ -40,8 +39,6 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 })
 
 try {
-  cron.init()
-
   app.listen(port, host, (): void => {
     console.info(`Connected successfully on port ${port}`)
   })
