@@ -3,12 +3,17 @@
   "private": true,
   "scripts": {
     "start": "ts-node-dev -r tsconfig-paths/register ./index.ts",
-    "start:check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
-    "tsc": "tsc",
+    "cron": "ts-node-dev -r tsconfig-paths/register ./cron.ts",
+
     "build": "tsc --build --clean && tsc --build --force",
     "migrate": "knex migrate:latest",
-    "lint": "eslint ./ --ext .ts",
+
+    "start:check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
     "lint:fix": "eslint --fix ./ --ext .ts",
+
+    "tsc": "tsc",
+    "lint": "eslint ./ --ext .ts",
+
     "syncTickerPrices": "ts-node -r tsconfig-paths/register cli syncTickerPrices",
     "syncTickerIncomes": "ts-node -r tsconfig-paths/register cli syncTickerIncomes",
     "syncTickerEarnings": "ts-node -r tsconfig-paths/register cli syncTickerEarnings",
