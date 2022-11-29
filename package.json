@@ -22,7 +22,8 @@
   "scripts": {
     "prepare": "npm run build --workspace=constants",
 
-    "dev": "npm run build && concurrently \"npm run start --workspace=client\" \"npm run start --workspace=server\"",
+    "dev": "npm run prepare && concurrently \"npm run start --workspace=client\" \"npm run start --workspace=server\"",
+    "build": "npm run build --workspace=constants && npm run build --workspace=client && npm run build --workspace=server",
 
     "test": "DOTENV_CONFIG_PATH=./.env.test jest",
     "lint": "npm run lint --workspace=client && npm run lint --workspace=server",

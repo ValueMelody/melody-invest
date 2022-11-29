@@ -1,4 +1,3 @@
-
 import * as adapterEnum from 'enums/adapter'
 import Redis from 'ioredis'
 import ms from 'ms'

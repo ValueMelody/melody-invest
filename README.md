@@ -1,5 +1,6 @@
 # Quick Start
 ```
+sudo npm install -g pm2
 cp ./client/.env.example ./client/.env
 cp ./server/.env.example ./server/.env
 npm install
