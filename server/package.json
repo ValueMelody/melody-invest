@@ -5,7 +5,7 @@
     "dev": "ts-node-dev -r tsconfig-paths/register ./index.ts",
     "cron": "ts-node-dev -r tsconfig-paths/register ./cron.ts",
 
-    "start": "pm2 start ../scripts/devOps/pm2.config.js",
+    "start": "pm2 start ../scripts/devOps/prod.pm2.js",
 
     "build": "tsc --build --clean && tsc --build --force",
     "migrate": "knex migrate:latest",
