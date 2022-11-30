@@ -3,11 +3,11 @@ module.exports = {
     {
       name: 'melody',
       script: '../../server/dist/server/index.js',
-      cwd: './scripts/devOps',
+      cwd: '../scripts/devOps',
       env: {
         NODE_ENV: 'production',
       },
-      node_args: '-r dotenv/config',
+      node_args: '-r  ../scripts/devOps/pathBootstrap -r dotenv/config',
       instances: 2,
       exec_mode: 'cluster',
       out_file: '../../logs/app.log',

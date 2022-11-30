@@ -1,7 +1,9 @@
 node_modules
 .env
+*.log
+.DS_Store
+
 constants/dist
 server/dist
 server/.clinic
-*.log
-.DS_Store
+client/build

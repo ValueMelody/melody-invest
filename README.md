@@ -1,6 +1,22 @@
+# Prerequisite
+```
+# setup nginx
+sudo apt install nginx-server
+
+# setup postgres
+sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+sudo apt-get update
+sudo apt install postgresql-15
+
+# setup node
+curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm install -g pm2
+```
+
 # Quick Start
 ```
-sudo npm install -g pm2
 cp ./client/.env.example ./client/.env
 cp ./server/.env.example ./server/.env
 npm install
