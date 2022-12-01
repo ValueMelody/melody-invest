@@ -17,7 +17,6 @@ export default app
 const port = adapterEnum.HostConfig.ServerPort || 3001
 const host = adapterEnum.HostConfig.ServerHost || '127.0.0.1'
 
-console.log(adapterEnum.HostConfig.ClientHost)
 app.use(cors({
   origin: `${adapterEnum.HostConfig.ClientType}://${adapterEnum.HostConfig.ClientHost}`,
 }))
