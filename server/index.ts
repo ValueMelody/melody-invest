@@ -1,15 +1,15 @@
 
 import 'express-async-errors'
-import * as adapterEnum from './enums/adapter'
-import * as errorEnum from './enums/error'
+import * as adapterEnum from 'enums/adapter'
+import * as errorEnum from 'enums/error'
 import express, { NextFunction, Request, Response } from 'express'
 import compression from 'compression'
 import cors from 'cors'
-import { initConnection as initCache } from './adapters/cache'
-import { initConnection as initDatabase } from './adapters/database'
-import systemRouter from './routers/system'
-import tradersRouter from './routers/traders'
-import usersRouter from './routers/users'
+import { initConnection as initCache } from 'adapters/cache'
+import { initConnection as initDatabase } from 'adapters/database'
+import systemRouter from 'routers/system'
+import tradersRouter from 'routers/traders'
+import usersRouter from 'routers/users'
 
 const app = express()
 export default app
@@ -17,7 +17,10 @@ export default app
 const port = adapterEnum.HostConfig.ServerPort || 3001
 const host = adapterEnum.HostConfig.ServerHost || '127.0.0.1'
 
-app.use(cors())
+console.log(adapterEnum.HostConfig.ClientHost)
+app.use(cors({
+  origin: `${adapterEnum.HostConfig.ClientType}://${adapterEnum.HostConfig.ClientHost}`,
+}))
 app.use(express.json())
 app.use(compression())
 app.use(express.urlencoded({ extended: true }))
