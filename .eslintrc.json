@@ -17,6 +17,7 @@
     "@typescript-eslint"
   ],
   "rules": {
+    "no-console": "warn",
     "sort-imports": "error",
     "react/jsx-closing-bracket-location": "error",
     "react/jsx-max-props-per-line": "error",
