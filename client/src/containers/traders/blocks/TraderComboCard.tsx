@@ -55,7 +55,7 @@ const TraderComboCard = ({
     >
       <header className='flex justify-between items-center'>
         <h3 className='font-bold'>
-          {localeTool.t('common.combo')}: {traderCombo.name}
+          {localeTool.t('common.combo')}: {parseTool.traderComboName(traderCombo)}
         </h3>
         {disabled && (
           <WatchButton

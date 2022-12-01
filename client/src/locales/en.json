@@ -123,8 +123,8 @@
     "topCombos.title": "Top Combos",
     "topCombos.history": "Recent Holding History",
 
-    "systemCombo.default5": "Top 5 in Default Env",
-    "systemCombo.bigTech5": "Top5 in Top Tech Env",
+    "systemCombo.default5": "Top 5 from Default Env",
+    "systemCombo.bigTech5": "Top5 from Top Tech Env",
 
     "tickerList.categories": "Stock Categories",
 
