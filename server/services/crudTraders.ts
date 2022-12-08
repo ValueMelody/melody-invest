@@ -153,7 +153,7 @@ export const createTraderProfile = async (
   try {
     const patternResult = await traderPatternModel.createIfEmpty(traderPattern, transaction)
     const pattern = patternResult.record
-    const traderResult = await traderModel.createOrActive(traderEnvId, pattern.id, transaction)
+    const traderResult = await traderModel.createOrActive(traderEnvId, pattern.id, null, null, false, transaction)
     const trader = traderResult.record
 
     const currentRelation = await traderFollowerModel.getByUK(userId, trader.id)

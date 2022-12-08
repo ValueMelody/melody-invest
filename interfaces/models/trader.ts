@@ -2,6 +2,9 @@ interface Common {
   id: number;
   traderEnvId: number;
   traderPatternId: number;
+  fatherId: number | null;
+  motherId: number | null;
+  hasMutation: boolean;
   accessCode: string;
   isActive: boolean;
   rebalancedAt: string | null;
@@ -33,6 +36,9 @@ export interface Create {
   traderPatternId: number;
   isActive: boolean;
   accessCode: string;
+  fatherId: number | null;
+  motherId: number | null;
+  hasMutation: boolean;
 }
 
 export interface Update {
