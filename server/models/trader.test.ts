@@ -233,6 +233,9 @@ describe('#create', () => {
       traderEnvId: 3,
       traderPatternId: 3,
       isActive: true,
+      fatherId: null,
+      motherId: null,
+      hasMutation: false,
       accessCode: '123',
     }, transaction)
     await transaction.commit()
