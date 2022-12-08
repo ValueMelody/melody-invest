@@ -3,7 +3,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 1,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 30,
       pastYearPercentNumber: 10,
@@ -14,7 +15,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 2,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 31,
       pastYearPercentNumber: 20,
@@ -25,7 +27,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 3,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 42,
       pastYearPercentNumber: 30,
@@ -36,7 +39,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 4,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 43,
       pastYearPercentNumber: 40,
@@ -47,7 +51,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 5,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 54,
       pastYearPercentNumber: 60,
@@ -58,7 +63,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 6,
       traderEnvId: 1,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 55,
       pastYearPercentNumber: 50,
@@ -115,7 +121,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 1,
       traderEnvId: 2,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 51,
       pastYearPercentNumber: 50,
@@ -126,7 +133,8 @@ exports.seed = (knex) => {
     {
       traderPatternId: 2,
       traderEnvId: 2,
-      isActive: true, hasMutation: false,
+      isActive: true,
+      hasMutation: false,
       accessCode: '000',
       yearlyPercentNumber: 36,
       pastYearPercentNumber: 25,
