@@ -311,9 +311,9 @@ describe('#createOrActive', () => {
     expect(created.record.isActive).toBe(true)
     expect(created.record.traderEnvId).toBe(2)
     expect(created.record.traderPatternId).toBe(51)
-    expect(created.record.fatherId).toBe(1)
-    expect(created.record.motherId).toBe(2)
-    expect(created.record.hasMutation).toBe(true)
+    expect(created.record.fatherId).toBe(null)
+    expect(created.record.motherId).toBe(null)
+    expect(created.record.hasMutation).toBe(false)
   })
 
   test('could return existing', async () => {

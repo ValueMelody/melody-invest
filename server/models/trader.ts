@@ -232,6 +232,7 @@ export const createOrActive = async (
   isEdited: boolean;
 }> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
+  console.log(currentRecord)
   const accessCode = generateTool.buildAccessHash(16)
   if (!currentRecord) {
     const record = await create({

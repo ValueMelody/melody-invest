@@ -19,7 +19,7 @@ exports.up = (knex) => {
       table.integer('pastWeekPercentNumber')
       table.integer('fatherId')
       table.integer('motherId')
-      table.boolean('hasMutation').defaultTo(false).notNullable()
+      table.boolean('hasMutation').notNullable()
       table.string('oneYearTrends', 160)
       table.string('oneDecadeTrends', 160)
       table.unique(['traderEnvId', 'traderPatternId'], 'trader_ukey')
