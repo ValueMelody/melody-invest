@@ -223,6 +223,9 @@ export const create = async (
 export const createOrActive = async (
   traderEnvId: number,
   traderPatternId: number,
+  fatherId: number | null,
+  motherId: number | null,
+  hasMutation: boolean,
   transaction: Knex.Transaction,
 ): Promise<{
   record: interfaces.traderModel.Record;
@@ -231,7 +234,15 @@ export const createOrActive = async (
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
   const accessCode = generateTool.buildAccessHash(16)
   if (!currentRecord) {
-    const record = await create({ traderEnvId, traderPatternId, isActive: true, accessCode }, transaction)
+    const record = await create({
+      traderEnvId,
+      traderPatternId,
+      isActive: true,
+      accessCode,
+      fatherId,
+      motherId,
+      hasMutation,
+    }, transaction)
     return { record, isEdited: true }
   }
   if (currentRecord.isActive) {

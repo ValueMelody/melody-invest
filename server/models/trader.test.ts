@@ -286,7 +286,7 @@ describe('#update', () => {
 describe('#createOrActive', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(3, 1, transaction)
+    const created = await trader.createOrActive(3, 1, null, null, false, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(106)
@@ -294,22 +294,28 @@ describe('#createOrActive', () => {
     expect(created.record.accessCode.length).toBe(16)
     expect(created.record.traderEnvId).toBe(3)
     expect(created.record.traderPatternId).toBe(1)
+    expect(created.record.fatherId).toBe(null)
+    expect(created.record.motherId).toBe(null)
+    expect(created.record.hasMutation).toBe(false)
   })
 
   test('could active', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(2, 51, transaction)
+    const created = await trader.createOrActive(2, 51, 1, 2, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(103)
     expect(created.record.isActive).toBe(true)
     expect(created.record.traderEnvId).toBe(2)
     expect(created.record.traderPatternId).toBe(51)
+    expect(created.record.fatherId).toBe(1)
+    expect(created.record.motherId).toBe(2)
+    expect(created.record.hasMutation).toBe(true)
   })
 
   test('could return existing', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const record = await trader.createOrActive(1, 1, transaction)
+    const record = await trader.createOrActive(1, 1, 1, 2, false, transaction)
     await transaction.rollback()
     expect(record.isEdited).toBe(false)
     expect(record.record.id).toBe(1)
