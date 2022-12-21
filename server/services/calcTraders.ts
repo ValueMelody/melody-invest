@@ -233,10 +233,13 @@ const calcTraderPerformance = async (
 }
 
 export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
-  const traders = await traderModel.getActives()
-
-  await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-    await calcTraderPerformance(trader, forceRecheck)
+  const envs = await traderEnvModel.getAll()
+  await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+    console.info(`checking ${env.id}`)
+    const traders = await traderModel.getActives(env.id)
+    await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
+      await calcTraderPerformance(trader, forceRecheck)
+    })
   })
 }
 

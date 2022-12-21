@@ -41,13 +41,14 @@ export const getByUK = async (
   return trader ? convertToRecord(trader) : null
 }
 
-export const getActives = async (): Promise<
+export const getActives = async (envId: number): Promise<
   interfaces.traderModel.Record[]
 > => {
   const traders = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'traderEnvId', value: envId },
     ],
   })
   return traders.map((trader) => convertToRecord(trader))
@@ -232,7 +233,6 @@ export const createOrActive = async (
   isEdited: boolean;
 }> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
-  console.log(currentRecord)
   const accessCode = generateTool.buildAccessHash(16)
   if (!currentRecord) {
     const record = await create({
