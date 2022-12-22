@@ -1,0 +1,32 @@
+name: Client Prod Deploy CI
+
+on:
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.13.2]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build --workspace=client
+    - name: Push dist files
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.CLIENT_DEPLOY_TOKEN }}
+      with:
+        source_file: './client/dist'
+        destination_repo: 'ValueMelody/melody-prod'
+        destination_folder: './'
+        user_email: 'byn9826@gmail.com'
+        user_name: 'Baozier'
+        commit_message: 'Production deploy'

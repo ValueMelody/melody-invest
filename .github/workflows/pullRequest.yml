@@ -8,7 +8,7 @@ env:
   TOKEN_SECRET: 123
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     strategy:
       matrix:

@@ -37,7 +37,7 @@
   "scripts": {
     "dev": "PORT=3099 BROWSER=none react-scripts start",
 
-    "build": "BUILD_PATH='./dist' react-scripts --max_old_space_size=512 build",
+    "build": "BUILD_PATH='./dist' react-scripts build",
     "lint:fix": "eslint --fix ./ --ext .tsx --ext .ts",
 
     "lint": "eslint ./ --ext .tsx --ext .ts",
