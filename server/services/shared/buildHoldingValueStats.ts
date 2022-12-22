@@ -91,7 +91,7 @@ const buildHoldingValueStats = async (
     pastYearPercentNumber,
     oneYearTrends,
     oneDecadeTrends,
-    rankingNumber: rankingNumber || nul,
+    rankingNumber: rankingNumber || null,
   }
 }
 

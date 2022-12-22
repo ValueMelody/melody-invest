@@ -68,7 +68,7 @@ const calcTraderPerformance = async (
   const cashMaxPercent = pattern.cashMaxPercent
 
   const latestDate = await dailyTickersModel.getLatestDate()
-  console.info(`Checking ${trader.id}`)
+  console.info(`Checking Trader:${trader.id}`)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
   let holding = await traderHoldingModel.getLatest(trader.id)
@@ -236,12 +236,12 @@ const calcTraderPerformance = async (
 export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    console.info(`checking ${env.id}`)
+    console.info(`Checking Env:${env.id}`)
     const traders = await traderModel.getActives(env.id)
     await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
       await calcTraderPerformance(trader, forceRecheck)
     })
-    const deactivateTarget = await traderModel.getByRank(env.activeTotal)
+    const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
     const inactiveRankingNumber = deactivateTarget?.rankingNumber
     if (inactiveRankingNumber) {
       await databaseAdapter.runWithTransaction(async (transaction) => {
@@ -388,7 +388,7 @@ const calcEnvDescendants = async (
 export const calcAllEnvDescendants = async () => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    console.info(`checking ${env.id}`)
+    console.info(`checking Env:${env.id}`)
     const tops = await traderModel.getTops(30, { envId: env.id })
     const topTraders = [
       ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter,

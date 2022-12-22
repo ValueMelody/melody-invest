@@ -7,7 +7,7 @@
 
     "start": "pm2 start ../scripts/devOps/prod.pm2.js",
 
-    "build": "tsc --build --clean && tsc --build --force",
+    "build": "tsc --build --clean && tsc --build",
     "migrate": "knex migrate:latest",
 
     "start:check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",

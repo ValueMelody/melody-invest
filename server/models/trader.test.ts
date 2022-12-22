@@ -98,8 +98,10 @@ describe('#getByUK', () => {
 
 describe('#getActives', () => {
   test('could get actives', async () => {
-    const actives = await trader.getActives()
-    expect(actives.length).toBe(100)
+    const actives1 = await trader.getActives(1)
+    expect(actives1.length).toBe(52)
+    const actives2 = await trader.getActives(2)
+    expect(actives2.length).toBe(48)
   })
 })
 
@@ -236,6 +238,7 @@ describe('#create', () => {
       fatherId: null,
       motherId: null,
       hasMutation: false,
+      hasFollower: false,
       accessCode: '123',
     }, transaction)
     await transaction.commit()
@@ -243,12 +246,14 @@ describe('#create', () => {
     expect(created.traderEnvId).toBe(3)
     expect(created.traderPatternId).toBe(3)
     expect(created.isActive).toBe(true)
+    expect(created.hasFollower).toBe(false)
     expect(created.accessCode).toBe('123')
     const record = await trader.getByPK(105)
     expect(record?.id).toBe(105)
     expect(record?.traderEnvId).toBe(3)
     expect(record?.traderPatternId).toBe(3)
     expect(record?.isActive).toBe(true)
+    expect(record?.hasFollower).toBe(false)
     expect(record?.accessCode).toBe('123')
   })
 })

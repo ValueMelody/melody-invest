@@ -87,9 +87,10 @@ export const getInPKs = async (
   return traders.map((trader) => convertToRecord(trader))
 }
 
-export const getByRank = async (rank: number) => {
+export const getByRank = async (envId: number, rank: number) => {
   const trader = await databaseAdapter.findOne({
     tableName: TableName,
+    conditions: [{ key: 'traderEnvId', value: envId }, { key: 'rankingNumber', value: null, type: 'IS NOT' }],
     orderBy: [{ column: 'rankingNumber', order: 'desc' }],
     limit: 1,
     offset: rank,
