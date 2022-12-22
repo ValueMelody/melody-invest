@@ -289,7 +289,7 @@ describe('#update', () => {
 describe('#createOrActive', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(3, 1, null, null, false, transaction)
+    const created = await trader.createOrActive(3, 1, null, null, false, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(106)
@@ -304,7 +304,7 @@ describe('#createOrActive', () => {
 
   test('could active', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(2, 51, 1, 2, true, transaction)
+    const created = await trader.createOrActive(2, 51, 1, 2, true, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(103)
@@ -318,7 +318,7 @@ describe('#createOrActive', () => {
 
   test('could return existing', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const record = await trader.createOrActive(1, 1, 1, 2, false, transaction)
+    const record = await trader.createOrActive(1, 1, 1, 2, false, true, transaction)
     await transaction.rollback()
     expect(record.isEdited).toBe(false)
     expect(record.record.id).toBe(1)

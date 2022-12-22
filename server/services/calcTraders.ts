@@ -221,6 +221,7 @@ const calcTraderPerformance = async (
       pastQuarterPercentNumber: stats.pastQuarterPercentNumber,
       pastMonthPercentNumber: stats.pastMonthPercentNumber,
       pastWeekPercentNumber: stats.pastWeekPercentNumber,
+      rankingNumber: stats.rankingNumber,
       oneYearTrends: stats.oneYearTrends.join(','),
       oneDecadeTrends: stats.oneDecadeTrends.join(','),
     }, traderTransaction)
@@ -240,6 +241,22 @@ export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
     await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
       await calcTraderPerformance(trader, forceRecheck)
     })
+    const deactivateTarget = await traderModel.getByRank(env.activeTotal)
+    const inactiveRankingNumber = deactivateTarget?.rankingNumber
+    if (inactiveRankingNumber) {
+      await databaseAdapter.runWithTransaction(async (transaction) => {
+        await traderModel.activateAllByRankingNumber(
+          env.id,
+          inactiveRankingNumber,
+          transaction,
+        )
+        await traderModel.deactivateAllByRankingNumber(
+          env.id,
+          inactiveRankingNumber,
+          transaction,
+        )
+      })
+    }
   })
 }
 
@@ -264,6 +281,8 @@ const calcEnvDescendants = async (
       const firstPattern = await traderPatternModel.getByPK(firstTrader.traderPatternId)
       const secondPattern = await traderPatternModel.getByPK(secondTrader.traderPatternId)
 
+      const hasFollower = false
+
       const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childOne.hashCode)) {
         const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
@@ -274,6 +293,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -291,6 +311,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -308,6 +329,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -325,6 +347,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -342,6 +365,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           true,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {

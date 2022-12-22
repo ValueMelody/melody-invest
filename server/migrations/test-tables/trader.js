@@ -17,6 +17,8 @@ exports.up = (knex) => {
       table.integer('pastQuarterPercentNumber')
       table.integer('pastMonthPercentNumber')
       table.integer('pastWeekPercentNumber')
+      table.integer('rankingNumber')
+      table.boolean('hasFollower').defaultTo(false).notNullable()
       table.integer('fatherId')
       table.integer('motherId')
       table.boolean('hasMutation').notNullable()

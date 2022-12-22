@@ -118,12 +118,16 @@ export const getTickerDetail = async (
 export const createFollowedTrader = async (
   userId: number, traderId: number,
 ) => {
+  const trader = await traderModel.getByPK(traderId)
+  if (!trader) return
+
   const currentRecord = await traderFollowerModel.getByUK(userId, traderId)
   if (currentRecord) return
 
   const transaction = await databaseAdapter.createTransaction()
   try {
     await traderFollowerModel.create({ userId, traderId }, transaction)
+    if (!trader.hasFollower) await traderModel.update(traderId, { hasFollower: false }, transaction)
     await transaction.commit()
   } catch (error) {
     await transaction.rollback()
@@ -153,7 +157,18 @@ export const createTraderProfile = async (
   try {
     const patternResult = await traderPatternModel.createIfEmpty(traderPattern, transaction)
     const pattern = patternResult.record
-    const traderResult = await traderModel.createOrActive(traderEnvId, pattern.id, null, null, false, transaction)
+    const parent = null
+    const hasMutation = false
+    const hasFollower = false
+    const traderResult = await traderModel.createOrActive(
+      traderEnvId,
+      pattern.id,
+      parent,
+      parent,
+      hasMutation,
+      hasFollower,
+      transaction,
+    )
     const trader = traderResult.record
 
     const currentRelation = await traderFollowerModel.getByUK(userId, trader.id)
