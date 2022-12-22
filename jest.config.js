@@ -1,7 +1,5 @@
 /** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
-  preset: 'ts-jest',
-  testEnvironment: 'jsdom',
   projects: [
     {
       displayName: 'client',
@@ -36,6 +34,7 @@ module.exports = {
       },
       moduleDirectories: [
         '<rootDir>/node_modules',
+        '<rootDir>/server/node_modules',
         '<rootDir>/server',
       ],
       setupFiles: [

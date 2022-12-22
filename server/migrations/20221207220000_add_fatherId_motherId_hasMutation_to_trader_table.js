@@ -10,7 +10,7 @@ exports.up = (knex) => {
 }
 
 exports.down = (knex) => {
-  return knex.schema.table('ticker', (table) => {
+  return knex.schema.table('trader', (table) => {
     table.dropColumn('fatherId')
     table.dropColumn('motherId')
     table.dropColumn('hasMutation')

@@ -29,6 +29,7 @@ const buildHoldingValueStats = async (
   pastMonthPercentNumber: number | null;
   pastQuarterPercentNumber: number | null;
   pastYearPercentNumber: number | null;
+  rankingNumber: number | null;
   oneYearTrends: number[];
   oneDecadeTrends: number[];
 }> => {
@@ -71,17 +72,26 @@ const buildHoldingValueStats = async (
   })
   const oneDecadeTrends = tenYearValues.filter((num) => num !== null).reverse()
 
+  const yearlyPercentNumber = grossPercentNumber ? Math.floor(grossPercentNumber * 365 / totalDays) : null
+  const rankingNumber =
+    (yearlyPercentNumber || 0) +
+    (pastWeekPercentNumber || 0) +
+    (pastMonthPercentNumber || 0) +
+    (pastQuarterPercentNumber || 0) +
+    (pastYearPercentNumber || 0)
+
   return {
     totalValue,
     totalDays,
     grossPercentNumber,
-    yearlyPercentNumber: grossPercentNumber ? Math.floor(grossPercentNumber * 365 / totalDays) : null,
+    yearlyPercentNumber,
     pastWeekPercentNumber,
     pastMonthPercentNumber,
     pastQuarterPercentNumber,
     pastYearPercentNumber,
     oneYearTrends,
     oneDecadeTrends,
+    rankingNumber: rankingNumber || null,
   }
 }
 

@@ -68,7 +68,7 @@ const calcTraderPerformance = async (
   const cashMaxPercent = pattern.cashMaxPercent
 
   const latestDate = await dailyTickersModel.getLatestDate()
-  console.info(`Checking ${trader.id}`)
+  console.info(`Checking Trader:${trader.id}`)
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
   let holding = await traderHoldingModel.getLatest(trader.id)
@@ -221,6 +221,7 @@ const calcTraderPerformance = async (
       pastQuarterPercentNumber: stats.pastQuarterPercentNumber,
       pastMonthPercentNumber: stats.pastMonthPercentNumber,
       pastWeekPercentNumber: stats.pastWeekPercentNumber,
+      rankingNumber: stats.rankingNumber,
       oneYearTrends: stats.oneYearTrends.join(','),
       oneDecadeTrends: stats.oneDecadeTrends.join(','),
     }, traderTransaction)
@@ -233,10 +234,29 @@ const calcTraderPerformance = async (
 }
 
 export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
-  const traders = await traderModel.getActives()
-
-  await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-    await calcTraderPerformance(trader, forceRecheck)
+  const envs = await traderEnvModel.getAll()
+  await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+    console.info(`Checking Env:${env.id}`)
+    const traders = await traderModel.getActives(env.id)
+    await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
+      await calcTraderPerformance(trader, forceRecheck)
+    })
+    const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
+    const inactiveRankingNumber = deactivateTarget?.rankingNumber
+    if (inactiveRankingNumber) {
+      await databaseAdapter.runWithTransaction(async (transaction) => {
+        await traderModel.activateAllByRankingNumber(
+          env.id,
+          inactiveRankingNumber,
+          transaction,
+        )
+        await traderModel.deactivateAllByRankingNumber(
+          env.id,
+          inactiveRankingNumber,
+          transaction,
+        )
+      })
+    }
   })
 }
 
@@ -261,6 +281,8 @@ const calcEnvDescendants = async (
       const firstPattern = await traderPatternModel.getByPK(firstTrader.traderPatternId)
       const secondPattern = await traderPatternModel.getByPK(secondTrader.traderPatternId)
 
+      const hasFollower = false
+
       const childOne = patternLogic.generatePatternChild(firstPattern!, secondPattern!, shouldMutate)
       if (!patternHashs.includes(childOne.hashCode)) {
         const patternOne = await traderPatternModel.createIfEmpty(childOne, transaction)
@@ -271,6 +293,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -288,6 +311,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -305,6 +329,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -322,6 +347,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           shouldMutate,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -339,6 +365,7 @@ const calcEnvDescendants = async (
           firstTrader.id,
           secondTrader.id,
           true,
+          hasFollower,
           transaction,
         )
         if (!transactionUsed) {
@@ -361,7 +388,7 @@ const calcEnvDescendants = async (
 export const calcAllEnvDescendants = async () => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    console.info(`checking ${env.id}`)
+    console.info(`checking Env:${env.id}`)
     const tops = await traderModel.getTops(30, { envId: env.id })
     const topTraders = [
       ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter,

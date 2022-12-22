@@ -7,6 +7,7 @@ interface Common {
   hasMutation: boolean;
   accessCode: string;
   isActive: boolean;
+  hasFollower: boolean;
   rebalancedAt: string | null;
   estimatedAt: string | null;
   startedAt: string | null;
@@ -17,6 +18,7 @@ interface Common {
   pastQuarterPercentNumber: number | null;
   pastMonthPercentNumber: number | null;
   pastWeekPercentNumber: number | null;
+  rankingNumber: number | null;
 }
 
 export interface Record extends Common {
@@ -35,6 +37,7 @@ export interface Create {
   traderEnvId: number;
   traderPatternId: number;
   isActive: boolean;
+  hasFollower: boolean;
   accessCode: string;
   fatherId: number | null;
   motherId: number | null;
@@ -44,6 +47,7 @@ export interface Create {
 export interface Update {
   accessCode?: string;
   isActive?: boolean;
+  hasFollower?: boolean;
   rebalancedAt?: string | null;
   totalValue?: number | null;
   estimatedAt?: string | null;
@@ -55,6 +59,7 @@ export interface Update {
   pastQuarterPercentNumber?: number | null;
   pastMonthPercentNumber?: number | null;
   pastWeekPercentNumber?: number | null;
+  rankingNumber?: number | null;
   oneYearTrends?: string | null;
   oneDecadeTrends?: string | null;
 }

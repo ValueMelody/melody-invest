@@ -98,8 +98,10 @@ describe('#getByUK', () => {
 
 describe('#getActives', () => {
   test('could get actives', async () => {
-    const actives = await trader.getActives()
-    expect(actives.length).toBe(100)
+    const actives1 = await trader.getActives(1)
+    expect(actives1.length).toBe(52)
+    const actives2 = await trader.getActives(2)
+    expect(actives2.length).toBe(48)
   })
 })
 
@@ -236,6 +238,7 @@ describe('#create', () => {
       fatherId: null,
       motherId: null,
       hasMutation: false,
+      hasFollower: false,
       accessCode: '123',
     }, transaction)
     await transaction.commit()
@@ -243,12 +246,14 @@ describe('#create', () => {
     expect(created.traderEnvId).toBe(3)
     expect(created.traderPatternId).toBe(3)
     expect(created.isActive).toBe(true)
+    expect(created.hasFollower).toBe(false)
     expect(created.accessCode).toBe('123')
     const record = await trader.getByPK(105)
     expect(record?.id).toBe(105)
     expect(record?.traderEnvId).toBe(3)
     expect(record?.traderPatternId).toBe(3)
     expect(record?.isActive).toBe(true)
+    expect(record?.hasFollower).toBe(false)
     expect(record?.accessCode).toBe('123')
   })
 })
@@ -289,7 +294,7 @@ describe('#update', () => {
 describe('#createOrActive', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(3, 1, null, null, false, transaction)
+    const created = await trader.createOrActive(3, 1, null, null, false, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(106)
@@ -304,7 +309,7 @@ describe('#createOrActive', () => {
 
   test('could active', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const created = await trader.createOrActive(2, 51, 1, 2, true, transaction)
+    const created = await trader.createOrActive(2, 51, 1, 2, true, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
     expect(created.record.id).toBe(103)
@@ -318,7 +323,7 @@ describe('#createOrActive', () => {
 
   test('could return existing', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const record = await trader.createOrActive(1, 1, 1, 2, false, transaction)
+    const record = await trader.createOrActive(1, 1, 1, 2, false, true, transaction)
     await transaction.rollback()
     expect(record.isEdited).toBe(false)
     expect(record.record.id).toBe(1)

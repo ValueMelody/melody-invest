@@ -36,6 +36,7 @@ describe('#buildHoldingValueStats', () => {
       pastMonthPercentNumber: null,
       pastQuarterPercentNumber: null,
       pastYearPercentNumber: null,
+      rankingNumber: null,
       oneYearTrends: [],
       oneDecadeTrends: [],
     })
@@ -71,6 +72,7 @@ describe('#buildHoldingValueStats', () => {
       pastMonthPercentNumber: 1103,
       pastQuarterPercentNumber: 880,
       pastYearPercentNumber: 3314,
+      rankingNumber: 7880,
       oneYearTrends: [
         211491, 213851,
         219794, 221929,
@@ -130,6 +132,7 @@ describe('#buildHoldingValueStats', () => {
       pastMonthPercentNumber: 1143,
       pastQuarterPercentNumber: 898,
       pastYearPercentNumber: 3435,
+      rankingNumber: 7982,
       oneYearTrends: [
         202434, 204957,
         211090, 212428,

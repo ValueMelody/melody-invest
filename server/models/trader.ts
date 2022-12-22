@@ -41,13 +41,14 @@ export const getByUK = async (
   return trader ? convertToRecord(trader) : null
 }
 
-export const getActives = async (): Promise<
+export const getActives = async (envId: number): Promise<
   interfaces.traderModel.Record[]
 > => {
   const traders = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
       { key: 'isActive', value: true },
+      { key: 'traderEnvId', value: envId },
     ],
   })
   return traders.map((trader) => convertToRecord(trader))
@@ -84,6 +85,17 @@ export const getInPKs = async (
     ],
   })
   return traders.map((trader) => convertToRecord(trader))
+}
+
+export const getByRank = async (envId: number, rank: number) => {
+  const trader = await databaseAdapter.findOne({
+    tableName: TableName,
+    conditions: [{ key: 'traderEnvId', value: envId }, { key: 'rankingNumber', value: null, type: 'IS NOT' }],
+    orderBy: [{ column: 'rankingNumber', order: 'desc' }],
+    limit: 1,
+    offset: rank,
+  })
+  return trader ? convertToRecord(trader) : null
 }
 
 export const getTopPerformancers = async (
@@ -226,19 +238,20 @@ export const createOrActive = async (
   fatherId: number | null,
   motherId: number | null,
   hasMutation: boolean,
+  hasFollower: boolean,
   transaction: Knex.Transaction,
 ): Promise<{
   record: interfaces.traderModel.Record;
   isEdited: boolean;
 }> => {
   const currentRecord = await getByUK(traderEnvId, traderPatternId)
-  console.log(currentRecord)
   const accessCode = generateTool.buildAccessHash(16)
   if (!currentRecord) {
     const record = await create({
       traderEnvId,
       traderPatternId,
       isActive: true,
+      hasFollower,
       accessCode,
       fatherId,
       motherId,
@@ -267,4 +280,41 @@ export const update = async (
     transaction,
   })
   return convertToRecord(updatedTraders[0])
+}
+
+export const activateAllByRankingNumber = async (
+  envId: number,
+  rankingNumber: number,
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.update({
+    tableName: TableName,
+    skipReturn: true,
+    values: { isActive: true },
+    conditions: [
+      { key: 'traderEnvId', value: envId },
+      { key: 'isActive', value: false },
+      { key: 'rankingNumber', value: rankingNumber, type: '>' },
+    ],
+    transaction,
+  })
+}
+
+export const deactivateAllByRankingNumber = async (
+  envId: number,
+  rankingNumber: number,
+  transaction: Knex.Transaction,
+) => {
+  await databaseAdapter.update({
+    tableName: TableName,
+    skipReturn: true,
+    values: { isActive: false },
+    conditions: [
+      { key: 'traderEnvId', value: envId },
+      { key: 'isActive', value: true },
+      { key: 'hasFollower', value: false },
+      { key: 'rankingNumber', value: rankingNumber, type: '<=' },
+    ],
+    transaction,
+  })
 }

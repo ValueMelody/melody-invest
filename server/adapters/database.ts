@@ -27,6 +27,7 @@ interface Find {
   conditions?: Condition[];
   orderBy?: OrderBy[];
   limit?: number;
+  offset?: number;
   select?: string[];
   join?: Join;
   distinctOn?: string;
@@ -44,6 +45,7 @@ interface Update {
   conditions: Condition[];
   transaction: Knex.Transaction;
   orderBy?: OrderBy[];
+  skipReturn?: boolean;
 }
 
 interface Destroy {
@@ -85,6 +87,7 @@ const find = async ({
   conditions,
   orderBy = [{ column: 'id', order: 'asc' }],
   limit,
+  offset,
   select = ['*'],
   join,
   distinctOn,
@@ -112,6 +115,8 @@ const find = async ({
   if (orderBy) query.orderBy(orderBy)
 
   if (limit) query.limit(limit)
+
+  if (offset) query.offset(offset)
 
   // console.info(query.toSQL().toNative())
 
@@ -162,14 +167,16 @@ export const update = async ({
   conditions,
   transaction,
   orderBy,
-}: Update) => {
+  skipReturn = false,
+}: Update): Promise<any[]> => {
   const db = getConnection()
   const query = db
     .table(tableName)
     .transacting(transaction)
     .clone()
     .update(values)
-    .returning('*')
+
+  if (!skipReturn) query.returning('*')
 
   if (orderBy) query.orderBy(orderBy)
 
@@ -184,7 +191,7 @@ export const update = async ({
 
   try {
     const records = await query
-    return records
+    return Array.isArray(records) ? records : []
   } catch (e) {
     await transaction.rollback()
     throw errorEnum.Custom.UpdationFailed
