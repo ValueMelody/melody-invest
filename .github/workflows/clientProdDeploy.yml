@@ -32,7 +32,7 @@ jobs:
       env:
         API_TOKEN_GITHUB: ${{ secrets.CLIENT_DEPLOY_TOKEN }}
       with:
-        source_file: './client/dist/*'
+        source_file: './client/dist/.'
         destination_repo: 'ValueMelody/melody-prod'
         destination_folder: './'
         user_email: 'byn9826@gmail.com'
