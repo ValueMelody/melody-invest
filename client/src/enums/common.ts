@@ -11,6 +11,8 @@ export const Config = Object.freeze({
 })
 
 export const Env = Object.freeze({
+  ClientHost: process.env.REACT_APP_CLIENT_HOST!,
+  ClientType: process.env.REACT_APP_CLIENT_TYPE!,
   ServerHost: process.env.REACT_APP_SERVER_HOST!,
   ServerType: process.env.REACT_APP_SERVER_TYPE!,
   PayPalClientId: process.env.REACT_APP_PAYPAL_CLIENT_ID!,
