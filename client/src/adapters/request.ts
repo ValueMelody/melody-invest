@@ -4,7 +4,7 @@ import axios from 'axios'
 
 axios.defaults.headers.common[
   'Access-Control-Allow-Origin'
-] = `${commonEnum.Env.ClientType}://${commonEnum.Env.ClientHost}`
+] = `${commonEnum.Env.ServerType}://${commonEnum.Env.ServerHost}`
 
 export const setAuthToken = (token: string) => {
   if (!token) {

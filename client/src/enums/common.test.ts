@@ -15,8 +15,6 @@ describe('#Config', () => {
 
 describe('#Env', () => {
   test('Have defined env enums', () => {
-    expect(common.Env.ClientHost).toBeDefined()
-    expect(common.Env.ClientType).toBeDefined()
     expect(common.Env.ServerHost).toBeDefined()
     expect(common.Env.ServerType).toBeDefined()
     expect(common.Env.PayPalClientId).toBeDefined()
