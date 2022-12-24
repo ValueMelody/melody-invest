@@ -1,0 +1,40 @@
+name: Client Prod Deploy CI
+
+on:
+  push:
+    branches: [ main ]
+
+env:
+  REACT_APP_SERVER_HOST: ${{ secrets.CLIENT_PROD_SERVER_HOST }}
+  REACT_APP_SERVER_TYPE: ${{ secrets.CLIENT_PROD_SERVER_TYPE }}
+  REACT_APP_PAYPAL_CLIENT_ID: ${{ secrets.CLIENT_PROD_PAYPAL_CLIENT_ID }}
+  REACT_APP_PAYPAL_PRO_PLAN_ID: ${{ secrets.CLIENT_PROD_PAYPAL_PRO_PLAN_ID }}
+  REACT_APP_PAYPAL_PREMIUM_PLAN_ID: ${{ secrets.CLIENT_PROD_PAYPAL_PREMIUM_PLAN_ID }}
+  REACT_APP_CONTACT_EMAIL: ${{ secrets.CLIENT_PROD_CONTACT_EMAIL }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [16.13.2]
+    steps:
+    - uses: actions/checkout@v3
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    - run: npm ci
+    - run: npm run build:prod --workspace=client
+    - name: Push dist files
+      uses: dmnemec/copy_file_to_another_repo_action@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.CLIENT_DEPLOY_TOKEN }}
+      with:
+        source_file: './client/dist/.'
+        destination_repo: 'ValueMelody/melody-prod'
+        destination_folder: './'
+        user_email: 'byn9826@gmail.com'
+        user_name: 'Baozier'
+        commit_message: 'Production deploy'
