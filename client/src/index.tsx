@@ -5,7 +5,7 @@ import * as requestAdapter from 'adapters/request'
 import * as selectors from 'selectors'
 import * as storageAdapter from 'adapters/storage'
 import { Provider, useSelector } from 'react-redux'
-import { BrowserRouter } from 'react-router-dom'
+import { HashRouter } from 'react-router-dom'
 
 import ReactDOM from 'react-dom/client'
 import Router from './containers/Router'
@@ -32,9 +32,9 @@ const App = () => {
 
 const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <Provider store={store}>
       <App />
     </Provider>
-  </BrowserRouter>,
+  </HashRouter>,
 )
