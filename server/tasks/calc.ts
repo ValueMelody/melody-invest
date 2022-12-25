@@ -20,8 +20,15 @@ export const calcIndicatorMovements = async () => {
 }
 
 export const calcDailyTickers = async () => {
-  const forceRecheck = process.argv[3] === 'true' || false
-  await calcTickers.calcDailyAvailableTickers(forceRecheck)
+  console.info('Start calc daily tickers')
+  try {
+    const forceRecheck = process.argv[3] === 'true' || false
+    await calcTickers.calcDailyAvailableTickers(forceRecheck)
+    console.info('daily tickers calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcTraderPerformances = async () => {
@@ -34,5 +41,12 @@ export const calcTraderDescendants = async () => {
 }
 
 export const calcTraderAccessHashs = async () => {
-  await calcTraders.calcTraderAccessHashs()
+  console.info('Start calc trader access hashs')
+  try {
+    await calcTraders.calcTraderAccessHashs()
+    console.info('trader access hashs calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }

@@ -1,31 +1,34 @@
-import * as constants from '@shared/constants'
-import * as crudSystems from 'services/crudSystems'
+import * as cacheTask from 'tasks/cache'
+import * as emailTask from 'tasks/email'
+import * as calcTask from 'tasks/calc'
 import * as runTool from 'tools/run'
 import cronJob from 'node-cron'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
 
-const systemCache = cronJob.schedule('* */12 * * *', async () => {
-  console.info('Start generating system caches')
-  try {
-    await crudSystems.getDefaults()
-    await crudSystems.getDefaultTraderCombos()
-    await crudSystems.getTopTraderProfiles()
-    await crudSystems.getSystemPolicy(constants.Content.PolicyType.Privacy)
-    await crudSystems.getSystemPolicy(constants.Content.PolicyType.TermsAndConditions)
-    console.info('System cache generated')
-  } catch (e) {
-    console.error('Error occured:')
-    console.error(e)
-  }
+// At every minute past every 12th hour
+const systemCaches = cronJob.schedule('* */12 * * *', async () => {
+  await cacheTask.generateSystemCaches()
+})
+
+// At every minute
+const pendingEmails = cronJob.schedule('* * * * *', async () => {
+  await emailTask.sendPendingEmails()
+})
+
+// At 19:30
+const dailyPrices = cronJob.schedule('30 19 * * *', async () => {
+  await calcTask.calcDailyTickers()
 })
 
 const initSettings = async () => {
   initDatabase()
   initCache()
-  await runTool.sleep(1)
+  await runTool.sleep(2)
 }
 
 initSettings().then(() => {
-  systemCache.start()
+  systemCaches.start()
+  pendingEmails.start()
+  dailyPrices.start()
 })
