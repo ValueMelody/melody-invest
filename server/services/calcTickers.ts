@@ -514,15 +514,13 @@ export const calcDailyAvailableTickers = async (
     const nextDate = dateTool.getNextDate(targetDate)
 
     const dailyTickers = await buildDailyTickers(targetDate)
-    if (!dailyTickers) {
-      targetDate = nextDate
-      continue
-    }
+    const nearestPrices = await tickerDailyModel.getNearestPricesByDate(targetDate)
 
     const transaction = await databaseAdapter.createTransaction()
     try {
       await dailyTickersModel.upsert(targetDate, {
         tickers: dailyTickers,
+        nearestPrices,
       }, transaction)
       await transaction.commit()
     } catch (error) {

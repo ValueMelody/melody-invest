@@ -1,7 +1,5 @@
 
 import * as adapterEnum from 'enums/adapter'
-import * as cacheAdapter from 'adapters/cache'
-import * as cacheTool from 'tools/cache'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as interfaces from '@shared/interfaces'
@@ -70,10 +68,6 @@ export const getAll = async (
 export const getNearestPricesByDate = async (
   date: string,
 ): Promise<interfaces.tickerDailyModel.TickerPrices> => {
-  const cacheKey = cacheTool.generateTickerPricesKey(date)
-  const cached = await cacheAdapter.get(cacheKey)
-  if (cached) return JSON.parse(cached)
-
   const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
     tableName: TableName,
     select: ['tickerId', 'closePrice', 'splitMultiplier'],
@@ -94,7 +88,6 @@ export const getNearestPricesByDate = async (
       [raw.tickerId]: price,
     }
   }, initialPrices)
-  await cacheAdapter.set(cacheKey, JSON.stringify(tickerPrices), '1d')
   return tickerPrices
 }
 

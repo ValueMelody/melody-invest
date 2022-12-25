@@ -1,15 +1,25 @@
+import * as cacheAdapter from 'adapters/cache'
+import * as cacheTool from 'tools/cache'
+import * as dailyTickersModel from 'models/dailyTickers'
 import * as dateTool from 'tools/date'
 import * as generateTool from 'tools/generate'
 import * as holdingLogic from 'logics/holding'
 import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
-import * as tickerDailyModel from 'models/tickerDaily'
 
 const calHoldingValueByDate = async (
   date: string,
   holdings: interfaces.traderHoldingModel.Detail[], // order by date desc required
 ): Promise<number | null> => {
-  const prices = await tickerDailyModel.getNearestPricesByDate(date)
+  const prices: interfaces.tickerDailyModel.TickerPrices = await cacheAdapter.returnBuild(
+    cacheTool.generateTickerPricesKey(date),
+    '1d',
+    async () => {
+      const dailyTickers = await dailyTickersModel.getByUK(date)
+      return dailyTickers?.nearestPrices || {}
+    },
+  )
+
   const holding = holdings.find((holding) => holding.date <= date)
   const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null
   return value

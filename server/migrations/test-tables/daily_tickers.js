@@ -3,7 +3,8 @@ exports.up = (knex) => {
     .createTable('daily_tickers', (table) => {
       table.increments('id')
       table.specificType('date', 'CHAR(10)').notNullable()
-      table.jsonb('tickers').notNullable()
+      table.jsonb('tickers')
+      table.jsonb('nearestPrices').notNullable()
       table.unique('date', 'daily_tickers_ukey')
     })
 }

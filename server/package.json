@@ -9,6 +9,7 @@
 
     "build": "tsc --build --clean && tsc --build",
     "migrate": "knex migrate:latest",
+    "migrate:down": "knex migrate:down",
 
     "start:check": " npm run build && clinic clean && clinic flame -- node ./dist/index.js",
     "lint:fix": "eslint --fix ./ --ext .ts",
