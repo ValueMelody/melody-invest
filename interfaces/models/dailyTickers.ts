@@ -32,14 +32,17 @@ export interface DailyTickers {
 export interface Record {
   id: number;
   date: string;
-  tickers: DailyTickers;
+  tickers: DailyTickers | null;
+  nearestPrices: tickerDaily.TickerPrices;
 }
 
 export interface Create {
   date: string;
-  tickers: DailyTickers;
+  tickers: DailyTickers | null;
+  nearestPrices: tickerDaily.TickerPrices;
 }
 
 export interface Update {
-  tickers: DailyTickers;
+  tickers: DailyTickers | null;
+  nearestPrices: tickerDaily.TickerPrices;
 }

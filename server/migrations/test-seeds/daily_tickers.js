@@ -2,6 +2,7 @@ exports.seed = (knex) => {
   return knex('daily_tickers').insert([
     {
       date: '2021-12-31',
+      nearestPrices: {},
       tickers: {
         info: {
           weeklyAverageFinalPrice: null,
@@ -99,6 +100,7 @@ exports.seed = (knex) => {
     {
       date: '2022-01-01',
       tickers: {},
+      nearestPrices: {},
     },
   ])
 }

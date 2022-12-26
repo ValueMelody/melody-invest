@@ -1,4 +1,6 @@
 export const Name = Object.freeze({
+  generateSystemCaches: 'generateSystemCaches',
+  sendPendingEmails: 'sendPendingEmails',
   syncTickerPrices: 'syncTickerPrices',
   syncTickerIncomes: 'syncTickerIncomes',
   syncTickerEarnings: 'syncTickerEarnings',
@@ -12,5 +14,4 @@ export const Name = Object.freeze({
   calcTraderPerformances: 'calcTraderPerformances',
   calcTraderDescendants: 'calcTraderDescendants',
   calcTraderAccessHashs: 'calcTraderAccessHashs',
-  sendPendingEmails: 'sendPendingEmails',
 })

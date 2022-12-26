@@ -1,12 +1,22 @@
+import * as dailyTickersModel from 'models/dailyTickers'
 import * as interfaces from '@shared/interfaces'
-import * as tickerDailyModel from 'models/tickerDaily'
 import buildHoldingValueStats from './buildHoldingValueStats'
 import getNearestPricesByDateMock from '../../../scripts/mocks/methods/getNearestPricesByDateMock'
 import { mock } from 'ts-mockito'
 
+const getByUK = async (date: string) => {
+  const prices = await getNearestPricesByDateMock(date)
+  return {
+    id: 1,
+    date,
+    tickers: null,
+    nearestPrices: prices,
+  }
+}
+
 jest
-  .spyOn(tickerDailyModel, 'getNearestPricesByDate')
-  .mockImplementation(getNearestPricesByDateMock)
+  .spyOn(dailyTickersModel, 'getByUK')
+  .mockImplementation(getByUK)
 
 const holdingMock: interfaces.traderHoldingModel.Detail = mock({})
 const itemMock: interfaces.traderHoldingModel.Item = mock({})
