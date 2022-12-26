@@ -1,6 +1,6 @@
 import * as cacheTask from 'tasks/cache'
-import * as emailTask from 'tasks/email'
 import * as calcTask from 'tasks/calc'
+import * as emailTask from 'tasks/email'
 import * as runTool from 'tools/run'
 import cronJob from 'node-cron'
 import { initConnection as initCache } from 'adapters/cache'
