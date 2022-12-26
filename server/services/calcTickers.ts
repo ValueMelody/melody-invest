@@ -1,4 +1,5 @@
 import * as cacheAdapter from 'adapters/cache'
+import * as cacheTask from 'tasks/cache'
 import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as databaseAdapter from 'adapters/database'
@@ -533,5 +534,6 @@ export const calcDailyAvailableTickers = async (
 
   if (forceRecheck) {
     await cacheAdapter.empty()
+    await cacheTask.generateSystemCaches()
   }
 }

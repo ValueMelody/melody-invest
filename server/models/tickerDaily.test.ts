@@ -1,13 +1,10 @@
 
 import * as adapterEnum from 'enums/adapter'
-import * as cacheAdapter from 'adapters/cache'
-import * as cacheTool from 'tools/cache'
 import * as databaseAdapter from 'adapters/database'
 import * as tickerDaily from './tickerDaily'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
-  cacheAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
@@ -38,7 +35,6 @@ beforeAll(async () => {
 afterAll(async () => {
   const db = databaseAdapter.getConnection()
   await db.destroy()
-  await cacheAdapter.empty()
 })
 
 describe('#getByUK', () => {
@@ -95,35 +91,20 @@ describe('#getAll', () => {
 
 describe('#getNearestPricesByDate', () => {
   test('could get nearest prices by date', async () => {
-    const cacheKey1 = cacheTool.generateTickerPricesKey('2021-12-30')
-    const cacheKey2 = cacheTool.generateTickerPricesKey('2022-01-01')
-    const cacheKey3 = cacheTool.generateTickerPricesKey('2022-01-03')
-    expect(await cacheAdapter.get(cacheKey1)).toBe(null)
-    expect(await cacheAdapter.get(cacheKey2)).toBe(null)
-    expect(await cacheAdapter.get(cacheKey3)).toBe(null)
-
     const result1 = await tickerDaily.getNearestPricesByDate('2021-12-30')
     expect(result1).toStrictEqual({})
-    const cacheResult1 = await cacheAdapter.get(cacheKey1)
-    expect(JSON.parse(cacheResult1!)).toStrictEqual({})
 
     const result2 = await tickerDaily.getNearestPricesByDate('2021-12-31')
     expect(result2).toStrictEqual({ 1: 100, 2: 32 })
 
     const result3 = await tickerDaily.getNearestPricesByDate('2022-01-01')
     expect(result3).toStrictEqual({ 1: 105, 2: 32, 3: 1111 })
-    const cacheResult2 = await cacheAdapter.get(cacheKey2)
-    expect(JSON.parse(cacheResult2!)).toStrictEqual({ 1: 105, 2: 32, 3: 1111 })
 
     const result4 = await tickerDaily.getNearestPricesByDate('2022-01-02')
     expect(result4).toStrictEqual({ 1: 107, 2: 40, 3: 1111 })
 
     const result5 = await tickerDaily.getNearestPricesByDate('2022-01-03')
     expect(result5).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
-    const cacheResult3 = await cacheAdapter.get(cacheKey3)
-    expect(JSON.parse(cacheResult3!)).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
-    const result5WithCache = await tickerDaily.getNearestPricesByDate('2022-01-03')
-    expect(result5WithCache).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
   })
 })
 

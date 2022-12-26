@@ -52,6 +52,7 @@ describe('#create', () => {
     const created = await dailyTickers.create({
       date: '2022-01-02',
       tickers: {},
+      nearestPrices: {},
     }, transaction)
     await transaction.commit()
     expect(created.id).toBe(3)
@@ -71,16 +72,21 @@ describe('#update', () => {
     const tickers = {
       1: dailyTicker,
     }
-    const updated = await dailyTickers.update(3, { tickers }, transaction)
+    const prices = {
+      1: 100,
+    }
+    const updated = await dailyTickers.update(3, { tickers, nearestPrices: prices }, transaction)
     await transaction.commit()
     expect(updated.id).toBe(3)
     expect(updated.date).toBe('2022-01-02')
     expect(updated.tickers).toStrictEqual(JSON.stringify(tickers))
+    expect(updated.nearestPrices).toStrictEqual(JSON.stringify(prices))
 
     const record = await dailyTickers.getByUK('2022-01-02')
     expect(record?.id).toBe(3)
     expect(record?.date).toBe('2022-01-02')
     expect(record?.tickers).toStrictEqual(JSON.stringify(tickers))
+    expect(record?.nearestPrices).toStrictEqual(JSON.stringify(prices))
   })
 })
 
@@ -93,28 +99,36 @@ describe('#upsert', () => {
       1: instance(dailyTickerMock),
       2: instance(dailyTickerMock),
     }
-    const updated = await dailyTickers.upsert('2022-01-02', { tickers }, transaction)
+    const prices = {
+      1: 100,
+      2: 200,
+    }
+    const updated = await dailyTickers.upsert('2022-01-02', { tickers, nearestPrices: prices }, transaction)
     await transaction.commit()
     expect(updated.id).toBe(3)
     expect(updated.date).toBe('2022-01-02')
     expect(updated.tickers).toStrictEqual(JSON.stringify(tickers))
+    expect(updated.nearestPrices).toStrictEqual(JSON.stringify(prices))
 
     const record = await dailyTickers.getByUK('2022-01-02')
     expect(record?.id).toBe(3)
     expect(record?.date).toBe('2022-01-02')
     expect(record?.tickers).toStrictEqual(JSON.stringify(tickers))
+    expect(record?.nearestPrices).toStrictEqual(JSON.stringify(prices))
 
     const transaction1 = await databaseAdapter.createTransaction()
-    const created = await dailyTickers.upsert('2022-01-03', { tickers }, transaction1)
+    const created = await dailyTickers.upsert('2022-01-03', { tickers, nearestPrices: prices }, transaction1)
     await transaction1.commit()
     expect(created.id).toBe(4)
     expect(created.date).toBe('2022-01-03')
     expect(created.tickers).toBe(JSON.stringify(tickers))
+    expect(created.nearestPrices).toStrictEqual(JSON.stringify(prices))
 
     const record1 = await dailyTickers.getByUK('2022-01-03')
     expect(record1?.id).toBe(4)
     expect(record1?.date).toBe('2022-01-03')
     expect(record1?.tickers).toStrictEqual(JSON.stringify(tickers))
+    expect(record1?.nearestPrices).toStrictEqual(JSON.stringify(prices))
   })
 })
 

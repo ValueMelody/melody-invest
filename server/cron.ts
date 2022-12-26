@@ -16,8 +16,8 @@ const pendingEmails = cronJob.schedule('* * * * *', async () => {
   await emailTask.sendPendingEmails()
 })
 
-// At 19:30
-const dailyPrices = cronJob.schedule('30 19 * * *', async () => {
+// At 21:30
+const dailyPrices = cronJob.schedule('30 21 * * *', async () => {
   await calcTask.calcDailyTickers()
 })
 
