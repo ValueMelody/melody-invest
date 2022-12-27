@@ -11,12 +11,14 @@ describe('#HoldingShare', () => {
     region: 'US',
     name: 'Apple',
     tickerCategoryId: 3,
+    isDelisted: false,
   }
   const holdingItem = {
     tickerId: 12,
     shares: 100,
     splitMultiplier: 2,
     value: 2000,
+    isDelisted: false,
   }
 
   test('could render', () => {

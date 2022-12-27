@@ -1,4 +1,6 @@
+import * as adapterEnum from 'enums/adapter'
 import * as dateTool from 'tools/date'
+import * as emailAdapter from 'adapters/email'
 import * as marketEnum from 'enums/market'
 import * as syncIndicators from 'services/syncIndicators'
 import * as syncTickers from 'services/syncTickers'
@@ -12,9 +14,28 @@ const validateQuarterParam = (date: string) => {
 }
 
 export const syncTickerPrices = async () => {
+  console.info('Start sync ticker prices')
   const date = process.argv[3] || dateTool.getCurrentDate()
   validateDateParam(date)
-  await syncTickers.syncAllPrices(date)
+
+  try {
+    const notes = await syncTickers.syncAllPrices(date)
+
+    const noteTags = notes.map((note) => `<li>${note}</li>`)
+
+    const transporter = emailAdapter.initTransporter()
+    await transporter.sendMail({
+      from: `ValueMelody ${adapterEnum.MailerConfig.Email}`,
+      to: 'valuemelody@outlook.com',
+      subject: 'Ticker prices synced',
+      html: noteTags.length ? `<ul>${noteTags.join('')}</ul>` : '',
+    })
+
+    console.info('ticker prices synced')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const syncTickerEarnings = async () => {

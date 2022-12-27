@@ -3,6 +3,7 @@ export interface Identity {
   symbol: string;
   region: string;
   name: string;
+  isDelisted: boolean;
   tickerCategoryId: number | null;
 }
 
@@ -10,6 +11,7 @@ export interface Create {
   symbol: string;
   region: string;
   name: string;
+  isDelisted: boolean;
   tickerCategoryId: number | null;
 }
 

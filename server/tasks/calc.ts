@@ -32,12 +32,26 @@ export const calcDailyTickers = async () => {
 }
 
 export const calcTraderPerformances = async () => {
-  const forceRecheck = process.argv[3] === 'true' || false
-  await calcTraders.calcAllTraderPerformances(forceRecheck)
+  console.info('Start calc trader performances')
+  try {
+    const forceRecheck = process.argv[3] === 'true' || false
+    await calcTraders.calcAllTraderPerformances(forceRecheck)
+    console.info('trader performances calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcTraderDescendants = async () => {
-  await calcTraders.calcAllEnvDescendants()
+  console.info('Start calc trader descendants')
+  try {
+    await calcTraders.calcAllEnvDescendants()
+    console.info('trader descendants calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcTraderAccessHashs = async () => {

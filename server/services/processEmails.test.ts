@@ -7,6 +7,14 @@ import * as runTool from 'tools/run'
 import { SendMailOptions, Transporter } from 'nodemailer'
 import { instance, mock, when } from 'ts-mockito'
 
+jest.mock('adapters/email', () => {
+  const actual = jest.requireActual('adapters/email')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const emailMocks = [
   {
     id: '5ed6d4c8-c159-4588-b966-364a4bdbd3a1',

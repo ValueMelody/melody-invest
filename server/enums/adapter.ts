@@ -43,6 +43,10 @@ export const CacheConfig = Object.freeze({
     host: process.env.CACHE_HOST!,
     port: parseInt(process.env.CACHE_PORT!),
   },
+  LocalConnection: {
+    host: process.env.LOCAL_CACHE_HOST!,
+    port: parseInt(process.env.LOCAL_CACHE_PORT!),
+  },
 })
 
 export const CacheKey = Object.freeze({

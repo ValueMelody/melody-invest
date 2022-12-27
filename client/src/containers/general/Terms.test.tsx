@@ -5,6 +5,14 @@ import Terms from './Terms'
 import { contentSlice } from 'stores/content'
 import { store } from 'stores'
 
+jest.mock('adapters/request', () => {
+  const actual = jest.requireActual('adapters/request')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const fetchMock = jest.fn(async (url: string) => {
   const baseUrl = 'http://127.0.0.1:3100/system/policy'
   if (url === `${baseUrl}/${constants.Content.PolicyType.TermsAndConditions}`) {

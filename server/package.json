@@ -4,14 +4,13 @@
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register ./index.ts",
 
-    "cron": "ts-node-dev -r tsconfig-paths/register ./cron.ts",
+    "cron": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cron",
     "api": "pm2 start ../scripts/devOps/serverProd.config.js",
 
     "build": "tsc --build --clean && tsc --build",
     "migrate": "knex migrate:latest",
-    "migrate:down": "knex migrate:down",
 
-    "start:check": " npm run build && clinic clean && clinic flame -- node ./dist/server/index.js",
+    "migrate:down": "knex migrate:down",
     "lint:fix": "eslint --fix ./ --ext .ts",
 
     "tsc": "tsc",
@@ -19,11 +18,14 @@
 
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
-    "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
 
     "calcTraderAccessHashs": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderAccessHashs",
+    "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderPerformances",
+    "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderDescendants",
 
-    "syncTickerPrices": "ts-node -r tsconfig-paths/register cli syncTickerPrices",
+    "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
+    "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
+
     "syncTickerIncomes": "ts-node -r tsconfig-paths/register cli syncTickerIncomes",
     "syncTickerEarnings": "ts-node -r tsconfig-paths/register cli syncTickerEarnings",
     "syncMonthlyIndicators": "ts-node -r tsconfig-paths/register cli syncMonthlyIndicators",
@@ -31,12 +33,11 @@
     "syncYearlyIndicators": "ts-node -r tsconfig-paths/register cli syncYearlyIndicators",
     "calcPriceMovements": "ts-node -r tsconfig-paths/register cli calcPriceMovements",
     "calcFinancialMovements": "ts-node -r tsconfig-paths/register cli calcFinancialMovements",
-    "calcIndicatorMovements": "ts-node -r tsconfig-paths/register cli calcIndicatorMovements",
-    "calcTraderPerformances": "ts-node -r tsconfig-paths/register cli calcTraderPerformances",
-    "calcTraderDescendants": "ts-node -r tsconfig-paths/register cli calcTraderDescendants"
+    "calcIndicatorMovements": "ts-node -r tsconfig-paths/register cli calcIndicatorMovements"
   },
   "dependencies": {
     "@shared/constants": "*",
+    "async": "^3.2.4",
     "axios": "^0.24.0",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
@@ -46,19 +47,20 @@
     "express-async-errors": "^3.1.1",
     "ioredis": "^4.28.2",
     "ioredis-mock": "^7.4.0",
-    "jsonwebtoken": "^8.5.1",
-    "knex": "^0.95.15",
+    "jsonwebtoken": "^9.0.0",
+    "knex": "^2.3.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "ms": "^2.1.3",
     "node-cron": "^3.0.2",
     "nodemailer": "^6.7.5",
     "pg": "^8.7.1",
-    "pg-mem": "^2.3.5",
+    "pg-mem": "^2.6.4",
     "qs": "^6.10.1"
   },
   "devDependencies": {
     "@shared/interfaces": "*",
+    "@types/async": "^3.2.16",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.12",
     "@types/crypto-js": "^4.0.2",
@@ -70,7 +72,6 @@
     "@types/node": "^16.11.6",
     "@types/node-cron": "^3.0.4",
     "@types/nodemailer": "^6.4.4",
-    "clinic": "^12.0.0",
     "ts-node": "^10.9.1",
     "ts-node-dev": "^2.0.0",
     "tsconfig-paths": "^4.1.0"

@@ -8,6 +8,22 @@ import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createMemoryHistory } from 'history'
 import { render } from 'test.utils'
 
+jest.mock('hooks/usePublicGuard', () => {
+  const actual = jest.requireActual('hooks/usePublicGuard')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('actions/user', () => {
+  const actual = jest.requireActual('actions/user')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const activateUser = jest.fn()
 jest.spyOn(userAction, 'activateUser')
   .mockImplementation(createAsyncThunk(

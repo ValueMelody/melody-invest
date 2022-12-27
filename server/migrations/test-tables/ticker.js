@@ -4,6 +4,7 @@ exports.up = (knex) => {
       table.increments('id')
       table.string('name', 50).notNullable()
       table.string('symbol', 10).notNullable()
+      table.boolean('isDelisted').defaultTo(false).notNullable()
       table.specificType('region', 'CHAR(2)').notNullable()
       table.specificType('firstPriceDate', 'CHAR(10)')
       table.specificType('lastPriceDate', 'CHAR(10)')

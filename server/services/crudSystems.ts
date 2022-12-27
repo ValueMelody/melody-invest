@@ -93,6 +93,7 @@ const buildDefaults = async (): Promise<
     name: ticker.name,
     region: ticker.region,
     symbol: ticker.symbol,
+    isDelisted: ticker.isDelisted,
     tickerCategoryId: ticker.tickerCategoryId,
   }))
 

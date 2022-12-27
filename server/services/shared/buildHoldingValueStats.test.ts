@@ -4,6 +4,14 @@ import buildHoldingValueStats from './buildHoldingValueStats'
 import getNearestPricesByDateMock from '../../../scripts/mocks/methods/getNearestPricesByDateMock'
 import { mock } from 'ts-mockito'
 
+jest.mock('models/dailyTickers', () => {
+  const actual = jest.requireActual('models/dailyTickers')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const getByUK = async (date: string) => {
   const prices = await getNearestPricesByDateMock(date)
   return {

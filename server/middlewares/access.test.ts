@@ -9,6 +9,38 @@ import * as traderFollowerModel from 'models/traderFollower'
 import { Request, Response } from 'express'
 import { instance, mock, when } from 'ts-mockito'
 
+jest.mock('models/traderEnv', () => {
+  const actual = jest.requireActual('models/traderEnv')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('models/traderFollower', () => {
+  const actual = jest.requireActual('models/traderFollower')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('models/traderEnvFollower', () => {
+  const actual = jest.requireActual('models/traderEnvFollower')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('models/traderComboFollower', () => {
+  const actual = jest.requireActual('models/traderComboFollower')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const getUserFollowedEnvMock = async (userId: number) => {
   let placeholders: interfaces.traderEnvFollowerModel.Record[] = []
 

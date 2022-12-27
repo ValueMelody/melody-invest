@@ -9,6 +9,22 @@ import * as generateTool from 'tools/generate'
 import * as localeTool from 'tools/locale'
 import * as userModel from 'models/user'
 
+jest.mock('tools/generate', () => {
+  const actual = jest.requireActual('tools/generate')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('models/user', () => {
+  const actual = jest.requireActual('models/user')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 beforeEach(async () => {
   databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
