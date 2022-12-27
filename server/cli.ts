@@ -27,6 +27,10 @@ const run = async () => {
       await calcTask.calcTraderAccessHashs()
       break
     }
+    case taskEnum.Name.calcTraderPerformances: {
+      await calcTask.calcTraderPerformances()
+      break
+    }
 
     case taskEnum.Name.syncTickerPrices: {
       await syncTask.syncTickerPrices()
@@ -62,10 +66,6 @@ const run = async () => {
     }
     case taskEnum.Name.calcIndicatorMovements: {
       await calcTask.calcIndicatorMovements()
-      break
-    }
-    case taskEnum.Name.calcTraderPerformances: {
-      await calcTask.calcTraderPerformances()
       break
     }
     case taskEnum.Name.calcTraderDescendants: {

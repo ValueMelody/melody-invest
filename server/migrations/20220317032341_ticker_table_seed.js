@@ -484,7 +484,6 @@ exports.up = (knex) => {
     { symbol: 'HSIC', region: 'US', name: 'Henry Schein Inc.' },
     { symbol: 'FFIV', region: 'US', name: 'F5 Inc.' },
     { symbol: 'PHM', region: 'US', name: 'PulteGroup Inc.' },
-    { symbol: 'FBHS', region: 'US', name: 'Fortune Brands Home & Security Inc.' },
     { symbol: 'WHR', region: 'US', name: 'Whirlpool Corporation' },
     { symbol: 'NI', region: 'US', name: 'NiSource Inc.' },
     { symbol: 'BF.B', region: 'US', name: 'Brown-Forman Corporation Class B' },

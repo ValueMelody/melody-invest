@@ -12,12 +12,24 @@ import { Knex } from 'knex'
 
 export const syncPrices = async (
   ticker: interfaces.tickerModel.Record,
-) => {
-  const tickerData = await marketAdapter.getTickerPrices(ticker.symbol)
+): Promise<string | undefined> => {
+  let tickerData
+
+  try {
+    tickerData = await marketAdapter.getTickerPrices(ticker.symbol)
+  } catch (e) {
+    return `${ticker.id} fetch error: ${e} `
+  }
+
   const metaData = tickerData['Meta Data']
   const endDate = metaData['3. Last Refreshed'].substring(0, 10)
 
-  if (endDate === ticker.lastPriceDate) return
+  if (endDate === ticker.lastPriceDate) {
+    const today = dateTool.getCurrentDate()
+    const checkDate = dateTool.getPreviousDate(today, 7)
+    if (checkDate > endDate) return `${ticker.id} is probably delisted`
+    return
+  }
 
   const allDaysData = tickerData['Time Series (Daily)']
 
@@ -76,17 +88,25 @@ export const syncPrices = async (
   }
 }
 
-export const syncAllPrices = async (date: string) => {
+export const syncAllPrices = async (date: string): Promise<string[]> => {
   const allTickers = await tickerModel.getAll()
   const cooldown = marketAdapter.getCooldownPerMin()
+  const notes: string[] = []
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     console.info(`checking ${ticker.id}`)
+    if (ticker.isDelisted) return
+
     const isDateSynced = ticker.lastPriceDate && ticker?.lastPriceDate >= date
     if (isDateSynced) return
-    await syncPrices(ticker)
+
+    const note = await syncPrices(ticker)
+    if (note) notes.push(note)
+
     await runTool.sleep(cooldown)
   })
+
+  return notes
 }
 
 const generateYearlyEarnings = async (
