@@ -10,6 +10,22 @@ import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
 
+jest.mock('hooks/usePublicGuard', () => {
+  const actual = jest.requireActual('hooks/usePublicGuard')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('actions/user', () => {
+  const actual = jest.requireActual('actions/user')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 const publicGuard = jest.fn()
 jest.spyOn(usePublicGuard, 'default').mockImplementation(publicGuard)
 

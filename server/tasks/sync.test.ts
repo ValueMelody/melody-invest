@@ -1,8 +1,45 @@
 import * as dateTool from 'tools/date'
+import * as emailAdapter from 'adapters/email'
 import * as marketEnum from 'enums/market'
 import * as sync from './sync'
 import * as syncIndicators from 'services/syncIndicators'
 import * as syncTickers from 'services/syncTickers'
+import { instance, mock } from 'ts-mockito'
+import { Transporter } from 'nodemailer'
+
+jest.mock('services/syncTickers', () => {
+  const actual = jest.requireActual('services/syncTickers')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('services/syncIndicators', () => {
+  const actual = jest.requireActual('services/syncIndicators')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('adapters/email', () => {
+  const actual = jest.requireActual('adapters/email')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+const transporter: Transporter = mock({})
+const transporterInstance = instance(transporter)
+
+const initTransporterMock = () => {
+  return transporterInstance
+}
+
+jest.spyOn(emailAdapter, 'initTransporter')
+  .mockImplementation(initTransporterMock)
 
 afterEach(() => {
   jest.clearAllMocks()

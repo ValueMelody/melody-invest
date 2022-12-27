@@ -3,6 +3,30 @@ import * as calcIndicators from 'services/calcIndicators'
 import * as calcTickers from 'services/calcTickers'
 import * as calcTraders from 'services/calcTraders'
 
+jest.mock('services/calcIndicators', () => {
+  const actual = jest.requireActual('services/calcIndicators')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('services/calcTickers', () => {
+  const actual = jest.requireActual('services/calcTickers')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+jest.mock('services/calcTraders', () => {
+  const actual = jest.requireActual('services/calcTraders')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 afterEach(() => {
   jest.clearAllMocks()
 })

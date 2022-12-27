@@ -11,6 +11,7 @@ export interface Create {
   symbol: string;
   region: string;
   name: string;
+  isDelisted: boolean;
   tickerCategoryId: number | null;
 }
 

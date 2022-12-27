@@ -1,6 +1,14 @@
 import * as email from './email'
 import * as processEmails from 'services/processEmails'
 
+jest.mock('services/processEmails', () => {
+  const actual = jest.requireActual('services/processEmails')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
 describe('#sendPendingEmails', () => {
   const sendPendingEmails = jest.fn()
   jest.spyOn(processEmails, 'sendPendingEmails')

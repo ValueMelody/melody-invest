@@ -1,14 +1,19 @@
-/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
 module.exports = {
   projects: [
     {
       displayName: 'client',
-      preset: 'ts-jest',
       testEnvironment: 'jsdom',
-      globals: {
-        'ts-jest': {
-          tsconfig: '<rootDir>/client/tsconfig.json',
-        },
+      transform: {
+        '^.+\\.(ts|tsx)$': ['@swc/jest', {
+          jsc: {
+            baseUrl: './src',
+            transform: {
+              react: {
+                runtime: 'automatic',
+              },
+            },
+          },
+        }],
       },
       moduleDirectories: [
         '<rootDir>/node_modules',
@@ -25,12 +30,13 @@ module.exports = {
     },
     {
       displayName: 'server',
-      preset: 'ts-jest',
       testEnvironment: 'node',
-      globals: {
-        'ts-jest': {
-          tsconfig: '<rootDir>/server/tsconfig.json',
-        },
+      transform: {
+        '^.+\\.ts$': ['@swc/jest', {
+          jsc: {
+            baseUrl: './',
+          },
+        }],
       },
       moduleDirectories: [
         '<rootDir>/node_modules',
@@ -48,8 +54,10 @@ module.exports = {
     },
     {
       displayName: 'constants',
-      preset: 'ts-jest',
       testEnvironment: 'node',
+      transform: {
+        '^.+\\.ts$': ['@swc/jest'],
+      },
       testMatch: ['<rootDir>/constants/**/*.test.ts'],
       coveragePathIgnorePatterns: ['/dist/'],
       testPathIgnorePatterns: ['/dist/'],

@@ -15,9 +15,10 @@ const validateQuarterParam = (date: string) => {
 
 export const syncTickerPrices = async () => {
   console.info('Start sync ticker prices')
+  const date = process.argv[3] || dateTool.getCurrentDate()
+  validateDateParam(date)
+
   try {
-    const date = process.argv[3] || dateTool.getCurrentDate()
-    validateDateParam(date)
     const notes = await syncTickers.syncAllPrices(date)
 
     const noteTags = notes.map((note) => `<li>${note}</li>`)

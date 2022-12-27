@@ -59,6 +59,7 @@ describe('#create', () => {
       symbol: 'AMZN',
       region: 'US',
       tickerCategoryId: 2,
+      isDelisted: false,
     }
     const result = await ticker.create(info, transaction)
     await transaction.commit()
@@ -78,6 +79,7 @@ describe('#getByUK', () => {
       region: 'US',
       name: 'Microsoft Corp',
       tickerCategoryId: 1,
+      isDelisted: false,
       ...emptyProps,
     })
     const empty = await ticker.getByUK('US', 'RANDOM')
@@ -102,7 +104,7 @@ describe('#update', () => {
     }
     const result = await ticker.update(3, info, transaction)
     await transaction.commit()
-    const basic = { symbol: 'GOOG', region: 'US', name: 'Google', tickerCategoryId: null }
+    const basic = { symbol: 'GOOG', region: 'US', name: 'Google', isDelisted: false, tickerCategoryId: null }
     expect(result).toStrictEqual({ id: 3, ...info, ...basic })
     const record = await ticker.getByUK('US', 'GOOG')
     expect(record).toStrictEqual({ id: 3, ...info, ...basic })
