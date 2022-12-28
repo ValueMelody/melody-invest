@@ -126,6 +126,7 @@
     "systemCombo.default5": "Top 5 from Default Env",
     "systemCombo.bigTech5": "Top5 from Top Tech Env",
 
+    "ticker.delisted": "Delisted",
     "tickerList.categories": "Stock Categories",
 
     "tickerCategory.tech": "Technology",
