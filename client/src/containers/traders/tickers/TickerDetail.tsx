@@ -59,7 +59,7 @@ const TickerDetail = () => {
             color='gray'
           />
           <h1 className='font-bold text-xl'>
-            {tickerIdentity.name}
+            {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
           </h1>
         </header>
         <PageTitle
