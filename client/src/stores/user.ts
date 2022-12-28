@@ -16,7 +16,7 @@ interface UserAccess {
 export interface UserState {
   userTraderIds: number[];
   userType: number;
-  userEmail: string,
+  userEmail: string;
   planStartAtUTC: string | null;
   planEndAtUTC: string | null;
   access: UserAccess;

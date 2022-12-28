@@ -12,7 +12,7 @@ const ProfileLabel = ({
   color: 'info' | 'gray';
   trader: interfaces.traderModel.Record;
   traderEnv: interfaces.traderEnvModel.Record;
-  className?: string
+  className?: string;
 }) => {
   const envName = parseTool.traderEnvName(traderEnv)
   return (

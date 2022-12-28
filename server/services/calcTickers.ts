@@ -402,11 +402,11 @@ export const calcAllTickersYearlyFinancial = async () => {
 }
 
 interface Quarterlys {
-  [tickerId: number]: interfaces.tickerQuarterlyModel.Record
+  [tickerId: number]: interfaces.tickerQuarterlyModel.Record;
 }
 
 interface Yearlys {
-  [tickerId: number]: interfaces.tickerYearlyModel.Record
+  [tickerId: number]: interfaces.tickerYearlyModel.Record;
 }
 
 export const buildTickerInfo = (

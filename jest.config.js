@@ -1,3 +1,8 @@
+const ignorePath = {
+  coveragePathIgnorePatterns: ['/dist/'],
+  testPathIgnorePatterns: ['/dist/'],
+}
+
 module.exports = {
   projects: [
     {
@@ -25,8 +30,7 @@ module.exports = {
         '<rootDir>/scripts/mocks/adapters/storageMock',
       ],
       testMatch: ['<rootDir>/client/**/*.test.{ts,tsx}'],
-      coveragePathIgnorePatterns: ['/dist/'],
-      testPathIgnorePatterns: ['/dist/'],
+      ...ignorePath,
     },
     {
       displayName: 'server',
@@ -49,8 +53,7 @@ module.exports = {
         '<rootDir>/scripts/mocks/adapters/databaseMock',
       ],
       testMatch: ['<rootDir>/server/**/*.test.ts'],
-      coveragePathIgnorePatterns: ['/dist/'],
-      testPathIgnorePatterns: ['/dist/'],
+      ...ignorePath,
     },
     {
       displayName: 'constants',
@@ -59,8 +62,7 @@ module.exports = {
         '^.+\\.ts$': ['@swc/jest'],
       },
       testMatch: ['<rootDir>/constants/**/*.test.ts'],
-      coveragePathIgnorePatterns: ['/dist/'],
-      testPathIgnorePatterns: ['/dist/'],
+      ...ignorePath,
     },
   ],
   coverageReporters: ['text'],

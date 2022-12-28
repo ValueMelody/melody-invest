@@ -15,7 +15,7 @@ export const getHoldingTotalValue = (
 }
 
 export interface HoldingsByTraders {
-  [traderId: number]: interfaces.traderHoldingModel.Record[]
+  [traderId: number]: interfaces.traderHoldingModel.Record[];
 }
 
 export const groupHoldingsByTraders = (
@@ -46,7 +46,7 @@ export const getNearestHoldingByDate = (
 export type TraderHolding = interfaces.traderHoldingModel.Record | null
 
 export interface HoldingsByDates {
-  [date: string]: TraderHolding[]
+  [date: string]: TraderHolding[];
 }
 
 export const groupTraderHoldingsByDate = (
@@ -67,7 +67,7 @@ export const groupTraderHoldingsByDate = (
 }
 
 interface HoldingItemsByTickers {
-  [tickerId: number]: interfaces.traderHoldingModel.Item
+  [tickerId: number]: interfaces.traderHoldingModel.Item;
 }
 
 export const groupHoldingItemsByTickers = (

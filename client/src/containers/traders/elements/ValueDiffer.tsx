@@ -10,7 +10,7 @@ const ValueDiffer = ({
   currentValue,
   compareValue,
 }: {
-  title: string,
+  title: string;
   currentValue: number;
   compareValue: number;
   className?: string;

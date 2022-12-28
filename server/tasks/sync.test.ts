@@ -135,36 +135,24 @@ describe('#syncTickerIncomes', () => {
   })
 })
 
-describe('#syncMonthlyIndicators', () => {
+describe('#syncEconomyIndicators', () => {
   const syncAllMonthlyIndicators = jest.fn()
   jest.spyOn(syncIndicators, 'syncAllMonthlyIndicators')
     .mockImplementation(syncAllMonthlyIndicators)
 
-  test('could sync monthly indicators', async () => {
-    await sync.syncMonthlyIndicators()
-    expect(syncAllMonthlyIndicators).toBeCalledTimes(1)
-  })
-})
-
-describe('#syncQuarterlyIndicators', () => {
   const syncQuarterly = jest.fn()
   jest.spyOn(syncIndicators, 'syncQuarterly')
     .mockImplementation(syncQuarterly)
 
-  test('could sync quarterly indicators', async () => {
-    await sync.syncQuarterlyIndicators()
-    expect(syncQuarterly).toBeCalledTimes(1)
-    expect(syncQuarterly).toBeCalledWith(marketEnum.Type.GDP)
-  })
-})
-
-describe('#syncYearlyIndicators', () => {
   const syncAllYearlyIndicators = jest.fn()
   jest.spyOn(syncIndicators, 'syncAllYearlyIndicators')
     .mockImplementation(syncAllYearlyIndicators)
 
-  test('could sync monthly indicators', async () => {
-    await sync.syncYearlyIndicators()
+  test('could sync economy indicators', async () => {
+    await sync.syncEconomyIndicators()
+    expect(syncAllMonthlyIndicators).toBeCalledTimes(1)
+    expect(syncQuarterly).toBeCalledTimes(1)
+    expect(syncQuarterly).toBeCalledWith(marketEnum.Type.GDP)
     expect(syncAllYearlyIndicators).toBeCalledTimes(1)
   })
 })

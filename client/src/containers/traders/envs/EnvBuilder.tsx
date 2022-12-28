@@ -105,7 +105,7 @@ const EnvBuilder = () => {
   }
 
   const handleSelectTickers = (
-    data: MultiValue<{ label: string; value: number; }>,
+    data: MultiValue<{ label: string; value: number }>,
   ) => {
     setTickerIds(data.map((option) => option.value))
   }

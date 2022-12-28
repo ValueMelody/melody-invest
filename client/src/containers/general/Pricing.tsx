@@ -8,8 +8,8 @@ const Header = ({
   title,
   className,
 }: {
-  title: string,
-  className: string,
+  title: string;
+  className: string;
 }) => {
   return (
     <header
@@ -23,7 +23,7 @@ const Header = ({
 const Price = ({
   title,
 }: {
-  title: string,
+  title: string;
 }) => {
   return (
     <div className='bg-gray-300 w-full p-4'>
@@ -37,7 +37,7 @@ const Price = ({
 const Item = ({
   title,
 }: {
-  title: string,
+  title: string;
 }) => {
   return (
     <div className='w-full text-center p-4'>

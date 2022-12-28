@@ -68,14 +68,15 @@ export const syncTickerIncomes = async (
   }
 }
 
-export const syncMonthlyIndicators = async () => {
-  await syncIndicators.syncAllMonthlyIndicators()
-}
-
-export const syncQuarterlyIndicators = async () => {
-  await syncIndicators.syncQuarterly(marketEnum.Type.GDP)
-}
-
-export const syncYearlyIndicators = async () => {
-  await syncIndicators.syncAllYearlyIndicators()
+export const syncEconomyIndicators = async () => {
+  try {
+    console.info('Start economy indicators')
+    await syncIndicators.syncAllMonthlyIndicators()
+    await syncIndicators.syncQuarterly(marketEnum.Type.GDP)
+    await syncIndicators.syncAllYearlyIndicators()
+    console.info('economy indicators synced')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }

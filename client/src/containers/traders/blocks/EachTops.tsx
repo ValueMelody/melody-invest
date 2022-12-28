@@ -17,11 +17,11 @@ const EachTops = ({
   bestPastMonth,
   bestPastWeek,
 }: {
-  bestOverall?: number,
-  bestPastYear?: number,
-  bestPastQuarter?: number,
-  bestPastMonth?: number,
-  bestPastWeek?: number,
+  bestOverall?: number;
+  bestPastYear?: number;
+  bestPastQuarter?: number;
+  bestPastMonth?: number;
+  bestPastWeek?: number;
 }) => {
   const navigate = useNavigate()
 

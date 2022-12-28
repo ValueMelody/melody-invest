@@ -9,8 +9,8 @@ export interface TickerIdentityBase {
 
 export interface TraderIdentityDetail {
   [key: string]: {
-    topProfiles: TopTraderProfileIds
-  }
+    topProfiles: TopTraderProfileIds;
+  };
 }
 
 export interface TickerIdentityState {
