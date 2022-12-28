@@ -18,8 +18,8 @@ const emails = cronJob.schedule('0 0 * * *', async () => {
   await emailTask.sendPendingEmails()
 })
 
-// At 21:30, from Monday to Friday
-const daily = cronJob.schedule('30 21 * * *', async () => {
+// At 20:30, from Monday to Friday
+const daily = cronJob.schedule('30 20 * * *', async () => {
   const today = new Date()
   const todayDay = today.getDay()
   if (todayDay === 0 || todayDay === 6) return
