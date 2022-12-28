@@ -19,10 +19,9 @@ export const calcIndicatorMovements = async () => {
   await calcIndicators.calcMonthly(forceRecheck)
 }
 
-export const calcDailyTickers = async () => {
+export const calcDailyTickers = async (forceRecheck: boolean) => {
   console.info('Start calc daily tickers')
   try {
-    const forceRecheck = process.argv[3] === 'true' || false
     await calcTickers.calcDailyAvailableTickers(forceRecheck)
     console.info('daily tickers calculated')
   } catch (e) {
@@ -31,10 +30,9 @@ export const calcDailyTickers = async () => {
   }
 }
 
-export const calcTraderPerformances = async () => {
+export const calcTraderPerformances = async (forceRecheck: boolean) => {
   console.info('Start calc trader performances')
   try {
-    const forceRecheck = process.argv[3] === 'true' || false
     await calcTraders.calcAllTraderPerformances(forceRecheck)
     console.info('trader performances calculated')
   } catch (e) {

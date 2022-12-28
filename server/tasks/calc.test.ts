@@ -101,15 +101,13 @@ describe('#calcDailyTickers', () => {
     .mockImplementation(calcDailyAvailableTickers)
 
   test('could calc daily tickers', async () => {
-    process.argv[3] = ''
-    await calc.calcDailyTickers()
+    await calc.calcDailyTickers(false)
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
     expect(calcDailyAvailableTickers).toBeCalledWith(false)
   })
 
   test('could calc daily tickers by force recheck', async () => {
-    process.argv[3] = 'true'
-    await calc.calcDailyTickers()
+    await calc.calcDailyTickers(true)
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
     expect(calcDailyAvailableTickers).toBeCalledWith(true)
   })
@@ -121,15 +119,13 @@ describe('#calcTraderPerformances', () => {
     .mockImplementation(calcAllTraderPerformances)
 
   test('could calc trader performance', async () => {
-    process.argv[3] = ''
-    await calc.calcTraderPerformances()
+    await calc.calcTraderPerformances(false)
     expect(calcAllTraderPerformances).toBeCalledTimes(1)
     expect(calcAllTraderPerformances).toBeCalledWith(false)
   })
 
   test('could calc trader performance by force recheck', async () => {
-    process.argv[3] = 'true'
-    await calc.calcTraderPerformances()
+    await calc.calcTraderPerformances(true)
     expect(calcAllTraderPerformances).toBeCalledTimes(1)
     expect(calcAllTraderPerformances).toBeCalledWith(true)
   })

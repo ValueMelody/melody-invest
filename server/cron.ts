@@ -1,5 +1,6 @@
 import * as cacheTask from 'tasks/cache'
 import * as calcTask from 'tasks/calc'
+import * as dateTool from 'tools/date'
 import * as emailTask from 'tasks/email'
 import * as runTool from 'tools/run'
 import * as syncTask from 'tasks/sync'
@@ -18,12 +19,25 @@ const pendingEmails = cronJob.schedule('0 0 * * *', async () => {
 })
 
 // At 21:30, from Monday to Friday
-const dailyPrices = cronJob.schedule('30 21 * * *', async () => {
+const daily = cronJob.schedule('30 21 * * *', async () => {
   const today = new Date()
   const todayDay = today.getDay()
   if (todayDay === 0 || todayDay === 6) return
-  await syncTask.syncTickerPrices()
-  await calcTask.calcDailyTickers()
+  const date = dateTool.getCurrentDate()
+  await syncTask.syncTickerPrices(date)
+  await calcTask.calcDailyTickers(false)
+})
+
+// // At 10:30, Saturday
+const weekly = cronJob.schedule('30 10 * * *', async () => {
+  const today = new Date()
+  const todayDay = today.getDay()
+  if (todayDay !== 6) return
+  const quarter = dateTool.getCurrentQuater()
+  const forceRecheck = false
+  const startTickerId = null
+  await syncTask.syncTickerIncomes(quarter, forceRecheck, startTickerId)
+  await syncTask.syncTickerEarnings(quarter, forceRecheck, startTickerId)
 })
 
 const initSettings = async () => {
@@ -34,7 +48,7 @@ const initSettings = async () => {
 
 const repeatCalcTraders = async () => {
   while (true) {
-    await calcTask.calcTraderPerformances()
+    await calcTask.calcTraderPerformances(false)
     await calcTask.calcTraderDescendants()
   }
 }
@@ -42,6 +56,7 @@ const repeatCalcTraders = async () => {
 initSettings().then(() => {
   systemCaches.start()
   pendingEmails.start()
-  dailyPrices.start()
+  daily.start()
+  weekly.start()
   repeatCalcTraders()
 })

@@ -1,5 +1,4 @@
 import * as adapterEnum from 'enums/adapter'
-import * as dateTool from 'tools/date'
 import * as emailAdapter from 'adapters/email'
 import * as marketEnum from 'enums/market'
 import * as syncIndicators from 'services/syncIndicators'
@@ -13,9 +12,8 @@ const validateQuarterParam = (date: string) => {
   if (!date || date.length !== 7) throw new Error('no quarter or wrong quarter provided')
 }
 
-export const syncTickerPrices = async () => {
+export const syncTickerPrices = async (date: string) => {
   console.info('Start sync ticker prices')
-  const date = process.argv[3] || dateTool.getCurrentDate()
   validateDateParam(date)
 
   try {
@@ -38,20 +36,36 @@ export const syncTickerPrices = async () => {
   }
 }
 
-export const syncTickerEarnings = async () => {
-  const quarter = process.argv[3] || dateTool.getCurrentQuater()
+export const syncTickerEarnings = async (
+  quarter: string,
+  forceRecheck: boolean,
+  startTickerId: number | null,
+) => {
   validateQuarterParam(quarter)
-  const forceRecheck = process.argv[4] === 'true' || false
-  const startTickerId = process.argv[5] ? parseInt(process.argv[5]) : null
-  await syncTickers.syncAllEarnings(quarter, forceRecheck, startTickerId)
+  try {
+    console.info('Start sync ticker earnings')
+    await syncTickers.syncAllEarnings(quarter, forceRecheck, startTickerId)
+    console.info('ticker earnings synced')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
-export const syncTickerIncomes = async () => {
-  const quarter = process.argv[3] || dateTool.getCurrentQuater()
+export const syncTickerIncomes = async (
+  quarter: string,
+  forceRecheck: boolean,
+  startTickerId: number | null,
+) => {
   validateQuarterParam(quarter)
-  const forceRecheck = process.argv[4] === 'true' || false
-  const startTickerId = process.argv[5] ? parseInt(process.argv[5]) : null
-  await syncTickers.syncAllIncomes(quarter, forceRecheck, startTickerId)
+  try {
+    console.info('Start sync ticker incomes')
+    await syncTickers.syncAllIncomes(quarter, forceRecheck, startTickerId)
+    console.info('ticker incomes synced')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const syncMonthlyIndicators = async () => {

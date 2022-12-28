@@ -51,22 +51,19 @@ describe('#syncTickerPrices', () => {
     .mockImplementation(syncAllPrices)
 
   test('could sync ticker prices', async () => {
-    process.argv[3] = ''
-    await sync.syncTickerPrices()
+    await sync.syncTickerPrices(dateTool.getCurrentDate())
     expect(syncAllPrices).toBeCalledTimes(1)
     expect(syncAllPrices).toBeCalledWith(dateTool.getCurrentDate())
   })
 
   test('could sync ticker prices by a specific date', async () => {
-    process.argv[3] = '2001-01-03'
-    await sync.syncTickerPrices()
+    await sync.syncTickerPrices('2001-01-03')
     expect(syncAllPrices).toBeCalledTimes(1)
     expect(syncAllPrices).toBeCalledWith('2001-01-03')
   })
 
   test('could throw error for a wrong date', async () => {
-    process.argv[3] = '20010103'
-    expect(async () => await sync.syncTickerPrices()).rejects.toThrowError()
+    expect(async () => await sync.syncTickerPrices('20010103')).rejects.toThrowError()
   })
 })
 
@@ -76,44 +73,29 @@ describe('#syncTickerEarnings', () => {
     .mockImplementation(syncAllEarnings)
 
   test('could sync ticker earnings', async () => {
-    process.argv[3] = ''
-    process.argv[4] = ''
-    process.argv[5] = ''
-    await sync.syncTickerEarnings()
+    await sync.syncTickerEarnings(dateTool.getCurrentQuater(), false, null)
     expect(syncAllEarnings).toBeCalledTimes(1)
     expect(syncAllEarnings).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
   })
 
   test('could sync ticker earnings till a specific quarter', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = ''
-    process.argv[5] = ''
-    await sync.syncTickerEarnings()
+    await sync.syncTickerEarnings('2012-03', false, null)
     expect(syncAllEarnings).toBeCalledTimes(1)
     expect(syncAllEarnings).toBeCalledWith('2012-03', false, null)
   })
 
   test('could throw error for a wrong quarter', async () => {
-    process.argv[3] = '201203'
-    process.argv[4] = ''
-    process.argv[5] = ''
-    expect(async () => await sync.syncTickerEarnings()).rejects.toThrowError()
+    expect(async () => await sync.syncTickerEarnings('201203', false, null)).rejects.toThrowError()
   })
 
   test('could sync ticker earnings and force recheck', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = 'true'
-    process.argv[5] = ''
-    await sync.syncTickerEarnings()
+    await sync.syncTickerEarnings('2012-03', true, null)
     expect(syncAllEarnings).toBeCalledTimes(1)
     expect(syncAllEarnings).toBeCalledWith('2012-03', true, null)
   })
 
   test('could sync ticker earnings and target a ticker', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = 'true'
-    process.argv[5] = '12'
-    await sync.syncTickerEarnings()
+    await sync.syncTickerEarnings('2012-03', true, 12)
     expect(syncAllEarnings).toBeCalledTimes(1)
     expect(syncAllEarnings).toBeCalledWith('2012-03', true, 12)
   })
@@ -125,44 +107,29 @@ describe('#syncTickerIncomes', () => {
     .mockImplementation(syncAllIncomes)
 
   test('could sync ticker incomes', async () => {
-    process.argv[3] = ''
-    process.argv[4] = ''
-    process.argv[5] = ''
-    await sync.syncTickerIncomes()
+    await sync.syncTickerIncomes(dateTool.getCurrentQuater(), false, null)
     expect(syncAllIncomes).toBeCalledTimes(1)
     expect(syncAllIncomes).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
   })
 
   test('could sync ticker incomes till a specific quarter', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = ''
-    process.argv[5] = ''
-    await sync.syncTickerIncomes()
+    await sync.syncTickerIncomes('2012-03', false, null)
     expect(syncAllIncomes).toBeCalledTimes(1)
     expect(syncAllIncomes).toBeCalledWith('2012-03', false, null)
   })
 
   test('could throw error for a wrong quarter', async () => {
-    process.argv[3] = '201203'
-    process.argv[4] = ''
-    process.argv[5] = ''
-    expect(async () => await sync.syncTickerIncomes()).rejects.toThrowError()
+    expect(async () => await sync.syncTickerIncomes('201203', false, null)).rejects.toThrowError()
   })
 
   test('could sync ticker incomes and force recheck', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = 'true'
-    process.argv[5] = ''
-    await sync.syncTickerIncomes()
+    await sync.syncTickerIncomes('2012-03', true, null)
     expect(syncAllIncomes).toBeCalledTimes(1)
     expect(syncAllIncomes).toBeCalledWith('2012-03', true, null)
   })
 
   test('could sync ticker incomes and target a ticker', async () => {
-    process.argv[3] = '2012-03'
-    process.argv[4] = 'true'
-    process.argv[5] = '12'
-    await sync.syncTickerIncomes()
+    await sync.syncTickerIncomes('2012-03', true, 12)
     expect(syncAllIncomes).toBeCalledTimes(1)
     expect(syncAllIncomes).toBeCalledWith('2012-03', true, 12)
   })
