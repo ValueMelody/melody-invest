@@ -52,7 +52,7 @@ export const sendDeleteRequest = async (endpoint: string) => {
 interface Error {
   response?: {
     data: {
-      message: string
+      message: string;
     };
     status: number;
   };

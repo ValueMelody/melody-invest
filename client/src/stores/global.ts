@@ -40,7 +40,7 @@ const stopLoading = (state: GlobalState) => {
 
 const successWithMessage = (
   state: GlobalState,
-  action: PayloadAction<{ msg: string; }>,
+  action: PayloadAction<{ msg: string }>,
 ) => {
   state.isLoading = false
   state.messages = [
@@ -55,7 +55,7 @@ const successWithMessage = (
 
 const addMessage = (
   state: GlobalState,
-  action: PayloadAction<{ title: string; type: MessageType; }>,
+  action: PayloadAction<{ title: string; type: MessageType }>,
 ) => {
   state.messages = [
     ...state.messages,
@@ -83,7 +83,7 @@ const setJWTTOken = (jwtToken: string) => {
   storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
 }
 
-const lockUserAccount = (state: GlobalState, action: PayloadAction<{ msg: string; }>) => {
+const lockUserAccount = (state: GlobalState, action: PayloadAction<{ msg: string }>) => {
   logout(state)
   successWithMessage(state, action)
 }

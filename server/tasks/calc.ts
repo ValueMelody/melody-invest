@@ -3,20 +3,41 @@ import * as calcTickers from 'services/calcTickers'
 import * as calcTraders from 'services/calcTraders'
 
 export const calcPriceMovements = async () => {
-  await calcTickers.calcAllTickersAveragePrice()
-  await calcTickers.calcAllTickersPriceMovement()
+  console.info('Start calc tickers price movements')
+  try {
+    await calcTickers.calcAllTickersAveragePrice()
+    await calcTickers.calcAllTickersPriceMovement()
+    console.info('tickers price movements calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcFinancialMovements = async () => {
-  await calcTickers.calcAllTickersQuarterlyFinancial()
-  await calcTickers.calcAllTickersYearlyFinancial()
+  console.info('Start calc tickers financial movements')
+  try {
+    await calcTickers.calcAllTickersQuarterlyFinancial()
+    await calcTickers.calcAllTickersYearlyFinancial()
+    console.info('tickers financial movements calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcIndicatorMovements = async () => {
-  const forceRecheck = process.argv[3] === 'true' || false
-  await calcIndicators.calcYearly()
-  await calcIndicators.calcQuarterly()
-  await calcIndicators.calcMonthly(forceRecheck)
+  console.info('Start calc indicator movements')
+  try {
+    const forceRecheck = process.argv[3] === 'true' || false
+    await calcIndicators.calcYearly()
+    await calcIndicators.calcQuarterly()
+    await calcIndicators.calcMonthly(forceRecheck)
+    console.info('indicator movements calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
 }
 
 export const calcDailyTickers = async (forceRecheck: boolean) => {

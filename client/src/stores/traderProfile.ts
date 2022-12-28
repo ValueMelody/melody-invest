@@ -38,7 +38,7 @@ const storeFromDetailTops = (
 
 const storeFromComboDetail = (
   state: TraderProfileState,
-  action: PayloadAction<{ detail: interfaces.response.ComboDetail; }>,
+  action: PayloadAction<{ detail: interfaces.response.ComboDetail }>,
 ) => {
   const profiles = action.payload.detail.profiles
   profiles.forEach((profile) => {
@@ -90,7 +90,7 @@ const storeFromTraderProfile = (
 
 const storeFromProfileDetail = (
   state: TraderProfileState,
-  action: PayloadAction<{ id: number; detail: interfaces.response.ProfileDetail; }>,
+  action: PayloadAction<{ id: number; detail: interfaces.response.ProfileDetail }>,
 ) => {
   state.detail[action.payload.id] = action.payload.detail
 }

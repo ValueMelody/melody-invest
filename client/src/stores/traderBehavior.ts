@@ -5,8 +5,8 @@ import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderBehaviorDetail {
   [key: string]: {
-    topProfiles: TopTraderProfileIds
-  }
+    topProfiles: TopTraderProfileIds;
+  };
 }
 
 export interface TraderBehaviorState {

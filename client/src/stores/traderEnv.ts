@@ -10,8 +10,8 @@ export interface TraderEnvBase {
 
 export interface TraderEnvDetail {
   [envId: number]: {
-    topProfiles: TopTraderProfileIds
-  }
+    topProfiles: TopTraderProfileIds;
+  };
 }
 
 export interface TraderEnvState {
@@ -51,7 +51,7 @@ const storeFromEnvBase = (
 
 const storeFromEnvDetail = (
   state: TraderEnvState,
-  action: PayloadAction<{ detail: interfaces.response.EnvDetail, id: number }>,
+  action: PayloadAction<{ detail: interfaces.response.EnvDetail; id: number }>,
 ) => {
   const topProfiles = stripTopProfiles(action.payload.detail.topProfiles)
   state.detail[action.payload.id] = { topProfiles }

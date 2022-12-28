@@ -25,16 +25,14 @@
 
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
     "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
+    "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
 
     "syncTickerIncomes": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerIncomes",
     "syncTickerEarnings": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerEarnings",
+    "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
 
-    "syncMonthlyIndicators": "ts-node -r tsconfig-paths/register cli syncMonthlyIndicators",
-    "syncQuarterlyIndicators": "ts-node -r tsconfig-paths/register cli syncQuarterlyIndicators",
-    "syncYearlyIndicators": "ts-node -r tsconfig-paths/register cli syncYearlyIndicators",
-    "calcPriceMovements": "ts-node -r tsconfig-paths/register cli calcPriceMovements",
-    "calcFinancialMovements": "ts-node -r tsconfig-paths/register cli calcFinancialMovements",
-    "calcIndicatorMovements": "ts-node -r tsconfig-paths/register cli calcIndicatorMovements"
+    "syncEconomyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncEconomyIndicators",
+    "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements"
   },
   "dependencies": {
     "@shared/constants": "*",

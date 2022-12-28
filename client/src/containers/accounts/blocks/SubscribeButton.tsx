@@ -11,8 +11,8 @@ const Button = ({
   planType,
   onCloseModal,
 }: {
-  planType: PlanType,
-  onCloseModal: () => void,
+  planType: PlanType;
+  onCloseModal: () => void;
 }) => {
   const reduxDispatch = useDispatch<AppDispatch>()
 
@@ -59,8 +59,8 @@ const SubscribeButton = ({
   planType,
   onCloseModal,
 }: {
-  planType: PlanType,
-  onCloseModal: () => void,
+  planType: PlanType;
+  onCloseModal: () => void;
 }) => {
   const handleCloseModal = () => {
     onCloseModal()

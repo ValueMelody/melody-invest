@@ -218,8 +218,8 @@ export const createTraderCombo = createAsyncThunk(
     name,
     traderIds,
   }: {
-    name: string,
-    traderIds: number[],
+    name: string;
+    traderIds: number[];
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos`
     const reqs: interfaces.request.TraderComboCreation = {
@@ -243,8 +243,8 @@ export const createTraderProfile = createAsyncThunk(
     traderEnvId,
     traderPattern,
   }: {
-    traderEnvId: number,
-    traderPattern: interfaces.traderPatternModel.Create,
+    traderEnvId: number;
+    traderPattern: interfaces.traderPatternModel.Create;
   }, { rejectWithValue }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles`
 

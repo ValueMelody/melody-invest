@@ -12,7 +12,7 @@ import { useState } from 'react'
 const UnwatchEnvButton = ({
   traderEnv,
 }: {
-  traderEnv: interfaces.traderEnvModel.Record,
+  traderEnv: interfaces.traderEnvModel.Record;
 }) => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()

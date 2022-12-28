@@ -57,24 +57,16 @@ const run = async () => {
       await syncTask.syncTickerIncomes(quarter, forceRecheck, startTickerId)
       break
     }
-    case taskEnum.Name.syncMonthlyIndicators: {
-      await syncTask.syncMonthlyIndicators()
-      break
-    }
-    case taskEnum.Name.syncQuarterlyIndicators: {
-      await syncTask.syncQuarterlyIndicators()
-      break
-    }
-    case taskEnum.Name.syncYearlyIndicators: {
-      await syncTask.syncYearlyIndicators()
-      break
-    }
     case taskEnum.Name.calcPriceMovements: {
       await calcTask.calcPriceMovements()
       break
     }
     case taskEnum.Name.calcFinancialMovements: {
       await calcTask.calcFinancialMovements()
+      break
+    }
+    case taskEnum.Name.syncEconomyIndicators: {
+      await syncTask.syncEconomyIndicators()
       break
     }
     case taskEnum.Name.calcIndicatorMovements: {

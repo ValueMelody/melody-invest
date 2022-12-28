@@ -34,7 +34,7 @@ const buildHoldingValueStats = async (
   holdings: interfaces.traderHoldingModel.Detail[],
 ): Promise<{
   totalValue: number | null;
-  totalDays: number,
+  totalDays: number;
   grossPercentNumber: number | null;
   yearlyPercentNumber: number | null;
   pastWeekPercentNumber: number | null;

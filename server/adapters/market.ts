@@ -96,7 +96,7 @@ interface IndicatorDateValue {
 export const getRealGDP = async (
   interval: string,
 ): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.GDP,
@@ -110,7 +110,7 @@ export const getRealGDP = async (
 }
 
 export const getFundsRate = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.FundsRate,
@@ -124,7 +124,7 @@ export const getFundsRate = async (): Promise<{
 }
 
 export const getCPI = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.CPI,
@@ -140,7 +140,7 @@ export const getCPI = async (): Promise<{
 export const getTreasuryYield = async (
   type: string,
 ): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.TreasuryYield,
@@ -155,7 +155,7 @@ export const getTreasuryYield = async (
 }
 
 export const getInflation = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.Inflation,
@@ -168,7 +168,7 @@ export const getInflation = async (): Promise<{
 }
 
 export const getInflationExpectation = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.InflationExpectation,
@@ -181,7 +181,7 @@ export const getInflationExpectation = async (): Promise<{
 }
 
 export const getConsumerSentiment = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.ConsumerSentiment,
@@ -194,7 +194,7 @@ export const getConsumerSentiment = async (): Promise<{
 }
 
 export const getRetailSales = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.RetailSales,
@@ -207,7 +207,7 @@ export const getRetailSales = async (): Promise<{
 }
 
 export const getDurableGoods = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.DurableGoods,
@@ -220,7 +220,7 @@ export const getDurableGoods = async (): Promise<{
 }
 
 export const getUnemploymentRate = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.UnemploymentRate,
@@ -233,7 +233,7 @@ export const getUnemploymentRate = async (): Promise<{
 }
 
 export const getNonfarmPayroll = async (): Promise<{
-  data: IndicatorDateValue[]
+  data: IndicatorDateValue[];
 }> => {
   const queryParams = qs.stringify({
     function: marketEnum.Type.NonfarmPayroll,

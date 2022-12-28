@@ -32,7 +32,7 @@ const storeFromUserOverall = (
 
 const storeFromComboDetail = (
   state: TraderComboState,
-  action: PayloadAction<{ detail: interfaces.response.ComboDetail; id: number; }>,
+  action: PayloadAction<{ detail: interfaces.response.ComboDetail; id: number }>,
 ) => {
   state.detail[action.payload.id] = action.payload.detail
 }

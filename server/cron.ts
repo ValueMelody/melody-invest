@@ -9,12 +9,12 @@ import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
 
 // Every 12 hours
-const systemCaches = cronJob.schedule('0 */12 * * *', async () => {
+const caches = cronJob.schedule('0 */12 * * *', async () => {
   await cacheTask.generateSystemCaches()
 })
 
-// At 00:00, to be change to at every 1 minute
-const pendingEmails = cronJob.schedule('0 0 * * *', async () => {
+// At 00:00, to be change to at every 30 seconds
+const emails = cronJob.schedule('0 0 * * *', async () => {
   await emailTask.sendPendingEmails()
 })
 
@@ -25,6 +25,7 @@ const daily = cronJob.schedule('30 21 * * *', async () => {
   if (todayDay === 0 || todayDay === 6) return
   const date = dateTool.getCurrentDate()
   await syncTask.syncTickerPrices(date)
+  await calcTask.calcPriceMovements()
   await calcTask.calcDailyTickers(false)
 })
 
@@ -33,11 +34,18 @@ const weekly = cronJob.schedule('30 10 * * *', async () => {
   const today = new Date()
   const todayDay = today.getDay()
   if (todayDay !== 6) return
+
   const quarter = dateTool.getCurrentQuater()
   const forceRecheck = false
   const startTickerId = null
   await syncTask.syncTickerIncomes(quarter, forceRecheck, startTickerId)
   await syncTask.syncTickerEarnings(quarter, forceRecheck, startTickerId)
+  await calcTask.calcFinancialMovements()
+
+  await syncTask.syncEconomyIndicators()
+  await calcTask.calcIndicatorMovements()
+
+  await calcTask.calcDailyTickers(true)
 })
 
 const initSettings = async () => {
@@ -54,8 +62,8 @@ const repeatCalcTraders = async () => {
 }
 
 initSettings().then(() => {
-  systemCaches.start()
-  pendingEmails.start()
+  caches.start()
+  emails.start()
   daily.start()
   weekly.start()
   repeatCalcTraders()

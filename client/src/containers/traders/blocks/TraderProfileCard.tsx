@@ -25,7 +25,7 @@ const TraderProfileCard = ({
   onClick,
 }: {
   profile?: interfaces.response.TraderProfile;
-  isActive?: boolean,
+  isActive?: boolean;
   simple?: boolean;
   className?: string;
   disabled?: boolean;
