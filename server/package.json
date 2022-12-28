@@ -26,8 +26,9 @@
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
     "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
 
-    "syncTickerIncomes": "ts-node -r tsconfig-paths/register cli syncTickerIncomes",
-    "syncTickerEarnings": "ts-node -r tsconfig-paths/register cli syncTickerEarnings",
+    "syncTickerIncomes": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerIncomes",
+    "syncTickerEarnings": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerEarnings",
+
     "syncMonthlyIndicators": "ts-node -r tsconfig-paths/register cli syncMonthlyIndicators",
     "syncQuarterlyIndicators": "ts-node -r tsconfig-paths/register cli syncQuarterlyIndicators",
     "syncYearlyIndicators": "ts-node -r tsconfig-paths/register cli syncYearlyIndicators",
