@@ -1,5 +1,5 @@
-import * as behaviorValue from './behaviorValue'
 import * as behavior from './behavior'
+import * as behaviorValue from './behaviorValue'
 
 describe('#Preference', () => {
   test('defined preference correctly', () => {

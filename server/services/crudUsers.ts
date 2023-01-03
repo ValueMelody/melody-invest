@@ -132,6 +132,24 @@ export const createUser = async (
   })
 }
 
+const buildUserToken = (
+  auth: interfaces.request.Auth,
+  refreshExpiresIn: '30d' | '12h',
+): interfaces.response.UserToken => {
+  const accessExpiresIn = adapterEnum.HostConfig.AccessExpiresIn
+  const accessExpiresInUTC = dateTool.toTokenExpiresInISO(accessExpiresIn)
+  const accessToken = generateTool.encodeJWT(auth, accessExpiresIn)
+  const refreshExpiresInUTC = dateTool.toTokenExpiresInISO(refreshExpiresIn)
+  const isRefreshToken = true
+  const refreshToken = generateTool.encodeJWT(auth, refreshExpiresIn, isRefreshToken)
+  return {
+    refreshToken,
+    refreshExpiresIn: refreshExpiresInUTC,
+    accessToken,
+    accessExpiresIn: accessExpiresInUTC,
+  }
+}
+
 export const createUserToken = async (
   email: string,
   password: string,
@@ -142,11 +160,26 @@ export const createUserToken = async (
   if (!user || user.password !== encryptedPassword || !!user.deletedAt) throw errorEnum.Custom.UserNotFound
   if (user.activationCode) throw errorEnum.Custom.UserNotActivated
 
-  const expiresIn = remember ? '30d' : '12h'
-  const jwtToken = generateTool.encodeJWT({
-    id: user.id, email, type: user.type,
-  }, expiresIn)
-  return { jwtToken, expiresIn }
+  const refreshExpiresIn = remember ? '30d' : '12h'
+  return buildUserToken(
+    { id: user.id, email, type: user.type },
+    refreshExpiresIn,
+  )
+}
+
+export const refreshAccessToken = async (
+  id: number,
+  email: string,
+  type: number,
+): Promise<interfaces.response.AccessToken> => {
+  const auth = { id, email, type }
+  const accessExpiresIn = adapterEnum.HostConfig.AccessExpiresIn
+  const accessExpiresInUTC = dateTool.toTokenExpiresInISO(accessExpiresIn)
+  const accessToken = generateTool.encodeJWT(auth, accessExpiresIn)
+  return {
+    accessExpiresIn: accessExpiresInUTC,
+    accessToken,
+  }
 }
 
 export const createSubscription = async (
@@ -178,11 +211,11 @@ export const createSubscription = async (
     return updatedUser
   })
 
-  const expiresIn = '12h'
-  const jwtToken = generateTool.encodeJWT({
-    id: userId, email: updatedUser.email, type: updatedUser.type,
-  }, expiresIn)
-  return { jwtToken, expiresIn }
+  const refreshExpiresIn = '12h'
+  return buildUserToken(
+    { id: userId, email: updatedUser.email, type: updatedUser.type },
+    refreshExpiresIn,
+  )
 }
 
 export const deleteSubscription = async (

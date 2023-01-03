@@ -32,7 +32,10 @@ export const sendPostRequest = async (endpoint: string, params?: object) => {
   }
 }
 
-export const sendPutRequest = async (endpoint: string, params?: object) => {
+export const sendPutRequest = async (
+  endpoint: string,
+  params?: object,
+) => {
   try {
     const res = await axios.put(endpoint, params)
     return res ? res.data : null

@@ -3,11 +3,13 @@ import * as localeTool from 'tools/locale'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { refreshAccessToken } from './general'
 
 export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',
-  async (params, { rejectWithValue }) => {
+  async (params, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/overall`
+    await dispatch(refreshAccessToken())
 
     try {
       const res: interfaces.response.UserOverall = await requestAdapter.sendGetRequest(endpoint)
@@ -68,8 +70,9 @@ export const updateUserPassword = createAsyncThunk(
   }: {
     currentPassword: string;
     newPassword: string;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/password`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendPutRequest(endpoint, {
@@ -86,8 +89,9 @@ export const updateUserPassword = createAsyncThunk(
 
 export const lockUserAccount = createAsyncThunk(
   'user/lockUserAccount',
-  async (params, { rejectWithValue }) => {
+  async (params, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/lock`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendPutRequest(endpoint)
@@ -128,8 +132,9 @@ export const resetUserPassword = createAsyncThunk(
 
 export const cancelUserSubscription = createAsyncThunk(
   'user/cancelUserSubscription',
-  async (params, { rejectWithValue }) => {
+  async (params, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
@@ -194,8 +199,9 @@ export const createUserSubscription = createAsyncThunk(
   }: {
     subscriptionId: string;
     planType: number;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+    await dispatch(refreshAccessToken())
 
     try {
       const userToken: interfaces.response.UserToken = await requestAdapter.sendPostRequest(endpoint, {

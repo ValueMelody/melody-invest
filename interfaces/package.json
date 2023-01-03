@@ -1,4 +1,8 @@
 {
   "name": "@shared/interfaces",
-  "private": true
+  "private": true,
+  "scripts": {
+    "lint:fix": "eslint --fix ./ --ext .ts",
+    "lint": "eslint ./ --ext .ts"
+  }
 }

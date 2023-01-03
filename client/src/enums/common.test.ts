@@ -2,7 +2,8 @@ import * as common from './common'
 
 describe('#StorageKey', () => {
   test('Have defined storage key', () => {
-    expect(common.StorageKey.AuthToken).toBeDefined()
+    expect(common.StorageKey.AccessToken).toBeDefined()
+    expect(common.StorageKey.RefreshToken).toBeDefined()
   })
 })
 

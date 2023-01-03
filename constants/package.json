@@ -6,6 +6,8 @@
     "@shared/interfaces": "*"
   },
   "scripts": {
-    "build": "tsc --build --clean && tsc --build"
+    "build": "tsc --build --clean && tsc --build",
+    "lint:fix": "eslint --fix ./ --ext .ts",
+    "lint": "eslint ./ --ext .ts"
   }
 }

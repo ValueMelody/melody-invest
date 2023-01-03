@@ -79,7 +79,7 @@ describe('#encodeJWT', () => {
 describe('#decodeJWT', () => {
   test('could decode jwt', () => {
     const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
-    const result = generate.decodeJWT(jwt)
+    const result = generate.decodeJWT(jwt, false)
     expect(result?.id).toBe(1)
     expect(result?.email).toBe('abc')
     expect(result?.type).toBe(1)
@@ -87,7 +87,7 @@ describe('#decodeJWT', () => {
   test('return null if not valid', () => {
     // @ts-ignore
     const wrongJwt = generate.encodeJWT({ code: 1, name: 'abc' }, '12h')
-    const result = generate.decodeJWT(wrongJwt)
+    const result = generate.decodeJWT(wrongJwt, false)
     expect(result).toBeNull()
   })
 })

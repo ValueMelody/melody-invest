@@ -52,7 +52,7 @@ describe('#Header', () => {
   })
 
   test('could render as loggedin user', () => {
-    store.dispatch(globalSlice.actions._updateForTest({ hasLogin: true }))
+    store.dispatch(globalSlice.actions._updateForTest({ refreshToken: '123' }))
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
     render(<Header />, { history })

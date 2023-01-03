@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { refreshAccessToken } from './general'
 
 export const fetchTraderProfile = createAsyncThunk(
   'trader/fetchTraderProfile',
@@ -48,8 +49,9 @@ export const fetchTraderProfileDetail = createAsyncThunk(
 
 export const fetchTraderEnvDetail = createAsyncThunk(
   'trader/fetchTraderEnvDetail',
-  async (envId: number, { rejectWithValue }) => {
+  async (envId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}`
+    await dispatch(refreshAccessToken())
 
     try {
       const res: interfaces.response.EnvDetail = await requestAdapter.sendGetRequest(endpoint)
@@ -113,8 +115,9 @@ export const fetchTraderBehaviorDetail = createAsyncThunk(
 
 export const fetchTraderComboDetail = createAsyncThunk(
   'trader/fetchTraderComboDetail',
-  async (comboId: number, { rejectWithValue }) => {
+  async (comboId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos/${comboId}`
+    await dispatch(refreshAccessToken())
 
     try {
       const res: interfaces.response.ComboDetail = await requestAdapter.sendGetRequest(endpoint)
@@ -130,8 +133,9 @@ export const fetchTraderComboDetail = createAsyncThunk(
 
 export const deleteTraderCombo = createAsyncThunk(
   'trader/deleteTraderCombo',
-  async (comboId: number, { rejectWithValue }) => {
+  async (comboId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos/${comboId}`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
@@ -144,8 +148,9 @@ export const deleteTraderCombo = createAsyncThunk(
 
 export const deleteTraderEnv = createAsyncThunk(
   'trader/deleteTraderEnv',
-  async (envId: number, { rejectWithValue }) => {
+  async (envId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
@@ -158,8 +163,9 @@ export const deleteTraderEnv = createAsyncThunk(
 
 export const deleteWatchedProfile = createAsyncThunk(
   'trader/deleteWatchedProfile',
-  async (traderId: number, { rejectWithValue }) => {
+  async (traderId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendDeleteRequest(endpoint)
@@ -172,8 +178,9 @@ export const deleteWatchedProfile = createAsyncThunk(
 
 export const createWatchedProfile = createAsyncThunk(
   'trader/createWatchedProfile',
-  async (traderId: number, { rejectWithValue }) => {
+  async (traderId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
+    await dispatch(refreshAccessToken())
 
     try {
       await requestAdapter.sendPostRequest(endpoint)
@@ -194,11 +201,12 @@ export const createTraderEnv = createAsyncThunk(
     name: string;
     startDate: string;
     tickerIds: number[] | null;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs`
     const reqs: interfaces.request.TraderEnvCreation = {
       name, startDate, tickerIds,
     }
+    await dispatch(refreshAccessToken())
 
     try {
       const env: interfaces.traderEnvModel.Record = await requestAdapter.sendPostRequest(
@@ -220,11 +228,12 @@ export const createTraderCombo = createAsyncThunk(
   }: {
     name: string;
     traderIds: number[];
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/combos`
     const reqs: interfaces.request.TraderComboCreation = {
       name, traderIds,
     }
+    await dispatch(refreshAccessToken())
 
     try {
       const combo: interfaces.traderComboModel.Identity = await requestAdapter.sendPostRequest(
@@ -245,8 +254,9 @@ export const createTraderProfile = createAsyncThunk(
   }: {
     traderEnvId: number;
     traderPattern: interfaces.traderPatternModel.Create;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles`
+    await dispatch(refreshAccessToken())
 
     try {
       const profile: interfaces.response.TraderProfile = await requestAdapter.sendPostRequest(
