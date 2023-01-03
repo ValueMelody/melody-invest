@@ -85,7 +85,9 @@ describe('#HostConfig', () => {
       ClientType: 'http',
       ServerPort: 3001,
       ServerHost: '127.0.0.1',
-      TokenSecret: '123',
+      AccessTokenSecret: '123',
+      RefreshTokenSecret: '345',
+      AccessExpiresIn: '15m',
     })
   })
 })

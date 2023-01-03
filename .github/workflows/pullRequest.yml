@@ -4,9 +4,6 @@ on:
   pull_request:
     branches: [ main ]
 
-env:
-  TOKEN_SECRET: 123
-
 jobs:
   verify:
     runs-on: ubuntu-latest

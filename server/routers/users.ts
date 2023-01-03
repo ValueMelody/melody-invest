@@ -116,6 +116,12 @@ usersRouter.put('/reset', async (req, res) => {
   return res.status(204).send()
 })
 
+usersRouter.put('/token', authMiddleware.authByRefreshToken, async (req, res) => {
+  const auth: interfaces.request.Auth = req.body.auth
+  const tokens = await crudUsers.refreshAccessToken(auth.id, auth.email, auth.type)
+  return res.status(200).send(tokens)
+})
+
 usersRouter.delete('/subscription', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.deleteSubscription(auth.id)

@@ -175,3 +175,23 @@ export const isNearbyQuarter = (
 export const toUTCFormat = (date: moment.Moment): string => {
   return `${date.toISOString().substring(0, 19)}Z`
 }
+
+export const toTokenExpiresInISO = (
+  expiresIn: '30d' | '12h' | '15m',
+): string => {
+  const currentTime = moment()
+  let newDate
+  switch (expiresIn) {
+    case '30d':
+      newDate = currentTime.add(30, 'days')
+      break
+    case '12h':
+      newDate = currentTime.add(12, 'hours')
+      break
+    case '15m':
+    default:
+      newDate = currentTime.add(15, 'minutes')
+      break
+  }
+  return toUTCFormat(newDate)
+}

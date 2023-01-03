@@ -21,9 +21,9 @@ const Layout: FunctionComponent = ({
   }, [dispatch])
 
   useEffect(() => {
-    if (!global.hasLogin || user.userType) return
+    if (!global.refreshToken || user.userType) return
     dispatch(actions.fetchUserOverall())
-  }, [global.hasLogin, user.userType, dispatch])
+  }, [global.refreshToken, user.userType, dispatch])
 
   useEffect(() => {
     if (!messages.length) return

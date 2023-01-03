@@ -1,9 +1,9 @@
-import * as tickerDaily from './tickerDaily'
-import * as tickerQuarterly from './tickerQuarterly'
-import * as tickerYearly from './tickerYearly'
 import * as indicatorMonthly from './indicatorMonthly'
 import * as indicatorQuarterly from './indicatorQuarterly'
 import * as indicatorYearly from './indicatorYearly'
+import * as tickerDaily from './tickerDaily'
+import * as tickerQuarterly from './tickerQuarterly'
+import * as tickerYearly from './tickerYearly'
 
 export type MovementKey =
   tickerDaily.MovementKey |
@@ -26,7 +26,7 @@ export interface DailyTicker {
 }
 
 export interface DailyTickers {
-  [tickerId: number]: DailyTicker
+  [tickerId: number]: DailyTicker;
 }
 
 export interface Record {

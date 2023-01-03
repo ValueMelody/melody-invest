@@ -2,7 +2,10 @@ import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 
 export const StorageKey = Object.freeze({
-  AuthToken: 'authToken',
+  AccessToken: 'accessToken',
+  AccessExpiresIn: 'accessExpiresIn',
+  RefreshToken: 'refreshToken',
+  RefreshExpiresIn: 'refreshExpiresIn',
 })
 
 export const Config = Object.freeze({

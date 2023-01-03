@@ -52,7 +52,7 @@ const Header = () => {
         />
       </nav>
       <nav className={navClass}>
-        {global.hasLogin && (
+        {!!global.refreshToken && (
           <HeaderLink
             isActive={location.pathname === routerTool.dashboardRoute()}
             className={headerClass}
@@ -65,7 +65,7 @@ const Header = () => {
           isActive={location.pathname === routerTool.settingRoute()}
           className={headerClass}
           data-testid='user'
-          route={global.hasLogin ? routerTool.settingRoute() : routerTool.signInRoute()}
+          route={global.refreshToken ? routerTool.settingRoute() : routerTool.signInRoute()}
           icon={UserCircleIcon}
         />
       </nav>

@@ -64,5 +64,5 @@ export interface Update {
 }
 
 export interface TickerPrices {
-  [tickerId: number]: number
+  [tickerId: number]: number;
 }

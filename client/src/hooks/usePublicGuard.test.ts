@@ -14,7 +14,7 @@ afterEach(() => {
 describe('#usePublicGuard', () => {
   test('could trigger public guard when login', () => {
     store.dispatch(globalSlice.actions._updateForTest({
-      hasLogin: true,
+      refreshToken: '123',
     }))
     store.dispatch(userSlice.actions._updateForTest({
       userTraderIds: [1, 2, 3],

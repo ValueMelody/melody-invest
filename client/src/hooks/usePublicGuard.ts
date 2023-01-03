@@ -10,8 +10,8 @@ const usePublicGuard = () => {
   const global = useSelector(selectors.selectGlobal())
 
   useEffect(() => {
-    if (global.hasLogin) navigate(routerTool.dashboardRoute())
-  }, [global.hasLogin, navigate])
+    if (global.refreshToken) navigate(routerTool.dashboardRoute())
+  }, [global.refreshToken, navigate])
 }
 
 export default usePublicGuard

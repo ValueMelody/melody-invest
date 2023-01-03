@@ -1,5 +1,6 @@
 import * as actions from 'actions'
 import * as commonEnum from 'enums/common'
+import * as dateTool from 'tools/date'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as requestAdapter from 'adapters/request'
@@ -17,15 +18,28 @@ export interface Message {
 }
 
 export interface GlobalState {
-  hasLogin: boolean;
+  accessToken: string;
+  accessExpiresIn: string;
+  refreshToken: string;
+  refreshExpiresIn: string;
   isLoading: boolean;
   messages: Message[];
 }
 
-const authToken = storageAdapter.get(commonEnum.StorageKey.AuthToken)
+const accessToken = storageAdapter.get(commonEnum.StorageKey.AccessToken) || ''
+const accessExpiresIn = storageAdapter.get(commonEnum.StorageKey.AccessExpiresIn) || ''
+const refreshToken = storageAdapter.get(commonEnum.StorageKey.RefreshToken) || ''
+const refreshExpiresIn = storageAdapter.get(commonEnum.StorageKey.RefreshExpiresIn) || ''
+
+const currentUTC = dateTool.getVerifyISO()
+const hasValidToken = refreshToken && refreshExpiresIn && refreshExpiresIn > currentUTC
+if (hasValidToken) requestAdapter.setAuthToken(accessToken)
 
 const initialState: GlobalState = {
-  hasLogin: !!authToken,
+  accessToken: hasValidToken ? accessToken : '',
+  accessExpiresIn: hasValidToken ? accessExpiresIn : '',
+  refreshToken: hasValidToken ? refreshToken : '',
+  refreshExpiresIn: hasValidToken ? refreshExpiresIn : '',
   isLoading: false,
   messages: [],
 }
@@ -73,14 +87,40 @@ const removeMessage = (state: GlobalState, action: PayloadAction<string>) => {
 }
 
 const logout = (state: GlobalState) => {
-  state.hasLogin = false
   requestAdapter.setAuthToken('')
-  storageAdapter.remove(commonEnum.StorageKey.AuthToken)
+  storageAdapter.remove(commonEnum.StorageKey.AccessToken)
+  storageAdapter.remove(commonEnum.StorageKey.AccessExpiresIn)
+  storageAdapter.remove(commonEnum.StorageKey.RefreshToken)
+  storageAdapter.remove(commonEnum.StorageKey.RefreshExpiresIn)
+  state.accessToken = ''
+  state.accessExpiresIn = ''
+  state.refreshToken = ''
+  state.refreshExpiresIn = ''
 }
 
-const setJWTTOken = (jwtToken: string) => {
-  requestAdapter.setAuthToken(jwtToken)
-  storageAdapter.set(commonEnum.StorageKey.AuthToken, jwtToken)
+const storeAccessToken = (
+  state: GlobalState,
+  accessToken: interfaces.response.AccessToken,
+) => {
+  requestAdapter.setAuthToken(accessToken.accessToken)
+  storageAdapter.set(commonEnum.StorageKey.AccessToken, accessToken.accessToken)
+  storageAdapter.set(commonEnum.StorageKey.AccessExpiresIn, accessToken.accessExpiresIn)
+  state.accessToken = accessToken.accessToken
+  state.accessExpiresIn = accessToken.accessExpiresIn
+}
+
+const storeAuthToken = (
+  state: GlobalState,
+  userToken: interfaces.response.UserToken,
+) => {
+  storeAccessToken(state, {
+    accessToken: userToken.accessToken,
+    accessExpiresIn: userToken.accessExpiresIn,
+  })
+  storageAdapter.set(commonEnum.StorageKey.RefreshToken, userToken.refreshToken)
+  storageAdapter.set(commonEnum.StorageKey.RefreshExpiresIn, userToken.refreshExpiresIn)
+  state.refreshToken = userToken.refreshToken
+  state.refreshExpiresIn = userToken.refreshExpiresIn
 }
 
 const lockUserAccount = (state: GlobalState, action: PayloadAction<{ msg: string }>) => {
@@ -123,10 +163,15 @@ const onCreateUserToken = (
   action: PayloadAction<interfaces.response.UserToken>,
 ) => {
   state.isLoading = false
-  state.hasLogin = true
+  storeAuthToken(state, action.payload)
+}
 
-  const { jwtToken } = action.payload
-  setJWTTOken(jwtToken)
+const onRefreshAccessToken = (
+  state: GlobalState,
+  action: PayloadAction<interfaces.response.AccessToken | null>,
+) => {
+  state.isLoading = false
+  if (action.payload !== null) storeAccessToken(state, action.payload)
 }
 
 const onCreateSubscription = (
@@ -136,9 +181,7 @@ const onCreateSubscription = (
     msg: string;
   }>,
 ) => {
-  const { jwtToken } = action.payload.userToken
-  setJWTTOken(jwtToken)
-
+  storeAuthToken(state, action.payload.userToken)
   successWithMessage(state, action)
 }
 
@@ -149,10 +192,16 @@ export const globalSlice = createSlice({
     removeMessage, addMessage, _updateForTest, _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
-    builder.addCase(actions.createUserToken.fulfilled, onCreateUserToken)
     builder.addCase(actions.createUserSubscription.fulfilled, onCreateSubscription)
     builder.addCase(actions.lockUserAccount.fulfilled, lockUserAccount)
     builder.addCase(actions.logout, logout)
+
+    builder.addCase(actions.createUserToken.pending, startLoading)
+    builder.addCase(actions.createUserToken.fulfilled, onCreateUserToken)
+    builder.addCase(actions.createUserToken.rejected, onRequestRejected)
+
+    builder.addCase(actions.refreshAccessToken.pending, startLoading)
+    builder.addCase(actions.refreshAccessToken.fulfilled, onRefreshAccessToken)
 
     builder.addCase(actions.fetchSystemPolicy.pending, startLoading)
     builder.addCase(actions.fetchSystemPolicy.fulfilled, stopLoading)
@@ -193,9 +242,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchTraderProfileDetail.pending, startLoading)
     builder.addCase(actions.fetchTraderProfileDetail.fulfilled, stopLoading)
     builder.addCase(actions.fetchTraderProfileDetail.rejected, onRequestRejected)
-
-    builder.addCase(actions.createUserToken.pending, startLoading)
-    builder.addCase(actions.createUserToken.rejected, onRequestRejected)
 
     builder.addCase(actions.deleteTraderCombo.pending, startLoading)
     builder.addCase(actions.deleteTraderCombo.fulfilled, stopLoading)

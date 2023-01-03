@@ -65,9 +65,9 @@ export interface Update {
 }
 
 export interface Tops {
-  yearly: Record[],
-  pastYear: Record[],
-  pastQuarter: Record[],
-  pastMonth: Record[],
-  pastWeek: Record[],
+  yearly: Record[];
+  pastYear: Record[];
+  pastQuarter: Record[];
+  pastMonth: Record[];
+  pastWeek: Record[];
 }

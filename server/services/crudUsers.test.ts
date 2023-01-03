@@ -2,6 +2,7 @@ import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
+import * as dateTool from 'tools/date'
 import * as emailLogic from 'logics/email'
 import * as emailModel from 'models/email'
 import * as errorEnum from 'enums/error'
@@ -127,14 +128,18 @@ describe('#createUserToken', () => {
 
   test('could create user token expires in 12h', async () => {
     const result = await crudUsers.createUserToken('b@email.com', 'aabbcc', false)
-    expect(result.jwtToken).toBeTruthy()
-    expect(result.expiresIn).toBe('12h')
+    expect(result.accessToken).toBeTruthy()
+    expect(result.refreshToken).toBeTruthy()
+    expect(result.refreshExpiresIn).toBe(dateTool.toTokenExpiresInISO('12h'))
+    expect(result.accessExpiresIn).toBe(dateTool.toTokenExpiresInISO('15m'))
   })
 
   test('could create user token expires in 30d', async () => {
     const result = await crudUsers.createUserToken('b@email.com', 'aabbcc', true)
-    expect(result.jwtToken).toBeTruthy()
-    expect(result.expiresIn).toBe('30d')
+    expect(result.accessToken).toBeTruthy()
+    expect(result.refreshToken).toBeTruthy()
+    expect(result.refreshExpiresIn).toBe(dateTool.toTokenExpiresInISO('30d'))
+    expect(result.accessExpiresIn).toBe(dateTool.toTokenExpiresInISO('15m'))
   })
 
   test('do not generate token if user not exists', async () => {

@@ -10,8 +10,8 @@ const usePrivateGuard = () => {
   const global = useSelector(selectors.selectGlobal())
 
   useEffect(() => {
-    if (!global.hasLogin) navigate(routerTool.signInRoute())
-  }, [global.hasLogin, navigate])
+    if (!global.refreshToken) navigate(routerTool.signInRoute())
+  }, [global.refreshToken, navigate])
 }
 
 export default usePrivateGuard

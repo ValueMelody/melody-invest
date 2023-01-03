@@ -30,16 +30,23 @@ export const buildAccessCode = (): string => {
 }
 
 export const encodeJWT = (
-  auth: interfaces.request.Auth, expiresIn: '12h' | '30d',
+  auth: interfaces.request.Auth,
+  expiresIn: '15m' | '12h' | '30d',
+  isRefreshToken = false,
 ): string => {
+  const secret = isRefreshToken ? adapterEnum.HostConfig.RefreshTokenSecret : adapterEnum.HostConfig.AccessTokenSecret
   const jwtToken = jwt.sign(
-    auth, adapterEnum.HostConfig.TokenSecret, { expiresIn },
+    auth, secret, { expiresIn },
   )
   return jwtToken
 }
 
-export const decodeJWT = (token: string): interfaces.request.Auth | null => {
-  const payload = jwt.verify(token, adapterEnum.HostConfig.TokenSecret)
+export const decodeJWT = (
+  token: string,
+  isRefreshToken: boolean,
+): interfaces.request.Auth | null => {
+  const secret = isRefreshToken ? adapterEnum.HostConfig.RefreshTokenSecret : adapterEnum.HostConfig.AccessTokenSecret
+  const payload = jwt.verify(token, secret)
   const id = typeof payload === 'object' && payload.id
   const email = typeof payload === 'object' && payload.email
   const type = typeof payload === 'object' && payload.type

@@ -1,14 +1,14 @@
+import * as tickerCategoryModel from './models/tickerCategory'
+import * as tickerModel from './models/ticker'
+import * as traderComboModel from './models/traderCombo'
+import * as traderEnvModel from './models/traderEnv'
 import * as traderHoldingModel from './models/traderHolding'
 import * as traderModel from './models/trader'
-import * as traderEnvModel from './models/traderEnv'
 import * as traderPatternModel from './models/traderPattern'
-import * as traderComboModel from './models/traderCombo'
-import * as tickerModel from './models/ticker'
-import * as tickerCategoryModel from './models/tickerCategory'
 
 export interface TraderProfile {
-  trader: traderModel.Record,
-  pattern: traderPatternModel.Public,
+  trader: traderModel.Record;
+  pattern: traderPatternModel.Public;
 }
 
 export interface ComboDetail {
@@ -49,13 +49,18 @@ export interface UserOverall {
   traderCombos: traderComboModel.Identity[];
   email: string;
   type: number;
-  planStartAtUTC: string | null,
-  planEndAtUTC: string | null,
+  planStartAtUTC: string | null;
+  planEndAtUTC: string | null;
 }
 
-export interface UserToken {
-  jwtToken: string;
-  expiresIn: '12h' | '30d';
+export interface AccessToken {
+  accessToken: string;
+  accessExpiresIn: string;
+}
+
+export interface UserToken extends AccessToken {
+  refreshToken: string;
+  refreshExpiresIn: string;
 }
 
 export interface ProfileEnv {

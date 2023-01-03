@@ -20,7 +20,7 @@ describe('#usePrivateGuard', () => {
 
   test('should not trigger private guard when login', () => {
     store.dispatch(globalSlice.actions._updateForTest({
-      hasLogin: true,
+      refreshToken: '123',
     }))
     store.dispatch(userSlice.actions._updateForTest({
       userTraderIds: [1, 2, 3],
