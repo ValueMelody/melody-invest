@@ -469,17 +469,17 @@ const buildDailyTickers = async (
 
   const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate)
   const initialQuarterlys: Quarterlys = {}
-  const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => ({
-    ...quarterlys,
-    [quarterly.tickerId]: quarterly,
-  }), initialQuarterlys)
+  const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => {
+    quarterlys[quarterly.tickerId] = quarterly
+    return quarterlys
+  }, initialQuarterlys)
 
   const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate)
   const initialYearlys: Yearlys = {}
-  const yearlys = yearlyTargets.reduce((yearlys, yearly) => ({
-    ...yearlys,
-    [yearly.tickerId]: yearly,
-  }), initialYearlys)
+  const yearlys = yearlyTargets.reduce((yearlys, yearly) => {
+    yearlys[yearly.tickerId] = yearly
+    return yearlys
+  }, initialYearlys)
 
   const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
   const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
@@ -492,17 +492,16 @@ const buildDailyTickers = async (
     const info = buildTickerInfo(
       daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
     )
-    return {
-      ...tickers,
-      [daily.tickerId]: { info, daily, quarterly, yearly },
-    }
+    tickers[daily.tickerId] = { info, daily, quarterly, yearly }
+    return tickers
   }, initialDailyTickers)
 }
 
 export const calcDailyAvailableTickers = async (
   forceRecheck: boolean,
 ) => {
-  const lastPriceDate = await tickerDailyModel.getLatestDate()
+  const lastPrices = await tickerDailyModel.getLatest(1)
+  const lastPriceDate = lastPrices?.date || dateTool.getInitialDate()
   const lastCalculatedDate = forceRecheck
     ? dateTool.getInitialDate()
     : await dailyTickersModel.getLatestDate()

@@ -35,7 +35,7 @@ describe('#detailsFromCashAndHoldings', () => {
     2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 3 } },
   }
   test('could generate holdingDetail from cash adn items', () => {
-    expect(transaction.detailFromCashAndItems(50, items, dailyTickers)).toEqual({
+    expect(transaction.detailFromCashAndItems(50, items, dailyTickers, '', {})).toEqual({
       totalCash: 50,
       totalValue: 20650,
       date: '',

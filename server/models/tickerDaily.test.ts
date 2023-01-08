@@ -1,5 +1,3 @@
-
-import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
 import * as tickerDaily from './tickerDaily'
 
@@ -71,10 +69,10 @@ describe('#getPreviousOne', () => {
   })
 })
 
-describe('#getLatestDate', () => {
+describe('#getLatest', () => {
   test('could get lastest date', async () => {
-    const result = await tickerDaily.getLatestDate()
-    expect(result).toBe('2022-01-04')
+    const result = await tickerDaily.getLatest(1)
+    expect(result?.date).toBe('2022-01-04')
   })
 })
 
@@ -211,18 +209,5 @@ describe('#update', () => {
     expect(created).toStrictEqual(result)
     const record = await tickerDaily.getByUK(2, '2022-02-02')
     expect(record).toStrictEqual(result)
-  })
-})
-
-describe('#getLatestDate', () => {
-  test('could return initial date if there is no record', async () => {
-    const transaction = await databaseAdapter.createTransaction()
-    await databaseAdapter.destroy({
-      tableName: adapterEnum.DatabaseTable.TickerDaily,
-      transaction,
-    })
-    await transaction.commit()
-    const result = await tickerDaily.getLatestDate()
-    expect(result).toBe('2001-01-01')
   })
 })

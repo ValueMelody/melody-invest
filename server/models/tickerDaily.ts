@@ -44,12 +44,17 @@ export const getPreviousOne = async (
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
-export const getLatestDate = async (): Promise<string> => {
-  const tickerDaily = await databaseAdapter.findOne({
+export const getLatest = async (
+  tickerId: number,
+): Promise<interfaces.tickerDailyModel.Record | undefined> => {
+  const record = await databaseAdapter.findOne({
     tableName: TableName,
     orderBy: [{ column: 'date', order: 'desc' }],
+    conditions: [
+      { key: 'tickerId', value: tickerId },
+    ],
   })
-  return tickerDaily ? tickerDaily.date : dateTool.getInitialDate()
+  return record ? convertToRecord(record) : undefined
 }
 
 export const getAll = async (
@@ -68,6 +73,7 @@ export const getAll = async (
 export const getNearestPricesByDate = async (
   date: string,
 ): Promise<interfaces.tickerDailyModel.TickerPrices> => {
+  const sevenDaysAgo = dateTool.getPreviousDate(date, 7)
   const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
     tableName: TableName,
     select: ['tickerId', 'closePrice', 'splitMultiplier'],
@@ -77,16 +83,15 @@ export const getNearestPricesByDate = async (
     ],
     conditions: [
       { key: 'date', value: date, type: '<=' },
+      { key: 'date', value: sevenDaysAgo, type: '>=' },
     ],
     distinctOn: 'tickerId',
   })
   const initialPrices: interfaces.tickerDailyModel.TickerPrices = {}
   const tickerPrices = latestTickerDailys.reduce((prices, raw) => {
     const price = parseFloat(raw.splitMultiplier) * raw.closePrice
-    return {
-      ...prices,
-      [raw.tickerId]: price,
-    }
+    prices[raw.tickerId] = price
+    return prices
   }, initialPrices)
   return tickerPrices
 }

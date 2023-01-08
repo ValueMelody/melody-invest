@@ -30,6 +30,16 @@ export const getAll = async (): Promise<interfaces.tickerModel.Record[]> => {
   return tickers
 }
 
+export const getAllDelisted = async (): Promise<interfaces.tickerModel.Record[]> => {
+  const delisted = await databaseAdapter.findAll({
+    tableName: TableName,
+    conditions: [
+      { key: 'isDelisted', value: true },
+    ],
+  })
+  return delisted
+}
+
 export const create = async (
   values: interfaces.tickerModel.Create,
   transaction: Knex.Transaction,
