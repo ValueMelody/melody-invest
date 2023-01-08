@@ -8,7 +8,9 @@ import * as generateTool from 'tools/generate'
 import * as interfaces from '@shared/interfaces'
 import * as patternLogic from 'logics/pattern'
 import * as runTool from 'tools/run'
+import * as tickerDailyModel from 'models/tickerDaily'
 import * as tickerHolderModel from 'models/tickerHolder'
+import * as tickerModel from 'models/ticker'
 import * as traderEnvModel from 'models/traderEnv'
 import * as traderHoldingModel from 'models/traderHolding'
 import * as traderLogic from 'logics/trader'
@@ -50,6 +52,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
 const calcTraderPerformance = async (
   targetTrader: interfaces.traderModel.Record,
   forceRecheck: boolean,
+  delistedLastPrices: transactionLogic.DelistedLastPrices,
 ) => {
   const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
   if (!pattern) throw errorEnums.Custom.RecordNotFound
@@ -95,10 +98,8 @@ const calcTraderPerformance = async (
       const availableTargets = env.tickerIds
         ? env.tickerIds.reduce((tickers, tickerId) => {
           if (!dailyTickers.tickers) return tickers
-          return {
-            ...tickers,
-            [tickerId]: dailyTickers.tickers[tickerId],
-          }
+          tickers[tickerId] = dailyTickers.tickers[tickerId]
+          return tickers
         }, emptyDailyTickers)
         : dailyTickers.tickers
 
@@ -106,7 +107,7 @@ const calcTraderPerformance = async (
       const items = holding ? holding.items : []
 
       const detailsAfterUpdate = transactionLogic.detailFromCashAndItems(
-        totalCash, items, availableTargets,
+        totalCash, items, availableTargets, tradeDate, delistedLastPrices,
       )
 
       const shouldRebalance =
@@ -239,11 +240,23 @@ const calcTraderPerformance = async (
 
 export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
   const envs = await traderEnvModel.getAll()
+
+  const delistedTickers = await tickerModel.getAllDelisted()
+  const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
+  const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
+    return tickerDailyModel.getLatest(tickerId)
+  })
+  const initLastPrices: transactionLogic.DelistedLastPrices = {}
+  const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
+    lastPrices[tickerDaily.tickerId] = tickerDaily
+    return lastPrices
+  }, initLastPrices)
+
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
     console.info(`Checking Env:${env.id}`)
     const traders = await traderModel.getActives(env.id)
     await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-      await calcTraderPerformance(trader, forceRecheck)
+      await calcTraderPerformance(trader, forceRecheck, delistedLastPrices)
     })
     const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
     const inactiveRankingNumber = deactivateTarget?.rankingNumber

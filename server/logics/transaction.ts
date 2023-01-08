@@ -1,13 +1,21 @@
 import * as interfaces from '@shared/interfaces'
 
+const getItemHoldingValue = (
+  shares: number,
+  defaultValue: number,
+  tickerDaily: interfaces.tickerDailyModel.Record | undefined,
+) => {
+  return tickerDaily
+    ? shares * tickerDaily.closePrice * tickerDaily.splitMultiplier
+    : defaultValue
+}
+
 export const refreshHoldingItemValue = (
   item: interfaces.traderHoldingModel.Item,
   dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
 ): interfaces.traderHoldingModel.Item => {
   const matchedDaily = dailyTicker?.daily
-  const holdingValue = matchedDaily
-    ? item.shares * matchedDaily.closePrice * matchedDaily.splitMultiplier
-    : item.value
+  const holdingValue = getItemHoldingValue(item.shares, item.value, matchedDaily)
   const splitMultiplier = matchedDaily?.splitMultiplier || item.splitMultiplier
   const updatedHolding = {
     tickerId: item.tickerId,
@@ -22,19 +30,26 @@ export const detailFromCashAndItems = (
   totalCash: number,
   items: interfaces.traderHoldingModel.Item[],
   dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  tradeDate: string,
+  delistedLastPrices: DelistedLastPrices,
 ): interfaces.traderHoldingModel.Detail => {
   const emptyDetail: interfaces.traderHoldingModel.Detail = {
     totalValue: totalCash, totalCash, items: [], date: '',
   }
   return items.reduce((details, item) => {
+    const isDelisted = delistedLastPrices[item.tickerId] && delistedLastPrices[item.tickerId].date <= tradeDate
+    if (isDelisted) {
+      const holdingValue = getItemHoldingValue(item.shares, item.value, delistedLastPrices[item.tickerId])
+      details.totalValue += holdingValue
+      details.totalCash += holdingValue
+      return details
+    }
+
     const matched = dailyTickers[item.tickerId] || null
     const refreshedHolding = refreshHoldingItemValue(item, matched)
-    return {
-      date: '',
-      totalValue: details.totalValue + refreshedHolding.value,
-      totalCash: details.totalCash,
-      items: [...details.items, refreshedHolding],
-    }
+    details.totalValue += refreshedHolding.value
+    details.items.push(refreshedHolding)
+    return details
   }, emptyDetail)
 }
 
@@ -105,6 +120,10 @@ interface DetailAndTransaction {
   hasTransaction: boolean;
 }
 
+export interface DelistedLastPrices {
+  [tickerId: number]: interfaces.tickerDailyModel.Record;
+}
+
 export const detailAfterRebalance = (
   shouldRebalance: boolean,
   currentDetail: interfaces.traderHoldingModel.Detail,
@@ -163,7 +182,7 @@ export const sellForHoldingPercent = (
   const baseSharesShold = holdingSellPercent === 100 ? itemForSell.shares : sharesSold / tickerDaily.splitMultiplier
   if (itemForSell.shares < baseSharesShold) return null
 
-  const valueSold = baseSharesShold * tickerDaily.splitMultiplier * tickerDaily.closePrice
+  const valueSold = getItemHoldingValue(baseSharesShold, 0, tickerDaily)
   const percentAfterSell = (itemForSell.value - valueSold) / holdingDetail.totalValue
   if (percentAfterSell * 100 < tickerMinPercent) return null
 
