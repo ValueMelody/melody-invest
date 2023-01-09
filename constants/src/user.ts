@@ -11,6 +11,21 @@ export const SubscriptionStatus = Object.freeze({
   Cancelled: 3,
 })
 
+export const PlanPrice = Object.freeze({
+  Pro: {
+    OneMonthPrice: '11.99',
+    ThreeMonthsPrice: '34.99',
+    SixMonthsPrice: '65.99',
+    OneYearPrice: '119.99',
+  },
+  Premium: {
+    OneMonthPrice: '19.99',
+    ThreeMonthsPrice: '55.99',
+    SixMonthsPrice: '105.99',
+    OneYearPrice: '199.99',
+  },
+})
+
 export const PlanLimit = Object.freeze({
   Guest: {
     Profiles: 0,

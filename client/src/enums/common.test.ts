@@ -19,8 +19,6 @@ describe('#Env', () => {
     expect(common.Env.ServerHost).toBeDefined()
     expect(common.Env.ServerType).toBeDefined()
     expect(common.Env.PayPalClientId).toBeDefined()
-    expect(common.Env.PayPalProPlanId).toBeDefined()
-    expect(common.Env.PayPalPremiumPlanId).toBeDefined()
     expect(common.Env.ContactEmail).toBeDefined()
   })
 })

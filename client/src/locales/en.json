@@ -42,7 +42,7 @@
     "common.pro": "Pro",
     "common.premium": "Premium",
     "common.plan": "Plan",
-    "common.subscribe": "Subscribe",
+    "common.upgrade": "Upgrade",
     "common.unsubscribe": "Unsubscribe",
     "common.close": "Close",
     "common.select": "Select",
@@ -67,9 +67,9 @@
     "pricing.envsLimit": "{{num}} Trader Envs",
     "pricing.combosLimit": "{{num}} Trader Combos",
     "pricing.basicEnvs": "System Defined Trade Envs",
-    "pricing.proPrice": "$9.99 / Month",
-    "pricing.premiumPrice": "$19.99 / Month",
-    "pricing.title": "Our Subscription Plans and Prices",
+    "pricing.planPrice": "${{num}} CAD / Month",
+    "pricing.title": "Our Plans and Prices",
+    "pricing.unit": "{{num}} Days",
 
     "permission.limited": "Unaccessible due to plan limit, check your account page for details",
 

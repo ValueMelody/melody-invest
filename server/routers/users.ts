@@ -1,4 +1,5 @@
 import * as authMiddleware from 'middlewares/auth'
+import * as constants from '@shared/constants'
 import * as crudUsers from 'services/crudUsers'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
@@ -22,10 +23,6 @@ const validatePassword = (password: string) => {
 
 const validateAccessCode = (code: string) => {
   if (!code || code.length !== 64) throw errorEnum.Custom.WrongAccessCode
-}
-
-const validateSubscriptionId = (id: string) => {
-  if (!id) throw errorEnum.Default.Forbidden
 }
 
 usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
@@ -59,13 +56,17 @@ usersRouter.post('/', async (req, res) => {
   return res.status(201).send(user)
 })
 
-usersRouter.post('/subscription', authMiddleware.normalUser, async (req, res) => {
-  const subscriptionId = req.body.subscriptionId?.trim()
+usersRouter.post('/payment', authMiddleware.normalUser, async (req, res) => {
+  const orderId = req.body.orderId?.trim()
+  const planType = Number(req.body.planType)
+  const stateCode = req.body.stateCode || null
+  const provinceCode = req.body.provinceCode || null
 
-  validateSubscriptionId(subscriptionId)
+  const isCorrectPlanType = planType === constants.User.Type.Pro || planType === constants.User.Type.Premium
+  if (!orderId || !isCorrectPlanType) throw errorEnum.Default.Forbidden
 
   const auth: interfaces.request.Auth = req.body.auth
-  const userToken = await crudUsers.createSubscription(auth.id, subscriptionId)
+  const userToken = await crudUsers.createPayment(auth.id, orderId, planType, stateCode, provinceCode)
   return res.status(201).send(userToken)
 })
 
@@ -120,10 +121,4 @@ usersRouter.put('/token', authMiddleware.authByRefreshToken, async (req, res) =>
   const auth: interfaces.request.Auth = req.body.auth
   const tokens = await crudUsers.refreshAccessToken(auth.id, auth.email, auth.type)
   return res.status(200).send(tokens)
-})
-
-usersRouter.delete('/subscription', authMiddleware.normalUser, async (req, res) => {
-  const auth: interfaces.request.Auth = req.body.auth
-  await crudUsers.deleteSubscription(auth.id)
-  return res.status(204).send()
 })
