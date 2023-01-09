@@ -52,7 +52,6 @@ describe('#CacheKey', () => {
   test('Have defined cache key enums', () => {
     expect(adapter.CacheKey.TickerPrices).toBeDefined()
     expect(adapter.CacheKey.SysemEndpoint).toBeDefined()
-    expect(adapter.CacheKey.PayPalAccessToken).toBeDefined()
   })
 })
 

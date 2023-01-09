@@ -16,3 +16,11 @@ const init = () => i18n
 init()
 
 export const t = i18n.t
+
+export const getStateName = (code: string) => {
+  return t(`state.${code}`)
+}
+
+export const getProvinceName = (stateCode: string, code: string) => {
+  return t(`province.${stateCode}.${code}`)
+}

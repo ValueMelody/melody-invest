@@ -190,8 +190,18 @@ export const createPayment = async (
   provinceCode: string | null,
 ): Promise<interfaces.response.UserToken> => {
   const detail = await paymentAdapter.getOrderDetail(orderId)
-  const paymentAmount = detail?.purchase_units[0]?.amount?.value
-  const paymentCurrency = detail?.purchase_units[0]?.amount?.currency
+
+  const isApproved = detail?.status === 'APPROVED' && detail?.intent === 'CAPTURE'
+  if (!isApproved) throw errorEnum.Custom.OrderFailed
+
+  const purchaseDetail = detail?.purchase_units[0]
+  console.log(purchaseDetail)
+
+  const paymentAmount = purchaseDetail?.amount?.breakdown?.item_total?.value
+  const paymentCurrency = purchaseDetail?.amount?.breakdown?.item_total?.currency_code
+  const taxAmount = purchaseDetail?.amount?.breakdown?.tax_total?.value
+  const taxCurrency = purchaseDetail?.amount?.breakdown?.tax_total?.currency_code
+
   const planPrice = planType === constants.User.Type.Pro
     ? constants.User.PlanPrice.Pro
     : constants.User.PlanPrice.Premium
@@ -199,7 +209,6 @@ export const createPayment = async (
   const paidThreeMonths = paymentAmount === planPrice.ThreeMonthsPrice
   const paidSixMonths = paymentAmount === planPrice.SixMonthsPrice
   const paidOneYear = paymentAmount === planPrice.OneYearPrice
-  const isCorrectCurrency = paymentCurrency === 'CAD'
 
   const isCorrectPayment = isCorrectCurrency && (paidOneMonth || paidThreeMonths || paidSixMonths || paidOneYear)
   if (!isCorrectPayment) throw errorEnum.Custom.OrderFailed

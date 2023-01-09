@@ -144,13 +144,13 @@ const onRequestRejected = (state: GlobalState, action: AnyAction) => {
   ]
 }
 
-const onCreateSubscriptionFailed = (state: GlobalState) => {
+const onCreatePaymentFailed = (state: GlobalState) => {
   state.isLoading = false
   state.messages = [
     ...state.messages,
     {
       id: nanoid(),
-      title: localeTool.t('setting.subscribeFailed', {
+      title: localeTool.t('setting.paymentFailed', {
         email: commonEnum.Env.ContactEmail,
       }),
       type: 'failure',
@@ -174,7 +174,7 @@ const onRefreshAccessToken = (
   if (action.payload !== null) storeAccessToken(state, action.payload)
 }
 
-const onCreateSubscription = (
+const onCreatePayment = (
   state: GlobalState,
   action: PayloadAction<{
     userToken: interfaces.response.UserToken;
@@ -192,7 +192,7 @@ export const globalSlice = createSlice({
     removeMessage, addMessage, _updateForTest, _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
-    builder.addCase(actions.createUserSubscription.fulfilled, onCreateSubscription)
+    builder.addCase(actions.createUserPayment.fulfilled, onCreatePayment)
     builder.addCase(actions.lockUserAccount.fulfilled, lockUserAccount)
     builder.addCase(actions.logout, logout)
 
@@ -298,8 +298,8 @@ export const globalSlice = createSlice({
     builder.addCase(actions.activateUser.fulfilled, successWithMessage)
     builder.addCase(actions.activateUser.rejected, onRequestRejected)
 
-    builder.addCase(actions.createUserSubscription.pending, startLoading)
-    builder.addCase(actions.createUserSubscription.rejected, onCreateSubscriptionFailed)
+    builder.addCase(actions.createUserPayment.pending, startLoading)
+    builder.addCase(actions.createUserPayment.rejected, onCreatePaymentFailed)
   },
 })
 

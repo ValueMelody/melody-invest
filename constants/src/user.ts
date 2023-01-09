@@ -5,6 +5,31 @@ export const Type = Object.freeze({
   Premium: 3,
 })
 
+export const BillingTax = Object.freeze({
+  State: {
+    CA: {
+      Province: {
+        AB: 0.05,
+        BC: 0.05,
+        MB: 0.05,
+        NB: 0.15,
+        NL: 0.15,
+        NT: 0.05,
+        NS: 0.15,
+        NU: 0.05,
+        ON: 0.13,
+        PE: 0.15,
+        QC: 0.05,
+        SK: 0.05,
+        YT: 0.05,
+      },
+    },
+    Other: {
+      Province: {},
+    },
+  },
+})
+
 export const SubscriptionStatus = Object.freeze({
   Active: 1,
   Suspended: 2,
