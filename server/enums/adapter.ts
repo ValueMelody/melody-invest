@@ -15,7 +15,7 @@ export const DatabaseConfig = Object.freeze({
 
 export const DatabaseTable = Object.freeze({
   User: 'user',
-  UserSubscription: 'user_subscription',
+  UserPayment: 'user_payment',
   Email: 'email',
   Ticker: 'ticker',
   TickerDaily: 'ticker_daily',
@@ -52,7 +52,6 @@ export const CacheConfig = Object.freeze({
 export const CacheKey = Object.freeze({
   TickerPrices: 'tickerPrices',
   SysemEndpoint: 'systemEndpoint',
-  PayPalAccessToken: 'paypalAccessToken',
 })
 
 export const MarketConfig = Object.freeze({
@@ -83,6 +82,4 @@ export const PaymentConfig = Object.freeze({
   BaseUrl: process.env.PAYPAL_BASE_URL!,
   ClientId: process.env.PAYPAL_CLIENT_ID!,
   ClientSecret: process.env.PAYPAL_CLIENT_SECRET!,
-  ProPlanId: process.env.PAYPAL_PRO_PLAN_ID!,
-  PremiumPlanId: process.env.PAYPAL_PREMIUM_PLAN_ID!,
 })

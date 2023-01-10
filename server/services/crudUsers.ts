@@ -6,6 +6,7 @@ import * as emailLogic from 'logics/email'
 import * as emailModel from 'models/email'
 import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
+import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as paymentAdapter from 'adapters/payment'
@@ -18,7 +19,7 @@ import * as traderLogic from 'logics/trader'
 import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import * as userModel from 'models/user'
-import * as userSubscriptionModel from 'models/userSubscription'
+import * as userPaymentModel from 'models/userPayment'
 import { Knex } from 'knex'
 import moment from 'moment'
 
@@ -63,13 +64,11 @@ export const getUserOverall = async (
   let planEndAtUTC = null
   let userType = user.type
   if (user.type === constants.User.Type.Pro || user.type === constants.User.Type.Premium) {
-    let subscription = await userSubscriptionModel.getUserActive(user.id)
-    if (!subscription) subscription = await userSubscriptionModel.getUserLatest(user.id)
-    planStartAtUTC = subscription?.startAtUTC || null
-    planEndAtUTC = subscription?.endAtUTC || null
+    const payment = await userPaymentModel.getLatest(user.id)
+    planStartAtUTC = payment?.startAtUTC || null
+    planEndAtUTC = payment?.endAtUTC || null
 
-    const planIsEnd = !!planEndAtUTC && dateTool.toUTCFormat(moment()) > planEndAtUTC
-    if (planIsEnd) {
+    if (!payment || dateTool.toUTCFormat(moment()) >= payment.endAtUTC) {
       userType = constants.User.Type.Basic
       planStartAtUTC = null
       planEndAtUTC = null
@@ -182,30 +181,81 @@ export const refreshAccessToken = async (
   }
 }
 
-export const createSubscription = async (
+export const createPayment = async (
   userId: number,
-  subscriptionId: string,
+  orderId: string,
+  planType: number,
+  stateCode: string,
+  provinceCode: string,
 ): Promise<interfaces.response.UserToken> => {
-  const detail = await paymentAdapter.getSubscriptionDetail(subscriptionId)
+  const detail = await paymentAdapter.getOrderDetail(orderId)
 
-  const isProPlan = detail?.plan_id === adapterEnum.PaymentConfig.ProPlanId
-  const isPremiumPlan = detail?.plan_id === adapterEnum.PaymentConfig.PremiumPlanId
-  const isActive = detail?.status === 'ACTIVE'
-  const isSucceed = isActive && (isProPlan || isPremiumPlan)
-  if (!isSucceed) throw errorEnum.Custom.SubscriptionFailed
+  const isApproved = detail?.status === 'APPROVED' && detail?.intent === 'CAPTURE'
+  if (!isApproved) throw errorEnum.Custom.OrderFailed
 
-  const userType = isProPlan ? constants.User.Type.Pro : constants.User.Type.Premium
+  const purchaseDetail = detail?.purchase_units[0]
+  const paymentAmount = purchaseDetail?.amount?.breakdown?.item_total?.value
+  const paymentCurrency = purchaseDetail?.amount?.breakdown?.item_total?.currency_code
+  const taxAmount = purchaseDetail?.amount?.breakdown?.tax_total?.value
+  const taxCurrency = purchaseDetail?.amount?.breakdown?.tax_total?.currency_code
+
+  const planPrice = planType === constants.User.Type.Pro
+    ? constants.User.PlanPrice.Pro
+    : constants.User.PlanPrice.Premium
+
+  let days = 0
+  switch (paymentAmount) {
+    case planPrice.OneMonthPrice:
+      days = 30
+      break
+    case planPrice.ThreeMonthsPrice:
+      days = 90
+      break
+    case planPrice.SixMonthsPrice:
+      days = 180
+      break
+    case planPrice.OneYearPrice:
+      days = 360
+      break
+    default:
+      days = 0
+      break
+  }
+
+  if (!days || paymentCurrency !== 'CAD') throw errorEnum.Custom.OrderFailed
+
+  const expectedTax = helpers.getTaxAmount(paymentAmount, stateCode, provinceCode)
+  const hasValidTax = (!parseFloat(expectedTax) && !taxAmount) || expectedTax === taxAmount
+  const hasValidTaxCurrency = !taxCurrency || taxCurrency === 'CAD'
+  if (!hasValidTax || !hasValidTaxCurrency) throw errorEnum.Custom.OrderFailed
+
+  const captured = await paymentAdapter.captureOrderPayment(orderId)
+  if (captured?.status !== 'COMPLETED') throw errorEnum.Custom.OrderFailed
+
+  const lastPayment = await userPaymentModel.getLatest(userId)
+  const currentUTC = dateTool.toUTCFormat(moment())
+  const activePayment = lastPayment && currentUTC < lastPayment?.endAtUTC ? lastPayment : null
+  if (activePayment && activePayment.type !== planType) throw errorEnum.Custom.OrderFailed
+
+  const startAtUTC = activePayment?.endAtUTC || currentUTC
+  const endDate = moment(startAtUTC).add(days, 'days')
+  const endAtUTC = dateTool.toUTCFormat(endDate)
 
   const updatedUser = await databaseAdapter.runWithTransaction(async (transaction) => {
     const updatedUser = await userModel.update(userId, {
-      type: userType,
+      type: planType,
     }, transaction)
 
-    await userSubscriptionModel.create({
+    await userPaymentModel.create({
       userId,
-      subscriptionId,
-      status: constants.User.SubscriptionStatus.Active,
-      startAtUTC: dateTool.toUTCFormat(moment()),
+      orderId,
+      type: planType,
+      price: paymentAmount,
+      tax: taxAmount,
+      stateCode,
+      provinceCode,
+      startAtUTC,
+      endAtUTC,
     }, transaction)
 
     return updatedUser
@@ -216,34 +266,6 @@ export const createSubscription = async (
     { id: userId, email: updatedUser.email, type: updatedUser.type },
     refreshExpiresIn,
   )
-}
-
-export const deleteSubscription = async (
-  userId: number,
-) => {
-  const subscription = await userSubscriptionModel.getUserActive(userId)
-  if (subscription?.status !== constants.User.SubscriptionStatus.Active) throw errorEnum.Custom.SubscriptionNotFound
-
-  const detail = await paymentAdapter.getSubscriptionDetail(subscription.subscriptionId)
-  if (detail.status !== 'ACTIVE') throw errorEnum.Custom.SubscriptionNotFound
-
-  try {
-    await paymentAdapter.cancelSubscription(subscription.subscriptionId)
-  } catch (e) {
-    throw errorEnum.Custom.PayPalServerError
-  }
-
-  const totalCycles = detail.billing_info.cycle_executions.reduce((total: number, info: any) => {
-    return total + info.cycles_completed
-  }, 0)
-  const endTime = moment(subscription.startAtUTC).add(totalCycles, 'months')
-
-  await databaseAdapter.runWithTransaction(async (transaction) => {
-    await userSubscriptionModel.update(subscription.id, {
-      status: constants.User.SubscriptionStatus.Cancelled,
-      endAtUTC: dateTool.toUTCFormat(endTime),
-    }, transaction)
-  })
 }
 
 export const generateResetCode = async (

@@ -1,7 +1,10 @@
 {
-  "name": "@shared/constants",
+  "name": "@shared/helpers",
   "private": true,
   "main": "dist/index.js",
+  "dependencies": {
+    "@shared/constants": "*"
+  },
   "devDependencies": {
     "@shared/interfaces": "*"
   },

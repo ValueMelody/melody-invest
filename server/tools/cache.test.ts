@@ -15,9 +15,3 @@ describe('#generateSystemEndpointKey', () => {
       .toEqual('systemEndpoint-[default-trader-combos]')
   })
 })
-
-describe('#generatePayPalAccessTokenKey', () => {
-  test('could generate cache key for paypal access token', () => {
-    expect(cache.generatePayPalAccessTokenKey()).toBe('paypalAccessToken')
-  })
-})

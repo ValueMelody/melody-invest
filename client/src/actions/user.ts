@@ -191,21 +191,28 @@ export const activateUser = createAsyncThunk(
   },
 )
 
-export const createUserSubscription = createAsyncThunk(
-  'user/createUserSubscription',
+export const createUserPayment = createAsyncThunk(
+  'user/createUserPayment',
   async ({
-    subscriptionId,
+    orderId,
     planType,
+    stateCode,
+    provinceCode,
   }: {
-    subscriptionId: string;
+    orderId: string;
     planType: number;
+    stateCode: string;
+    provinceCode: string;
   }, { rejectWithValue, dispatch }) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/subscription`
+    const endpoint = `${routerEnum.Endpoint.Users}/payment`
     await dispatch(refreshAccessToken())
 
     try {
       const userToken: interfaces.response.UserToken = await requestAdapter.sendPostRequest(endpoint, {
-        subscriptionId,
+        orderId,
+        planType,
+        stateCode,
+        provinceCode,
       })
       return {
         userToken,

@@ -22,11 +22,11 @@ import * as traderHoldingModel from './models/traderHolding'
 import * as traderModel from './models/trader'
 import * as traderPatternModel from './models/traderPattern'
 import * as userModel from './models/user'
-import * as userSubscriptionModel from './models/userSubscription'
+import * as userPaymentModel from './models/userPayment'
 
 export {
   userModel,
-  userSubscriptionModel,
+  userPaymentModel,
   tickerModel,
   tickerDailyModel,
   tickerQuarterlyModel,

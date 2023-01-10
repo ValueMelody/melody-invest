@@ -7,9 +7,8 @@ import { Button, Card, TextInput } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ConfirmModal from 'containers/elements/ConfirmModal'
+import PaymentModal from 'containers/accounts/blocks/PaymentModal'
 import RequiredLabel from 'containers/elements/RequiredLabel'
-import SubscribeModal from 'containers/accounts/blocks/SubscribeModal'
-import UnsubscribeButton from 'containers/accounts/blocks/UnsubscribeButton'
 import { globalSlice } from 'stores/global'
 import usePasswordValidator from 'hooks/usePasswordValidator'
 import usePrivateGuard from 'hooks/usePrivateGuard'
@@ -147,23 +146,15 @@ const Setting = () => {
           {userTypeText.Services.map((service) => (
             <h5 key={service}>- {service}</h5>
           ))}
-          {user.userType !== constants.User.Type.Basic && !user.planEndAtUTC && (
-            <UnsubscribeButton />
-          )}
-          {user.planStartAtUTC && (
-            <h5>
-              {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
-            </h5>
-          )}
           {user.planEndAtUTC && (
             <h5>
               {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
             </h5>
           )}
           <div className='mt-4'>
-            {user.userType === constants.User.Type.Basic && (
-              <SubscribeModal />
-            )}
+            <PaymentModal
+              userType={user.userType}
+            />
           </div>
         </Card>
         <Card className={cardClass}>

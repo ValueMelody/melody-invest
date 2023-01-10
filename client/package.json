@@ -6,6 +6,7 @@
     "@paypal/react-paypal-js": "^7.8.1",
     "@reduxjs/toolkit": "^1.8.6",
     "@shared/constants": "*",
+    "@shared/helpers": "*",
     "axios": "^0.26.0",
     "classnames": "^2.3.1",
     "flowbite": "^1.5.3",

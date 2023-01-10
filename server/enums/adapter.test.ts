@@ -16,7 +16,7 @@ describe('#DatabaseConfig', () => {
 describe('DatabaseTable', () => {
   test('Have defined database table enums', () => {
     expect(adapter.DatabaseTable.User).toBeDefined()
-    expect(adapter.DatabaseTable.UserSubscription).toBeDefined()
+    expect(adapter.DatabaseTable.UserPayment).toBeDefined()
     expect(adapter.DatabaseTable.Email).toBeDefined()
     expect(adapter.DatabaseTable.Ticker).toBeDefined()
     expect(adapter.DatabaseTable.TickerYearly).toBeDefined()
@@ -52,7 +52,6 @@ describe('#CacheKey', () => {
   test('Have defined cache key enums', () => {
     expect(adapter.CacheKey.TickerPrices).toBeDefined()
     expect(adapter.CacheKey.SysemEndpoint).toBeDefined()
-    expect(adapter.CacheKey.PayPalAccessToken).toBeDefined()
   })
 })
 
@@ -98,8 +97,6 @@ describe('#PayPalConfig', () => {
       BaseUrl: 'https://paypal.com',
       ClientId: '123456',
       ClientSecret: 'ABCDEF',
-      ProPlanId: 'P-PRO',
-      PremiumPlanId: 'P-PREMIUM',
     })
   })
 })

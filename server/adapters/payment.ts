@@ -1,68 +1,35 @@
 
 import * as adapterEnum from 'enums/adapter'
-import * as cacheAdapter from './cache'
-import * as cacheTool from 'tools/cache'
-import * as errorEnum from 'enums/error'
 import axios from 'axios'
-import qs from 'qs'
 
-export const createAccessToken = async () => {
-  const url = `${adapterEnum.PaymentConfig.BaseUrl}/oauth2/token`
-  const result = await axios.post(
-    url,
-    qs.stringify({ grant_type: 'client_credentials' }),
-    {
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-      },
-      auth: {
-        username: adapterEnum.PaymentConfig.ClientId,
-        password: adapterEnum.PaymentConfig.ClientSecret,
-      },
-    },
-  )
-  return {
-    accessToken: result?.data?.access_token || '',
-    expiresIn: result?.data?.expires_in || 0,
-  }
+const buildAuth = () => {
+  const token = Buffer.from(
+    `${adapterEnum.PaymentConfig.ClientId}:${adapterEnum.PaymentConfig.ClientSecret}`,
+  ).toString('base64')
+  return `Basic ${token}`
 }
 
-const getAccessToken = async () => {
-  const key = cacheTool.generatePayPalAccessTokenKey()
-  const stored = await cacheAdapter.get(key)
-  if (stored) return stored
-  const accessResult = await createAccessToken()
-  if (!accessResult.accessToken) throw errorEnum.Custom.PayPalServerError
-  const hours = Math.floor(accessResult.expiresIn / 3600) - 1
-  await cacheAdapter.set(key, accessResult.accessToken, `${hours}h`)
-  return accessResult.accessToken
-}
-
-export const getSubscriptionDetail = async (
-  subscriptionId: string,
+export const getOrderDetail = async (
+  orderId: string,
 ) => {
-  const accessToken = await getAccessToken()
-  const url = `${adapterEnum.PaymentConfig.BaseUrl}/billing/subscriptions/${subscriptionId}`
+  const url = `${adapterEnum.PaymentConfig.BaseUrl}/checkout/orders/${orderId}`
   const result = await axios.get(url, {
     headers: {
-      Authorization: `Bearer ${accessToken}`,
+      Authorization: buildAuth(),
     },
   })
   return result.data
 }
 
-export const cancelSubscription = async (
-  subscriptionId: string,
+export const captureOrderPayment = async (
+  orderId: string,
 ) => {
-  const accessToken = await getAccessToken()
-  const url = `${adapterEnum.PaymentConfig.BaseUrl}/billing/subscriptions/${subscriptionId}/cancel`
-  await axios.post(
-    url,
-    { reason: 'Cancalled by user' },
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+  const url = `${adapterEnum.PaymentConfig.BaseUrl}/checkout/orders/${orderId}/capture`
+  const result = await axios.post(url, undefined, {
+    headers: {
+      Authorization: buildAuth(),
+      'Content-Type': 'application/json',
     },
-  )
+  })
+  return result.data
 }

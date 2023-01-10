@@ -64,12 +64,22 @@ module.exports = {
       testMatch: ['<rootDir>/constants/**/*.test.ts'],
       ...ignorePath,
     },
+    {
+      displayName: 'helpers',
+      testEnvironment: 'node',
+      transform: {
+        '^.+\\.ts$': ['@swc/jest'],
+      },
+      testMatch: ['<rootDir>/helpers/**/*.test.ts'],
+      ...ignorePath,
+    },
   ],
   coverageReporters: ['text'],
   collectCoverageFrom: [
     './client/**/*.{ts,tsx}',
     './server/**/*.ts',
     './constants/**/*.ts',
+    './helpers/**/*.ts',
     '!./**/*.test.ts',
   ],
   coverageThreshold: {

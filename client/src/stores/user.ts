@@ -49,7 +49,7 @@ const storeFromUserOverall = (
   state.userTraderIds = action.payload.traderProfiles.map((profile) => profile.trader.id)
 }
 
-const onCreateSubscriptionSuccess = (
+const onCreatePaymentSuccess = (
   state: UserState,
   action: PayloadAction<{
     userToken: interfaces.response.UserToken;
@@ -95,7 +95,7 @@ export const userSlice = createSlice({
     builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
     builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
     builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
-    builder.addCase(actions.createUserSubscription.fulfilled, onCreateSubscriptionSuccess)
+    builder.addCase(actions.createUserPayment.fulfilled, onCreatePaymentSuccess)
   },
 })
 
