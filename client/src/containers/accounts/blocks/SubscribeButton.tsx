@@ -31,7 +31,7 @@ const Button = ({
       value: options,
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [totalAmount])
+  }, [totalAmount, stateCode, provinceCode])
 
   const handleCloseModal = () => {
     onCloseModal()
@@ -73,7 +73,6 @@ const Button = ({
         })
       }}
       onApprove={async (data) => {
-        console.log(data)
         await handleApproved(data.orderID)
       }}
     />

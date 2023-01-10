@@ -1,0 +1,17 @@
+{
+  "name": "@shared/helpers",
+  "private": true,
+  "main": "dist/index.js",
+  "dependencies": {
+    "@shared/constants": "*"
+  },
+  "devDependencies": {
+    "@shared/interfaces": "*"
+  },
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc --build --clean && tsc --build",
+    "lint:fix": "eslint --fix ./ --ext .ts",
+    "lint": "eslint ./ --ext .ts"
+  }
+}

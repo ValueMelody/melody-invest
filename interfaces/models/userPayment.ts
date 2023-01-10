@@ -1,6 +1,7 @@
 export interface Record {
   id: number;
   userId: number;
+  type: number;
   orderId: string;
   price: string;
   tax: string;
@@ -12,6 +13,7 @@ export interface Record {
 
 export interface Create {
   userId: number;
+  type: number;
   orderId: string;
   price: string;
   tax: string;

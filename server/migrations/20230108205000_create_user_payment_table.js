@@ -3,6 +3,7 @@ exports.up = (knex) => {
     .createTable('user_payment', (table) => {
       table.increments('id')
       table.integer('userId').notNullable()
+      table.smallint('type').notNullable()
       table.string('orderId', 20).notNullable()
       table.string('price', 6).notNullable()
       table.string('tax', 5).notNullable()

@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@shared/constants": "*",
+    "@shared/helpers": "*",
     "async": "^3.2.4",
     "axios": "^0.24.0",
     "compression": "^1.7.4",

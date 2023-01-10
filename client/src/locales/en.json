@@ -99,7 +99,6 @@
     "setting.subscribeSucceed": "Your plan has been upgraded successfully",
     "setting.paymentFailed": "Can not verify your payment, please contact {{email}} if your card has been charged",
     "setting.unsubscribe": "By unsubscribe, you account will be changed to a basic plan. We will partially refund your subscription fee based on remaining number of days on your current ",
-    "setting.planStartAt": "Subscribed since {{date}}",
     "setting.planEndAt": "Subscription ends at {{date}}",
     "setting.unsubscribeDesc": "Your current active plan will still be valid until the end of current cycle after unsubscribe. If you want to unsubscribe, click the Confirm button",
     "setting.unsubscribeSuccess": "Your have unsubscribed from our monthly plan",
@@ -109,6 +108,7 @@
     "setting.stateSelectPlaceholder": "Select your country",
     "setting.provinceSelectPlaceholder": "Select your province",
     "setting.billingVerificationNote": "Country/Province must matches your payment method, otherwise payment will be failed",
+    "setting.extendMoreTime": "Extend plan",
 
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",

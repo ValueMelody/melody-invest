@@ -1,14 +1,21 @@
 import * as commonEnum from 'enums/common'
 import * as constants from '@shared/constants'
+import * as helpers from '@shared/helpers'
 import * as localeTool from 'tools/locale'
 import { Button, Card, Label, Modal, Radio, Select } from 'flowbite-react'
 import { ChangeEvent, useMemo, useState } from 'react'
 import SubscribeButton from './SubscribeButton'
 import classNames from 'classnames'
 
-const PaymentModal = () => {
+const PaymentModal = ({
+  userType,
+}: {
+  userType: number;
+}) => {
+  const isBasicUser = userType === constants.User.Type.Basic
+
   const [isOpen, setIsOpen] = useState(false)
-  const [planType, setPlanType] = useState<number>(constants.User.Type.Pro)
+  const [planType, setPlanType] = useState<number>(isBasicUser ? constants.User.Type.Pro : userType)
   const [totalPrice, setTotalPrice] = useState('')
   const [stateCode, setStateCode] = useState('')
   const [provinceCode, setProvinceCode] = useState('')
@@ -41,13 +48,7 @@ const PaymentModal = () => {
   }, [stateCode, provinceCode])
 
   const taxAmount = useMemo(() => {
-    const percentage = stateCode === 'CA' && provinceCode
-      ? constants.User.BillingTax.State.CA.Province[
-        provinceCode as keyof typeof constants.User.BillingTax.State.CA.Province
-      ]
-      : 0
-    const tax = Math.round(parseFloat(totalPrice) * percentage * 100) / 100
-    return tax.toFixed(2)
+    return helpers.getTaxAmount(totalPrice, stateCode, provinceCode)
   }, [stateCode, provinceCode, totalPrice])
 
   const totalAmount = useMemo(() => {
@@ -110,7 +111,7 @@ const PaymentModal = () => {
   return (
     <>
       <Button onClick={handleOpenModal}>
-        {localeTool.t('common.upgrade')}
+        {isBasicUser ? localeTool.t('common.upgrade') : localeTool.t('setting.extendMoreTime')}
       </Button>
       <Modal
         show={isOpen}
@@ -121,30 +122,34 @@ const PaymentModal = () => {
         </Modal.Header>
         <Modal.Body className='flex flex-col px-16'>
           <section className='flex justify-between'>
-            <Card
-              className={classNames(
-                'cursor-pointer',
-                { 'card-active': selectedProType },
-              )}
-              onClick={() => handleSelectType(constants.User.Type.Pro)}
-            >
-              <h4 className='font-bold'>{commonEnum.Plan.Pro.Title}</h4>
-              {commonEnum.Plan.Pro.Services.map((service) => (
-                <h5 key={service}>{service}</h5>
-              ))}
-            </Card>
-            <Card
-              className={classNames(
-                'cursor-pointer',
-                { 'card-active': selectedPremiumType },
-              )}
-              onClick={() => handleSelectType(constants.User.Type.Premium)}
-            >
-              <h4 className='font-bold'>{commonEnum.Plan.Premium.Title}</h4>
-              {commonEnum.Plan.Premium.Services.map((service) => (
-                <h5 key={service}>{service}</h5>
-              ))}
-            </Card>
+            {(isBasicUser || selectedProType) && (
+              <Card
+                className={classNames(
+                  'cursor-pointer',
+                  { 'card-active': selectedProType },
+                )}
+                onClick={() => handleSelectType(constants.User.Type.Pro)}
+              >
+                <h4 className='font-bold'>{commonEnum.Plan.Pro.Title}</h4>
+                {commonEnum.Plan.Pro.Services.map((service) => (
+                  <h5 key={service}>{service}</h5>
+                ))}
+              </Card>
+            )}
+            {(isBasicUser || selectedPremiumType) && (
+              <Card
+                className={classNames(
+                  'cursor-pointer',
+                  { 'card-active': selectedPremiumType },
+                )}
+                onClick={() => handleSelectType(constants.User.Type.Premium)}
+              >
+                <h4 className='font-bold'>{commonEnum.Plan.Premium.Title}</h4>
+                {commonEnum.Plan.Premium.Services.map((service) => (
+                  <h5 key={service}>{service}</h5>
+                ))}
+              </Card>
+            )}
           </section>
           <section className='flex mt-6 justify-between'>
             <Select

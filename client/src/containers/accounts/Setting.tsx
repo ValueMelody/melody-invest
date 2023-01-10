@@ -146,20 +146,15 @@ const Setting = () => {
           {userTypeText.Services.map((service) => (
             <h5 key={service}>- {service}</h5>
           ))}
-          {user.planStartAtUTC && (
-            <h5>
-              {localeTool.t('setting.planStartAt', { date: user.planStartAtUTC })}
-            </h5>
-          )}
           {user.planEndAtUTC && (
             <h5>
               {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
             </h5>
           )}
           <div className='mt-4'>
-            {user.userType === constants.User.Type.Basic && (
-              <PaymentModal />
-            )}
+            <PaymentModal
+              userType={user.userType}
+            />
           </div>
         </Card>
         <Card className={cardClass}>
