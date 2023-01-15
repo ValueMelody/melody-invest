@@ -47,9 +47,9 @@ const minDate = getDateFromString(initialDate)
 const maxYear = getMaxYear()
 const maxDate = getDateFromString(maxYear)
 
-const rowClass = 'flex items-center mb-6'
+const rowClass = 'flex items-center mb-6 flex-wrap max-sm:justify-center'
 const leftClass = 'w-60 font-semibold flex items-center'
-const rightClass = 'w-96'
+const rightClass = 'w-96 max-sm:w-60'
 
 const EnvBuilder = () => {
   const dispatch = useDispatch<AppDispatch>()

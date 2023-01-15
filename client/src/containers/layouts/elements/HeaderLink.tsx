@@ -10,6 +10,7 @@ const HeaderLink = ({
   icon,
   'data-testid': dataTestId,
   className,
+  onClick,
 }: {
   isActive?: boolean;
   title?: string;
@@ -17,12 +18,14 @@ const HeaderLink = ({
   icon: FC<React.SVGProps<SVGSVGElement>>;
   ['data-testid']?: string;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <Link
       to={route}
       data-testid={dataTestId}
       className={classNames(className)}
+      onClick={onClick}
     >
       <Badge
         className='cursor-pointer'

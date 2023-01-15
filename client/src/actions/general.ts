@@ -13,12 +13,13 @@ export const refreshAccessToken = createAsyncThunk(
     const state = getState() as AppState
     const accessExpiresIn = state.global.accessExpiresIn
     const refreshExpiresIn = state.global.refreshExpiresIn
+    const refreshToken = state.global.refreshToken
     const verifyISO = dateTool.getVerifyISO()
 
-    if (accessExpiresIn > verifyISO || refreshExpiresIn <= verifyISO) return null
+    if (!refreshToken || accessExpiresIn > verifyISO || refreshExpiresIn <= verifyISO) return null
 
     try {
-      requestAdapter.setAuthToken(state.global.refreshToken)
+      requestAdapter.setAuthToken(refreshToken)
       const res: interfaces.response.AccessToken = await requestAdapter.sendPutRequest(
         endpoint,
         undefined,

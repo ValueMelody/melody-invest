@@ -3,7 +3,7 @@ import * as constants from '@shared/constants'
 import * as helpers from '@shared/helpers'
 import * as localeTool from 'tools/locale'
 import { Button, Card, Label, Modal, Radio, Select } from 'flowbite-react'
-import { ChangeEvent, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 import SubscribeButton from './SubscribeButton'
 import classNames from 'classnames'
 
@@ -78,6 +78,10 @@ const PaymentModal = ({
     ]
   }, [selectedProType])
 
+  useEffect(() => {
+    setPlanType(userType)
+  }, [userType])
+
   const handleOpenModal = () => {
     setIsOpen(true)
   }
@@ -121,11 +125,11 @@ const PaymentModal = ({
           {localeTool.t('setting.selectPlan')}
         </Modal.Header>
         <Modal.Body className='flex flex-col px-16'>
-          <section className='flex justify-between'>
+          <section className='flex justify-between max-sm:flex-wrap'>
             {(isBasicUser || selectedProType) && (
               <Card
                 className={classNames(
-                  'cursor-pointer',
+                  'cursor-pointer mb-4',
                   { 'card-active': selectedProType },
                 )}
                 onClick={() => handleSelectType(constants.User.Type.Pro)}
@@ -139,7 +143,7 @@ const PaymentModal = ({
             {(isBasicUser || selectedPremiumType) && (
               <Card
                 className={classNames(
-                  'cursor-pointer',
+                  'cursor-pointer mb-4',
                   { 'card-active': selectedPremiumType },
                 )}
                 onClick={() => handleSelectType(constants.User.Type.Premium)}
@@ -151,7 +155,7 @@ const PaymentModal = ({
               </Card>
             )}
           </section>
-          <section className='flex mt-6 justify-between'>
+          <section className='flex mt-6 justify-between max-sm:flex-wrap'>
             <Select
               onChange={handleSelectState}
               value={stateCode}
@@ -186,9 +190,9 @@ const PaymentModal = ({
             )}
           </section>
           <h5>* {localeTool.t('setting.billingVerificationNote')}</h5>
-          {planType && billingFilled && (
-            <section className='flex justify-between mt-6'>
-              <div>
+          {!!planType && !!billingFilled && (
+            <section className='flex justify-between mt-6 max-sm:flex-wrap'>
+              <div className='mb-4'>
                 <fieldset
                   className='lex flex-col gap-4'
                 >
@@ -223,15 +227,17 @@ const PaymentModal = ({
                 )}
               </div>
               {!!totalPrice && (
-                <SubscribeButton
-                  planType={planType}
-                  totalPrice={totalPrice}
-                  taxAmount={taxAmount}
-                  totalAmount={totalAmount}
-                  stateCode={stateCode}
-                  provinceCode={provinceCode}
-                  onCloseModal={handleCloseModal}
-                />
+                <div className='mb-4'>
+                  <SubscribeButton
+                    planType={planType}
+                    totalPrice={totalPrice}
+                    taxAmount={taxAmount}
+                    totalAmount={totalAmount}
+                    stateCode={stateCode}
+                    provinceCode={provinceCode}
+                    onCloseModal={handleCloseModal}
+                  />
+                </div>
               )}
             </section>
           )}

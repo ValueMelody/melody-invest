@@ -13,16 +13,17 @@ body {
 }
 
 .page-root {
-  @apply flex flex-wrap items-start justify-between;
+  @apply flex items-end justify-between  flex-wrap-reverse;
 }
 
 .page-aside {
-  @apply w-96 flex flex-col items-center;
+  @apply w-96 flex flex-col items-center mb-6;
 }
 
 .page-main {
   @apply flex flex-col;
   width: calc(100% - 26rem);
+  min-width: 20rem;
 }
 
 .account-root {
@@ -34,15 +35,15 @@ body {
 }
 
 .account-row {
-  @apply flex items-center mb-6;
+  @apply flex items-center mb-6 max-sm:flex-wrap max-sm:justify-center;
 }
 
 .account-left {
-  @apply w-60;
+  @apply w-36 max-sm:w-60;
 }
 
 .account-right {
-  @apply w-96;
+  @apply w-96 max-sm:w-60;
 }
 
 .account-footer {

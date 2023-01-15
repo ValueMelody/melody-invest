@@ -73,8 +73,9 @@ export const fetchTraderTickerDetail = createAsyncThunk(
   }: {
     envId: number;
     tickerId: number;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/tickers/${tickerId}`
+    await dispatch(refreshAccessToken())
 
     try {
       const res: interfaces.response.TickerDetail = await requestAdapter.sendGetRequest(endpoint)
@@ -97,8 +98,9 @@ export const fetchTraderBehaviorDetail = createAsyncThunk(
   }: {
     envId: number;
     behavior: interfaces.traderPatternModel.Behavior;
-  }, { rejectWithValue }) => {
+  }, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/envs/${envId}/behaviors/${behavior}`
+    await dispatch(refreshAccessToken())
 
     try {
       const res: interfaces.response.BehaviorDetail = await requestAdapter.sendGetRequest(endpoint)

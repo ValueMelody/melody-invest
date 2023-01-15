@@ -63,7 +63,7 @@ const BehaviorEditor = ({
       </header>
       <Select
         data-testid='select'
-        className='w-64'
+        className='w-52'
         value={behaviorValue || ''}
         onChange={handleSelect}
       >

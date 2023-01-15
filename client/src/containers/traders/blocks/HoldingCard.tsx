@@ -32,44 +32,45 @@ const HoldingCard = ({
     <Card
       className={className}
     >
-      <header className='flex justify-between items-center'>
-        <section className='flex items-center'>
+      <header className='flex flex-wrap justify-between items-center'>
+        <section className='flex flex-wrap items-center'>
           <Badge
-            className='mr-4'
+            className='mr-4 mb-2'
             color='indigo'
           >
             {localeTool.t('common.date')}: {holding.date}
           </Badge>
           {holding.totalValue !== null && (
-            <h5 className='mr-4'>
+            <h5 className='mr-4 mb-2'>
               <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
               {parseTool.holdingValue(holding.totalValue)}
             </h5>
           )}
           {holding.totalCash !== null && (
-            <h5>
+            <h5 className='mb-2'>
               <b>{localeTool.t('common.cash')}:</b>&nbsp;
               {parseTool.holdingValue(holding.totalCash)}
             </h5>
           )}
         </section>
-        <section className='flex items-center'>
+        <section className='flex flex-wrap items-center'>
           {previousHolding && (
             <ValueDiffer
-              className='mr-4'
+              className='mr-4 mb-2'
               title={localeTool.t('common.sinceLast')}
               currentValue={holding.totalValue}
               compareValue={previousHolding.totalValue}
             />
           )}
           <ValueDiffer
+            className='mb-2'
             title={localeTool.t('common.sinceStart')}
             currentValue={holding.totalValue}
             compareValue={initialValue}
           />
         </section>
       </header>
-      <div className='border border-gray-200 my-4' />
+      <div className='border border-gray-200 mb-2' />
       <section className='flex flex-wrap'>
         {displayedHoldingItems.map((holdingItem) => {
           return (

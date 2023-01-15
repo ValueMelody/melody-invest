@@ -103,6 +103,7 @@
     "pricing.planPrice": "${{num}} CAD / Month",
     "pricing.title": "Our Plans and Prices",
     "pricing.unit": "{{num}} Days",
+    "pricing.signUp": "Sign up a free account now",
 
     "permission.limited": "Unaccessible due to plan limit, check your account page for details",
 
@@ -240,7 +241,7 @@
     "traderEnv.allTickers": "Trade based on all stocks available",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",
-    "traderEnv.noResultYet": "There's no result generated for this environment yet",
+    "traderEnv.noResultYet": "There's no result generated for this environment yet, please check later",
     "traderEnv.topProfiles": "Top Profiles from this environment",
     "traderEnv.default" : "Default",
     "traderEnv.topTech" : "Top Tech",

@@ -42,7 +42,7 @@ const Layout: FunctionComponent = ({
     <>
       <Header />
       {!!messages.length && (
-        <section className='fixed top-16 left-4 right-4 z-50'>
+        <section className='fixed top-16 left-4 right-4 z-40'>
           {messages.map((message) => (
             <Alert
               className='mb-4'
