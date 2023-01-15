@@ -2,7 +2,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import {
-  ArchiveBoxIcon, BookmarkIcon, ChartBarIcon,
+  ArchiveBoxIcon, BookmarkIcon, ChartBarIcon, HomeIcon,
   TableCellsIcon, TicketIcon, UserCircleIcon,
 } from '@heroicons/react/24/solid'
 import HeaderLink from 'containers/layouts/elements/HeaderLink'
@@ -22,6 +22,12 @@ const Header = () => {
       className='fixed h-12 z-50 flex justify-between w-full bg-primary top-0 px-4'
     >
       <nav className={navClass}>
+        <HeaderLink
+          isActive={location.pathname === routerTool.homeRoute()}
+          className={headerClass}
+          route={routerTool.homeRoute()}
+          icon={HomeIcon}
+        />
         <HeaderLink
           isActive={location.pathname === routerTool.topProfilesRoute()}
           className={headerClass}

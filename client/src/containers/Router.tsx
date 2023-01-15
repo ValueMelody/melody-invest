@@ -8,6 +8,7 @@ import ComboDetail from './traders/combos/ComboDetail'
 import EnvBuilder from './traders/envs/EnvBuilder'
 import EnvDetail from './traders/envs/EnvDetail'
 import Forgot from './accounts/Forgot'
+import Home from './general/Home'
 import Layout from './layouts/Layout'
 import Pricing from './general/Pricing'
 import Privacy from './general/Privacy'
@@ -31,6 +32,10 @@ const Router = () => {
         <Route
           path={routerEnum.Nav.Terms}
           element={<Terms />}
+        />
+        <Route
+          path={routerEnum.Nav.Home}
+          element={<Home />}
         />
         <Route
           path={routerEnum.Nav.Privacy}
