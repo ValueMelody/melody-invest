@@ -358,7 +358,7 @@ const ProfileBuilder = () => {
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.id}
-            className='mx-4'
+            className='mx-4 mb-4'
             traderEnv={traderEnv}
             isActive={traderEnv.id === selectedTraderEnvId}
             onClick={handleSelectEnv}

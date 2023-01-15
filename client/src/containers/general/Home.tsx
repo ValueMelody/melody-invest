@@ -46,12 +46,12 @@ const Home = () => {
   return (
     <section className='flex flex-wrap justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'>
       <section className='flex flex-col'>
-        <section className='flex'>
+        <section className='flex  max-lg:justify-center'>
           <Badge>
             {localeTool.t('home.coreConcepts')}
           </Badge>
         </section>
-        <section className='flex flex-wrap'>
+        <section className='flex flex-wrap  max-lg:justify-center'>
           <Section
             title={localeTool.t('common.traderEnv')}
             desc={localeTool.t('home.traderEnvDefine')}
@@ -68,12 +68,12 @@ const Home = () => {
             Icon={PuzzlePieceIcon}
           />
         </section>
-        <section className='flex mt-4'>
+        <section className='flex mt-4  max-lg:justify-center'>
           <Badge>
             {localeTool.t('home.centralOutputs')}
           </Badge>
         </section>
-        <section className='flex flex-wrap'>
+        <section className='flex flex-wrap  max-lg:justify-center'>
           <Section
             title={localeTool.t('home.performancePrediction')}
             desc={localeTool.t('home.traderPerformanceList')}

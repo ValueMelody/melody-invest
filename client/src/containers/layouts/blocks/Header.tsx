@@ -97,7 +97,7 @@ const RightLinks = ({
   )
 }
 
-const navClass = 'flex items-center max-sm:invisible'
+const navClass = 'flex items-center max-lg:invisible'
 
 const Header = () => {
   const [showSideBar, setShowSideBar] = useState(false)
@@ -117,7 +117,7 @@ const Header = () => {
         className='fixed h-12 z-50 flex justify-between items-center w-full bg-primary top-0 px-4'
       >
         <Button
-          className='sm:hidden'
+          className='lg:hidden'
           size='sm'
           color='gray'
           onClick={handleOpenSideBar}
