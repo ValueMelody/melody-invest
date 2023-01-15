@@ -7,7 +7,7 @@ import TraderProfileCard from './TraderProfileCard'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const cardClass = 'w-96 m-4'
+const cardClass = 'w-96 m-4 max-sm:w-80'
 const titleClass = 'font-semibold mb-4'
 
 const EachTops = ({

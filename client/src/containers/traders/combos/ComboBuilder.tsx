@@ -74,13 +74,13 @@ const ComboBuilder = () => {
       <h1 className='builder-title'>
         {localeTool.t('comboBuilder.title')}
       </h1>
-      <section className='flex items-center'>
+      <section className='flex items-center flex-wrap max-sm:justify-center'>
         <RequiredLabel
           className='w-60'
           title={localeTool.t('comboBuilder.name')}
         />
         <TextInput
-          className='w-96'
+          className='w-96 max-sm:w-60'
           value={comboName}
           onChange={handleChangeName}
         />
@@ -104,7 +104,7 @@ const ComboBuilder = () => {
       <section className='flex items-center justify-around flex-wrap mb-8'>
         {profiles.map((profile, index) => (
           <div
-            className='w-1/2 px-8 py-4'
+            className='w-1/2 px-8 py-4 max-sm:w-96'
             key={profile?.trader.id || `index-${index}`}
           >
             <TraderProfileCard

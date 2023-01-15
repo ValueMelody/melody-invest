@@ -1,8 +1,10 @@
 import * as commonEnum from 'enums/common'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
+import { useSelector } from 'react-redux'
 
 const Header = ({
   title,
@@ -46,15 +48,17 @@ const Item = ({
   )
 }
 
-const sectionClass = 'flex flex-col items-center w-96'
+const sectionClass = 'flex flex-col items-center w-96 max-sm:w-full'
 
 const Pricing = () => {
+  const global = useSelector(selectors.selectGlobal())
+
   return (
     <section className='flex flex-col items-center'>
       <h1 className='font-bold text-2xl mb-6'>
         {localeTool.t('pricing.title')}
       </h1>
-      <section className='flex justify-around w-full'>
+      <section className='flex justify-around w-full max-sm:flex-wrap'>
         <section className={sectionClass}>
           <Header
             title={commonEnum.Plan.Basic.Title}
@@ -68,21 +72,6 @@ const Pricing = () => {
             />
           ))}
           <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <div className='w-full bg-slate-100 flex justify-center p-4'>
-            <Link
-              to={routerTool.signUpRoute()}
-              className='bg-primary text-white rounded px-4 py-2'
-            >
-              {localeTool.t('common.signUp')}
-            </Link>
-          </div>
         </section>
         <section className={sectionClass}>
           <Header
@@ -96,13 +85,6 @@ const Pricing = () => {
               title={service}
             />
           ))}
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
           <Item title='' />
           <Item title='' />
         </section>
@@ -120,15 +102,18 @@ const Pricing = () => {
           ))}
           <Item title='' />
           <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
-          <Item title='' />
         </section>
       </section>
+      {!global.refreshToken && (
+        <div className='w-full bg-slate-100 flex justify-center p-4'>
+          <Link
+            to={routerTool.signUpRoute()}
+            className='bg-primary text-white rounded px-4 py-2'
+          >
+            {localeTool.t('pricing.signUp')}
+          </Link>
+        </div>
+      )}
     </section>
   )
 }

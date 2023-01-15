@@ -93,7 +93,7 @@ tradersRouter.get(
 
 tradersRouter.get(
   '/envs/:env_id/behaviors/:behavior',
-  authMiddleware.normalUser,
+  authMiddleware.guestOrUser,
   accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)
@@ -109,7 +109,7 @@ tradersRouter.get(
 
 tradersRouter.get(
   '/envs/:env_id/tickers/:ticker_id',
-  authMiddleware.normalUser,
+  authMiddleware.guestOrUser,
   accessMiddleware.couldAccessEnv,
   async (req, res) => {
     const envId = parseInt(req.params.env_id)

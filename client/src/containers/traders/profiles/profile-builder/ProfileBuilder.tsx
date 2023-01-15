@@ -354,7 +354,7 @@ const ProfileBuilder = () => {
       <h2 className={subTitleClass}>
         {localeTool.t('common.selectEnvironment')}:
       </h2>
-      <section className='flex justify-center'>
+      <section className='flex justify-center flex-wrap'>
         {traderEnvs.map((traderEnv) => (
           <TraderEnvCard
             key={traderEnv.id}

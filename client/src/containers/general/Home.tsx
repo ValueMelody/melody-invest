@@ -44,14 +44,14 @@ const Home = () => {
   }
 
   return (
-    <section className='flex justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'>
+    <section className='flex flex-wrap justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'>
       <section className='flex flex-col'>
         <section className='flex'>
           <Badge>
             {localeTool.t('home.coreConcepts')}
           </Badge>
         </section>
-        <section className='flex'>
+        <section className='flex flex-wrap'>
           <Section
             title={localeTool.t('common.traderEnv')}
             desc={localeTool.t('home.traderEnvDefine')}
@@ -73,7 +73,7 @@ const Home = () => {
             {localeTool.t('home.centralOutputs')}
           </Badge>
         </section>
-        <section className='flex'>
+        <section className='flex flex-wrap'>
           <Section
             title={localeTool.t('home.performancePrediction')}
             desc={localeTool.t('home.traderPerformanceList')}
