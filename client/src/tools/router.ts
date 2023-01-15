@@ -87,3 +87,7 @@ export const privacyRoute = (): string => {
 export const termsRoute = (): string => {
   return routerEnum.Nav.Terms
 }
+
+export const homeRoute = (): string => {
+  return routerEnum.Nav.Home
+}
