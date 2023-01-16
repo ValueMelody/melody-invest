@@ -7,3 +7,15 @@ describe('#t', () => {
     expect(localeTool.t('common.notexistrandomstring')).toBe('common.notexistrandomstring')
   })
 })
+
+describe('#getStateName', () => {
+  test('could return state name', () => {
+    expect(localeTool.getStateName('CA')).toBe('Canada')
+  })
+})
+
+describe('#getProvinceName', () => {
+  test('could return province name', () => {
+    expect(localeTool.getProvinceName('CA', 'ON')).toBe('Ontario')
+  })
+})

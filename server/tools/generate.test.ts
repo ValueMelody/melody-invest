@@ -77,9 +77,16 @@ describe('#encodeJWT', () => {
 })
 
 describe('#decodeJWT', () => {
-  test('could decode jwt', () => {
+  test('could decode accessToken', () => {
     const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
     const result = generate.decodeJWT(jwt, false)
+    expect(result?.id).toBe(1)
+    expect(result?.email).toBe('abc')
+    expect(result?.type).toBe(1)
+  })
+  test('could decode refreshToken', () => {
+    const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h', true)
+    const result = generate.decodeJWT(jwt, true)
     expect(result?.id).toBe(1)
     expect(result?.email).toBe('abc')
     expect(result?.type).toBe(1)
