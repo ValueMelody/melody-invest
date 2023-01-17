@@ -30,12 +30,6 @@ export const BillingTax = Object.freeze({
   },
 })
 
-export const SubscriptionStatus = Object.freeze({
-  Active: 1,
-  Suspended: 2,
-  Cancelled: 3,
-})
-
 export const PlanPrice = Object.freeze({
   Pro: {
     OneMonthPrice: '11.99',

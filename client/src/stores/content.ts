@@ -12,6 +12,8 @@ export interface ContentState {
 
 const initialState: ContentState = {
   activeTraderChartIndex: 0,
+  privacyPolicy: undefined,
+  termsPolicy: undefined,
 }
 
 const storePolicy = (

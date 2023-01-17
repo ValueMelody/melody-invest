@@ -9,10 +9,14 @@ describe('#Type', () => {
   })
 })
 
-describe('#SubscriptionStatus', () => {
-  expect(user.SubscriptionStatus.Active).toBeDefined()
-  expect(user.SubscriptionStatus.Suspended).toBeDefined()
-  expect(user.SubscriptionStatus.Cancelled).toBeDefined()
+describe('#BillingTax', () => {
+  expect(user.BillingTax.State.CA.Province).toBeInstanceOf(Object)
+  expect(user.BillingTax.State.Other).toBeInstanceOf(Object)
+})
+
+describe('#PlanPrice', () => {
+  expect(user.PlanPrice.Pro).toBeInstanceOf(Object)
+  expect(user.PlanPrice.Premium).toBeInstanceOf(Object)
 })
 
 describe('#PlanLimit', () => {
