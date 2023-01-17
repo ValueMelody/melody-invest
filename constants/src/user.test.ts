@@ -14,6 +14,11 @@ describe('#BillingTax', () => {
   expect(user.BillingTax.State.Other).toBeInstanceOf(Object)
 })
 
+describe('#PlanPrice', () => {
+  expect(user.PlanPrice.Pro).toBeInstanceOf(Object)
+  expect(user.PlanPrice.Premium).toBeInstanceOf(Object)
+})
+
 describe('#PlanLimit', () => {
   expect(user.PlanLimit.Guest).toBeDefined()
   expect(user.PlanLimit.Basic).toBeDefined()
