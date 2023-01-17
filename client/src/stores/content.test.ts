@@ -37,4 +37,10 @@ describe('#store', () => {
     })
     expect(store.getState().content.termsPolicy).toBeUndefined()
   })
+
+  test('could changeActiveTraderChartIndex', async () => {
+    store.dispatch(contentSlice.actions.changeActiveTraderChartIndex(2))
+
+    expect(store.getState().content.activeTraderChartIndex).toBe(2)
+  })
 })
