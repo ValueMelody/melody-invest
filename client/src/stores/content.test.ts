@@ -13,12 +13,14 @@ describe('#store', () => {
   test('get default state', () => {
     expect(store.getState().content).toStrictEqual({
       activeTraderChartIndex: 0,
+      privacyPolicy: undefined,
+      termsPolicy: undefined,
     })
   })
 
   const policyType = mock<interfaces.policyModel.Record>({})
 
-  test('could storePolicy', async () => {
+  test('could store privacyPolicy', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {
         return {
@@ -36,6 +38,26 @@ describe('#store', () => {
       type: 1,
     })
     expect(store.getState().content.termsPolicy).toBeUndefined()
+  })
+
+  test('could store termsPolicy', async () => {
+    jest.spyOn(axios, 'get')
+      .mockImplementation(async () => {
+        return {
+          data: {
+            ...instance(policyType),
+            type: 2,
+          },
+        }
+      })
+
+    await store.dispatch(actions.fetchSystemPolicy(2))
+
+    expect(store.getState().content.termsPolicy).toStrictEqual({
+      ...instance(policyType),
+      type: 2,
+    })
+    expect(store.getState().content.privacyPolicy).toBeUndefined()
   })
 
   test('could changeActiveTraderChartIndex', async () => {
