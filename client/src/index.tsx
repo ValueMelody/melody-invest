@@ -9,13 +9,16 @@ import Router from './containers/Router'
 import { Spinner } from 'flowbite-react'
 import { store } from 'stores'
 
-const App = () => {
+export const App = () => {
   const { isLoading } = useSelector(selectors.selectGlobal())
 
   return (
     <>
       {isLoading && (
-        <div className='fixed h-screen w-full flex items-center justify-center'>
+        <div
+          data-testid='loader'
+          className='fixed h-screen w-full flex items-center justify-center'
+        >
           <Spinner size='xl' />
         </div>
       )}
