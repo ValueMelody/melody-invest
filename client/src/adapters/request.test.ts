@@ -1,0 +1,64 @@
+import * as request from './request'
+import axios from 'axios'
+
+describe('#setAuthToken', () => {
+  test('could set auth', () => {
+    request.setAuthToken('ABC')
+    expect(axios.defaults.headers.common.Authorization).toBe('Bearer ABC')
+
+    request.setAuthToken('')
+    expect(axios.defaults.headers.common.Authorization).toBe('')
+  })
+
+  test('could sent get request', async () => {
+    const get = jest.fn()
+    jest.spyOn(axios, 'get').mockImplementation(async (url) => {
+      get(url)
+      return {
+        data: 123,
+      }
+    })
+
+    const result = await request.sendGetRequest('abc.com')
+    expect(get).toBeCalledWith('abc.com')
+    expect(result).toBe(123)
+  })
+
+  test('could sent post request', async () => {
+    const post = jest.fn()
+    jest.spyOn(axios, 'post').mockImplementation(async (url, params) => {
+      post(url, params)
+      return {
+        data: 123,
+      }
+    })
+
+    const result = await request.sendPostRequest('abc.com', { name: '111' })
+    expect(post).toBeCalledWith('abc.com', { name: '111' })
+    expect(result).toBe(123)
+  })
+
+  test('could sent put request', async () => {
+    const put = jest.fn()
+    jest.spyOn(axios, 'put').mockImplementation(async (url, params) => {
+      put(url, params)
+      return {
+        data: 123,
+      }
+    })
+
+    const result = await request.sendPutRequest('abc.com', { name: '111' })
+    expect(put).toBeCalledWith('abc.com', { name: '111' })
+    expect(result).toBe(123)
+  })
+
+  test('could sent delete request', async () => {
+    const remove = jest.fn()
+    jest.spyOn(axios, 'delete').mockImplementation(async (url) => {
+      remove(url)
+    })
+
+    await request.sendDeleteRequest('abc.com')
+    expect(remove).toBeCalledWith('abc.com')
+  })
+})

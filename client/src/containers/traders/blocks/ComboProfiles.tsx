@@ -54,7 +54,7 @@ const ComboProfiles = ({
       <TraderProfileCard
         className='w-80 [&>div]:p-4'
         disabledUnwatch
-        profile={profilesWithEnvs[activeIndex].profile}
+        profile={profilesWithEnvs[activeIndex]?.profile}
         onClick={handleClickProfile}
       />
     </section>

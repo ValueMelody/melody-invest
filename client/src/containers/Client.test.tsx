@@ -1,0 +1,36 @@
+import { act, render, screen } from 'test.utils'
+import * as routerEnum from 'enums/router'
+import Client from './Client'
+import { createMemoryHistory } from 'history'
+import { globalSlice } from 'stores/global'
+import { store } from 'stores'
+
+jest.mock('react-select', () => '')
+
+afterAll(() => {
+  store.dispatch(globalSlice.actions._resetForTest())
+})
+
+describe('#Client', () => {
+  test('could render without loader', () => {
+    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Home] })
+
+    render(<Client />, { history })
+
+    act(() => {
+      store.dispatch(globalSlice.actions.stopLoading())
+    })
+    expect(screen.queryByTestId('loader')).not.toBeInTheDocument()
+  })
+
+  test('could render with loader', () => {
+    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Home] })
+
+    render(<Client />, { history })
+
+    act(() => {
+      store.dispatch(globalSlice.actions.startLoading())
+    })
+    expect(screen.queryByTestId('loader')).toBeInTheDocument()
+  })
+})

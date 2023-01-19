@@ -43,6 +43,7 @@ const UnwatchEnvButton = ({
       >
         <h4>{localeTool.t('unwatchEnv.desc')}</h4>
         <Button
+          data-testid='confirmUnwatchBtn'
           onClick={handleConfirmUnwatch}
           className='mt-2'
         >

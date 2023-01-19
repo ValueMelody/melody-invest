@@ -52,7 +52,7 @@ describe('#Terms', () => {
     }))
     render(<Terms />)
     const content = await waitFor(() => screen.queryByTestId('terms-content'))
-    waitFor(() => {
+    await waitFor(() => {
       expect(content?.innerHTML).toBe('Terms already fetched')
       expect(fetchMock).toBeCalledTimes(0)
     })

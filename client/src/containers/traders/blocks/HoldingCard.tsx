@@ -88,6 +88,7 @@ const HoldingCard = ({
         <div className='flex justify-center'>
           <Button
             color='gray'
+            data-testid='showAllBtn'
             onClick={handleClickShowMore}
           >
             {localeTool.t('profile.showAllHoldings')}
