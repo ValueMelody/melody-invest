@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
+import { fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import HoldingCard from './HoldingCard'
-import { fireEvent, render, screen } from 'test.utils'
 
 const holdingType = mock<interfaces.traderHoldingModel.Detail>({})
 const itemType = mock<interfaces.traderHoldingModel.Item>({})

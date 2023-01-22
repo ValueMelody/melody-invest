@@ -3,7 +3,6 @@ import * as selectors from 'selectors'
 import { act, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import ComboDetail from './ComboDetail'
-import axios from 'axios'
 
 jest.mock('selectors', () => {
   return {

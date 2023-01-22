@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
-import { act, fireEvent, render, screen } from 'test.utils'
-import UnwatchEnvButton from './UnwatchEnvButton'
-import { instance, mock } from 'ts-mockito'
 import * as traderAction from 'actions/trader'
+import { act, fireEvent, render, screen } from 'test.utils'
+import { instance, mock } from 'ts-mockito'
+import UnwatchEnvButton from './UnwatchEnvButton'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
 const envType = mock<interfaces.traderEnvModel.Record>({})
