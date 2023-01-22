@@ -91,6 +91,7 @@ const Home = () => {
           {localeTool.t('home.header')}
         </h1>
         <Button
+          data-testid='signUpBtn'
           color='gray'
           onClick={handleClickSignUp}
         >
@@ -98,6 +99,7 @@ const Home = () => {
           <ArrowRightIcon className='icon-size ml-2' />
         </Button>
         <Button
+          data-testid='behaviorsBtn'
           color='gray'
           className='my-4'
           onClick={handleClickBehaviors}
@@ -106,6 +108,7 @@ const Home = () => {
           <ArrowRightIcon className='icon-size ml-2' />
         </Button>
         <Button
+          data-testid='stocksBtn'
           color='gray'
           onClick={handleClickStocks}
         >

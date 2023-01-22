@@ -135,6 +135,7 @@ const ComboBuilder = () => {
       <form onSubmit={handleSubmit}>
         <footer className='flex justify-center'>
           <Button
+            data-testid='createBtn'
             type='submit'
             disabled={!hasValidName || !hasValidTraders || hasDuplicatedName || hasDuplicatedCombo}
           >

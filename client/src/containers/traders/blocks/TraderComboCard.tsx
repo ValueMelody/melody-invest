@@ -54,7 +54,10 @@ const TraderComboCard = ({
       onClick={!disabled ? handleClickCombo : undefined}
     >
       <header className='flex justify-between items-center'>
-        <h3 className='font-bold'>
+        <h3
+          className='font-bold'
+          data-testid='traderComboCardName'
+        >
           {localeTool.t('common.combo')}: {parseTool.traderComboName(traderCombo)}
         </h3>
         {disabled && (

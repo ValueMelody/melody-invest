@@ -376,6 +376,7 @@ const ProfileBuilder = () => {
       <form onSubmit={handleSubmit}>
         <footer className='flex flex-col items-center mt-6'>
           <Button
+            data-testid='createBtn'
             type='submit'
             disabled={
               !isValidBuyBehavior ||

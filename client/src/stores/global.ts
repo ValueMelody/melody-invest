@@ -189,7 +189,12 @@ export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
-    removeMessage, addMessage, _updateForTest, _resetForTest: (state) => _resetForTest(state, initialState),
+    removeMessage,
+    addMessage,
+    startLoading,
+    stopLoading,
+    _updateForTest,
+    _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.createUserPayment.fulfilled, onCreatePayment)

@@ -227,6 +227,7 @@ const EnvBuilder = () => {
         <div>
           <Button
             type='submit'
+            data-testid='createButton'
             disabled={!couldCreate}
           >
             {localeTool.t('common.confirmAndWatch')}

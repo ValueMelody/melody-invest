@@ -123,6 +123,7 @@ const Setting = () => {
             {localeTool.t('common.email')}: {user.userEmail}
           </h4>
           <Button
+            data-testid='signOutBtn'
             color='gray'
             onClick={handleSignOut}
             className='mb-4'
@@ -130,6 +131,7 @@ const Setting = () => {
             {localeTool.t('setting.signOut')}
           </Button>
           <Button
+            data-testid='lockAccessBtn'
             color='gray'
             onClick={handleToggleConfirmLock}
           >
@@ -193,6 +195,7 @@ const Setting = () => {
               onChange={handleChangeRetypePassword}
             />
             <Button
+              data-testid='changePasswordBtn'
               type='submit'
               disabled={!currentPassword || !newPassword || !retypePassword}
             >
