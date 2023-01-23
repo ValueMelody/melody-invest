@@ -1,8 +1,3 @@
-const ignorePath = {
-  coveragePathIgnorePatterns: ['/dist/'],
-  testPathIgnorePatterns: ['/dist/'],
-}
-
 module.exports = {
   projects: [
     {
@@ -30,7 +25,6 @@ module.exports = {
         '<rootDir>/scripts/mocks/adapters/storageMock',
       ],
       testMatch: ['<rootDir>/client/**/*.test.{ts,tsx}'],
-      ...ignorePath,
     },
     {
       displayName: 'server',
@@ -52,8 +46,9 @@ module.exports = {
         '<rootDir>/scripts/mocks/adapters/cacheMock',
         '<rootDir>/scripts/mocks/adapters/databaseMock',
       ],
-      testMatch: ['<rootDir>/server/**/*.test.ts'],
-      ...ignorePath,
+      testMatch: [
+        '<rootDir>/server/**/*.test.ts',
+      ],
     },
     {
       displayName: 'constants',
@@ -62,7 +57,6 @@ module.exports = {
         '^.+\\.ts$': ['@swc/jest'],
       },
       testMatch: ['<rootDir>/constants/**/*.test.ts'],
-      ...ignorePath,
     },
     {
       displayName: 'helpers',
@@ -71,7 +65,6 @@ module.exports = {
         '^.+\\.ts$': ['@swc/jest'],
       },
       testMatch: ['<rootDir>/helpers/**/*.test.ts'],
-      ...ignorePath,
     },
   ],
   coverageReporters: ['text'],
@@ -81,6 +74,8 @@ module.exports = {
     './constants/**/*.ts',
     './helpers/**/*.ts',
     '!./**/*.test.ts',
+    '!./server/routers/index.ts',
+    '!./server/routers/cron.ts',
   ],
   coverageThreshold: {
     global: {

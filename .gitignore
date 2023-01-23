@@ -4,6 +4,7 @@ node_modules
 .DS_Store
 
 constants/dist
+helpers/dist
 server/dist
 client/dist
 
