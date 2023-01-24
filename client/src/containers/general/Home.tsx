@@ -44,7 +44,10 @@ const Home = () => {
   }
 
   return (
-    <section className='flex flex-wrap justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'>
+    <section
+      className='flex flex-wrap justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'
+      style={{ minHeight: 'calc(100vh - 200px)' }}
+    >
       <section className='flex flex-col'>
         <section className='flex  max-lg:justify-center'>
           <Badge>

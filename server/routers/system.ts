@@ -33,5 +33,6 @@ systemRouter.get('/default-trader-combos', async (req, res) => {
 
 systemRouter.get('/defaults', async (req, res) => {
   const defaults = await crudSystems.getDefaults()
+
   return res.status(200).send(defaults)
 })

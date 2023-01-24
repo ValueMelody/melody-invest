@@ -8,7 +8,7 @@ import * as taskEnum from 'enums/task'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
 
-const run = async () => {
+export const run = async () => {
   const taskName = process.argv[2]
 
   switch (taskName) {
@@ -76,13 +76,17 @@ const run = async () => {
     default:
       throw new Error('Task does not exist')
   }
-  process.exit(0)
 }
 
+// istanbul ignore next
 const initSettings = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
+  process.exit(0)
 }
 
-initSettings().then(run)
+// istanbul ignore next
+if (require.main === module) {
+  initSettings().then(run)
+}

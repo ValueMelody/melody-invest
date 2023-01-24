@@ -1,4 +1,3 @@
-
 import 'express-async-errors'
 import * as adapterEnum from 'enums/adapter'
 import * as errorEnum from 'enums/error'
