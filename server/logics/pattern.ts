@@ -61,10 +61,11 @@ export const pickBehaviorValues = (
   const expectedTotal = Math.floor(allValues.length / 2) || 1
   const chanceOfStay = (expectedTotal / allValues.length) * 100
   const subValues = allValues.reduce((values: BehaviorValue[], value: BehaviorValue) => {
-    const shouldStay = generateTool.pickNumberInRange(1, 100) <= chanceOfStay
     const hasRoom = values.length < expectedTotal
-    if (shouldStay && hasRoom) return [...values, value]
-    return values
+    if (!hasRoom) return values
+
+    const shouldStay = generateTool.pickNumberInRange(1, 100) <= chanceOfStay
+    return shouldStay ? [...values, value] : values
   }, [])
 
   if (!subValues.length) {

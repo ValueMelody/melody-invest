@@ -1,7 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
 import * as trader from './trader'
 
-beforeAll(async () => {
+beforeEach(async () => {
   databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
@@ -54,7 +54,7 @@ beforeAll(async () => {
   })
 })
 
-afterAll(async () => {
+afterEach(async () => {
   const db = databaseAdapter.getConnection()
   await db.destroy()
 })
@@ -142,6 +142,24 @@ describe('#getTopPerformancers', () => {
     expect(traders[0].id).toBe(6)
     expect(traders[1].id).toBe(5)
     expect(traders[2].id).toBe(4)
+  })
+})
+
+describe('#getByRank', () => {
+  test('could get by rank', async () => {
+    const rankTrader = await trader.getByRank(1, 1)
+    expect(rankTrader?.id).toBe(3)
+  })
+})
+
+describe('#deactivateAllByRankingNumber', () => {
+  test('could deactivate by ranking number', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await trader.deactivateAllByRankingNumber(1, 2, transaction)
+    await transaction.commit()
+    const target = await trader.getByPK(1)
+    expect(target).toBeTruthy()
+    expect(target?.isActive).toBe(false)
   })
 })
 
@@ -261,7 +279,7 @@ describe('#create', () => {
 describe('#update', () => {
   test('could update', async () => {
     const transaction = await databaseAdapter.createTransaction()
-    const updated = await trader.update(105, {
+    const updated = await trader.update(103, {
       yearlyPercentNumber: 100,
       pastWeekPercentNumber: 10,
       pastMonthPercentNumber: 20,
@@ -271,7 +289,7 @@ describe('#update', () => {
       oneDecadeTrends: '100,200,300',
     }, transaction)
     await transaction.commit()
-    expect(updated.id).toBe(105)
+    expect(updated.id).toBe(103)
     expect(updated.yearlyPercentNumber).toBe(100)
     expect(updated.pastWeekPercentNumber).toBe(10)
     expect(updated.pastMonthPercentNumber).toBe(20)
@@ -279,8 +297,8 @@ describe('#update', () => {
     expect(updated.pastYearPercentNumber).toBe(40)
     expect(updated.oneYearTrends).toStrictEqual([10, 20, 30])
     expect(updated.oneDecadeTrends).toStrictEqual([100, 200, 300])
-    const record = await trader.getByPK(105)
-    expect(record?.id).toBe(105)
+    const record = await trader.getByPK(103)
+    expect(record?.id).toBe(103)
     expect(record?.yearlyPercentNumber).toBe(100)
     expect(record?.pastWeekPercentNumber).toBe(10)
     expect(record?.pastMonthPercentNumber).toBe(20)
@@ -297,7 +315,7 @@ describe('#createOrActive', () => {
     const created = await trader.createOrActive(3, 1, null, null, false, true, transaction)
     await transaction.commit()
     expect(created.isEdited).toBe(true)
-    expect(created.record.id).toBe(106)
+    expect(created.record.id).toBe(105)
     expect(created.record.isActive).toBe(true)
     expect(created.record.accessCode.length).toBe(16)
     expect(created.record.traderEnvId).toBe(3)
