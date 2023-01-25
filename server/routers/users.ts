@@ -4,10 +4,7 @@ import * as crudUsers from 'services/crudUsers'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
 import * as verifyTool from 'tools/verify'
-import { Router } from 'express'
-
-const usersRouter = Router()
-export default usersRouter
+import { Request, Response, Router } from 'express'
 
 const validateEmail = (email: string) => {
   if (!email) throw errorEnum.Custom.MissingParams
@@ -25,13 +22,13 @@ const validateAccessCode = (code: string) => {
   if (!code || code.length !== 64) throw errorEnum.Custom.WrongAccessCode
 }
 
-usersRouter.get('/overall', authMiddleware.normalUser, async (req, res) => {
+export const getOverall = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
   const overall = await crudUsers.getUserOverall(auth.id)
   return res.status(200).send(overall)
-})
+}
 
-usersRouter.post('/token', async (req, res) => {
+export const createToken = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   const password = req.body.password?.trim()
   const remember = req.body.remember
@@ -41,9 +38,9 @@ usersRouter.post('/token', async (req, res) => {
 
   const userToken = await crudUsers.createUserToken(email, password, remember)
   return res.status(201).send(userToken)
-})
+}
 
-usersRouter.post('/', async (req, res) => {
+export const createUser = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   const password = req.body.password?.trim()
   const isConfirmed = req.body.isConfirmed
@@ -54,9 +51,9 @@ usersRouter.post('/', async (req, res) => {
 
   const user = await crudUsers.createUser(email, password)
   return res.status(201).send(user)
-})
+}
 
-usersRouter.post('/payment', authMiddleware.normalUser, async (req, res) => {
+export const createPayment = async (req: Request, res: Response) => {
   const orderId = req.body.orderId?.trim()
   const planType = Number(req.body.planType)
   const stateCode = req.body.stateCode || null
@@ -68,17 +65,17 @@ usersRouter.post('/payment', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.request.Auth = req.body.auth
   const userToken = await crudUsers.createPayment(auth.id, orderId, planType, stateCode, provinceCode)
   return res.status(201).send(userToken)
-})
+}
 
-usersRouter.post('/reset', async (req, res) => {
+export const createReset = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   validateEmail(email)
 
   await crudUsers.generateResetCode(email)
   return res.status(201).send()
-})
+}
 
-usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
+export const updatePassword = async (req: Request, res: Response) => {
   const currentPassword = req.body.currentPassword?.trim()
   const newPassword = req.body.newPassword?.trim()
 
@@ -88,24 +85,24 @@ usersRouter.put('/password', authMiddleware.normalUser, async (req, res) => {
   const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.updatePassword(auth.id, currentPassword, newPassword)
   return res.status(204).send()
-})
+}
 
-usersRouter.put('/lock', authMiddleware.normalUser, async (req, res) => {
+export const lockUser = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.lockAccess(auth.id)
   return res.status(204).send()
-})
+}
 
-usersRouter.put('/activate', async (req, res) => {
+export const activateUser = async (req: Request, res: Response) => {
   const token = req.body.token?.trim()
 
   validateAccessCode(token)
 
   await crudUsers.activateUser(token)
   return res.status(204).send()
-})
+}
 
-usersRouter.put('/reset', async (req, res) => {
+export const resetPassword = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   const password = req.body.password?.trim()
   const resetCode = req.body.resetCode.trim()
@@ -115,10 +112,23 @@ usersRouter.put('/reset', async (req, res) => {
 
   await crudUsers.resetPassword(email, password, resetCode)
   return res.status(204).send()
-})
+}
 
-usersRouter.put('/token', authMiddleware.authByRefreshToken, async (req, res) => {
+export const refreshToken = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
   const tokens = await crudUsers.refreshAccessToken(auth.id, auth.email, auth.type)
   return res.status(200).send(tokens)
-})
+}
+
+export const attachRoutes = (router: Router) => {
+  router.get('/overall', authMiddleware.normalUser, getOverall)
+  router.post('/token', createToken)
+  router.post('/', createUser)
+  router.post('/payment', authMiddleware.normalUser, createPayment)
+  router.post('/reset', createReset)
+  router.put('/password', authMiddleware.normalUser, updatePassword)
+  router.put('/lock', authMiddleware.normalUser, lockUser)
+  router.put('/activate', activateUser)
+  router.put('/reset', resetPassword)
+  router.put('/token', authMiddleware.authByRefreshToken, refreshToken)
+}

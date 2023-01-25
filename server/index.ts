@@ -1,14 +1,14 @@
 import 'express-async-errors'
 import * as adapterEnum from 'enums/adapter'
 import * as errorEnum from 'enums/error'
-import express, { NextFunction, Request, Response } from 'express'
+import express, { NextFunction, Request, Response, Router } from 'express'
+import { attachRoutes as attachSystemRoutes } from 'routers/system'
+import { attachRoutes as attachTradersRoutes } from 'routers/traders'
+import { attachRoutes as attachUsersRoutes } from 'routers/users'
 import compression from 'compression'
 import cors from 'cors'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
-import systemRouter from 'routers/system'
-import tradersRouter from 'routers/traders'
-import usersRouter from 'routers/users'
 
 const app = express()
 export default app
@@ -26,8 +26,16 @@ app.use(express.urlencoded({ extended: true }))
 initDatabase()
 initCache()
 
+const systemRouter = Router()
+attachSystemRoutes(systemRouter)
 app.use('/system', systemRouter)
+
+const usersRouter = Router()
+attachUsersRoutes(usersRouter)
 app.use('/users', usersRouter)
+
+const tradersRouter = Router()
+attachTradersRoutes(tradersRouter)
 app.use('/traders', tradersRouter)
 
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
