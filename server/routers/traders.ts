@@ -13,10 +13,10 @@ const validateGetProfileParams = (id: number, accessCode: string) => {
 }
 
 const validateCreateProfileParams = (
-  traderId: number,
+  traderEnvId: number,
   traderPattern: interfaces.traderPatternModel.Create,
 ) => {
-  if (!traderId || !traderPattern) throw errorEnum.Custom.MissingParams
+  if (!traderEnvId || !traderPattern) throw errorEnum.Custom.MissingParams
 }
 
 const validateCreateEnvParams = (name: string, startDate: string, tickerIds: number[] | null) => {
