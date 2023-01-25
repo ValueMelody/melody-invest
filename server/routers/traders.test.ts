@@ -352,7 +352,7 @@ describe('#attachRoutes', () => {
     traders.attachRoutes(router)
     expect(routerGet).toHaveBeenCalledWith('/profiles/:id/:access_code', traders.getTraderProfile)
     expect(routerGet).toHaveBeenCalledWith(
-      '/profiles/:id/:access_code/detail', authMiddleware.guestOrUser, traders.getProfileDetail
+      '/profiles/:id/:access_code/detail', authMiddleware.guestOrUser, traders.getProfileDetail,
     )
     expect(routerGet).toHaveBeenCalledWith('/combos/:combo_id', authMiddleware.normalUser, traders.getComboDetail)
     expect(routerGet).toHaveBeenCalledWith(
