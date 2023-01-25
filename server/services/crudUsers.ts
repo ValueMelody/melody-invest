@@ -103,7 +103,7 @@ const generateActivationEmail = async (
 export const createUser = async (
   email: string,
   password: string,
-) => {
+): Promise<interfaces.userModel.Record> => {
   let user = await userModel.getByUK(email)
 
   return databaseAdapter.runWithTransaction(async (transaction) => {

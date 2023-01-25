@@ -74,9 +74,6 @@ module.exports = {
     './constants/**/*.ts',
     './helpers/**/*.ts',
     '!./**/*.test.ts',
-    '!./server/index.ts',
-    '!./server/cron.ts',
-    '!./server/routers/*',
   ],
   coverageThreshold: {
     global: {
