@@ -69,6 +69,45 @@ describe('#createToken', () => {
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(token)
   })
+
+  test('validate password length', async () => {
+    const request = instance(reqType)
+    request.body = { email: 'test@email.com ', password: '123456789', remember: true }
+
+    await expect(async () => await users.createToken(request, response)).rejects.toBe(errorEnum.Custom.PasswordTooShort)
+  })
+
+  test('validate password has passed in', async () => {
+    const request = instance(reqType)
+    request.body = { email: 'test@email.com ', remember: true }
+
+    await expect(async () => await users.createToken(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('validate email has passed in', async () => {
+    const request = instance(reqType)
+    request.body = { password: '12345678901', remember: true }
+
+    await expect(async () => await users.createToken(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('validate email is not too long', async () => {
+    const request = instance(reqType)
+    request.body = {
+      password: '12345678901',
+      remember: true,
+      email: '1234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234@email.com',
+    }
+
+    await expect(async () => await users.createToken(request, response)).rejects.toBe(errorEnum.Custom.EmailTooLong)
+  })
+
+  test('validate email format', async () => {
+    const request = instance(reqType)
+    request.body = { password: '12345678901', remember: true, email: 'test@com' }
+
+    await expect(async () => await users.createToken(request, response)).rejects.toBe(errorEnum.Custom.EmailWrongFormat)
+  })
 })
 
 describe('#createUser', () => {
@@ -91,6 +130,13 @@ describe('#createUser', () => {
     expect(createUser).toBeCalledWith('test@email.com', '12345678912345')
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(user)
+  })
+
+  test('could throw missing params error', async () => {
+    const request = instance(reqType)
+    request.body = { email: 'Test@email.com ', password: '12345678912345' }
+
+    await expect(async () => await users.createUser(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
   })
 })
 
@@ -250,6 +296,16 @@ describe('#activateUser', () => {
     expect(activateUser).toBeCalledWith(token)
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('validate access code', async () => {
+    const token = new Array(63).fill('1').join('')
+    const request = instance(reqType)
+    request.body = {
+      token,
+    }
+
+    await expect(async () => await users.activateUser(request, response)).rejects.toBe(errorEnum.Custom.WrongAccessCode)
   })
 })
 

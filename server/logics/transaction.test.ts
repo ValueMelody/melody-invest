@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import * as transaction from './transaction'
-import { mock, instance } from 'ts-mockito'
+import { instance, mock } from 'ts-mockito'
 
 const dailyMock: interfaces.tickerDailyModel.Record = mock({})
 const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
