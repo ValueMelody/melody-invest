@@ -52,7 +52,6 @@ interface Destroy {
   tableName: string;
   conditions?: Condition[];
   transaction: Knex.Transaction;
-  join?: Join;
 }
 
 let _db: Knex | null = null
@@ -68,8 +67,8 @@ export const _initTestConnection = () => {
   _db = db.adapters.createKnex(0)
 }
 
-// istanbul ignore next
 export const initConnection = () => {
+  // istanbul ignore next
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,
     connection: adapterEnum.DatabaseConfig.Connection,
@@ -91,7 +90,7 @@ const find = async ({
   select = ['*'],
   join,
   distinctOn,
-}: Find): Promise<any[] | null> => {
+}: Find): Promise<any[]> => {
   const db = getConnection()
   const query = db.select(...select).from(tableName)
 
@@ -131,14 +130,14 @@ export const findOne = async (
     ...params,
     limit: 1,
   })
-  return records?.length ? records[0] : null
+  return records[0] || null
 }
 
 export const findAll = async (
   params: Find,
 ): Promise<any[]> => {
   const records = await find(params)
-  return records?.length ? records : []
+  return records
 }
 
 export const create = async ({
@@ -202,7 +201,6 @@ export const destroy = async ({
   tableName,
   conditions,
   transaction,
-  join,
 }: Destroy) => {
   const db = getConnection()
   const query = db
@@ -210,8 +208,6 @@ export const destroy = async ({
     .transacting(transaction)
     .clone()
     .delete()
-
-  if (join) query.join(join.joinTable, join.foreignKey, join.joinKey)
 
   conditions?.forEach((condition, index) => {
     const { key, type = '=', value } = condition

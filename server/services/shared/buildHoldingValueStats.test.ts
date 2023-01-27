@@ -1,6 +1,6 @@
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as interfaces from '@shared/interfaces'
-import buildHoldingValueStats from './buildHoldingValueStats'
+import buildHoldingValueStats, { calHoldingValueByDate } from './buildHoldingValueStats'
 import getNearestPricesByDateMock from '../../../scripts/mocks/methods/getNearestPricesByDateMock'
 import { mock } from 'ts-mockito'
 
@@ -13,6 +13,7 @@ jest.mock('models/dailyTickers', () => {
 })
 
 const getByUK = async (date: string) => {
+  if (date === '2111-11-11') return null
   const prices = await getNearestPricesByDateMock(date)
   return {
     id: 1,
@@ -28,6 +29,27 @@ jest
 
 const holdingMock: interfaces.traderHoldingModel.Detail = mock({})
 const itemMock: interfaces.traderHoldingModel.Item = mock({})
+
+describe('#calHoldingValueByDate', () => {
+  test('could return empty if no price found', async () => {
+    const holdings = [
+      {
+        ...holdingMock,
+        date: '2001-02-01',
+        totalCash: 25679,
+        items: [
+          { ...itemMock, tickerId: 1, shares: 10000 },
+          { ...itemMock, tickerId: 2, shares: 2000 },
+          { ...itemMock, tickerId: 3, shares: 4000 },
+          { ...itemMock, tickerId: 4, shares: 100 },
+          { ...itemMock, tickerId: 5, shares: 500 },
+        ],
+      },
+    ]
+    const result = await calHoldingValueByDate('2111-11-11', holdings)
+    expect(result).toBe(25679)
+  })
+})
 
 describe('#buildHoldingValueStats', () => {
   test('could build empty stats', async () => {

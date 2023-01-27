@@ -1,6 +1,7 @@
 import * as accessMiddleware from 'middlewares/access'
 import * as authMiddleware from 'middlewares/auth'
 import * as crudTraders from 'services/crudTraders'
+import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
 import * as traders from './traders'
 import { Request, Response, Router } from 'express'
@@ -79,6 +80,46 @@ describe('#getProfileDetail', () => {
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(profile)
   })
+
+  test('could handle guest user', async () => {
+    const profileType = mock<interfaces.response.ProfileDetail>({})
+    const profile = instance(profileType)
+
+    const getProfileDetail = jest.fn()
+    jest.spyOn(crudTraders, 'getProfileDetail')
+      .mockImplementation(async (id, accessCode, userEnvIds) => {
+        getProfileDetail(id, accessCode, userEnvIds)
+        return profile
+      })
+
+    const getUserTraderEnvIds = jest.fn()
+    jest.spyOn(crudTraders, 'getUserTraderEnvIds')
+      .mockImplementation(async (userId) => {
+        getUserTraderEnvIds(userId)
+        return [1, 2, 3]
+      })
+
+    const request = instance(reqType)
+    const accessCode = new Array(16).fill('1').join('')
+    request.params = { id: '1', access_code: accessCode }
+    request.body = {}
+    await traders.getProfileDetail(request, response)
+
+    expect(getUserTraderEnvIds).toBeCalledWith(null)
+    expect(getProfileDetail).toBeCalledWith(1, accessCode, [1, 2, 3])
+    expect(resStatus).toBeCalledWith(200)
+    expect(resSend).toBeCalledWith(profile)
+  })
+
+  test('could check params', async () => {
+    const request = instance(reqType)
+    const accessCode = new Array(15).fill('1').join('')
+    request.params = { id: '1', access_code: accessCode }
+    request.body = {}
+
+    await expect(async () => await traders.getProfileDetail(request, response))
+      .rejects.toBe(errorEnum.Custom.WrongAccessCode)
+  })
 })
 
 describe('#getComboDetail', () => {
@@ -101,6 +142,14 @@ describe('#getComboDetail', () => {
     expect(getComboDetail).toBeCalledWith(12)
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(combo)
+  })
+
+  test('could throw forbidden for empty combo', async () => {
+    const request = instance(reqType)
+    request.params = { combo_id: '0' }
+
+    await expect(async () => await traders.getComboDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 
@@ -125,6 +174,14 @@ describe('#getEnvDetail', () => {
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(env)
   })
+
+  test('could throw forbidden for empty env', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '0' }
+
+    await expect(async () => await traders.getEnvDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
 })
 
 describe('#getBehaviorDetail', () => {
@@ -147,6 +204,22 @@ describe('#getBehaviorDetail', () => {
     expect(getBehaviorDetail).toBeCalledWith(12, 'priceMonthlyIncreaseBuy')
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(behaviorData)
+  })
+
+  test('could throw forbidden for empty env', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '0', behavior: 'priceMonthlyIncreaseBuy' }
+
+    await expect(async () => await traders.getBehaviorDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
+
+  test('could validate behavior', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '1', behavior: 'priceMonthlyIncreaseBuy1' }
+
+    await expect(async () => await traders.getBehaviorDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 
@@ -171,15 +244,31 @@ describe('#getTickerDetail', () => {
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(tickerData)
   })
+
+  test('could throw forbidden for empty env', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '0', ticker_id: '15' }
+
+    await expect(async () => await traders.getTickerDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
+
+  test('could throw forbidden for empty ticker', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '1', ticker_id: '0' }
+
+    await expect(async () => await traders.getTickerDetail(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
 })
 
 describe('#createTrader', () => {
+  const patternType = mock<interfaces.traderPatternModel.Create>({})
+  const pattern = instance(patternType)
+
   test('could call expected function', async () => {
     const traderType = mock<interfaces.response.TraderProfile>({})
     const trader = instance(traderType)
-
-    const patternType = mock<interfaces.traderPatternModel.Create>({})
-    const pattern = instance(patternType)
 
     const createTraderProfile = jest.fn()
     jest.spyOn(crudTraders, 'createTraderProfile')
@@ -201,6 +290,29 @@ describe('#createTrader', () => {
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(trader)
   })
+
+  test('could env', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      traderEnvId: 0,
+      traderPattern: pattern,
+    }
+
+    await expect(async () => await traders.createTrader(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could verify pattern', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      traderEnvId: 1,
+    }
+
+    await expect(async () => await traders.createTrader(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
 })
 
 describe('#createTraderFollower', () => {
@@ -220,6 +332,17 @@ describe('#createTraderFollower', () => {
     expect(createFollowedTrader).toBeCalledWith(1, 2)
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('could throw forbidden', async () => {
+    const request = instance(reqType)
+    request.params = { trader_id: '0' }
+    request.body = {
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await traders.createTraderFollower(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 
@@ -249,6 +372,45 @@ describe('#createEnv', () => {
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(env)
   })
+
+  test('could verify name', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: '',
+      startDate: '2020-01-01',
+      tickerIds: [1, 2],
+    }
+
+    await expect(async () => await traders.createEnv(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could verify date', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: '123',
+      startDate: '2020-01-011',
+      tickerIds: [1, 2],
+    }
+
+    await expect(async () => await traders.createEnv(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could verify tickerIds', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: 'test ',
+      startDate: '2020-01-01',
+      tickerIds: ['A', 'B'],
+    }
+
+    await expect(async () => await traders.createEnv(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
 })
 
 describe('#createCombo', () => {
@@ -276,6 +438,30 @@ describe('#createCombo', () => {
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(combo)
   })
+
+  test('could verify name', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: '',
+      traderIds: [2, 3],
+    }
+
+    await expect(async () => await traders.createCombo(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could verify traderIds', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: 'test ',
+      traderIds: ['A', 2, 3],
+    }
+
+    await expect(async () => await traders.createCombo(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
 })
 
 describe('#removeFollowedTrader', () => {
@@ -295,6 +481,17 @@ describe('#removeFollowedTrader', () => {
     expect(deleteFollowedProfile).toBeCalledWith(1, 3)
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('could throw forbidden', async () => {
+    const request = instance(reqType)
+    request.params = { trader_id: '0' }
+    request.body = {
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await traders.removeFollowedTrader(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 
@@ -316,6 +513,17 @@ describe('#removeFollowedEnv', () => {
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
   })
+
+  test('could throw forbidden', async () => {
+    const request = instance(reqType)
+    request.params = { env_id: '0' }
+    request.body = {
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await traders.removeFollowedEnv(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
+  })
 })
 
 describe('#removeFollowedCombo', () => {
@@ -335,6 +543,17 @@ describe('#removeFollowedCombo', () => {
     expect(deleteFollowedCombo).toBeCalledWith(1, 3)
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('could throw forbidden', async () => {
+    const request = instance(reqType)
+    request.params = { combo_id: '0' }
+    request.body = {
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await traders.removeFollowedCombo(request, response))
+      .rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 

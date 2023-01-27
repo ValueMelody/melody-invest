@@ -1,7 +1,7 @@
-
 import * as adapterEnum from 'enums/adapter'
 import * as database from './database'
 import * as errorEnum from 'enums/error'
+import * as ticker from 'models/ticker'
 import * as traderEnv from 'models/traderEnv'
 
 beforeEach(async () => {
@@ -15,11 +15,33 @@ beforeEach(async () => {
     directory: './server/migrations/test-seeds',
     specific: 'trader_env.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'ticker_category.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'ticker.js',
+  })
 })
 
 afterEach(async () => {
   const connection = database.getConnection()
   await connection.destroy()
+})
+
+describe('#findAll', () => {
+  test('could return empty array', async () => {
+    const tickers = await ticker.getAll()
+    expect(tickers).toStrictEqual([])
+  })
+})
+
+describe('#findOne', () => {
+  test('could return null', async () => {
+    const result = await ticker.getByUK('US', 'AAPL')
+    expect(result).toBeNull()
+  })
 })
 
 describe('#update', () => {
@@ -45,6 +67,13 @@ describe('#update', () => {
     expect(updatedEnvs[0].name).toBe('updated name')
     expect(updatedEnvs[1].name).toBe(null)
     expect(updatedEnvs[2].name).toBe(null)
+  })
+
+  test('could return empty array', async () => {
+    const transaction = await database.createTransaction()
+    const tickers = await ticker.update(1, { firstPriceDate: '2000-01-01' }, transaction)
+    await transaction.commit()
+    expect(tickers).toBeUndefined()
   })
 })
 

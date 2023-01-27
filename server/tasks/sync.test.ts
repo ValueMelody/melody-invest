@@ -99,6 +99,16 @@ describe('#syncTickerEarnings', () => {
     expect(syncAllEarnings).toBeCalledTimes(1)
     expect(syncAllEarnings).toBeCalledWith('2012-03', true, 12)
   })
+
+  test('could throw error', async () => {
+    jest.spyOn(syncTickers, 'syncAllEarnings')
+      .mockImplementation(async () => { throw Error('Not found') })
+    const consoleError = jest.fn()
+    jest.spyOn(console, 'error')
+      .mockImplementation(() => { consoleError() })
+    await sync.syncTickerEarnings('2012-03', true, 12)
+    expect(consoleError).toBeCalledTimes(2)
+  })
 })
 
 describe('#syncTickerIncomes', () => {
@@ -133,6 +143,16 @@ describe('#syncTickerIncomes', () => {
     expect(syncAllIncomes).toBeCalledTimes(1)
     expect(syncAllIncomes).toBeCalledWith('2012-03', true, 12)
   })
+
+  test('could throw error', async () => {
+    jest.spyOn(syncTickers, 'syncAllIncomes')
+      .mockImplementation(async () => { throw Error('Not found') })
+    const consoleError = jest.fn()
+    jest.spyOn(console, 'error')
+      .mockImplementation(() => { consoleError() })
+    await sync.syncTickerIncomes('2012-03', true, 12)
+    expect(consoleError).toBeCalledTimes(2)
+  })
 })
 
 describe('#syncEconomyIndicators', () => {
@@ -154,5 +174,15 @@ describe('#syncEconomyIndicators', () => {
     expect(syncQuarterly).toBeCalledTimes(1)
     expect(syncQuarterly).toBeCalledWith(marketEnum.Type.GDP)
     expect(syncAllYearlyIndicators).toBeCalledTimes(1)
+  })
+
+  test('could throw error', async () => {
+    jest.spyOn(syncIndicators, 'syncAllMonthlyIndicators')
+      .mockImplementation(async () => { throw Error('Not found') })
+    const consoleError = jest.fn()
+    jest.spyOn(console, 'error')
+      .mockImplementation(() => { consoleError() })
+    await sync.syncEconomyIndicators()
+    expect(consoleError).toBeCalledTimes(2)
   })
 })
