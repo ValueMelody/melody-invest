@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import * as transaction from './transaction'
-import { mock } from 'ts-mockito'
+import { mock, instance } from 'ts-mockito'
 
 const dailyMock: interfaces.tickerDailyModel.Record = mock({})
 const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
@@ -29,15 +29,26 @@ describe('#detailsFromCashAndHoldings', () => {
     { tickerId: 1, shares: 100, splitMultiplier: 10, value: 10000 },
     { tickerId: 2, shares: 200, splitMultiplier: 2, value: 4000 },
     { tickerId: 3, shares: 20, splitMultiplier: 1, value: 200 },
+    { tickerId: 4, shares: 10, splitMultiplier: 1, value: 100 },
   ]
   const dailyTickers: interfaces.dailyTickersModel.DailyTickers = {
     1: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 12, splitMultiplier: 12 } },
     2: { ...dailyTickerMock, daily: { ...dailyMock, closePrice: 10, splitMultiplier: 3 } },
   }
+  const tickerDailyType = mock<interfaces.tickerDailyModel.Record>({})
   test('could generate holdingDetail from cash adn items', () => {
-    expect(transaction.detailFromCashAndItems(50, items, dailyTickers, '', {})).toEqual({
-      totalCash: 50,
-      totalValue: 20650,
+    expect(transaction.detailFromCashAndItems(
+      50,
+      items,
+      dailyTickers,
+      '2012-03-05',
+      {
+        3: { ...instance(tickerDailyType), date: '2012-03-06' },
+        4: { ...instance(tickerDailyType), date: '2012-03-04', closePrice: 200, splitMultiplier: 1 },
+      },
+    )).toEqual({
+      totalCash: 2050,
+      totalValue: 22650,
       date: '',
       items: [
         { tickerId: 1, shares: 100, splitMultiplier: 12, value: 14400 },

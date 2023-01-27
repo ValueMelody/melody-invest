@@ -150,6 +150,11 @@ describe('#getByRank', () => {
     const rankTrader = await trader.getByRank(1, 1)
     expect(rankTrader?.id).toBe(3)
   })
+
+  test('could return null', async () => {
+    const rankTrader = await trader.getByRank(3, 1)
+    expect(rankTrader).toBe(null)
+  })
 })
 
 describe('#deactivateAllByRankingNumber', () => {
@@ -160,6 +165,24 @@ describe('#deactivateAllByRankingNumber', () => {
     const target = await trader.getByPK(1)
     expect(target).toBeTruthy()
     expect(target?.isActive).toBe(false)
+  })
+})
+
+describe('#activateAllByRankingNumber', () => {
+  test('could activate by ranking number', async () => {
+    const transaction1 = await databaseAdapter.createTransaction()
+    await trader.deactivateAllByRankingNumber(1, 4, transaction1)
+    await transaction1.commit()
+
+    const transaction = await databaseAdapter.createTransaction()
+    await trader.activateAllByRankingNumber(1, 1, transaction)
+    await transaction.commit()
+    const trader1 = await trader.getByPK(1)
+    expect(trader1?.isActive).toBe(false)
+    const trader2 = await trader.getByPK(2)
+    expect(trader2?.isActive).toBe(true)
+    const trader3 = await trader.getByPK(3)
+    expect(trader3?.isActive).toBe(true)
   })
 })
 

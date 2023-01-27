@@ -7,7 +7,7 @@ import * as holdingLogic from 'logics/holding'
 import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
 
-const calHoldingValueByDate = async (
+export const calHoldingValueByDate = async (
   date: string,
   holdings: interfaces.traderHoldingModel.Detail[], // order by date desc required
 ): Promise<number | null> => {

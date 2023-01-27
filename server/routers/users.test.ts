@@ -1,5 +1,6 @@
 import * as authMiddleware from 'middlewares/auth'
 import * as crudUsers from 'services/crudUsers'
+import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
 import * as users from './users'
 import { Request, Response, Router } from 'express'
@@ -119,6 +120,59 @@ describe('#createPayment', () => {
     expect(createPayment).toBeCalledWith(1, '123456', 2, 'CA', 'ON')
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(token)
+  })
+
+  test('could handle no province', async () => {
+    const tokenType = mock<interfaces.response.UserToken>({})
+    const token = instance(tokenType)
+
+    const createPayment = jest.fn()
+    jest.spyOn(crudUsers, 'createPayment')
+      .mockImplementation(async (userId, orderId, planType, stateCode, provinceCode) => {
+        createPayment(userId, orderId, planType, stateCode, provinceCode)
+        return token
+      })
+
+    const request = instance(reqType)
+    request.body = {
+      orderId: '123456',
+      planType: '2',
+      stateCode: '',
+      provinceCode: '',
+      auth: { id: 1 },
+    }
+
+    await users.createPayment(request, response)
+
+    expect(createPayment).toBeCalledWith(1, '123456', 2, null, null)
+    expect(resStatus).toBeCalledWith(201)
+    expect(resSend).toBeCalledWith(token)
+  })
+
+  test('could throw forbidden for wrong plan type', async () => {
+    const request = instance(reqType)
+    request.body = {
+      orderId: '123456',
+      planType: '5',
+      stateCode: 'CA',
+      provinceCode: 'ON',
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await users.createPayment(request, response)).rejects.toBe(errorEnum.Default.Forbidden)
+  })
+
+  test('could throw forbidden for non orderId', async () => {
+    const request = instance(reqType)
+    request.body = {
+      orderId: '',
+      planType: '2',
+      stateCode: 'CA',
+      provinceCode: 'ON',
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await users.createPayment(request, response)).rejects.toBe(errorEnum.Default.Forbidden)
   })
 })
 

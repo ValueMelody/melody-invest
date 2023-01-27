@@ -1,7 +1,7 @@
 import * as databaseAdapter from 'adapters/database'
 import * as tickerDaily from './tickerDaily'
 
-beforeAll(async () => {
+beforeEach(async () => {
   databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
@@ -30,7 +30,7 @@ beforeAll(async () => {
   })
 })
 
-afterAll(async () => {
+afterEach(async () => {
   const db = databaseAdapter.getConnection()
   await db.destroy()
 })
@@ -73,6 +73,16 @@ describe('#getLatest', () => {
   test('could get lastest date', async () => {
     const result = await tickerDaily.getLatest(1)
     expect(result?.date).toBe('2022-01-04')
+  })
+  test('could return undefined', async () => {
+    const transaction = await databaseAdapter.createTransaction()
+    await databaseAdapter.destroy({
+      tableName: 'ticker_daily',
+      transaction,
+    })
+    await transaction.commit()
+    const result = await tickerDaily.getLatest(1)
+    expect(result).toBeUndefined()
   })
 })
 
@@ -177,6 +187,17 @@ describe('#create', () => {
 
 describe('#update', () => {
   test('could update', async () => {
+    const createTransaction = await databaseAdapter.createTransaction()
+    await tickerDaily.create({
+      tickerId: 2,
+      date: '2022-02-02',
+      volume: '222222',
+      closePrice: 30,
+      splitMultiplier: '3.0000',
+      dividendAmount: '1.11',
+    }, createTransaction)
+    await createTransaction.commit()
+
     const transaction = await databaseAdapter.createTransaction()
     const props = {
       weeklyAverageFinalPrice: 92,
