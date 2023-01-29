@@ -57,7 +57,7 @@ const BehaviorList = () => {
     },
   ]
 
-  const focusedOption = focusOptions.find((option) => option.value === focusedType)
+  const focusedOption = focusOptions.find((option) => option.value === focusedType)!
 
   const handleClickLabel = (behavior: interfaces.traderPatternModel.Behavior) => {
     const url = routerTool.behaviorDetailRoute(1, behavior)
@@ -70,13 +70,12 @@ const BehaviorList = () => {
     setSearchText(e.target.value)
   }
 
-  if (!focusedOption) return null
-
   return (
     <section className='page-root'>
       <section className='page-main'>
         <header className='mb-4'>
           <TextInput
+            data-testid='search'
             icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
             value={searchText}

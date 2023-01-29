@@ -149,7 +149,7 @@ const EnvBuilder = () => {
             onChange={handleChangeStartYear}
             showYearPicker
             dateFormat='yyyy'
-            customInput={<TextInput />}
+            customInput={<TextInput data-testid='dateInput' />}
           />
           <Select
             className='w-60'
@@ -202,6 +202,7 @@ const EnvBuilder = () => {
           title={localeTool.t('envBuilder.name')}
         />
         <TextInput
+          data-testid='name'
           className={rightClass}
           value={envName}
           onChange={handleChangeName}
@@ -223,7 +224,10 @@ const EnvBuilder = () => {
           {localeTool.t('envBuilder.duplicatedEnv')}
         </Alert>
       )}
-      <form onSubmit={handleSubmit}>
+      <form
+        data-testid='form'
+        onSubmit={handleSubmit}
+      >
         <div>
           <Button
             type='submit'

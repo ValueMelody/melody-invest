@@ -23,9 +23,12 @@ jest.mock('react-router-dom', () => {
 })
 
 const comboType = mock<interfaces.traderComboModel.Identity>({})
-const combo = { ...instance(comboType), id: 1, name: 'test combo', traderIds: [] }
+const combo = { ...instance(comboType), id: 1, name: 'test combo', traderIds: [1, 2] }
 const comboDetail = mock<interfaces.response.ComboDetail>({})
-const detail = { ...instance(comboDetail), holdings: [] }
+const detail = {
+  ...instance(comboDetail),
+  holdings: [],
+}
 
 describe('#ComboDetail', () => {
   test('could show combo info', async () => {
@@ -37,13 +40,39 @@ describe('#ComboDetail', () => {
       .mockImplementation(() => () => {
         return detail
       })
+
+    const envType = mock<interfaces.traderEnvModel.Record>({})
     jest.spyOn(selectors, 'selectTraderEnvBaseDict')
       .mockImplementation(() => () => {
-        return []
+        return {
+          1: instance(envType),
+        }
       })
+
+    const traderType = mock<interfaces.traderModel.Record>({})
+    const patternType = mock<interfaces.traderPatternModel.Public>({})
     jest.spyOn(selectors, 'selectTraderProfileBaseDict')
       .mockImplementation(() => () => {
-        return []
+        return {
+          1: {
+            trader: {
+              ...instance(traderType),
+              id: 1,
+              traderPatternId: 1,
+              traderEnvId: 1,
+            },
+            pattern: instance(patternType),
+          },
+          2: {
+            trader: {
+              ...instance(traderType),
+              id: 2,
+              traderPatternId: 2,
+              traderEnvId: 1,
+            },
+            pattern: instance(patternType),
+          },
+        }
       })
 
     await act(() => {
@@ -51,5 +80,7 @@ describe('#ComboDetail', () => {
     })
 
     expect(screen.queryByTestId('traderComboCardName')?.innerHTML).toContain('test combo')
+    const profiles = screen.getAllByTestId('profileValue')
+    expect(profiles.length).toBe(2)
   })
 })

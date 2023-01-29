@@ -24,6 +24,7 @@ const VariationList = ({
 
         return (
           <ListGroup.Item
+            data-testid={`variant${option.value}`}
             key={option.value}
             active={option.value === activeValue}
             onClick={handleClick}

@@ -24,6 +24,14 @@ describe('#setAuthToken', () => {
     expect(result).toBe(123)
   })
 
+  test('could catch get error', async () => {
+    jest.spyOn(axios, 'get').mockImplementation(async () => {
+      throw new Error()
+    })
+
+    await expect(async () => await request.sendGetRequest('abc.com')).rejects.toThrowError()
+  })
+
   test('could sent post request', async () => {
     const post = jest.fn()
     jest.spyOn(axios, 'post').mockImplementation(async (url, params) => {
@@ -36,6 +44,14 @@ describe('#setAuthToken', () => {
     const result = await request.sendPostRequest('abc.com', { name: '111' })
     expect(post).toBeCalledWith('abc.com', { name: '111' })
     expect(result).toBe(123)
+  })
+
+  test('could catch post error', async () => {
+    jest.spyOn(axios, 'post').mockImplementation(async () => {
+      throw new Error()
+    })
+
+    await expect(async () => await request.sendPostRequest('abc.com')).rejects.toThrowError()
   })
 
   test('could sent put request', async () => {
@@ -52,6 +68,14 @@ describe('#setAuthToken', () => {
     expect(result).toBe(123)
   })
 
+  test('could catch put error', async () => {
+    jest.spyOn(axios, 'put').mockImplementation(async () => {
+      throw new Error()
+    })
+
+    await expect(async () => await request.sendPutRequest('abc.com')).rejects.toThrowError()
+  })
+
   test('could sent delete request', async () => {
     const remove = jest.fn()
     jest.spyOn(axios, 'delete').mockImplementation(async (url) => {
@@ -60,5 +84,13 @@ describe('#setAuthToken', () => {
 
     await request.sendDeleteRequest('abc.com')
     expect(remove).toBeCalledWith('abc.com')
+  })
+
+  test('could catch delete error', async () => {
+    jest.spyOn(axios, 'delete').mockImplementation(async () => {
+      throw new Error()
+    })
+
+    await expect(async () => await request.sendDeleteRequest('abc.com')).rejects.toThrowError()
   })
 })

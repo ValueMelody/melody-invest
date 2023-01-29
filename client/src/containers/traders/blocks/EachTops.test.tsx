@@ -23,7 +23,7 @@ jest.mock('react-router-dom', () => {
 })
 
 const traderType = mock<interfaces.traderModel.Record>({})
-const patternType= mock<interfaces.traderPatternModel.Public>({})
+const patternType = mock<interfaces.traderPatternModel.Public>({})
 
 describe('#EachTops', () => {
   test('could show top profiles', () => {
