@@ -64,6 +64,7 @@ const Setting = () => {
     e: FormEvent<HTMLFormElement>,
   ) => {
     e.preventDefault()
+
     const parsedCurrentPassword = currentPassword.trim()
     const parsedNewPassword = newPassword.trim()
     const parsedRetypePasswod = retypePassword.trim()
@@ -72,6 +73,7 @@ const Setting = () => {
     const error = parsedNewPassword !== parsedRetypePasswod
       ? localeTool.t('error.password.requireSame')
       : formatError
+
     if (error) {
       dispatch(globalSlice.actions.addMessage({
         title: error,
@@ -163,12 +165,16 @@ const Setting = () => {
           <h2 className={titleClass}>
             {localeTool.t('setting.accountCredential')}
           </h2>
-          <form onSubmit={handleSubmit}>
+          <form
+            data-testid='form'
+            onSubmit={handleSubmit}
+          >
             <RequiredLabel
               className='mb-2'
               title={localeTool.t('common.currentPassword')}
             />
             <TextInput
+              data-testid='password'
               className='mb-4'
               type='password'
               value={currentPassword}
@@ -179,6 +185,7 @@ const Setting = () => {
               title={localeTool.t('common.newPassword')}
             />
             <TextInput
+              data-testid='newPassword'
               className='mb-4'
               type='password'
               value={newPassword}
@@ -189,6 +196,7 @@ const Setting = () => {
               title={localeTool.t('common.retypePassword')}
             />
             <TextInput
+              data-testid='retypePassword'
               className='mb-4'
               type='password'
               value={retypePassword}

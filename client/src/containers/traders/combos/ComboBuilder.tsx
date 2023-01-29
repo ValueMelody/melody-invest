@@ -80,6 +80,7 @@ const ComboBuilder = () => {
           title={localeTool.t('comboBuilder.name')}
         />
         <TextInput
+          data-testid='name'
           className='w-96 max-sm:w-60'
           value={comboName}
           onChange={handleChangeName}
@@ -97,6 +98,7 @@ const ComboBuilder = () => {
         <Alert
           color='failure'
           className='mb-4'
+          data-testid='noProfileAlert'
         >
           {localeTool.t('comboBuilder.noEnoughProfiles')}
         </Alert>
@@ -132,7 +134,10 @@ const ComboBuilder = () => {
           {localeTool.t('comboBuilder.duplicatedCombo')}
         </Alert>
       )}
-      <form onSubmit={handleSubmit}>
+      <form
+        data-testid='form'
+        onSubmit={handleSubmit}
+      >
         <footer className='flex justify-center'>
           <Button
             data-testid='createBtn'

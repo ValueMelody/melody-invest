@@ -1,11 +1,22 @@
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
-import { fireEvent, render, screen } from 'test.utils'
+import * as selectors from 'selectors'
+import { UserState, userSlice } from 'stores/user'
+import { fireEvent, render, screen, waitFor } from 'test.utils'
+import { instance, mock } from 'ts-mockito'
 import TraderComboCard from './TraderComboCard'
+import axios from 'axios'
 import { store } from 'stores'
 import { traderComboSlice } from 'stores/traderCombo'
-import { userSlice } from 'stores/user'
+
+jest.mock('selectors', () => {
+  const actual = jest.requireActual('selectors')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
 
 const traderCombo = {
   id: 123,
@@ -84,6 +95,41 @@ describe('#traderComboCard', () => {
     fireEvent.click(container)
     expect(onClick).toBeCalledTimes(1)
     expect(onClick).toBeCalledWith(123)
+  })
+
+  test('could trigger unfollow', async () => {
+    const remove = jest.fn()
+    jest.spyOn(axios, 'delete')
+      .mockImplementation(remove)
+
+    const userType = mock<UserState>({})
+
+    jest.spyOn(selectors, 'selectUser')
+      .mockImplementation(() => () => ({
+        ...instance(userType),
+        access: {
+          ...instance(userType).access,
+          accessibleComboIds: [],
+        },
+      }))
+
+    setupStore()
+    const onClick = jest.fn()
+    render(
+      <TraderComboCard
+        traderCombo={traderCombo}
+        isActive
+        onClick={onClick}
+      />,
+    )
+    const btn = screen.getByTestId('watchButton')
+
+    fireEvent.click(btn)
+
+    await waitFor(() => {
+      expect(remove).toBeCalledTimes(1)
+      expect(remove).toBeCalledWith('http://127.0.0.1:3100/traders/combos/123')
+    })
   })
 
   test('could render as disabled', () => {

@@ -53,7 +53,10 @@ const ProfileDashboard = () => {
   if (!user.userType) return null
 
   return (
-    <section className='page-root'>
+    <section
+      data-testid='dashboard'
+      className='page-root'
+    >
       <section className='page-main'>
         <header className='flex justify-between items-center mb-4'>
           <PageTitle

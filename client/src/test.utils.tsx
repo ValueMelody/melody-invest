@@ -30,7 +30,7 @@ const WithRouterProvider = ({
 
   return (
     <Router
-      location={history?.location}
+      location={history.location}
       navigator={history}
     >
       {children}

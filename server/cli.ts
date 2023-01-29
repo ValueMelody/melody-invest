@@ -83,10 +83,10 @@ const initSettings = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
-  process.exit(0)
 }
 
 // istanbul ignore next
-if (require.main === module) {
-  initSettings().then(run)
+if (process.env.ENV !== 'test') {
+  initSettings()
+    .then(run)
 }

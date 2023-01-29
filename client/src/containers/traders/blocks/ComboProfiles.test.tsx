@@ -1,8 +1,17 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import { render, screen } from 'test.utils'
+import * as selectors from 'selectors'
+import { fireEvent, render, screen } from 'test.utils'
 import ComboProfiles from './ComboProfiles'
 import { mock } from 'ts-mockito'
+
+jest.mock('selectors', () => {
+  const actual = jest.requireActual('selectors')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
 
 const traderMock: interfaces.traderModel.Record = mock({})
 const trader1 = { ...traderMock, totalValue: 200000 }
@@ -18,6 +27,9 @@ const traderEnv1 = { ...traderEnvMock, name: 'profile env 2' }
 
 describe('#ComboProfiles', () => {
   test('could render', () => {
+    jest.spyOn(selectors, 'selectTraderEnvBaseById')
+      .mockImplementation(() => () => traderEnv1)
+
     const profilesWithEnvs = [
       {
         profile: {
@@ -48,6 +60,9 @@ describe('#ComboProfiles', () => {
 
     const profile2Env = `profile env 2 ${localeTool.t('common.env')}`
     expect(screen.queryByText(profile2Env)).toBeTruthy()
+    const btn = screen.getByTestId('traderProfileCard')
+    fireEvent.click(btn)
+    expect(onClick).toBeCalledTimes(1)
   })
 
   test('could render with different active index', () => {

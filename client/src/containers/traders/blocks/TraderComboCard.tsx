@@ -33,8 +33,7 @@ const TraderComboCard = ({
   }
 
   const handleUnfollow = async () => {
-    if (!traderCombo) return
-    dispatch(actions.deleteTraderCombo(traderCombo.id))
+    dispatch(actions.deleteTraderCombo(traderCombo!.id))
   }
 
   if (!traderCombo) return null

@@ -27,7 +27,7 @@ const HoldingShare = ({
       className='text-xs [&>div]:p-2 mx-2 my-1'
     >
       <div className='flex items-center'>
-        <h5>
+        <h5 data-testid='holdingshareTitle'>
           {tickerIdentity?.symbol}&nbsp;
           {parseTool.floatToPercent(holdingItem.value / totalValue)}&nbsp;
         </h5>
