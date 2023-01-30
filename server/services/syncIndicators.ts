@@ -107,8 +107,6 @@ export const syncAllMonthlyIndicators = async () => {
   const normalIndicatorTypes: MonthlyIndicatorType[] = [
     marketEnum.Type.FundsRate,
     marketEnum.Type.CPI,
-    marketEnum.Type.InflationExpectation,
-    marketEnum.Type.ConsumerSentiment,
     marketEnum.Type.DurableGoods,
     marketEnum.Type.RetailSales,
     marketEnum.Type.UnemploymentRate,

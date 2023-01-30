@@ -68,5 +68,5 @@ server -> backend APIs for the whole project
 ```
 
 # Manual Indicators
-Monthly Monthly Inflation
+Monthly Inflation
 Monthly Consumer Sentiment
