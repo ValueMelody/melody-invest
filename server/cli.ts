@@ -97,15 +97,15 @@ export const run = async () => {
   }
 }
 
-// istanbul ignore next
-const initSettings = async () => {
+const startCli = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
+  await run()
+  process.exit(0)
 }
 
 // istanbul ignore next
 if (process.env.ENV !== 'test') {
-  initSettings()
-    .then(run)
+  startCli()
 }

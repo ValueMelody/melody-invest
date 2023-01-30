@@ -2,8 +2,6 @@
 import * as adapterEnum from 'enums/adapter'
 import * as errorEnum from 'enums/error'
 import knex, { Knex } from 'knex'
-import pgMem, { DataType } from 'pg-mem'
-import { randomUUID } from 'crypto'
 
 interface OrderBy {
   column: string;
@@ -54,21 +52,13 @@ interface Destroy {
   transaction: Knex.Transaction;
 }
 
-let _db: Knex | null = null
+export let _db: Knex | null = null
 
-// istanbul ignore next
-export const _initTestConnection = () => {
-  const db = pgMem.newDb()
-  db.public.registerFunction({
-    name: 'gen_random_uuid',
-    returns: DataType.uuid,
-    implementation: () => randomUUID(),
-  })
-  _db = db.adapters.createKnex(0)
+export const setConnection = (db: Knex) => {
+  _db = db
 }
 
 export const initConnection = () => {
-  // istanbul ignore next
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,
     connection: adapterEnum.DatabaseConfig.Connection,
@@ -76,7 +66,6 @@ export const initConnection = () => {
 }
 
 export const getConnection = (): Knex => {
-  // istanbul ignore next
   if (!_db) initConnection()
   return _db!
 }

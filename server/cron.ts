@@ -35,15 +35,17 @@ const daily = cronJob.schedule('30 20 * * *', async () => {
   await calcTask.calcDailyTickers(false)
 })
 
-const initSettings = async () => {
+const startCron = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
-}
-
-initSettings().then(() => {
   caches.start()
   emails.start()
   daily.start()
   calcTraders.start()
-})
+}
+
+// istanbul ignore next
+if (process.env.ENV !== 'test') {
+  startCron()
+}

@@ -12,8 +12,6 @@ type MonthlyIndicatorType =
   typeof marketEnum.Type.FundsRate |
   typeof marketEnum.Type.TreasuryYield |
   typeof marketEnum.Type.CPI |
-  typeof marketEnum.Type.InflationExpectation |
-  typeof marketEnum.Type.ConsumerSentiment |
   typeof marketEnum.Type.RetailSales |
   typeof marketEnum.Type.DurableGoods |
   typeof marketEnum.Type.UnemploymentRate |
@@ -53,14 +51,6 @@ export const syncMonthlyIndicator = async (
     case marketEnum.Type.CPI:
       indicatorResult = await marketAdapter.getCPI()
       indicatorKey = 'cpi'
-      break
-    case marketEnum.Type.InflationExpectation:
-      indicatorResult = await marketAdapter.getInflationExpectation()
-      indicatorKey = 'inflationExpectation'
-      break
-    case marketEnum.Type.ConsumerSentiment:
-      indicatorResult = await marketAdapter.getConsumerSentiment()
-      indicatorKey = 'consumerSentiment'
       break
     case marketEnum.Type.RetailSales:
       indicatorResult = await marketAdapter.getRetailSales()

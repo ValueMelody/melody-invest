@@ -5,7 +5,6 @@ import { Knex } from 'knex'
 
 const TableName = adapterEnum.DatabaseTable.TraderHolding
 
-// istanbul ignore next
 const parseItems = (
   items: string | interfaces.traderHoldingModel.Item[],
 ) => typeof items === 'string' ? JSON.parse(items) : items
