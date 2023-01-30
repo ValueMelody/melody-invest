@@ -37,11 +37,10 @@
   },
   "scripts": {
     "dev": "PORT=3099 BROWSER=none react-scripts start",
-
     "build": "GENERATE_SOURCEMAP=false BUILD_PATH='./dist' react-scripts build",
-    "lint:fix": "eslint --fix ./ --ext .tsx --ext .ts",
 
     "lint": "eslint ./ --ext .tsx --ext .ts",
+    "lint:fix": "eslint --fix ./ --ext .tsx --ext .ts",
     "tsc": "tsc"
   },
   "browserslist": {
