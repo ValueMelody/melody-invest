@@ -167,32 +167,6 @@ export const getInflation = async (): Promise<{
   return result.data
 }
 
-export const getInflationExpectation = async (): Promise<{
-  data: IndicatorDateValue[];
-}> => {
-  const queryParams = qs.stringify({
-    function: marketEnum.Type.InflationExpectation,
-    apikey: adapterEnum.MarketConfig.Key,
-  })
-  const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
-  const result = await axios.get(url)
-  if (result.data.Note) throw result.data
-  return result.data
-}
-
-export const getConsumerSentiment = async (): Promise<{
-  data: IndicatorDateValue[];
-}> => {
-  const queryParams = qs.stringify({
-    function: marketEnum.Type.ConsumerSentiment,
-    apikey: adapterEnum.MarketConfig.Key,
-  })
-  const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
-  const result = await axios.get(url)
-  if (result.data.Note) throw result.data
-  return result.data
-}
-
 export const getRetailSales = async (): Promise<{
   data: IndicatorDateValue[];
 }> => {

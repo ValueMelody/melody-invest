@@ -15,7 +15,6 @@ export const initConnection = () => {
 }
 
 const getConnection = (): Redis.Redis => {
-  // istanbul ignore next
   if (!_cache) initConnection()
   return _cache!
 }

@@ -22,7 +22,6 @@ const buildComboEntities = async (
     uniqueDates, traderIds, holdingsByTraders,
   )
 
-  // istanbul ignore next
   const availableDates = Object
     .keys(holdingsByDates)
     .sort((prev, curr) => curr < prev ? -1 : 1)

@@ -66,3 +66,7 @@ server -> backend APIs for the whole project
   templates -> email templates
   migrations -> Knex migrations
 ```
+
+# Manual Indicators
+Monthly Inflation
+Monthly Consumer Sentiment
