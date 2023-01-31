@@ -1,4 +1,3 @@
-import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'

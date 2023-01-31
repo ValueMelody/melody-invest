@@ -1,4 +1,3 @@
-import * as adapterEnum from 'enums/adapter'
 import * as emailAdapter from 'adapters/email'
 import * as marketEnum from 'enums/market'
 import * as syncIndicators from 'services/syncIndicators'
