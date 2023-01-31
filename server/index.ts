@@ -2,13 +2,17 @@ import 'express-async-errors'
 import * as adapterEnum from 'enums/adapter'
 import * as errorEnum from 'enums/error'
 import express, { NextFunction, Request, Response, Router } from 'express'
+import http, { Server as HttpServer } from 'http'
+import https, { Server as HttpsServer } from 'https'
 import { attachRoutes as attachSystemRoutes } from 'routers/system'
 import { attachRoutes as attachTradersRoutes } from 'routers/traders'
 import { attachRoutes as attachUsersRoutes } from 'routers/users'
 import compression from 'compression'
 import cors from 'cors'
+import fs from 'fs'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
+import path from 'path'
 
 const app = express()
 export default app
@@ -47,8 +51,23 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   next(err)
 })
 
+const getServer = (): HttpServer | HttpsServer => {
+  const isHttps = adapterEnum.HostConfig.ServerType === 'https'
+  const server = isHttps ? https : http
+
+  if (isHttps) {
+    const options = {
+      key: fs.readFileSync(path.join(__dirname, '../../../key.pem'), 'utf8'),
+      cert: fs.readFileSync(path.join(__dirname, '../../../cert.pem'), 'utf8'),
+    }
+    return server.createServer(options, app)
+  }
+  return server.createServer(app)
+}
+
 try {
-  app.listen(port, host, (): void => {
+  const server = getServer()
+  server.listen(port, host, (): void => {
     console.info(`Connected successfully on port ${port}`)
   })
 } catch (error) {

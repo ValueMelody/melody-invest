@@ -3,18 +3,16 @@
   "private": true,
   "scripts": {
     "dev": "ts-node-dev -r tsconfig-paths/register ./index.ts",
-
     "cron": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cron",
     "api": "pm2 start ../scripts/devOps/serverProd.config.js",
-
     "build": "tsc --build --clean && tsc --build",
-    "migrate": "knex migrate:latest",
-
-    "migrate:down": "knex migrate:down",
-    "lint:fix": "eslint --fix ./ --ext .ts",
 
     "tsc": "tsc",
     "lint": "eslint ./ --ext .ts",
+    "lint:fix": "eslint --fix ./ --ext .ts",
+
+    "migrate": "knex migrate:latest",
+    "migrate:down": "knex migrate:down",
 
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
