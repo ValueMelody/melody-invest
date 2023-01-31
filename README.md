@@ -67,6 +67,8 @@ server -> backend APIs for the whole project
   migrations -> Knex migrations
 ```
 
-# Manual Indicators
-Monthly Inflation
-Monthly Consumer Sentiment
+# Manual Schedules
+Monthly Inflation data  
+Monthly Consumer Sentiment data  
+Weekly npm run generateWeeklyData  
+Daily npm run generateDailyData  
