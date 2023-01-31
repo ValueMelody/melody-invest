@@ -1,4 +1,3 @@
-import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
@@ -71,7 +70,7 @@ describe('#createUser', () => {
     const email = emails[0]
 
     expect(email.sendTo).toBe(user!.email)
-    expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
+    expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
     expect(email.status).toBe(constants.Email.Status.Pending)
     expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
@@ -97,7 +96,7 @@ describe('#createUser', () => {
     const email = emails[0]
 
     expect(email.sendTo).toBe(user!.email)
-    expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
+    expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
     expect(email.status).toBe(constants.Email.Status.Pending)
     expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
@@ -178,7 +177,7 @@ describe('#generateResetCode', () => {
     const emails = await emailModel.getAll()
     const email = emails[0]
     expect(email.sendTo).toBe(emailAddr)
-    expect(email.sendBy).toBe(adapterEnum.MailerConfig.Email)
+    expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.title).toBe(localeTool.getTranslation('email.resetPassword'))
     expect(email.content).toBe(emailLogic.buildResetPasswordEmail(user!))
     expect(email.status).toBe(constants.Email.Status.Pending)

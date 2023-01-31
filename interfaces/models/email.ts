@@ -12,7 +12,6 @@ export interface Record {
 
 export interface Create {
   sendTo: string;
-  sendBy: string;
   title: string;
   content: string;
   status: number;
