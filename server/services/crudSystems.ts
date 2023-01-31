@@ -23,12 +23,14 @@ const buildSystemPolicy = async (
 
 export const getSystemPolicy = async (
   type: number,
+  forceRecheck: boolean = false,
 ): Promise<interfaces.policyModel.Record | null> => {
-  return cacheAdapter.returnBuild(
-    cacheTool.generateSystemEndpointKey(`policy-${type}`),
-    '1d',
-    async () => await buildSystemPolicy(type),
-  )
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateSystemEndpointKey(`policy-${type}`),
+    buildFunction: async () => await buildSystemPolicy(type),
+    forceRecheck,
+  })
 }
 
 const generateSystemTopTraderCombo = async (
@@ -106,14 +108,15 @@ const buildDefaults = async (): Promise<
   }
 }
 
-export const getDefaults = async (): Promise<
-  interfaces.response.SystemDefaults
-> => {
-  return cacheAdapter.returnBuild(
-    cacheTool.generateSystemEndpointKey('defaults'),
-    '1d',
-    buildDefaults,
-  )
+export const getDefaults = async (
+  forceRecheck: boolean = false,
+): Promise<interfaces.response.SystemDefaults> => {
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateSystemEndpointKey('defaults'),
+    buildFunction: buildDefaults,
+    forceRecheck,
+  })
 }
 
 const buildCurrentTopTraderProfiles = async (): Promise<
@@ -124,14 +127,15 @@ const buildCurrentTopTraderProfiles = async (): Promise<
   return topTraderProfiles
 }
 
-export const getTopTraderProfiles = async (): Promise<
-  interfaces.response.TopTraderProfiles
-> => {
-  return cacheAdapter.returnBuild(
-    cacheTool.generateSystemEndpointKey('top-trader-profiles'),
-    '1d',
-    buildCurrentTopTraderProfiles,
-  )
+export const getTopTraderProfiles = async (
+  forceRecheck: boolean = false,
+): Promise<interfaces.response.TopTraderProfiles> => {
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateSystemEndpointKey('top-trader-profiles'),
+    buildFunction: buildCurrentTopTraderProfiles,
+    forceRecheck,
+  })
 }
 
 const buildDefaultTraderCombos = async (): Promise<
@@ -157,12 +161,13 @@ const buildDefaultTraderCombos = async (): Promise<
   return comboProfiles
 }
 
-export const getDefaultTraderCombos = async (): Promise<
-  interfaces.response.ComboProfile[]
-> => {
-  return cacheAdapter.returnBuild(
-    cacheTool.generateSystemEndpointKey('trader-combos'),
-    '1d',
-    buildDefaultTraderCombos,
-  )
+export const getDefaultTraderCombos = async (
+  forceRecheck: boolean = false,
+): Promise<interfaces.response.ComboProfile[]> => {
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateSystemEndpointKey('trader-combos'),
+    buildFunction: buildDefaultTraderCombos,
+    forceRecheck,
+  })
 }
