@@ -1,3 +1,4 @@
+import * as commonEnum from 'enums/common'
 import * as routerEnum from 'enums/router'
 import { Route, Routes } from 'react-router-dom'
 import Activation from './accounts/Activation'
@@ -10,6 +11,7 @@ import EnvDetail from './traders/envs/EnvDetail'
 import Forgot from './accounts/Forgot'
 import Home from './general/Home'
 import Layout from './layouts/Layout'
+import Maintain from './general/Maintain'
 import Pricing from './general/Pricing'
 import Privacy from './general/Privacy'
 import ProfileBuilder from './traders/profiles/profile-builder/ProfileBuilder'
@@ -26,102 +28,107 @@ import TopCombos from './traders/combos/TopCombos'
 import TopProfiles from './traders/profiles/TopProfiles'
 
 const Router = () => {
+  const isMaintaining = commonEnum.Env.IsMaintaining
+
   return (
     <Layout>
-      <Routes>
-        <Route
-          path={routerEnum.Nav.Terms}
-          element={<Terms />}
-        />
-        <Route
-          path={routerEnum.Nav.Home}
-          element={<Home />}
-        />
-        <Route
-          path={routerEnum.Nav.Privacy}
-          element={<Privacy />}
-        />
-        <Route
-          path={routerEnum.Nav.Pricing}
-          element={<Pricing />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/profiles/tops`}
-          element={<TopProfiles />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}
-          element={<ProfileDetail />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/profiles/build`}
-          element={<ProfileBuilder />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/envs/build`}
-          element={<EnvBuilder />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/envs/:envId`}
-          element={<EnvDetail />}
-        />
-        <Route
-          path={routerEnum.Nav.Behaviors}
-          element={<BehaviorList />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Behaviors}/:behavior/envs/:envId`}
-          element={<BehaviorDetail />}
-        />
-        <Route
-          path={routerEnum.Nav.Tickers}
-          element={<TickerList />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
-          element={<TickerDetail />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/combos/:comboId`}
-          element={<ComboDetail />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/combos/tops`}
-          element={<TopCombos />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Traders}/combos/build`}
-          element={<ComboBuilder />}
-        />
-        <Route
-          path={routerEnum.Nav.Dashboard}
-          element={<ProfileDashboard />}
-        />
-        <Route
-          path={routerEnum.Nav.Setting}
-          element={<Setting />}
-        />
-        <Route
-          path={routerEnum.Nav.SignIn}
-          element={<SignIn />}
-        />
-        <Route
-          path={routerEnum.Nav.SignUp}
-          element={<SignUp />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Activation}/:code`}
-          element={<Activation />}
-        />
-        <Route
-          path={routerEnum.Nav.Forgot}
-          element={<Forgot />}
-        />
-        <Route
-          path={`${routerEnum.Nav.Reset}/:code`}
-          element={<Reset />}
-        />
-      </Routes>
+      {isMaintaining && <Maintain />}
+      {!isMaintaining && (
+        <Routes>
+          <Route
+            path={routerEnum.Nav.Terms}
+            element={<Terms />}
+          />
+          <Route
+            path={routerEnum.Nav.Root}
+            element={<Home />}
+          />
+          <Route
+            path={routerEnum.Nav.Privacy}
+            element={<Privacy />}
+          />
+          <Route
+            path={routerEnum.Nav.Pricing}
+            element={<Pricing />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/profiles/tops`}
+            element={<TopProfiles />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}
+            element={<ProfileDetail />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/profiles/build`}
+            element={<ProfileBuilder />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/envs/build`}
+            element={<EnvBuilder />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/envs/:envId`}
+            element={<EnvDetail />}
+          />
+          <Route
+            path={routerEnum.Nav.Behaviors}
+            element={<BehaviorList />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Behaviors}/:behavior/envs/:envId`}
+            element={<BehaviorDetail />}
+          />
+          <Route
+            path={routerEnum.Nav.Tickers}
+            element={<TickerList />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
+            element={<TickerDetail />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/combos/:comboId`}
+            element={<ComboDetail />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/combos/tops`}
+            element={<TopCombos />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Traders}/combos/build`}
+            element={<ComboBuilder />}
+          />
+          <Route
+            path={routerEnum.Nav.Dashboard}
+            element={<ProfileDashboard />}
+          />
+          <Route
+            path={routerEnum.Nav.Setting}
+            element={<Setting />}
+          />
+          <Route
+            path={routerEnum.Nav.SignIn}
+            element={<SignIn />}
+          />
+          <Route
+            path={routerEnum.Nav.SignUp}
+            element={<SignUp />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Activation}/:code`}
+            element={<Activation />}
+          />
+          <Route
+            path={routerEnum.Nav.Forgot}
+            element={<Forgot />}
+          />
+          <Route
+            path={`${routerEnum.Nav.Reset}/:code`}
+            element={<Reset />}
+          />
+        </Routes>
+      )}
     </Layout>
   )
 }

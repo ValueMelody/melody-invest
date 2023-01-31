@@ -13,7 +13,7 @@ afterAll(() => {
 
 describe('#Client', () => {
   test('could render without loader', () => {
-    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Home] })
+    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Root] })
 
     render(<Client />, { history })
 
@@ -24,7 +24,7 @@ describe('#Client', () => {
   })
 
   test('could render with loader', () => {
-    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Home] })
+    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Root] })
 
     render(<Client />, { history })
 

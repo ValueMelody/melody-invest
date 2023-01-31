@@ -71,6 +71,7 @@
     "page.privacyPolicy": "Privacy Policy",
     "page.termsPolicy": "Terms and Conditions",
     "page.disclaimer": "Disclaimer: The information provided on this website is for general informational purposes only. It is not intended to be a substitute for professional advice, and should not be relied upon as such. We make every effort to ensure that the information on this website is accurate and up-to-date, but we cannot guarantee its completeness or accuracy. Any reliance you place on the information provided on this website is strictly at your own risk.",
+    "page.maintaining": "We are maintaining at this moment, will be back as soon as we can.",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",

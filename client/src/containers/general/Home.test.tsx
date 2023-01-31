@@ -7,11 +7,11 @@ import { createMemoryHistory } from 'history'
 
 describe('#Home', () => {
   test('could redirect correctly', () => {
-    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Home] })
+    const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.Root] })
     render(
       <Routes>
         <Route
-          path={routerEnum.Nav.Home}
+          path={routerEnum.Nav.Root}
           element={<Home />}
         />
       </Routes>,
