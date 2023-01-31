@@ -19,7 +19,7 @@ const Footer = () => {
           {localeTool.t('common.pricing')}
         </Link>
         <a
-          href='mailto: valuemelody@outlook.com'
+          href='mailto: app@valuemelody.com'
           className={linkClass}
         >
           {localeTool.t('common.contactUs')}

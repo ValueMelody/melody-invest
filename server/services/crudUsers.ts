@@ -93,7 +93,6 @@ const generateActivationEmail = async (
   const content = emailLogic.buildActivateUserEmail(user)
   await emailModel.create({
     sendTo: user.email,
-    sendBy: adapterEnum.MailerConfig.Email,
     title: localeTool.getTranslation('email.activateUser'),
     content,
     status: constants.Email.Status.Pending,
@@ -283,7 +282,6 @@ export const generateResetCode = async (
     const content = emailLogic.buildResetPasswordEmail(updatedUser)
     await emailModel.create({
       sendTo: updatedUser.email,
-      sendBy: adapterEnum.MailerConfig.Email,
       title: localeTool.getTranslation('email.resetPassword'),
       content,
       status: constants.Email.Status.Pending,

@@ -31,7 +31,10 @@ export const create = async (
 ): Promise<interfaces.emailModel.Record> => {
   const createdEmail = await databaseAdapter.create({
     tableName: TableName,
-    values,
+    values: {
+      ...values,
+      sendBy: 'app@valuemelody.com',
+    },
     transaction,
   })
   return createdEmail

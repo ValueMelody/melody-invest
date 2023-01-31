@@ -38,7 +38,7 @@ exports.up = (knex) => {
         
         BEHAVIORAL ADVERTISING
         
-        We may use your Personal Information to provide you with targeted advertisements or marketing communications we believe may be of interest to you.   For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at valuemelody@outlook.com.
+        We may use your Personal Information to provide you with targeted advertisements or marketing communications we believe may be of interest to you.   For more information about our privacy practices, if you have questions, or if you would like to make a complaint, please contact us by e-mail at app@valuemelody.com.
       `,
     },
     {
@@ -191,7 +191,7 @@ exports.up = (knex) => {
         
         SECTION 20 - CONTACT INFORMATION
         
-        Questions about the Terms of Service should be sent to us at valuemelody@outlook.com.
+        Questions about the Terms of Service should be sent to us at app@valuemelody.com.
       `,
     },
   ])
