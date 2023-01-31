@@ -11,16 +11,15 @@ export const calHoldingValueByDate = async (
   date: string,
   holdings: interfaces.traderHoldingModel.Detail[], // order by date desc required
 ): Promise<number | null> => {
-  const preferLocal = true
-  const prices: interfaces.tickerDailyModel.TickerPrices = await cacheAdapter.returnBuild(
-    cacheTool.generateTickerPricesKey(date),
-    '1d',
-    async () => {
+  const prices: interfaces.tickerDailyModel.TickerPrices = await cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateTickerPricesKey(date),
+    buildFunction: async () => {
       const dailyTickers = await dailyTickersModel.getByUK(date)
       return dailyTickers?.nearestPrices || {}
     },
-    preferLocal,
-  )
+    preferLocal: true,
+  })
 
   const holding = holdings.find((holding) => holding.date <= date)
   const value = holding ? holdingLogic.getHoldingTotalValue(holding, prices) : null

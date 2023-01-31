@@ -34,14 +34,17 @@ describe('#calcPriceMovements', () => {
   test('could trigger generate system caches services', async () => {
     await cache.generateSystemCaches()
     expect(getDefaults).toBeCalledTimes(1)
+    expect(getDefaults).toBeCalledWith(true)
     expect(getDefaultTraderCombos).toBeCalledTimes(1)
+    expect(getDefaultTraderCombos).toBeCalledWith(true)
     expect(getTopTraderProfiles).toBeCalledTimes(1)
+    expect(getTopTraderProfiles).toBeCalledWith(true)
     expect(getSystemPolicy).toBeCalledTimes(2)
     expect(getSystemPolicy).toHaveBeenCalledWith(
-      constants.Content.PolicyType.Privacy,
+      constants.Content.PolicyType.Privacy, true,
     )
     expect(getSystemPolicy).toHaveBeenCalledWith(
-      constants.Content.PolicyType.TermsAndConditions,
+      constants.Content.PolicyType.TermsAndConditions, true,
     )
   })
 })

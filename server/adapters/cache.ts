@@ -46,13 +46,20 @@ export const empty = async () => {
   return cache.flushall()
 }
 
-export const returnBuild = async (
-  cacheKey: string,
-  cacheAge: Age,
-  buildFunction: Function,
-  preferLocal: boolean = false,
-) => {
-  const stored = await get(cacheKey, preferLocal)
+export const returnBuild = async ({
+  cacheKey,
+  cacheAge,
+  buildFunction,
+  preferLocal = false,
+  forceRecheck = false,
+}: {
+  cacheKey: string;
+  cacheAge: Age;
+  buildFunction: Function;
+  preferLocal?: boolean;
+  forceRecheck?: boolean;
+}) => {
+  const stored = forceRecheck ? null : await get(cacheKey, preferLocal)
   if (stored) return JSON.parse(stored)
   const data = await buildFunction()
   set(cacheKey, JSON.stringify(data), cacheAge, preferLocal)
