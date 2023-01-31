@@ -23,7 +23,7 @@ export const syncTickerPrices = async (date: string) => {
 
     const transporter = emailAdapter.initTransporter()
     await transporter.sendMail({
-      from: `ValueMelody ${adapterEnum.MailerConfig.Email}`,
+      from: 'ValueMelody app@valuemelody.com',
       to: 'valuemelody@outlook.com',
       subject: 'Ticker prices synced',
       html: noteTags.length ? `<ul>${noteTags.join('')}</ul>` : '',

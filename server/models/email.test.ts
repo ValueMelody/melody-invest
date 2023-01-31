@@ -113,7 +113,6 @@ describe('#create', () => {
     const transaction = await databaseAdapter.createTransaction()
     const values = {
       sendTo: 'd@email.com',
-      sendBy: 'test@email.com',
       title: 'title',
       content: 'content',
       status: 0,
@@ -124,7 +123,7 @@ describe('#create', () => {
     )
     await transaction.commit()
     expect(created.sendTo).toBe(values.sendTo)
-    expect(created.sendBy).toBe(values.sendBy)
+    expect(created.sendBy).toBe('app@valuemelody.com')
     expect(created.title).toBe(values.title)
     expect(created.content).toBe(values.content)
     expect(created.status).toBe(values.status)
