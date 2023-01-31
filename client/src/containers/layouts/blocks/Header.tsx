@@ -23,9 +23,9 @@ const LeftLinks = ({
   return (
     <>
       <HeaderLink
-        isActive={location.pathname === routerTool.homeRoute()}
+        isActive={location.pathname === routerTool.rootRoute()}
         className={headerClass}
-        route={routerTool.homeRoute()}
+        route={routerTool.rootRoute()}
         icon={HomeIcon}
         onClick={onClick}
       />

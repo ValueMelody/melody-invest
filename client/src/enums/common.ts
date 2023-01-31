@@ -18,6 +18,7 @@ export const Env = Object.freeze({
   ServerType: process.env.REACT_APP_SERVER_TYPE!,
   PayPalClientId: process.env.REACT_APP_PAYPAL_CLIENT_ID!,
   ContactEmail: process.env.REACT_APP_CONTACT_EMAIL!,
+  IsMaintaining: process.env.REACT_APP_IS_MAINTAINING === 'true',
 })
 
 export const Plan = Object.freeze({

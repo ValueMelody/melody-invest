@@ -1,6 +1,7 @@
 import * as commonEnum from './common'
 
 export const Nav = Object.freeze({
+  Root: '/',
   Activation: '/activation',
   SignUp: '/sign-up',
   SignIn: '/sign-in',
@@ -12,7 +13,6 @@ export const Nav = Object.freeze({
   Tickers: '/tickers',
   Dashboard: '/dashboard',
   NotFound: '/404',
-  Home: '/home',
   Pricing: '/pricing',
   Privacy: '/privacy',
   Terms: '/terms',
