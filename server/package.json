@@ -32,6 +32,7 @@
     "syncEconomyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncEconomyIndicators",
     "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",
 
+    "generateDailyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateDailyData",
     "generateWeeklyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateWeeklyData"
   },
   "dependencies": {

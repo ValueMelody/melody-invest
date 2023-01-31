@@ -13,6 +13,13 @@ export const run = async () => {
   const taskName = process.argv[2]
 
   switch (taskName) {
+    case taskEnum.Name.generateDailyData: {
+      const date = dateTool.getCurrentDate()
+      await syncTask.syncTickerPrices(date)
+      await calcTask.calcPriceMovements()
+      await calcTask.calcDailyTickers(false)
+      break
+    }
     case taskEnum.Name.generateWeeklyData: {
       const cooldown = marketAdapter.getCooldownPerMin()
 
