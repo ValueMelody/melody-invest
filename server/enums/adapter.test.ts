@@ -44,6 +44,12 @@ describe('#CacheConfig', () => {
     expect(adapter.CacheConfig.Connection).toStrictEqual({
       host: '127.0.0.1',
       port: 6379,
+      password: '123',
+    })
+    expect(adapter.CacheConfig.LocalConnection).toStrictEqual({
+      host: '127.0.0.2',
+      port: 6380,
+      password: '234',
     })
   })
 })
