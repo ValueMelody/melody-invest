@@ -7,6 +7,10 @@ import * as taskEnum from 'enums/task'
 
 import { run } from './cli'
 
+jest.mock('tools/run', () => ({
+  sleep: () => {},
+}))
+
 jest.mock('tasks/cache', () => ({
   ...jest.requireActual('tasks/cache'),
   __esModule: true,
@@ -32,6 +36,76 @@ afterEach(() => {
   process.argv[3] = ''
   process.argv[4] = ''
   process.argv[5] = ''
+})
+
+describe('generateDailyData', () => {
+  test('could trigger generateDailyData', async () => {
+    const syncTickerPrices = jest.fn()
+    jest.spyOn(syncTask, 'syncTickerPrices')
+      .mockImplementation(syncTickerPrices)
+
+    const calcPriceMovements = jest.fn()
+    jest.spyOn(calcTask, 'calcPriceMovements')
+      .mockImplementation(calcPriceMovements)
+
+    const calcDailyTickers = jest.fn()
+    jest.spyOn(calcTask, 'calcDailyTickers')
+      .mockImplementation(calcDailyTickers)
+
+    process.argv[2] = taskEnum.Name.generateDailyData
+    await run()
+    expect(syncTickerPrices).toBeCalledTimes(1)
+    expect(syncTickerPrices).toBeCalledWith(dateTool.getCurrentDate())
+    expect(calcPriceMovements).toBeCalledTimes(1)
+    expect(calcDailyTickers).toBeCalledTimes(1)
+    expect(calcDailyTickers).toBeCalledWith(false)
+  })
+})
+
+describe('generateWeeklyData', () => {
+  test('could trigger generateWeeklyData', async () => {
+    const syncTickerIncomes = jest.fn()
+    jest.spyOn(syncTask, 'syncTickerIncomes')
+      .mockImplementation(syncTickerIncomes)
+
+    const syncTickerEarnings = jest.fn()
+    jest.spyOn(syncTask, 'syncTickerEarnings')
+      .mockImplementation(syncTickerEarnings)
+
+    const calcFinancialMovements = jest.fn()
+    jest.spyOn(calcTask, 'calcFinancialMovements')
+      .mockImplementation(calcFinancialMovements)
+
+    const syncEconomyIndicators = jest.fn()
+    jest.spyOn(syncTask, 'syncEconomyIndicators')
+      .mockImplementation(syncEconomyIndicators)
+
+    const calcIndicatorMovements = jest.fn()
+    jest.spyOn(calcTask, 'calcIndicatorMovements')
+      .mockImplementation(calcIndicatorMovements)
+
+    const calcDailyTickers = jest.fn()
+    jest.spyOn(calcTask, 'calcDailyTickers')
+      .mockImplementation(calcDailyTickers)
+
+    const calcTraderPerformances = jest.fn()
+    jest.spyOn(calcTask, 'calcTraderPerformances')
+      .mockImplementation(calcTraderPerformances)
+
+    process.argv[2] = taskEnum.Name.generateWeeklyData
+    await run()
+    expect(syncTickerIncomes).toBeCalledTimes(1)
+    expect(syncTickerIncomes).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
+    expect(syncTickerEarnings).toBeCalledTimes(1)
+    expect(syncTickerEarnings).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
+    expect(calcFinancialMovements).toBeCalledTimes(1)
+    expect(syncEconomyIndicators).toBeCalledTimes(1)
+    expect(calcIndicatorMovements).toBeCalledTimes(1)
+    expect(calcDailyTickers).toBeCalledTimes(1)
+    expect(calcDailyTickers).toBeCalledWith(true)
+    expect(calcTraderPerformances).toBeCalledTimes(1)
+    expect(calcTraderPerformances).toBeCalledWith(true)
+  })
 })
 
 describe('generateSystemCaches', () => {
