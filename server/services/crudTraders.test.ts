@@ -1,7 +1,7 @@
 import * as crudTraders from './crudTraders'
-import * as interfaces from '@shared/interfaces'
 import * as databaseAdapter from 'adapters/database'
 import * as errorEnum from 'enums/error'
+import * as interfaces from '@shared/interfaces'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderEnvFollowerModel from 'models/traderEnvFollower'
 import * as traderFollowerModel from 'models/traderFollower'
