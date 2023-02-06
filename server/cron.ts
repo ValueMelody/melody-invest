@@ -17,8 +17,8 @@ const generateCaches = cronJob.schedule('0 */12 * * *', async () => {
   await cacheTask.generateSystemCaches()
 })
 
-// At 00:00, to be change to at every 30 seconds
-const sendEmails = cronJob.schedule('0 0 * * *', async () => {
+// At every minute
+const sendEmails = cronJob.schedule('* * * * *', async () => {
   await emailTask.sendPendingEmails()
 })
 
