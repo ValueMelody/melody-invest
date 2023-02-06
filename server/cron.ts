@@ -6,29 +6,32 @@ import cronJob from 'node-cron'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
 
-// Every hour
-const calcTraders = cronJob.schedule('0 * * * *', async () => {
+export const calcTraders = async () => {
   await calcTask.calcTraderPerformances(false)
   await calcTask.calcTraderDescendants()
-})
+}
+// Every hour
+const calcTradersCron = cronJob.schedule('0 * * * *', calcTraders)
 
-// Every 12 hours
-const generateCaches = cronJob.schedule('0 */12 * * *', async () => {
+export const generateCaches = async () => {
   await cacheTask.generateSystemCaches()
-})
+}
+// Every 12 hours
+const generateCachesCron = cronJob.schedule('0 */12 * * *', generateCaches)
 
-// At 00:00, to be change to at every 30 seconds
-const sendEmails = cronJob.schedule('0 0 * * *', async () => {
+export const sendEmails = async () => {
   await emailTask.sendPendingEmails()
-})
+}
+// Every minute
+const sendEmailsCron = cronJob.schedule('* * * * *', sendEmails)
 
 const startCron = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
-  generateCaches.start()
-  sendEmails.start()
-  calcTraders.start()
+  generateCachesCron.start()
+  sendEmailsCron.start()
+  calcTradersCron.start()
 }
 
 // istanbul ignore next
