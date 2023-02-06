@@ -60,20 +60,22 @@ const TopCombos = () => {
   if (!comboBase || !comboDetail) return null
 
   return (
-    <>
-      <header className='flex border-b-4 border-primary mb-4 pb-4'>
-        {systemCombos.map((combo) => (
-          <div
-            key={combo.id}
-            className='m-2'
-          >
-            <TraderComboCard
-              traderCombo={combo}
-              isActive={combo.id === focusedComboId}
-              onClick={handleClickCombo}
-            />
-          </div>
-        ))}
+    <section className='detail-root'>
+      <header className='detail-header'>
+        <section className='flex'>
+          {systemCombos.map((combo) => (
+            <div
+              key={combo.id}
+              className='m-2'
+            >
+              <TraderComboCard
+                traderCombo={combo}
+                isActive={combo.id === focusedComboId}
+                onClick={handleClickCombo}
+              />
+            </div>
+          ))}
+        </section>
       </header>
       <section className='page-root'>
         <section className='page-main'>
@@ -139,7 +141,7 @@ const TopCombos = () => {
           />
         </section>
       </section>
-    </>
+    </section>
   )
 }
 
