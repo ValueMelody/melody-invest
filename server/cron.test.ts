@@ -4,7 +4,7 @@ import * as cron from './cron'
 import * as emailTask from 'tasks/email'
 
 jest.mock('node-cron', () => ({
-  schedule: jest.fn()
+  schedule: jest.fn(),
 }))
 
 jest.mock('tasks/calc', () => ({
