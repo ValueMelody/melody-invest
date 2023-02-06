@@ -55,56 +55,60 @@ const ProfileDetail = () => {
   if (!profileBase || !profileDetail || !traderEnv) return null
 
   return (
-    <section className='page-root'>
-      <section className='page-main'>
-        <PageTitle
-          icon='history'
-          title={localeTool.t('profile.history')}
-          className='mb-4'
-        />
-        {!displayedHoldings.length && (
-          <Alert
-            color='warning'
-            className='mt-4'
-          >
-            {localeTool.t('profile.noResultYet')}
-          </Alert>
-        )}
-        {displayedHoldings.map((holding, index) => (
-          <HoldingCard
-            key={holding.id}
-            className='mb-6'
-            holding={holding}
-            previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
-            initialValue={constants.Trader.Initial.Cash}
-          />
-        ))}
-        {displayedTotal < holdings.length && renderShowMoreButton()}
-      </section>
-      <aside className='page-aside'>
+    <section className='detail-root'>
+      <header className='detail-header'>
         <TraderProfileCard
-          className='w-80'
+          className='w-full'
           profile={profileBase}
         />
-        <PageTitle
-          title={localeTool.t('common.environments')}
-          className='my-4'
-        />
-        {profileEnvs.map((profileEnv) => {
-          const traderEnv = traderEnvDict[profileEnv.traderEnvId]
-          if (!traderEnv) return null
-
-          return (
-            <TraderEnvCard
-              key={profileEnv.traderEnvId}
-              className='w-80 mb-4'
-              traderEnv={traderEnv}
-              isActive={profileBase.trader.traderEnvId === profileEnv.traderEnvId}
-              onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
+      </header>
+      <section className='page-root'>
+        <section className='page-main'>
+          <PageTitle
+            icon='history'
+            title={localeTool.t('profile.history')}
+            className='mb-4'
+          />
+          {!displayedHoldings.length && (
+            <Alert
+              color='warning'
+              className='mt-4'
+            >
+              {localeTool.t('profile.noResultYet')}
+            </Alert>
+          )}
+          {displayedHoldings.map((holding, index) => (
+            <HoldingCard
+              key={holding.id}
+              className='mb-6'
+              holding={holding}
+              previousHolding={index + 1 < holdings.length ? holdings[index + 1] : null}
+              initialValue={constants.Trader.Initial.Cash}
             />
-          )
-        })}
-      </aside>
+          ))}
+          {displayedTotal < holdings.length && renderShowMoreButton()}
+        </section>
+        <aside className='page-aside'>
+          <PageTitle
+            title={localeTool.t('common.environments')}
+            className='my-4'
+          />
+          {profileEnvs.map((profileEnv) => {
+            const traderEnv = traderEnvDict[profileEnv.traderEnvId]
+            if (!traderEnv) return null
+
+            return (
+              <TraderEnvCard
+                key={profileEnv.traderEnvId}
+                className='w-80 mb-4'
+                traderEnv={traderEnv}
+                isActive={profileBase.trader.traderEnvId === profileEnv.traderEnvId}
+                onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
+              />
+            )
+          })}
+        </aside>
+      </section>
     </section>
   )
 }

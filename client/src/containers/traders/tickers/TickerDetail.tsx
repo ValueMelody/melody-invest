@@ -50,9 +50,9 @@ const TickerDetail = () => {
   if (!tickerIdentity || !traderEnv) return null
 
   return (
-    <section className='page-root'>
-      <section className='page-main'>
-        <header className='detail-header'>
+    <section className='detail-root'>
+      <header className='detail-header'>
+        <section className='flex'>
           <TickerLabel
             className='mr-4'
             ticker={tickerIdentity}
@@ -61,29 +61,33 @@ const TickerDetail = () => {
           <h1 className='font-bold text-xl'>
             {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
           </h1>
-        </header>
-        <PageTitle
-          title={localeTool.t('availableTickers.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
-        />
-        <EachTops
-          bestOverall={bestOverall}
-          bestPastYear={bestPastYear}
-          bestPastQuarter={bestPastQuarter}
-          bestPastMonth={bestPastMonth}
-          bestPastWeek={bestPastWeek}
-        />
-      </section>
-      <aside className='page-aside'>
-        {traderEnvs.map((traderEnv) => (
-          <TraderEnvCard
-            key={traderEnv.id}
-            className='w-80 mb-4'
-            traderEnv={traderEnv}
-            isActive={envId === traderEnv.id}
-            onClick={handleClickEnv}
+        </section>
+      </header>
+      <section className='page-root'>
+        <section className='page-main'>
+          <PageTitle
+            title={localeTool.t('availableTickers.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
           />
-        ))}
-      </aside>
+          <EachTops
+            bestOverall={bestOverall}
+            bestPastYear={bestPastYear}
+            bestPastQuarter={bestPastQuarter}
+            bestPastMonth={bestPastMonth}
+            bestPastWeek={bestPastWeek}
+          />
+        </section>
+        <aside className='page-aside'>
+          {traderEnvs.map((traderEnv) => (
+            <TraderEnvCard
+              key={traderEnv.id}
+              className='w-80 mb-4'
+              traderEnv={traderEnv}
+              isActive={envId === traderEnv.id}
+              onClick={handleClickEnv}
+            />
+          ))}
+        </aside>
+      </section>
     </section>
   )
 }

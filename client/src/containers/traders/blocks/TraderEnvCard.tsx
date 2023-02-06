@@ -12,11 +12,13 @@ const TraderEnvCard = ({
   isActive = false,
   onClick,
   className,
+  allowUnwatch = false,
 }: {
   traderEnv: interfaces.traderEnvModel.Record | null;
   isActive?: boolean;
   onClick?: (envId: number) => void;
   className?: string;
+  allowUnwatch?: boolean;
 }) => {
   const user = useSelector(selectors.selectUser())
 
@@ -62,7 +64,7 @@ const TraderEnvCard = ({
             {localeTool.t('common.system')}
           </Badge>
         )}
-        {disabled && (
+        {(allowUnwatch || disabled) && (
           <UnwatchEnvButton traderEnv={traderEnv} />
         )}
       </header>

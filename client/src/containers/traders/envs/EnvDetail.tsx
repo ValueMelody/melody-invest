@@ -8,7 +8,6 @@ import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
-import UnwatchEnvButton from 'containers/traders/blocks/UnwatchEnvButton'
 import { useEffect } from 'react'
 
 const EnvDetail = () => {
@@ -48,24 +47,11 @@ const EnvDetail = () => {
   if (!envRecord || !topTraderProfiles) return null
 
   return (
-    <section className='page-root'>
-      <section className='page-main'>
-        <PageTitle
-          title={localeTool.t('traderEnv.topProfiles')}
-        />
-        <section>
-          <EachTops
-            bestOverall={bestOverall}
-            bestPastYear={bestPastYear}
-            bestPastQuarter={bestPastQuarter}
-            bestPastMonth={bestPastMonth}
-            bestPastWeek={bestPastWeek}
-          />
-        </section>
-      </section>
-      <aside className='page-aside'>
+    <section className='detail-root'>
+      <header className='detail-header'>
         <TraderEnvCard
-          className='w-80 mb-4'
+          allowUnwatch={!envRecord.isSystem}
+          className='w-80'
           traderEnv={envRecord}
         />
         <div className='flex flex-wrap mb-4'>
@@ -79,12 +65,21 @@ const EnvDetail = () => {
             />
           ))}
         </div>
-        {!envRecord.isSystem && (
-          <div>
-            <UnwatchEnvButton traderEnv={envRecord} />
-          </div>
-        )}
-      </aside>
+      </header>
+      <section className='detail-main'>
+        <PageTitle
+          title={localeTool.t('traderEnv.topProfiles')}
+        />
+        <section>
+          <EachTops
+            bestOverall={bestOverall}
+            bestPastYear={bestPastYear}
+            bestPastQuarter={bestPastQuarter}
+            bestPastMonth={bestPastMonth}
+            bestPastWeek={bestPastWeek}
+          />
+        </section>
+      </section>
     </section>
   )
 }

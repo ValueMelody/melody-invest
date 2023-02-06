@@ -13,7 +13,6 @@ import PageTitle from 'containers/elements/PageTitle'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import ValueChangePanel from 'containers/traders/elements/ValueChangePanel'
-import WatchButton from 'containers/traders/elements/WatchButton'
 import { contentSlice } from 'stores/content'
 import { useEffect } from 'react'
 import usePrivateGuard from 'hooks/usePrivateGuard'
@@ -62,98 +61,87 @@ const ComboDetail = () => {
     dispatch(contentSlice.actions.changeActiveTraderChartIndex(index))
   }
 
-  const handleUnwatch = () => {
-    if (!comboId) return
-    dispatch(actions.deleteTraderCombo(comboId))
-      .then((res: any) => {
-        if (!res.error) navigate(routerTool.dashboardRoute())
-      })
-  }
-
   if (!matchedBase || !matchedDetail) return null
 
   return (
-    <section className='page-root'>
-      <section className='page-main'>
-        <PageTitle
-          icon='performance'
-          title={localeTool.t('common.pastPerformance')}
+    <section className='detail-root'>
+      <header className='detail-header'>
+        <TraderComboCard
+          className='w-80'
+          traderCombo={matchedBase}
+          allowUnwatch={!matchedBase.isSystem}
         />
-        <ValueChangePanel
-          yearlyPercentNumber={matchedDetail?.yearlyPercentNumber}
-          pastYearPercentNumber={matchedDetail?.pastYearPercentNumber}
-          pastQuarterPercentNumber={matchedDetail?.pastQuarterPercentNumber}
-          pastMonthPercentNumber={matchedDetail?.pastMonthPercentNumber}
-          pastWeekPercentNumber={matchedDetail?.pastWeekPercentNumber}
-          oneDecadeTrends={matchedDetail?.oneDecadeTrends}
-          oneYearTrends={matchedDetail?.oneYearTrends}
-          totalValue={matchedDetail?.totalValue}
-          activeChartIndex={activeChartIndex}
-          onChangeChart={handleChangeChartIndex}
-          showPercents
-          showCharts
-        />
-        <PageTitle
-          icon='history'
-          className='my-8'
-          title={localeTool.t('traderCombo.history')}
-        />
-        {!displayedHoldings.length && (
-          <Alert
-            color='warning'
-            className='mt-4'
-          >
-            {localeTool.t('traderCombo.noResultYet')}
-          </Alert>
-        )}
-        {displayedHoldings.map((detail, index) => (
-          <HoldingCard
-            key={detail.date}
-            className='mb-6'
-            holding={detail}
-            previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
-            initialValue={constants.Trader.Initial.Cash * matchedBase.traderIds.length}
+      </header>
+      <section className='page-root'>
+        <section className='page-main'>
+          <PageTitle
+            icon='performance'
+            title={localeTool.t('common.pastPerformance')}
           />
-        ))}
-        {displayedTotal < holdings.length && renderShowMoreButton()}
-      </section>
-      <aside className='page-aside'>
-        <header className='pb-4 mb-4 flex flex-col'>
-          <TraderComboCard
-            className='mb-4'
-            traderCombo={matchedBase}
+          <ValueChangePanel
+            yearlyPercentNumber={matchedDetail?.yearlyPercentNumber}
+            pastYearPercentNumber={matchedDetail?.pastYearPercentNumber}
+            pastQuarterPercentNumber={matchedDetail?.pastQuarterPercentNumber}
+            pastMonthPercentNumber={matchedDetail?.pastMonthPercentNumber}
+            pastWeekPercentNumber={matchedDetail?.pastWeekPercentNumber}
+            oneDecadeTrends={matchedDetail?.oneDecadeTrends}
+            oneYearTrends={matchedDetail?.oneYearTrends}
+            totalValue={matchedDetail?.totalValue}
+            activeChartIndex={activeChartIndex}
+            onChangeChart={handleChangeChartIndex}
+            showPercents
+            showCharts
           />
-          {!matchedBase.isSystem && (
-            <WatchButton
-              isWatched={true}
-              onToggle={handleUnwatch}
-            />
+          <PageTitle
+            icon='history'
+            className='my-8'
+            title={localeTool.t('traderCombo.history')}
+          />
+          {!displayedHoldings.length && (
+            <Alert
+              color='warning'
+              className='mt-4'
+            >
+              {localeTool.t('traderCombo.noResultYet')}
+            </Alert>
           )}
-        </header>
-        <PageTitle
-          title={localeTool.t('traderCombo.includedProfiles')}
-          className='mb-4'
-        />
-        <section className='mb-4'>
-          {profilesWithEnvs.map((profileWithEnv) => (
-            <ProfileValue
-              key={profileWithEnv.profile?.trader.id}
-              className='mb-4'
-              trader={profileWithEnv.profile?.trader || null}
-              env={profileWithEnv.env || null}
-              onClick={handleClickProfile}
+          {displayedHoldings.map((detail, index) => (
+            <HoldingCard
+              key={detail.date}
+              className='mb-6'
+              holding={detail}
+              previousHolding={index < holdings.length - 1 ? holdings[index + 1] : null}
+              initialValue={constants.Trader.Initial.Cash * matchedBase.traderIds.length}
             />
           ))}
+          {displayedTotal < holdings.length && renderShowMoreButton()}
         </section>
-        <PageTitle
-          icon='pie'
-          title={localeTool.t('traderCombo.profilePortion')}
-        />
-        <ComboProfiles
-          profilesWithEnvs={profilesWithEnvs}
-          onClickProfile={handleClickProfile}
-        />
-      </aside>
+        <aside className='page-aside'>
+          <PageTitle
+            title={localeTool.t('traderCombo.includedProfiles')}
+            className='mb-4'
+          />
+          <section className='mb-4'>
+            {profilesWithEnvs.map((profileWithEnv) => (
+              <ProfileValue
+                key={profileWithEnv.profile?.trader.id}
+                className='mb-4'
+                trader={profileWithEnv.profile?.trader || null}
+                env={profileWithEnv.env || null}
+                onClick={handleClickProfile}
+              />
+            ))}
+          </section>
+          <PageTitle
+            icon='pie'
+            title={localeTool.t('traderCombo.profilePortion')}
+          />
+          <ComboProfiles
+            profilesWithEnvs={profilesWithEnvs}
+            onClickProfile={handleClickProfile}
+          />
+        </aside>
+      </section>
     </section>
   )
 }

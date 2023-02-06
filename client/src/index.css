@@ -15,11 +15,9 @@ body {
 .page-root {
   @apply flex items-end justify-between  flex-wrap-reverse;
 }
-
 .page-aside {
   @apply w-96 flex flex-col items-center mb-6;
 }
-
 .page-main {
   @apply flex flex-col;
   width: calc(100% - 26rem);
@@ -50,8 +48,14 @@ body {
   @apply flex flex-col items-center mt-8;
 }
 
+.detail-root {
+  @apply flex flex-col;
+}
 .detail-header {
-  @apply flex items-center pb-6 mb-6 border-b-4 border-primary;
+  @apply flex flex-col mb-8 pb-8 border-b-4 border-blue-200;
+}
+.detail-main {
+  @apply flex flex-col;
 }
 
 .builder-title {
