@@ -3,6 +3,10 @@ import * as calcTask from 'tasks/calc'
 import * as cron from './cron'
 import * as emailTask from 'tasks/email'
 
+jest.mock('node-cron', () => ({
+  schedule: jest.fn()
+}))
+
 jest.mock('tasks/calc', () => ({
   ...jest.requireActual('tasks/calc'),
   __esModule: true,
