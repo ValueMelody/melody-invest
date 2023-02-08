@@ -1,3 +1,5 @@
+import * as cacheAdapter from 'adapters/cache'
+import * as cacheTool from 'tools/cache'
 import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as databaseAdapter from 'adapters/database'
@@ -49,30 +51,40 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
   }
 }
 
+const getCachedDailyTickers = async (date: string) => {
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateDailyTickersKey(date),
+    buildFunction: async () => {
+      const dailyTickers = await dailyTickersModel.getByUK(date, 'tickers')
+      return dailyTickers?.tickers || null
+    },
+    preferLocal: true,
+  })
+}
+
 const calcTraderPerformance = async (
   targetTrader: interfaces.traderModel.Record,
+  env: interfaces.traderEnvModel.Record,
   forceRecheck: boolean,
+  latestDate: string,
   delistedLastPrices: transactionLogic.DelistedLastPrices,
 ) => {
-  const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
-  if (!pattern) throw errorEnums.Custom.RecordNotFound
-
-  const env = await traderEnvModel.getByPK(targetTrader.traderEnvId)
-  if (!env) throw errorEnums.Custom.RecordNotFound
-
   const trader = forceRecheck
     ? await cleanupTrader(targetTrader.id)
     : targetTrader
+
+  console.info(`Checking Trader:${trader.id}`)
+  if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
+
+  const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
+  if (!pattern) throw errorEnums.Custom.RecordNotFound
 
   const tickerMinPercent = pattern.tickerMinPercent
   const tickerMaxPercent = pattern.tickerMaxPercent
   const holdingBuyPercent = pattern.holdingBuyPercent
   const holdingSellPercent = pattern.holdingSellPercent
   const cashMaxPercent = pattern.cashMaxPercent
-
-  const latestDate = await dailyTickersModel.getLatestDate()
-  console.info(`Checking Trader:${trader.id}`)
-  if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
   let holding = await traderHoldingModel.getLatest(trader.id)
   let tradeDate = holding
@@ -88,8 +100,9 @@ const calcTraderPerformance = async (
     while (tradeDate <= latestDate) {
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
-      const dailyTickers = await dailyTickersModel.getByUK(tradeDate)
-      if (!dailyTickers || !dailyTickers.tickers) {
+      const dailyTickers: interfaces.dailyTickersModel.DailyTickers = await getCachedDailyTickers(tradeDate)
+
+      if (!dailyTickers) {
         tradeDate = nextDate
         continue
       }
@@ -97,11 +110,10 @@ const calcTraderPerformance = async (
       const emptyDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
       const availableTargets = env.tickerIds
         ? env.tickerIds.reduce((tickers, tickerId) => {
-          if (!dailyTickers.tickers) return tickers
-          tickers[tickerId] = dailyTickers.tickers[tickerId]
+          tickers[tickerId] = dailyTickers[tickerId]
           return tickers
         }, emptyDailyTickers)
-        : dailyTickers.tickers
+        : dailyTickers
 
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
       const items = holding ? holding.items : []
@@ -251,12 +263,13 @@ export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
     lastPrices[tickerDaily.tickerId] = tickerDaily
     return lastPrices
   }, initLastPrices)
+  const latestDate = await dailyTickersModel.getLatestDate()
 
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
     console.info(`Checking Env:${env.id}`)
     const traders = await traderModel.getActives(env.id)
     await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-      await calcTraderPerformance(trader, forceRecheck, delistedLastPrices)
+      await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
     })
     const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
     const inactiveRankingNumber = deactivateTarget?.rankingNumber

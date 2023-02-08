@@ -1,5 +1,9 @@
 import * as adapterEnum from 'enums/adapter'
 
+export const generateDailyTickersKey = (date: string): string => {
+  return `${adapterEnum.CacheKey.DailyTickers}-[${date}]`
+}
+
 export const generateTickerPricesKey = (date: string): string => {
   return `${adapterEnum.CacheKey.TickerPrices}-[${date}]`
 }
