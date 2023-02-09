@@ -11,14 +11,17 @@ export const getLatestDate = async (): Promise<string> => {
   const record = await databaseAdapter.findOne({
     tableName: TableName,
     orderBy: [{ column: 'date', order: 'desc' }],
+    select: ['date'],
   })
   return record ? record.date : dateTool.getInitialDate()
 }
 
 export const getByUK = async (
   date: string,
+  select?: 'tickers' | 'nearestPrices',
 ): Promise<interfaces.dailyTickersModel.Record | null> => {
   const record = await databaseAdapter.findOne({
+    select: select ? [select] : undefined,
     tableName: TableName,
     conditions: [
       { key: 'date', value: date },

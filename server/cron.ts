@@ -23,14 +23,14 @@ export const sendEmails = async () => {
   await emailTask.sendPendingEmails()
 }
 // Every minute
-const sendEmailsCron = cronJob.schedule('* * * * *', sendEmails)
+// const sendEmailsCron = cronJob.schedule('* * * * *', sendEmails)
 
 const startCron = async () => {
   initDatabase()
   initCache()
   await runTool.sleep(2)
   generateCachesCron.start()
-  sendEmailsCron.start()
+  // sendEmailsCron.start()
   calcTradersCron.start()
 }
 
