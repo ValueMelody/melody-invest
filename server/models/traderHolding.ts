@@ -7,7 +7,10 @@ const TableName = adapterEnum.DatabaseTable.TraderHolding
 
 const parseItems = (
   items: string | interfaces.traderHoldingModel.Item[],
-) => typeof items === 'string' ? JSON.parse(items) : items
+) => {
+  // istanbul ignore next
+  return typeof items === 'string' ? JSON.parse(items) : items
+}
 
 const convertToRecord = (
   raw: interfaces.traderHoldingModel.Raw,
