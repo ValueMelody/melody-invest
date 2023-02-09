@@ -31,7 +31,7 @@
     "lint": "npm run lint --workspace=interfaces && npm run lint --workspace=constants && npm run lint --workspace=helpers && npm run lint --workspace=client && npm run lint --workspace=server",
     "lint:fix": "npm run lint:fix --workspace=interfaces && npm run lint:fix --workspace=constants && npm run lint:fix --workspace=helpers && npm run lint:fix --workspace=client && npm run lint:fix --workspace=server",
     "tsc": "npm run tsc --workspace=client && npm run tsc --workspace=server",
-    "test": "DOTENV_CONFIG_PATH=./.env.test jest --silent",
+    "test": "DOTENV_CONFIG_PATH=./.env.test jest --silent --detectOpenHandles",
     "test:watch": "DOTENV_CONFIG_PATH=./.env.test jest --watch",
     "test:coverage": "DOTENV_CONFIG_PATH=./.env.test jest --coverage --silent",
     "database:create": "createdb -h 127.0.0.1 -U admin melody",
