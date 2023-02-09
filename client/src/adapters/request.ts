@@ -61,7 +61,7 @@ interface Error {
   };
 }
 
-const handleRequestError = (error: Error) => {
+export const handleRequestError = (error: Error) => {
   const code = error?.response?.status || 500
   const message = error?.response?.data.message || ''
   switch (code) {

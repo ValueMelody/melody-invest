@@ -1,3 +1,4 @@
+import * as localeTool from 'tools/locale'
 import * as request from './request'
 import axios from 'axios'
 
@@ -92,5 +93,18 @@ describe('#setAuthToken', () => {
     })
 
     await expect(async () => await request.sendDeleteRequest('abc.com')).rejects.toThrowError()
+  })
+})
+
+describe('#handleRequestError', () => {
+  test('could handle 401 error', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 401,
+        data: {
+          message: '',
+        },
+      },
+    })).toThrow(localeTool.t('error.401'))
   })
 })
