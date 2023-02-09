@@ -58,6 +58,7 @@ export const setConnection = (db: Knex) => {
   _db = db
 }
 
+// istanbul ignore next
 export const initConnection = () => {
   _db = knex({
     client: adapterEnum.DatabaseConfig.Client,

@@ -1,9 +1,16 @@
 import * as cache from './cache'
 
 describe('#generateTickerPricesKey', () => {
-  test('could generate cache key for daily tickers', () => {
+  test('could generate cache key for ticker prices', () => {
     expect(cache.generateTickerPricesKey('2001-01-01'))
       .toEqual('tickerPrices-[2001-01-01]')
+  })
+})
+
+describe('#generateDailyTickersKey', () => {
+  test('could generate cache key for daily tickers', () => {
+    expect(cache.generateDailyTickersKey('2001-01-01'))
+      .toEqual('dailyTickers-[2001-01-01]')
   })
 })
 

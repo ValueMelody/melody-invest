@@ -4,7 +4,7 @@ import * as marketEnum from 'enums/market'
 import * as sync from './sync'
 import * as syncIndicators from 'services/syncIndicators'
 import * as syncTickers from 'services/syncTickers'
-import { instance, mock } from 'ts-mockito'
+import { instance, mock, when } from 'ts-mockito'
 import { Transporter } from 'nodemailer'
 
 jest.mock('services/syncTickers', () => {
@@ -31,15 +31,13 @@ jest.mock('adapters/email', () => {
   }
 })
 
+const sendMail = jest.fn()
 const transporter: Transporter = mock({})
+when(transporter.sendMail).thenReturn(sendMail)
 const transporterInstance = instance(transporter)
 
-const initTransporterMock = () => {
-  return transporterInstance
-}
-
 jest.spyOn(emailAdapter, 'initTransporter')
-  .mockImplementation(initTransporterMock)
+  .mockReturnValue(transporterInstance)
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -48,12 +46,21 @@ afterEach(() => {
 describe('#syncTickerPrices', () => {
   const syncAllPrices = jest.fn()
   jest.spyOn(syncTickers, 'syncAllPrices')
-    .mockImplementation(syncAllPrices)
+    .mockImplementation(async (date) => {
+      syncAllPrices(date)
+      return ['aaa', 'bbb']
+    })
 
   test('could sync ticker prices', async () => {
     await sync.syncTickerPrices(dateTool.getCurrentDate())
     expect(syncAllPrices).toBeCalledTimes(1)
     expect(syncAllPrices).toBeCalledWith(dateTool.getCurrentDate())
+    expect(sendMail).toBeCalledTimes(1)
+    expect(sendMail).toBeCalledWith(expect.objectContaining({
+      to: 'valuemelody@outlook.com',
+      subject: 'Ticker prices synced',
+      html: '<ul><li>aaa</li><li>bbb</li></ul>',
+    }))
   })
 
   test('could sync ticker prices by a specific date', async () => {
