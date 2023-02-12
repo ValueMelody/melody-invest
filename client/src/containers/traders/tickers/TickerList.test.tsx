@@ -25,7 +25,7 @@ jest.spyOn(selectors, 'selectTickerIdentityBases')
 describe('#TickerList', () => {
   test('could render tickers', () => {
     render(<TickerList />)
-    expect(screen.queryByText('AAA')).not.toBeInTheDocument()
+    expect(screen.queryByText('AAA')).toBeInTheDocument()
     expect(screen.queryByText('BBB')).toBeInTheDocument()
     expect(screen.queryByText('CCC')).toBeInTheDocument()
   })
