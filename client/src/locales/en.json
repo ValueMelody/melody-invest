@@ -167,6 +167,7 @@
     "ticker.delisted": "Delisted",
     "tickerList.categories": "Stock Categories",
 
+    "tickerCategory.all": "All",
     "tickerCategory.tech": "Technology",
     "tickerCategory.consumerCyclical": "Consumer Cyclical",
     "tickerCategory.communication": "Communication Services",

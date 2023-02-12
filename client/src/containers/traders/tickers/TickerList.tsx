@@ -24,14 +24,14 @@ const isSearchedTicker = (
 const TickerList = () => {
   const navigate = useNavigate()
 
-  const [selectedCategory, setSelectedCategory] = useState(1)
+  const [selectedCategory, setSelectedCategory] = useState(0)
   const [searchText, setSearchText] = useState('')
 
   const tickers = useSelector(selectors.selectTickerIdentityBases())
   const categories = useSelector(selectors.selectTickerCategoryBases())
 
   const availableTickers = tickers.filter((ticker) => {
-    const matchCategory = ticker.tickerCategoryId === selectedCategory
+    const matchCategory = !selectedCategory || ticker.tickerCategoryId === selectedCategory
     const matchSearch = isSearchedTicker(ticker, searchText)
     return matchCategory && matchSearch
   })
@@ -41,6 +41,11 @@ const TickerList = () => {
     value: category.id,
     onClick: () => setSelectedCategory(category.id),
   }))
+  const allOption = {
+    label: localeTool.t('tickerCategory.all'),
+    value: 0,
+    onClick: () => setSelectedCategory(0),
+  }
 
   const handleClickTicker = (tickerId: number) => {
     const url = routerTool.tickerDetailRoute(1, tickerId)
@@ -81,7 +86,10 @@ const TickerList = () => {
           {localeTool.t('tickerList.categories')}
         </h1>
         <VariationList
-          options={categoryOptions}
+          options={[
+            allOption,
+            ...categoryOptions,
+          ]}
           activeValue={selectedCategory}
         />
       </aside>
