@@ -1,6 +1,12 @@
 import * as interfaces from '@shared/interfaces'
 import { TickerIdentityBase } from 'stores/tickerIdentity'
 
+const selectHasTickerIdentity = () => (
+  state: AppState,
+): boolean => {
+  return Object.keys(state.tickerIdentity.base).length > 0
+}
+
 const selectTickerIdentityBaseDict = () => (
   state: AppState,
 ): TickerIdentityBase => {
@@ -31,6 +37,7 @@ const selectTickerIdentityDetail = (envId: number, tickerId?: number) => (
 }
 
 export {
+  selectHasTickerIdentity,
   selectTickerIdentityBaseDict,
   selectTickerIdentityBases,
   selectTickerIdentityBaseById,

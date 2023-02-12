@@ -16,9 +16,10 @@ const TickerDetail = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
-  const tickerId = params.tickerId ? parseInt(params.tickerId) : undefined
-  const envId = params.envId ? parseInt(params.envId) : 1
+  const tickerId = Number(params.tickerId)
+  const envId = Number(params.envId)
 
+  const hasTicker = useSelector(selectors.selectHasTickerIdentity())
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
   const tickerIdentity = useSelector(selectors.selectTickerIdentityBaseById(tickerId))
   const tickerDetail = useSelector(selectors.selectTickerIdentityDetail(envId, tickerId))
@@ -33,8 +34,10 @@ const TickerDetail = () => {
   const bestPastWeek = topTraderProfiles?.pastWeek[0]
 
   useEffect(() => {
-    if (!tickerId || !envId) navigate(routerTool.notFoundRoute())
-  }, [tickerId, envId, navigate])
+    const hasNoTicker = hasTicker && !tickerIdentity
+    const hasNoEnv = traderEnvs.length && !traderEnv
+    if (hasNoTicker || hasNoEnv) navigate(routerTool.notFoundRoute())
+  }, [tickerIdentity, traderEnv, hasTicker, traderEnvs.length, navigate])
 
   useEffect(() => {
     if (tickerDetail || !tickerId || !envId) return
@@ -42,15 +45,17 @@ const TickerDetail = () => {
   }, [tickerDetail, tickerId, envId, dispatch])
 
   const handleClickEnv = (envId: number) => {
-    if (!tickerId) return
-    const url = routerTool.tickerDetailRoute(envId, tickerId)
+    const url = routerTool.tickerDetailRoute(envId, tickerId!)
     navigate(url)
   }
 
   if (!tickerIdentity || !traderEnv) return null
 
   return (
-    <section className='detail-root'>
+    <section
+      data-testid='detail-root'
+      className='detail-root'
+    >
       <header className='detail-header'>
         <section className='flex'>
           <TickerLabel
@@ -58,7 +63,10 @@ const TickerDetail = () => {
             ticker={tickerIdentity}
             color='gray'
           />
-          <h1 className='font-bold text-xl'>
+          <h1
+            data-testid='detail-title'
+            className='font-bold text-xl'
+          >
             {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
           </h1>
         </section>
