@@ -1,7 +1,7 @@
+import * as generalAction from 'actions/general'
 import { act, fireEvent, render, screen, waitFor } from 'test.utils'
 import Setting from './Setting'
 import axios from 'axios'
-import * as generalAction from 'actions/general'
 
 jest.mock('actions/general', () => {
   const actual = jest.requireActual('actions/general')
