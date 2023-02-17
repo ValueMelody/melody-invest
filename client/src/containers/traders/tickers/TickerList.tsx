@@ -63,6 +63,7 @@ const TickerList = () => {
       <section className='page-main'>
         <header className='mb-4'>
           <TextInput
+            data-testid='search'
             icon={MagnifyingGlassIcon}
             placeholder={localeTool.t('common.search')}
             value={searchText}

@@ -18,7 +18,7 @@ const BehaviorDetail = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const behavior = params.behavior
-  const envId = params.envId ? parseInt(params.envId) : 1
+  const envId = Number(params.envId)
   const validBehavior = constants.Behavior.Behaviors.find((value) => value === behavior)
   const behaviorDetail = useSelector(selectors.selectTraderBehaviorDetail(envId, validBehavior))
   const topTraderProfiles = behaviorDetail?.topProfiles
@@ -49,7 +49,10 @@ const BehaviorDetail = () => {
   if (!validBehavior || !traderEnv) return null
 
   return (
-    <section className='detail-root'>
+    <section
+      data-testid='detail-root'
+      className='detail-root'
+    >
       <header className='detail-header'>
         <section className='flex'>
           <BehaviorLabel

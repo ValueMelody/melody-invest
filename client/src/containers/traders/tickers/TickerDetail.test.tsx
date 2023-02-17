@@ -1,6 +1,5 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'

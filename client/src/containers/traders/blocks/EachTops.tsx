@@ -46,51 +46,76 @@ const EachTops = ({
 
   return (
     <section className='flex flex-wrap'>
-      <div className={cardClass}>
-        <h3 className={titleClass}>
-          {localeTool.t('bestReturn.yearlyTitle')}:
-        </h3>
-        <TraderProfileCard
-          profile={traderProfileDict[bestOverall || 0]}
-          onClick={handleClickCard}
-        />
-      </div>
-      <div className={cardClass}>
-        <h3 className={titleClass}>
-          {localeTool.t('bestReturn.pastYearTitle')}:
-        </h3>
-        <TraderProfileCard
-          profile={traderProfileDict[bestPastYear || 0]}
-          onClick={handleClickCard}
-        />
-      </div>
-      <div className={cardClass}>
-        <h3 className={titleClass}>
-          {localeTool.t('bestReturn.pastQuarterTitle')}:
-        </h3>
-        <TraderProfileCard
-          profile={traderProfileDict[bestPastQuarter || 0]}
-          onClick={handleClickCard}
-        />
-      </div>
-      <div className={cardClass}>
-        <h3 className={titleClass}>
-          {localeTool.t('bestReturn.pastMonthTitle')}:
-        </h3>
-        <TraderProfileCard
-          profile={traderProfileDict[bestPastMonth || 0]}
-          onClick={handleClickCard}
-        />
-      </div>
-      <div className={cardClass}>
-        <h3 className={titleClass}>
-          {localeTool.t('bestReturn.pastWeekTitle')}:
-        </h3>
-        <TraderProfileCard
-          profile={traderProfileDict[bestPastWeek || 0]}
-          onClick={handleClickCard}
-        />
-      </div>
+      {!!bestOverall && (
+        <div
+          data-testid='card'
+          className={cardClass}
+        >
+          <h3 className={titleClass}>
+            {localeTool.t('bestReturn.yearlyTitle')}:
+          </h3>
+          <TraderProfileCard
+            profile={traderProfileDict[bestOverall]}
+            onClick={handleClickCard}
+          />
+        </div>
+      )}
+      {!!bestPastYear && (
+        <div
+          data-testid='card'
+          className={cardClass}
+        >
+          <h3 className={titleClass}>
+            {localeTool.t('bestReturn.pastYearTitle')}:
+          </h3>
+          <TraderProfileCard
+            profile={traderProfileDict[bestPastYear]}
+            onClick={handleClickCard}
+          />
+        </div>
+      )}
+      {bestPastQuarter && (
+        <div
+          data-testid='card'
+          className={cardClass}
+        >
+          <h3 className={titleClass}>
+            {localeTool.t('bestReturn.pastQuarterTitle')}:
+          </h3>
+          <TraderProfileCard
+            profile={traderProfileDict[bestPastQuarter]}
+            onClick={handleClickCard}
+          />
+        </div>
+      )}
+      {bestPastMonth && (
+        <div
+          data-testid='card'
+          className={cardClass}
+        >
+          <h3 className={titleClass}>
+            {localeTool.t('bestReturn.pastMonthTitle')}:
+          </h3>
+          <TraderProfileCard
+            profile={traderProfileDict[bestPastMonth]}
+            onClick={handleClickCard}
+          />
+        </div>
+      )}
+      {bestPastWeek && (
+        <div
+          data-testid='card'
+          className={cardClass}
+        >
+          <h3 className={titleClass}>
+            {localeTool.t('bestReturn.pastWeekTitle')}:
+          </h3>
+          <TraderProfileCard
+            profile={traderProfileDict[bestPastWeek]}
+            onClick={handleClickCard}
+          />
+        </div>
+      )}
     </section>
   )
 }
