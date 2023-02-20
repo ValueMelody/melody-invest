@@ -191,6 +191,9 @@ export const globalSlice = createSlice({
   reducers: {
     removeMessage,
     addMessage,
+    onCreatePaymentFailed,
+    onCreateUserToken,
+    onRequestRejected,
     startLoading,
     stopLoading,
     _updateForTest,
