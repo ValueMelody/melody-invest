@@ -52,18 +52,11 @@ const TraderProfileCard = ({
   const isClickable = !!onClick && !disabled
 
   const handleClick = () => {
-    if (!onClick || !trader) return
-    return onClick(trader)
+    if (!onClick) return
+    return onClick(trader!)
   }
 
   const handleToggleWatch = () => {
-    if (!user.userType) {
-      dispatch(globalSlice.actions.addMessage({
-        title: localeTool.t('error.guest'),
-        type: 'failure',
-      }))
-      return
-    }
     if (!user.access.canFollowTrader && !isWatched) {
       dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('permission.limited'),
