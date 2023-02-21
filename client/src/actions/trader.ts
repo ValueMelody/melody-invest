@@ -183,7 +183,6 @@ export const createWatchedProfile = createAsyncThunk(
   async (traderId: number, { rejectWithValue, dispatch }) => {
     const endpoint = `${routerEnum.Endpoint.Traders}/profiles/${traderId}`
     await dispatch(refreshAccessToken())
-
     try {
       await requestAdapter.sendPostRequest(endpoint)
       return traderId

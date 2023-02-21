@@ -8,7 +8,6 @@ import axios from 'axios'
 import { contentSlice } from './content'
 import { globalSlice } from './global'
 import { store } from './index'
-import { AnyAction } from '@reduxjs/toolkit'
 
 afterEach(() => {
   store.dispatch(contentSlice.actions._resetForTest())
@@ -87,7 +86,7 @@ describe('#store', () => {
     expect(axios.defaults.headers.common.Authorization).toBe(`Bearer ${tokens.accessToken}`)
   })
 
-  test('onRequestRejected', () => {
+  test('onRequestRejected with 401', () => {
     store.dispatch(globalSlice.actions._updateForTest({
       refreshToken: 'aaa',
       refreshExpiresIn: '2022-01-05',
@@ -104,5 +103,23 @@ describe('#store', () => {
     expect(store.getState().global.refreshExpiresIn).toBe('')
     expect(store.getState().global.accessToken).toBe('')
     expect(store.getState().global.accessExpiresIn).toBe('')
+  })
+
+  test('onRequestRejected with no message', () => {
+    store.dispatch(globalSlice.actions._updateForTest({
+      refreshToken: 'aaa',
+      refreshExpiresIn: '2022-01-05',
+      accessToken: 'bbb',
+      accessExpiresIn: '2022-01-01',
+    }))
+    store.dispatch(globalSlice.actions.onRequestRejected())
+    expect(store.getState().global.isLoading).toBe(false)
+    const messages = store.getState().global.messages
+    expect(messages[messages.length - 1].type).toBe('failure')
+    expect(messages[messages.length - 1].title).toBe(localeTool.t('error.500'))
+    expect(store.getState().global.refreshToken).toBe('aaa')
+    expect(store.getState().global.refreshExpiresIn).toBe('2022-01-05')
+    expect(store.getState().global.accessToken).toBe('bbb')
+    expect(store.getState().global.accessExpiresIn).toBe('2022-01-01')
   })
 })

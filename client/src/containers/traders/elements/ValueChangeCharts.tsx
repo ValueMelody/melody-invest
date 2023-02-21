@@ -45,6 +45,7 @@ const ValueChangeCharts = ({
       <Button.Group>
         <Button
           size='xs'
+          data-testid='decadeChartBtn'
           onClick={handleClickDecadeChart}
           color={activeChartIndex === 0 ? undefined : 'gray'}
         >
@@ -52,6 +53,7 @@ const ValueChangeCharts = ({
         </Button>
         <Button
           size='xs'
+          data-testid='yearChartBtn'
           onClick={handleClickYearChart}
           color={activeChartIndex === 1 ? undefined : 'gray'}
         >

@@ -17,7 +17,7 @@ const EnvDetail = () => {
 
   const tickerIdentityBaseDict = useSelector(selectors.selectTickerIdentityBaseDict())
 
-  const envId = params.envId ? parseInt(params.envId) : undefined
+  const envId = Number(params.envId)
   const envRecord = useSelector(selectors.selectTraderEnvBaseById(envId))
   const envDetail = useSelector(selectors.selectTraderEnvDetailById(envId))
 
@@ -39,7 +39,6 @@ const EnvDetail = () => {
   }, [envId, envRecord, topTraderProfiles, dispatch])
 
   const handleClickTicker = (tickerId: number) => {
-    if (!envId) return
     const url = routerTool.tickerDetailRoute(envId, tickerId)
     navigate(url)
   }

@@ -37,11 +37,10 @@ afterEach(() => {
 })
 
 describe('#ComboBuilder', () => {
-  // test('disable create button by default', () => {
-  //   render(<ComboBuilder />)
-  //   expect(screen.getByTestId('createBtn')).toBeDisabled()
-  //   expect(screen.getByTestId('noProfileAlert')).toBeInTheDocument()
-  // })
+  test('disable create button by default', () => {
+    render(<ComboBuilder />)
+    expect(screen.getByTestId('createBtn')).toBeDisabled()
+  })
 
   test('could trigger create', async () => {
     const userType = mock<UserState>({})
@@ -98,6 +97,13 @@ describe('#ComboBuilder', () => {
     expect(traders.length).toBe(3)
     fireEvent.click(traders[0])
     fireEvent.click(traders[2])
+    expect(traders[0].className).toContain('card-active')
+    expect(traders[2].className).toContain('card-active')
+
+    fireEvent.click(traders[2])
+    expect(traders[2].className).not.toContain('card-active')
+    fireEvent.click(traders[2])
+    expect(traders[2].className).toContain('card-active')
 
     fireEvent.submit(screen.getByTestId('form'))
 

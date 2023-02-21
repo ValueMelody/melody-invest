@@ -35,9 +35,8 @@ const TickerDetail = () => {
 
   useEffect(() => {
     const hasNoTicker = hasTicker && !tickerIdentity
-    const hasNoEnv = traderEnvs.length && !traderEnv
-    if (hasNoTicker || hasNoEnv) navigate(routerTool.notFoundRoute())
-  }, [tickerIdentity, traderEnv, hasTicker, traderEnvs.length, navigate])
+    if (hasNoTicker) navigate(routerTool.notFoundRoute())
+  }, [tickerIdentity, hasTicker, navigate])
 
   useEffect(() => {
     if (tickerDetail || !tickerId || !envId) return

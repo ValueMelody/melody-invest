@@ -92,6 +92,7 @@ const ComboBuilder = () => {
       </h2>
       <RequiredLabel
         className='mb-6'
+        data-testid='minProfileAlert'
         title={localeTool.t('comboBuilder.minTraderRequired')}
       />
       {profiles.length < 2 && (

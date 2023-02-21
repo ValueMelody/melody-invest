@@ -114,18 +114,4 @@ describe('#TickerDetail', () => {
     expect(navigate).toBeCalledTimes(1)
     expect(navigate).toBeCalledWith('/404')
   })
-
-  test('could show empty if env not found', async () => {
-    jest.spyOn(selectors, 'selectTraderEnvBaseById')
-      .mockImplementation(() => () => undefined)
-    jest.spyOn(selectors, 'selectTickerIdentityBaseById')
-      .mockImplementation(() => () => ticker)
-    await act(() => {
-      render(<TickerDetail />)
-    })
-
-    expect(screen.queryByTestId('detail-root')).not.toBeInTheDocument()
-    expect(navigate).toBeCalledTimes(1)
-    expect(navigate).toBeCalledWith('/404')
-  })
 })

@@ -57,7 +57,6 @@ const TraderProfileCard = ({
   }
 
   const handleToggleWatch = () => {
-    if (!trader) return
     if (!user.userType) {
       dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('error.guest'),
@@ -73,9 +72,9 @@ const TraderProfileCard = ({
       return
     }
     if (isWatched) {
-      dispatch(actions.deleteWatchedProfile(trader.id))
+      dispatch(actions.deleteWatchedProfile(trader!.id))
     } else {
-      dispatch(actions.createWatchedProfile(trader.id))
+      dispatch(actions.createWatchedProfile(trader!.id))
     }
   }
 
@@ -122,6 +121,7 @@ const TraderProfileCard = ({
               onToggle={handleToggleWatch}
             />
             <Button
+              data-testid='forkBtn'
               size='xs'
               className='ml-4'
               onClick={handleFork}
