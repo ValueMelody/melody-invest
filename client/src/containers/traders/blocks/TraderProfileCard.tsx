@@ -52,8 +52,7 @@ const TraderProfileCard = ({
   const isClickable = !!onClick && !disabled
 
   const handleClick = () => {
-    if (!onClick) return
-    return onClick(trader!)
+    return onClick!(trader!)
   }
 
   const handleToggleWatch = () => {

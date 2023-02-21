@@ -160,9 +160,6 @@ describe('#TraderProfileCard', () => {
     expect(post).toBeCalledTimes(0)
     expect(store.getState().global.messages[0].title).toBe(localeTool.t('permission.limited'))
     expect(store.getState().global.messages[0].type).toBe('failure')
-
-    fireEvent.click(screen.getByTestId('traderProfileCard'))
-    expect(navigate).toBeCalledTimes(0)
   })
 
   test('do not render when there is no trader', async () => {
