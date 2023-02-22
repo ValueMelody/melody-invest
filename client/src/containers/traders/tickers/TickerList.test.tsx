@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as selectors from 'selectors'
-import { instance, mock } from 'ts-mockito'
 import { fireEvent, render, screen } from 'test.utils'
+import { instance, mock } from 'ts-mockito'
 import TickerList from './TickerList'
 
 const tickerType = mock<interfaces.tickerModel.Identity>({})

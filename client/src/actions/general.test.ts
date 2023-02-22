@@ -1,8 +1,8 @@
 import * as general from './general'
 import * as requestAdapter from 'adapters/request'
+import { act, waitFor } from 'test.utils'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
-import { act, waitFor } from 'test.utils'
 
 jest.mock('adapters/request', () => {
   const actual = jest.requireActual('adapters/request')
