@@ -309,3 +309,13 @@ describe('#activateUser', () => {
     spy.mockRestore()
   })
 })
+
+describe('#refreshAccessToken', () => {
+  test('could refresh access token', async () => {
+    const result = await crudUsers.refreshAccessToken(1, 'test@email.com', 2)
+    const decoded = generateTool.decodeJWT(result.accessToken, false)
+    expect(decoded).toStrictEqual({
+      id: 1, email: 'test@email.com', type: 2,
+    })
+  })
+})

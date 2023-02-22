@@ -35,7 +35,7 @@ const ProfileBuilderGroup = ({
   }
 
   return (
-    <Card>
+    <Card data-testid='profileBuilderGroup'>
       <h3>
         {title}
       </h3>

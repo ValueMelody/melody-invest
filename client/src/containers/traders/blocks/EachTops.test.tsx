@@ -76,20 +76,44 @@ describe('#EachTops', () => {
         bestOverall={22}
         bestPastYear={11}
         bestPastQuarter={33}
+        bestPastMonth={22}
         bestPastWeek={44}
       />,
     )
 
     const labels = screen.queryAllByTestId('profileLabel')
-    expect(labels.length).toBe(4)
+    expect(labels.length).toBe(5)
     expect(labels[0].innerHTML).toContain('222')
     expect(labels[1].innerHTML).toContain('111')
     expect(labels[2].innerHTML).toContain('333')
-    expect(labels[3].innerHTML).toContain('444')
+    expect(labels[3].innerHTML).toContain('222')
+    expect(labels[4].innerHTML).toContain('444')
 
     const profiles = screen.queryAllByTestId('traderProfileCard')
     fireEvent.click(profiles[1])
     expect(navigate).toBeCalledTimes(1)
     expect(navigate).toBeCalledWith('/traders/profiles/1/A')
+  })
+
+  test('could show top profiles', () => {
+    const envType = mock<interfaces.traderEnvModel.Record>({})
+    jest.spyOn(selectors, 'selectTraderEnvBaseById')
+      .mockImplementation(() => () => instance(envType))
+
+    jest.spyOn(selectors, 'selectTraderProfileBaseDict')
+      .mockImplementation(() => () => ({}))
+
+    render(
+      <EachTops
+        bestOverall={undefined}
+        bestPastYear={undefined}
+        bestPastQuarter={undefined}
+        bestPastMonth={undefined}
+        bestPastWeek={undefined}
+      />,
+    )
+
+    const labels = screen.queryAllByTestId('profileLabel')
+    expect(labels.length).toBe(0)
   })
 })

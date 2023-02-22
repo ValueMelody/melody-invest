@@ -1,20 +1,44 @@
-import { fireEvent, render, screen, waitFor } from 'test.utils'
+import * as generalAction from 'actions/general'
+import { act, fireEvent, render, screen, waitFor } from 'test.utils'
 import Setting from './Setting'
 import axios from 'axios'
+
+jest.mock('actions/general', () => {
+  const actual = jest.requireActual('actions/general')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+const logout = jest.fn()
+jest.spyOn(generalAction, 'logout')
+  .mockImplementation(() => {
+    logout()
+    return { payload: undefined, type: 'general/logout' }
+  })
 
 describe('#Setting', () => {
   test('could render buttons', async () => {
     const put = jest.fn()
     jest.spyOn(axios, 'put').mockImplementation(put)
 
-    render(<Setting />)
+    act(() => {
+      render(<Setting />)
+    })
 
-    expect(screen.queryByTestId('signOutBtn')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('signOutBtn'))
+    await waitFor(() => {
+      expect(logout).toBeCalledTimes(1)
+    })
+
     expect(screen.queryByTestId('changePasswordBtn')).toBeInTheDocument()
 
     expect(screen.queryByTestId('confirmModal')).not.toBeInTheDocument()
     fireEvent.click(screen.getByTestId('lockAccessBtn'))
     expect(screen.queryByTestId('confirmModal')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('confirmModalCloseBtn'))
+    expect(screen.queryByTestId('confirmModal')).not.toBeInTheDocument()
 
     fireEvent.change(screen.getByTestId('password'), { target: { value: 'Aa12345678! ' } })
     fireEvent.change(screen.getByTestId('newPassword'), { target: { value: ' Aa87654321!' } })

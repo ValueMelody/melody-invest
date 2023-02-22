@@ -88,3 +88,20 @@ describe('#normalUser', () => {
     expect(next).toBeCalledTimes(0)
   })
 })
+
+describe('#authByRefreshToken', () => {
+  test('could auth by refresh token', async () => {
+    const detail = { id: 1, email: 'test@email.com', type: 1 }
+    const encode = generateTool.encodeJWT(detail, '12h', true)
+    const next = jest.fn()
+
+    const requestMock: Request = mock({})
+    when(requestMock.headers).thenReturn({ authorization: `Bearer ${encode}` })
+    when(requestMock.body).thenReturn({})
+    const req = instance(requestMock)
+
+    auth.authByRefreshToken(req, res, next)
+    expect(req.body.auth).toStrictEqual(detail)
+    expect(next).toBeCalledTimes(1)
+  })
+})

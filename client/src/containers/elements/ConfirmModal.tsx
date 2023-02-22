@@ -31,6 +31,7 @@ const ConfirmModal = ({
       </Modal.Body>
       <Modal.Footer className='flex justify-end'>
         <Button
+          data-testid='confirmModalCloseBtn'
           color='gray'
           onClick={handleCloseModal}
         >

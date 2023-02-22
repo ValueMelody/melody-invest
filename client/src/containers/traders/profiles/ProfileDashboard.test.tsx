@@ -6,6 +6,10 @@ import { GlobalState } from 'stores/global'
 import ProfileDashboard from './ProfileDashboard'
 import { UserState } from 'stores/user'
 
+afterEach(() => {
+  jest.clearAllMocks()
+})
+
 jest.mock('selectors', () => {
   return {
     __esModule: true,
@@ -140,5 +144,86 @@ describe('#ProfileDashboard', () => {
 
     render(<ProfileDashboard />)
     expect(screen.queryByTestId('dashboard')).not.toBeInTheDocument()
+  })
+
+  test('render disabled', async () => {
+    const traderType = mock<interfaces.traderModel.Record>({})
+    const patternType = mock<interfaces.traderPatternModel.Public>({})
+    jest.spyOn(selectors, 'selectTraderProfileBaseDict')
+      .mockImplementation(() => () => ({
+        1: {
+          trader: { ...instance(traderType), id: 1, accessCode: 'abc' },
+          pattern: instance(patternType),
+        },
+        2: {
+          trader: { ...instance(traderType), id: 2 },
+          pattern: instance(patternType),
+        },
+        3: {
+          trader: { ...instance(traderType), id: 3 },
+          pattern: instance(patternType),
+        },
+      }))
+
+    jest.spyOn(selectors, 'selectUser')
+      .mockImplementation(() => () => {
+        return {
+          ...instance(userType),
+          userType: 1,
+          userTraderIds: [1],
+          access: {
+            canFollowEnv: false,
+            canFollowCombo: false,
+            canFollowTrader: false,
+            accessibleEnvIds: [],
+            accessibleComboIds: [],
+            accessibleTraderIds: [],
+          },
+        }
+      })
+
+    const envType = mock<interfaces.traderEnvModel.Record>({})
+    jest.spyOn(selectors, 'selectTraderEnvBaseById')
+      .mockImplementation(() => () => instance(envType))
+
+    jest.spyOn(selectors, 'selectTraderEnvBases')
+      .mockImplementation(() => () => [
+        { ...instance(envType), id: 1, isSystem: true },
+        { ...instance(envType), id: 2 },
+      ])
+
+    const comboType = mock<interfaces.traderComboModel.Identity>({})
+    jest.spyOn(selectors, 'selectTraderComboBases')
+      .mockImplementation(() => () => [
+        { ...instance(comboType), id: 1, isSystem: false, traderIds: [] },
+      ])
+
+    await act(() => {
+      render(<ProfileDashboard />)
+    })
+
+    fireEvent.click(screen.getByTestId('addProfileBtn'))
+    expect(navigate).toBeCalledTimes(0)
+
+    fireEvent.click(screen.getByTestId('addEnvBtn'))
+    expect(navigate).toBeCalledTimes(0)
+
+    fireEvent.click(screen.getByTestId('addComboBtn'))
+    expect(navigate).toBeCalledTimes(0)
+
+    const profiles = screen.getAllByTestId('traderProfileCard')
+    expect(profiles.length).toBe(1)
+    fireEvent.click(profiles[0])
+    expect(navigate).toBeCalledTimes(0)
+
+    const envs = screen.getAllByTestId('traderEnvCard')
+    expect(envs.length).toBe(2)
+    fireEvent.click(envs[1])
+    expect(navigate).toBeCalledTimes(0)
+
+    const combos = screen.getAllByTestId('traderComboCard')
+    expect(combos.length).toBe(1)
+    fireEvent.click(combos[0])
+    expect(navigate).toBeCalledTimes(0)
   })
 })

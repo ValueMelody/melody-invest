@@ -12,7 +12,6 @@ import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
 import ProfileBuilderGroup from './ProfileBuilderGroup'
 import ProfileBuilderHeader from './ProfileBuilderHeader'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
-import { mock } from 'ts-mockito'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
@@ -195,7 +194,7 @@ const ProfileBuilder = () => {
   ) => {
     e.preventDefault()
 
-    const patternMock: interfaces.traderPatternModel.Create = mock({})
+    const patternMock = {} as interfaces.traderPatternModel.Create
     const defaultValues = { ...patternMock, hashCode: '' }
 
     const traderPattern = constants

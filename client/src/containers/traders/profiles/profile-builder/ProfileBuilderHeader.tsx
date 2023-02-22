@@ -14,6 +14,7 @@ const ProfileBuilderHeader = ({
 }) => {
   return (
     <header
+      data-testid='profileBuilderHeader'
       className='cursor-pointer flex items-center'
     >
       <h3 className='font-semibold mr-4'>

@@ -52,19 +52,10 @@ const TraderProfileCard = ({
   const isClickable = !!onClick && !disabled
 
   const handleClick = () => {
-    if (!onClick || !trader) return
-    return onClick(trader)
+    return onClick!(trader!)
   }
 
   const handleToggleWatch = () => {
-    if (!trader) return
-    if (!user.userType) {
-      dispatch(globalSlice.actions.addMessage({
-        title: localeTool.t('error.guest'),
-        type: 'failure',
-      }))
-      return
-    }
     if (!user.access.canFollowTrader && !isWatched) {
       dispatch(globalSlice.actions.addMessage({
         title: localeTool.t('permission.limited'),
@@ -73,9 +64,9 @@ const TraderProfileCard = ({
       return
     }
     if (isWatched) {
-      dispatch(actions.deleteWatchedProfile(trader.id))
+      dispatch(actions.deleteWatchedProfile(trader!.id))
     } else {
-      dispatch(actions.createWatchedProfile(trader.id))
+      dispatch(actions.createWatchedProfile(trader!.id))
     }
   }
 
@@ -122,6 +113,7 @@ const TraderProfileCard = ({
               onToggle={handleToggleWatch}
             />
             <Button
+              data-testid='forkBtn'
               size='xs'
               className='ml-4'
               onClick={handleFork}

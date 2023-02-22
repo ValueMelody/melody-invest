@@ -1,3 +1,4 @@
+import * as localeTool from 'tools/locale'
 import * as request from './request'
 import axios from 'axios'
 
@@ -24,6 +25,15 @@ describe('#setAuthToken', () => {
     expect(result).toBe(123)
   })
 
+  test('could return null for get', async () => {
+    jest.spyOn(axios, 'get').mockImplementation(async () => {
+      return undefined
+    })
+
+    const result = await request.sendGetRequest('abc.com')
+    expect(result).toBe(null)
+  })
+
   test('could catch get error', async () => {
     jest.spyOn(axios, 'get').mockImplementation(async () => {
       throw new Error()
@@ -46,6 +56,15 @@ describe('#setAuthToken', () => {
     expect(result).toBe(123)
   })
 
+  test('could return null for post', async () => {
+    jest.spyOn(axios, 'post').mockImplementation(async () => {
+      return undefined
+    })
+
+    const result = await request.sendPostRequest('abc.com')
+    expect(result).toBe(null)
+  })
+
   test('could catch post error', async () => {
     jest.spyOn(axios, 'post').mockImplementation(async () => {
       throw new Error()
@@ -66,6 +85,15 @@ describe('#setAuthToken', () => {
     const result = await request.sendPutRequest('abc.com', { name: '111' })
     expect(put).toBeCalledWith('abc.com', { name: '111' })
     expect(result).toBe(123)
+  })
+
+  test('could return null for put', async () => {
+    jest.spyOn(axios, 'put').mockImplementation(async () => {
+      return undefined
+    })
+
+    const result = await request.sendPutRequest('abc.com')
+    expect(result).toBe(null)
   })
 
   test('could catch put error', async () => {
@@ -92,5 +120,62 @@ describe('#setAuthToken', () => {
     })
 
     await expect(async () => await request.sendDeleteRequest('abc.com')).rejects.toThrowError()
+  })
+})
+
+describe('#handleRequestError', () => {
+  test('could handle 401 error', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 401,
+        data: {
+          message: '',
+        },
+      },
+    })).toThrow(localeTool.t('error.401'))
+  })
+
+  test('could handle 500 error', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 500,
+        data: {
+          message: '',
+        },
+      },
+    })).toThrow(localeTool.t('error.500'))
+  })
+
+  test('could handle other error with message', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 402,
+        data: {
+          message: 'wrong code',
+        },
+      },
+    })).toThrow('wrong code')
+  })
+
+  test('could handle other error with message', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 402,
+        data: {
+          message: 'wrong code',
+        },
+      },
+    })).toThrow('wrong code')
+  })
+
+  test('could handle other error without message', () => {
+    expect(() => request.handleRequestError({
+      response: {
+        status: 402,
+        data: {
+          message: '',
+        },
+      },
+    })).toThrow(localeTool.t('error.500'))
   })
 })

@@ -44,6 +44,16 @@ describe('#getByUK', () => {
     const record4 = await dailyTickers.getByUK('2022-01-02')
     expect(record4).toBeNull()
   })
+
+  test('could only return selected columns', async () => {
+    const result1 = await dailyTickers.getByUK('2021-12-31', 'tickers')
+    expect(result1?.tickers).toBeTruthy()
+    expect(result1?.nearestPrices).toBeFalsy()
+
+    const result2 = await dailyTickers.getByUK('2021-12-31', 'nearestPrices')
+    expect(result2?.nearestPrices).toBeTruthy()
+    expect(result2?.tickers).toBeFalsy()
+  })
 })
 
 describe('#create', () => {

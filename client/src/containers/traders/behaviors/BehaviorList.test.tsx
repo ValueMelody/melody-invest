@@ -29,8 +29,22 @@ describe('#BehaviorList', () => {
     fireEvent.change(screen.getByTestId('search'), { target: { value: 'Daily' } })
     buyBehaviors.forEach((behavior) => {
       const title = parseTool.behaviorTitle(behavior)
-      if (title.includes('Daily')) expect(screen.queryByText(title)).toBeInTheDocument()
-      if (!title.includes('Daily')) expect(screen.queryByText(title)).not.toBeInTheDocument()
+      if (behavior.includes('Daily')) expect(screen.queryByText(title)).toBeInTheDocument()
+      if (!behavior.includes('Daily')) expect(screen.queryByText(title)).not.toBeInTheDocument()
+    })
+
+    fireEvent.change(screen.getByTestId('search'), { target: { value: 'US Annual' } })
+    buyBehaviors.forEach((behavior) => {
+      const title = parseTool.behaviorTitle(behavior)
+      if (title.includes('US Annual')) expect(screen.queryByText(title)).toBeInTheDocument()
+      if (!title.includes('US Annual')) expect(screen.queryByText(title)).not.toBeInTheDocument()
+    })
+
+    fireEvent.change(screen.getByTestId('search'), { target: { value: 'maximum' } })
+    buyBehaviors.forEach((behavior) => {
+      const desc = parseTool.behaviorDesc(behavior)
+      if (desc.includes('Maximum')) expect(screen.queryByText(desc)).toBeInTheDocument()
+      if (!desc.includes('Maximum')) expect(screen.queryByText(desc)).not.toBeInTheDocument()
     })
   })
 
