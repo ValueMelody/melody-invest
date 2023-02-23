@@ -6,6 +6,7 @@ import BehaviorDetail from './traders/behaviors/BehaviorDetail'
 import BehaviorList from './traders/behaviors/BehaviorList'
 import ComboBuilder from './traders/combos/ComboBuilder'
 import ComboDetail from './traders/combos/ComboDetail'
+import Disclaimer from './general/Disclaimer'
 import EnvBuilder from './traders/envs/EnvBuilder'
 import EnvDetail from './traders/envs/EnvDetail'
 import Forgot from './accounts/Forgot'
@@ -46,6 +47,10 @@ const Router = () => {
           <Route
             path={routerEnum.Nav.Privacy}
             element={<Privacy />}
+          />
+          <Route
+            path={routerEnum.Nav.Disclaimer}
+            element={<Disclaimer />}
           />
           <Route
             path={routerEnum.Nav.Pricing}

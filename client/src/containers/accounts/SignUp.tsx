@@ -21,7 +21,7 @@ const SignUp = () => {
 
   const { validatePassword } = usePasswordValidator()
 
-  const { termsPolicy } = useSelector(selectors.selectContent())
+  const { termsPolicy, privacyPolicy } = useSelector(selectors.selectContent())
 
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -31,6 +31,10 @@ const SignUp = () => {
   useEffect(() => {
     if (!termsPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.TermsAndConditions))
   }, [termsPolicy, dispatch])
+
+  useEffect(() => {
+    if (!privacyPolicy) dispatch(actions.fetchSystemPolicy(constants.Content.PolicyType.Privacy))
+  }, [privacyPolicy, dispatch])
 
   const handleChangeEmail = (
     e: ChangeEvent<HTMLInputElement>,
@@ -133,6 +137,20 @@ const SignUp = () => {
             value={termsPolicy?.content || ''}
           />
         </section>
+        <section className='account-row'>
+          <Textarea
+            className='h-60'
+            disabled
+            value={privacyPolicy?.content || ''}
+          />
+        </section>
+        <section className='account-row'>
+          <Textarea
+            className='h-60'
+            disabled
+            value={String(localeTool.t('page.disclaimer'))}
+          />
+        </section>
         <div className='flex justify-center items-center mb-4'>
           <Checkbox
             data-testid='checkbox'
@@ -140,7 +158,7 @@ const SignUp = () => {
             checked={isConfirmed}
             onChange={handleToggleTerms}
           />
-          <Label>
+          <Label className='w-96'>
             {localeTool.t('signUp.terms')}
           </Label>
         </div>

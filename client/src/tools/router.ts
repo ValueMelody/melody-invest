@@ -88,6 +88,10 @@ export const termsRoute = (): string => {
   return routerEnum.Nav.Terms
 }
 
+export const disclaimerRoute = (): string => {
+  return routerEnum.Nav.Disclaimer
+}
+
 export const rootRoute = (): string => {
   return routerEnum.Nav.Root
 }
