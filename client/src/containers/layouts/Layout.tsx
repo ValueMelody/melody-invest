@@ -62,7 +62,7 @@ const Layout: FunctionComponent = ({
       <main className='pt-12 flex flex-col'>
         <section
           className='p-6 w-full'
-          style={{ minHeight: 'calc(100vh - 138px)' }}
+          style={{ minHeight: 'calc(100vh - 88px)' }}
         >
           {children}
         </section>

@@ -16,6 +16,7 @@ export const Nav = Object.freeze({
   Pricing: '/pricing',
   Privacy: '/privacy',
   Terms: '/terms',
+  Disclaimer: '/disclaimer',
 })
 
 const base = `${commonEnum.Env.ServerType}://${commonEnum.Env.ServerHost}`
