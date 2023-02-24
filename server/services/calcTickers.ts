@@ -499,6 +499,7 @@ const buildDailyTickers = async (
 
 export const calcDailyAvailableTickers = async (
   forceRecheck: boolean,
+  startDate?: string,
 ) => {
   const lastPrices = await tickerDailyModel.getLatest(1)
   const lastPriceDate = lastPrices?.date || dateTool.getInitialDate()
@@ -506,7 +507,9 @@ export const calcDailyAvailableTickers = async (
     ? dateTool.getInitialDate()
     : await dailyTickersModel.getLatestDate()
 
-  let targetDate = dateTool.getNextDate(lastCalculatedDate)
+  const checkDate = startDate && startDate > lastCalculatedDate ? startDate : lastCalculatedDate
+
+  let targetDate = dateTool.getNextDate(checkDate)
   if (!forceRecheck && lastPriceDate < targetDate) return
 
   while (targetDate <= lastPriceDate) {
