@@ -103,13 +103,13 @@ describe('#calcDailyTickers', () => {
   test('could calc daily tickers', async () => {
     await calc.calcDailyTickers(false)
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
-    expect(calcDailyAvailableTickers).toBeCalledWith(false)
+    expect(calcDailyAvailableTickers).toBeCalledWith(false, undefined)
   })
 
   test('could calc daily tickers by force recheck', async () => {
     await calc.calcDailyTickers(true)
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
-    expect(calcDailyAvailableTickers).toBeCalledWith(true)
+    expect(calcDailyAvailableTickers).toBeCalledWith(true, undefined)
   })
 })
 

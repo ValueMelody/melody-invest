@@ -40,10 +40,13 @@ export const calcIndicatorMovements = async () => {
   }
 }
 
-export const calcDailyTickers = async (forceRecheck: boolean) => {
+export const calcDailyTickers = async (
+  forceRecheck: boolean,
+  startDate?: string,
+) => {
   console.info('Start calc daily tickers')
   try {
-    await calcTickers.calcDailyAvailableTickers(forceRecheck)
+    await calcTickers.calcDailyAvailableTickers(forceRecheck, startDate)
     console.info('daily tickers calculated')
   } catch (e) {
     console.error('Error occured:')

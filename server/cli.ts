@@ -48,7 +48,8 @@ export const run = async () => {
     }
     case taskEnum.Name.calcDailyTickers: {
       const forceRecheck = process.argv[3] === 'true' || false
-      await calcTask.calcDailyTickers(forceRecheck)
+      const startDate = process.argv[4] || undefined
+      await calcTask.calcDailyTickers(forceRecheck, startDate)
       break
     }
     case taskEnum.Name.calcTraderAccessHashs: {
