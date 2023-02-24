@@ -141,7 +141,7 @@ describe('calcDailyTickers', () => {
     process.argv[2] = taskEnum.Name.calcDailyTickers
     await run()
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(false)
+    expect(calcDailyTickers).toBeCalledWith(false, undefined)
   })
 
   test('could trigger calcDailyTickers by true', async () => {
@@ -153,7 +153,7 @@ describe('calcDailyTickers', () => {
     process.argv[3] = 'true'
     await run()
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(true)
+    expect(calcDailyTickers).toBeCalledWith(true, undefined)
   })
 })
 
