@@ -1,4 +1,3 @@
-import * as emailAdapter from 'adapters/email'
 import * as marketEnum from 'enums/market'
 import * as syncIndicators from 'services/syncIndicators'
 import * as syncTickers from 'services/syncTickers'
@@ -18,15 +17,7 @@ export const syncTickerPrices = async (date: string) => {
   try {
     const notes = await syncTickers.syncAllPrices(date)
 
-    const noteTags = notes.map((note) => `<li>${note}</li>`)
-
-    const transporter = emailAdapter.initTransporter()
-    await transporter.sendMail({
-      from: 'ValueMelody app@valuemelody.com',
-      to: 'valuemelody@outlook.com',
-      subject: 'Ticker prices synced',
-      html: `<ul>${noteTags.join('')}</ul>`,
-    })
+    notes.forEach((note) => console.info(note))
 
     console.info('ticker prices synced')
   } catch (e) {
