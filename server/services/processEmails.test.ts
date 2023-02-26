@@ -29,7 +29,7 @@ const emailMocks = [
   },
   {
     id: '5ed6d4c8-c159-4588-b966-364a4bdbd3a2',
-    sendTo: 'a@company.com',
+    sendTo: 'b@company.com',
     sendBy: 'test@email.com',
     title: 'activation email',
     content: 'This is an activation email',
@@ -40,7 +40,7 @@ const emailMocks = [
   },
   {
     id: '5ed6d4c8-c159-4588-b966-364a4bdbd3a3',
-    sendTo: 'a@company.com',
+    sendTo: 'c@company.com',
     sendBy: 'test@email.com',
     title: 'activation email',
     content: 'This is an activation email',
@@ -51,7 +51,7 @@ const emailMocks = [
   },
   {
     id: '5ed6d4c8-c159-4588-b966-364a4bdbd3a4',
-    sendTo: 'a@company.com',
+    sendTo: 'd@company.com',
     sendBy: 'test@email.com',
     title: 'activation email',
     content: 'This is an activation email',
@@ -91,6 +91,12 @@ const initTransporterMock = () => {
   return transporterInstance
 }
 
+const pendingMocks = emailMocks.map((mock) => ({
+  ...mock,
+  status: constants.Email.Status.Pending,
+  sentAt: null,
+}))
+
 jest.spyOn(emailAdapter, 'initTransporter')
   .mockImplementation(initTransporterMock)
 
@@ -110,12 +116,6 @@ describe('#processEmail', () => {
   })
 
   test('could sent emails', async () => {
-    const pendingMocks = emailMocks.map((mock) => ({
-      ...mock,
-      status: constants.Email.Status.Pending,
-      sentAt: null,
-    }))
-
     const transaction = await databaseAdapter.createTransaction()
     await runTool.asyncForEach(pendingMocks, async (mock: any) => {
       await emailModel.create(mock, transaction)
@@ -138,5 +138,44 @@ describe('#processEmail', () => {
     expect(updatedEmails[1].status).toBe(constants.Email.Status.Completed)
     expect(updatedEmails[2].status).toBe(constants.Email.Status.Completed)
     expect(updatedEmails[3].status).toBe(constants.Email.Status.Pending)
+  })
+
+  test('could catch failed', async () => {
+    const transporter: Transporter = mock({})
+    when(transporter.sendMail).thenReturn(async (options: SendMailOptions) => {
+      if (options.to === 'a@company.com') {
+        return {}
+      }
+      if (options.to === 'b@company.com') {
+        return {
+          accepted: ['c@company.com'],
+        }
+      }
+      if (options.to === 'c@company.com') {
+        return {
+          accepted: [],
+        }
+      }
+      return undefined
+    })
+    const transporterInstance = instance(transporter)
+    const initTransporterMock = () => {
+      return transporterInstance
+    }
+    jest.spyOn(emailAdapter, 'initTransporter')
+      .mockImplementation(initTransporterMock)
+
+    const transaction = await databaseAdapter.createTransaction()
+    await runTool.asyncForEach(pendingMocks, async (mock: any) => {
+      await emailModel.create(mock, transaction)
+    })
+    await transaction.commit()
+
+    await processEmail.sendPendingEmails(4)
+    const updatedEmails = await emailModel.getAll()
+    expect(updatedEmails[0].status).toBe(constants.Email.Status.Failed)
+    expect(updatedEmails[1].status).toBe(constants.Email.Status.Failed)
+    expect(updatedEmails[2].status).toBe(constants.Email.Status.Failed)
+    expect(updatedEmails[3].status).toBe(constants.Email.Status.Failed)
   })
 })

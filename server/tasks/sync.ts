@@ -25,7 +25,7 @@ export const syncTickerPrices = async (date: string) => {
       from: 'ValueMelody app@valuemelody.com',
       to: 'valuemelody@outlook.com',
       subject: 'Ticker prices synced',
-      html: noteTags.length ? `<ul>${noteTags.join('')}</ul>` : '',
+      html: `<ul>${noteTags.join('')}</ul>`,
     })
 
     console.info('ticker prices synced')
