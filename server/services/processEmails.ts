@@ -46,7 +46,7 @@ export const sendPendingEmails = async (total: number) => {
     })
 
     await databaseAdapter.runWithTransaction(async (transaction) => {
-      const status = response?.accepted?.length && response?.accepted[0] === email.sendTo
+      const status = response?.accepted?.length && response.accepted[0] === email.sendTo
         ? constants.Email.Status.Completed
         : constants.Email.Status.Failed
 

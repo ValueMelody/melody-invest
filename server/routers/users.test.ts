@@ -138,6 +138,20 @@ describe('#createUser', () => {
 
     await expect(async () => await users.createUser(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
   })
+
+  test('could handle empty email', async () => {
+    const request = instance(reqType)
+    request.body = { password: '12345678912345', isConfirmed: true }
+
+    await expect(async () => await users.createUser(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could handle empty password', async () => {
+    const request = instance(reqType)
+    request.body = { email: 'Test@email.com', isConfirmed: true }
+
+    await expect(async () => await users.createUser(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
 })
 
 describe('#createPayment', () => {
@@ -211,7 +225,6 @@ describe('#createPayment', () => {
   test('could throw forbidden for non orderId', async () => {
     const request = instance(reqType)
     request.body = {
-      orderId: '',
       planType: '2',
       stateCode: 'CA',
       provinceCode: 'ON',
@@ -237,6 +250,17 @@ describe('#createReset', () => {
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledTimes(1)
   })
+
+  test('could throw error when no email provided', async () => {
+    const generateResetCode = jest.fn()
+    jest.spyOn(crudUsers, 'generateResetCode')
+      .mockImplementation(generateResetCode)
+
+    const request = instance(reqType)
+    request.body = {}
+
+    await expect(async () => await users.createReset(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
 })
 
 describe('#updatePassword', () => {
@@ -257,6 +281,26 @@ describe('#updatePassword', () => {
     expect(updatePassword).toBeCalledWith(1, '12345678912345', '123456789123456')
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('could throw error when no password provided', async () => {
+    const request = instance(reqType)
+    request.body = {
+      newPassword: '123456789123456',
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await users.updatePassword(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could throw error when no new password provided', async () => {
+    const request = instance(reqType)
+    request.body = {
+      currentPassword: '12345678912345',
+      auth: { id: 1 },
+    }
+
+    await expect(async () => await users.updatePassword(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
   })
 })
 
@@ -307,6 +351,13 @@ describe('#activateUser', () => {
 
     await expect(async () => await users.activateUser(request, response)).rejects.toBe(errorEnum.Custom.WrongAccessCode)
   })
+
+  test('handle empty access code', async () => {
+    const request = instance(reqType)
+    request.body = {}
+
+    await expect(async () => await users.activateUser(request, response)).rejects.toBe(errorEnum.Custom.WrongAccessCode)
+  })
 })
 
 describe('#resetPassword', () => {
@@ -328,6 +379,39 @@ describe('#resetPassword', () => {
     expect(resetPassword).toBeCalledWith('test@email.com', '12345678912345', resetCode)
     expect(resStatus).toBeCalledWith(204)
     expect(resSend).toBeCalledTimes(1)
+  })
+
+  test('could throw error for empty email', async () => {
+    const resetCode = new Array(64).fill('1').join('')
+    const request = instance(reqType)
+    request.body = {
+      password: '12345678912345',
+      resetCode,
+    }
+
+    await expect(async () => await users.resetPassword(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could throw error for empty password', async () => {
+    const resetCode = new Array(64).fill('1').join('')
+    const request = instance(reqType)
+    request.body = {
+      email: 'Test@email.com ',
+      resetCode,
+    }
+
+    await expect(async () => await users.resetPassword(request, response)).rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could throw error for empty resetCode', async () => {
+    const request = instance(reqType)
+    request.body = {
+      email: 'Test@email.com ',
+      password: '12345678912345',
+    }
+
+    await expect(async () => await users.resetPassword(request, response))
+      .rejects.toBe(errorEnum.Custom.WrongAccessCode)
   })
 })
 

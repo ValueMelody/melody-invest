@@ -377,7 +377,6 @@ describe('#createEnv', () => {
     const request = instance(reqType)
     request.body = {
       auth: { id: 1 },
-      name: '',
       startDate: '2020-01-01',
       tickerIds: [1, 2],
     }
@@ -392,6 +391,18 @@ describe('#createEnv', () => {
       auth: { id: 1 },
       name: '123',
       startDate: '2020-01-011',
+      tickerIds: [1, 2],
+    }
+
+    await expect(async () => await traders.createEnv(request, response))
+      .rejects.toBe(errorEnum.Custom.MissingParams)
+  })
+
+  test('could check if date exists', async () => {
+    const request = instance(reqType)
+    request.body = {
+      auth: { id: 1 },
+      name: '123',
       tickerIds: [1, 2],
     }
 
@@ -443,7 +454,6 @@ describe('#createCombo', () => {
     const request = instance(reqType)
     request.body = {
       auth: { id: 1 },
-      name: '',
       traderIds: [2, 3],
     }
 

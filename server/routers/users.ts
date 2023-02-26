@@ -105,7 +105,7 @@ export const activateUser = async (req: Request, res: Response) => {
 export const resetPassword = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   const password = req.body.password?.trim()
-  const resetCode = req.body.resetCode.trim()
+  const resetCode = req.body.resetCode?.trim()
   validateEmail(email)
   validatePassword(password)
   validateAccessCode(resetCode)

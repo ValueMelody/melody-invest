@@ -50,6 +50,9 @@ describe('#returnBuild', () => {
       buildFunction: generateFunc,
     })
     expect(firstCall).toStrictEqual({ stored: true })
+
+    expect(generateFunc).toBeCalledTimes(1)
+
     const secondCall = await cache.returnBuild({
       cacheAge: '1d',
       cacheKey,
@@ -64,5 +67,14 @@ describe('#returnBuild', () => {
     expect(thirdCall).toStrictEqual({ stored: true })
 
     expect(generateFunc).toBeCalledTimes(1)
+
+    const forthCall = await cache.returnBuild({
+      cacheAge: '1d',
+      cacheKey,
+      buildFunction: generateFunc,
+      forceRecheck: true,
+    })
+    expect(forthCall).toStrictEqual({ stored: true })
+    expect(generateFunc).toBeCalledTimes(2)
   })
 })

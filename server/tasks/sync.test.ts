@@ -72,6 +72,16 @@ describe('#syncTickerPrices', () => {
   test('could throw error for a wrong date', async () => {
     expect(async () => await sync.syncTickerPrices('20010103')).rejects.toThrowError()
   })
+
+  test('could throw error message', async () => {
+    jest.spyOn(syncTickers, 'syncAllPrices')
+      .mockImplementation(async () => { throw Error('Not found') })
+    const consoleError = jest.fn()
+    jest.spyOn(console, 'error')
+      .mockImplementation(() => { consoleError() })
+    await sync.syncTickerPrices('2012-03-03')
+    expect(consoleError).toBeCalledTimes(2)
+  })
 })
 
 describe('#syncTickerEarnings', () => {

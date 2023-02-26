@@ -740,4 +740,32 @@ describe('#couldAccessProfiles', () => {
       .rejects
       .toStrictEqual(errorEnum.Default.Forbidden)
   })
+
+  test('could throw error if traderIds not exists', async () => {
+    const next = jest.fn()
+
+    const reqMock: Request = mock({})
+    when(reqMock.body).thenReturn({
+      auth: {
+        id: 2,
+        type: constants.User.Type.Basic,
+      },
+    })
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessProfiles(req, res, next))
+      .rejects
+      .toStrictEqual(errorEnum.Dev.WrongMiddleware)
+  })
+
+  test('could throw error if req body not exists', async () => {
+    const next = jest.fn()
+
+    const reqMock: Request = mock({})
+    const req = instance(reqMock)
+
+    await expect(() => access.couldAccessProfiles(req, res, next))
+      .rejects
+      .toStrictEqual(errorEnum.Dev.WrongMiddleware)
+  })
 })
