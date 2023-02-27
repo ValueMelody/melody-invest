@@ -36,6 +36,52 @@ afterEach(() => {
   jest.clearAllMocks()
 })
 
+const userType = mock<UserState>({})
+jest.spyOn(selectors, 'selectUser')
+  .mockImplementation(() => () => ({
+    ...instance(userType),
+    userTraderIds: [1, 2, 3, 4],
+  }))
+
+const envType = mock<interfaces.traderEnvModel.Record>({})
+jest.spyOn(selectors, 'selectTraderEnvBaseById')
+  .mockImplementation(() => () => instance(envType))
+
+const traderType = mock<interfaces.traderModel.Record>({})
+const patternType = mock<interfaces.traderPatternModel.Public>({})
+
+jest.spyOn(selectors, 'selectTraderProfileBaseDict')
+  .mockImplementation(() => () => ({
+    1: {
+      trader: { ...instance(traderType), id: 1 },
+      pattern: instance(patternType),
+    },
+    2: {
+      trader: { ...instance(traderType), id: 2 },
+      pattern: instance(patternType),
+    },
+    3: {
+      trader: { ...instance(traderType), id: 3 },
+      pattern: instance(patternType),
+    },
+  }))
+
+const comboType = mock<interfaces.traderComboModel.Identity>({})
+
+const post = jest.fn()
+jest.spyOn(axios, 'post')
+  .mockImplementation(async (url, req) => {
+    post(url, req)
+    return {
+      data: {
+        ...instance(comboType),
+        id: 11,
+        name: 'test combo',
+        traderIds: [1, 3],
+      },
+    }
+  })
+
 describe('#ComboBuilder', () => {
   test('disable create button by default', () => {
     render(<ComboBuilder />)
@@ -43,52 +89,6 @@ describe('#ComboBuilder', () => {
   })
 
   test('could trigger create', async () => {
-    const userType = mock<UserState>({})
-    jest.spyOn(selectors, 'selectUser')
-      .mockImplementation(() => () => ({
-        ...instance(userType),
-        userTraderIds: [1, 2, 3],
-      }))
-
-    const envType = mock<interfaces.traderEnvModel.Record>({})
-    jest.spyOn(selectors, 'selectTraderEnvBaseById')
-      .mockImplementation(() => () => instance(envType))
-
-    const traderType = mock<interfaces.traderModel.Record>({})
-    const patternType = mock<interfaces.traderPatternModel.Public>({})
-
-    jest.spyOn(selectors, 'selectTraderProfileBaseDict')
-      .mockImplementation(() => () => ({
-        1: {
-          trader: { ...instance(traderType), id: 1 },
-          pattern: instance(patternType),
-        },
-        2: {
-          trader: { ...instance(traderType), id: 2 },
-          pattern: instance(patternType),
-        },
-        3: {
-          trader: { ...instance(traderType), id: 3 },
-          pattern: instance(patternType),
-        },
-      }))
-
-    const comboType = mock<interfaces.traderComboModel.Identity>({})
-
-    const post = jest.fn()
-    jest.spyOn(axios, 'post')
-      .mockImplementation(async (url, req) => {
-        post(url, req)
-        return {
-          data: {
-            ...instance(comboType),
-            id: 11,
-            name: 'test combo',
-            traderIds: [1, 3],
-          },
-        }
-      })
-
     await act(() => {
       render(<ComboBuilder />)
     })
@@ -104,6 +104,9 @@ describe('#ComboBuilder', () => {
     expect(traders[2].className).not.toContain('card-active')
     fireEvent.click(traders[2])
     expect(traders[2].className).toContain('card-active')
+    fireEvent.click(traders[0])
+    fireEvent.click(traders[0])
+    expect(traders[0].className).toContain('card-active')
 
     fireEvent.submit(screen.getByTestId('form'))
 
@@ -115,6 +118,31 @@ describe('#ComboBuilder', () => {
       })
       expect(navigate).toBeCalledTimes(1)
       expect(navigate).toBeCalledWith('/traders/combos/11')
+    })
+  })
+
+  test('do not redirect if create failed', async () => {
+    jest.spyOn(axios, 'post')
+      .mockImplementation(async (url, req) => {
+        post(url, req)
+        throw new Error()
+      })
+
+    await act(() => {
+      render(<ComboBuilder />)
+    })
+    fireEvent.change(screen.getByTestId('name'), { target: { value: 'test name' } })
+    const traders = screen.getAllByTestId('traderProfileCard')
+    fireEvent.click(traders[0])
+    fireEvent.click(traders[2])
+
+    await act(() => {
+      fireEvent.submit(screen.getByTestId('form'))
+    })
+
+    await waitFor(() => {
+      expect(post).toBeCalledTimes(1)
+      expect(navigate).toBeCalledTimes(0)
     })
   })
 })

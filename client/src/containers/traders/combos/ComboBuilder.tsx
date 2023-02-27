@@ -23,7 +23,7 @@ const ComboBuilder = () => {
 
   const user = useSelector(selectors.selectUser())
   const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
-  const profiles = user.userTraderIds.map((traderId) => profileDict[traderId]) || []
+  const profiles = user.userTraderIds.map((traderId) => profileDict[traderId])
 
   const parsedName = comboName.trim().toLowerCase()
   const hasValidName = !!parsedName.trim()

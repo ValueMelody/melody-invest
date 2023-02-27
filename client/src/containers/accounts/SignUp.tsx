@@ -101,6 +101,7 @@ const SignUp = () => {
           />
           <TextInput
             className='account-right'
+            data-testid='emailInput'
             type='email'
             value={email}
             onChange={handleChangeEmail}
@@ -113,6 +114,7 @@ const SignUp = () => {
           />
           <TextInput
             className='account-right'
+            data-testid='passInput'
             type='password'
             value={password}
             onChange={handleChangePassword}
@@ -125,6 +127,7 @@ const SignUp = () => {
           />
           <TextInput
             className='account-right'
+            data-testid='retypePassInput'
             type='password'
             value={retypePassword}
             onChange={handleChangeRetypePassword}
@@ -132,16 +135,18 @@ const SignUp = () => {
         </section>
         <section className='account-row'>
           <Textarea
+            data-testid='termsContent'
             className='h-60'
             disabled
-            value={termsPolicy?.content || ''}
+            value={termsPolicy?.content}
           />
         </section>
         <section className='account-row'>
           <Textarea
+            data-testid='privacyContent'
             className='h-60'
             disabled
-            value={privacyPolicy?.content || ''}
+            value={privacyPolicy?.content}
           />
         </section>
         <section className='account-row'>
