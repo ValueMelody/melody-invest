@@ -372,7 +372,10 @@ const ProfileBuilder = () => {
           {localeTool.t('profileBuilder.duplicatedProfile')}
         </Alert>
       )}
-      <form onSubmit={handleSubmit}>
+      <form
+        data-testid='submitForm'
+        onSubmit={handleSubmit}
+      >
         <footer className='flex flex-col items-center mt-6'>
           <Button
             data-testid='createBtn'

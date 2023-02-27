@@ -21,6 +21,7 @@ const ValueChangeCharts = ({
 
   const decadeTrends = parseTool.chartTrends(oneDecadeTrends, totalValue)
   const yearTrends = parseTool.chartTrends(oneYearTrends, totalValue)
+  const isDecadeChart = activeChartIndex === 0
 
   const handleClickDecadeChart = (e: SyntheticEvent) => {
     e.stopPropagation()
@@ -40,14 +41,15 @@ const ValueChangeCharts = ({
       className='flex flex-col items-center'
     >
       <TrendChart
-        data={activeChartIndex === 0 ? decadeTrends : yearTrends}
+        data-testid={isDecadeChart ? 'decadeChart' : 'yearChart'}
+        data={isDecadeChart ? decadeTrends : yearTrends}
       />
       <Button.Group>
         <Button
           size='xs'
           data-testid='decadeChartBtn'
           onClick={handleClickDecadeChart}
-          color={activeChartIndex === 0 ? undefined : 'gray'}
+          color={isDecadeChart ? undefined : 'gray'}
         >
           {localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })}
         </Button>
@@ -55,7 +57,7 @@ const ValueChangeCharts = ({
           size='xs'
           data-testid='yearChartBtn'
           onClick={handleClickYearChart}
-          color={activeChartIndex === 1 ? undefined : 'gray'}
+          color={!isDecadeChart ? undefined : 'gray'}
         >
           {localeTool.t('common.daysTrends', { num: 30 * (yearTrends.length - 1) })}
         </Button>

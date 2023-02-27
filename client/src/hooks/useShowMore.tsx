@@ -10,11 +10,11 @@ const useShowMore = () => {
   }
 
   const renderShowMoreButton = () => (
-    <div
-      className='flex justify-center'
-      data-testid='showMore'
-    >
-      <Button onClick={handleClickShowMore}>
+    <div className='flex justify-center'>
+      <Button
+        data-testid='showMore'
+        onClick={handleClickShowMore}
+      >
         {localeTool.t('common.showMoreHistory')}
       </Button>
     </div>

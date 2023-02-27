@@ -30,6 +30,7 @@ const HoldingCard = ({
 
   return (
     <Card
+      data-testid='holdingCard'
       className={className}
     >
       <header className='flex flex-wrap justify-between items-center'>
@@ -56,6 +57,7 @@ const HoldingCard = ({
         <section className='flex flex-wrap items-center'>
           {previousHolding && (
             <ValueDiffer
+              data-testid='holdingDiffer'
               className='mr-4 mb-2'
               title={localeTool.t('common.sinceLast')}
               currentValue={holding.totalValue}

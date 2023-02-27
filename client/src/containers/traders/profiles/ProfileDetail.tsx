@@ -21,7 +21,7 @@ const ProfileDetail = () => {
   const { displayedTotal, renderShowMoreButton } = useShowMore()
 
   const traderId = params.traderId ? parseInt(params.traderId) : undefined
-  const accessCode = params?.accessCode || null
+  const accessCode = params.accessCode || null
 
   const profileBase = useSelector(selectors.selectTraderProfileBaseById(traderId))
   const profileDetail = useSelector(selectors.selectTraderProfileDetailById(traderId))
@@ -39,7 +39,7 @@ const ProfileDetail = () => {
   }, [accessCode, traderId, navigate])
 
   useEffect(() => {
-    if (!traderId || !accessCode) return
+    if (!traderId || accessCode?.length !== 16) return
     if (!profileBase) {
       dispatch(actions.fetchTraderProfile({ id: traderId, accessCode }))
     } else if (profileBase && !profileDetail) {
@@ -93,20 +93,15 @@ const ProfileDetail = () => {
             title={localeTool.t('common.environments')}
             className='my-4'
           />
-          {profileEnvs.map((profileEnv) => {
-            const traderEnv = traderEnvDict[profileEnv.traderEnvId]
-            if (!traderEnv) return null
-
-            return (
-              <TraderEnvCard
-                key={profileEnv.traderEnvId}
-                className='w-80 mb-4'
-                traderEnv={traderEnv}
-                isActive={profileBase.trader.traderEnvId === profileEnv.traderEnvId}
-                onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
-              />
-            )
-          })}
+          {profileEnvs.map((profileEnv) => (
+            <TraderEnvCard
+              key={profileEnv.traderEnvId}
+              className='w-80 mb-4'
+              traderEnv={traderEnvDict[profileEnv.traderEnvId]}
+              isActive={profileBase.trader.traderEnvId === profileEnv.traderEnvId}
+              onClick={() => handleClickEnv(profileEnv.traderId, profileEnv.accessCode)}
+            />
+          ))}
         </aside>
       </section>
     </section>

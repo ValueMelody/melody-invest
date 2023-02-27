@@ -33,6 +33,10 @@ describe('#UnwatchEnvButton', () => {
       />,
     )
     fireEvent.click(screen.getByTestId('watchButton'))
+    expect(screen.queryByTestId('confirmModal')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('confirmModalCloseBtn'))
+    expect(screen.queryByTestId('confirmModal')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('watchButton'))
     await act(() => {
       fireEvent.click(screen.getByTestId('confirmUnwatchBtn'))
     })

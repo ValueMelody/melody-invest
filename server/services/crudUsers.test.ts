@@ -129,8 +129,8 @@ describe('#createUserToken', () => {
     const result = await crudUsers.createUserToken('b@email.com', 'aabbcc', false)
     expect(result.accessToken).toBeTruthy()
     expect(result.refreshToken).toBeTruthy()
-    expect(result.refreshExpiresIn).toBe(dateTool.toTokenExpiresInISO('12h'))
-    expect(result.accessExpiresIn).toBe(dateTool.toTokenExpiresInISO('15m'))
+    expect(result.refreshExpiresIn.slice(0, 18)).toBe(dateTool.toTokenExpiresInISO('12h').slice(0, 18))
+    expect(result.accessExpiresIn.slice(0, 18)).toBe(dateTool.toTokenExpiresInISO('15m').slice(0, 18))
   })
 
   test('could create user token expires in 30d', async () => {

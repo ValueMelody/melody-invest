@@ -1,9 +1,14 @@
 import * as interfaces from '@shared/interfaces'
+import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import EnvDetail from './EnvDetail'
 import axios from 'axios'
+
+afterEach(() => {
+  jest.clearAllMocks()
+})
 
 jest.mock('selectors', () => {
   return {
@@ -12,18 +17,23 @@ jest.mock('selectors', () => {
   }
 })
 
-const navigate = jest.fn()
 jest.mock('react-router-dom', () => {
   return {
+    __esModule: true,
     ...jest.requireActual('react-router-dom'),
-    useNavigate: () => navigate,
-    useParams: () => (
-      {
-        envId: '1',
-      }
-    ),
   }
 })
+
+jest.spyOn(router, 'useParams')
+  .mockImplementation(() => {
+    return {
+      envId: '1',
+    }
+  })
+
+const navigate = jest.fn()
+jest.spyOn(router, 'useNavigate')
+  .mockImplementation(() => navigate)
 
 const envType = mock<interfaces.traderEnvModel.Record>({})
 const env = { ...instance(envType), id: 1, name: 'test env', tickerIds: [1, 2] }
@@ -32,34 +42,34 @@ const tickerType = mock<interfaces.tickerModel.Identity>({})
 const ticker1 = { ...instance(tickerType), id: 1 }
 const ticker2 = { ...instance(tickerType), id: 2 }
 
+jest.spyOn(selectors, 'selectTraderEnvBaseById')
+  .mockImplementation(() => () => {
+    return env
+  })
+
+jest.spyOn(selectors, 'selectTickerIdentityBaseDict')
+  .mockImplementation(() => () => ({
+    1: ticker1,
+    2: ticker2,
+  }))
+
+jest.spyOn(axios, 'get')
+  .mockImplementation(async () => {
+    return {
+      data: {
+        topProfiles: {
+          yearly: [],
+          pastYear: [],
+          pastQuarter: [],
+          pastMonth: [],
+          pastWeek: [],
+        },
+      },
+    }
+  })
+
 describe('#TickerDetail', () => {
   test('could show env info', async () => {
-    jest.spyOn(selectors, 'selectTraderEnvBaseById')
-      .mockImplementation(() => () => {
-        return env
-      })
-
-    jest.spyOn(selectors, 'selectTickerIdentityBaseDict')
-      .mockImplementation(() => () => ({
-        1: ticker1,
-        2: ticker2,
-      }))
-
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: {
-            topProfiles: {
-              yearly: [],
-              pastYear: [],
-              pastQuarter: [],
-              pastMonth: [],
-              pastWeek: [],
-            },
-          },
-        }
-      })
-
     await act(() => {
       render(<EnvDetail />)
     })
@@ -71,5 +81,19 @@ describe('#TickerDetail', () => {
     fireEvent.click(tickers[1])
     expect(navigate).toBeCalledTimes(1)
     expect(navigate).toBeCalledWith('/tickers/2/envs/1')
+  })
+
+  test('could handle no envId', async () => {
+    jest.spyOn(router, 'useParams')
+      .mockImplementation(() => {
+        return {}
+      })
+
+    await act(() => {
+      render(<EnvDetail />)
+    })
+
+    expect(navigate).toBeCalledTimes(1)
+    expect(navigate).toBeCalledWith('/404')
   })
 })

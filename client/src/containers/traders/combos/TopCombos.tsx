@@ -33,7 +33,7 @@ const TopCombos = () => {
 
   const profilesWithEnvs = comboBase?.traderIds.map((traderId) => {
     const profile = traderProfileDict[traderId]
-    const env = profile?.trader.traderEnvId ? traderEnvDict[profile?.trader.traderEnvId] : undefined
+    const env = profile?.trader.traderEnvId ? traderEnvDict[profile.trader.traderEnvId] : undefined
     return { profile, env }
   }) || []
 
@@ -60,7 +60,10 @@ const TopCombos = () => {
   if (!comboBase || !comboDetail) return null
 
   return (
-    <section className='detail-root'>
+    <section
+      data-testid='topCombos'
+      className='detail-root'
+    >
       <header className='detail-header'>
         <section className='flex'>
           {systemCombos.map((combo) => (
@@ -86,14 +89,14 @@ const TopCombos = () => {
           />
           <ValueChangePanel
             className='mb-4'
-            yearlyPercentNumber={comboDetail?.yearlyPercentNumber}
-            pastYearPercentNumber={comboDetail?.pastYearPercentNumber}
-            pastQuarterPercentNumber={comboDetail?.pastQuarterPercentNumber}
-            pastMonthPercentNumber={comboDetail?.pastMonthPercentNumber}
-            pastWeekPercentNumber={comboDetail?.pastWeekPercentNumber}
-            oneDecadeTrends={comboDetail?.oneDecadeTrends}
-            oneYearTrends={comboDetail?.oneYearTrends}
-            totalValue={comboDetail?.totalValue}
+            yearlyPercentNumber={comboDetail.yearlyPercentNumber}
+            pastYearPercentNumber={comboDetail.pastYearPercentNumber}
+            pastQuarterPercentNumber={comboDetail.pastQuarterPercentNumber}
+            pastMonthPercentNumber={comboDetail.pastMonthPercentNumber}
+            pastWeekPercentNumber={comboDetail.pastWeekPercentNumber}
+            oneDecadeTrends={comboDetail.oneDecadeTrends}
+            oneYearTrends={comboDetail.oneYearTrends}
+            totalValue={comboDetail.totalValue}
             activeChartIndex={activeChartIndex}
             onChangeChart={handleChangeChartIndex}
             showPercents
@@ -121,9 +124,9 @@ const TopCombos = () => {
             className='mb-4'
           />
           <section className='flex flex-col mb-4'>
-            {profilesWithEnvs.map((profileWithEnv) => (
+            {profilesWithEnvs.map((profileWithEnv, index) => (
               <ProfileValue
-                key={profileWithEnv.profile?.trader.id}
+                key={profileWithEnv.profile?.trader.id || `profile-${index}`}
                 className='mb-4'
                 trader={profileWithEnv.profile?.trader || null}
                 env={profileWithEnv.env || null}

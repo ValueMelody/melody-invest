@@ -1,9 +1,17 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
+import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
-import { fireEvent, render, screen } from 'test.utils'
+import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import ProfileBuilder from './ProfileBuilder'
+import axios from 'axios'
+import { globalSlice } from 'stores/global'
+import { store } from 'stores'
+
+store.dispatch(globalSlice.actions._updateForTest({
+  refreshToken: 'aaa',
+}))
 
 jest.mock('selectors', () => {
   return {
@@ -12,9 +20,33 @@ jest.mock('selectors', () => {
   }
 })
 
+jest.mock('react-router-dom', () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual('react-router-dom'),
+  }
+})
+
+const navigate = jest.fn()
+jest.spyOn(router, 'useNavigate')
+  .mockImplementation(() => navigate)
+
 const envType = mock<interfaces.traderEnvModel.Record>({})
 const env1 = { ...instance(envType), id: 1, isSystem: true }
 const env2 = { ...instance(envType), id: 2, isSystem: true }
+
+const post = jest.fn()
+jest.spyOn(axios, 'post').mockImplementation(async (url, params) => {
+  post(url, params)
+  return {
+    data: {
+      trader: {
+        id: 33,
+        accessCode: 'ccc',
+      },
+    },
+  }
+})
 
 describe('#ProfileBuilder', () => {
   test('disable create button by default', async () => {
@@ -23,7 +55,9 @@ describe('#ProfileBuilder', () => {
         return [env1, env2]
       })
 
-    render(<ProfileBuilder />)
+    await act(() => {
+      render(<ProfileBuilder />)
+    })
     expect(screen.getByTestId('createBtn')).toBeDisabled()
 
     const envs = screen.getAllByTestId('traderEnvCard')
@@ -56,5 +90,16 @@ describe('#ProfileBuilder', () => {
     fireEvent.change(screen.getByTestId('select'), { target: { value: 3 } })
     expect(screen.queryAllByTestId('behaviorEditor').length).toBe(0)
     expect(screen.getAllByTestId('behaviorLabel')[1].innerHTML).toContain(': 3')
+
+    await act(() => {
+      fireEvent.submit(screen.getByTestId('submitForm'))
+    })
+    expect(post).toBeCalledTimes(1)
+    expect(post).toBeCalledWith(
+      'http://127.0.0.1:3100/traders/profiles',
+      expect.any(Object),
+    )
+    expect(navigate).toBeCalledTimes(1)
+    expect(navigate).toBeCalledWith('/traders/profiles/33/ccc')
   })
 })

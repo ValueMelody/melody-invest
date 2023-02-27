@@ -2,9 +2,11 @@ import * as chart from 'recharts'
 import * as interfaces from '@shared/interfaces'
 
 const TrendChart = ({
+  'data-testid': testId,
   data,
   title,
 }: {
+  ['data-testid']?: string;
   data: interfaces.common.Option[];
   title?: string;
 }) => {
@@ -19,41 +21,43 @@ const TrendChart = ({
   if (data.length <= 1 || !stats) return null
 
   return (
-    <chart.AreaChart
-      data={data}
-      width={280}
-      height={80}
-    >
-      <chart.Area
-        type='monotone'
-        dataKey='value'
-        stroke='#8884d8'
-        strokeWidth={2}
-        isAnimationActive={false}
-      />
-      <chart.YAxis
-        type='number'
-        domain={[stats.min, stats.max]}
-        axisLine={false}
-        tick={false}
-        width={0}
-      />
-
-      {title && (
-        <chart.XAxis
-          tick={false}
+    <section data-testid={testId}>
+      <chart.AreaChart
+        data={data}
+        width={280}
+        height={80}
+      >
+        <chart.Area
+          type='monotone'
+          dataKey='value'
+          stroke='#8884d8'
+          strokeWidth={2}
+          isAnimationActive={false}
+        />
+        <chart.YAxis
+          type='number'
+          domain={[stats.min, stats.max]}
           axisLine={false}
-          height={20}
-        >
-          <chart.Label
-            orientation='bottom'
-            value={title}
-            offset={0}
-            position='insideBottomRight'
-          />
-        </chart.XAxis>
-      )}
-    </chart.AreaChart>
+          tick={false}
+          width={0}
+        />
+
+        {title && (
+          <chart.XAxis
+            tick={false}
+            axisLine={false}
+            height={20}
+          >
+            <chart.Label
+              orientation='bottom'
+              value={title}
+              offset={0}
+              position='insideBottomRight'
+            />
+          </chart.XAxis>
+        )}
+      </chart.AreaChart>
+    </section>
   )
 }
 
