@@ -110,6 +110,7 @@ const Setting = () => {
           {localeTool.t('setting.lockAccessDesc')}
         </h4>
         <Button
+          data-testid='confirmLockBtn'
           onClick={handleConfirmLock}
           className='mt-4'
         >
@@ -144,7 +145,7 @@ const Setting = () => {
           <h2 className={titleClass}>
             {localeTool.t('setting.accountType')}
           </h2>
-          <h4>
+          <h4 data-testid='userPlan'>
             {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
           </h4>
           {userTypeText.Services.map((service) => (

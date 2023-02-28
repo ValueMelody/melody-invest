@@ -114,10 +114,14 @@ const PaymentModal = ({
 
   return (
     <>
-      <Button onClick={handleOpenModal}>
+      <Button
+        data-testid='upgradeBtn'
+        onClick={handleOpenModal}
+      >
         {isBasicUser ? localeTool.t('common.upgrade') : localeTool.t('setting.extendMoreTime')}
       </Button>
       <Modal
+        data-testid='paymentModal'
         show={isOpen}
         onClose={handleCloseModal}
       >
@@ -128,6 +132,7 @@ const PaymentModal = ({
           <section className='flex justify-between max-sm:flex-wrap'>
             {(isBasicUser || selectedProType) && (
               <Card
+                data-testid='proCard'
                 className={classNames(
                   'cursor-pointer mb-4',
                   { 'card-active': selectedProType },
@@ -142,6 +147,7 @@ const PaymentModal = ({
             )}
             {(isBasicUser || selectedPremiumType) && (
               <Card
+                data-testid='premiumCard'
                 className={classNames(
                   'cursor-pointer mb-4',
                   { 'card-active': selectedPremiumType },
@@ -157,6 +163,7 @@ const PaymentModal = ({
           </section>
           <section className='flex mt-6 justify-between max-sm:flex-wrap'>
             <Select
+              data-testid='stateSelector'
               onChange={handleSelectState}
               value={stateCode}
               className='w-52'
@@ -176,6 +183,7 @@ const PaymentModal = ({
                 onChange={handleSelectProvince}
                 value={provinceCode}
                 className='w-52'
+                data-testid='provinceSelector'
               >
                 <option hidden>{localeTool.t('setting.provinceSelectPlaceholder')}</option>
                 {provinceOptions.map((option) => (
@@ -196,12 +204,13 @@ const PaymentModal = ({
                 <fieldset
                   className='lex flex-col gap-4'
                 >
-                  {priceOptions.map((option) => (
+                  {priceOptions.map((option, index) => (
                     <div
                       key={option.price}
                       className='flex items-center gap-2 mb-2'
                     >
                       <Radio
+                        data-testid={`paymentOption-${index}`}
                         id={option.days}
                         value={option.price}
                         checked={totalPrice === option.price}
@@ -217,11 +226,11 @@ const PaymentModal = ({
                   <>
                     <div className='flex justify-between'>
                       <h4>Tax</h4>
-                      <h5>{taxAmount}</h5>
+                      <h5 data-testid='taxAmount'>{taxAmount}</h5>
                     </div>
                     <div className='flex justify-between border-t'>
                       <h4>Total</h4>
-                      <h5>{totalAmount}</h5>
+                      <h5 data-testid='totalAmount'>{totalAmount}</h5>
                     </div>
                   </>
                 )}
@@ -244,6 +253,7 @@ const PaymentModal = ({
         </Modal.Body>
         <Modal.Footer>
           <Button
+            data-testid='closeBtn'
             color='gray'
             onClick={handleCloseModal}
           >
