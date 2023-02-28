@@ -9,11 +9,13 @@ const ValueDiffer = ({
   className,
   currentValue,
   compareValue,
+  'data-testid': testId = 'valueDiffer',
 }: {
   title: string;
   currentValue: number;
   compareValue: number;
   className?: string;
+  ['data-testid']?: string;
 }) => {
   const differ = (currentValue - compareValue) / compareValue
   const isPositive = differ > 0
@@ -22,7 +24,7 @@ const ValueDiffer = ({
 
   return (
     <section
-      data-testid='valueDiffer'
+      data-testid={testId}
       className={classNames('flex items-center', className)}
     >
       {title && <h5 className='mr-2'>{title}:</h5>}

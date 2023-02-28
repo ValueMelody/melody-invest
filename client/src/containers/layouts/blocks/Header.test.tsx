@@ -67,4 +67,14 @@ describe('#Header', () => {
     fireEvent.click(userButton!)
     expect(history.location.pathname).toBe(routerTool.settingRoute())
   })
+
+  test('mobile header', () => {
+    jest.spyOn(window.screen, 'width', 'get').mockReturnValue(350)
+    render(<Header />)
+    expect(screen.queryByTestId('sideBar')).not.toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('sideBarBtn'))
+    expect(screen.queryByTestId('sideBar')).toBeInTheDocument()
+    fireEvent.click(screen.getByTestId('closeSideBarBtn'))
+    expect(screen.queryByTestId('sideBar')).not.toBeInTheDocument()
+  })
 })

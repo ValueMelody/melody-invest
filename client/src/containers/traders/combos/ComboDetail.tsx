@@ -42,15 +42,19 @@ const ComboDetail = () => {
   const profilesWithEnvs = matchedBase?.traderIds.map((traderId) => {
     const profile = traderProfileDict[traderId]
     const env = profile?.trader.traderEnvId
-      ? traderEnvDict[profile?.trader.traderEnvId]
+      ? traderEnvDict[profile.trader.traderEnvId]
       : undefined
     return { profile, env }
   }) || []
 
   useEffect(() => {
-    if (!matchedBase || matchedDetail) return
+    if (!matchedBase?.id || matchedDetail) return
     dispatch(actions.fetchTraderComboDetail(matchedBase.id))
-  }, [matchedBase, matchedDetail, dispatch])
+  }, [matchedBase?.id, matchedDetail, dispatch])
+
+  useEffect(() => {
+    if (!comboId) navigate(routerTool.notFoundRoute())
+  }, [comboId, navigate])
 
   const handleClickProfile = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
@@ -64,7 +68,10 @@ const ComboDetail = () => {
   if (!matchedBase || !matchedDetail) return null
 
   return (
-    <section className='detail-root'>
+    <section
+      data-testid='comboDetail'
+      className='detail-root'
+    >
       <header className='detail-header'>
         <TraderComboCard
           className='w-80'
@@ -79,14 +86,14 @@ const ComboDetail = () => {
             title={localeTool.t('common.pastPerformance')}
           />
           <ValueChangePanel
-            yearlyPercentNumber={matchedDetail?.yearlyPercentNumber}
-            pastYearPercentNumber={matchedDetail?.pastYearPercentNumber}
-            pastQuarterPercentNumber={matchedDetail?.pastQuarterPercentNumber}
-            pastMonthPercentNumber={matchedDetail?.pastMonthPercentNumber}
-            pastWeekPercentNumber={matchedDetail?.pastWeekPercentNumber}
-            oneDecadeTrends={matchedDetail?.oneDecadeTrends}
-            oneYearTrends={matchedDetail?.oneYearTrends}
-            totalValue={matchedDetail?.totalValue}
+            yearlyPercentNumber={matchedDetail.yearlyPercentNumber}
+            pastYearPercentNumber={matchedDetail.pastYearPercentNumber}
+            pastQuarterPercentNumber={matchedDetail.pastQuarterPercentNumber}
+            pastMonthPercentNumber={matchedDetail.pastMonthPercentNumber}
+            pastWeekPercentNumber={matchedDetail.pastWeekPercentNumber}
+            oneDecadeTrends={matchedDetail.oneDecadeTrends}
+            oneYearTrends={matchedDetail.oneYearTrends}
+            totalValue={matchedDetail.totalValue}
             activeChartIndex={activeChartIndex}
             onChangeChart={handleChangeChartIndex}
             showPercents
@@ -122,9 +129,9 @@ const ComboDetail = () => {
             className='mb-4'
           />
           <section className='mb-4'>
-            {profilesWithEnvs.map((profileWithEnv) => (
+            {profilesWithEnvs.map((profileWithEnv, index) => (
               <ProfileValue
-                key={profileWithEnv.profile?.trader.id}
+                key={profileWithEnv.profile?.trader.id || `profile-${index}`}
                 className='mb-4'
                 trader={profileWithEnv.profile?.trader || null}
                 env={profileWithEnv.env || null}

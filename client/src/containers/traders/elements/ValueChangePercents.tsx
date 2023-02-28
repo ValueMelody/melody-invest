@@ -51,19 +51,19 @@ const ValueChangePercents = ({
       </Table.Head>
       <Table.Body>
         <Table.Row>
-          <Table.Cell>
+          <Table.Cell data-testid='yearlyNumber'>
             {parseTool.dbPercentNumber(yearlyPercentNumber)}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell data-testid='pastYearNumber'>
             {parseTool.dbPercentNumber(pastYearPercentNumber)}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell data-testid='pastQuarterNumber'>
             {parseTool.dbPercentNumber(pastQuarterPercentNumber)}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell data-testid='pastMonthNumber'>
             {parseTool.dbPercentNumber(pastMonthPercentNumber)}
           </Table.Cell>
-          <Table.Cell>
+          <Table.Cell data-testid='pastWeekNumber'>
             {parseTool.dbPercentNumber(pastWeekPercentNumber)}
           </Table.Cell>
         </Table.Row>

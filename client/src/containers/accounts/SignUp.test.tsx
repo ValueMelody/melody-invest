@@ -3,8 +3,10 @@ import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
-import { fireEvent, render, screen } from 'test.utils'
+import { act, fireEvent, render, screen } from 'test.utils'
 import SignUp from './SignUp'
+import axios from 'axios'
+import { contentSlice } from 'stores/content'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
@@ -17,6 +19,33 @@ jest.mock('hooks/usePublicGuard', () => {
     ...actual,
   }
 })
+
+afterEach(() => {
+  jest.clearAllMocks()
+  store.dispatch(contentSlice.actions._resetForTest())
+})
+
+const get = jest.fn()
+jest.spyOn(axios, 'get')
+  .mockImplementation(async (url) => {
+    get(url)
+    if (url.includes('/policy/1')) {
+      return {
+        data: {
+          id: 1,
+          type: 1,
+          content: '111',
+        },
+      }
+    }
+    return {
+      data: {
+        id: 2,
+        type: 2,
+        content: '222',
+      },
+    }
+  })
 
 jest.mock('actions/user', () => {
   const actual = jest.requireActual('actions/user')
@@ -42,35 +71,49 @@ afterEach(() => {
 })
 
 describe('#SignUp', () => {
-  test('has public guard', () => {
-    render(<SignUp />)
+  test('has public guard', async () => {
+    await act(() => {
+      render(<SignUp />)
+    })
     expect(publicGuard).toBeCalled()
   })
 
-  test('could go to signUp', () => {
+  test('could go to signIn', async () => {
     const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.SignUp] })
-    render(
-      <SignUp />,
-      { history },
-    )
+    await act(() => {
+      render(
+        <SignUp />,
+        { history },
+      )
+    })
     const signInButton = screen.getByTestId('signInButton')
 
-    fireEvent.click(signInButton)
+    expect(get).toBeCalledTimes(2)
+    expect(get).toHaveBeenCalledWith('http://127.0.0.1:3100/system/policy/1')
+    expect(get).toHaveBeenCalledWith('http://127.0.0.1:3100/system/policy/2')
+
+    expect(screen.getByTestId('privacyContent').innerHTML).toBe('111')
+    expect(screen.getByTestId('termsContent').innerHTML).toBe('222')
+
+    await act(() => {
+      fireEvent.click(signInButton)
+    })
     expect(history.location.pathname).toBe(routerTool.signInRoute())
   })
 
-  test('could trigger signUp', () => {
+  test('could trigger signUp', async () => {
     const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.SignIn] })
-    const { container } = render(
-      <SignUp />,
-      { history },
-    )
+    await act(() => {
+      render(
+        <SignUp />,
+        { history },
+      )
+    })
 
-    const inputs = container.querySelectorAll('input')
-    const emailInput = inputs[0]
-    const passInput = inputs[1]
-    const confirmPassInput = inputs[2]
-    const checkboxInput = inputs[3]
+    const emailInput = screen.getByTestId('emailInput') as HTMLInputElement
+    const passInput = screen.getByTestId('passInput') as HTMLInputElement
+    const confirmPassInput = screen.getByTestId('retypePassInput') as HTMLInputElement
+    const checkboxInput = screen.getByTestId('checkbox') as HTMLInputElement
 
     expect(emailInput.value).toBe('')
     expect(passInput.value).toBe('')
@@ -105,16 +148,17 @@ describe('#SignUp', () => {
 
   test('could trigger validation message', async () => {
     const history = createMemoryHistory({ initialEntries: [routerEnum.Nav.SignIn] })
-    const { container } = render(
-      <SignUp />,
-      { history },
-    )
+    await act(() => {
+      render(
+        <SignUp />,
+        { history },
+      )
+    })
 
-    const inputs = container.querySelectorAll('input')
-    const emailInput = inputs[0]
-    const passInput = inputs[1]
-    const confirmPassInput = inputs[2]
-    const checkboxInput = inputs[3]
+    const emailInput = screen.getByTestId('emailInput') as HTMLInputElement
+    const passInput = screen.getByTestId('passInput') as HTMLInputElement
+    const confirmPassInput = screen.getByTestId('retypePassInput') as HTMLInputElement
+    const checkboxInput = screen.getByTestId('checkbox') as HTMLInputElement
 
     const pass = '123ABC45678'
     fireEvent.change(emailInput, { target: { value: ' AbC@email.Com ' } })

@@ -1,8 +1,10 @@
 import * as interfaces from '@shared/interfaces'
+import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import ProfileDetail from './ProfileDetail'
+import axios from 'axios'
 
 afterEach(() => {
   jest.clearAllMocks()
@@ -15,19 +17,23 @@ jest.mock('selectors', () => {
   }
 })
 
-const navigate = jest.fn()
 jest.mock('react-router-dom', () => {
   return {
+    __esModule: true,
     ...jest.requireActual('react-router-dom'),
-    useNavigate: () => navigate,
-    useParams: () => (
-      {
-        traderId: '1',
-        accessCode: 'aaaaaaaaaaaaaaaa',
-      }
-    ),
   }
 })
+
+const navigate = jest.fn()
+jest.spyOn(router, 'useNavigate')
+  .mockImplementation(() => navigate)
+jest.spyOn(router, 'useParams')
+  .mockImplementation(() => {
+    return {
+      traderId: '1',
+      accessCode: 'aaaaaaaaaaaaaaaa',
+    }
+  })
 
 const envType = mock<interfaces.traderEnvModel.Record>({})
 const env1 = { ...instance(envType), id: 1, name: 'test env', isSystem: true }
@@ -53,6 +59,20 @@ const detail = {
   ],
 }
 
+const holdingType = mock<interfaces.traderHoldingModel.Record>({})
+
+jest.spyOn(selectors, 'selectTraderEnvBaseById')
+  .mockImplementation((id) => () => {
+    if (id === 1) return env1
+    return env2
+  })
+
+jest.spyOn(selectors, 'selectTraderEnvBaseDict')
+  .mockImplementation(() => () => ({
+    1: env1,
+    2: env2,
+  }))
+
 describe('#ProfileDetail', () => {
   test('could show profile info', async () => {
     jest.spyOn(selectors, 'selectTraderProfileBaseById')
@@ -60,26 +80,29 @@ describe('#ProfileDetail', () => {
         return profile
       })
 
-    jest.spyOn(selectors, 'selectTraderEnvBaseById')
-      .mockImplementation((id) => () => {
-        if (id === 1) return env1
-        return env2
-      })
-
-    jest.spyOn(selectors, 'selectTraderEnvBaseDict')
-      .mockImplementation(() => () => ({
-        1: env1,
-        2: env2,
-      }))
-
     jest.spyOn(selectors, 'selectTraderProfileDetailById')
       .mockImplementation(() => () => {
-        return detail
+        return {
+          ...detail,
+          holdings: (new Array(15)).fill(null).map((_, index) => {
+            return {
+              ...instance(holdingType),
+              id: `a${index}`,
+              items: [],
+              totalValue: index + 1,
+            }
+          }),
+        }
       })
 
     await act(() => {
       render(<ProfileDetail />)
     })
+
+    const cards = screen.getAllByTestId('holdingCard')
+    expect(cards.length).toBe(5)
+
+    expect(screen.queryByTestId('showMore')).toBeInTheDocument()
 
     expect(screen.queryByTestId('profileLabel')?.innerHTML).toContain('123')
     const envs = screen.getAllByTestId('traderEnvCard')
@@ -88,5 +111,83 @@ describe('#ProfileDetail', () => {
     fireEvent.click(envs[1])
     expect(navigate).toBeCalledTimes(1)
     expect(navigate).toBeCalledWith('/traders/profiles/1/bbbbbbbbbbbbbbbb')
+
+    expect(screen.getAllByTestId('holdingCard').length).toBe(5)
+    await act(() => {
+      fireEvent.click(screen.getByTestId('showMore'))
+    })
+    expect(screen.getAllByTestId('holdingCard').length).toBe(15)
+    expect(screen.getAllByTestId('holdingDiffer').length).toBe(14)
+  })
+
+  test('could fetch profile', async () => {
+    jest.spyOn(selectors, 'selectTraderProfileBaseById')
+      .mockImplementationOnce(() => () => {
+        return undefined
+      })
+
+    jest.spyOn(selectors, 'selectTraderProfileDetailById')
+      .mockImplementation(() => () => {
+        return undefined
+      })
+
+    const get = jest.fn()
+    jest.spyOn(axios, 'get').mockImplementation(async (url) => {
+      get()
+      if (url === 'http://127.0.0.1:3100/traders/profiles/1/aaaaaaaaaaaaaaaa') {
+        return { data: profile }
+      } else {
+        return { data: detail }
+      }
+    })
+
+    await act(() => {
+      render(<ProfileDetail />)
+    })
+
+    expect(get).toBeCalledTimes(2)
+  })
+
+  test('could redirect if id not eixst', async () => {
+    jest.spyOn(router, 'useParams')
+      .mockImplementation(() => {
+        return {
+          accessCode: 'aaaaaaaaaaaaaaaa',
+        }
+      })
+    await act(() => {
+      render(<ProfileDetail />)
+    })
+    expect(navigate).toBeCalledTimes(1)
+    expect(navigate).toBeCalledWith('/404')
+  })
+
+  test('could redirect if accessCode not eixst', async () => {
+    jest.spyOn(router, 'useParams')
+      .mockImplementation(() => {
+        return {
+          traderId: '1',
+        }
+      })
+    await act(() => {
+      render(<ProfileDetail />)
+    })
+    expect(navigate).toBeCalledTimes(1)
+    expect(navigate).toBeCalledWith('/404')
+  })
+
+  test('could redirect if accessCode length is wrong', async () => {
+    jest.spyOn(router, 'useParams')
+      .mockImplementation(() => {
+        return {
+          traderId: '1',
+          accessCode: 'aaaaaaaaaaaaaaa',
+        }
+      })
+    await act(() => {
+      render(<ProfileDetail />)
+    })
+    expect(navigate).toBeCalledTimes(1)
+    expect(navigate).toBeCalledWith('/404')
   })
 })

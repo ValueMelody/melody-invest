@@ -117,6 +117,7 @@ const Header = () => {
         className='fixed h-12 z-50 flex justify-between items-center w-full bg-primary top-0 px-4'
       >
         <Button
+          data-testid='sideBarBtn'
           className='lg:hidden'
           size='sm'
           color='gray'
@@ -132,10 +133,14 @@ const Header = () => {
         </nav>
       </header>
       {showSideBar && (
-        <Sidebar className='fixed top-0 bottom-0 z-50'>
+        <Sidebar
+          data-testid='sideBar'
+          className='fixed top-0 bottom-0 z-50'
+        >
           <div className='flex'>
             <Button
               size='sm'
+              data-testid='closeSideBarBtn'
               onClick={handleCloseSideBar}
             >
               <ArrowLeftIcon className='icon-size mr-2' />
