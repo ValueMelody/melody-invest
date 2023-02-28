@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen, waitFor } from 'test.utils'
+import { act, fireEvent, render, screen } from 'test.utils'
 import Layout from 'containers/layouts/Layout'
 import axios from 'axios'
 import { globalSlice } from 'stores/global'
