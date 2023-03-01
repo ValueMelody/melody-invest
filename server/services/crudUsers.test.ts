@@ -2,12 +2,41 @@ import * as constants from '@shared/constants'
 import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
+import * as emailAdapter from 'adapters/email'
 import * as emailLogic from 'logics/email'
 import * as emailModel from 'models/email'
 import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
 import * as localeTool from 'tools/locale'
 import * as userModel from 'models/user'
+import { mock, instance, when } from 'ts-mockito'
+import { Transporter, SendMailOptions } from 'nodemailer'
+
+jest.mock('adapters/email', () => {
+  const actual = jest.requireActual('adapters/email')
+  return {
+    __esModule: true,
+    ...actual,
+  }
+})
+
+const sendMail = jest.fn()
+
+const transporter: Transporter = mock({})
+when(transporter.sendMail).thenReturn(async (options: SendMailOptions) => {
+  sendMail()
+  return {
+    accepted: [options.to],
+  }
+})
+const transporterInstance = instance(transporter)
+
+const initTransporterMock = () => {
+  return transporterInstance
+}
+
+jest.spyOn(emailAdapter, 'initTransporter')
+  .mockImplementation(initTransporterMock)
 
 jest.mock('tools/generate', () => {
   const actual = jest.requireActual('tools/generate')
@@ -49,6 +78,7 @@ beforeEach(async () => {
 afterEach(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.destroy()
+  jest.clearAllMocks()
 })
 
 describe('#createUser', () => {
@@ -66,13 +96,15 @@ describe('#createUser', () => {
     expect(user?.activationCode).toBeTruthy()
     expect(user?.activationSentAt).toBeTruthy()
 
+    expect(sendMail).toBeCalledTimes(1)
+
     const emails = await emailModel.getAll()
     const email = emails[0]
 
     expect(email.sendTo).toBe(user!.email)
     expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
-    expect(email.status).toBe(constants.Email.Status.Pending)
+    expect(email.status).toBe(constants.Email.Status.Completed)
     expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
   })
 
@@ -92,13 +124,15 @@ describe('#createUser', () => {
     expect(user?.activationSentAt).toBeTruthy()
     expect(user?.activationSentAt).not.toBe('2022-01-03')
 
+    expect(sendMail).toBeCalledTimes(1)
+
     const emails = await emailModel.getAll()
     const email = emails[0]
 
     expect(email.sendTo).toBe(user!.email)
     expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.content).toBe(emailLogic.buildActivateUserEmail(user!))
-    expect(email.status).toBe(constants.Email.Status.Pending)
+    expect(email.status).toBe(constants.Email.Status.Completed)
     expect(email.title).toBe(localeTool.getTranslation('email.activateUser'))
   })
 
@@ -115,6 +149,8 @@ describe('#createUser', () => {
     expect(user?.type).toBe(constants.User.Type.Basic)
     expect(user?.activationCode).toBeFalsy()
     expect(user?.activationSentAt).toBeFalsy()
+
+    expect(sendMail).toBeCalledTimes(0)
 
     const emails = await emailModel.getAll()
     expect(emails.length).toBe(3)
@@ -174,13 +210,15 @@ describe('#generateResetCode', () => {
     expect(user?.resetCode).toBeTruthy()
     expect(user?.resetSentAt).toBeTruthy()
 
+    expect(sendMail).toBeCalledTimes(1)
+
     const emails = await emailModel.getAll()
     const email = emails[0]
     expect(email.sendTo).toBe(emailAddr)
     expect(email.sendBy).toBe('app@valuemelody.com')
     expect(email.title).toBe(localeTool.getTranslation('email.resetPassword'))
     expect(email.content).toBe(emailLogic.buildResetPasswordEmail(user!))
-    expect(email.status).toBe(constants.Email.Status.Pending)
+    expect(email.status).toBe(constants.Email.Status.Completed)
   })
 
   test('do nothing if user not exists', async () => {

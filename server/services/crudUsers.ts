@@ -2,6 +2,7 @@ import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
+import * as emailAdapter from 'adapters/email'
 import * as emailLogic from 'logics/email'
 import * as emailModel from 'models/email'
 import * as errorEnum from 'enums/error'
@@ -20,7 +21,6 @@ import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import * as userModel from 'models/user'
 import * as userPaymentModel from 'models/userPayment'
-import { Knex } from 'knex'
 import moment from 'moment'
 
 export const getUserOverall = async (
@@ -86,47 +86,53 @@ export const getUserOverall = async (
   }
 }
 
-const generateActivationEmail = async (
-  user: interfaces.userModel.Record,
-  transaction: Knex.Transaction,
-) => {
-  const content = emailLogic.buildActivateUserEmail(user)
-  await emailModel.create({
-    sendTo: user.email,
-    title: localeTool.getTranslation('email.activateUser'),
-    content,
-    status: constants.Email.Status.Pending,
-  }, transaction)
-}
-
 export const createUser = async (
   email: string,
   password: string,
 ): Promise<interfaces.userModel.Record> => {
-  let user = await userModel.getByUK(email)
+  const user = await userModel.getByUK(email)
+
+  if (user && !user.activationCode) return user
 
   return databaseAdapter.runWithTransaction(async (transaction) => {
-    if (user && user.activationCode) {
-      user = await userModel.update(user.id, {
-        password: generateTool.buildEncryptedPassword(password),
-        activationCode: generateTool.buildAccessCode(),
-        activationSentAt: new Date(),
-      }, transaction)
-      await generateActivationEmail(user, transaction)
-    }
+    const finalPass = generateTool.buildEncryptedPassword(password)
+    const activationCode = generateTool.buildAccessCode()
+    const activationSentAt = new Date()
 
-    if (!user) {
-      user = await userModel.create({
+    const targetUser = !user
+      ? await userModel.create({
         email,
-        password: generateTool.buildEncryptedPassword(password),
-        activationCode: generateTool.buildAccessCode(),
-        activationSentAt: new Date(),
+        password: finalPass,
+        activationCode,
+        activationSentAt,
         type: constants.User.Type.Basic,
       }, transaction)
-      await generateActivationEmail(user, transaction)
-    }
+      : await userModel.update(user.id, {
+        password: finalPass,
+        activationCode,
+        activationSentAt,
+      }, transaction)
 
-    return user
+    const subject = localeTool.getTranslation('email.activateUser')
+    const content = emailLogic.buildActivateUserEmail(targetUser)
+    const transporter = emailAdapter.initTransporter()
+    const response = await transporter.sendMail({
+      from: 'ValueMelody app@valuemelody.com',
+      to: targetUser.email,
+      subject,
+      html: content,
+    })
+
+    const status = generateTool.getEmailStatus(response, targetUser.email)
+
+    await emailModel.create({
+      sendTo: targetUser.email,
+      title: subject,
+      content,
+      status,
+    }, transaction)
+
+    return targetUser
   })
 }
 
@@ -279,12 +285,23 @@ export const generateResetCode = async (
       resetSentAt: new Date(),
     }, transaction)
 
+    const subject = localeTool.getTranslation('email.resetPassword')
     const content = emailLogic.buildResetPasswordEmail(updatedUser)
+    const transporter = emailAdapter.initTransporter()
+    const response = await transporter.sendMail({
+      from: 'ValueMelody app@valuemelody.com',
+      to: updatedUser.email,
+      subject,
+      html: content,
+    })
+
+    const status = await generateTool.getEmailStatus(response, updatedUser.email)
+
     await emailModel.create({
       sendTo: updatedUser.email,
-      title: localeTool.getTranslation('email.resetPassword'),
+      title: subject,
       content,
-      status: constants.Email.Status.Pending,
+      status,
     }, transaction)
   })
 }
