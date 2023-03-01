@@ -2,6 +2,7 @@ import * as constants from '@shared/constants'
 import * as databaseAdapter from 'adapters/database'
 import * as emailAdapter from 'adapters/email'
 import * as emailModel from 'models/email'
+import * as generateTool from 'tools/generate'
 import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
 
@@ -46,9 +47,7 @@ export const sendPendingEmails = async (total: number) => {
     })
 
     await databaseAdapter.runWithTransaction(async (transaction) => {
-      const status = response?.accepted?.length && response.accepted[0] === email.sendTo
-        ? constants.Email.Status.Completed
-        : constants.Email.Status.Failed
+      const status = generateTool.getEmailStatus(response, email.sendTo)
 
       await emailModel.update(email.id, {
         status,

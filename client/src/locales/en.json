@@ -131,12 +131,12 @@
 
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",
-    "reset.emailSent": "We will send a password reset email to you soon. It might take a few minutes.",
+    "reset.emailSent": "We will send a password reset email to you soon.",
 
     "signUp.title": "Create an account",
     "signUp.terms": "Please note that by accessing and using valuemelody.com, you are deemed to have read, understood, and agreed to be bound by the terms and conditions, privacy policy, and disclaimer governing the use of this website.",
     "signUp.toSignIn": "Already have an account?",
-    "signUp.success": "Success! We will send a verification email to you soon. It might take a few minutes.",
+    "signUp.success": "Success! We will send a verification email to you soon.",
 
     "signIn.remember": "Remember for one month",
     "signIn.button": "Sign In",

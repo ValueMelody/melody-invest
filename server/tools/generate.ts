@@ -1,6 +1,8 @@
 import * as adapterEnum from 'enums/adapter'
+import * as constants from '@shared/constants'
 import * as emailEnum from 'enums/email'
 import * as interfaces from '@shared/interfaces'
+import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
 import md5 from 'crypto-js/md5'
@@ -99,4 +101,10 @@ export const buildEmailContent = (
     template = template.replace(`{{{${option.label}}}}`, option.value)
   })
   return template
+}
+
+export const getEmailStatus = (response: SMTPTransport.SentMessageInfo | undefined, email: string) => {
+  return response?.accepted?.length && response.accepted[0] === email
+    ? constants.Email.Status.Completed
+    : constants.Email.Status.Failed
 }

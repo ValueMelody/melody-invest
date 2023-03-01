@@ -1,4 +1,7 @@
+import * as constants from '@shared/constants'
 import * as generate from './generate'
+import { instance, mock } from 'ts-mockito'
+import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
 describe('#toSHA256', () => {
   test('could generate sha256', () => {
@@ -191,4 +194,30 @@ describe('#buildEmail', () => {
       expect(reset).not.toContain(`{{{${option.label}}}}`)
     })
   })
+})
+
+describe('#getEmailStatus', () => {
+  const responseType = mock<SMTPTransport.SentMessageInfo>({})
+  const response = instance(responseType)
+
+  expect(generate.getEmailStatus({
+    ...response,
+    accepted: ['test1@email.com'],
+  }, 'test1@email.com')).toBe(constants.Email.Status.Completed)
+
+  expect(generate.getEmailStatus({
+    ...response,
+    accepted: ['test2@email.com', 'test1@email.com'],
+  }, 'test1@email.com')).toBe(constants.Email.Status.Failed)
+
+  expect(generate.getEmailStatus({
+    ...response,
+    accepted: [],
+  }, 'test1@email.com')).toBe(constants.Email.Status.Failed)
+
+  expect(generate.getEmailStatus({
+    ...response,
+  }, 'test1@email.com')).toBe(constants.Email.Status.Failed)
+
+  expect(generate.getEmailStatus(undefined, 'test1@email.com')).toBe(constants.Email.Status.Failed)
 })
