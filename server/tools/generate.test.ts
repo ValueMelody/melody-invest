@@ -1,6 +1,6 @@
 import * as constants from '@shared/constants'
 import * as generate from './generate'
-import { mock, instance } from 'ts-mockito'
+import { instance, mock } from 'ts-mockito'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 
 describe('#toSHA256', () => {

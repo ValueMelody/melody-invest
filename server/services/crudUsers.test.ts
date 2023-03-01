@@ -9,8 +9,8 @@ import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
 import * as localeTool from 'tools/locale'
 import * as userModel from 'models/user'
-import { mock, instance, when } from 'ts-mockito'
-import { Transporter, SendMailOptions } from 'nodemailer'
+import { SendMailOptions, Transporter } from 'nodemailer'
+import { instance, mock, when } from 'ts-mockito'
 
 jest.mock('adapters/email', () => {
   const actual = jest.requireActual('adapters/email')
