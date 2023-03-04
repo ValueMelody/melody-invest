@@ -72,13 +72,13 @@ const generateSystemTopTraderCombo = async (
 const SystemCombos: interfaces.traderComboModel.Identity[] = [
   {
     id: -1,
-    name: 'systemCombo.default5',
+    name: 'systemCombo.default2001',
     isSystem: true,
     traderIds: [],
   },
   {
     id: -2,
-    name: 'systemCombo.bigTech5',
+    name: 'systemCombo.default2011',
     isSystem: true,
     traderIds: [],
   },
@@ -145,11 +145,11 @@ const buildDefaultTraderCombos = async (): Promise<
     combo: interfaces.traderComboModel.Identity,
   ) => {
     switch (combo.name) {
-      case 'systemCombo.default5': {
+      case 'systemCombo.default2001': {
         const comboProfile = await generateSystemTopTraderCombo(1, combo, 5)
         return comboProfile
       }
-      case 'systemCombo.bigTech5': {
+      case 'systemCombo.default2011': {
         const comboProfile = await generateSystemTopTraderCombo(2, combo, 5)
         return comboProfile
       }

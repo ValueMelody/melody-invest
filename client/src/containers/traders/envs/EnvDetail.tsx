@@ -53,7 +53,7 @@ const EnvDetail = () => {
           className='w-80'
           traderEnv={envRecord}
         />
-        <div className='flex flex-wrap mb-4'>
+        <div className='flex flex-wrap my-4'>
           {envRecord.tickerIds && envRecord.tickerIds.map((tickerId) => (
             <TickerLabel
               color='info'

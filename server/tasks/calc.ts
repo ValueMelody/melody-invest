@@ -54,10 +54,13 @@ export const calcDailyTickers = async (
   }
 }
 
-export const calcTraderPerformances = async (forceRecheck: boolean) => {
+export const calcTraderPerformances = async (
+  forceRecheck: boolean,
+  checkAll?: boolean,
+) => {
   console.info('Start calc trader performances')
   try {
-    await calcTraders.calcAllTraderPerformances(forceRecheck)
+    await calcTraders.calcAllTraderPerformances(forceRecheck, checkAll || false)
     console.info('trader performances calculated')
   } catch (e) {
     console.error('Error occured:')

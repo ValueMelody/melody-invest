@@ -6,12 +6,12 @@ import cronJob from 'node-cron'
 import { initConnection as initCache } from 'adapters/cache'
 import { initConnection as initDatabase } from 'adapters/database'
 
-export const calcTraders = async () => {
-  await calcTask.calcTraderPerformances(false)
-  await calcTask.calcTraderDescendants()
+const repeatCalcTraders = async () => {
+  while (true) {
+    await calcTask.calcTraderPerformances(false)
+    await calcTask.calcTraderDescendants()
+  }
 }
-// Every hour
-const calcTradersCron = cronJob.schedule('0 * * * *', calcTraders)
 
 export const generateCaches = async () => {
   await cacheTask.generateSystemCaches()
@@ -31,7 +31,7 @@ const startCron = async () => {
   await runTool.sleep(2)
   generateCachesCron.start()
   // sendEmailsCron.start()
-  calcTradersCron.start()
+  repeatCalcTraders()
 }
 
 // istanbul ignore next

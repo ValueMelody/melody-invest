@@ -75,6 +75,18 @@ export const getAll = async (): Promise<
   return traders.map((trader) => convertToRecord(trader))
 }
 
+export const getAllByEnvId = async (envId: number): Promise<
+  interfaces.traderModel.Record[]
+> => {
+  const traders = await databaseAdapter.findAll({
+    tableName: TableName,
+    conditions: [
+      { key: 'traderEnvId', value: envId },
+    ],
+  })
+  return traders.map((trader) => convertToRecord(trader))
+}
+
 export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderModel.Record[]> => {

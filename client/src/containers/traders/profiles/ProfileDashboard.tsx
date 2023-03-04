@@ -3,6 +3,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import AddButton from 'containers/traders/elements/AddButton'
+import { Alert } from 'flowbite-react'
 import PageTitle from 'containers/elements/PageTitle'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
@@ -74,6 +75,11 @@ const ProfileDashboard = () => {
             }
           />
         </header>
+        {!user.userTraderIds.length && (
+          <Alert color='gray'>
+            {localeTool.t('dashboard.emptyProfiles')}
+          </Alert>
+        )}
         {user.userTraderIds.map((traderId) => (
           <TraderProfileCard
             key={traderId}
@@ -115,6 +121,14 @@ const ProfileDashboard = () => {
           title={localeTool.t('dashboard.watchedCombos')}
           className='my-4'
         />
+        {!userCombos.length && (
+          <Alert
+            color='gray'
+            className='w-80 mb-4'
+          >
+            {localeTool.t('dashboard.emptyCombos')}
+          </Alert>
+        )}
         {userCombos.map((combo) => (
           <TraderComboCard
             key={combo.id}

@@ -58,7 +58,8 @@ export const run = async () => {
     }
     case taskEnum.Name.calcTraderPerformances: {
       const forceRecheck = process.argv[3] === 'true' || false
-      await calcTask.calcTraderPerformances(forceRecheck)
+      const checkAll = process.argv[4] === 'true' || false
+      await calcTask.calcTraderPerformances(forceRecheck, checkAll)
       break
     }
     case taskEnum.Name.calcTraderDescendants: {

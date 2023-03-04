@@ -55,7 +55,7 @@ const EnvBuilder = () => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
-  const [startYear, setStartYear] = useState('')
+  const [startYear, setStartYear] = useState('2001')
   const [startMonth, setStartMonth] = useState('01-01')
   const [tickerIds, setTickerIds] = useState<number[] | null>(null)
   const [envName, setEnvName] = useState('')

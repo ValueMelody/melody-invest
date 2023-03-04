@@ -13,12 +13,14 @@ import * as runTool from 'tools/run'
 import * as tickerDailyModel from 'models/tickerDaily'
 import * as tickerHolderModel from 'models/tickerHolder'
 import * as tickerModel from 'models/ticker'
+import * as traderEnvFollowerModel from 'models/traderEnvFollower'
 import * as traderEnvModel from 'models/traderEnv'
 import * as traderHoldingModel from 'models/traderHolding'
 import * as traderLogic from 'logics/trader'
 import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import * as transactionLogic from 'logics/transaction'
+import * as userPaymentModel from 'models/userPayment'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
 
 const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.Record> => {
@@ -49,6 +51,13 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
     await transaction.rollback()
     throw error
   }
+}
+
+const isActiveTraderEnv = async (env: interfaces.traderEnvModel.Record) => {
+  if (env.isSystem) return true
+  const followers = await traderEnvFollowerModel.getEnvFollowers(env.id)
+  const userIds = followers.map((follower) => follower.userId)
+  return userPaymentModel.hasActiveUser(userIds)
 }
 
 const getCachedDailyTickers = async (date: string) => {
@@ -250,7 +259,10 @@ const calcTraderPerformance = async (
   }
 }
 
-export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
+export const calcAllTraderPerformances = async (
+  forceRecheck: boolean,
+  checkAll: boolean,
+) => {
   const envs = await traderEnvModel.getAll()
 
   const delistedTickers = await tickerModel.getAllDelisted()
@@ -267,7 +279,10 @@ export const calcAllTraderPerformances = async (forceRecheck: boolean) => {
 
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
     console.info(`Checking Env:${env.id}`)
-    const traders = await traderModel.getActives(env.id)
+    const traders = checkAll
+      ? await traderModel.getAllByEnvId(env.id)
+      : await traderModel.getActives(env.id)
+
     await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
       await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
     })
@@ -419,6 +434,9 @@ export const calcAllEnvDescendants = async () => {
   const envs = await traderEnvModel.getAll()
   await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
     console.info(`checking Env:${env.id}`)
+    const isActive = await isActiveTraderEnv(env)
+    if (!isActive) return
+
     const tops = await traderModel.getTops(30, { envId: env.id })
     const topTraders = [
       ...tops.yearly, ...tops.pastYear, ...tops.pastQuarter,

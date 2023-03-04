@@ -6,9 +6,6 @@ import axios from 'axios'
 
 jest.mock('react-select', () => '')
 
-const date = new Date()
-const year = date.getFullYear()
-
 const navigate = jest.fn()
 jest.mock('react-router-dom', () => {
   const actual = jest.requireActual('react-router-dom')
@@ -45,7 +42,7 @@ describe('#EnvBuilder', () => {
       render(<EnvBuilder />)
     })
     fireEvent.click(screen.getByTestId('dateInput'))
-    fireEvent.click(screen.getByText(year))
+    fireEvent.click(screen.getByText('2002'))
     fireEvent.change(screen.getByTestId('name'), { target: { value: 'test env' } })
     fireEvent.submit(screen.getByTestId('form'))
 
@@ -53,7 +50,7 @@ describe('#EnvBuilder', () => {
       expect(post).toBeCalledTimes(1)
       expect(post).toBeCalledWith('http://127.0.0.1:3100/traders/envs', {
         name: 'test env',
-        startDate: `${year}-01-01`,
+        startDate: '2002-01-01',
         tickerIds: null,
       })
       expect(navigate).toBeCalledTimes(1)

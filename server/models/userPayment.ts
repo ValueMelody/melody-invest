@@ -1,7 +1,9 @@
 import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
+import * as dateTool from 'tools/date'
 import * as interfaces from '@shared/interfaces'
 import { Knex } from 'knex'
+import moment from 'moment'
 
 const TableName = adapterEnum.DatabaseTable.UserPayment
 
@@ -28,4 +30,18 @@ export const getLatest = async (
     orderBy: [{ column: 'id', order: 'desc' }],
   })
   return record
+}
+
+export const hasActiveUser = async (
+  userIds: number[],
+): Promise<boolean> => {
+  const record = await databaseAdapter.findOne({
+    tableName: TableName,
+    conditions: [
+      { key: 'userId', value: userIds, type: 'IN' },
+      { key: 'endAtUTC', value: dateTool.toUTCFormat(moment()), type: '>' },
+    ],
+    orderBy: [{ column: 'id', order: 'desc' }],
+  })
+  return !!record
 }
