@@ -41,7 +41,6 @@ export const hasActiveUser = async (
       { key: 'userId', value: userIds, type: 'IN' },
       { key: 'endAtUTC', value: dateTool.toUTCFormat(moment()), type: '>' },
     ],
-    orderBy: [{ column: 'id', order: 'desc' }],
   })
   return !!record
 }
