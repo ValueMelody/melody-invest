@@ -72,13 +72,13 @@ const generateSystemTopTraderCombo = async (
 const SystemCombos: interfaces.traderComboModel.Identity[] = [
   {
     id: -1,
-    name: 'systemCombo.default5',
+    name: 'systemCombo.default2001',
     isSystem: true,
     traderIds: [],
   },
   {
     id: -2,
-    name: 'systemCombo.bigTech5',
+    name: 'systemCombo.default2011',
     isSystem: true,
     traderIds: [],
   },
@@ -141,16 +141,19 @@ export const getTopTraderProfiles = async (
 const buildDefaultTraderCombos = async (): Promise<
   interfaces.response.ComboProfile[]
 > => {
+  const envs = await traderEnvModel.getSystemDefined()
   const comboProfiles = await runTool.asyncMap(SystemCombos, async (
     combo: interfaces.traderComboModel.Identity,
   ) => {
     switch (combo.name) {
-      case 'systemCombo.default5': {
-        const comboProfile = await generateSystemTopTraderCombo(1, combo, 5)
+      case 'systemCombo.default2001': {
+        const env = envs.find((env) => env.name === 'traderEnv.2001')
+        const comboProfile = await generateSystemTopTraderCombo(env!.id, combo, 5)
         return comboProfile
       }
-      case 'systemCombo.bigTech5': {
-        const comboProfile = await generateSystemTopTraderCombo(2, combo, 5)
+      case 'systemCombo.default2011': {
+        const env = envs.find((env) => env.name === 'traderEnv.2011')
+        const comboProfile = await generateSystemTopTraderCombo(env!.id, combo, 5)
         return comboProfile
       }
       default:

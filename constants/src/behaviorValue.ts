@@ -1,5 +1,3 @@
-import { Day } from './trader'
-
 export const Preference = Object.freeze({
   HigherPrice: 1,
   LowerPrice: 2,
@@ -139,16 +137,10 @@ export const Options = {
   holdingBuyPercent: [1, 2, 3, 5, 8, 13, 21, 34, 55],
   holdingSellPercent: [20, 40, 60, 80, 100],
   tradeFrequency: [
-    1, 2, 3, Day.Week,
-    Day.HalfMonth, Day.Month,
-    Day.HalfQuarter, Day.Quarter,
-    Day.HalfYear, Day.Year,
+    5, 15, 30, 90, 180, 360,
   ],
   rebalanceFrequency: [
-    0, Day.Week,
-    Day.HalfMonth, Day.Month,
-    Day.HalfQuarter, Day.Quarter,
-    Day.HalfYear, Day.Year,
+    0, 5, 15, 30, 90, 180, 360,
   ],
   buyPreference: Object.values(Preference),
   sellPreference: Object.values(Preference),

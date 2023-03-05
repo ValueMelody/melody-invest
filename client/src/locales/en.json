@@ -150,8 +150,10 @@
     "forgot.button": "Send Reset Email",
 
     "dashboard.title": "Dashboard",
+    "dashboard.emptyProfiles": "No profile yet.",
     "dashboard.watchedProfiles": "Watched Profiles",
     "dashboard.watchedEnvs": "Watched Environments",
+    "dashboard.emptyCombos": "No combo yet.",
     "dashboard.watchedCombos": "Watched Combos",
     "dashboard.newProfileDesc": "Build a new profile",
     "dashboard.newEnvDesc": "Build a new environment",
@@ -162,8 +164,8 @@
     "topCombos.title": "Top Combos",
     "topCombos.history": "Recent Holding History",
 
-    "systemCombo.default5": "Top 5 from Default Env",
-    "systemCombo.bigTech5": "Top5 from Top Tech Env",
+    "systemCombo.default2001": "Top 5 from Default 2001 Env",
+    "systemCombo.default2011": "Top 5 from Default 2011 Env",
 
     "ticker.delisted": "Delisted",
     "tickerList.categories": "Stock Categories",
@@ -246,11 +248,13 @@
     "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet, please check later",
     "traderEnv.topProfiles": "Top Profiles from this environment",
-    "traderEnv.default" : "Default",
-    "traderEnv.topTech" : "Top Tech",
+    "traderEnv.2001" : "Default 2001",
+    "traderEnv.2011" : "Default 2011",
 
     "availableTickers.title": "Available Stocks",
     "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
+
+    "valueChange.emptyYears": "No enough data for yearly trends",
 
     "gain.yearly": "Annual",
     "gain.pastYear": "360 days",
@@ -395,7 +399,7 @@
     "behaviorDesc.holdingBuyPercent": "Percentage allowed for single buy transaction against all holdings",
     "behaviorDesc.holdingSellPercent": "Percentage allowed for single sell transaction against the holding of target stock",
     "behaviorDesc.tradeFrequency": "Intervals for making next buy/sell decision",
-    "behaviorDesc.rebalanceFrequency": "Intervals for rebalancing existing holdings",
+    "behaviorDesc.rebalanceFrequency": "Intervals for make next holdings rebalancing decision",
     "behaviorDesc.buyPreference": "Preference when make buy decisions",
     "behaviorDesc.sellPreference": "Preference when make sell decisions",
     "behaviorDesc.priceDailyIncreaseBuy": "Buy when stock price increased based on continuous days",

@@ -121,13 +121,13 @@ describe('#calcTraderPerformances', () => {
   test('could calc trader performance', async () => {
     await calc.calcTraderPerformances(false)
     expect(calcAllTraderPerformances).toBeCalledTimes(1)
-    expect(calcAllTraderPerformances).toBeCalledWith(false)
+    expect(calcAllTraderPerformances).toBeCalledWith(false, false)
   })
 
   test('could calc trader performance by force recheck', async () => {
     await calc.calcTraderPerformances(true)
     expect(calcAllTraderPerformances).toBeCalledTimes(1)
-    expect(calcAllTraderPerformances).toBeCalledWith(true)
+    expect(calcAllTraderPerformances).toBeCalledWith(true, false)
   })
 })
 

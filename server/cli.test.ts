@@ -178,7 +178,7 @@ describe('calcTraderPerformances', () => {
     process.argv[2] = taskEnum.Name.calcTraderPerformances
     await run()
     expect(calcTraderPerformances).toBeCalledTimes(1)
-    expect(calcTraderPerformances).toBeCalledWith(false)
+    expect(calcTraderPerformances).toBeCalledWith(false, false)
   })
 
   test('could trigger calcTraderPerformances by true', async () => {
@@ -190,7 +190,7 @@ describe('calcTraderPerformances', () => {
     process.argv[3] = 'true'
     await run()
     expect(calcTraderPerformances).toBeCalledTimes(1)
-    expect(calcTraderPerformances).toBeCalledWith(true)
+    expect(calcTraderPerformances).toBeCalledWith(true, false)
   })
 })
 

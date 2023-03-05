@@ -33,6 +33,18 @@ export const getUserFollowed = async (
   return records
 }
 
+export const getEnvFollowers = async (
+  envId: number,
+): Promise<interfaces.traderEnvFollowerModel.Record[]> => {
+  const records = await databaseAdapter.findAll({
+    tableName: TableName,
+    conditions: [
+      { key: 'envId', value: envId },
+    ],
+  })
+  return records
+}
+
 export const create = async (
   values: interfaces.traderEnvFollowerModel.Create, transaction: Knex.Transaction,
 ): Promise<interfaces.traderEnvFollowerModel.Record> => {
