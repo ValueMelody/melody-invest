@@ -399,7 +399,7 @@
     "behaviorDesc.holdingBuyPercent": "Percentage allowed for single buy transaction against all holdings",
     "behaviorDesc.holdingSellPercent": "Percentage allowed for single sell transaction against the holding of target stock",
     "behaviorDesc.tradeFrequency": "Intervals for making next buy/sell decision",
-    "behaviorDesc.rebalanceFrequency": "Intervals for rebalancing existing holdings",
+    "behaviorDesc.rebalanceFrequency": "Intervals for make next holdings rebalancing decision",
     "behaviorDesc.buyPreference": "Preference when make buy decisions",
     "behaviorDesc.sellPreference": "Preference when make sell decisions",
     "behaviorDesc.priceDailyIncreaseBuy": "Buy when stock price increased based on continuous days",
