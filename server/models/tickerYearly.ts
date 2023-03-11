@@ -8,15 +8,16 @@ const TableName = adapterEnum.DatabaseTable.TickerYearly
 
 const convertToRecord = (
   raw: interfaces.tickerYearlyModel.Raw,
-): interfaces.tickerYearlyModel.Record => ({
-  ...raw,
-  eps: raw.eps ? parseFloat(raw.eps) : null,
-  ebitda: raw.ebitda ? parseInt(raw.ebitda) : null,
-  netIncome: raw.netIncome ? parseInt(raw.netIncome) : null,
-  grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
-  totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
-  costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
-})
+): interfaces.tickerYearlyModel.Record => {
+  const record: any = raw
+  record.eps = raw.eps ? parseFloat(raw.eps) : null
+  record.ebitda = raw.ebitda ? parseInt(raw.ebitda) : null
+  record.netIncome = raw.netIncome ? parseInt(raw.netIncome) : null
+  record.grossProfit = raw.grossProfit ? parseInt(raw.grossProfit) : null
+  record.totalRevenue = raw.totalRevenue ? parseInt(raw.totalRevenue) : null
+  record.costOfRevenue = raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
+  return record
+}
 
 export const getLatest = async (
   tickerId: number,

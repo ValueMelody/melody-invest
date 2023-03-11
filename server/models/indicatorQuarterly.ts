@@ -9,12 +9,15 @@ const TableName = adapterEnum.DatabaseTable.IndicatorQuarterly
 
 const convertToRecord = (
   raw: interfaces.indicatorQuarterlyModel.Raw,
-): interfaces.indicatorQuarterlyModel.Record => ({
-  ...raw,
-  realGDP: raw.realGDP ? parseFloat(raw.realGDP) : null,
-  gdpQuarterlyChangePercent: raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null,
-  gdpQuarterlyYoYChangePercent: raw.gdpQuarterlyYoYChangePercent ? parseFloat(raw.gdpQuarterlyYoYChangePercent) : null,
-})
+): interfaces.indicatorQuarterlyModel.Record => {
+  const record: any = raw
+  record.realGDP = raw.realGDP ? parseFloat(raw.realGDP) : null
+  record.gdpQuarterlyChangePercent = raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null
+  record.gdpQuarterlyYoYChangePercent = raw.gdpQuarterlyYoYChangePercent
+    ? parseFloat(raw.gdpQuarterlyYoYChangePercent)
+    : null
+  return record
+}
 
 export const getByUK = async (
   quarter: string,

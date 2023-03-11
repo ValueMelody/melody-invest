@@ -8,12 +8,13 @@ const TableName = adapterEnum.DatabaseTable.Trader
 
 const convertToRecord = (
   raw: interfaces.traderModel.Raw,
-): interfaces.traderModel.Record => ({
-  ...raw,
-  totalValue: raw.totalValue ? parseInt(raw.totalValue) : null,
-  oneYearTrends: raw.oneYearTrends?.split(',').map((val) => parseInt(val)) || null,
-  oneDecadeTrends: raw.oneDecadeTrends?.split(',').map((val) => parseInt(val)) || null,
-})
+): interfaces.traderModel.Record => {
+  const record: any = raw
+  record.totalValue = raw.totalValue ? parseInt(raw.totalValue) : null
+  record.oneYearTrends = raw.oneYearTrends?.split(',').map((val) => parseInt(val)) || null
+  record.oneDecadeTrends = raw.oneDecadeTrends?.split(',').map((val) => parseInt(val)) || null
+  return record
+}
 
 export const getByPK = async (
   id: number,

@@ -9,17 +9,18 @@ const TableName = adapterEnum.DatabaseTable.TickerQuarterly
 
 const convertToRecord = (
   raw: interfaces.tickerQuarterlyModel.Raw,
-): interfaces.tickerQuarterlyModel.Record => ({
-  ...raw,
-  eps: raw.eps ? parseFloat(raw.eps) : null,
-  estimatedEPS: raw.estimatedEPS ? parseFloat(raw.estimatedEPS) : null,
-  epsSurprisePercent: raw.epsSurprisePercent ? parseFloat(raw.epsSurprisePercent) : null,
-  ebitda: raw.ebitda ? parseInt(raw.ebitda) : null,
-  netIncome: raw.netIncome ? parseInt(raw.netIncome) : null,
-  grossProfit: raw.grossProfit ? parseInt(raw.grossProfit) : null,
-  totalRevenue: raw.totalRevenue ? parseInt(raw.totalRevenue) : null,
-  costOfRevenue: raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null,
-})
+): interfaces.tickerQuarterlyModel.Record => {
+  const record: any = raw
+  record.eps = raw.eps ? parseFloat(raw.eps) : null
+  record.estimatedEPS = raw.estimatedEPS ? parseFloat(raw.estimatedEPS) : null
+  record.epsSurprisePercent = raw.epsSurprisePercent ? parseFloat(raw.epsSurprisePercent) : null
+  record.ebitda = raw.ebitda ? parseInt(raw.ebitda) : null
+  record.netIncome = raw.netIncome ? parseInt(raw.netIncome) : null
+  record.grossProfit = raw.grossProfit ? parseInt(raw.grossProfit) : null
+  record.totalRevenue = raw.totalRevenue ? parseInt(raw.totalRevenue) : null
+  record.costOfRevenue = raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
+  return record
+}
 
 export const getRawByUK = async (
   tickerId: number,

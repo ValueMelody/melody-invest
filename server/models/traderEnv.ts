@@ -7,10 +7,11 @@ const TableName = adapterEnum.DatabaseTable.TraderEnv
 
 const convertToRecord = (
   raw: interfaces.traderEnvModel.Raw,
-): interfaces.traderEnvModel.Record => ({
-  ...raw,
-  tickerIds: raw.tickerIds ? raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId)) : null,
-})
+): interfaces.traderEnvModel.Record => {
+  const record: any = raw
+  record.tickerIds = raw.tickerIds ? raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId)) : null
+  return record
+}
 
 export const getAll = async (): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
