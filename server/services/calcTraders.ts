@@ -29,6 +29,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
     await tickerHolderModel.destroyTraderTickers(traderId, transaction)
     await traderHoldingModel.destroyAll(traderId, transaction)
     const updated = await traderModel.update(traderId, {
+      rankingNumber: null,
       totalValue: null,
       totalDays: null,
       startedAt: null,

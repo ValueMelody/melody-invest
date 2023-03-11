@@ -932,7 +932,7 @@ describe('#getMovementAndCompareWeights', () => {
   })
 })
 
-describe('#getTickersWithSellEvaluation', () => {
+describe('#getTickerWithSellEvaluation', () => {
   test('could get result', () => {
     const patternMock: interfaces.traderPatternModel.Record = mock({})
     const pattern = {
@@ -950,10 +950,10 @@ describe('#getTickersWithSellEvaluation', () => {
     const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
     const dailyTicker = { ...dailyTickerMock, daily, info }
 
-    expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toStrictEqual({
+    expect(evaluation.getTickerWithSellEvaluation(1, pattern, dailyTicker)).toStrictEqual({
       tickerId: 1, preferValue: 100, weight: 3,
     })
-    expect(evaluation.getTickersWithSellEvaluation(2, pattern, dailyTicker)).toStrictEqual({
+    expect(evaluation.getTickerWithSellEvaluation(2, pattern, dailyTicker)).toStrictEqual({
       tickerId: 2, preferValue: 100, weight: 3,
     })
   })
@@ -966,7 +966,7 @@ describe('#getTickersWithSellEvaluation', () => {
       sellPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
 
-    expect(evaluation.getTickersWithSellEvaluation(1, pattern, null)).toBe(null)
+    expect(evaluation.getTickerWithSellEvaluation(1, pattern, null)).toBe(null)
   })
 
   test('if there is no prefer value', () => {
@@ -989,7 +989,7 @@ describe('#getTickersWithSellEvaluation', () => {
     const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
     const dailyTicker = { ...dailyTickerMock, daily, info }
 
-    expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
+    expect(evaluation.getTickerWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 
   test('if there is no weight', () => {
@@ -1009,11 +1009,11 @@ describe('#getTickersWithSellEvaluation', () => {
     const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
     const dailyTicker = { ...dailyTickerMock, daily, info }
 
-    expect(evaluation.getTickersWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
+    expect(evaluation.getTickerWithSellEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 })
 
-describe('#getTickersWithBuyEvaluation', () => {
+describe('#getTickerWithBuyEvaluation', () => {
   test('could get result', () => {
     const patternMock: interfaces.traderPatternModel.Record = mock({})
     const pattern = {
@@ -1031,10 +1031,10 @@ describe('#getTickersWithBuyEvaluation', () => {
     const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
     const dailyTicker = { ...dailyTickerMock, daily, info }
 
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toStrictEqual({
+    expect(evaluation.getTickerWithBuyEvaluation(1, pattern, dailyTicker)).toStrictEqual({
       tickerId: 1, preferValue: 100, weight: 3,
     })
-    expect(evaluation.getTickersWithBuyEvaluation(2, pattern, dailyTicker)).toStrictEqual({
+    expect(evaluation.getTickerWithBuyEvaluation(2, pattern, dailyTicker)).toStrictEqual({
       tickerId: 2, preferValue: 100, weight: 3,
     })
   })
@@ -1047,7 +1047,7 @@ describe('#getTickersWithBuyEvaluation', () => {
       buyPreference: constants.BehaviorValue.Preference.HigherPrice,
     }
 
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, null)).toBe(null)
+    expect(evaluation.getTickerWithBuyEvaluation(1, pattern, null)).toBe(null)
   })
 
   test('if there is no prefer value', () => {
@@ -1069,7 +1069,7 @@ describe('#getTickersWithBuyEvaluation', () => {
       ...dailyTickerMock, daily, info,
     }
 
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
+    expect(evaluation.getTickerWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 
   test('if there is no weight', () => {
@@ -1091,7 +1091,7 @@ describe('#getTickersWithBuyEvaluation', () => {
       ...dailyTickerMock, daily, info,
     }
 
-    expect(evaluation.getTickersWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
+    expect(evaluation.getTickerWithBuyEvaluation(1, pattern, dailyTicker)).toBe(null)
   })
 })
 
