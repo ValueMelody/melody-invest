@@ -233,7 +233,7 @@ interface TickerWithEvaluation {
   weight: number;
 }
 
-export const getTickersWithSellEvaluation = (
+export const getTickerWithSellEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
   dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
@@ -258,7 +258,7 @@ export const getTickersWithSellEvaluation = (
   }
 }
 
-export const getTickersWithBuyEvaluation = (
+export const getTickerWithBuyEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
   dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
@@ -306,11 +306,11 @@ export const getTickerBuyEaluations = (
 ) => {
   const emptyEvaluations: TickerWithEvaluation[] = []
   const tickerEvaluations = tickerIds.reduce((evaluations, tickerId) => {
-    const evaluation = getTickersWithBuyEvaluation(
+    const evaluation = getTickerWithBuyEvaluation(
       tickerId, pattern, dailyTickers[tickerId],
     )
-    if (!evaluation) return evaluations
-    return [...evaluations, evaluation]
+    if (evaluation) evaluations.push(evaluation)
+    return evaluations
   }, emptyEvaluations)
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.buyPreference)
   return orderedEvaluations
@@ -323,11 +323,11 @@ export const getTickerSellEaluations = (
 ): TickerWithEvaluation[] => {
   const emptyEvaluations: TickerWithEvaluation[] = []
   const tickerEvaluations = tickerIds.reduce((evaluations, tickerId) => {
-    const evaluation = getTickersWithSellEvaluation(
+    const evaluation = getTickerWithSellEvaluation(
       tickerId, pattern, dailyTickers[tickerId],
     )
-    if (!evaluation) return evaluations
-    return [...evaluations, evaluation]
+    if (evaluation) evaluations.push(evaluation)
+    return evaluations
   }, emptyEvaluations)
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.sellPreference)
   return orderedEvaluations
