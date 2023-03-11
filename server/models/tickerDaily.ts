@@ -9,11 +9,12 @@ const TableName = adapterEnum.DatabaseTable.TickerDaily
 
 const convertToRecord = (
   raw: interfaces.tickerDailyModel.Raw,
-): interfaces.tickerDailyModel.Record => ({
-  ...raw,
-  dividendAmount: parseFloat(raw.dividendAmount),
-  splitMultiplier: parseFloat(raw.splitMultiplier),
-})
+): interfaces.tickerDailyModel.Record => {
+  const record: any = raw
+  record.dividendAmount = parseFloat(raw.dividendAmount)
+  record.splitMultiplier = parseFloat(raw.splitMultiplier)
+  return record
+}
 
 export const getByUK = async (
   tickerId: number,

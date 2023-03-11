@@ -8,10 +8,9 @@ const TableName = adapterEnum.DatabaseTable.TraderCombo
 const convertToRecord = (
   raw: interfaces.traderComboModel.Raw,
 ): interfaces.traderComboModel.Record => {
-  return {
-    ...raw,
-    traderIds: raw.traderIds.split(',').map((id) => parseInt(id)),
-  }
+  const record: any = raw
+  record.traderIds = raw.traderIds.split(',').map((id) => parseInt(id))
+  return record
 }
 
 export const getByPK = async (

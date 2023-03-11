@@ -15,12 +15,11 @@ const parseItems = (
 const convertToRecord = (
   raw: interfaces.traderHoldingModel.Raw,
 ): interfaces.traderHoldingModel.Record => {
-  return {
-    ...raw,
-    totalValue: parseInt(raw.totalValue),
-    totalCash: parseInt(raw.totalCash),
-    items: parseItems(raw.items),
-  }
+  const record: any = raw
+  record.totalValue = parseInt(raw.totalValue)
+  record.totalCash = parseInt(raw.totalCash)
+  record.items = parseItems(raw.items)
+  return record
 }
 
 export const getLatest = async (
