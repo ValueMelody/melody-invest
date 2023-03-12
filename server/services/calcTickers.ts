@@ -413,12 +413,18 @@ export const buildTickerInfo = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
-  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
-  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
 ): interfaces.dailyTickersModel.TickerInfo => {
   return {
-    ...tickerDaily,
+    priceDailyIncrease: tickerDaily.priceDailyIncrease,
+    priceDailyDecrease: tickerDaily.priceDailyDecrease,
+    priceWeeklyIncrease: tickerDaily.priceWeeklyIncrease,
+    priceWeeklyDecrease: tickerDaily.priceWeeklyDecrease,
+    priceMonthlyIncrease: tickerDaily.priceMonthlyIncrease,
+    priceMonthlyDecrease: tickerDaily.priceMonthlyDecrease,
+    priceQuarterlyIncrease: tickerDaily.priceQuarterlyIncrease,
+    priceQuarterlyDecrease: tickerDaily.priceQuarterlyDecrease,
+    priceYearlyIncrease: tickerDaily.priceYearlyIncrease,
+    priceYearlyDecrease: tickerDaily.priceYearlyDecrease,
     epsQuarterlyBeat: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeat : null,
     epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
     profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
@@ -433,6 +439,15 @@ export const buildTickerInfo = (
     incomeYearlyDecrease: tickerYearly ? tickerYearly.incomeYearlyDecrease : null,
     revenueYearlyIncrease: tickerYearly ? tickerYearly.revenueYearlyIncrease : null,
     revenueYearlyDecrease: tickerYearly ? tickerYearly.revenueYearlyDecrease : null,
+  }
+}
+
+export const buildIndicatorInfo = (
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
+): interfaces.dailyTickersModel.IndicatorInfo => {
+  return {
     inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
     inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
     gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
@@ -481,20 +496,28 @@ const buildDailyTickers = async (
     return yearlys
   }, initialYearlys)
 
-  const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
-  const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
-  const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
-
   const initialDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
   return dailyTargets.reduce((tickers, daily) => {
     const quarterly = quarterlys[daily.tickerId] || null
     const yearly = yearlys[daily.tickerId] || null
     const info = buildTickerInfo(
-      daily, quarterly, yearly, monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+      daily, quarterly, yearly,
     )
     tickers[daily.tickerId] = { info, daily, quarterly, yearly }
     return tickers
   }, initialDailyTickers)
+}
+
+const buildDailyIndicators = async (
+  targetDate: string,
+): Promise<interfaces.dailyTickersModel.IndicatorInfo> => {
+  const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
+  const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
+  const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
+
+  return buildIndicatorInfo(
+    monthlyIndicator, quarterlyIndicator, yearlyIndicator,
+  )
 }
 
 export const calcDailyAvailableTickers = async (
@@ -517,12 +540,14 @@ export const calcDailyAvailableTickers = async (
     const nextDate = dateTool.getNextDate(targetDate)
 
     const dailyTickers = await buildDailyTickers(targetDate)
+    const indicators = dailyTickers ? await buildDailyIndicators(targetDate) : null
     const nearestPrices = await tickerDailyModel.getNearestPricesByDate(targetDate)
 
     const transaction = await databaseAdapter.createTransaction()
     try {
       await dailyTickersModel.upsert(targetDate, {
         tickers: dailyTickers,
+        indicators,
         nearestPrices,
       }, transaction)
       await transaction.commit()
