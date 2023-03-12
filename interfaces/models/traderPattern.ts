@@ -254,7 +254,7 @@ export type TickerMovementBuyBehavior =
   'incomeYearlyIncreaseBuy' | 'incomeYearlyDecreaseBuy' |
   'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy'
 
-export type GeneralMovementBuyBehavior =
+export type IndicatorMovementBuyBehavior =
   'inflationYearlyIncreaseBuy' | 'inflationYearlyDecreaseBuy' |
   'fundsRateMonthlyIncreaseBuy' | 'fundsRateMonthlyDecreaseBuy' |
   'thirtyYearsTreasuryMonthlyIncreaseBuy' | 'thirtyYearsTreasuryMonthlyDecreaseBuy' |
@@ -267,14 +267,14 @@ export type GeneralMovementBuyBehavior =
   'unemploymentRateMonthlyIncreaseBuy' | 'unemploymentRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
-export type MovementBuyBehavior = TickerMovementBuyBehavior | GeneralMovementBuyBehavior
+export type MovementBuyBehavior = TickerMovementBuyBehavior | IndicatorMovementBuyBehavior
 
-export type GeneralCompareBuyBehavior =
+export type IndicatorCompareBuyBehavior =
   'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy' |
   'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
   'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
 
-export type CompareBuyBehavior = GeneralCompareBuyBehavior
+export type CompareBuyBehavior = IndicatorCompareBuyBehavior
 
 export type BuyBehavior = MovementBuyBehavior | CompareBuyBehavior
 
@@ -292,7 +292,7 @@ export type TickerMovementSellBehavior =
   'incomeYearlyIncreaseSell' | 'incomeYearlyDecreaseSell' |
   'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell'
 
-export type GeneralMovementSellBehavior = 
+export type IndicatorMovementSellBehavior =
   'inflationYearlyIncreaseSell' | 'inflationYearlyDecreaseSell' |
   'fundsRateMonthlyIncreaseSell' | 'fundsRateMonthlyDecreaseSell' |
   'thirtyYearsTreasuryMonthlyIncreaseSell' | 'thirtyYearsTreasuryMonthlyDecreaseSell' |
@@ -305,16 +305,20 @@ export type GeneralMovementSellBehavior =
   'unemploymentRateMonthlyIncreaseSell' | 'unemploymentRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
-export type MovementSellBehavior = TickerMovementSellBehavior | GeneralMovementSellBehavior
+export type MovementSellBehavior = TickerMovementSellBehavior | IndicatorMovementSellBehavior
 
-export type GeneralCompareSellBehavior = 
+export type IndicatorCompareSellBehavior =
   'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell' |
   'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
   'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
 
-export type CompareSellBehavior = GeneralCompareSellBehavior
+export type CompareSellBehavior = IndicatorCompareSellBehavior
 
 export type TickerMovementBehavior = TickerMovementBuyBehavior | TickerMovementSellBehavior
+
+export type IndicatorMovementBehavior = IndicatorMovementBuyBehavior | IndicatorMovementSellBehavior
+
+export type indicatorCompareBehavior = IndicatorCompareBuyBehavior | IndicatorCompareSellBehavior
 
 export type MovementBehavior = MovementBuyBehavior | MovementSellBehavior
 

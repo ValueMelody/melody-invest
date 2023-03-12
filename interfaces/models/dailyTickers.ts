@@ -10,15 +10,15 @@ export type TickerMovementKey =
   tickerQuarterly.MovementKey |
   tickerYearly.MovementKey
 
-export type GeneralMovementKey = indicatorMonthly.MovementKey |indicatorYearly.MovementKey
+export type IndicatorMovementKey = indicatorMonthly.MovementKey |indicatorYearly.MovementKey
 
-export type MovementKey = TickerMovementKey | GeneralMovementKey
+export type MovementKey = TickerMovementKey | IndicatorMovementKey
 
-export type GeneralCompareKey = indicatorQuarterly.CompareKey | indicatorYearly.CompareKey
+export type IndicatorCompareKey = indicatorQuarterly.CompareKey | indicatorYearly.CompareKey
 
-export type CompareKey = GeneralCompareKey
+export type CompareKey = IndicatorCompareKey
 
-export type GeneralKey = GeneralMovementKey | GeneralCompareKey
+export type IndicatorKey = IndicatorMovementKey | IndicatorCompareKey
 
 export type TickerInfo = {
   [key in TickerMovementKey]: number | null;
@@ -36,7 +36,7 @@ export interface DailyTickers {
 }
 
 export type IndicatorInfo = {
-  [key in GeneralKey]: number | null;
+  [key in IndicatorKey]: number | null;
 }
 
 export interface Record {

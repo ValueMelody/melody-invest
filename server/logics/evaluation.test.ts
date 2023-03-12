@@ -470,8 +470,8 @@ describe('#getTickerPreferValue', () => {
   })
 })
 
-describe('#MovementTriggers', () => {
-  const entries = Object.entries(evaluation.MovementTriggers)
+describe('#IndicatorCompareTriggers', () => {
+  const entries = Object.entries(evaluation.IndicatorCompareTriggers)
   test('key mapping is correct', () => {
     entries.forEach((entry) => {
       expect(entry[0].includes('Buy') || entry[0].includes('Sell')).toBeTruthy()
@@ -481,12 +481,12 @@ describe('#MovementTriggers', () => {
   })
   test('has correct total items', () => {
     const total = constants.Behavior.MovementBuyBehaviors.length + constants.Behavior.MovementSellBehaviors.length
-    expect(Object.keys(evaluation.MovementTriggers).length).toEqual(total)
+    expect(Object.keys(evaluation.IndicatorCompareTriggers).length).toEqual(total)
   })
 })
 
-describe('#CompareTriggers', () => {
-  const entries = Object.entries(evaluation.CompareTriggers)
+describe('#IndicatorCompareTriggers', () => {
+  const entries = Object.entries(evaluation.IndicatorCompareTriggers)
   test('key mapping is correct', () => {
     entries.forEach((entry) => {
       expect(
@@ -502,7 +502,7 @@ entry[0].includes('BelowBuy') || entry[0].includes('BelowSell'),
   })
   test('has correct total items', () => {
     const total = constants.Behavior.CompareBuyBehaviors.length + constants.Behavior.CompareSellBehaviors.length
-    expect(Object.keys(evaluation.CompareTriggers).length).toEqual(total)
+    expect(Object.keys(evaluation.IndicatorCompareTriggers).length).toEqual(total)
   })
 })
 
@@ -644,9 +644,9 @@ describe('#getTickerMovementWeight', () => {
 
 describe('#getTickerCompareWeight', () => {
   test('could get weight when matches', () => {
-    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
-    const tickerInfo = {
-      ...dailyTickersMock,
+    const indicatorInfoMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
+    const indicatorInfo = {
+      ...indicatorInfoMock,
       gdpYearlyChangePercent: 3,
       gdpQuarterlyChangePercent: -2,
     }
@@ -664,35 +664,35 @@ describe('#getTickerCompareWeight', () => {
       gdpQuarterlyChangeBelowSell: 1,
     }
 
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
     )).toBe(4)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
     )).toBe(3)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
     )).toBe(4)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
     )).toBe(3)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
     )).toBe(3)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
     )).toBe(4)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
     )).toBe(3)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
     )).toBe(5)
   })
 
   test('could get weight when there are no matches', () => {
-    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
-    const tickerInfo = { ...dailyTickersMock, gdpQuarterlyChangePercent: -2 }
+    const indicatorInfoMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
+    const indicatorInfo = { ...indicatorInfoMock, gdpQuarterlyChangePercent: -2 }
 
     const patternMock: interfaces.traderPatternModel.Record = mock({})
     const pattern = {
@@ -703,24 +703,24 @@ describe('#getTickerCompareWeight', () => {
       gdpYearlyChangeBelowSell: 4,
     }
 
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
     )).toBe(1)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
     )).toBe(1)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
     )).toBe(1)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
     )).toBe(1)
   })
 
   test('could get weight when matches with less value', () => {
-    const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
-    const tickerInfo = {
-      ...dailyTickersMock,
+    const indicatorInfoMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
+    const indicatorInfo = {
+      ...indicatorInfoMock,
       gdpYearlyChangePercent: 0,
       gdpQuarterlyChangePercent: -2,
     }
@@ -734,39 +734,39 @@ describe('#getTickerCompareWeight', () => {
       gdpYearlyChangeBelowSell: -2,
     }
 
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
     )).toBe(0)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
     )).toBe(0)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
     )).toBe(0)
-    expect(evaluation.getTickerCompareWeight(
-      tickerInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
+    expect(evaluation.getIndicatorCompareWeight(
+      indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
     )).toBe(0)
   })
 })
 
-describe('#getMovementAndCompareWeights', () => {
-  const dailyTickersMock: interfaces.dailyTickersModel.TickerInfo = mock({})
+describe('#getIndicatorMovementAndCompareWeights', () => {
+  const indicatorMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
   const tickerInfo1 = {
-    ...dailyTickersMock,
-    priceDailyIncrease: 3,
+    ...indicatorMock,
+    inflationYearlyIncreaseBuy: 3,
     gdpYearlyChangePercent: 2,
   }
 
   const tickerInfo2 = {
-    ...dailyTickersMock,
-    priceDailyIncrease: 3,
-    priceWeeklyDecrease: 2,
+    ...indicatorMock,
+    inflationYearlyIncreaseBuy: 3,
+    inflationMonthlyIncreaseBuy: 2,
     gdpYearlyChangePercent: 2,
   }
 
   const tickerInfo3 = {
-    ...dailyTickersMock,
-    priceDailyIncrease: 3,
+    ...indicatorMock,
+    inflationMonthlyIncreaseBuy: 3,
     gdpYearlyChangePercent: 2,
     gdpQuarterlyChangePercent: -1,
   }
@@ -774,121 +774,121 @@ describe('#getMovementAndCompareWeights', () => {
   const patternMock: interfaces.traderPatternModel.Record = mock({})
   const pattern1 = {
     ...patternMock,
-    priceDailyIncreaseBuy: 1,
+    inflationYearlyIncreaseBuy: 1,
     gdpYearlyChangeAboveBuy: 1,
   }
 
   const pattern2 = {
     ...patternMock,
-    priceDailyIncreaseBuy: 2,
+    inflationYearlyIncreaseBuy: 2,
     gdpYearlyChangeAboveBuy: 1,
   }
 
   const pattern3 = {
     ...patternMock,
-    priceDailyIncreaseBuy: 2,
-    priceWeeklyDecreaseBuy: 1,
+    inflationYearlyIncreaseBuy: 2,
+    inflationMonthlyIncreaseBuy: 1,
     gdpYearlyChangeAboveBuy: 1,
   }
 
   const pattern4 = {
     ...patternMock,
-    priceDailyIncreaseBuy: 2,
+    inflationMonthlyIncreaseBuy: 2,
     gdpYearlyChangeAboveBuy: 1,
     gdpQuarterlyChangeAboveBuy: -3,
   }
 
   const pattern5 = {
     ...patternMock,
-    priceDailyIncreaseSell: 1,
+    inflationMonthlyIncreaseSell: 1,
     gdpYearlyChangeAboveSell: 1,
   }
 
   const pattern6 = {
     ...patternMock,
-    priceDailyIncreaseSell: 2,
+    inflationMonthlyIncreaseSell: 2,
     gdpYearlyChangeAboveSell: 1,
   }
 
   const pattern7 = {
     ...patternMock,
-    priceDailyIncreaseSell: 2,
-    priceWeeklyDecreaseSell: 1,
+    inflationMonthlyIncreaseSell: 2,
+    inflationYearlyIncreaseSell: 1,
     gdpYearlyChangeAboveSell: 1,
   }
 
   const pattern8 = {
     ...patternMock,
-    priceDailyIncreaseSell: 2,
+    inflationMonthlyIncreaseSell: 2,
     gdpYearlyChangeAboveSell: 1,
     gdpQuarterlyChangeAboveSell: -3,
   }
 
   test('could get correct weights for buy', () => {
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern1, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern1, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(12)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern1, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern1, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern2, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern2, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(9)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern2, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern2, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern3, tickerInfo2, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern3, tickerInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(27)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern3, tickerInfo2, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern3, tickerInfo2, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern4, tickerInfo3, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern4, tickerInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(36)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern4, tickerInfo3, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern4, tickerInfo3, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(1)
   })
 
   test('could get correct weights for sell', () => {
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern5, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern5, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(12)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern5, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern5, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern6, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern6, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(9)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern6, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern6, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern7, tickerInfo2, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern7, tickerInfo2, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(27)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern7, tickerInfo2, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern7, tickerInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(1)
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern8, tickerInfo3, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern8, tickerInfo3, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
     )).toBe(36)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern8, tickerInfo3, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern8, tickerInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(1)
   })
 
   test('if there is no weight for buy', () => {
-    const tickerInfoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
-    const tickerInfo1 = { ...tickerInfoMock, priceDailyIncrease: 3 }
-    const tickerInfo2 = { ...tickerInfoMock, gdpYearlyChangePercent: 2 }
-    const tickerInfo3 = instance(tickerInfoMock)
+    const indicatorInfoMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
+    const indicatorInfo1 = { ...indicatorInfoMock, priceDailyIncrease: 3 }
+    const indicatorInfo2 = { ...indicatorInfoMock, gdpYearlyChangePercent: 2 }
+    const indicatorInfo3 = instance(indicatorInfoMock)
 
     const patternMock: interfaces.traderPatternModel.Record = mock({})
     const pattern = {
@@ -897,22 +897,22 @@ describe('#getMovementAndCompareWeights', () => {
       gdpYearlyChangeAboveBuy: 1,
     }
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo1, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern, indicatorInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(0)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo2, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern, indicatorInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(0)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo3, constants.Behavior.MovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern, indicatorInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
     )).toBe(0)
   })
 
   test('if there is no weight for sell', () => {
-    const tickerInfoMock: interfaces.dailyTickersModel.TickerInfo = mock({})
-    const tickerInfo1 = { ...tickerInfoMock, priceDailyIncrease: 3 }
-    const tickerInfo2 = { ...tickerInfoMock, gdpYearlyChangePercent: 2 }
-    const tickerInfo3 = instance(tickerInfoMock)
+    const indicatorInfoMock: interfaces.dailyTickersModel.IndicatorInfo = mock({})
+    const indicatorInfo1 = { ...indicatorInfoMock, priceDailyIncrease: 3 }
+    const indicatorInfo2 = { ...indicatorInfoMock, gdpYearlyChangePercent: 2 }
+    const indicatorInfo3 = instance(indicatorInfoMock)
 
     const pattern = {
       ...patternMock,
@@ -920,14 +920,23 @@ describe('#getMovementAndCompareWeights', () => {
       gdpYearlyChangeAboveSell: 1,
     }
 
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo1, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern,
+      indicatorInfo1,
+      constants.Behavior.IndicatorMovementSellBehaviors,
+      constants.Behavior.CompareSellBehaviors,
     )).toBe(0)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo2, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern,
+      indicatorInfo2,
+      constants.Behavior.IndicatorMovementSellBehaviors,
+      constants.Behavior.CompareSellBehaviors,
     )).toBe(0)
-    expect(evaluation.getMovementAndCompareWeights(
-      pattern, tickerInfo3, constants.Behavior.MovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
+    expect(evaluation.getIndicatorMovementAndCompareWeights(
+      pattern,
+      indicatorInfo3,
+      constants.Behavior.IndicatorMovementSellBehaviors,
+      constants.Behavior.CompareSellBehaviors,
     )).toBe(0)
   })
 })
