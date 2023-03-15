@@ -174,44 +174,45 @@ export const getTickerMovementWeight = (
   const tickerValue = tickerInfo[tickerKey]
   const patternValue = pattern[behavior]
 
-  if (!patternValue) return 1
-  if (!tickerValue || tickerValue < patternValue) return 0
+  if (patternValue === null) return 1
+  if (tickerValue === null || tickerValue < patternValue) return 0
   return tickerValue - patternValue + 2
 }
 
-export const getIndicatorMovementWeight = (
+export const getIndicatorMovementMatch = (
   indicatorInfo: interfaces.dailyTickersModel.IndicatorInfo,
   indicatorKey: interfaces.dailyTickersModel.IndicatorMovementKey,
   pattern: interfaces.traderPatternModel.Record,
   behavior: interfaces.traderPatternModel.MovementBehavior,
-): number => {
+): boolean => {
   const indicatorValue = indicatorInfo[indicatorKey]
   const patternValue = pattern[behavior]
 
-  if (!patternValue) return 1
-  if (!indicatorValue || indicatorValue < patternValue) return 0
-  return indicatorValue - patternValue + 2
+  if (patternValue === null) return true
+  return indicatorValue !== null && indicatorValue >= patternValue
 }
 
-export const getIndicatorCompareWeight = (
+export const getIndicatorCompareMatch = (
   indicatorInfo: interfaces.dailyTickersModel.IndicatorInfo,
   compareKey: interfaces.dailyTickersModel.IndicatorCompareKey,
   pattern: interfaces.traderPatternModel.Record,
   behavior: interfaces.traderPatternModel.CompareBehavior,
-): number => {
+): boolean => {
   const indicatorValue = indicatorInfo[compareKey]
   const patternValue = pattern[behavior]
 
-  if (!patternValue && patternValue !== 0) return 1
-  if (behavior.includes('Above') && indicatorValue && indicatorValue > patternValue) {
-    return Math.abs(indicatorValue - patternValue) + 2
+  if (patternValue === null) return true
+  if (indicatorValue === null) return false
+
+  if (behavior.includes('Above') && indicatorValue > patternValue) {
+    return true
   }
 
-  if (behavior.includes('Below') && indicatorValue && indicatorValue < patternValue) {
-    return Math.abs(patternValue - indicatorValue) + 2
+  if (behavior.includes('Below') && indicatorValue < patternValue) {
+    return true
   }
 
-  return 0
+  return false
 }
 
 export const getTickerMovementWeights = (
@@ -222,6 +223,7 @@ export const getTickerMovementWeights = (
   const movementWeights = movementBehaviors.reduce((
     weights: number, behavior,
   ): number => {
+    if (!weights) return 0
     const tickerKey = TickerMovementTriggers[behavior]
     const currentWeight = getTickerMovementWeight(
       tickerInfo, tickerKey, pattern, behavior,
@@ -232,35 +234,31 @@ export const getTickerMovementWeights = (
   return movementWeights
 }
 
-export const getIndicatorMovementAndCompareWeights = (
+export const getIndicatorMovementAndCompareMatches = (
   pattern: interfaces.traderPatternModel.Record,
   indicatorInfo: interfaces.dailyTickersModel.IndicatorInfo,
   movementBehaviors: interfaces.traderPatternModel.IndicatorMovementBehavior[],
   compareTriggers: interfaces.traderPatternModel.indicatorCompareBehavior[],
-) => {
-  const movementWeights = movementBehaviors.reduce((
-    weights: number, behavior,
-  ): number => {
+): boolean => {
+  const movementMatches = movementBehaviors.every((behavior) => {
     const indicatorKey = IndicatorMovementTriggers[behavior]
-    const currentWeight = getIndicatorMovementWeight(
+    const isMatch = getIndicatorMovementMatch(
       indicatorInfo, indicatorKey, pattern, behavior,
     )
-    return weights * currentWeight
-  }, 1)
+    return isMatch
+  })
 
-  const compareWeights = compareTriggers.reduce((
-    weights: number, behavior,
-  ): number => {
-    const indicatorKey = IndicatorCompareTriggers[behavior]
-    const currentWeight = getIndicatorCompareWeight(
-      indicatorInfo, indicatorKey, pattern, behavior,
+  if (!movementMatches) return false
+
+  const compareMatches = compareTriggers.every((trigger) => {
+    const indicatorKey = IndicatorCompareTriggers[trigger]
+    const isMatch = getIndicatorCompareMatch(
+      indicatorInfo, indicatorKey, pattern, trigger,
     )
-    return weights * currentWeight
-  }, 1)
+    return isMatch
+  })
 
-  if (!movementWeights || !compareWeights) return 0
-
-  return movementWeights * compareWeights
+  return compareMatches
 }
 
 interface TickerWithEvaluation {
@@ -348,6 +346,32 @@ export const getTickerBuyEaluations = (
   }, emptyEvaluations)
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.buyPreference)
   return orderedEvaluations
+}
+
+export const getIndicatorBuyMatches = (
+  pattern: interfaces.traderPatternModel.Record,
+  indicatorInfo: interfaces.dailyTickersModel.IndicatorInfo,
+): boolean => {
+  const shouldBuy = getIndicatorMovementAndCompareMatches(
+    pattern,
+    indicatorInfo,
+    constants.Behavior.IndicatorMovementBuyBehaviors,
+    constants.Behavior.IndicatorCompareBuyBehaviors,
+  )
+  return shouldBuy
+}
+
+export const getIndicatorSellMatches = (
+  pattern: interfaces.traderPatternModel.Record,
+  indicatorInfo: interfaces.dailyTickersModel.IndicatorInfo,
+): boolean => {
+  const shouldSell = getIndicatorMovementAndCompareMatches(
+    pattern,
+    indicatorInfo,
+    constants.Behavior.IndicatorMovementSellBehaviors,
+    constants.Behavior.IndicatorCompareSellBehaviors,
+  )
+  return shouldSell
 }
 
 export const getTickerSellEaluations = (

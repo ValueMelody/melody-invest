@@ -664,30 +664,30 @@ describe('#getTickerCompareWeight', () => {
       gdpQuarterlyChangeBelowSell: 1,
     }
 
-    expect(evaluation.getIndicatorCompareWeight(
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
-    )).toBe(4)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
-    )).toBe(3)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
-    )).toBe(4)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
-    )).toBe(3)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
-    )).toBe(3)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
-    )).toBe(4)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
-    )).toBe(3)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
-    )).toBe(5)
+    )).toBe(true)
   })
 
   test('could get weight when there are no matches', () => {
@@ -703,18 +703,18 @@ describe('#getTickerCompareWeight', () => {
       gdpYearlyChangeBelowSell: 4,
     }
 
-    expect(evaluation.getIndicatorCompareWeight(
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveBuy',
-    )).toBe(1)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeAboveSell',
-    )).toBe(1)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowBuy',
-    )).toBe(1)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(true)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpQuarterlyChangePercent', pattern, 'gdpQuarterlyChangeBelowSell',
-    )).toBe(1)
+    )).toBe(true)
   })
 
   test('could get weight when matches with less value', () => {
@@ -734,18 +734,18 @@ describe('#getTickerCompareWeight', () => {
       gdpYearlyChangeBelowSell: -2,
     }
 
-    expect(evaluation.getIndicatorCompareWeight(
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveBuy',
-    )).toBe(0)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(false)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeAboveSell',
-    )).toBe(0)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(false)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowBuy',
-    )).toBe(0)
-    expect(evaluation.getIndicatorCompareWeight(
+    )).toBe(false)
+    expect(evaluation.getIndicatorCompareMatch(
       indicatorInfo, 'gdpYearlyChangePercent', pattern, 'gdpYearlyChangeBelowSell',
-    )).toBe(0)
+    )).toBe(false)
   })
 })
 
@@ -825,63 +825,63 @@ describe('#getIndicatorMovementAndCompareWeights', () => {
   }
 
   test('could get correct weights for buy', () => {
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern1, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(12)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern1, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern2, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(9)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern2, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern3, tickerInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(27)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern3, tickerInfo2, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern4, tickerInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(36)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern4, tickerInfo3, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(1)
+    )).toBe(true)
   })
 
   test('could get correct weights for sell', () => {
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern5, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(12)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern5, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern6, tickerInfo1, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(9)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern6, tickerInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern7, tickerInfo2, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(27)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern7, tickerInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(1)
+    )).toBe(true)
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern8, tickerInfo3, constants.Behavior.IndicatorMovementSellBehaviors, constants.Behavior.CompareSellBehaviors,
-    )).toBe(36)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(true)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern8, tickerInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(1)
+    )).toBe(true)
   })
 
   test('if there is no weight for buy', () => {
@@ -897,15 +897,15 @@ describe('#getIndicatorMovementAndCompareWeights', () => {
       gdpYearlyChangeAboveBuy: 1,
     }
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern, indicatorInfo1, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(0)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(false)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern, indicatorInfo2, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(0)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(false)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern, indicatorInfo3, constants.Behavior.IndicatorMovementBuyBehaviors, constants.Behavior.CompareBuyBehaviors,
-    )).toBe(0)
+    )).toBe(false)
   })
 
   test('if there is no weight for sell', () => {
@@ -920,24 +920,24 @@ describe('#getIndicatorMovementAndCompareWeights', () => {
       gdpYearlyChangeAboveSell: 1,
     }
 
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern,
       indicatorInfo1,
       constants.Behavior.IndicatorMovementSellBehaviors,
       constants.Behavior.CompareSellBehaviors,
-    )).toBe(0)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(false)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern,
       indicatorInfo2,
       constants.Behavior.IndicatorMovementSellBehaviors,
       constants.Behavior.CompareSellBehaviors,
-    )).toBe(0)
-    expect(evaluation.getIndicatorMovementAndCompareWeights(
+    )).toBe(false)
+    expect(evaluation.getIndicatorMovementAndCompareMatches(
       pattern,
       indicatorInfo3,
       constants.Behavior.IndicatorMovementSellBehaviors,
       constants.Behavior.CompareSellBehaviors,
-    )).toBe(0)
+    )).toBe(false)
   })
 })
 

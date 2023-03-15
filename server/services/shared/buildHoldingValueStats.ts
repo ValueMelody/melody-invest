@@ -15,7 +15,7 @@ export const calHoldingValueByDate = async (
     cacheAge: '1d',
     cacheKey: cacheTool.generateTickerPricesKey(date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(date, 'nearestPrices')
+      const dailyTickers = await dailyTickersModel.getByUK(date, ['nearestPrices'])
       return dailyTickers?.nearestPrices || {}
     },
     preferLocal: true,
