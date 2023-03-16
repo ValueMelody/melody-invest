@@ -18,10 +18,10 @@ export const getLatestDate = async (): Promise<string> => {
 
 export const getByUK = async (
   date: string,
-  select?: 'tickers' | 'nearestPrices',
+  select?: ('tickers' | 'indicators' | 'nearestPrices')[],
 ): Promise<interfaces.dailyTickersModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    select: select ? [select] : undefined,
+    select,
     tableName: TableName,
     conditions: [
       { key: 'date', value: date },

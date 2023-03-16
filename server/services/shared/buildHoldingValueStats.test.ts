@@ -19,6 +19,7 @@ const getByUK = async (date: string) => {
     id: 1,
     date,
     tickers: null,
+    indicators: null,
     nearestPrices: prices,
   }
 }

@@ -10,17 +10,26 @@ describe('#BuyBehaviors', () => {
     expect(behavior.IndicatorDecreaseBuyBehaviors.length).toBe(11)
     expect(behavior.EconomyImproveBuyBehaviors.length).toBe(3)
     expect(behavior.EconomyWorsenBuyBehaviors.length).toBe(3)
-    expect(behavior.MovementBuyBehaviors).toStrictEqual([
+    expect(behavior.TickerMovementBuyBehaviors).toStrictEqual([
       ...behavior.PriceIncreaseBuyBehaviors,
       ...behavior.PriceDecreaseBuyBehaviors,
       ...behavior.FinancialImproveBuyBehaviors,
       ...behavior.FinancialWorsenBuyBehaviors,
+    ])
+    expect(behavior.IndicatorMovementBuyBehaviors).toStrictEqual([
       ...behavior.IndicatorIncreaseBuyBehaviors,
       ...behavior.IndicatorDecreaseBuyBehaviors,
     ])
-    expect(behavior.CompareBuyBehaviors).toStrictEqual([
+    expect(behavior.MovementBuyBehaviors).toStrictEqual([
+      ...behavior.TickerMovementBuyBehaviors,
+      ...behavior.IndicatorMovementBuyBehaviors,
+    ])
+    expect(behavior.IndicatorCompareBuyBehaviors).toStrictEqual([
       ...behavior.EconomyImproveBuyBehaviors,
       ...behavior.EconomyWorsenBuyBehaviors,
+    ])
+    expect(behavior.CompareBuyBehaviors).toStrictEqual([
+      ...behavior.IndicatorCompareBuyBehaviors,
     ])
     expect(behavior.BuyBehaviors).toStrictEqual([
       ...behavior.PriceIncreaseBuyBehaviors,
@@ -45,17 +54,26 @@ describe('#SellBehaviors', () => {
     expect(behavior.IndicatorDecreaseSellBehaviors.length).toBe(11)
     expect(behavior.EconomyImproveSellBehaviors.length).toBe(3)
     expect(behavior.EconomyWorsenSellBehaviors.length).toBe(3)
-    expect(behavior.MovementSellBehaviors).toStrictEqual([
+    expect(behavior.TickerMovementSellBehaviors).toStrictEqual([
       ...behavior.PriceIncreaseSellBehaviors,
       ...behavior.PriceDecreaseSellBehaviors,
       ...behavior.FinancialImproveSellBehaviors,
       ...behavior.FinancialWorsenSellBehaviors,
+    ])
+    expect(behavior.IndicatorMovementSellBehaviors).toStrictEqual([
       ...behavior.IndicatorIncreaseSellBehaviors,
       ...behavior.IndicatorDecreaseSellBehaviors,
     ])
-    expect(behavior.CompareSellBehaviors).toStrictEqual([
+    expect(behavior.MovementSellBehaviors).toStrictEqual([
+      ...behavior.TickerMovementSellBehaviors,
+      ...behavior.IndicatorMovementSellBehaviors,
+    ])
+    expect(behavior.IndicatorCompareSellBehaviors).toStrictEqual([
       ...behavior.EconomyImproveSellBehaviors,
       ...behavior.EconomyWorsenSellBehaviors,
+    ])
+    expect(behavior.CompareSellBehaviors).toStrictEqual([
+      ...behavior.IndicatorCompareSellBehaviors,
     ])
     expect(behavior.SellBehaviors).toStrictEqual([
       ...behavior.PriceIncreaseSellBehaviors,

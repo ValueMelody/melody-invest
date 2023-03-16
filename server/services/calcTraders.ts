@@ -66,8 +66,8 @@ const getCachedDailyTickers = async (date: string) => {
     cacheAge: '1d',
     cacheKey: cacheTool.generateDailyTickersKey(date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(date, 'tickers')
-      return dailyTickers?.tickers || null
+      const dailyTickers = await dailyTickersModel.getByUK(date, ['tickers', 'indicators'])
+      return dailyTickers
     },
     preferLocal: true,
   })
@@ -110,12 +110,15 @@ const calcTraderPerformance = async (
     while (tradeDate <= latestDate) {
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
-      const dailyTickers: interfaces.dailyTickersModel.DailyTickers = await getCachedDailyTickers(tradeDate)
+      const dailyTickersRecord: interfaces.dailyTickersModel.Record | null = await getCachedDailyTickers(tradeDate)
 
-      if (!dailyTickers) {
+      if (!dailyTickersRecord?.tickers) {
         tradeDate = nextDate
         continue
       }
+
+      const dailyTickers = dailyTickersRecord.tickers
+      const indicatorInfo = dailyTickersRecord.indicators
 
       const emptyDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
       const availableTargets = env.tickerIds
@@ -150,9 +153,13 @@ const calcTraderPerformance = async (
       )
 
       const holdingTickerIds = detailAfterRebalance.items.map((item) => item.tickerId)
-      const sellTickerEvaluations = evaluationLogic.getTickerSellEaluations(
-        holdingTickerIds, pattern, availableTargets,
-      )
+
+      const isSellIndicatorMatches = !!indicatorInfo && evaluationLogic.getIndicatorSellMatches(pattern, indicatorInfo)
+      const sellTickerEvaluations = isSellIndicatorMatches
+        ? evaluationLogic.getTickerSellEaluations(
+          holdingTickerIds, pattern, availableTargets,
+        )
+        : []
       const sellTickerIds = sellTickerEvaluations.map((sellTickerEvaluation) => sellTickerEvaluation.tickerId)
 
       const {
@@ -167,11 +174,14 @@ const calcTraderPerformance = async (
         maxCashValue,
       )
 
-      const buyTickerEvaluations = evaluationLogic.getTickerBuyEaluations(
-        Object.keys(availableTargets).map((id) => parseInt(id)),
-        pattern,
-        availableTargets,
-      )
+      const isBuyIndicatorMatches = !!indicatorInfo && evaluationLogic.getIndicatorBuyMatches(pattern, indicatorInfo)
+      const buyTickerEvaluations = isBuyIndicatorMatches
+        ? evaluationLogic.getTickerBuyEaluations(
+          Object.keys(availableTargets).map((id) => parseInt(id)),
+          pattern,
+          availableTargets,
+        )
+        : []
       const buyTickerIds = buyTickerEvaluations.map((evaluation) => evaluation.tickerId)
 
       const maxBuyAmount = detailAfterSell.totalValue * holdingBuyPercent / 100

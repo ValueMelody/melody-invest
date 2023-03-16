@@ -22,6 +22,7 @@
     "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderDescendants",
 
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
+
     "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
     "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
 

@@ -240,7 +240,7 @@ export interface Update {
   hashCode: string;
 }
 
-export type MovementBuyBehavior =
+export type TickerMovementBuyBehavior =
   'priceDailyIncreaseBuy' | 'priceDailyDecreaseBuy' |
   'priceWeeklyIncreaseBuy' | 'priceWeeklyDecreaseBuy' |
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
@@ -252,7 +252,9 @@ export type MovementBuyBehavior =
   'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy' |
   'profitYearlyIncreaseBuy' | 'profitYearlyDecreaseBuy' |
   'incomeYearlyIncreaseBuy' | 'incomeYearlyDecreaseBuy' |
-  'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy' |
+  'revenueYearlyIncreaseBuy' | 'revenueYearlyDecreaseBuy'
+
+export type IndicatorMovementBuyBehavior =
   'inflationYearlyIncreaseBuy' | 'inflationYearlyDecreaseBuy' |
   'fundsRateMonthlyIncreaseBuy' | 'fundsRateMonthlyDecreaseBuy' |
   'thirtyYearsTreasuryMonthlyIncreaseBuy' | 'thirtyYearsTreasuryMonthlyDecreaseBuy' |
@@ -265,14 +267,18 @@ export type MovementBuyBehavior =
   'unemploymentRateMonthlyIncreaseBuy' | 'unemploymentRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
-export type CompareBuyBehavior =
+export type MovementBuyBehavior = TickerMovementBuyBehavior | IndicatorMovementBuyBehavior
+
+export type IndicatorCompareBuyBehavior =
   'gdpYearlyChangeAboveBuy' | 'gdpYearlyChangeBelowBuy' |
   'gdpQuarterlyChangeAboveBuy' | 'gdpQuarterlyChangeBelowBuy' |
   'gdpQuarterlyYoYChangeAboveBuy' | 'gdpQuarterlyYoYChangeBelowBuy'
 
+export type CompareBuyBehavior = IndicatorCompareBuyBehavior
+
 export type BuyBehavior = MovementBuyBehavior | CompareBuyBehavior
 
-export type MovementSellBehavior =
+export type TickerMovementSellBehavior =
   'priceDailyIncreaseSell' | 'priceDailyDecreaseSell' |
   'priceWeeklyIncreaseSell' | 'priceWeeklyDecreaseSell' |
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
@@ -284,7 +290,9 @@ export type MovementSellBehavior =
   'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell' |
   'profitYearlyIncreaseSell' | 'profitYearlyDecreaseSell' |
   'incomeYearlyIncreaseSell' | 'incomeYearlyDecreaseSell' |
-  'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell' |
+  'revenueYearlyIncreaseSell' | 'revenueYearlyDecreaseSell'
+
+export type IndicatorMovementSellBehavior =
   'inflationYearlyIncreaseSell' | 'inflationYearlyDecreaseSell' |
   'fundsRateMonthlyIncreaseSell' | 'fundsRateMonthlyDecreaseSell' |
   'thirtyYearsTreasuryMonthlyIncreaseSell' | 'thirtyYearsTreasuryMonthlyDecreaseSell' |
@@ -297,10 +305,20 @@ export type MovementSellBehavior =
   'unemploymentRateMonthlyIncreaseSell' | 'unemploymentRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 
-export type CompareSellBehavior =
+export type MovementSellBehavior = TickerMovementSellBehavior | IndicatorMovementSellBehavior
+
+export type IndicatorCompareSellBehavior =
   'gdpYearlyChangeAboveSell' | 'gdpYearlyChangeBelowSell' |
   'gdpQuarterlyChangeAboveSell' | 'gdpQuarterlyChangeBelowSell' |
   'gdpQuarterlyYoYChangeAboveSell' | 'gdpQuarterlyYoYChangeBelowSell'
+
+export type CompareSellBehavior = IndicatorCompareSellBehavior
+
+export type TickerMovementBehavior = TickerMovementBuyBehavior | TickerMovementSellBehavior
+
+export type IndicatorMovementBehavior = IndicatorMovementBuyBehavior | IndicatorMovementSellBehavior
+
+export type indicatorCompareBehavior = IndicatorCompareBuyBehavior | IndicatorCompareSellBehavior
 
 export type MovementBehavior = MovementBuyBehavior | MovementSellBehavior
 
