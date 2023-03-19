@@ -9,6 +9,7 @@ import TickerLabel from 'containers/traders/elements/TickerLabel'
 import VariationList from 'containers/traders/elements/VariationList'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import useShowMore from 'hooks/useShowMore'
 
 const isSearchedTicker = (
   ticker: interfaces.tickerModel.Identity,
@@ -24,6 +25,11 @@ const isSearchedTicker = (
 const TickerList = () => {
   const navigate = useNavigate()
 
+  const { displayedTotal, renderShowMoreButton } = useShowMore({
+    default: 100,
+    more: 100,
+  })
+
   const [selectedCategory, setSelectedCategory] = useState(0)
   const [searchText, setSearchText] = useState('')
 
@@ -35,6 +41,7 @@ const TickerList = () => {
     const matchSearch = isSearchedTicker(ticker, searchText)
     return matchCategory && matchSearch
   })
+  const displayedTickers = availableTickers.slice(0, displayedTotal)
 
   const categoryOptions = categories.map((category) => ({
     label: localeTool.t(category.name),
@@ -70,8 +77,8 @@ const TickerList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section className='flex flex-wrap'>
-          {availableTickers.map((ticker) => (
+        <section className='flex flex-wrap mb-6'>
+          {displayedTickers.map((ticker) => (
             <TickerLabel
               key={ticker.id}
               className='mx-2 my-1'
@@ -81,6 +88,7 @@ const TickerList = () => {
             />
           ))}
         </section>
+        {displayedTotal < availableTickers.length && renderShowMoreButton()}
       </section>
       <aside className='page-aside'>
         <h1 className='mb-4 font-bold'>
