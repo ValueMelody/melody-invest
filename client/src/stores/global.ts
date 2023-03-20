@@ -22,6 +22,7 @@ export interface GlobalState {
   accessExpiresIn: string;
   refreshToken: string;
   refreshExpiresIn: string;
+  acceptedDisclaimer: boolean;
   isLoading: boolean;
   messages: Message[];
 }
@@ -32,7 +33,7 @@ const refreshToken = storageAdapter.get(commonEnum.StorageKey.RefreshToken) || '
 const refreshExpiresIn = storageAdapter.get(commonEnum.StorageKey.RefreshExpiresIn) || ''
 
 const currentUTC = dateTool.getVerifyISO()
-const hasValidToken = refreshToken && refreshExpiresIn && refreshExpiresIn > currentUTC
+const hasValidToken = !!refreshToken && !!refreshExpiresIn && refreshExpiresIn > currentUTC
 if (hasValidToken) requestAdapter.setAuthToken(accessToken)
 
 const initialState: GlobalState = {
@@ -40,6 +41,7 @@ const initialState: GlobalState = {
   accessExpiresIn: hasValidToken ? accessExpiresIn : '',
   refreshToken: hasValidToken ? refreshToken : '',
   refreshExpiresIn: hasValidToken ? refreshExpiresIn : '',
+  acceptedDisclaimer: hasValidToken,
   isLoading: false,
   messages: [],
 }
@@ -50,6 +52,10 @@ const startLoading = (state: GlobalState) => {
 
 const stopLoading = (state: GlobalState) => {
   state.isLoading = false
+}
+
+const acceptDisclaimer = (state: GlobalState) => {
+  state.acceptedDisclaimer = true
 }
 
 const successWithMessage = (
@@ -96,6 +102,7 @@ const logout = (state: GlobalState) => {
   state.accessExpiresIn = ''
   state.refreshToken = ''
   state.refreshExpiresIn = ''
+  state.acceptedDisclaimer = false
 }
 
 const storeAccessToken = (
@@ -203,6 +210,7 @@ export const globalSlice = createSlice({
     builder.addCase(actions.createUserPayment.fulfilled, onCreatePayment)
     builder.addCase(actions.lockUserAccount.fulfilled, lockUserAccount)
     builder.addCase(actions.logout, logout)
+    builder.addCase(actions.acceptDisclaimer, acceptDisclaimer)
 
     builder.addCase(actions.createUserToken.pending, startLoading)
     builder.addCase(actions.createUserToken.fulfilled, onCreateUserToken)

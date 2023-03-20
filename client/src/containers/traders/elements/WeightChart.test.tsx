@@ -38,9 +38,9 @@ describe('#WeightChart', () => {
     expect(screen.queryByText('aaa desc')).toBeTruthy()
     expect(screen.queryByText('bbb desc')).toBeFalsy()
     expect(screen.queryByText('ccc desc')).toBeFalsy()
-    expect(screen.queryByText(`${localeTool.t('common.weight')}: 30.00%`)).toBeTruthy()
-    expect(screen.queryByText(`${localeTool.t('common.weight')}: 45.00%`)).toBeFalsy()
-    expect(screen.queryByText(`${localeTool.t('common.weight')}: 25.00%`)).toBeFalsy()
+    expect(screen.queryByText(`${localeTool.t('weightChart.weight')}: 30.00%`)).toBeTruthy()
+    expect(screen.queryByText(`${localeTool.t('weightChart.weight')}: 45.00%`)).toBeFalsy()
+    expect(screen.queryByText(`${localeTool.t('weightChart.weight')}: 25.00%`)).toBeFalsy()
 
     const charts = container.querySelectorAll('.recharts-pie-sector')
     expect(charts.length).toBe(3)
@@ -106,7 +106,7 @@ describe('#WeightChart', () => {
       />,
     )
 
-    const text = localeTool.t('common.weight')
+    const text = localeTool.t('weightChart.weight')
 
     expect(screen.queryByText('aaa label')).toBeTruthy()
     expect(screen.queryByText('aaa desc')).toBeTruthy()

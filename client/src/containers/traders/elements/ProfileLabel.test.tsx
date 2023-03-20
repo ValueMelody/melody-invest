@@ -29,7 +29,7 @@ describe('#ProfileLabel', () => {
     const container = screen.getByTestId('profileLabel')
     expect(container).toBeTruthy()
     expect(container.children[0].innerHTML).toBe(
-      `${parseTool.profileName(12)} - test env ${localeTool.t('common.env')}`,
+      `${parseTool.profileName(12)} - test env ${localeTool.t('entity.env')}`,
     )
   })
 

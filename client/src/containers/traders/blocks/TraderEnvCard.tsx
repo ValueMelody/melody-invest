@@ -50,7 +50,7 @@ const TraderEnvCard = ({
       <header className='flex justify-between'>
         <section>
           <h3 className='font-bold'>
-            {localeTool.t('common.env')}: {parseTool.traderEnvName(traderEnv)}
+            {localeTool.t('entity.env')}: {parseTool.traderEnvName(traderEnv)}
           </h3>
           <h5 className='text-sm italic'>
             {parseTool.traderEnvStartDate(traderEnv)}
@@ -61,7 +61,7 @@ const TraderEnvCard = ({
             color='gray'
             title={localeTool.t('traderEnv.systemDesc')}
           >
-            {localeTool.t('common.system')}
+            {localeTool.t('traderEnv.system')}
           </Badge>
         )}
         {(allowUnwatch || disabled) && (

@@ -25,14 +25,14 @@ describe('#ValueChangePanel', () => {
     expect(screen.getByTestId('valueChangeCharts')).toBeTruthy()
     expect(screen.getByTestId('valueChangePercents')).toBeTruthy()
 
-    const decadeText = localeTool.t('common.yearsTrends', { num: 3 })
+    const decadeText = localeTool.t('valueChange.yearsTrends', { num: 3 })
     const decadeButton = screen.getByText(decadeText)
 
     fireEvent.click(decadeButton)
     expect(onChange).toBeCalledTimes(1)
     expect(onChange).toBeCalledWith(0)
 
-    const yearText = localeTool.t('common.daysTrends', { num: 120 })
+    const yearText = localeTool.t('valueChange.daysTrends', { num: 120 })
     const yearButton = screen.getByText(yearText)
 
     fireEvent.click(yearButton)

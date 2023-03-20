@@ -39,17 +39,17 @@ const HoldingCard = ({
             className='mr-4 mb-2'
             color='indigo'
           >
-            {localeTool.t('common.date')}: {holding.date}
+            {localeTool.t('holdingCard.date')}: {holding.date}
           </Badge>
           {holding.totalValue !== null && (
             <h5 className='mr-4 mb-2'>
-              <b>{localeTool.t('common.totalValue')}:</b>&nbsp;
+              <b>{localeTool.t('holdingCard.totalValue')}:</b>&nbsp;
               {parseTool.holdingValue(holding.totalValue)}
             </h5>
           )}
           {holding.totalCash !== null && (
             <h5 className='mb-2'>
-              <b>{localeTool.t('common.cash')}:</b>&nbsp;
+              <b>{localeTool.t('holdingCard.cash')}:</b>&nbsp;
               {parseTool.holdingValue(holding.totalCash)}
             </h5>
           )}
@@ -59,14 +59,14 @@ const HoldingCard = ({
             <ValueDiffer
               data-testid='holdingDiffer'
               className='mr-4 mb-2'
-              title={localeTool.t('common.sinceLast')}
+              title={localeTool.t('holdingCard.sinceLast')}
               currentValue={holding.totalValue}
               compareValue={previousHolding.totalValue}
             />
           )}
           <ValueDiffer
             className='mb-2'
-            title={localeTool.t('common.sinceStart')}
+            title={localeTool.t('holdingCard.sinceStart')}
             currentValue={holding.totalValue}
             compareValue={initialValue}
           />

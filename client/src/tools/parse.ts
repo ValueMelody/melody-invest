@@ -13,7 +13,7 @@ export const dbPercent = (value: number | null): string => {
 }
 
 const patternFrequency = (value: number): string => {
-  if (value === 0) return localeTool.t('common.never')
+  if (value === 0) return localeTool.t('behavior.frequency.never')
   return localeTool.t('behavior.frequency.type', { num: value })
 }
 
@@ -77,7 +77,7 @@ export const traderEnvTickers = (
 export const profileName = (
   traderPatternId: number,
 ): string => {
-  return `${localeTool.t('common.profile')} #${traderPatternId}`
+  return `${localeTool.t('entity.profile')} #${traderPatternId}`
 }
 
 export const traderComboName = (

@@ -26,7 +26,7 @@ describe('#behaviorValue', () => {
     expect(parseTool.behaviorValue('tickerMaxPercent', 10)).toBe('10%')
     expect(parseTool.behaviorValue('tickerMaxPercent', 50)).toBe('50%')
     expect(parseTool.behaviorValue('tradeFrequency', null)).toBe('')
-    expect(parseTool.behaviorValue('tradeFrequency', 0)).toBe(localeTool.t('common.never'))
+    expect(parseTool.behaviorValue('tradeFrequency', 0)).toBe(localeTool.t('behavior.frequency.never'))
     expect(parseTool.behaviorValue('rebalanceFrequency', 10)).toBe(localeTool.t('behavior.frequency.type', { num: 10 }))
     expect(parseTool.behaviorValue('rebalanceFrequency', 50)).toBe(localeTool.t('behavior.frequency.type', { num: 50 }))
     expect(parseTool.behaviorValue('buyPreference', null)).toBe('')
@@ -129,8 +129,8 @@ describe('#traderEnvTickers', () => {
 
 describe('#profileName', () => {
   test('could parse profile name', () => {
-    expect(parseTool.profileName(1)).toBe(`${localeTool.t('common.profile')} #1`)
-    expect(parseTool.profileName(2)).toBe(`${localeTool.t('common.profile')} #2`)
+    expect(parseTool.profileName(1)).toBe(`${localeTool.t('entity.profile')} #1`)
+    expect(parseTool.profileName(2)).toBe(`${localeTool.t('entity.profile')} #2`)
   })
 })
 

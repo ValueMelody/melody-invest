@@ -5,6 +5,7 @@ import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import VariationList from 'containers/traders/elements/VariationList'
 import { useNavigate } from 'react-router-dom'
@@ -69,6 +70,7 @@ const TopProfiles = () => {
 
   return (
     <section className='page-root'>
+      <DisclaimerModal />
       <section className='page-main'>
         {focusedTop.traders.map((traderId) => (
           <TraderProfileCard

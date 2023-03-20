@@ -16,6 +16,7 @@ afterEach(() => {
 describe('#store', () => {
   test('get default', () => {
     expect(store.getState().global).toStrictEqual({
+      acceptedDisclaimer: false,
       accessToken: '',
       accessExpiresIn: '',
       refreshToken: '',

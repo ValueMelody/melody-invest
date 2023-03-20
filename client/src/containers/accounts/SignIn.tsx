@@ -77,7 +77,7 @@ const SignIn = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.email')}
+            title={localeTool.t('account.email')}
           />
           <TextInput
             className='account-right'
@@ -89,7 +89,7 @@ const SignIn = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.password')}
+            title={localeTool.t('account.password')}
           />
           <TextInput
             className='account-right'

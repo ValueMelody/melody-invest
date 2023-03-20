@@ -23,7 +23,7 @@ export const Env = Object.freeze({
 
 export const Plan = Object.freeze({
   Basic: {
-    Title: localeTool.t('common.basic'),
+    Title: localeTool.t('plan.basic'),
     Price: localeTool.t('pricing.basicPrice'),
     Services: [
       localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Basic.Profiles }),
@@ -31,7 +31,7 @@ export const Plan = Object.freeze({
     ],
   },
   Pro: {
-    Title: localeTool.t('common.pro'),
+    Title: localeTool.t('plan.pro'),
     Price: localeTool.t('pricing.planPrice', { num: constants.User.PlanPrice.Pro.OneMonthPrice }),
     Services: [
       localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Pro.Profiles }),
@@ -40,7 +40,7 @@ export const Plan = Object.freeze({
     ],
   },
   Premium: {
-    Title: localeTool.t('common.premium'),
+    Title: localeTool.t('plan.premium'),
     Price: localeTool.t('pricing.planPrice', { num: constants.User.PlanPrice.Premium.OneMonthPrice }),
     Services: [
       localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Premium.Profiles }),

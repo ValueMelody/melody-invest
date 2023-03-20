@@ -118,7 +118,7 @@ const PaymentModal = ({
         data-testid='upgradeBtn'
         onClick={handleOpenModal}
       >
-        {isBasicUser ? localeTool.t('common.upgrade') : localeTool.t('setting.extendMoreTime')}
+        {isBasicUser ? localeTool.t('setting.upgradePlan') : localeTool.t('setting.extendMoreTime')}
       </Button>
       <Modal
         data-testid='paymentModal'
@@ -257,7 +257,7 @@ const PaymentModal = ({
             color='gray'
             onClick={handleCloseModal}
           >
-            {localeTool.t('common.close')}
+            {localeTool.t('setting.closeBtn')}
           </Button>
         </Modal.Footer>
       </Modal>

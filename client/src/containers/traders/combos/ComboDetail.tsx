@@ -83,7 +83,7 @@ const ComboDetail = () => {
         <section className='page-main'>
           <PageTitle
             icon='performance'
-            title={localeTool.t('common.pastPerformance')}
+            title={localeTool.t('traderCombo.pastPerformance')}
           />
           <ValueChangePanel
             yearlyPercentNumber={matchedDetail.yearlyPercentNumber}

@@ -38,7 +38,7 @@ const HoldingShare = ({
               'text-red-600': shareDiffer < 0,
             })}
           >
-            {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('common.shares')}
+            {shareDiffer > 0 ? '+' : '-'} {Math.abs(shareDiffer)} {localeTool.t('holdingCard.shares')}
           </span>
         )}
         {!!previousDetail && !previousItem && (
@@ -46,7 +46,7 @@ const HoldingShare = ({
             color='success'
             className='ml-2'
           >
-            {localeTool.t('common.new')}
+            {localeTool.t('holdingShare.new')}
           </Badge>
         )}
       </div>

@@ -55,7 +55,7 @@ describe('#traderComboCard', () => {
     expect(screen.getByText(parseTool.traderEnvStartDate(traderEnv))).toBeTruthy()
     expect(screen.queryByText('System')).toBeFalsy()
     expect(screen.queryByText('Trade based on selected 5 stocks')).toBeTruthy()
-    expect(screen.queryByText('Trade based on all stocks available')).toBeFalsy()
+    expect(screen.queryByText(localeTool.t('traderEnv.allTickers') as string)).toBeFalsy()
     expect(container.className).not.toContain('card-active')
 
     const watchButton = screen.queryByTestId('watchButton')
@@ -77,7 +77,7 @@ describe('#traderComboCard', () => {
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
     expect(screen.getByText('System')).toBeTruthy()
-    expect(screen.getByText('Trade based on all stocks available')).toBeTruthy()
+    expect(screen.getByText(localeTool.t('traderEnv.allTickers') as string)).toBeTruthy()
   })
 
   test('could render as active', () => {

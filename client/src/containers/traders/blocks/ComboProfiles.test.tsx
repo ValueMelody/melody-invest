@@ -53,12 +53,12 @@ describe('#ComboProfiles', () => {
       />,
     )
 
-    const profile1Name = `${localeTool.t('common.profile')} #1`
-    const profile2Name = `${localeTool.t('common.profile')} #2`
+    const profile1Name = `${localeTool.t('entity.profile')} #1`
+    const profile2Name = `${localeTool.t('entity.profile')} #2`
     expect(screen.queryByText(profile1Name)).toBeFalsy()
     expect(screen.queryByText(profile2Name)).toBeTruthy()
 
-    const profile2Env = `profile env 2 ${localeTool.t('common.env')}`
+    const profile2Env = `profile env 2 ${localeTool.t('entity.env')}`
     expect(screen.queryByText(profile2Env)).toBeTruthy()
     const btn = screen.getByTestId('traderProfileCard')
     fireEvent.click(btn)
@@ -90,12 +90,12 @@ describe('#ComboProfiles', () => {
       />,
     )
 
-    const profile1Name = `${localeTool.t('common.profile')} #1`
-    const profile2Name = `${localeTool.t('common.profile')} #2`
+    const profile1Name = `${localeTool.t('entity.profile')} #1`
+    const profile2Name = `${localeTool.t('entity.profile')} #2`
     expect(screen.queryByText(profile1Name)).toBeTruthy()
     expect(screen.queryByText(profile2Name)).toBeFalsy()
 
-    const profile2Env = `profile env 2 ${localeTool.t('common.env')}`
+    const profile2Env = `profile env 2 ${localeTool.t('entity.env')}`
     expect(screen.queryByText(profile2Env)).toBeFalsy()
   })
 })

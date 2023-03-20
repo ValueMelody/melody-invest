@@ -144,7 +144,7 @@ const Header = () => {
               onClick={handleCloseSideBar}
             >
               <ArrowLeftIcon className='icon-size mr-2' />
-              {localeTool.t('common.close')}
+              {localeTool.t('header.close')}
             </Button>
           </div>
           <Sidebar.Items>

@@ -5,6 +5,7 @@ import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
 import { ChangeEvent, useState } from 'react'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { TextInput } from 'flowbite-react'
 import VariationList from 'containers/traders/elements/VariationList'
@@ -72,12 +73,13 @@ const BehaviorList = () => {
 
   return (
     <section className='page-root'>
+      <DisclaimerModal />
       <section className='page-main'>
         <header className='mb-4'>
           <TextInput
             data-testid='search'
             icon={MagnifyingGlassIcon}
-            placeholder={localeTool.t('common.search')}
+            placeholder={localeTool.t('resource.search')}
             value={searchText}
             onChange={handleChangeSearchText}
           />

@@ -7,6 +7,7 @@ import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useEffect, useState } from 'react'
 import ComboProfiles from 'containers/traders/blocks/ComboProfiles'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import PageTitle from 'containers/elements/PageTitle'
 import ProfileValue from 'containers/traders/elements/ProfileValue'
@@ -64,6 +65,7 @@ const TopCombos = () => {
       data-testid='topCombos'
       className='detail-root'
     >
+      <DisclaimerModal />
       <header className='detail-header'>
         <section className='flex'>
           {systemCombos.map((combo) => (
@@ -85,7 +87,7 @@ const TopCombos = () => {
           <PageTitle
             className='mb-4'
             icon='performance'
-            title={localeTool.t('common.pastPerformance')}
+            title={localeTool.t('traderCombo.pastPerformance')}
           />
           <ValueChangePanel
             className='mb-4'

@@ -31,7 +31,7 @@ const ValueDiffer = ({
       <Badge
         color={isPositive ? 'success' : 'failure'}
         icon={isPositive ? ArrowTrendingUpIcon : ArrowTrendingDownIcon}
-        title={localeTool.t(isPositive ? 'profile.value.increased' : 'profile.value.decreased')}
+        title={localeTool.t(isPositive ? 'profile.valueIncreased' : 'profile.valueDecreased')}
       >
         {parseTool.floatToPercent(differ)}
       </Badge>
