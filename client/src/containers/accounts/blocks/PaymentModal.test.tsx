@@ -9,7 +9,7 @@ describe('#PaymentModal', () => {
 
     expect(screen.queryByTestId('paymentModal')).not.toBeInTheDocument()
     const upgradeBtn = screen.getByTestId('upgradeBtn')
-    expect(upgradeBtn.innerHTML).toContain(localeTool.t('common.upgrade'))
+    expect(upgradeBtn.innerHTML).toContain(localeTool.t('setting.upgradePlan'))
 
     fireEvent.click(upgradeBtn)
     expect(screen.queryByTestId('paymentModal')).toBeInTheDocument()

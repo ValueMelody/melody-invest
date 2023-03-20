@@ -47,7 +47,7 @@ const Forgot = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.email')}
+            title={localeTool.t('account.email')}
           />
           <TextInput
             className='account-right'

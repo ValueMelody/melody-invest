@@ -6,6 +6,7 @@ import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import PageTitle from 'containers/elements/PageTitle'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
@@ -56,6 +57,7 @@ const ProfileDetail = () => {
 
   return (
     <section className='detail-root'>
+      <DisclaimerModal />
       <header className='detail-header'>
         <TraderProfileCard
           className='w-full'
@@ -90,7 +92,7 @@ const ProfileDetail = () => {
         </section>
         <aside className='page-aside'>
           <PageTitle
-            title={localeTool.t('common.environments')}
+            title={localeTool.t('profile.environments')}
             className='my-4'
           />
           {profileEnvs.map((profileEnv) => (

@@ -125,7 +125,7 @@ const TraderProfileCard = ({
               }
             >
               <CodeBracketIcon className='icon-size mr-2' />
-              {localeTool.t('common.fork')}
+              {localeTool.t('profile.fork')}
             </Button>
           </section>
         )}

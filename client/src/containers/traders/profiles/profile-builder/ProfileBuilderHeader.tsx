@@ -21,7 +21,7 @@ const ProfileBuilderHeader = ({
         {title}
       </h3>
       <h5 className='mr-4'>
-        {localeTool.t('common.numSelected', { num: activeCount })}
+        {localeTool.t('profileBuilder.numSelected', { num: activeCount })}
       </h5>
       {isValid && <CheckIcon
         color='green'

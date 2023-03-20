@@ -25,7 +25,7 @@ const ValueChangePercents = ({
   if (!hasValue) {
     return (
       <Alert color='info'>
-        {localeTool.t('common.noResultYet')}
+        {localeTool.t('valueChange.noResultYet')}
       </Alert>
     )
   }

@@ -34,7 +34,7 @@ describe('#HoldingShare', () => {
     expect(container.innerHTML).toContain(tickerIdentity.symbol)
     expect(container.innerHTML).toContain('20.00%')
 
-    const newText = localeTool.t('common.new')
+    const newText = localeTool.t('holdingShare.new')
     expect(screen.queryByText(newText)).toBeFalsy()
   })
 
@@ -63,7 +63,7 @@ describe('#HoldingShare', () => {
         tickerIdentity={tickerIdentity}
       />,
     )
-    const newText = localeTool.t('common.new')
+    const newText = localeTool.t('holdingShare.new')
     expect(screen.queryByText(newText)).toBeTruthy()
   })
 
@@ -91,7 +91,7 @@ describe('#HoldingShare', () => {
     expect(differ?.className).toContain('text-green-600')
     expect(differ?.innerHTML).toContain('+ 50')
 
-    const newText = localeTool.t('common.new')
+    const newText = localeTool.t('holdingShare.new')
     expect(screen.queryByText(newText)).toBeFalsy()
   })
 
@@ -119,7 +119,7 @@ describe('#HoldingShare', () => {
     expect(differ?.className).toContain('text-red-600')
     expect(differ?.innerHTML).toContain('- 100')
 
-    const newText = localeTool.t('common.new')
+    const newText = localeTool.t('holdingShare.new')
     expect(screen.queryByText(newText)).toBeFalsy()
   })
 })

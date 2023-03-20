@@ -37,17 +37,17 @@ const UnwatchEnvButton = ({
   return (
     <>
       <ConfirmModal
-        title={localeTool.t('unwatchEnv.title')}
+        title={localeTool.t('unwatchEnvModal.title')}
         isOpen={isDeleting}
         onClose={handleCancelUnwatch}
       >
-        <h4>{localeTool.t('unwatchEnv.desc')}</h4>
+        <h4>{localeTool.t('unwatchEnvModal.desc')}</h4>
         <Button
           data-testid='confirmUnwatchBtn'
           onClick={handleConfirmUnwatch}
           className='mt-2'
         >
-          {localeTool.t('common.confirm')}
+          {localeTool.t('unwatchEnvModal.confirm')}
         </Button>
       </ConfirmModal>
       <WatchButton

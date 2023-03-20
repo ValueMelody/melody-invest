@@ -19,7 +19,7 @@ describe('#ValueChangeCharts', () => {
     const area = container.querySelector('.recharts-area-area')
     expect(area?.getAttribute('points')?.split(',').length).toBe(7)
 
-    const decadeText = localeTool.t('common.yearsTrends', { num: 6 })
+    const decadeText = localeTool.t('valueChange.yearsTrends', { num: 6 })
     const decadeButton = screen.getByText(decadeText)
     expect(decadeButton.parentElement?.classList).toContain('bg-blue-700')
 
@@ -27,7 +27,7 @@ describe('#ValueChangeCharts', () => {
     expect(onChange).toBeCalledTimes(1)
     expect(onChange).toBeCalledWith(0)
 
-    const yearText = localeTool.t('common.daysTrends', { num: 150 })
+    const yearText = localeTool.t('valueChange.daysTrends', { num: 150 })
     const yearButton = screen.getByText(yearText)
     expect(yearButton.parentElement?.classList).not.toContain('bg-blue-700')
 
@@ -50,10 +50,10 @@ describe('#ValueChangeCharts', () => {
     const area = container.querySelector('.recharts-area-area')
     expect(area?.getAttribute('points')?.split(',').length).toBe(6)
 
-    const decadeText = localeTool.t('common.yearsTrends', { num: 6 })
+    const decadeText = localeTool.t('valueChange.yearsTrends', { num: 6 })
     const decadeButton = screen.getByText(decadeText)
     expect(decadeButton.parentElement?.classList).not.toContain('bg-blue-700')
-    const yearText = localeTool.t('common.daysTrends', { num: 150 })
+    const yearText = localeTool.t('valueChange.daysTrends', { num: 150 })
     const yearButton = screen.getByText(yearText)
     expect(yearButton.parentElement?.classList).toContain('bg-blue-700')
   })

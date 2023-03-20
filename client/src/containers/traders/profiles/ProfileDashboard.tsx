@@ -67,7 +67,7 @@ const ProfileDashboard = () => {
             data-testid='addProfileBtn'
             onClick={handleClickAddProfile}
             disabled={!user.access.canFollowTrader}
-            title={localeTool.t('common.new')}
+            title={localeTool.t('dashboard.newBtn')}
             tooltip={
               user.access.canFollowTrader
                 ? localeTool.t('dashboard.newProfileDesc')
@@ -109,7 +109,7 @@ const ProfileDashboard = () => {
           data-testid='addEnvBtn'
           onClick={handleClickAddEnv}
           disabled={!user.access.canFollowEnv}
-          title={localeTool.t('common.new')}
+          title={localeTool.t('dashboard.newBtn')}
           tooltip={
             user.access.canFollowEnv
               ? localeTool.t('dashboard.newEnvDesc')
@@ -141,7 +141,7 @@ const ProfileDashboard = () => {
           data-testid='addComboBtn'
           onClick={handleClickAddCombo}
           disabled={!user.access.canFollowCombo}
-          title={localeTool.t('common.new')}
+          title={localeTool.t('dashboard.newBtn')}
           tooltip={
             user.access.canFollowCombo
               ? localeTool.t('dashboard.newComboDesc')

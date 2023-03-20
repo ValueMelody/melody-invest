@@ -79,7 +79,7 @@ export const updateUserPassword = createAsyncThunk(
         currentPassword, newPassword,
       })
       return {
-        msg: localeTool.t('common.passwordUpdated'),
+        msg: localeTool.t('account.passwordUpdated'),
       }
     } catch (e) {
       return rejectWithValue(e)
@@ -122,7 +122,7 @@ export const resetUserPassword = createAsyncThunk(
         email, password, resetCode,
       })
       return {
-        msg: localeTool.t('common.passwordUpdated'),
+        msg: localeTool.t('account.passwordUpdated'),
       }
     } catch (e) {
       return rejectWithValue(e)

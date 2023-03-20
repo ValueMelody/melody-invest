@@ -56,17 +56,17 @@ const Home = () => {
         </section>
         <section className='flex flex-wrap  max-lg:justify-center'>
           <Section
-            title={localeTool.t('common.traderEnv')}
+            title={localeTool.t('entity.traderEnv')}
             desc={localeTool.t('home.traderEnvDefine')}
             Icon={BookmarkIcon}
           />
           <Section
-            title={localeTool.t('common.traderProfile')}
+            title={localeTool.t('entity.traderProfile')}
             desc={localeTool.t('home.traderProfileInit')}
             Icon={StarIcon}
           />
           <Section
-            title={localeTool.t('common.traderCombo')}
+            title={localeTool.t('entity.traderCombo')}
             desc={localeTool.t('home.traderPerformanceCombo')}
             Icon={PuzzlePieceIcon}
           />

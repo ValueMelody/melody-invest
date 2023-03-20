@@ -23,7 +23,7 @@ const ProfileLabel = ({
       data-testid='profileLabel'
     >
       {
-        parseTool.profileName(trader.traderPatternId)} - {envName} {localeTool.t('common.env')
+        parseTool.profileName(trader.traderPatternId)} - {envName} {localeTool.t('entity.env')
       }
     </Badge>
   )

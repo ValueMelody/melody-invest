@@ -29,7 +29,7 @@ describe('#ValueDiffer', () => {
     expect(screen.getByText('50.00%')).toBeTruthy()
     expect(container.children[1]?.classList).toContain('bg-green-100')
     expect(container.children[1]?.classList).not.toContain('bg-red-100')
-    expect(container.children[1]?.getAttribute('title')).toBe(localeTool.t('profile.value.increased'))
+    expect(container.children[1]?.getAttribute('title')).toBe(localeTool.t('profile.valueIncreased'))
   })
 
   test('could render positive differ', () => {
@@ -46,6 +46,6 @@ describe('#ValueDiffer', () => {
     expect(screen.getByText('-33.33%')).toBeTruthy()
     expect(container.children[0]?.classList).toContain('bg-red-100')
     expect(container.children[0]?.classList).not.toContain('bg-green-100')
-    expect(container.children[0]?.getAttribute('title')).toBe(localeTool.t('profile.value.decreased'))
+    expect(container.children[0]?.getAttribute('title')).toBe(localeTool.t('profile.valueDecreased'))
   })
 })

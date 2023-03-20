@@ -1,56 +1,44 @@
 {
   "translation": {
-    "unwatchEnv.title": "Unwatch this environment",
-    "unwatchEnv.desc": "Unwatch this environment will automatically unwatch all the trader profiles you followed from this environment as well. Do you want to continue?",
+    "unwatchEnvModal.title": "Unwatch this environment",
+    "unwatchEnvModal.desc": "Unwatch this environment will automatically unwatch all the trader profiles you followed from this environment as well. Do you want to continue?",
+    "unwatchEnvModal.confirm": "Confirm",
 
-    "common.profile": "Profile",
-    "common.date": "Date",
-    "common.cash": "Cash",
-    "common.totalValue": "Total Value",
-    "common.shares": "shares",
-    "common.email": "Email",
-    "common.password": "Password",
-    "common.retypePassword": "Retype Password",
-    "common.currentPassword": "Current Password",
-    "common.newPassword": "New Password",
-    "common.watch": "Watch",
-    "common.unwatch": "Unwatch",
-    "common.new": "New",
-    "common.numSelected": "{{num}} selected",
-    "common.environments": "Environments",
-    "common.selectEnvironment": "Select an Environment",
-    "common.env": "Env",
-    "common.weight": "Weight",
-    "common.combo": "Combo",
-    "common.system": "System",
-    "common.search": "Search",
-    "common.never": "Never",
-    "common.confirm": "Confirm",
-    "common.confirmAndWatch": "Confirm and Start Watch",
-    "common.showMoreHistory": "Show More History",
-    "common.sinceLast": "Since last",
-    "common.sinceStart": "Since start",
-    "common.daysTrends": "{{num}} Days Trends",
-    "common.yearsTrends": "{{num}} Years Trends",
-    "common.noResultYet": "There's no result generated yet",
-    "common.backToLogin": "Back to sign in",
-    "common.passwordUpdated": "Password Updated!",
-    "common.contactUs": "Contact",
-    "common.pricing": "Pricing",
-    "common.signUp": "Sign Up",
-    "common.basic": "Basic",
-    "common.pro": "Pro",
-    "common.premium": "Premium",
-    "common.plan": "Plan",
-    "common.upgrade": "Upgrade",
-    "common.close": "Close",
-    "common.select": "Select",
-    "common.fork": "Fork",
-    "common.pastPerformance": "Past Performance",
-    "common.traderEnv": "Trader Env",
-    "common.traderProfile": "Trader Profile",
-    "common.traderCombo": "Trader Combo",
-    "common.disclaimer": "Disclaimer",
+    "watchButton.watch": "Watch",
+    "watchButton.unwatch": "Unwatch",
+
+    "confirmModal.close": "Close",
+
+    "header.close": "Close",
+
+    "showMore.button": "Show More",
+
+    "resource.search": "Search",
+
+    "entity.env": "Env",
+    "entity.profile": "Profile",
+    "entity.combo": "Combo",
+    "entity.traderEnv": "Trader Env",
+    "entity.traderProfile": "Trader Profile",
+    "entity.traderCombo": "Trader Combo",
+
+    "weightChart.weight": "Weight",
+
+    "footer.contactUs": "Contact",
+    "footer.pricing": "Pricing",
+
+    "account.email": "Email",
+    "account.password": "Password",
+    "account.retypePassword": "Retype Password",
+    "account.passwordUpdated": "Password Updated!",
+    "account.newPassword": "New Password",
+
+    "plan.title": "Plan",
+    "plan.basic": "Basic",
+    "plan.pro": "Pro",
+    "plan.premium": "Premium",
+
+    "builder.confirmAndWatch": "Confirm and Start Watch",
 
     "state.CA": "Canada",
     "state.Other": "Other",
@@ -69,10 +57,12 @@
     "province.CA.SK": "Saskatchewan",
     "province.CA.YT": "Yukon",
 
+    "page.disclaimer": "Disclaimer",
     "page.privacyPolicy": "Privacy Policy",
     "page.termsPolicy": "Terms and Conditions",
-    "page.disclaimer": "Disclaimer: The information provided on this website is for general informational purposes only. We want to make it clear that the results provided on this website are subject to change and should be considered as preliminary findings based on the available data and conditions. We make every effort to ensure that the information on this website is accurate and up-to-date, but we cannot guarantee its completeness or accuracy, and the results could be biased due to survivorship bias. Therefore, any reliance you place on the information provided on this website is strictly at your own risk, and we encourage you to seek professional advice for any important decisions.",
     "page.maintaining": "We are maintaining at this moment, will be back as soon as we can.",
+
+    "content.disclaimer": "<p><b>Any information contained on this website is provided for general informational, educational, and entertainment purposes only and does not constitute investment advice.</b></p><br /><p>We want to make it clear that any information provided on this website is unreliable and subject to change for the following reasons:</p><br /><ul><li>• We make every effort to ensure that the information on this website is accurate, but we cannot guarantee its completeness or accuracy.</li><li>• We are not able to accurately reflect complex situations such as stock splits, reverse splits, dividends, transaction fees, delisting, bankruptcies, etc.</li><li>• We just run simulate programs based on certain rule, so we cannot verify the real operability of each trading strategy.</li><li>• Some of the provided stocks on this website are proved successful ones, so the results could be biased due to survivorship bias. Applying a similar strategy to other stocks may not achieve the same results.</li><li>• We cannot predict the future, and past performance is not an indicative of future results.</li><li>We may regenerate our data after introducing new stocks, new behaviors, or updating calculation logic behind the scenes, resulting in completely different outcomes. A successful strategy might turn out to be a failure.</li><li>• There could be programming bugs which may significantly distort the accuracy of the data we provide.</li></ul><br /><p>Therefore, any reliance you place on the information provided on this website is strictly at your own risk, and we encourage you to seek professional advice for any important decisions.</p><br /><p><b>You must read, understand and accept this disclaimer before using our website. We will not accept liability for any loss or damage, including without limitation any loss of profit, which may arise directly or indirectly from the use of or reliance on such information.</b></p>",
 
     "error.password.requireSame": "Retype password doesn't match password!",
     "error.password.requireMin": "Password must include minimum {{num}} characters!",
@@ -82,6 +72,9 @@
     "error.guest": "Please sign in first!",
     "error.500": "Something went wrong, please try again later",
     "error.401": "Authentication expired, please sign in again",
+
+    "disclaimerModal.confirmBtn": "I have read, understand, and accept this disclaimer",
+    "disclaimerModal.cancelBtn": "I do not accept",
 
     "home.header": "Evolutionary Approach for Trading Strategy",
     "home.traderEnvDefine": "Customize your trading conditions based on stocks and date",
@@ -110,7 +103,11 @@
     "permission.limited": "Unaccessible due to plan limit, check your account page for details",
 
     "setting.changePassword": "Change Password",
+    "setting.currentPassword": "Current Password",
     "setting.signOut": "Sign Out",
+    "setting.confirm": "Confirm",
+    "setting.closeBtn": "Close",
+    "setting.upgradePlan": "Upgrade",
     "setting.accountType": "Account Type",
     "setting.accountInfo": "Account Info",
     "setting.accountCredential": "Account Credential",
@@ -132,11 +129,13 @@
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",
     "reset.emailSent": "We will send a password reset email to you soon.",
+    "reset.backBtn": "Back to sign in",
 
     "signUp.title": "Create an account",
     "signUp.terms": "Please note that by accessing and using valuemelody.com, you are deemed to have read, understood, and agreed to be bound by the terms and conditions, privacy policy, and disclaimer governing the use of this website.",
     "signUp.toSignIn": "Already have an account?",
     "signUp.success": "Success! We will send a verification email to you soon.",
+    "signUp.button": "Sign Up",
 
     "signIn.remember": "Remember for one month",
     "signIn.button": "Sign In",
@@ -150,6 +149,7 @@
     "forgot.button": "Send Reset Email",
 
     "dashboard.title": "Dashboard",
+    "dashboard.newBtn": "New",
     "dashboard.emptyProfiles": "No profile yet.",
     "dashboard.watchedProfiles": "Watched Profiles",
     "dashboard.watchedEnvs": "Watched Environments",
@@ -170,6 +170,15 @@
     "ticker.delisted": "Delisted",
     "tickerList.categories": "Stock Categories",
 
+    "holdingCard.date": "Date",
+    "holdingCard.cash": "Cash",
+    "holdingCard.shares": "shares",
+    "holdingCard.sinceLast": "Since last",
+    "holdingCard.sinceStart": "Since start",
+    "holdingCard.totalValue": "Total Value",
+
+    "holdingShare.new": "New",
+
     "tickerCategory.all": "All",
     "tickerCategory.tech": "Technology",
     "tickerCategory.consumerCyclical": "Consumer Cyclical",
@@ -184,7 +193,7 @@
     "tickerCategory.realEstate": "Real Estate",
     "tickerCategory.etf": "ETF",
 
-    "tradeBehaviors.title": "Available Behaviors",
+    "tradeBehaviors.title": "Provided Behaviors",
     "tradeBehaviors.type": "Type of Trade Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
@@ -198,14 +207,17 @@
     "bestReturn.pastMonthTitle": "Best Return in 30 days",
     "bestReturn.pastWeekTitle": "Best Return in 7 days",
 
+    "profile.fork": "Fork",
+    "profile.environments": "Environments",
     "profile.estimatedAt": "Data refreshed at: {{date}}",
     "profile.history": "Holding History",
     "profile.showAllHoldings": "Show All Holdings",
     "profile.noResultYet": "There's no result generated for this profile yet",
-    "profile.value.increased": "Total value increased compare to previous",
-    "profile.value.decreased": "Total value decreased compare to previous",
+    "profile.valueIncreased": "Total value increased compare to previous",
+    "profile.valueDecreased": "Total value decreased compare to previous",
 
     "profileBuilder.title": "Profile Builder",
+    "profileBuilder.numSelected": "{{num}} selected",
     "profileBuilder.selectBehaviors": "Select trading behaviors for your profile",
     "profileBuilder.requireOne": "Please config one or multiple of the following behaviors",
     "profileBuilder.requireAll": "Please config all of the following behaviors",
@@ -217,6 +229,7 @@
     "profileBuilder.notSet": "Do not set",
     "profileBuilder.fork": "Build a new profile by using this profile as a template",
     "profileBuilder.duplicatedProfile": "You have another profile use the same setup.",
+    "profileBuilder.selectEnvironment": "Select an Environment",
 
     "comboBuilder.title": "Combo Builder",
     "comboBuilder.name": "Combo Name",
@@ -226,6 +239,7 @@
     "comboBuilder.duplicatedName": "You have another combo use the same name.",
     "comboBuilder.duplicatedCombo": "You have another combo use the same setup.",
 
+    "traderCombo.pastPerformance": "Past Performance",
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
     "traderCombo.history": "Holding History",
     "traderCombo.noResultYet": "There's no result generated for this combo yet",
@@ -242,8 +256,9 @@
     "envBuilder.duplicatedName": "You have another environment use the same name.",
     "envBuilder.duplicatedEnv": "You have another environment use the same setup.",
 
+    "traderEnv.system": "System",
     "traderEnv.startAt": "Start from {{date}}",
-    "traderEnv.allTickers": "Trade based on all stocks available",
+    "traderEnv.allTickers": "Trade based on all stocks provided",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet, please check later",
@@ -251,10 +266,13 @@
     "traderEnv.2001" : "Default 2001",
     "traderEnv.2011" : "Default 2011",
 
-    "availableTickers.title": "Available Stocks",
+    "availableTickers.title": "Provided Stocks",
     "availableTickers.topProfiles": "Top Profiles currently holds this stock from {{name}} Environment",
 
     "valueChange.emptyYears": "No enough data for yearly trends",
+    "valueChange.noResultYet": "There's no result generated yet",
+    "valueChange.daysTrends": "{{num}} Days Trends",
+    "valueChange.yearsTrends": "{{num}} Years Trends",
 
     "gain.yearly": "Annual",
     "gain.pastYear": "360 days",
@@ -508,6 +526,7 @@
     "behaviorDesc.gdpQuarterlyYoYChangeBelowSell": "The threshold for how much US GDP must change below the expected percent compared to the same quarter of last year before triggering a sell decision",
 
     "behavior.frequency.type": "Every {{num}} Day(s)",
+    "behavior.frequency.never": "Never",
 
     "behavior.preference.type.1": "Higher share price",
     "behavior.preference.type.2": "Lower share price",

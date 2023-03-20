@@ -33,7 +33,7 @@ const ActiveShape = ({
   value: number;
 }) => {
   const weight = payload.value
-    ? `${localeTool.t('common.weight')}: ${parseTool.floatToPercent(percent)}`
+    ? `${localeTool.t('weightChart.weight')}: ${parseTool.floatToPercent(percent)}`
     : ''
 
   return (

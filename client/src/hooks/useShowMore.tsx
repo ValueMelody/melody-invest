@@ -2,12 +2,10 @@ import * as localeTool from 'tools/locale'
 import { Button } from 'flowbite-react'
 import { useState } from 'react'
 
-interface ShowMoreProps {
+const useShowMore = (props?: {
   default: number;
   more: number;
-}
-
-const useShowMore = (props?: ShowMoreProps) => {
+}) => {
   const [displayedTotal, setDisplayedTotal] = useState(props?.default || 5)
 
   const handleClickShowMore = () => {
@@ -21,7 +19,7 @@ const useShowMore = (props?: ShowMoreProps) => {
         data-testid='showMore'
         onClick={handleClickShowMore}
       >
-        {localeTool.t('common.showMoreHistory')}
+        {localeTool.t('showMore.button')}
       </Button>
     </div>
   )

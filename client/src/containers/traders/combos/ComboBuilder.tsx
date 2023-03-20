@@ -145,7 +145,7 @@ const ComboBuilder = () => {
             type='submit'
             disabled={!hasValidName || !hasValidTraders || hasDuplicatedName || hasDuplicatedCombo}
           >
-            {localeTool.t('common.confirmAndWatch')}
+            {localeTool.t('builder.confirmAndWatch')}
           </Button>
         </footer>
       </form>

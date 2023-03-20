@@ -5,6 +5,7 @@ import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
@@ -55,6 +56,7 @@ const TickerDetail = () => {
       data-testid='detail-root'
       className='detail-root'
     >
+      <DisclaimerModal />
       <header className='detail-header'>
         <section className='flex'>
           <TickerLabel

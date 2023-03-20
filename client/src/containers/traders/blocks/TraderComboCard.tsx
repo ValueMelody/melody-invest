@@ -65,7 +65,7 @@ const TraderComboCard = ({
           className='font-bold'
           data-testid='traderComboCardName'
         >
-          {localeTool.t('common.combo')}: {parseTool.traderComboName(traderCombo)}
+          {localeTool.t('entity.combo')}: {parseTool.traderComboName(traderCombo)}
         </h3>
         {(allowUnwatch || disabled) && (
           <WatchButton

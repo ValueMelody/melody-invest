@@ -3,6 +3,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { ChangeEvent, useState } from 'react'
+import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { TextInput } from 'flowbite-react'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
@@ -67,12 +68,13 @@ const TickerList = () => {
 
   return (
     <section className='page-root'>
+      <DisclaimerModal />
       <section className='page-main'>
         <header className='mb-4'>
           <TextInput
             data-testid='search'
             icon={MagnifyingGlassIcon}
-            placeholder={localeTool.t('common.search')}
+            placeholder={localeTool.t('resource.search')}
             value={searchText}
             onChange={handleChangeSearchText}
           />

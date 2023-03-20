@@ -97,7 +97,7 @@ const SignUp = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.email')}
+            title={localeTool.t('account.email')}
           />
           <TextInput
             className='account-right'
@@ -110,7 +110,7 @@ const SignUp = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.password')}
+            title={localeTool.t('account.password')}
           />
           <TextInput
             className='account-right'
@@ -123,7 +123,7 @@ const SignUp = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.retypePassword')}
+            title={localeTool.t('account.retypePassword')}
           />
           <TextInput
             className='account-right'
@@ -149,12 +149,15 @@ const SignUp = () => {
             value={privacyPolicy?.content}
           />
         </section>
-        <section className='account-row'>
-          <Textarea
-            className='h-60'
-            disabled
-            value={String(localeTool.t('page.disclaimer'))}
-          />
+        <section className='account-row justify-center'>
+          <section className='flex flex-col w-96'>
+            <h2 className='font-bold mb-4'>
+              {localeTool.t('page.disclaimer')}
+            </h2>
+            <section
+              dangerouslySetInnerHTML={{ __html: localeTool.t('content.disclaimer') }}
+            />
+          </section>
         </section>
         <div className='flex justify-center items-center mb-4'>
           <Checkbox
@@ -173,7 +176,7 @@ const SignUp = () => {
             type='submit'
             disabled={!email || !password || !retypePassword || !isConfirmed}
           >
-            {localeTool.t('common.signUp')}
+            {localeTool.t('signUp.button')}
           </Button>
         </div>
       </form>

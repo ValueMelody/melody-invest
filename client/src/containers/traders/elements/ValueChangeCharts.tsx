@@ -54,7 +54,7 @@ const ValueChangeCharts = ({
           {
             decadeTrends.length < 1
               ? localeTool.t('valueChange.emptyYears')
-              : localeTool.t('common.yearsTrends', { num: decadeTrends.length - 1 })
+              : localeTool.t('valueChange.yearsTrends', { num: decadeTrends.length - 1 })
           }
         </Button>
         <Button
@@ -63,7 +63,7 @@ const ValueChangeCharts = ({
           onClick={handleClickYearChart}
           color={!isDecadeChart ? undefined : 'gray'}
         >
-          {localeTool.t('common.daysTrends', { num: 30 * (yearTrends.length - 1) })}
+          {localeTool.t('valueChange.daysTrends', { num: 30 * (yearTrends.length - 1) })}
         </Button>
       </Button.Group>
     </section>

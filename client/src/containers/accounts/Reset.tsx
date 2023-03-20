@@ -85,7 +85,7 @@ const Reset = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.email')}
+            title={localeTool.t('account.email')}
           />
           <TextInput
             className='account-right'
@@ -97,7 +97,7 @@ const Reset = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.newPassword')}
+            title={localeTool.t('account.newPassword')}
           />
           <TextInput
             className='account-right'
@@ -109,7 +109,7 @@ const Reset = () => {
         <section className='account-row'>
           <RequiredLabel
             className='account-left'
-            title={localeTool.t('common.retypePassword')}
+            title={localeTool.t('account.retypePassword')}
           />
           <TextInput
             className='account-right'
@@ -131,7 +131,7 @@ const Reset = () => {
       <footer className='account-footer'>
         <GoToButton
           data-testid='loginButton'
-          title={localeTool.t('common.backToLogin')}
+          title={localeTool.t('reset.backBtn')}
           onClick={handleClickSignIn}
         />
       </footer>

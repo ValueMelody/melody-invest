@@ -35,7 +35,7 @@ const ConfirmModal = ({
           color='gray'
           onClick={handleCloseModal}
         >
-          {localeTool.t('common.close')}
+          {localeTool.t('confirmModal.close')}
         </Button>
       </Modal.Footer>
     </Modal>

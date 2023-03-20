@@ -6,6 +6,8 @@ import { createAction, createAsyncThunk } from '@reduxjs/toolkit'
 
 export const logout = createAction('general/logout')
 
+export const acceptDisclaimer = createAction('general/acceptDisclaimer')
+
 export const refreshAccessToken = createAsyncThunk(
   'general/refreshAccessToken',
   async (params, { rejectWithValue, getState }) => {

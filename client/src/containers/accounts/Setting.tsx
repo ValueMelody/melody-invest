@@ -114,7 +114,7 @@ const Setting = () => {
           onClick={handleConfirmLock}
           className='mt-4'
         >
-          {localeTool.t('common.confirm')}
+          {localeTool.t('setting.confirm')}
         </Button>
       </ConfirmModal>
       <section className='flex flex-wrap w-full'>
@@ -123,7 +123,7 @@ const Setting = () => {
             {localeTool.t('setting.accountInfo')}
           </h2>
           <h4 className='mb-4'>
-            {localeTool.t('common.email')}: {user.userEmail}
+            {localeTool.t('account.email')}: {user.userEmail}
           </h4>
           <Button
             data-testid='signOutBtn'
@@ -146,7 +146,7 @@ const Setting = () => {
             {localeTool.t('setting.accountType')}
           </h2>
           <h4 data-testid='userPlan'>
-            {`${userTypeText.Title} ${localeTool.t('common.plan')} - ${userTypeText.Price}`}
+            {`${userTypeText.Title} ${localeTool.t('plan.title')} - ${userTypeText.Price}`}
           </h4>
           {userTypeText.Services.map((service) => (
             <h5 key={service}>- {service}</h5>
@@ -172,7 +172,7 @@ const Setting = () => {
           >
             <RequiredLabel
               className='mb-2'
-              title={localeTool.t('common.currentPassword')}
+              title={localeTool.t('setting.currentPassword')}
             />
             <TextInput
               data-testid='password'
@@ -183,7 +183,7 @@ const Setting = () => {
             />
             <RequiredLabel
               className='mb-2'
-              title={localeTool.t('common.newPassword')}
+              title={localeTool.t('account.newPassword')}
             />
             <TextInput
               data-testid='newPassword'
@@ -194,7 +194,7 @@ const Setting = () => {
             />
             <RequiredLabel
               className='mb-2'
-              title={localeTool.t('common.retypePassword')}
+              title={localeTool.t('account.retypePassword')}
             />
             <TextInput
               data-testid='retypePassword'

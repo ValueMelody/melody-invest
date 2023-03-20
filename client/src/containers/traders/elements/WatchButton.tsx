@@ -25,7 +25,7 @@ const WatchButton = ({
       onClick={handleToggle}
     >
       <Icon className='icon-size mr-2' />
-      {localeTool.t(isWatched ? 'common.unwatch' : 'common.watch')}
+      {localeTool.t(isWatched ? 'watchButton.unwatch' : 'watchButton.watch')}
     </Button>
   )
 }

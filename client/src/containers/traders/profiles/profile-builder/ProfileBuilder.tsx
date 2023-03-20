@@ -351,7 +351,7 @@ const ProfileBuilder = () => {
         </Accordion.Panel>
       </Accordion>
       <h2 className={subTitleClass}>
-        {localeTool.t('common.selectEnvironment')}:
+        {localeTool.t('profileBuilder.selectEnvironment')}:
       </h2>
       <section className='flex justify-center flex-wrap'>
         {traderEnvs.map((traderEnv) => (
@@ -389,7 +389,7 @@ const ProfileBuilder = () => {
               hasMatchedPattern
             }
           >
-            {localeTool.t('common.confirmAndWatch')}
+            {localeTool.t('builder.confirmAndWatch')}
           </Button>
         </footer>
       </form>

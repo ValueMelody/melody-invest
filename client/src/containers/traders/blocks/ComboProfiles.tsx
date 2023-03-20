@@ -22,7 +22,7 @@ const ComboProfiles = ({
       ? parseTool.profileName(profileWithEnv.profile.pattern.id)
       : ''
     const desc = profileWithEnv.env
-      ? `${profileWithEnv.env.name} ${localeTool.t('common.env')}`
+      ? `${profileWithEnv.env.name} ${localeTool.t('entity.env')}`
       : ''
     return {
       label,

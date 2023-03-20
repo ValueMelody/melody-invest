@@ -31,7 +31,7 @@ describe('#ValueChangePercents', () => {
     expect(ths[4].innerHTML).toBe(`${localeTool.t('gain.pastWeek')}:`)
     expect(tds[4].innerHTML).toBe('-10%')
 
-    const noResultText = localeTool.t('common.noResultYet')
+    const noResultText = localeTool.t('valueChange.noResultYet')
     expect(screen.queryByText(noResultText)).toBeFalsy()
   })
 
@@ -46,7 +46,7 @@ describe('#ValueChangePercents', () => {
       />,
     )
 
-    const noResultText = localeTool.t('common.noResultYet')
+    const noResultText = localeTool.t('valueChange.noResultYet')
     expect(screen.queryByText(noResultText)).toBeTruthy()
   })
 })

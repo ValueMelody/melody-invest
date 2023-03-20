@@ -15,13 +15,13 @@ const Footer = () => {
           to={routerTool.pricingRoute()}
           className={linkClass}
         >
-          {localeTool.t('common.pricing')}
+          {localeTool.t('footer.pricing')}
         </Link>
         <a
           href='mailto: app@valuemelody.com'
           className={linkClass}
         >
-          {localeTool.t('common.contactUs')}
+          {localeTool.t('footer.contactUs')}
         </a>
         <Link
           to={routerTool.privacyRoute()}
@@ -39,7 +39,7 @@ const Footer = () => {
           to={routerTool.disclaimerRoute()}
           className={linkClass}
         >
-          {localeTool.t('common.disclaimer')}
+          {localeTool.t('page.disclaimer')}
         </Link>
       </section>
     </footer>
