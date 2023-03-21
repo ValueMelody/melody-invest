@@ -19,10 +19,6 @@ describe('#calcPriceMovements', () => {
   jest.spyOn(crudSystems, 'getDefaults')
     .mockImplementation(getDefaults)
 
-  const getDefaultTraderCombos = jest.fn()
-  jest.spyOn(crudSystems, 'getDefaultTraderCombos')
-    .mockImplementation(getDefaultTraderCombos)
-
   const getTopTraderProfiles = jest.fn()
   jest.spyOn(crudSystems, 'getTopTraderProfiles')
     .mockImplementation(getTopTraderProfiles)
@@ -35,8 +31,6 @@ describe('#calcPriceMovements', () => {
     await cache.generateSystemCaches()
     expect(getDefaults).toBeCalledTimes(1)
     expect(getDefaults).toBeCalledWith(true)
-    expect(getDefaultTraderCombos).toBeCalledTimes(1)
-    expect(getDefaultTraderCombos).toBeCalledWith(true)
     expect(getTopTraderProfiles).toBeCalledTimes(1)
     expect(getTopTraderProfiles).toBeCalledWith(true)
     expect(getSystemPolicy).toBeCalledTimes(2)

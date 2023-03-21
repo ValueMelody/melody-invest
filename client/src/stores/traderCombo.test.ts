@@ -42,40 +42,6 @@ describe('#store', () => {
     })
   })
 
-  test('could storeFromSystemCombos', async () => {
-    const profile1 = {
-      identity: {
-        ...comboType,
-        id: 1,
-      },
-      detail,
-    }
-    const profile2 = {
-      identity: {
-        ...comboType,
-        id: 2,
-      },
-      detail,
-    }
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: [profile1, profile2],
-        }
-      })
-
-    await store.dispatch(actions.fetchSystemTraderCombos())
-
-    expect(store.getState().traderCombo.base).toStrictEqual({
-      1: profile1.identity,
-      2: profile2.identity,
-    })
-    expect(store.getState().traderCombo.detail).toStrictEqual({
-      1: profile1.detail,
-      2: profile2.detail,
-    })
-  })
-
   test('could storeFromComboDetail', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {

@@ -52,12 +52,6 @@ describe('#comboDetailRoute', () => {
   })
 })
 
-describe('#topCombosRoute', () => {
-  test('could get correct url for top combos route', () => {
-    expect(routerTool.topCombosRoute()).toBe('/traders/combos/tops')
-  })
-})
-
 describe('#envDetailRoute', () => {
   test('could get correct url for env detail route', () => {
     expect(routerTool.envDetailRoute(1)).toBe('/traders/envs/1')

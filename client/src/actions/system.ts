@@ -31,20 +31,6 @@ export const fetchSystemPolicy = createAsyncThunk(
   },
 )
 
-export const fetchSystemTraderCombos = createAsyncThunk(
-  'system/fetchSystemTraderCombos',
-  async (params, { rejectWithValue }) => {
-    const endpoint = `${routerEnum.Endpoint.Systems}/default-trader-combos`
-
-    try {
-      const res: interfaces.response.ComboProfile[] = await requestAdapter.sendGetRequest(endpoint)
-      return res
-    } catch (e) {
-      return rejectWithValue(e)
-    }
-  },
-)
-
 export const fetchSystemTopTraders = createAsyncThunk(
   'system/fetchSystemTopTraders',
   async (params, { rejectWithValue }) => {

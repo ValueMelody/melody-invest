@@ -21,11 +21,6 @@ describe('#Header', () => {
     fireEvent.click(topProfilesButton)
     expect(history.location.pathname).toBe(routerTool.topProfilesRoute())
 
-    const topCombosText = localeTool.t('topCombos.title')
-    const topCombosButton = screen.getByText(topCombosText)
-    fireEvent.click(topCombosButton)
-    expect(history.location.pathname).toBe(routerTool.topCombosRoute())
-
     const behaviorsText = localeTool.t('tradeBehaviors.title')
     const behaviorsButton = screen.getByText(behaviorsText)
     fireEvent.click(behaviorsButton)

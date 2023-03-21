@@ -48,10 +48,6 @@ export const topProfilesRoute = (): string => {
   return `${routerEnum.Nav.Traders}/profiles/tops`
 }
 
-export const topCombosRoute = (): string => {
-  return `${routerEnum.Nav.Traders}/combos/tops`
-}
-
 export const signInRoute = (): string => {
   return routerEnum.Nav.SignIn
 }
