@@ -20,6 +20,7 @@ sudo npm install -g pm2
 cp ./client/.env.example ./client/.env
 cp ./server/.env.example ./server/.env
 npm install
+npm run basic
 npm run dev
 ```
 
@@ -68,7 +69,9 @@ server -> backend APIs for the whole project
 ```
 
 # Manual Schedules
+Weekly: npm run generateWeeklyData  
+Daily: npm run generateDailyData  
+
+# Manual Data Collect
 Monthly Inflation data  
 Monthly Consumer Sentiment data  
-Weekly npm run generateWeeklyData  
-Daily npm run generateDailyData  
