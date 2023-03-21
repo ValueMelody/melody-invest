@@ -48,17 +48,6 @@ const storeFromComboDetail = (
   })
 }
 
-const storeFromSystemCombos = (
-  state: TraderProfileState,
-  action: PayloadAction<interfaces.response.ComboProfile[]>,
-) => {
-  action.payload.forEach((comboProfile) => {
-    comboProfile.detail.profiles.forEach((profile) => {
-      state.base[profile.trader.id] = profile
-    })
-  })
-}
-
 const storeFromSystemTops = (
   state: TraderProfileState,
   action: PayloadAction<interfaces.response.TopTraderProfiles>,
@@ -108,7 +97,6 @@ export const traderProfileSlice = createSlice({
     builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
-    builder.addCase(actions.fetchSystemTraderCombos.fulfilled, storeFromSystemCombos)
     builder.addCase(actions.fetchSystemTopTraders.fulfilled, storeFromSystemTops)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderProfile.fulfilled, storeFromTraderProfile)

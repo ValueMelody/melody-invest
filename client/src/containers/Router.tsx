@@ -25,7 +25,6 @@ import SignUp from './accounts/SignUp'
 import Terms from './general/Terms'
 import TickerDetail from './traders/tickers/TickerDetail'
 import TickerList from './traders/tickers/TickerList'
-import TopCombos from './traders/combos/TopCombos'
 import TopProfiles from './traders/profiles/TopProfiles'
 
 const Router = () => {
@@ -95,10 +94,6 @@ const Router = () => {
           <Route
             path={`${routerEnum.Nav.Traders}/combos/:comboId`}
             element={<ComboDetail />}
-          />
-          <Route
-            path={`${routerEnum.Nav.Traders}/combos/tops`}
-            element={<TopCombos />}
           />
           <Route
             path={`${routerEnum.Nav.Traders}/combos/build`}

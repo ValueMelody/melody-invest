@@ -83,26 +83,6 @@ describe('#getTopTraders', () => {
   })
 })
 
-describe('#getDefaultCombos', () => {
-  test('could call expected function', async () => {
-    const comboType = mock<interfaces.response.ComboProfile>({})
-    const combos = [instance(comboType)]
-
-    const getDefaultTraderCombos = jest.fn()
-    jest.spyOn(crudSystems, 'getDefaultTraderCombos')
-      .mockImplementation(async () => {
-        getDefaultTraderCombos()
-        return combos
-      })
-
-    await system.getDefaultCombos(instance(reqType), response)
-
-    expect(getDefaultTraderCombos).toBeCalledTimes(1)
-    expect(resStatus).toBeCalledWith(200)
-    expect(resSend).toBeCalledWith(combos)
-  })
-})
-
 describe('#getDefaults', () => {
   test('could call expected function', async () => {
     const defaultType = mock<interfaces.response.SystemDefaults>({})
@@ -132,7 +112,6 @@ describe('#attachRoutes', () => {
     system.attachRoutes(router)
     expect(routerGet).toHaveBeenCalledWith('/policy/:type', system.getPolicy)
     expect(routerGet).toHaveBeenCalledWith('/top-trader-profiles', system.getTopTraders)
-    expect(routerGet).toHaveBeenCalledWith('/default-trader-combos', system.getDefaultCombos)
     expect(routerGet).toHaveBeenCalledWith('/defaults', system.getDefaults)
   })
 })

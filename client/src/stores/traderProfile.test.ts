@@ -129,30 +129,6 @@ describe('#store', () => {
     })
   })
 
-  test('could storeFromSystemCombos from fetchSystemTraderCombos', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: [
-            {
-              identity: {
-                id: 1,
-              },
-              detail: {
-                profiles: [profile1, profile2],
-              },
-            },
-          ],
-        }
-      })
-    await store.dispatch(actions.fetchSystemTraderCombos())
-
-    expect(store.getState().traderProfile.base).toStrictEqual({
-      1: profile1,
-      2: profile2,
-    })
-  })
-
   test('could storeFromSystemTops from fetchSystemTopTraders', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {
