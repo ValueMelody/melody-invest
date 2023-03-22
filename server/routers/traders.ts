@@ -20,7 +20,7 @@ const validateCreateProfileParams = (
 
   const hasInvalidPattern = constants.Behavior.Behaviors.some((behavior) => {
     const value = traderPattern[behavior]
-    if (value === null) return false
+    if (value === null || value === undefined) return false
     const allowedValues = constants.BehaviorValue.Options[behavior]
     return allowedValues.every((allowedValue) => allowedValue !== value)
   })
