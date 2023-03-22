@@ -17,6 +17,15 @@ const validateCreateProfileParams = (
   traderPattern: interfaces.traderPatternModel.Create,
 ) => {
   if (!traderEnvId || !traderPattern) throw errorEnum.Custom.MissingParams
+
+  const hasInvalidPattern = constants.Behavior.Behaviors.some((behavior) => {
+    const value = traderPattern[behavior]
+    if (value === null) return false
+    const allowedValues = constants.BehaviorValue.Options[behavior]
+    return allowedValues.every((allowedValue) => allowedValue !== value)
+  })
+
+  if (hasInvalidPattern) throw errorEnum.Default.Forbidden
 }
 
 const validateCreateEnvParams = (name: string, startDate: string, tickerIds: number[] | null) => {

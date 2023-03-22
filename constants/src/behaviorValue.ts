@@ -25,6 +25,7 @@ export const Preference = Object.freeze({
 
 const ContinuousMovement = [1, 2, 3, 5]
 const PercentChange = [-5, -3, -2, -1, 1, 2, 3, 5]
+const HoldingPercent = [1, 2, 3, 5, 8, 13, 21, 34]
 
 export const Options = {
   priceDailyIncreaseBuy: [...ContinuousMovement],
@@ -132,12 +133,12 @@ export const Options = {
   gdpQuarterlyYoYChangeBelowBuy: [...PercentChange],
   gdpQuarterlyYoYChangeBelowSell: [...PercentChange],
   cashMaxPercent: [0, 10, 20, 30, 50, 80, 100],
-  tickerMinPercent: [1, 2, 3, 5, 8, 13, 21, 34, 55],
-  tickerMaxPercent: [1, 2, 3, 5, 8, 13, 21, 34, 55],
-  holdingBuyPercent: [1, 2, 3, 5, 8, 13, 21, 34, 55],
+  tickerMinPercent: [...HoldingPercent],
+  tickerMaxPercent: [...HoldingPercent],
+  holdingBuyPercent: [...HoldingPercent],
   holdingSellPercent: [20, 40, 60, 80, 100],
   tradeFrequency: [
-    5, 15, 30, 90, 180, 360,
+    2, 5, 15, 30, 90, 180, 360,
   ],
   rebalanceFrequency: [
     0, 5, 15, 30, 90, 180, 360,
