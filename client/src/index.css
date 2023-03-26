@@ -52,7 +52,7 @@ body {
   @apply flex flex-col;
 }
 .detail-header {
-  @apply flex flex-col mb-8 pb-8 border-b-4 border-blue-200;
+  @apply flex flex-col mb-8 pb-6 border-b-4 border-blue-200;
 }
 .detail-main {
   @apply flex flex-col;

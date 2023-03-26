@@ -71,6 +71,12 @@ const TickerDetail = () => {
             {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
           </h1>
         </section>
+        <p className='mt-4 italic'>
+          {localeTool.t('ticker.dataRange', {
+            start: tickerIdentity.firstPriceDate,
+            end: tickerIdentity.lastPriceDate,
+          })}
+        </p>
       </header>
       <section className='page-root'>
         <section className='page-main'>
