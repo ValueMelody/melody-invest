@@ -32,7 +32,11 @@ const DisclaimerModal = () => {
       <Modal.Body>
         <section
           className='overflow-y-auto h-60'
-          dangerouslySetInnerHTML={{ __html: localeTool.t('content.disclaimer') }}
+          dangerouslySetInnerHTML={{
+            __html: localeTool.t('content.disclaimer', {
+              drawback: localeTool.t('content.drawback'),
+            }),
+          }}
         />
       </Modal.Body>
       <Modal.Footer className='flex justify-between'>

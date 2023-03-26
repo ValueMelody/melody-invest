@@ -155,7 +155,11 @@ const SignUp = () => {
               {localeTool.t('page.disclaimer')}
             </h2>
             <section
-              dangerouslySetInnerHTML={{ __html: localeTool.t('content.disclaimer') }}
+              dangerouslySetInnerHTML={{
+                __html: localeTool.t('content.disclaimer', {
+                  drawback: localeTool.t('content.drawback'),
+                }),
+              }}
             />
           </section>
         </section>
