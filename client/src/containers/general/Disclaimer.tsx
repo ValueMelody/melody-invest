@@ -8,7 +8,11 @@ const Disclaimer = () => {
       </h1>
       <section
         className='px-8 w-full'
-        dangerouslySetInnerHTML={{ __html: localeTool.t('content.disclaimer') }}
+        dangerouslySetInnerHTML={{
+          __html: localeTool.t('content.disclaimer', {
+            drawback: localeTool.t('content.drawback'),
+          }),
+        }}
       />
     </section>
   )
