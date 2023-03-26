@@ -44,28 +44,31 @@ const ValueChangeCharts = ({
         data-testid={isDecadeChart ? 'decadeChart' : 'yearChart'}
         data={isDecadeChart ? decadeTrends : yearTrends}
       />
-      <Button.Group>
-        <Button
-          size='xs'
-          data-testid='decadeChartBtn'
-          onClick={handleClickDecadeChart}
-          color={isDecadeChart ? undefined : 'gray'}
-        >
-          {
-            decadeTrends.length < 1
-              ? localeTool.t('valueChange.emptyYears')
-              : localeTool.t('valueChange.yearsTrends', { num: decadeTrends.length - 1 })
-          }
-        </Button>
-        <Button
-          size='xs'
-          data-testid='yearChartBtn'
-          onClick={handleClickYearChart}
-          color={!isDecadeChart ? undefined : 'gray'}
-        >
-          {localeTool.t('valueChange.daysTrends', { num: 30 * (yearTrends.length - 1) })}
-        </Button>
-      </Button.Group>
+      <section className='flex items-center flex-wrap'>
+        <h3 className='mr-4'>{localeTool.t('valueChange.trends')}</h3>
+        <Button.Group>
+          <Button
+            size='xs'
+            data-testid='decadeChartBtn'
+            onClick={handleClickDecadeChart}
+            color={isDecadeChart ? undefined : 'gray'}
+          >
+            {
+              decadeTrends.length < 1
+                ? localeTool.t('valueChange.emptyYears')
+                : localeTool.t('valueChange.yearsTrends', { num: decadeTrends.length - 1 })
+            }
+          </Button>
+          <Button
+            size='xs'
+            data-testid='yearChartBtn'
+            onClick={handleClickYearChart}
+            color={!isDecadeChart ? undefined : 'gray'}
+          >
+            {localeTool.t('valueChange.daysTrends', { num: 30 * (yearTrends.length - 1) })}
+          </Button>
+        </Button.Group>
+      </section>
     </section>
   )
 }

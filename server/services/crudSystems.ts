@@ -40,6 +40,8 @@ const buildDefaults = async (): Promise<
     symbol: ticker.symbol,
     isDelisted: ticker.isDelisted,
     tickerCategoryId: ticker.tickerCategoryId,
+    firstPriceDate: ticker.firstPriceDate,
+    lastPriceDate: ticker.lastPriceDate,
   }))
 
   const categories = await tickerCategoryModel.getAll()

@@ -5,6 +5,8 @@ export interface Identity {
   name: string;
   isDelisted: boolean;
   tickerCategoryId: number | null;
+  firstPriceDate: string | null;
+  lastPriceDate: string | null;
 }
 
 export interface Create {
@@ -16,8 +18,6 @@ export interface Create {
 }
 
 export interface Record extends Identity {
-  firstPriceDate: string | null;
-  lastPriceDate: string | null;
   firstEPSYear: string | null;
   lastEPSYear: string | null;
   firstEPSQuarter: string | null;

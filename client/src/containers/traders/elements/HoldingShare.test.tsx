@@ -12,6 +12,8 @@ describe('#HoldingShare', () => {
     name: 'Apple',
     tickerCategoryId: 3,
     isDelisted: false,
+    firstPriceDate: null,
+    lastPriceDate: null,
   }
   const holdingItem = {
     tickerId: 12,
