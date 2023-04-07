@@ -41,6 +41,12 @@ const Footer = () => {
         >
           {localeTool.t('page.disclaimer')}
         </Link>
+        <Link
+          to={routerTool.limitationsRoute()}
+          className={linkClass}
+        >
+          {localeTool.t('page.limitations')}
+        </Link>
       </section>
     </footer>
   )

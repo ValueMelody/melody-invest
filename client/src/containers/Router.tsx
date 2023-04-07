@@ -12,6 +12,7 @@ import EnvDetail from './traders/envs/EnvDetail'
 import Forgot from './accounts/Forgot'
 import Home from './general/Home'
 import Layout from './layouts/Layout'
+import Limitations from './general/Limitations'
 import Maintain from './general/Maintain'
 import Pricing from './general/Pricing'
 import Privacy from './general/Privacy'
@@ -50,6 +51,10 @@ const Router = () => {
           <Route
             path={routerEnum.Nav.Disclaimer}
             element={<Disclaimer />}
+          />
+          <Route
+            path={routerEnum.Nav.Limitations}
+            element={<Limitations />}
           />
           <Route
             path={routerEnum.Nav.Pricing}

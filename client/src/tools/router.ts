@@ -88,6 +88,10 @@ export const disclaimerRoute = (): string => {
   return routerEnum.Nav.Disclaimer
 }
 
+export const limitationsRoute = (): string => {
+  return routerEnum.Nav.Limitations
+}
+
 export const rootRoute = (): string => {
   return routerEnum.Nav.Root
 }
