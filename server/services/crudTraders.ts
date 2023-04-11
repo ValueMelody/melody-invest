@@ -82,8 +82,7 @@ const buildTraderTopProfiles = async (
 export const getEnvDetail = async (
   traderEnvId: number,
 ): Promise<interfaces.response.EnvDetail> => {
-  const each = 1
-  const tops = await traderModel.getTops(each, { envId: traderEnvId })
+  const tops = await traderModel.getTops(3, { envId: traderEnvId })
   const topProfiles = await buildTraderTopProfiles(tops)
 
   return {
@@ -95,7 +94,7 @@ export const getBehaviorDetail = async (
   envId: number,
   behavior: interfaces.traderPatternModel.Behavior,
 ): Promise<interfaces.response.BehaviorDetail> => {
-  const tops = await traderModel.getTops(1, { envId, behavior })
+  const tops = await traderModel.getTops(3, { envId, behavior })
   const topProfiles = await buildTraderTopProfiles(tops)
 
   return {
@@ -107,7 +106,7 @@ export const getTickerDetail = async (
   envId: number,
   tickerId: number,
 ): Promise<interfaces.response.TickerDetail> => {
-  const tops = await traderModel.getTops(1, { envId, tickerId })
+  const tops = await traderModel.getTops(3, { envId, tickerId })
   const topProfiles = await buildTraderTopProfiles(tops)
 
   return {
