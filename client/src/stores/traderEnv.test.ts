@@ -34,7 +34,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [],
+            tickers: [],
             traderEnvs: [
               { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
@@ -115,7 +115,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [],
+            tickers: [],
             traderEnvs: [
               { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
@@ -147,7 +147,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [],
+            tickers: [],
             traderEnvs: [
               { ...instance(envType), id: 1, isSystem: true },
               { ...instance(envType), id: 2 },
@@ -178,7 +178,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [],
+            tickers: [],
             traderEnvs: [
               { ...instance(envType), id: 1, isSystem: true },
               { ...instance(envType), id: 2 },
