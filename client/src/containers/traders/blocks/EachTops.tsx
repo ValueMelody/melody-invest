@@ -7,26 +7,28 @@ import TraderProfileCard from './TraderProfileCard'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
-const cardClass = 'w-96 m-4 max-sm:w-80'
+const sectionClass = 'w-full m-4 max-sm:w-80'
 const titleClass = 'font-semibold mb-4'
+const cardClass = 'mb-4'
 
 const EachTops = ({
-  bestOverall,
-  bestPastYear,
-  bestPastQuarter,
-  bestPastMonth,
-  bestPastWeek,
+  bestOveralls,
+  bestPastYears,
+  bestPastQuarters,
+  bestPastMonths,
+  bestPastWeeks,
 }: {
-  bestOverall?: number;
-  bestPastYear?: number;
-  bestPastQuarter?: number;
-  bestPastMonth?: number;
-  bestPastWeek?: number;
+  bestOveralls: number[];
+  bestPastYears: number[];
+  bestPastQuarters: number[];
+  bestPastMonths: number[];
+  bestPastWeeks: number[];
 }) => {
   const navigate = useNavigate()
 
   const traderProfileDict = useSelector(selectors.selectTraderProfileBaseDict())
-  const hasResult = bestOverall || bestPastYear || bestPastQuarter || bestPastMonth || bestPastWeek
+  const hasResult = bestOveralls.length || bestPastYears.length || bestPastQuarters.length ||
+    bestPastMonths.length || bestPastWeeks.length
 
   const handleClickCard = (trader: interfaces.traderModel.Record) => {
     const link = routerTool.profileDetailRoute(trader.id, trader.accessCode)
@@ -45,75 +47,95 @@ const EachTops = ({
   }
 
   return (
-    <section className='flex flex-wrap'>
-      {!!bestOverall && (
+    <section className='flex flex-col'>
+      {!!bestOveralls.length && (
         <div
           data-testid='card'
-          className={cardClass}
+          className={sectionClass}
         >
           <h3 className={titleClass}>
             {localeTool.t('bestReturn.yearlyTitle')}:
           </h3>
-          <TraderProfileCard
-            profile={traderProfileDict[bestOverall]}
-            onClick={handleClickCard}
-          />
+          {bestOveralls.map((bestOveralls) => (
+            <TraderProfileCard
+              key={bestOveralls}
+              className={cardClass}
+              profile={traderProfileDict[bestOveralls]}
+              onClick={handleClickCard}
+            />
+          ))}
         </div>
       )}
-      {!!bestPastYear && (
+      {!!bestPastYears.length && (
         <div
           data-testid='card'
-          className={cardClass}
+          className={sectionClass}
         >
           <h3 className={titleClass}>
             {localeTool.t('bestReturn.pastYearTitle')}:
           </h3>
-          <TraderProfileCard
-            profile={traderProfileDict[bestPastYear]}
-            onClick={handleClickCard}
-          />
+          {bestPastYears.map((bestPastYear) => (
+            <TraderProfileCard
+              key={bestPastYear}
+              className={cardClass}
+              profile={traderProfileDict[bestPastYear]}
+              onClick={handleClickCard}
+            />
+          ))}
         </div>
       )}
-      {bestPastQuarter && (
+      {!!bestPastQuarters.length && (
         <div
           data-testid='card'
-          className={cardClass}
+          className={sectionClass}
         >
           <h3 className={titleClass}>
             {localeTool.t('bestReturn.pastQuarterTitle')}:
           </h3>
-          <TraderProfileCard
-            profile={traderProfileDict[bestPastQuarter]}
-            onClick={handleClickCard}
-          />
+          {bestPastQuarters.map((bestPastQuarter) => (
+            <TraderProfileCard
+              key={bestPastQuarter}
+              className={cardClass}
+              profile={traderProfileDict[bestPastQuarter]}
+              onClick={handleClickCard}
+            />
+          ))}
         </div>
       )}
-      {bestPastMonth && (
+      {!!bestPastMonths.length && (
         <div
           data-testid='card'
-          className={cardClass}
+          className={sectionClass}
         >
           <h3 className={titleClass}>
             {localeTool.t('bestReturn.pastMonthTitle')}:
           </h3>
-          <TraderProfileCard
-            profile={traderProfileDict[bestPastMonth]}
-            onClick={handleClickCard}
-          />
+          {bestPastMonths.map((bestPastMonth) => (
+            <TraderProfileCard
+              key={bestPastMonth}
+              className={cardClass}
+              profile={traderProfileDict[bestPastMonth]}
+              onClick={handleClickCard}
+            />
+          ))}
         </div>
       )}
-      {bestPastWeek && (
+      {!!bestPastWeeks.length && (
         <div
           data-testid='card'
-          className={cardClass}
+          className={sectionClass}
         >
           <h3 className={titleClass}>
             {localeTool.t('bestReturn.pastWeekTitle')}:
           </h3>
-          <TraderProfileCard
-            profile={traderProfileDict[bestPastWeek]}
-            onClick={handleClickCard}
-          />
+          {bestPastWeeks.map((bestPastWeek) => (
+            <TraderProfileCard
+              key={bestPastWeek}
+              className={cardClass}
+              profile={traderProfileDict[bestPastWeek]}
+              onClick={handleClickCard}
+            />
+          ))}
         </div>
       )}
     </section>

@@ -13,6 +13,6 @@ const PricePadding = 100
 export const Initial = {
   Date: '2001-01-01',
   PricePadding,
-  ETFCategoryId: 12,
+  ETFCategoryId: 3,
   Cash: 100000 * PricePadding,
 }

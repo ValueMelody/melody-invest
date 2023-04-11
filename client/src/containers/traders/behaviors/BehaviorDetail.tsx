@@ -27,11 +27,11 @@ const BehaviorDetail = () => {
   const traderEnvs = useSelector(selectors.selectTraderEnvBases())
   const traderEnv = useSelector(selectors.selectTraderEnvBaseById(envId))
 
-  const bestOverall = topTraderProfiles?.yearly[0]
-  const bestPastYear = topTraderProfiles?.pastYear[0]
-  const bestPastQuarter = topTraderProfiles?.pastQuarter[0]
-  const bestPastMonth = topTraderProfiles?.pastMonth[0]
-  const bestPastWeek = topTraderProfiles?.pastWeek[0]
+  const bestOveralls = topTraderProfiles?.yearly || []
+  const bestPastYears = topTraderProfiles?.pastYear || []
+  const bestPastQuarters = topTraderProfiles?.pastQuarter || []
+  const bestPastMonths = topTraderProfiles?.pastMonth || []
+  const bestPastWeeks = topTraderProfiles?.pastWeek || []
 
   useEffect(() => {
     if (!validBehavior) navigate(routerTool.notFoundRoute())
@@ -73,11 +73,11 @@ const BehaviorDetail = () => {
             title={localeTool.t('tradeBehaviors.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
           />
           <EachTops
-            bestOverall={bestOverall}
-            bestPastYear={bestPastYear}
-            bestPastQuarter={bestPastQuarter}
-            bestPastMonth={bestPastMonth}
-            bestPastWeek={bestPastWeek}
+            bestOveralls={bestOveralls}
+            bestPastYears={bestPastYears}
+            bestPastQuarters={bestPastQuarters}
+            bestPastMonths={bestPastMonths}
+            bestPastWeeks={bestPastWeeks}
           />
         </section>
         <aside className='page-aside'>

@@ -73,11 +73,11 @@ describe('#EachTops', () => {
 
     render(
       <EachTops
-        bestOverall={22}
-        bestPastYear={11}
-        bestPastQuarter={33}
-        bestPastMonth={22}
-        bestPastWeek={44}
+        bestOveralls={[22]}
+        bestPastYears={[11]}
+        bestPastQuarters={[33]}
+        bestPastMonths={[22]}
+        bestPastWeeks={[44]}
       />,
     )
 
@@ -105,11 +105,11 @@ describe('#EachTops', () => {
 
     render(
       <EachTops
-        bestOverall={undefined}
-        bestPastYear={undefined}
-        bestPastQuarter={undefined}
-        bestPastMonth={undefined}
-        bestPastWeek={undefined}
+        bestOveralls={[]}
+        bestPastYears={[]}
+        bestPastQuarters={[]}
+        bestPastMonths={[]}
+        bestPastWeeks={[]}
       />,
     )
 
