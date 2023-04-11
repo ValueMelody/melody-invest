@@ -13,7 +13,7 @@ import { useSelector } from 'react-redux'
 import useShowMore from 'hooks/useShowMore'
 
 const isSearchedTicker = (
-  ticker: interfaces.tickerModel.Identity,
+  ticker: interfaces.tickerModel.Record,
   searchText: string,
 ): boolean => {
   const search = searchText.trim().toLowerCase()

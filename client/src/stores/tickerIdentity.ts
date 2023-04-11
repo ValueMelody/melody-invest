@@ -5,7 +5,7 @@ import { _resetForTest } from 'tools/store'
 import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TickerIdentityBase {
-  [tickerId: number]: interfaces.tickerModel.Identity;
+  [tickerId: number]: interfaces.tickerModel.Record;
 }
 
 export interface TraderIdentityDetail {
@@ -28,7 +28,7 @@ const storeFromSystemDefaults = (
   state: TickerIdentityState,
   action: PayloadAction<interfaces.response.SystemDefaults>,
 ) => {
-  action.payload.tickerIdentities.forEach((ticker) => {
+  action.payload.tickers.forEach((ticker) => {
     state.base[ticker.id] = ticker
   })
 }

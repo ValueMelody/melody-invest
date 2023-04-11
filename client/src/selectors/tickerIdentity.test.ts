@@ -4,7 +4,7 @@ import { instance, mock, when } from 'ts-mockito'
 
 const type = mock<AppState>({})
 
-const tickerType = mock<interfaces.tickerModel.Identity>({})
+const tickerType = mock<interfaces.tickerModel.Record>({})
 const ticker1 = {
   ...instance(tickerType),
   symbol: 'A',

@@ -71,10 +71,22 @@ const TickerDetail = () => {
             {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
           </h1>
         </section>
-        <p className='mt-4 italic'>
-          {localeTool.t('ticker.dataRange', {
+        <p className='mt-2 italic'>
+          {localeTool.t('ticker.dailyPriceRange', {
             start: tickerIdentity.firstPriceDate,
             end: tickerIdentity.lastPriceDate,
+          })}
+        </p>
+        <p className='mt-2 italic'>
+          {localeTool.t('ticker.quarterlyFinancialRange', {
+            start: tickerIdentity.firstEPSQuarter || tickerIdentity.firstIncomeQuarter,
+            end: tickerIdentity.lastEPSQuarter || tickerIdentity.lastIncomeQuarter,
+          })}
+        </p>
+        <p className='mt-2 italic'>
+          {localeTool.t('ticker.yearlyFinancialRange', {
+            start: tickerIdentity.firstEPSYear || tickerIdentity.firstIncomeYear,
+            end: tickerIdentity.lastEPSYear || tickerIdentity.lastIncomeYear,
           })}
         </p>
       </header>

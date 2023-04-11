@@ -33,21 +33,11 @@ const buildDefaults = async (): Promise<
   const systemTraderEnvs = await traderEnvModel.getSystemDefined()
 
   const tickers = await tickerModel.getAll()
-  const tickerIdentities: interfaces.tickerModel.Identity[] = tickers.map((ticker) => ({
-    id: ticker.id,
-    name: ticker.name,
-    region: ticker.region,
-    symbol: ticker.symbol,
-    isDelisted: ticker.isDelisted,
-    tickerCategoryId: ticker.tickerCategoryId,
-    firstPriceDate: ticker.firstPriceDate,
-    lastPriceDate: ticker.lastPriceDate,
-  }))
 
   const categories = await tickerCategoryModel.getAll()
 
   return {
-    tickerIdentities,
+    tickers,
     traderEnvs: systemTraderEnvs,
     tickerCategories: categories,
   }

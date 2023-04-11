@@ -165,7 +165,9 @@
     "topProfiles.title": "Default Profiles",
 
     "ticker.delisted": "Delisted",
-    "ticker.dataRange": "Mock data is available on our platform between between {{start}} and {{end}}",
+    "ticker.dailyPriceRange": "Mock daily price data is available on our platform between {{start}} and {{end}}",
+    "ticker.quarterlyFinancialRange": "Mock quarterly financial data is available on our platform between {{start}} and {{end}}",
+    "ticker.yearlyFinancialRange": "Mock yearly financial data is available on our platform between {{start}} and {{end}}",
     "tickerList.categories": "Stock Categories",
 
     "holdingCard.date": "Date",
