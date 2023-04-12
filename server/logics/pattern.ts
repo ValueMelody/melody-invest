@@ -1,34 +1,11 @@
-
 import * as constants from '@shared/constants'
 import * as generateTool from 'tools/generate'
+import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
-
-const BehaviorGroups: interfaces.traderPatternModel.Behavior[][] = [
-  constants.Behavior.BuyBehaviors,
-  constants.Behavior.SellBehaviors,
-  ['cashMaxPercent'],
-  ['tickerMinPercent'],
-  ['tickerMaxPercent'],
-  ['holdingBuyPercent'],
-  ['holdingSellPercent'],
-  ['tradeFrequency'],
-  ['rebalanceFrequency'],
-  ['buyPreference'],
-  ['sellPreference'],
-]
 
 interface BehaviorValue {
   type: interfaces.traderPatternModel.Behavior;
   value: number;
-}
-
-export const getPatternHashCode = (
-  pattern: interfaces.traderPatternModel.Record | interfaces.traderPatternModel.Create,
-): string => {
-  const template = BehaviorGroups.map((group) => group.map((behavior) => {
-    return pattern[behavior] === undefined ? null : pattern[behavior]
-  }))
-  return generateTool.toSHA512(JSON.stringify(template))
 }
 
 export const gatherPatternBehaviorValues = (
@@ -224,11 +201,11 @@ export const generatePatternChild = (
     sellPreference: generateTool.pickOneNumber(first.sellPreference, second.sellPreference),
   }
 
-  const buyBehaviorKeys = BehaviorGroups[0]
+  const buyBehaviorKeys = constants.Behavior.BuyBehaviors
   const childBuyBehaviors = pickBehaviorValues(buyBehaviorKeys, first, second)
   const childWithBuy = mergeBehaviorValueToPattern(newChild, childBuyBehaviors)
 
-  const sellBehaviorKeys = BehaviorGroups[1]
+  const sellBehaviorKeys = constants.Behavior.SellBehaviors
   const childSellBehaviors = pickBehaviorValues(sellBehaviorKeys, first, second)
   const updatedChild = mergeBehaviorValueToPattern(childWithBuy, childSellBehaviors)
 
@@ -237,7 +214,7 @@ export const generatePatternChild = (
     updatedChild[mutatedBehaviorValue.type] = mutatedBehaviorValue.value
   }
 
-  updatedChild.hashCode = getPatternHashCode(newChild)
+  updatedChild.hashCode = helpers.toPatternHashCode(newChild)
 
   return updatedChild
 }

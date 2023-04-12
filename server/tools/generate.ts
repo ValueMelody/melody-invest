@@ -1,34 +1,24 @@
 import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as emailEnum from 'enums/email'
+import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
 import fs from 'fs'
 import jwt from 'jsonwebtoken'
-import md5 from 'crypto-js/md5'
 import path from 'path'
-import sha256 from 'crypto-js/sha256'
-import sha512 from 'crypto-js/sha512'
-
-export const toSHA256 = (content: string): string => {
-  return sha256(content).toString()
-}
-
-export const toSHA512 = (content: string): string => {
-  return sha512(content).toString()
-}
 
 export const buildAccessHash = (digits: number): string => {
-  const code = md5(Math.random().toString()).toString()
+  const code = helpers.toMD5(Math.random().toString())
   return code.substring(0, digits)
 }
 
 export const buildEncryptedPassword = (password: string): string => {
-  return toSHA256(toSHA512(password))
+  return helpers.toSHA256(helpers.toSHA512(password))
 }
 
 export const buildAccessCode = (): string => {
-  return toSHA256(Math.random().toString())
+  return helpers.toSHA256(Math.random().toString())
 }
 
 export const encodeJWT = (

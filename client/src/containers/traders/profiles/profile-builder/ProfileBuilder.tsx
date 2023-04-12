@@ -1,5 +1,6 @@
 import * as actions from 'actions'
 import * as constants from '@shared/constants'
+import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
@@ -119,16 +120,10 @@ const ProfileBuilder = () => {
   const { userTraderIds } = useSelector(selectors.selectUser())
   const traderDict = useSelector(selectors.selectTraderProfileBaseDict())
   const userTraders = userTraderIds.map((id) => traderDict[id])
-  const currentPattern = JSON.stringify({
-    ...behaviorValues,
-    id: undefined,
-  })
+  const currentPatternHash = helpers.toPatternHashCode(behaviorValues)
   const hasMatchedPattern = userTraders.some((trader) => {
-    const traderPattern = {
-      ...trader.pattern,
-      id: undefined,
-    }
-    return currentPattern === JSON.stringify(traderPattern) && selectedTraderEnvId === trader.trader.traderEnvId
+    return selectedTraderEnvId === trader.trader.traderEnvId &&
+    currentPatternHash === helpers.toPatternHashCode(trader.pattern)
   })
 
   const activeBuyBehaviorCount = getActiveBehaviorCount(
@@ -292,7 +287,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] ?? null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
@@ -316,7 +311,7 @@ const ProfileBuilder = () => {
                 <BehaviorEditor
                   key={behavior}
                   behavior={behavior}
-                  behaviorValue={behaviorValues[behavior] || null}
+                  behaviorValue={behaviorValues[behavior] ?? null}
                   isEditing={currentEditingBehavior === behavior}
                   onClick={handleClickBehavior}
                   onSelect={handleSelectValue}
