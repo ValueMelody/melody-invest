@@ -3,10 +3,12 @@
   "private": true,
   "main": "dist/index.js",
   "dependencies": {
-    "@shared/constants": "*"
+    "@shared/constants": "*",
+    "crypto-js": "^4.1.1"
   },
   "devDependencies": {
-    "@shared/interfaces": "*"
+    "@shared/interfaces": "*",
+    "@types/crypto-js": "^4.0.2"
   },
   "scripts": {
     "dev": "tsc --watch",

@@ -7,6 +7,7 @@ import * as dateTool from 'tools/date'
 import * as errorEnums from 'enums/error'
 import * as evaluationLogic from 'logics/evaluation'
 import * as generateTool from 'tools/generate'
+import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import * as patternLogic from 'logics/pattern'
 import * as runTool from 'tools/run'
@@ -474,7 +475,7 @@ export const calcTraderAccessHashs = async () => {
   const transaction = await databaseAdapter.createTransaction()
   try {
     await runTool.asyncForEach(patterns, async (pattern: interfaces.traderPatternModel.Record) => {
-      const hashCode = patternLogic.getPatternHashCode(pattern)
+      const hashCode = helpers.toPatternHashCode(pattern)
       await traderPatternModel.update(pattern.id, { hashCode }, transaction)
     })
 
