@@ -15,7 +15,7 @@ describe('#tickerLabel', () => {
     expect(container).toBeFalsy()
   })
 
-  const identityMock: interfaces.tickerModel.Identity = mock({})
+  const identityMock: interfaces.tickerModel.Record = mock({})
   const ticker = {
     ...identityMock,
     id: 123,

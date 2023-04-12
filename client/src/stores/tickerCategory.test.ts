@@ -23,7 +23,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [],
+            tickers: [],
             traderEnvs: [],
             tickerCategories: [
               { ...instance(categoryType), id: 1 },

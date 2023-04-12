@@ -39,7 +39,7 @@ export interface TopTraderProfiles {
 
 export interface SystemDefaults {
   traderEnvs: traderEnvModel.Record[];
-  tickerIdentities: tickerModel.Identity[];
+  tickers: tickerModel.Record[];
   tickerCategories: tickerCategoryModel.Record[];
 }
 

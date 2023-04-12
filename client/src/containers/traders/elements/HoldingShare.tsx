@@ -11,7 +11,7 @@ const HoldingShare = ({
   totalValue,
 }: {
   holdingItem: interfaces.traderHoldingModel.Item;
-  tickerIdentity: interfaces.tickerModel.Identity | null;
+  tickerIdentity: interfaces.tickerModel.Record | null;
   previousDetail: interfaces.traderHoldingModel.Detail | null;
   totalValue: number;
 }) => {

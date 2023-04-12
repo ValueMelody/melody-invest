@@ -38,7 +38,7 @@ jest.spyOn(router, 'useNavigate')
 const envType = mock<interfaces.traderEnvModel.Record>({})
 const env = { ...instance(envType), id: 1, name: 'test env', tickerIds: [1, 2] }
 
-const tickerType = mock<interfaces.tickerModel.Identity>({})
+const tickerType = mock<interfaces.tickerModel.Record>({})
 const ticker1 = { ...instance(tickerType), id: 1 }
 const ticker2 = { ...instance(tickerType), id: 2 }
 

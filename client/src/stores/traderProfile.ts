@@ -87,7 +87,7 @@ const storeFromProfileDetail = (
 }
 
 export const traderProfileSlice = createSlice({
-  name: 'tickerIdentity',
+  name: 'traderProfile',
   initialState,
   reducers: {
     _resetForTest: (state) => _resetForTest(state, initialState),

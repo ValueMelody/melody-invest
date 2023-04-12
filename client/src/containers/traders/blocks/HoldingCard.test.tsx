@@ -47,7 +47,7 @@ describe('#HoldingCard', () => {
     holding.items[2].value = 2
     holding.items[3].value = 4
 
-    const tickerType = mock<interfaces.tickerModel.Identity>({})
+    const tickerType = mock<interfaces.tickerModel.Record>({})
 
     jest.spyOn(selectors, 'selectTickerIdentityBaseDict')
       .mockImplementation(() => () => ({

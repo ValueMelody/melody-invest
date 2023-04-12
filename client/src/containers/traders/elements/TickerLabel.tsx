@@ -8,7 +8,7 @@ const TickerLabel = ({
   color,
   className,
 }: {
-  ticker: interfaces.tickerModel.Identity | null;
+  ticker: interfaces.tickerModel.Record | null;
   onClick?: (tickerId: number) => void;
   color: 'info' | 'gray';
   className?: string;

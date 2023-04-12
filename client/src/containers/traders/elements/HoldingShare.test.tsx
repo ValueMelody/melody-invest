@@ -14,6 +14,14 @@ describe('#HoldingShare', () => {
     isDelisted: false,
     firstPriceDate: null,
     lastPriceDate: null,
+    firstEPSYear: null,
+    lastEPSYear: null,
+    firstEPSQuarter: null,
+    lastEPSQuarter: null,
+    firstIncomeYear: null,
+    lastIncomeYear: null,
+    firstIncomeQuarter: null,
+    lastIncomeQuarter: null,
   }
   const holdingItem = {
     tickerId: 12,

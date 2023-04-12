@@ -17,7 +17,7 @@ describe('#store', () => {
     })
   })
 
-  const tickerType = mock<interfaces.tickerModel.Identity>({})
+  const tickerType = mock<interfaces.tickerModel.Record>({})
 
   const detail = {
     topProfiles: {
@@ -34,7 +34,7 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickerIdentities: [
+            tickers: [
               { ...instance(tickerType), id: 1 },
               { ...instance(tickerType), id: 2 },
               { ...instance(tickerType), id: 3 },

@@ -32,7 +32,7 @@ jest.mock('react-router-dom', () => {
 const envType = mock<interfaces.traderEnvModel.Record>({})
 const env1 = { ...instance(envType), id: 1, isSystem: true }
 const env2 = { ...instance(envType), id: 2, isSystem: true }
-const tickerType = mock<interfaces.tickerModel.Identity>({})
+const tickerType = mock<interfaces.tickerModel.Record>({})
 const ticker = { ...instance(tickerType), id: 1, name: 'AAPL' }
 
 jest.spyOn(selectors, 'selectTraderEnvBases')

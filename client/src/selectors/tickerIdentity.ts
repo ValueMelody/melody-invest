@@ -15,14 +15,14 @@ const selectTickerIdentityBaseDict = () => (
 
 const selectTickerIdentityBases = () => (
   state: AppState,
-): interfaces.tickerModel.Identity[] => {
+): interfaces.tickerModel.Record[] => {
   const tickers = Object.values(state.tickerIdentity.base)
   return tickers.sort((prev, curr) => curr.symbol > prev.symbol ? -1 : 1)
 }
 
 const selectTickerIdentityBaseById = (id?: number) => (
   state: AppState,
-): interfaces.tickerModel.Identity | undefined => {
+): interfaces.tickerModel.Record | undefined => {
   if (!id) return undefined
   const ticker = state.tickerIdentity.base[id]
   return ticker

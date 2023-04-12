@@ -20,7 +20,7 @@ jest.spyOn(axios, 'get')
         data: {
           traderEnvs: [],
           tickerCategories: [],
-          tickerIdentities: [],
+          tickers: [],
         },
       }
     }

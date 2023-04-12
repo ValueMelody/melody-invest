@@ -4,7 +4,7 @@ import { fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import TickerList from './TickerList'
 
-const tickerType = mock<interfaces.tickerModel.Identity>({})
+const tickerType = mock<interfaces.tickerModel.Record>({})
 
 jest.mock('selectors', () => {
   return {

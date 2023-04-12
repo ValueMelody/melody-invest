@@ -1,4 +1,4 @@
-export interface Identity {
+export interface Record {
   id: number;
   symbol: string;
   region: string;
@@ -7,17 +7,6 @@ export interface Identity {
   tickerCategoryId: number | null;
   firstPriceDate: string | null;
   lastPriceDate: string | null;
-}
-
-export interface Create {
-  symbol: string;
-  region: string;
-  name: string;
-  isDelisted: boolean;
-  tickerCategoryId: number | null;
-}
-
-export interface Record extends Identity {
   firstEPSYear: string | null;
   lastEPSYear: string | null;
   firstEPSQuarter: string | null;
@@ -26,6 +15,14 @@ export interface Record extends Identity {
   lastIncomeYear: string | null;
   firstIncomeQuarter: string | null;
   lastIncomeQuarter: string | null;
+}
+
+export interface Create {
+  symbol: string;
+  region: string;
+  name: string;
+  isDelisted: boolean;
+  tickerCategoryId: number | null;
 }
 
 export interface Update {
