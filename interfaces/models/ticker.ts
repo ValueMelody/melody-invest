@@ -1,5 +1,6 @@
 export interface Record {
   id: number;
+  entityId: number;
   symbol: string;
   region: string;
   name: string;
@@ -18,6 +19,7 @@ export interface Record {
 }
 
 export interface Create {
+  entityId: number;
   symbol: string;
   region: string;
   name: string;

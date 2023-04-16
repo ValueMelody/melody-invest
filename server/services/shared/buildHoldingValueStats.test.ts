@@ -12,11 +12,12 @@ jest.mock('models/dailyTickers', () => {
   }
 })
 
-const getByUK = async (date: string) => {
+const getByUK = async (entityId: number, date: string) => {
   if (date === '2111-11-11') return null
   const prices = await getNearestPricesByDateMock(date)
   return {
     id: 1,
+    entityId: 1,
     date,
     tickers: null,
     indicators: null,
@@ -47,7 +48,7 @@ describe('#calHoldingValueByDate', () => {
         ],
       },
     ]
-    const result = await calHoldingValueByDate('2111-11-11', holdings)
+    const result = await calHoldingValueByDate(1, '2111-11-11', holdings)
     expect(result).toBe(25679)
   })
 })
@@ -63,6 +64,7 @@ describe('#buildHoldingValueStats', () => {
       },
     ]
     const result = await buildHoldingValueStats(
+      1,
       '1990-01-01',
       '2000-12-31',
       100000,
@@ -99,6 +101,7 @@ describe('#buildHoldingValueStats', () => {
       },
     ]
     const result = await buildHoldingValueStats(
+      1,
       '2001-01-01',
       '2010-12-31',
       100000,
@@ -159,6 +162,7 @@ describe('#buildHoldingValueStats', () => {
       },
     ]
     const result = await buildHoldingValueStats(
+      1,
       '2001-01-01',
       '2010-12-31',
       100000,

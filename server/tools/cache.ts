@@ -1,11 +1,11 @@
 import * as adapterEnum from 'enums/adapter'
 
-export const generateDailyTickersKey = (date: string): string => {
-  return `${adapterEnum.CacheKey.DailyTickers}-[${date}]`
+export const generateDailyTickersKey = (entityId: number, date: string): string => {
+  return `${adapterEnum.CacheKey.DailyTickers}-[${entityId}+${date}]`
 }
 
-export const generateTickerPricesKey = (date: string): string => {
-  return `${adapterEnum.CacheKey.TickerPrices}-[${date}]`
+export const generateTickerPricesKey = (entityId: number, date: string): string => {
+  return `${adapterEnum.CacheKey.TickerPrices}-[${entityId}+${date}]`
 }
 
 export const generateSystemEndpointKey = (name: string): string => {

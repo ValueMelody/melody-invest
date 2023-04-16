@@ -6,6 +6,14 @@ beforeAll(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'trader_env.js',
   })
   await connection.seed.run({
@@ -51,13 +59,13 @@ describe('#getByPK', () => {
 
 describe('#getByUK', () => {
   test('could get by UK', async () => {
-    const env1 = await traderEnv.getByUK('2001-01-01', null)
+    const env1 = await traderEnv.getByUK(1, '2001-01-01', null)
     expect(env1?.id).toBe(1)
 
-    const env2 = await traderEnv.getByUK('2015-06-01', '1,2')
+    const env2 = await traderEnv.getByUK(1, '2015-06-01', '1,2')
     expect(env2?.id).toBe(3)
 
-    const env3 = await traderEnv.getByUK('2001-01-01', '1,2')
+    const env3 = await traderEnv.getByUK(1, '2001-01-01', '1,2')
     expect(env3).toBe(null)
   })
 })
@@ -83,6 +91,7 @@ describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await traderEnv.create({
+      entityId: 3,
       activeTotal: 100,
       name: '123',
       isSystem: false,
@@ -92,6 +101,7 @@ describe('#create', () => {
     await transaction.commit()
     const expected = {
       id: 4,
+      entityId: 3,
       activeTotal: 100,
       name: '123',
       isSystem: false,
@@ -108,6 +118,7 @@ describe('#createIfEmpty', () => {
   test('could return existing one', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await traderEnv.createIfEmpty({
+      entityId: 3,
       activeTotal: 100,
       name: '123',
       isSystem: false,
@@ -117,6 +128,7 @@ describe('#createIfEmpty', () => {
     await transaction.rollback()
     const expected = {
       id: 4,
+      entityId: 3,
       activeTotal: 100,
       name: '123',
       isSystem: false,
@@ -132,6 +144,7 @@ describe('#createIfEmpty', () => {
   test('could create new', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await traderEnv.createIfEmpty({
+      entityId: 2,
       activeTotal: 100,
       name: '123',
       isSystem: false,
@@ -141,6 +154,7 @@ describe('#createIfEmpty', () => {
     await transaction.commit()
     const expected = {
       id: 5,
+      entityId: 2,
       activeTotal: 100,
       name: '123',
       isSystem: false,

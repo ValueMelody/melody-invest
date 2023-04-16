@@ -8,14 +8,15 @@ import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
 
 export const calHoldingValueByDate = async (
+  entityId: number,
   date: string,
   holdings: interfaces.traderHoldingModel.Detail[], // order by date desc required
 ): Promise<number | null> => {
   const prices: interfaces.tickerDailyModel.TickerPrices = await cacheAdapter.returnBuild({
     cacheAge: '1d',
-    cacheKey: cacheTool.generateTickerPricesKey(date),
+    cacheKey: cacheTool.generateTickerPricesKey(entityId, date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(date, ['nearestPrices'])
+      const dailyTickers = await dailyTickersModel.getByUK(entityId, date, ['nearestPrices'])
       return dailyTickers?.nearestPrices || {}
     },
     preferLocal: true,
@@ -27,6 +28,7 @@ export const calHoldingValueByDate = async (
 }
 
 const buildHoldingValueStats = async (
+  entityId: number,
   startDate: string,
   endDate: string,
   initialValue: number,
@@ -44,19 +46,19 @@ const buildHoldingValueStats = async (
   oneYearTrends: number[];
   oneDecadeTrends: number[];
 }> => {
-  const totalValue = await calHoldingValueByDate(endDate, holdings)
+  const totalValue = await calHoldingValueByDate(entityId, endDate, holdings)
   const totalDays = dateTool.getDurationCount(startDate, endDate)
   const grossPercentNumber = totalValue
     ? generateTool.getChangePercent(totalValue, initialValue)
     : null
 
   const pastWeek = dateTool.getPreviousDate(endDate, 7)
-  const pastWeekValue = await calHoldingValueByDate(pastWeek, holdings)
+  const pastWeekValue = await calHoldingValueByDate(entityId, pastWeek, holdings)
 
   const twelveMonths = generateTool.getNumbersInRange(1, 12)
   const pastMonthValues = await runTool.asyncMap(twelveMonths, async (month: number) => {
     const date = dateTool.getPreviousDate(endDate, month * 30)
-    const value = await calHoldingValueByDate(date, holdings)
+    const value = await calHoldingValueByDate(entityId, date, holdings)
     return value
   })
 
@@ -78,7 +80,7 @@ const buildHoldingValueStats = async (
   const tenYears = generateTool.getNumbersInRange(1, 10)
   const tenYearValues = await runTool.asyncMap(tenYears, async (year: number) => {
     const date = dateTool.getPreviousDate(endDate, year * 365)
-    const value = await calHoldingValueByDate(date, holdings)
+    const value = await calHoldingValueByDate(entityId, date, holdings)
     return value
   })
   const oneDecadeTrends = tenYearValues.filter((num) => num !== null).reverse()

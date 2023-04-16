@@ -12,71 +12,79 @@ beforeEach(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'trader_env.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_pattern.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_holding.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'user.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_env_follower.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_follower.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_combo.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_combo_follower.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_env.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_pattern.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_pattern.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_holding.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_holding.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'user.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'user.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_env_follower.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_env_follower.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_follower.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_follower.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_combo.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_combo.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_combo_follower.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
@@ -241,9 +249,10 @@ describe('#deleteFollowedCombo', () => {
 
 describe('#createTraderCombo', () => {
   test('could create combo', async () => {
-    const result = await crudTraders.createTraderCombo(1, 'test combo', [2, 3])
+    const result = await crudTraders.createTraderCombo(1, 1, 'test combo', [2, 3])
     expect(result).toStrictEqual({
       id: 4,
+      entityId: 1,
       traderIds: [2, 3],
       isSystem: false,
       name: 'test combo',
@@ -253,9 +262,10 @@ describe('#createTraderCombo', () => {
   })
 
   test('could create combo if already exists', async () => {
-    const result = await crudTraders.createTraderCombo(1, 'test combo', [4, 5, 6])
+    const result = await crudTraders.createTraderCombo(1, 1, 'test combo', [4, 5, 6])
     expect(result).toStrictEqual({
       id: 2,
+      entityId: 1,
       traderIds: [4, 5, 6],
       isSystem: false,
       name: 'test2',
@@ -267,9 +277,10 @@ describe('#createTraderCombo', () => {
 
 describe('#createTraderEnv', () => {
   test('could create env', async () => {
-    const result = await crudTraders.createTraderEnv(1, 'test env', '2020-01-01', [2, 3])
+    const result = await crudTraders.createTraderEnv(1, 1, 'test env', '2020-01-01', [2, 3])
     expect(result).toStrictEqual({
       id: 4,
+      entityId: 1,
       tickerIds: [2, 3],
       startDate: '2020-01-01',
       isSystem: false,
@@ -281,9 +292,10 @@ describe('#createTraderEnv', () => {
   })
 
   test('could create env if already exists', async () => {
-    const result = await crudTraders.createTraderEnv(1, 'test env', '2012-01-01', null)
+    const result = await crudTraders.createTraderEnv(1, 2, 'test env', '2012-01-01', null)
     expect(result).toStrictEqual({
       id: 2,
+      entityId: 2,
       tickerIds: null,
       startDate: '2012-01-01',
       isSystem: false,

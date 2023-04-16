@@ -1,5 +1,6 @@
 export interface Record {
   id: number;
+  entityId: number;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -15,6 +16,7 @@ export interface Record {
 export interface Create {
   activationCode: string;
   activationSentAt: Date;
+  entityId: number;
   email: string;
   password: string;
   type: number;

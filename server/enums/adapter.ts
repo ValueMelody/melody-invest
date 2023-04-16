@@ -17,6 +17,7 @@ export const DatabaseTable = Object.freeze({
   User: 'user',
   UserPayment: 'user_payment',
   Email: 'email',
+  Entity: 'entity',
   Ticker: 'ticker',
   TickerDaily: 'ticker_daily',
   TickerYearly: 'ticker_yearly',

@@ -20,15 +20,23 @@ beforeAll(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
-    name: 'ticker_category.js',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
   })
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
-    name: 'ticker.js',
+    name: 'ticker_category.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'ticker_category.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'ticker.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
@@ -55,6 +63,7 @@ describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const info = {
+      entityId: 1,
       name: 'AMAZON',
       symbol: 'AMZN',
       region: 'US',
@@ -72,9 +81,10 @@ describe('#create', () => {
 
 describe('#getByUK', () => {
   test('could get by UK', async () => {
-    const result = await ticker.getByUK('US', 'MSFT')
+    const result = await ticker.getByUK(1, 'US', 'MSFT')
     expect(result).toStrictEqual({
       id: 2,
+      entityId: 1,
       symbol: 'MSFT',
       region: 'US',
       name: 'Microsoft Corp',
@@ -82,7 +92,7 @@ describe('#getByUK', () => {
       isDelisted: false,
       ...emptyProps,
     })
-    const empty = await ticker.getByUK('US', 'RANDOM')
+    const empty = await ticker.getByUK(1, 'US', 'RANDOM')
     expect(empty).toBe(null)
   })
 })
@@ -105,8 +115,8 @@ describe('#update', () => {
     const result = await ticker.update(3, info, transaction)
     await transaction.commit()
     const basic = { symbol: 'GOOG', region: 'US', name: 'Google', isDelisted: false, tickerCategoryId: null }
-    expect(result).toStrictEqual({ id: 3, ...info, ...basic })
-    const record = await ticker.getByUK('US', 'GOOG')
-    expect(record).toStrictEqual({ id: 3, ...info, ...basic })
+    expect(result).toStrictEqual({ id: 3, entityId: 2, ...info, ...basic })
+    const record = await ticker.getByUK(2, 'US', 'GOOG')
+    expect(record).toStrictEqual({ id: 3, entityId: 2, ...info, ...basic })
   })
 })

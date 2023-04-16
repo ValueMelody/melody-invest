@@ -524,6 +524,8 @@ export const calcDailyAvailableTickers = async (
   forceRecheck: boolean,
   startDate?: string,
 ) => {
+  const entityId = 1
+
   const lastPrices = await tickerDailyModel.getLatest(1)
   const lastPriceDate = lastPrices?.date || dateTool.getInitialDate()
   const lastCalculatedDate = forceRecheck
@@ -545,7 +547,7 @@ export const calcDailyAvailableTickers = async (
 
     const transaction = await databaseAdapter.createTransaction()
     try {
-      await dailyTickersModel.upsert(targetDate, {
+      await dailyTickersModel.upsert(entityId, targetDate, {
         tickers: dailyTickers,
         indicators,
         nearestPrices,

@@ -33,12 +33,14 @@ export const getByPK = async (
 }
 
 export const getByUK = async (
+  entityId: number,
   startDate: string,
   tickerIds: string | null,
 ): Promise<interfaces.traderEnvModel.Record | null> => {
   const env = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
+      { key: 'entityId', value: entityId },
       { key: 'startDate', value: startDate },
       { key: 'tickerIds', value: tickerIds || null, type: tickerIds ? '=' : 'IS' },
     ],
@@ -86,7 +88,7 @@ export const createIfEmpty = async (
   record: interfaces.traderEnvModel.Record;
   isNew: boolean;
 }> => {
-  const currentRecord = await getByUK(values.startDate, values.tickerIds)
+  const currentRecord = await getByUK(values.entityId, values.startDate, values.tickerIds)
   if (currentRecord) return { record: currentRecord, isNew: false }
 
   const created = await create(values, transaction)

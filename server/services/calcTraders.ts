@@ -62,12 +62,12 @@ const isActiveTraderEnv = async (env: interfaces.traderEnvModel.Record) => {
   return userPaymentModel.hasActiveUser(userIds)
 }
 
-const getCachedDailyTickers = async (date: string) => {
+const getCachedDailyTickers = async (entityId: number, date: string) => {
   return cacheAdapter.returnBuild({
     cacheAge: '1d',
-    cacheKey: cacheTool.generateDailyTickersKey(date),
+    cacheKey: cacheTool.generateDailyTickersKey(entityId, date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(date, ['tickers', 'indicators'])
+      const dailyTickers = await dailyTickersModel.getByUK(entityId, date, ['tickers', 'indicators'])
       return dailyTickers
     },
     preferLocal: true,
@@ -111,7 +111,10 @@ const calcTraderPerformance = async (
     while (tradeDate <= latestDate) {
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
-      const dailyTickersRecord: interfaces.dailyTickersModel.Record | null = await getCachedDailyTickers(tradeDate)
+      const dailyTickersRecord: interfaces.dailyTickersModel.Record | null = await getCachedDailyTickers(
+        env.entityId,
+        tradeDate,
+      )
 
       if (!dailyTickersRecord?.tickers) {
         tradeDate = nextDate
@@ -245,7 +248,7 @@ const calcTraderPerformance = async (
 
     const holdings = await traderHoldingModel.getAll(trader.id)
     const initialValue = constants.Trader.Initial.Cash
-    const stats = await buildHoldingValueStats(startedAt, latestDate, initialValue, holdings)
+    const stats = await buildHoldingValueStats(env.entityId, startedAt, latestDate, initialValue, holdings)
 
     await traderModel.update(trader.id, {
       estimatedAt: latestDate,

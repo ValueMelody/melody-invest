@@ -5,6 +5,7 @@ import * as dateTool from 'tools/date'
 import * as emailAdapter from 'adapters/email'
 import * as emailLogic from 'logics/email'
 import * as emailModel from 'models/email'
+import * as entityModel from 'models/entity'
 import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
 import * as helpers from '@shared/helpers'
@@ -99,19 +100,26 @@ export const createUser = async (
     const activationCode = generateTool.buildAccessCode()
     const activationSentAt = new Date()
 
-    const targetUser = !user
-      ? await userModel.create({
+    let targetUser
+
+    if (!user) {
+      const entity = await entityModel.create({}, transaction)
+      console.log(entity)
+      targetUser = await userModel.create({
         email,
+        entityId: entity.id,
         password: finalPass,
         activationCode,
         activationSentAt,
         type: constants.User.Type.Basic,
       }, transaction)
-      : await userModel.update(user.id, {
+    } else {
+      targetUser = await userModel.update(user.id, {
         password: finalPass,
         activationCode,
         activationSentAt,
       }, transaction)
+    }
 
     const subject = localeTool.getTranslation('email.activateUser')
     const content = emailLogic.buildActivateUserEmail(targetUser)
@@ -166,17 +174,18 @@ export const createUserToken = async (
 
   const refreshExpiresIn = remember ? '30d' : '12h'
   return buildUserToken(
-    { id: user.id, email, type: user.type },
+    { id: user.id, entityId: user.entityId, email, type: user.type },
     refreshExpiresIn,
   )
 }
 
 export const refreshAccessToken = async (
   id: number,
+  entityId: number,
   email: string,
   type: number,
 ): Promise<interfaces.response.AccessToken> => {
-  const auth = { id, email, type }
+  const auth = { id, entityId, email, type }
   const accessExpiresIn = adapterEnum.HostConfig.AccessExpiresIn
   const accessExpiresInUTC = dateTool.toTokenExpiresInISO(accessExpiresIn)
   const accessToken = generateTool.encodeJWT(auth, accessExpiresIn)
@@ -188,6 +197,7 @@ export const refreshAccessToken = async (
 
 export const createPayment = async (
   userId: number,
+  entityId: number,
   orderId: string,
   planType: number,
   stateCode: string,
@@ -268,7 +278,7 @@ export const createPayment = async (
 
   const refreshExpiresIn = '12h'
   return buildUserToken(
-    { id: userId, email: updatedUser.email, type: updatedUser.type },
+    { id: userId, entityId, email: updatedUser.email, type: updatedUser.type },
     refreshExpiresIn,
   )
 }

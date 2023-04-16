@@ -1,5 +1,6 @@
 export interface Auth {
   id: number;
+  entityId: number;
   email: string;
   type: number;
 }

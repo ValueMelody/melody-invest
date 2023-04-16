@@ -21,7 +21,7 @@ describe('#guestOrUser', () => {
   })
 
   test('could get user', () => {
-    const detail = { id: 1, email: 'test@email.com', type: 1 }
+    const detail = { id: 1, entityId: 1, email: 'test@email.com', type: 1 }
     const encode = generateTool.encodeJWT(detail, '12h')
     const next = jest.fn()
 
@@ -50,7 +50,7 @@ describe('#guestOrUser', () => {
 
 describe('#normalUser', () => {
   test('could get user', () => {
-    const detail = { id: 1, email: 'test@email.com', type: 1 }
+    const detail = { id: 1, entityId: 1, email: 'test@email.com', type: 1 }
     const encode = generateTool.encodeJWT(detail, '12h')
     const next = jest.fn()
 
@@ -91,7 +91,7 @@ describe('#normalUser', () => {
 
 describe('#authByRefreshToken', () => {
   test('could auth by refresh token', async () => {
-    const detail = { id: 1, email: 'test@email.com', type: 1 }
+    const detail = { id: 1, entityId: 1, email: 'test@email.com', type: 1 }
     const encode = generateTool.encodeJWT(detail, '12h', true)
     const next = jest.fn()
 

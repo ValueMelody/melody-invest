@@ -40,10 +40,11 @@ export const decodeJWT = (
   const secret = isRefreshToken ? adapterEnum.HostConfig.RefreshTokenSecret : adapterEnum.HostConfig.AccessTokenSecret
   const payload = jwt.verify(token, secret)
   const id = typeof payload === 'object' && payload.id
+  const entityId = typeof payload === 'object' && payload.entityId
   const email = typeof payload === 'object' && payload.email
   const type = typeof payload === 'object' && payload.type
   if (!id || !email || !type) return null
-  return { id, email, type }
+  return { id, entityId, email, type }
 }
 
 export const getNumbersInRange = (min: number, max: number): number[] => {

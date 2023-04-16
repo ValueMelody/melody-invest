@@ -9,6 +9,14 @@ beforeEach(async () => {
   const connection = database.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'trader_env.js',
   })
   await connection.seed.run({
@@ -39,7 +47,7 @@ describe('#findAll', () => {
 
 describe('#findOne', () => {
   test('could return null', async () => {
-    const result = await ticker.getByUK('US', 'AAPL')
+    const result = await ticker.getByUK(1, 'US', 'AAPL')
     expect(result).toBeNull()
   })
 })

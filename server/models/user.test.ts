@@ -3,6 +3,7 @@ import * as user from './user'
 
 const record1 = {
   id: 1,
+  entityId: 1,
   email: 'a@email.com',
   type: 1,
   password: 'abc',
@@ -17,6 +18,7 @@ const record1 = {
 
 const record2 = {
   id: 2,
+  entityId: 2,
   email: 'b@email.com',
   type: 1,
   password: 'aabbcc',
@@ -32,6 +34,14 @@ const record2 = {
 beforeAll(async () => {
   databaseAdapter.initConnection()
   const connection = databaseAdapter.getConnection()
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
     name: 'user.js',
@@ -85,12 +95,14 @@ describe('#create', () => {
       email: 'c@test.com',
       password: '123456789',
       type: 1,
+      entityId: 2,
       activationSentAt: new Date('2021-12-21'),
       activationCode: 'qwerty',
     }
     const created = await user.create(info, transaction)
     await transaction.commit()
     expect(created.id).toBe(4)
+    expect(created.entityId).toBe(2)
     expect(created.email).toBe(info.email)
     expect(created.password).toBe(info.password)
     expect(created.type).toBe(info.type)
@@ -100,6 +112,7 @@ describe('#create', () => {
 
     const record = await user.getByUK(info.email)
     expect(record?.id).toBe(created.id)
+    expect(record?.entityId).toBe(2)
     expect(record?.email).toBe(info.email)
     expect(record?.password).toBe(info.password)
     expect(record?.type).toBe(info.type)

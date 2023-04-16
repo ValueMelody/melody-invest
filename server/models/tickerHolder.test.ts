@@ -6,47 +6,55 @@ beforeAll(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'ticker_category.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'ticker.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_env.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_pattern.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'ticker_holder.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'ticker_category.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'ticker.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'ticker.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_env.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_env.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_pattern.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_pattern.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'ticker_holder.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',

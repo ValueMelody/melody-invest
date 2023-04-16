@@ -45,9 +45,9 @@ describe('#buildAccessCode', () => {
 
 describe('#encodeJWT', () => {
   test('could encode jwt', () => {
-    const first = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
-    const second = generate.encodeJWT({ id: 1, email: 'abc', type: 2 }, '30d')
-    const third = generate.encodeJWT({ id: 2, email: 'abc', type: 3 }, '30d')
+    const first = generate.encodeJWT({ id: 1, entityId: 1, email: 'abc', type: 1 }, '12h')
+    const second = generate.encodeJWT({ id: 1, entityId: 1, email: 'abc', type: 2 }, '30d')
+    const third = generate.encodeJWT({ id: 2, entityId: 2, email: 'abc', type: 3 }, '30d')
     expect(first.length).toBeTruthy()
     expect(second.length).toBeTruthy()
     expect(third.length).toBeTruthy()
@@ -59,16 +59,18 @@ describe('#encodeJWT', () => {
 
 describe('#decodeJWT', () => {
   test('could decode accessToken', () => {
-    const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h')
+    const jwt = generate.encodeJWT({ id: 1, entityId: 2, email: 'abc', type: 1 }, '12h')
     const result = generate.decodeJWT(jwt, false)
     expect(result?.id).toBe(1)
+    expect(result?.entityId).toBe(2)
     expect(result?.email).toBe('abc')
     expect(result?.type).toBe(1)
   })
   test('could decode refreshToken', () => {
-    const jwt = generate.encodeJWT({ id: 1, email: 'abc', type: 1 }, '12h', true)
+    const jwt = generate.encodeJWT({ id: 1, entityId: 1, email: 'abc', type: 1 }, '12h', true)
     const result = generate.decodeJWT(jwt, true)
     expect(result?.id).toBe(1)
+    expect(result?.entityId).toBe(1)
     expect(result?.email).toBe('abc')
     expect(result?.type).toBe(1)
   })
