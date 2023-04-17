@@ -30,17 +30,3 @@ export const fetchSystemPolicy = createAsyncThunk(
     }
   },
 )
-
-export const fetchSystemTopTraders = createAsyncThunk(
-  'system/fetchSystemTopTraders',
-  async (params, { rejectWithValue }) => {
-    const endpoint = `${routerEnum.Endpoint.Systems}/top-trader-profiles`
-
-    try {
-      const res: interfaces.response.TopTraderProfiles = await requestAdapter.sendGetRequest(endpoint)
-      return res
-    } catch (e) {
-      return rejectWithValue(e)
-    }
-  },
-)

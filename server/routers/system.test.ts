@@ -63,26 +63,6 @@ describe('#getPolicy', () => {
   })
 })
 
-describe('#getTopTraders', () => {
-  test('could call expected function', async () => {
-    const topType = mock<interfaces.response.TopTraderProfiles>({})
-    const tops = instance(topType)
-
-    const getTopTraderProfiles = jest.fn()
-    jest.spyOn(crudSystems, 'getTopTraderProfiles')
-      .mockImplementation(async () => {
-        getTopTraderProfiles()
-        return tops
-      })
-
-    await system.getTopTraders(instance(reqType), response)
-
-    expect(getTopTraderProfiles).toBeCalledTimes(1)
-    expect(resStatus).toBeCalledWith(200)
-    expect(resSend).toBeCalledWith(tops)
-  })
-})
-
 describe('#getDefaults', () => {
   test('could call expected function', async () => {
     const defaultType = mock<interfaces.response.SystemDefaults>({})
@@ -111,7 +91,6 @@ describe('#attachRoutes', () => {
     router.get = routerGet
     system.attachRoutes(router)
     expect(routerGet).toHaveBeenCalledWith('/policy/:type', system.getPolicy)
-    expect(routerGet).toHaveBeenCalledWith('/top-trader-profiles', system.getTopTraders)
     expect(routerGet).toHaveBeenCalledWith('/defaults', system.getDefaults)
   })
 })

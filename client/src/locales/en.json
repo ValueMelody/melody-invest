@@ -162,8 +162,6 @@
     "dashboard.newEnvDesc": "Build a new environment",
     "dashboard.newComboDesc": "Build a new combo",
 
-    "topProfiles.title": "Default Profiles",
-
     "ticker.delisted": "Delisted",
     "ticker.dailyPriceRange": "Mock daily price data is available on our platform between {{start}} and {{end}}",
     "ticker.quarterlyFinancialRange": "Mock quarterly financial data is available on our platform between {{start}} and {{end}}",

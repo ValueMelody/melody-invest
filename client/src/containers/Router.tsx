@@ -26,7 +26,6 @@ import SignUp from './accounts/SignUp'
 import Terms from './general/Terms'
 import TickerDetail from './traders/tickers/TickerDetail'
 import TickerList from './traders/tickers/TickerList'
-import TopProfiles from './traders/profiles/TopProfiles'
 
 const Router = () => {
   const isMaintaining = commonEnum.Env.IsMaintaining
@@ -59,10 +58,6 @@ const Router = () => {
           <Route
             path={routerEnum.Nav.Pricing}
             element={<Pricing />}
-          />
-          <Route
-            path={`${routerEnum.Nav.Traders}/profiles/tops`}
-            element={<TopProfiles />}
           />
           <Route
             path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}

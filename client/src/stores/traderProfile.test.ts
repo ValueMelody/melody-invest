@@ -17,7 +17,6 @@ describe('#store', () => {
     expect(store.getState().traderProfile).toStrictEqual({
       base: {},
       detail: {},
-      systemTops: undefined,
     })
   })
 
@@ -121,22 +120,6 @@ describe('#store', () => {
         }
       })
     await store.dispatch(actions.fetchTraderComboDetail(1))
-
-    expect(store.getState().traderProfile.base).toStrictEqual({
-      1: profile1,
-      2: profile2,
-      3: profile3,
-    })
-  })
-
-  test('could storeFromSystemTops from fetchSystemTopTraders', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: topProfiles,
-        }
-      })
-    await store.dispatch(actions.fetchSystemTopTraders())
 
     expect(store.getState().traderProfile.base).toStrictEqual({
       1: profile1,

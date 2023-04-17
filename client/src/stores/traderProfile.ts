@@ -2,7 +2,6 @@ import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { _resetForTest } from 'tools/store'
-import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderProfileBase {
   [traderId: number]: interfaces.response.TraderProfile;
@@ -15,13 +14,11 @@ export interface TraderProfileDetail {
 export interface TraderProfileState {
   base: TraderProfileBase;
   detail: TraderProfileDetail;
-  systemTops?: TopTraderProfileIds;
 }
 
 const initialState: TraderProfileState = {
   base: {},
   detail: {},
-  systemTops: undefined,
 }
 
 const storeFromDetailTops = (
@@ -46,21 +43,6 @@ const storeFromComboDetail = (
   profiles.forEach((profile) => {
     state.base[profile.trader.id] = profile
   })
-}
-
-const storeFromSystemTops = (
-  state: TraderProfileState,
-  action: PayloadAction<interfaces.response.TopTraderProfiles>,
-) => {
-  const profiles = [
-    ...action.payload.yearly, ...action.payload.pastYear, ...action.payload.pastQuarter,
-    ...action.payload.pastMonth, ...action.payload.pastWeek,
-  ]
-  profiles.forEach((profile) => {
-    state.base[profile.trader.id] = profile
-  })
-  const tops = stripTopProfiles(action.payload)
-  state.systemTops = tops
 }
 
 const storeFromUserOverall = (
@@ -97,7 +79,6 @@ export const traderProfileSlice = createSlice({
     builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
-    builder.addCase(actions.fetchSystemTopTraders.fulfilled, storeFromSystemTops)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.fetchTraderProfile.fulfilled, storeFromTraderProfile)
     builder.addCase(actions.createTraderProfile.fulfilled, storeFromTraderProfile)

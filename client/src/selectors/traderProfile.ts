@@ -21,15 +21,8 @@ const selectTraderProfileDetailById = (id?: number) => (
   return state.traderProfile.detail[id]
 }
 
-const selectSystemTopTraders = () => (
-  state: AppState,
-): TopTraderProfileIds | undefined => {
-  return state.traderProfile.systemTops
-}
-
 export {
   selectTraderProfileBaseDict,
   selectTraderProfileBaseById,
   selectTraderProfileDetailById,
-  selectSystemTopTraders,
 }

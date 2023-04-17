@@ -4,8 +4,6 @@ import * as interfaces from '@shared/interfaces'
 import * as policyModel from 'models/policy'
 import * as tickerModel from 'models/ticker'
 import * as traderEnvModel from 'models/traderEnv'
-import * as traderModel from 'models/trader'
-import buildTopTraderProfiles from './shared/buildTopTraderProfiles'
 
 const buildSystemPolicy = async (
   type: number,
@@ -46,25 +44,6 @@ export const getDefaults = async (
     cacheAge: '1d',
     cacheKey: cacheTool.generateSystemEndpointKey('defaults'),
     buildFunction: buildDefaults,
-    forceRecheck,
-  })
-}
-
-const buildCurrentTopTraderProfiles = async (): Promise<
-  interfaces.response.TopTraderProfiles
-> => {
-  const topTraders = await traderModel.getTops(5)
-  const topTraderProfiles = await buildTopTraderProfiles(topTraders)
-  return topTraderProfiles
-}
-
-export const getTopTraderProfiles = async (
-  forceRecheck: boolean = false,
-): Promise<interfaces.response.TopTraderProfiles> => {
-  return cacheAdapter.returnBuild({
-    cacheAge: '1d',
-    cacheKey: cacheTool.generateSystemEndpointKey('top-trader-profiles'),
-    buildFunction: buildCurrentTopTraderProfiles,
     forceRecheck,
   })
 }

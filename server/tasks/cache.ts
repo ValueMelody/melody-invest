@@ -6,7 +6,6 @@ export const generateSystemCaches = async () => {
   const forceRecheck = true
   try {
     await crudSystems.getDefaults(forceRecheck)
-    await crudSystems.getTopTraderProfiles(forceRecheck)
     await crudSystems.getSystemPolicy(constants.Content.PolicyType.Privacy, forceRecheck)
     await crudSystems.getSystemPolicy(constants.Content.PolicyType.TermsAndConditions, forceRecheck)
     console.info('System cache generated')
