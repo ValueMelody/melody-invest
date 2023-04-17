@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import contentReducer from './content'
 import globalReducer from './global'
-import tickerCategoryReducer from './tickerCategory'
 import tickerIdentityReducer from './tickerIdentity'
 import traderBehaviorReducer from './traderBehavior'
 import traderComboReducer from './traderCombo'
@@ -18,7 +17,6 @@ export const store = configureStore({
     traderEnv: traderEnvReducer,
     traderProfile: traderProfileReducer,
     traderBehavior: traderBehaviorReducer,
-    tickerCategory: tickerCategoryReducer,
     tickerIdentity: tickerIdentityReducer,
   },
   middleware: (getDefaultMddleWare) => getDefaultMddleWare({

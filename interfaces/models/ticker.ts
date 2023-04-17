@@ -5,7 +5,6 @@ export interface Record {
   region: string;
   name: string;
   isDelisted: boolean;
-  tickerCategoryId: number | null;
   firstPriceDate: string | null;
   lastPriceDate: string | null;
   firstEPSYear: string | null;
@@ -24,7 +23,6 @@ export interface Create {
   region: string;
   name: string;
   isDelisted: boolean;
-  tickerCategoryId: number | null;
 }
 
 export interface Update {

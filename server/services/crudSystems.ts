@@ -2,7 +2,6 @@ import * as cacheAdapter from 'adapters/cache'
 import * as cacheTool from 'tools/cache'
 import * as interfaces from '@shared/interfaces'
 import * as policyModel from 'models/policy'
-import * as tickerCategoryModel from 'models/tickerCategory'
 import * as tickerModel from 'models/ticker'
 import * as traderEnvModel from 'models/traderEnv'
 import * as traderModel from 'models/trader'
@@ -34,12 +33,9 @@ const buildDefaults = async (): Promise<
 
   const tickers = await tickerModel.getAll()
 
-  const categories = await tickerCategoryModel.getAll()
-
   return {
     tickers,
     traderEnvs: systemTraderEnvs,
-    tickerCategories: categories,
   }
 }
 

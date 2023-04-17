@@ -1,4 +1,3 @@
-import * as constants from '@shared/constants'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as interfaces from '@shared/interfaces'
@@ -279,7 +278,6 @@ export const syncAllEarnings = async (
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     if (startTickerId && ticker.id < startTickerId) return
     if (ticker.isDelisted) return
-    if (ticker.tickerCategoryId === constants.Trader.Initial.ETFCategoryId) return
 
     console.info(`checking ${ticker.id}`)
     const isYearSynced = ticker.lastEPSYear && ticker.lastEPSYear >= year
@@ -459,7 +457,6 @@ export const syncAllIncomes = async (
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     if (startTickerId && ticker.id < startTickerId) return
     if (ticker.isDelisted) return
-    if (ticker.tickerCategoryId === constants.Trader.Initial.ETFCategoryId) return
 
     console.info(`checking ${ticker.id}`)
     const isYearSynced = ticker.lastIncomeYear && ticker.lastIncomeYear >= year

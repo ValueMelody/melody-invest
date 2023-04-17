@@ -50,15 +50,6 @@ describe('#behaviorTitle', () => {
   })
 })
 
-describe('#tickerCategoryName', () => {
-  test('could parse category name', () => {
-    expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.tech' }))
-      .toBe(localeTool.t('tickerCategory.tech'))
-    expect(parseTool.tickerCategoryName({ id: 1, name: 'tickerCategory.utility' }))
-      .toBe(localeTool.t('tickerCategory.utility'))
-  })
-})
-
 describe('#behaviorDesc', () => {
   test('could parse behavior desc', () => {
     expect(parseTool.behaviorDesc('tickerMaxPercent')).toBe(localeTool.t('behaviorDesc.tickerMaxPercent'))

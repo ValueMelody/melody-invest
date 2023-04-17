@@ -40,7 +40,6 @@ describe('#store', () => {
               { ...instance(tickerType), id: 3 },
             ],
             traderEnvs: [],
-            tickerCategories: [],
           },
         }
       })

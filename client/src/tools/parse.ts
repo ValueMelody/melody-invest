@@ -48,12 +48,6 @@ export const behaviorDesc = (
   return localeTool.t(`behaviorDesc.${behavior}`)
 }
 
-export const tickerCategoryName = (
-  tickerCategory: interfaces.tickerCategoryModel.Record,
-): string => {
-  return localeTool.t(tickerCategory.name)
-}
-
 export const traderEnvName = (
   traderEnv: interfaces.traderEnvModel.Record,
 ): string | null => {

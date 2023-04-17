@@ -22,7 +22,6 @@ describe('DatabaseTable', () => {
     expect(adapter.DatabaseTable.TickerYearly).toBeDefined()
     expect(adapter.DatabaseTable.TickerQuarterly).toBeDefined()
     expect(adapter.DatabaseTable.TickerHolder).toBeDefined()
-    expect(adapter.DatabaseTable.TickerCategory).toBeDefined()
     expect(adapter.DatabaseTable.IndicatorYearly).toBeDefined()
     expect(adapter.DatabaseTable.IndicatorQuarterly).toBeDefined()
     expect(adapter.DatabaseTable.IndicatorMonthly).toBeDefined()

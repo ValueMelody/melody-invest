@@ -40,7 +40,6 @@ describe('#store', () => {
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
-            tickerCategories: [],
           },
         }
       })
@@ -121,7 +120,6 @@ describe('#store', () => {
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
-            tickerCategories: [],
           },
         }
       })
@@ -153,7 +151,6 @@ describe('#store', () => {
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
-            tickerCategories: [],
           },
         }
       })
@@ -184,7 +181,6 @@ describe('#store', () => {
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
-            tickerCategories: [],
           },
         }
       })

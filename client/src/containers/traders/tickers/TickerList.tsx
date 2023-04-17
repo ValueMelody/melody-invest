@@ -7,7 +7,6 @@ import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { TextInput } from 'flowbite-react'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
-import VariationList from 'containers/traders/elements/VariationList'
 import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import useShowMore from 'hooks/useShowMore'
@@ -31,29 +30,12 @@ const TickerList = () => {
     more: 100,
   })
 
-  const [selectedCategory, setSelectedCategory] = useState(0)
   const [searchText, setSearchText] = useState('')
 
   const tickers = useSelector(selectors.selectTickerIdentityBases())
-  const categories = useSelector(selectors.selectTickerCategoryBases())
 
-  const availableTickers = tickers.filter((ticker) => {
-    const matchCategory = !selectedCategory || ticker.tickerCategoryId === selectedCategory
-    const matchSearch = isSearchedTicker(ticker, searchText)
-    return matchCategory && matchSearch
-  })
+  const availableTickers = tickers.filter((ticker) => isSearchedTicker(ticker, searchText))
   const displayedTickers = availableTickers.slice(0, displayedTotal)
-
-  const categoryOptions = categories.map((category) => ({
-    label: localeTool.t(category.name),
-    value: category.id,
-    onClick: () => setSelectedCategory(category.id),
-  }))
-  const allOption = {
-    label: localeTool.t('tickerCategory.all'),
-    value: 0,
-    onClick: () => setSelectedCategory(0),
-  }
 
   const handleClickTicker = (tickerId: number) => {
     const url = routerTool.tickerDetailRoute(1, tickerId)
@@ -92,18 +74,6 @@ const TickerList = () => {
         </section>
         {displayedTotal < availableTickers.length && renderShowMoreButton()}
       </section>
-      <aside className='page-aside'>
-        <h1 className='mb-4 font-bold'>
-          {localeTool.t('tickerList.categories')}
-        </h1>
-        <VariationList
-          options={[
-            allOption,
-            ...categoryOptions,
-          ]}
-          activeValue={selectedCategory}
-        />
-      </aside>
     </section>
   )
 }

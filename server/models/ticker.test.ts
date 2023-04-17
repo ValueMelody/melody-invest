@@ -28,14 +28,6 @@ beforeAll(async () => {
   })
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
-    name: 'ticker_category.js',
-  })
-  await connection.seed.run({
-    directory: './server/migrations/test-seeds',
-    specific: 'ticker_category.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
     name: 'ticker.js',
   })
   await connection.seed.run({
@@ -67,7 +59,6 @@ describe('#create', () => {
       name: 'AMAZON',
       symbol: 'AMZN',
       region: 'US',
-      tickerCategoryId: 2,
       isDelisted: false,
     }
     const result = await ticker.create(info, transaction)
@@ -88,7 +79,6 @@ describe('#getByUK', () => {
       symbol: 'MSFT',
       region: 'US',
       name: 'Microsoft Corp',
-      tickerCategoryId: 1,
       isDelisted: false,
       ...emptyProps,
     })
@@ -114,7 +104,7 @@ describe('#update', () => {
     }
     const result = await ticker.update(3, info, transaction)
     await transaction.commit()
-    const basic = { symbol: 'GOOG', region: 'US', name: 'Google', isDelisted: false, tickerCategoryId: null }
+    const basic = { symbol: 'GOOG', region: 'US', name: 'Google', isDelisted: false }
     expect(result).toStrictEqual({ id: 3, entityId: 2, ...info, ...basic })
     const record = await ticker.getByUK(2, 'US', 'GOOG')
     expect(record).toStrictEqual({ id: 3, entityId: 2, ...info, ...basic })
