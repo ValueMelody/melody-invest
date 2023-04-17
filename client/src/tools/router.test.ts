@@ -71,12 +71,6 @@ describe('#dashboardRoute', () => {
   })
 })
 
-describe('#topProfilesRoute', () => {
-  test('could get correct url for top profiles route', () => {
-    expect(routerTool.topProfilesRoute()).toBe('/traders/profiles/tops')
-  })
-})
-
 describe('#signInRoute', () => {
   test('could get correct url for sign in route', () => {
     expect(routerTool.signInRoute()).toBe('/sign-in')

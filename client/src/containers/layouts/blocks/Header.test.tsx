@@ -16,11 +16,6 @@ describe('#Header', () => {
 
     render(<Header />, { history })
 
-    const topProfilesText = localeTool.t('topProfiles.title')
-    const topProfilesButton = screen.getByText(topProfilesText)
-    fireEvent.click(topProfilesButton)
-    expect(history.location.pathname).toBe(routerTool.topProfilesRoute())
-
     const behaviorsText = localeTool.t('tradeBehaviors.title')
     const behaviorsButton = screen.getByText(behaviorsText)
     fireEvent.click(behaviorsButton)

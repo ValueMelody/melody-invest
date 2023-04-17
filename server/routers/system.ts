@@ -16,11 +16,6 @@ export const getPolicy = async (req: Request, res: Response) => {
   return res.status(200).send(policy)
 }
 
-export const getTopTraders = async (req: Request, res: Response) => {
-  const tops = await crudSystems.getTopTraderProfiles()
-  return res.status(200).send(tops)
-}
-
 export const getDefaults = async (req: Request, res: Response) => {
   const defaults = await crudSystems.getDefaults()
 
@@ -29,6 +24,5 @@ export const getDefaults = async (req: Request, res: Response) => {
 
 export const attachRoutes = (router: Router) => {
   router.get('/policy/:type', getPolicy)
-  router.get('/top-trader-profiles', getTopTraders)
   router.get('/defaults', getDefaults)
 }

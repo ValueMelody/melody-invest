@@ -2,7 +2,7 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import {
-  ArrowLeftIcon, Bars3Icon, BookmarkIcon, ChartBarIcon, HomeIcon,
+  ArrowLeftIcon, Bars3Icon, BookmarkIcon, HomeIcon,
   TableCellsIcon, TicketIcon, UserCircleIcon,
 } from '@heroicons/react/24/solid'
 import { Button, Sidebar } from 'flowbite-react'
@@ -27,14 +27,6 @@ const LeftLinks = ({
         className={headerClass}
         route={routerTool.rootRoute()}
         icon={HomeIcon}
-        onClick={onClick}
-      />
-      <HeaderLink
-        isActive={location.pathname === routerTool.topProfilesRoute()}
-        className={headerClass}
-        route={routerTool.topProfilesRoute()}
-        title={localeTool.t('topProfiles.title')}
-        icon={ChartBarIcon}
         onClick={onClick}
       />
       <HeaderLink

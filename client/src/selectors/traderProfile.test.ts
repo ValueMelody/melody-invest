@@ -31,7 +31,6 @@ const trader = {
     2: detail2,
     3: detail3,
   },
-  systemTops: instance(mock<TopTraderProfileIds>({})),
 }
 
 when(type.traderProfile).thenReturn(trader)
@@ -56,11 +55,5 @@ describe('#selectTraderProfileDetailById', () => {
     expect(traderProfile.selectTraderProfileDetailById(1)(stateInstance)).toStrictEqual(detail1)
     expect(traderProfile.selectTraderProfileDetailById(3)(stateInstance)).toStrictEqual(detail3)
     expect(traderProfile.selectTraderProfileDetailById(undefined)(stateInstance)).toBeUndefined()
-  })
-})
-
-describe('#selectSystemTopTraders', () => {
-  test('could select system top traders', () => {
-    expect(traderProfile.selectSystemTopTraders()(stateInstance)).toStrictEqual(trader.systemTops)
   })
 })
