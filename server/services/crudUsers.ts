@@ -103,8 +103,9 @@ export const createUser = async (
     let targetUser
 
     if (!user) {
-      const entity = await entityModel.create({}, transaction)
-      console.log(entity)
+      const entity = await entityModel.create({
+        dataKey: null, isValidKey: null,
+      }, transaction)
       targetUser = await userModel.create({
         email,
         entityId: entity.id,

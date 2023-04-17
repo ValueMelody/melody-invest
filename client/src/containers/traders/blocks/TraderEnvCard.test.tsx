@@ -9,6 +9,7 @@ import { userSlice } from 'stores/user'
 
 const traderEnv = {
   id: 123,
+  entityId: 1,
   name: 'test env',
   isSystem: false,
   startDate: '2001-01-02',

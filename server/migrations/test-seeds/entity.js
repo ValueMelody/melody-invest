@@ -1,13 +1,13 @@
 exports.seed = (knex) => {
   return knex('entity').insert([
     {
-      id: 1,
+      dataKey: null,
     },
     {
-      id: 2,
+      dataKey: null,
     },
     {
-      id: 3,
+      dataKey: null,
     },
   ])
 }

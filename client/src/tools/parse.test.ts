@@ -71,33 +71,22 @@ describe('#behaviorDesc', () => {
 describe('#traderEnvName', () => {
   test('could parse trader env name', () => {
     expect(parseTool.traderEnvName({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1,
+      entityId: 1,
+      isSystem: true,
+      name: 'traderEnv.default',
+      activeTotal: 100,
+      startDate: '2000-01-01',
+      tickerIds: null,
     })).toBe(localeTool.t('traderEnv.default'))
     expect(parseTool.traderEnvName({
-      id: 1, isSystem: true, name: '', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1, entityId: 1, isSystem: true, name: '', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
     })).toBe('')
     expect(parseTool.traderEnvName({
-      id: 1, isSystem: false, name: 'test1', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1, entityId: 1, isSystem: false, name: 'test1', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
     })).toBe('test1')
     expect(parseTool.traderEnvName({
-      id: 1, isSystem: false, name: 'test2', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
-    })).toBe('test2')
-  })
-})
-
-describe('#traderEnvName', () => {
-  test('could parse trader env name', () => {
-    expect(parseTool.traderEnvName({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
-    })).toBe(localeTool.t('traderEnv.default'))
-    expect(parseTool.traderEnvName({
-      id: 1, isSystem: true, name: '', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
-    })).toBe('')
-    expect(parseTool.traderEnvName({
-      id: 1, isSystem: false, name: 'test1', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
-    })).toBe('test1')
-    expect(parseTool.traderEnvName({
-      id: 1, isSystem: false, name: 'test2', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1, entityId: 1, isSystem: false, name: 'test2', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
     })).toBe('test2')
   })
 })
@@ -105,10 +94,22 @@ describe('#traderEnvName', () => {
 describe('#traderEnvStartDate', () => {
   test('could parse trader env start date', () => {
     expect(parseTool.traderEnvStartDate({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1,
+      entityId: 1,
+      isSystem: true,
+      name: 'traderEnv.default',
+      activeTotal: 100,
+      startDate: '2000-01-01',
+      tickerIds: null,
     })).toBe(localeTool.t('traderEnv.startAt', { date: '2000-01-01' }))
     expect(parseTool.traderEnvStartDate({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2002-02-02', tickerIds: null,
+      id: 1,
+      entityId: 1,
+      isSystem: true,
+      name: 'traderEnv.default',
+      activeTotal: 100,
+      startDate: '2002-02-02',
+      tickerIds: null,
     })).toBe(localeTool.t('traderEnv.startAt', { date: '2002-02-02' }))
   })
 })
@@ -116,13 +117,31 @@ describe('#traderEnvStartDate', () => {
 describe('#traderEnvTickers', () => {
   test('could parse trader env start date', () => {
     expect(parseTool.traderEnvTickers({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2000-01-01', tickerIds: null,
+      id: 1,
+      entityId: 1,
+      isSystem: true,
+      name: 'traderEnv.default',
+      activeTotal: 100,
+      startDate: '2000-01-01',
+      tickerIds: null,
     })).toBe(localeTool.t('traderEnv.allTickers'))
     expect(parseTool.traderEnvTickers({
-      id: 1, isSystem: true, name: 'traderEnv.default', activeTotal: 100, startDate: '2002-02-02', tickerIds: [111],
+      id: 1,
+      entityId: 1,
+      isSystem: true,
+      name: 'traderEnv.default',
+      activeTotal: 100,
+      startDate: '2002-02-02',
+      tickerIds: [111],
     })).toBe(localeTool.t('traderEnv.selectedTickers', { num: 1 }))
     expect(parseTool.traderEnvTickers({
-      id: 1, isSystem: false, name: 'default', activeTotal: 100, startDate: '2002-02-02', tickerIds: [1, 2, 3, 4, 5],
+      id: 1,
+      entityId: 1,
+      isSystem: false,
+      name: 'default',
+      activeTotal: 100,
+      startDate: '2002-02-02',
+      tickerIds: [1, 2, 3, 4, 5],
     })).toBe(localeTool.t('traderEnv.selectedTickers', { num: 5 }))
   })
 })
@@ -134,30 +153,13 @@ describe('#profileName', () => {
   })
 })
 
-describe('#traderComboName', () => {
-  test('could parse trader combo name', () => {
-    expect(parseTool.traderComboName({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [],
-    })).toBe(localeTool.t('systemCombo.-1'))
-    expect(parseTool.traderComboName({
-      id: 1, isSystem: true, name: '', traderIds: [],
-    })).toBe('')
-    expect(parseTool.traderComboName({
-      id: 1, isSystem: false, name: 'test1', traderIds: [],
-    })).toBe('test1')
-    expect(parseTool.traderComboName({
-      id: 1, isSystem: false, name: 'test2', traderIds: [],
-    })).toBe('test2')
-  })
-})
-
 describe('#traderComboTraders', () => {
   test('could parse trader combo selected traders', () => {
     expect(parseTool.traderComboTraders({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [],
+      id: 1, entityId: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [],
     })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 0 }))
     expect(parseTool.traderComboTraders({
-      id: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [1, 2],
+      id: 1, entityId: 1, isSystem: true, name: 'systemCombo.-1', traderIds: [1, 2],
     })).toBe(localeTool.t('traderCombo.selectedTraders', { num: 2 }))
   })
 })
