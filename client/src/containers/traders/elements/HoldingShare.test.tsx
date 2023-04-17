@@ -11,7 +11,6 @@ describe('#HoldingShare', () => {
     symbol: 'AAPL',
     region: 'US',
     name: 'Apple',
-    tickerCategoryId: 3,
     isDelisted: false,
     firstPriceDate: null,
     lastPriceDate: null,

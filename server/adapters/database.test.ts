@@ -25,10 +25,6 @@ beforeEach(async () => {
   })
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
-    name: 'ticker_category.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
     name: 'ticker.js',
   })
 })

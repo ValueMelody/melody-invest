@@ -23,7 +23,6 @@ export const DatabaseTable = Object.freeze({
   TickerYearly: 'ticker_yearly',
   TickerQuarterly: 'ticker_quarterly',
   TickerHolder: 'ticker_holder',
-  TickerCategory: 'ticker_category',
   IndicatorYearly: 'indicator_yearly',
   IndicatorQuarterly: 'indicator_quarterly',
   IndicatorMonthly: 'indicator_monthly',

@@ -1,4 +1,3 @@
-import * as tickerCategoryModel from './models/tickerCategory'
 import * as tickerModel from './models/ticker'
 import * as traderComboModel from './models/traderCombo'
 import * as traderEnvModel from './models/traderEnv'
@@ -40,7 +39,6 @@ export interface TopTraderProfiles {
 export interface SystemDefaults {
   traderEnvs: traderEnvModel.Record[];
   tickers: tickerModel.Record[];
-  tickerCategories: tickerCategoryModel.Record[];
 }
 
 export interface UserOverall {

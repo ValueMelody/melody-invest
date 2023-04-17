@@ -8,7 +8,6 @@ import * as indicatorYearlyModel from './models/indicatorYearly'
 import * as policyModel from './models/policy'
 import * as request from './request'
 import * as response from './response'
-import * as tickerCategoryModel from './models/tickerCategory'
 import * as tickerDailyModel from './models/tickerDaily'
 import * as tickerHolderModel from './models/tickerHolder'
 import * as tickerModel from './models/ticker'
@@ -33,7 +32,6 @@ export {
   tickerQuarterlyModel,
   tickerYearlyModel,
   tickerHolderModel,
-  tickerCategoryModel,
   traderModel,
   traderEnvModel,
   traderEnvFollowerModel,

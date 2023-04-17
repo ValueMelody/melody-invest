@@ -168,7 +168,6 @@
     "ticker.dailyPriceRange": "Mock daily price data is available on our platform between {{start}} and {{end}}",
     "ticker.quarterlyFinancialRange": "Mock quarterly financial data is available on our platform between {{start}} and {{end}}",
     "ticker.yearlyFinancialRange": "Mock yearly financial data is available on our platform between {{start}} and {{end}}",
-    "tickerList.categories": "Stock Categories",
 
     "holdingCard.date": "Date",
     "holdingCard.cash": "Mock Cash",
@@ -178,20 +177,6 @@
     "holdingCard.totalValue": "Total Mock Value",
 
     "holdingShare.new": "New",
-
-    "tickerCategory.all": "All",
-    "tickerCategory.tech": "Technology",
-    "tickerCategory.consumerCyclical": "Consumer Cyclical",
-    "tickerCategory.communication": "Communication Services",
-    "tickerCategory.consumerDefensive": "Consumer Defensive",
-    "tickerCategory.financial": "Financial Services",
-    "tickerCategory.health": "Healthcare",
-    "tickerCategory.industry": "Industrials",
-    "tickerCategory.energy": "Energy",
-    "tickerCategory.utility": "Utilities",
-    "tickerCategory.material": "Basic Materials",
-    "tickerCategory.realEstate": "Real Estate",
-    "tickerCategory.etf": "ETF",
 
     "tradeBehaviors.title": "Provided Behaviors",
     "tradeBehaviors.type": "Type of Trade Behaviors",

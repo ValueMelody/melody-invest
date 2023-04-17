@@ -18,9 +18,7 @@ exports.up = (knex) => {
       table.specificType('lastIncomeYear', 'CHAR(4)')
       table.specificType('firstIncomeQuarter', 'CHAR(7)')
       table.specificType('lastIncomeQuarter', 'CHAR(7)')
-      table.integer('tickerCategoryId')
       table.unique(['entityId', 'symbol', 'region'], 'ticker_ukey')
-      table.foreign('tickerCategoryId').references('id').inTable('ticker_category')
     })
 }
 
