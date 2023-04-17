@@ -7,6 +7,7 @@ import { Knex } from 'knex'
 const TableName = adapterEnum.DatabaseTable.Ticker
 
 export const getByUK = async (
+  entityId: number,
   region: string,
   symbol: string,
 ): Promise<interfaces.tickerModel.Record | null> => {
@@ -16,6 +17,7 @@ export const getByUK = async (
   const ticker = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
+      { key: 'entityId', value: entityId },
       { key: 'region', value: tickerRegion },
       { key: 'symbol', value: tickerSymbol },
     ],

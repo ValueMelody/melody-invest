@@ -1,5 +1,6 @@
 export interface Record {
   id: number;
+  entityId: number;
   traderIds: number[];
 }
 
@@ -14,5 +15,6 @@ export interface Raw {
 }
 
 export interface Create {
+  entityId: number;
   traderIds: string;
 }

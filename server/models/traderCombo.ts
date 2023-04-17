@@ -26,11 +26,13 @@ export const getByPK = async (
 }
 
 export const getByUK = async (
+  entityId: number,
   traderIds: string,
 ): Promise<interfaces.traderComboModel.Record | null> => {
   const combo = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
+      { key: 'entityId', value: entityId },
       { key: 'traderIds', value: traderIds },
     ],
   })
@@ -68,7 +70,7 @@ export const createIfEmpty = async (
   record: interfaces.traderComboModel.Record;
   isNew: boolean;
 }> => {
-  const currentRecord = await getByUK(values.traderIds)
+  const currentRecord = await getByUK(values.entityId, values.traderIds)
   if (currentRecord) {
     return {
       record: currentRecord,

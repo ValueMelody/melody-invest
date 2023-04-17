@@ -353,14 +353,14 @@ describe('#createEnv', () => {
 
     const createTraderEnv = jest.fn()
     jest.spyOn(crudTraders, 'createTraderEnv')
-      .mockImplementation(async (id, name, startDate, tickerIds) => {
-        createTraderEnv(id, name, startDate, tickerIds)
+      .mockImplementation(async (id, entityId, name, startDate, tickerIds) => {
+        createTraderEnv(id, entityId, name, startDate, tickerIds)
         return env
       })
 
     const request = instance(reqType)
     request.body = {
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 2 },
       name: 'test ',
       startDate: '2020-01-01',
       tickerIds: [1, 2, 3],
@@ -368,7 +368,7 @@ describe('#createEnv', () => {
 
     await traders.createEnv(request, response)
 
-    expect(createTraderEnv).toBeCalledWith(1, 'test', '2020-01-01', [1, 2, 3])
+    expect(createTraderEnv).toBeCalledWith(1, 2, 'test', '2020-01-01', [1, 2, 3])
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(env)
   })
@@ -431,21 +431,21 @@ describe('#createCombo', () => {
 
     const createTraderCombo = jest.fn()
     jest.spyOn(crudTraders, 'createTraderCombo')
-      .mockImplementation(async (id, name, traderIds) => {
-        createTraderCombo(id, name, traderIds)
+      .mockImplementation(async (id, entityId, name, traderIds) => {
+        createTraderCombo(id, entityId, name, traderIds)
         return combo
       })
 
     const request = instance(reqType)
     request.body = {
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 2 },
       name: 'test ',
       traderIds: [1, 2, 3],
     }
 
     await traders.createCombo(request, response)
 
-    expect(createTraderCombo).toBeCalledWith(1, 'test', [1, 2, 3])
+    expect(createTraderCombo).toBeCalledWith(1, 2, 'test', [1, 2, 3])
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(combo)
   })

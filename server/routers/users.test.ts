@@ -161,8 +161,8 @@ describe('#createPayment', () => {
 
     const createPayment = jest.fn()
     jest.spyOn(crudUsers, 'createPayment')
-      .mockImplementation(async (userId, orderId, planType, stateCode, provinceCode) => {
-        createPayment(userId, orderId, planType, stateCode, provinceCode)
+      .mockImplementation(async (userId, entityId, orderId, planType, stateCode, provinceCode) => {
+        createPayment(userId, entityId, orderId, planType, stateCode, provinceCode)
         return token
       })
 
@@ -172,12 +172,12 @@ describe('#createPayment', () => {
       planType: '2',
       stateCode: 'CA',
       provinceCode: 'ON',
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 1 },
     }
 
     await users.createPayment(request, response)
 
-    expect(createPayment).toBeCalledWith(1, '123456', 2, 'CA', 'ON')
+    expect(createPayment).toBeCalledWith(1, 1, '123456', 2, 'CA', 'ON')
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(token)
   })
@@ -188,8 +188,8 @@ describe('#createPayment', () => {
 
     const createPayment = jest.fn()
     jest.spyOn(crudUsers, 'createPayment')
-      .mockImplementation(async (userId, orderId, planType, stateCode, provinceCode) => {
-        createPayment(userId, orderId, planType, stateCode, provinceCode)
+      .mockImplementation(async (userId, entityId, orderId, planType, stateCode, provinceCode) => {
+        createPayment(userId, entityId, orderId, planType, stateCode, provinceCode)
         return token
       })
 
@@ -199,12 +199,12 @@ describe('#createPayment', () => {
       planType: '2',
       stateCode: '',
       provinceCode: '',
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 1 },
     }
 
     await users.createPayment(request, response)
 
-    expect(createPayment).toBeCalledWith(1, '123456', 2, null, null)
+    expect(createPayment).toBeCalledWith(1, 1, '123456', 2, null, null)
     expect(resStatus).toBeCalledWith(201)
     expect(resSend).toBeCalledWith(token)
   })
@@ -216,7 +216,7 @@ describe('#createPayment', () => {
       planType: '5',
       stateCode: 'CA',
       provinceCode: 'ON',
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 1 },
     }
 
     await expect(async () => await users.createPayment(request, response)).rejects.toBe(errorEnum.Default.Forbidden)
@@ -228,7 +228,7 @@ describe('#createPayment', () => {
       planType: '2',
       stateCode: 'CA',
       provinceCode: 'ON',
-      auth: { id: 1 },
+      auth: { id: 1, entityId: 1 },
     }
 
     await expect(async () => await users.createPayment(request, response)).rejects.toBe(errorEnum.Default.Forbidden)
@@ -420,19 +420,19 @@ describe('#refreshToken', () => {
     const refreshToken = jest.fn()
     const tokenType = mock<interfaces.response.AccessToken>({})
     jest.spyOn(crudUsers, 'refreshAccessToken')
-      .mockImplementation(async (id, email, type) => {
-        refreshToken(id, email, type)
+      .mockImplementation(async (id, entityId, email, type) => {
+        refreshToken(id, entityId, email, type)
         return instance(tokenType)
       })
 
     const request = instance(reqType)
     request.body = {
-      auth: { id: 1, email: 'test@email.com', type: 2 },
+      auth: { id: 1, entityId: 2, email: 'test@email.com', type: 2 },
     }
 
     await users.refreshToken(request, response)
 
-    expect(refreshToken).toBeCalledWith(1, 'test@email.com', 2)
+    expect(refreshToken).toBeCalledWith(1, 2, 'test@email.com', 2)
     expect(resStatus).toBeCalledWith(200)
     expect(resSend).toBeCalledWith(instance(tokenType))
   })

@@ -20,6 +20,7 @@ jest.mock('selectors', () => {
 
 const traderCombo = {
   id: 123,
+  entityId: 1,
   name: 'test combo',
   traderIds: [2, 3, 4, 5, 6],
   isSystem: false,

@@ -7,6 +7,14 @@ beforeAll(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'policy.js',
   })
   await connection.seed.run({

@@ -63,7 +63,7 @@ export const createPayment = async (req: Request, res: Response) => {
   if (!orderId || !isCorrectPlanType) throw errorEnum.Default.Forbidden
 
   const auth: interfaces.request.Auth = req.body.auth
-  const userToken = await crudUsers.createPayment(auth.id, orderId, planType, stateCode, provinceCode)
+  const userToken = await crudUsers.createPayment(auth.id, auth.entityId, orderId, planType, stateCode, provinceCode)
   return res.status(201).send(userToken)
 }
 
@@ -116,7 +116,7 @@ export const resetPassword = async (req: Request, res: Response) => {
 
 export const refreshToken = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
-  const tokens = await crudUsers.refreshAccessToken(auth.id, auth.email, auth.type)
+  const tokens = await crudUsers.refreshAccessToken(auth.id, auth.entityId, auth.email, auth.type)
   return res.status(200).send(tokens)
 }
 

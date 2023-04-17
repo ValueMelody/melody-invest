@@ -133,7 +133,7 @@ export const createEnv = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
 
   const traderEnv = await crudTraders.createTraderEnv(
-    auth.id, parsedName, startDate, tickerIds,
+    auth.id, auth.entityId, parsedName, startDate, tickerIds,
   )
   return res.status(201).send(traderEnv)
 }
@@ -146,7 +146,7 @@ export const createCombo = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
 
   const traderCombo = await crudTraders.createTraderCombo(
-    auth.id, parsedName, traderIds,
+    auth.id, auth.entityId, parsedName, traderIds,
   )
   return res.status(201).send(traderCombo)
 }

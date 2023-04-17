@@ -202,6 +202,7 @@ export const getComboDetail = async (
   const latestDate = await dailyTickersModel.getLatestDate()
   const startDate = holdings.length ? holdings[holdings.length - 1].date : latestDate
   const stats = await buildHoldingValueStats(
+    combo.entityId,
     startDate,
     latestDate,
     constants.Trader.Initial.Cash * traders.length,
@@ -224,6 +225,7 @@ export const getComboDetail = async (
 
 export const createTraderEnv = async (
   userId: number,
+  entityId: number,
   name: string,
   startDate: string,
   tickerIds: number[] | null,
@@ -234,6 +236,7 @@ export const createTraderEnv = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     const envResult = await traderEnvModel.createIfEmpty({
+      entityId,
       startDate,
       tickerIds: tickerIdsAsString,
       name: null,
@@ -266,6 +269,7 @@ export const createTraderEnv = async (
 
 export const createTraderCombo = async (
   userId: number,
+  entityId: number,
   name: string,
   traderIds: number[],
 ): Promise<interfaces.traderComboModel.Identity> => {
@@ -274,6 +278,7 @@ export const createTraderCombo = async (
   const transaction = await databaseAdapter.createTransaction()
   try {
     const combo = await traderComboModel.createIfEmpty({
+      entityId,
       traderIds: traderIdsAsString,
     }, transaction)
 

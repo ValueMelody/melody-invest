@@ -80,13 +80,6 @@ export const profileName = (
   return `${localeTool.t('entity.profile')} #${traderPatternId}`
 }
 
-export const traderComboName = (
-  traderCombo: interfaces.traderComboModel.Identity,
-): string => {
-  if (!traderCombo.isSystem) return traderCombo.name
-  return traderCombo.name ? localeTool.t(traderCombo.name) : ''
-}
-
 export const traderComboTraders = (
   traderCombo: interfaces.traderComboModel.Identity,
 ): string => {

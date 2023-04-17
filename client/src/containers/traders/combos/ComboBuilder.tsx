@@ -1,7 +1,6 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { Alert, Button, TextInput } from 'flowbite-react'
@@ -32,8 +31,7 @@ const ComboBuilder = () => {
   const traderCombos = useSelector(selectors.selectTraderComboBases())
 
   const hasDuplicatedName = traderCombos.some((combo) => {
-    const name = parseTool.traderComboName(combo)
-    return name.toLowerCase() === parsedName
+    return combo.name.toLowerCase() === parsedName
   })
   const hasDuplicatedCombo = traderCombos.some((combo) => {
     const currentIds = combo.traderIds.join(',')

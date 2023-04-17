@@ -1,6 +1,7 @@
 exports.seed = (knex) => {
   return knex('user').insert([
     {
+      entityId: 1,
       email: 'a@email.com',
       type: 1,
       password: 'abc',
@@ -10,6 +11,7 @@ exports.seed = (knex) => {
       updatedAt: '2022-01-03',
     },
     {
+      entityId: 2,
       email: 'b@email.com',
       type: 1,
       password: 'aabbcc',
@@ -17,6 +19,7 @@ exports.seed = (knex) => {
       updatedAt: '2022-03-03',
     },
     {
+      entityId: 1,
       email: 'deleted@email.com',
       type: 1,
       password: 'aabbcc123',

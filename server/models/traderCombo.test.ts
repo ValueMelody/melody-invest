@@ -6,31 +6,39 @@ beforeAll(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'trader_env.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_pattern.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader.js',
-  })
-  await connection.migrate.up({
-    directory: './server/migrations/test-tables',
-    name: 'trader_combo.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_env.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_pattern.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader_pattern.js',
   })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader.js',
+  })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
     specific: 'trader.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
+    name: 'trader_combo.js',
   })
   await connection.seed.run({
     directory: './server/migrations/test-seeds',
@@ -48,11 +56,13 @@ describe('getByPK', () => {
     const record1 = await traderCombo.getByPK(1)
     expect(record1).toStrictEqual({
       id: 1,
+      entityId: 1,
       traderIds: [1, 2, 3],
     })
     const record2 = await traderCombo.getByPK(2)
     expect(record2).toStrictEqual({
       id: 2,
+      entityId: 1,
       traderIds: [4, 5, 6],
     })
     const record3 = await traderCombo.getByPK(4)
@@ -62,17 +72,19 @@ describe('getByPK', () => {
 
 describe('getByUK', () => {
   test('could get by UK', async () => {
-    const record1 = await traderCombo.getByUK('1,2,3')
+    const record1 = await traderCombo.getByUK(1, '1,2,3')
     expect(record1).toStrictEqual({
       id: 1,
+      entityId: 1,
       traderIds: [1, 2, 3],
     })
-    const record2 = await traderCombo.getByUK('1,2')
+    const record2 = await traderCombo.getByUK(2, '1,2')
     expect(record2).toStrictEqual({
       id: 3,
+      entityId: 2,
       traderIds: [1, 2],
     })
-    const record3 = await traderCombo.getByUK('1')
+    const record3 = await traderCombo.getByUK(2, '1')
     expect(record3).toBeNull()
   })
 })
@@ -90,17 +102,20 @@ describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await traderCombo.create({
+      entityId: 3,
       traderIds: '1,3,5,7',
     }, transaction)
     await transaction.commit()
     expect(created).toStrictEqual({
       id: 4,
+      entityId: 3,
       traderIds: [1, 3, 5, 7],
     })
 
     const record = await traderCombo.getByPK(4)
     expect(record).toStrictEqual({
       id: 4,
+      entityId: 3,
       traderIds: [1, 3, 5, 7],
     })
   })
@@ -110,6 +125,7 @@ describe('#createIfEmpty', () => {
   test('could return existing one', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const result = await traderCombo.createIfEmpty({
+      entityId: 1,
       traderIds: '1,2,3',
     }, transaction)
     await transaction.rollback()
@@ -117,6 +133,7 @@ describe('#createIfEmpty', () => {
       isNew: false,
       record: {
         id: 1,
+        entityId: 1,
         traderIds: [1, 2, 3],
       },
     })
@@ -125,6 +142,7 @@ describe('#createIfEmpty', () => {
   test('could create new', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const result = await traderCombo.createIfEmpty({
+      entityId: 2,
       traderIds: '1,2,3,4,5,6',
     }, transaction)
     await transaction.commit()
@@ -132,12 +150,14 @@ describe('#createIfEmpty', () => {
       isNew: true,
       record: {
         id: 5,
+        entityId: 2,
         traderIds: [1, 2, 3, 4, 5, 6],
       },
     })
     const record = await traderCombo.getByPK(5)
     expect(record).toStrictEqual({
       id: 5,
+      entityId: 2,
       traderIds: [1, 2, 3, 4, 5, 6],
     })
   })

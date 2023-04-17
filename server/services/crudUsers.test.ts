@@ -59,6 +59,14 @@ beforeEach(async () => {
   const connection = databaseAdapter.getConnection()
   await connection.migrate.up({
     directory: './server/migrations/test-tables',
+    name: 'entity.js',
+  })
+  await connection.seed.run({
+    directory: './server/migrations/test-seeds',
+    specific: 'entity.js',
+  })
+  await connection.migrate.up({
+    directory: './server/migrations/test-tables',
     name: 'email.js',
   })
   await connection.seed.run({
@@ -350,10 +358,10 @@ describe('#activateUser', () => {
 
 describe('#refreshAccessToken', () => {
   test('could refresh access token', async () => {
-    const result = await crudUsers.refreshAccessToken(1, 'test@email.com', 2)
+    const result = await crudUsers.refreshAccessToken(1, 2, 'test@email.com', 2)
     const decoded = generateTool.decodeJWT(result.accessToken, false)
     expect(decoded).toStrictEqual({
-      id: 1, email: 'test@email.com', type: 2,
+      id: 1, entityId: 2, email: 'test@email.com', type: 2,
     })
   })
 })

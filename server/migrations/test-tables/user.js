@@ -2,6 +2,8 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('user', (table) => {
       table.increments('id')
+      table.integer('entityId').notNullable()
+      table.foreign('entityId').references('id').inTable('entity')
       table.timestamp('createdAt').defaultTo(knex.raw('now()')).notNullable()
       table.timestamp('updatedAt').defaultTo(knex.raw('now()')).notNullable()
       table.timestamp('deletedAt')

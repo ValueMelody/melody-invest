@@ -17,6 +17,7 @@ export const getLatestDate = async (): Promise<string> => {
 }
 
 export const getByUK = async (
+  entityId: number,
   date: string,
   select?: ('tickers' | 'indicators' | 'nearestPrices')[],
 ): Promise<interfaces.dailyTickersModel.Record | null> => {
@@ -24,6 +25,7 @@ export const getByUK = async (
     select,
     tableName: TableName,
     conditions: [
+      { key: 'entityId', value: entityId },
       { key: 'date', value: date },
     ],
   })
@@ -59,14 +61,15 @@ export const update = async (
 }
 
 export const upsert = async (
+  entityId: number,
   date: string,
   values: interfaces.dailyTickersModel.Update,
   transaction: Knex.Transaction,
 ): Promise<interfaces.dailyTickersModel.Record> => {
-  const record = await getByUK(date)
+  const record = await getByUK(entityId, date)
   const newRecord = record
     ? await update(record.id, values, transaction)
-    : await create({ ...values, date }, transaction)
+    : await create({ ...values, entityId, date }, transaction)
   return newRecord
 }
 

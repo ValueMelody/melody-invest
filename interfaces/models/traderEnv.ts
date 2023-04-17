@@ -1,5 +1,6 @@
 export interface Record {
   id: number;
+  entityId: number;
   activeTotal: number;
   isSystem: boolean;
   name: string | null;
@@ -9,6 +10,7 @@ export interface Record {
 
 export interface Raw {
   id: number;
+  entityId: number;
   activeTotal: number;
   isSystem: boolean;
   name: string | null;
@@ -17,6 +19,7 @@ export interface Raw {
 }
 
 export interface Create {
+  entityId: number;
   activeTotal: number;
   isSystem: boolean;
   name: string | null;

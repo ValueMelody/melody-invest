@@ -2,6 +2,8 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('ticker', (table) => {
       table.increments('id')
+      table.integer('entityId').notNullable()
+      table.foreign('entityId').references('id').inTable('entity')
       table.string('name', 50).notNullable()
       table.string('symbol', 10).notNullable()
       table.boolean('isDelisted').defaultTo(false).notNullable()
@@ -17,7 +19,7 @@ exports.up = (knex) => {
       table.specificType('firstIncomeQuarter', 'CHAR(7)')
       table.specificType('lastIncomeQuarter', 'CHAR(7)')
       table.integer('tickerCategoryId')
-      table.unique(['symbol', 'region'], 'ticker_ukey')
+      table.unique(['entityId', 'symbol', 'region'], 'ticker_ukey')
       table.foreign('tickerCategoryId').references('id').inTable('ticker_category')
     })
 }

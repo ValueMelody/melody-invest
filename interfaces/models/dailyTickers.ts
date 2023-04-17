@@ -41,6 +41,7 @@ export type IndicatorInfo = {
 
 export interface Record {
   id: number;
+  entityId: number;
   date: string;
   tickers: DailyTickers | null;
   indicators: IndicatorInfo | null;
@@ -49,6 +50,7 @@ export interface Record {
 
 export interface Create {
   date: string;
+  entityId: number;
   tickers: DailyTickers | null;
   indicators: IndicatorInfo | null;
   nearestPrices: tickerDaily.TickerPrices;

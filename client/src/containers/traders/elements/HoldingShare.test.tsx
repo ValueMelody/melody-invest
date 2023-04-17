@@ -7,6 +7,7 @@ import { mock } from 'ts-mockito'
 describe('#HoldingShare', () => {
   const tickerIdentity = {
     id: 12,
+    entityId: 1,
     symbol: 'AAPL',
     region: 'US',
     name: 'Apple',
