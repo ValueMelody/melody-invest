@@ -48,16 +48,6 @@ export const getByUK = async (
   return env ? convertToRecord(env) : null
 }
 
-export const getSystemDefined = async (): Promise<interfaces.traderEnvModel.Record[]> => {
-  const envs = await databaseAdapter.findAll({
-    tableName: TableName,
-    conditions: [
-      { key: 'isSystem', value: true },
-    ],
-  })
-  return envs.map((env) => convertToRecord(env))
-}
-
 export const getInPKs = async (
   ids: number[],
 ): Promise<interfaces.traderEnvModel.Record[]> => {

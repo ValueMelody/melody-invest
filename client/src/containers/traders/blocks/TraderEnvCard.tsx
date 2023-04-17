@@ -2,7 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as selectors from 'selectors'
-import { Badge, Card } from 'flowbite-react'
+import { Card } from 'flowbite-react'
 import UnwatchEnvButton from './UnwatchEnvButton'
 import classNames from 'classnames'
 import { useSelector } from 'react-redux'
@@ -12,19 +12,15 @@ const TraderEnvCard = ({
   isActive = false,
   onClick,
   className,
-  allowUnwatch = false,
 }: {
-  traderEnv: interfaces.traderEnvModel.Record | null;
+  traderEnv: interfaces.traderEnvModel.Identity | null;
   isActive?: boolean;
   onClick?: (envId: number) => void;
   className?: string;
-  allowUnwatch?: boolean;
 }) => {
   const user = useSelector(selectors.selectUser())
 
-  const disabled = traderEnv && (
-    !traderEnv.isSystem && !user.access.accessibleEnvIds.includes(traderEnv.id)
-  )
+  const disabled = traderEnv && !user.access.accessibleEnvIds.includes(traderEnv.id)
 
   const handleClickEnv = () => {
     if (!traderEnv || !onClick) return
@@ -50,21 +46,13 @@ const TraderEnvCard = ({
       <header className='flex justify-between'>
         <section>
           <h3 className='font-bold'>
-            {localeTool.t('entity.env')}: {parseTool.traderEnvName(traderEnv)}
+            {localeTool.t('entity.env')}: {traderEnv.name}
           </h3>
           <h5 className='text-sm italic'>
             {parseTool.traderEnvStartDate(traderEnv)}
           </h5>
         </section>
-        {traderEnv.isSystem && (
-          <Badge
-            color='gray'
-            title={localeTool.t('traderEnv.systemDesc')}
-          >
-            {localeTool.t('traderEnv.system')}
-          </Badge>
-        )}
-        {(allowUnwatch || disabled) && (
+        {disabled && (
           <UnwatchEnvButton traderEnv={traderEnv} />
         )}
       </header>

@@ -210,7 +210,7 @@ export const createTraderEnv = createAsyncThunk(
     await dispatch(refreshAccessToken())
 
     try {
-      const env: interfaces.traderEnvModel.Record = await requestAdapter.sendPostRequest(
+      const env: interfaces.traderEnvModel.Identity = await requestAdapter.sendPostRequest(
         endpoint,
         reqs,
       )

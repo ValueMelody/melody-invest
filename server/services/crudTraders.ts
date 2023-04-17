@@ -56,13 +56,11 @@ export const getProfileDetail = async (
 }
 
 export const getUserTraderEnvIds = async (
-  userId: number | null,
+  userId: number,
 ): Promise<number[]> => {
-  const userEnvs = userId ? await traderEnvFollowerModel.getUserFollowed(userId) : []
+  const userEnvs = await traderEnvFollowerModel.getUserFollowed(userId)
   const userEnvIds = userEnvs.map((env) => env.traderEnvId)
-  const systemEnvs = await traderEnvModel.getSystemDefined()
-  const systemEnvIds = systemEnvs.map((env) => env.id)
-  return [...userEnvIds, ...systemEnvIds]
+  return userEnvIds
 }
 
 const buildTraderTopProfiles = async (
@@ -229,7 +227,7 @@ export const createTraderEnv = async (
   name: string,
   startDate: string,
   tickerIds: number[] | null,
-): Promise<interfaces.traderEnvModel.Record> => {
+): Promise<interfaces.traderEnvModel.Identity> => {
   const tickerIdsAsString = tickerIds
     ? generateTool.sortNumsToString(tickerIds)
     : null
@@ -239,16 +237,9 @@ export const createTraderEnv = async (
       entityId,
       startDate,
       tickerIds: tickerIdsAsString,
-      name: null,
-      isSystem: false,
       activeTotal: 1000,
     }, transaction)
     const env = envResult.record
-
-    if (env.isSystem) {
-      await transaction.rollback()
-      return env
-    }
 
     const relation = await traderEnvFollowerModel.createIfEmpty({
       userId, traderEnvId: env.id, name,
@@ -290,7 +281,7 @@ export const createTraderCombo = async (
       ? await transaction.commit()
       : await transaction.rollback()
 
-    return { ...combo.record, name: relation.record.name, isSystem: false }
+    return { ...combo.record, name: relation.record.name }
   } catch (error) {
     await transaction.rollback()
     throw error

@@ -66,27 +66,27 @@ describe('#ProfileDashboard', () => {
             canFollowEnv: true,
             canFollowCombo: true,
             canFollowTrader: true,
-            accessibleEnvIds: [],
+            accessibleEnvIds: [1, 2],
             accessibleComboIds: [1],
             accessibleTraderIds: [1, 2],
           },
         }
       })
 
-    const envType = mock<interfaces.traderEnvModel.Record>({})
+    const envType = mock<interfaces.traderEnvModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderEnvBaseById')
       .mockImplementation(() => () => instance(envType))
 
     jest.spyOn(selectors, 'selectTraderEnvBases')
       .mockImplementation(() => () => [
-        { ...instance(envType), id: 1, isSystem: true },
+        { ...instance(envType), id: 1 },
         { ...instance(envType), id: 2 },
       ])
 
     const comboType = mock<interfaces.traderComboModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderComboBases')
       .mockImplementation(() => () => [
-        { ...instance(comboType), id: 1, isSystem: false, traderIds: [] },
+        { ...instance(comboType), id: 1, traderIds: [] },
       ])
 
     await act(() => {
@@ -182,20 +182,20 @@ describe('#ProfileDashboard', () => {
         }
       })
 
-    const envType = mock<interfaces.traderEnvModel.Record>({})
+    const envType = mock<interfaces.traderEnvModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderEnvBaseById')
       .mockImplementation(() => () => instance(envType))
 
     jest.spyOn(selectors, 'selectTraderEnvBases')
       .mockImplementation(() => () => [
-        { ...instance(envType), id: 1, isSystem: true },
+        { ...instance(envType), id: 1 },
         { ...instance(envType), id: 2 },
       ])
 
     const comboType = mock<interfaces.traderComboModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderComboBases')
       .mockImplementation(() => () => [
-        { ...instance(comboType), id: 1, isSystem: false, traderIds: [] },
+        { ...instance(comboType), id: 1, traderIds: [] },
       ])
 
     await act(() => {

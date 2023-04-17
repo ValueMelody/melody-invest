@@ -48,13 +48,6 @@ export const behaviorDesc = (
   return localeTool.t(`behaviorDesc.${behavior}`)
 }
 
-export const traderEnvName = (
-  traderEnv: interfaces.traderEnvModel.Record,
-): string | null => {
-  if (!traderEnv.isSystem) return traderEnv.name
-  return traderEnv.name ? localeTool.t(traderEnv.name) : ''
-}
-
 export const traderEnvStartDate = (
   traderEnv: interfaces.traderEnvModel.Record,
 ): string => {

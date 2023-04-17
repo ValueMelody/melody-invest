@@ -70,7 +70,7 @@ const BehaviorDetail = () => {
       <section className='page-root'>
         <section className='page-main'>
           <PageTitle
-            title={localeTool.t('tradeBehaviors.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
+            title={localeTool.t('tradeBehaviors.topProfiles', { name: traderEnv.name })}
           />
           <EachTops
             bestOveralls={bestOveralls}

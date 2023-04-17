@@ -27,7 +27,7 @@ const patternType = mock<interfaces.traderPatternModel.Public>({})
 
 describe('#EachTops', () => {
   test('could show top profiles', () => {
-    const envType = mock<interfaces.traderEnvModel.Record>({})
+    const envType = mock<interfaces.traderEnvModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderEnvBaseById')
       .mockImplementation(() => () => instance(envType))
 
@@ -96,7 +96,7 @@ describe('#EachTops', () => {
   })
 
   test('could show top profiles', () => {
-    const envType = mock<interfaces.traderEnvModel.Record>({})
+    const envType = mock<interfaces.traderEnvModel.Identity>({})
     jest.spyOn(selectors, 'selectTraderEnvBaseById')
       .mockImplementation(() => () => instance(envType))
 

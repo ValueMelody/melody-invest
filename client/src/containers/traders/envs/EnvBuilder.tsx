@@ -1,7 +1,6 @@
 import * as actions from 'actions'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
-import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { Alert, Button, Select, TextInput, ToggleSwitch } from 'flowbite-react'
@@ -77,8 +76,7 @@ const EnvBuilder = () => {
   const selectedDate = date ? getDateFromString(date) : null
 
   const hasDuplicatedName = traderEnvs.some((env) => {
-    const envName = parseTool.traderEnvName(env)
-    return envName?.toLowerCase() === parsedEnvName
+    return env.name?.toLowerCase() === parsedEnvName
   })
   const hasDuplicatedEnv = traderEnvs.some((env) => {
     const currentIds = env.tickerIds ? env.tickerIds.join(',') : null

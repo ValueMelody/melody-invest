@@ -118,7 +118,7 @@ describe('#store', () => {
             traderEnvs: [],
             traderProfiles: [],
             traderCombos: [
-              { ...instance(comboType), id: 1, isSystem: true },
+              { ...instance(comboType), id: 1 },
               { ...instance(comboType), id: 2 },
               { ...instance(comboType), id: 3 },
             ],
@@ -136,9 +136,7 @@ describe('#store', () => {
 
     store.dispatch(actions.logout())
 
-    expect(store.getState().traderCombo.base).toStrictEqual({
-      1: { ...instance(comboType), id: 1, isSystem: true },
-    })
+    expect(store.getState().traderCombo.base).toStrictEqual({})
   })
 
   test('could removeUserFollowed on lock account', async () => {
@@ -149,7 +147,7 @@ describe('#store', () => {
             traderEnvs: [],
             traderProfiles: [],
             traderCombos: [
-              { ...instance(comboType), id: 1, isSystem: true },
+              { ...instance(comboType), id: 1 },
               { ...instance(comboType), id: 2 },
               { ...instance(comboType), id: 3 },
             ],
@@ -167,8 +165,6 @@ describe('#store', () => {
 
     await store.dispatch(actions.lockUserAccount())
 
-    expect(store.getState().traderCombo.base).toStrictEqual({
-      1: { ...instance(comboType), id: 1, isSystem: true },
-    })
+    expect(store.getState().traderCombo.base).toStrictEqual({})
   })
 })

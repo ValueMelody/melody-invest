@@ -22,8 +22,6 @@ const ProfileDashboard = () => {
   const user = useSelector(selectors.selectUser())
   const profileDict = useSelector(selectors.selectTraderProfileBaseDict())
 
-  const userCombos = combos.filter((combo) => !combo.isSystem)
-
   const handleClickAddProfile = () => {
     navigate(routerTool.profileBuildRoute())
   }
@@ -121,7 +119,7 @@ const ProfileDashboard = () => {
           title={localeTool.t('dashboard.watchedCombos')}
           className='my-4'
         />
-        {!userCombos.length && (
+        {!combos.length && (
           <Alert
             color='gray'
             className='w-80 mb-4'
@@ -129,7 +127,7 @@ const ProfileDashboard = () => {
             {localeTool.t('dashboard.emptyCombos')}
           </Alert>
         )}
-        {userCombos.map((combo) => (
+        {combos.map((combo) => (
           <TraderComboCard
             key={combo.id}
             className='w-80 mb-4'

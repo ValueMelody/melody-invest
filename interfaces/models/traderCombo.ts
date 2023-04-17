@@ -6,7 +6,6 @@ export interface Record {
 
 export interface Identity extends Record {
   name: string;
-  isSystem: boolean;
 }
 
 export interface Raw {

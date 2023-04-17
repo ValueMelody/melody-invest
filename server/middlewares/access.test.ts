@@ -94,7 +94,6 @@ const getEnvMock = async (id: number) => {
   when(recordMock.id).thenReturn(id)
   const record = { ...recordMock, id }
 
-  record.isSystem = id === 1
   return record
 }
 

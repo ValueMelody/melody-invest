@@ -23,7 +23,6 @@ const traderCombo = {
   entityId: 1,
   name: 'test combo',
   traderIds: [2, 3, 4, 5, 6],
-  isSystem: false,
 }
 
 afterEach(() => {

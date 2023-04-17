@@ -4,7 +4,7 @@ import { instance, mock, when } from 'ts-mockito'
 
 const type = mock<AppState>({})
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
+const envType = mock<interfaces.traderEnvModel.Identity>({})
 const env1 = instance(envType)
 const env2 = instance(envType)
 const env3 = instance(envType)

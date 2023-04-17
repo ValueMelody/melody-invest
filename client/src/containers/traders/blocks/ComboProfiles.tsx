@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 interface ProfileWithEnv {
   profile?: interfaces.response.TraderProfile;
-  env?: interfaces.traderEnvModel.Record;
+  env?: interfaces.traderEnvModel.Identity;
 }
 
 const ComboProfiles = ({

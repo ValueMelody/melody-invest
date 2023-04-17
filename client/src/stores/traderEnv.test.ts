@@ -29,29 +29,6 @@ describe('#store', () => {
     },
   }
 
-  test('could storeFromSystemDefaults', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: {
-            tickers: [],
-            traderEnvs: [
-              { ...instance(envType), id: 1 },
-              { ...instance(envType), id: 2 },
-              { ...instance(envType), id: 3 },
-            ],
-          },
-        }
-      })
-    await store.dispatch(actions.fetchSystemDefaults())
-
-    expect(store.getState().traderEnv.base).toStrictEqual({
-      1: { ...instance(envType), id: 1 },
-      2: { ...instance(envType), id: 2 },
-      3: { ...instance(envType), id: 3 },
-    })
-  })
-
   test('could storeFromUserOverall', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {
@@ -114,7 +91,8 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickers: [],
+            traderCombos: [],
+            traderProfiles: [],
             traderEnvs: [
               { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
@@ -123,7 +101,7 @@ describe('#store', () => {
           },
         }
       })
-    await store.dispatch(actions.fetchSystemDefaults())
+    await store.dispatch(actions.fetchUserOverall())
 
     jest.spyOn(axios, 'delete')
       .mockImplementation(async () => {
@@ -147,7 +125,7 @@ describe('#store', () => {
           data: {
             tickers: [],
             traderEnvs: [
-              { ...instance(envType), id: 1, isSystem: true },
+              { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
@@ -165,9 +143,7 @@ describe('#store', () => {
 
     store.dispatch(actions.logout())
 
-    expect(store.getState().traderEnv.base).toStrictEqual({
-      1: { ...instance(envType), id: 1, isSystem: true },
-    })
+    expect(store.getState().traderEnv.base).toStrictEqual({})
   })
 
   test('could removeUserFollowed on lock account', async () => {
@@ -175,16 +151,17 @@ describe('#store', () => {
       .mockImplementation(async () => {
         return {
           data: {
-            tickers: [],
             traderEnvs: [
-              { ...instance(envType), id: 1, isSystem: true },
+              { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
               { ...instance(envType), id: 3 },
             ],
+            traderCombos: [],
+            traderProfiles: [],
           },
         }
       })
-    await store.dispatch(actions.fetchSystemDefaults())
+    await store.dispatch(actions.fetchUserOverall())
 
     jest.spyOn(axios, 'put')
       .mockImplementation(async () => {
@@ -195,8 +172,6 @@ describe('#store', () => {
 
     await store.dispatch(actions.lockUserAccount())
 
-    expect(store.getState().traderEnv.base).toStrictEqual({
-      1: { ...instance(envType), id: 1, isSystem: true },
-    })
+    expect(store.getState().traderEnv.base).toStrictEqual({})
   })
 })

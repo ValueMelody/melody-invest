@@ -348,7 +348,7 @@ describe('#createTraderFollower', () => {
 
 describe('#createEnv', () => {
   test('could call expected function', async () => {
-    const envType = mock<interfaces.traderEnvModel.Record>({})
+    const envType = mock<interfaces.traderEnvModel.Identity>({})
     const env = instance(envType)
 
     const createTraderEnv = jest.fn()

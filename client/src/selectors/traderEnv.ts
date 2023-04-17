@@ -9,13 +9,13 @@ const selectTraderEnvBaseDict = () => (
 
 const selectTraderEnvBases = () => (
   state: AppState,
-): interfaces.traderEnvModel.Record[] => {
+): interfaces.traderEnvModel.Identity[] => {
   return Object.values(state.traderEnv.base)
 }
 
 const selectTraderEnvBaseById = (id?: number) => (
   state: AppState,
-): interfaces.traderEnvModel.Record | undefined => {
+): interfaces.traderEnvModel.Identity | undefined => {
   if (!id) return undefined
   const env = state.traderEnv.base[id]
   return env

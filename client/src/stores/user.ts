@@ -4,7 +4,7 @@ import * as interfaces from '@shared/interfaces'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { _resetForTest, _updateForTest } from 'tools/store'
 
-interface UserAccess {
+export interface UserAccess {
   canFollowEnv: boolean;
   canFollowCombo: boolean;
   canFollowTrader: boolean;

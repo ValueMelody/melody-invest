@@ -15,22 +15,18 @@ const TraderComboCard = ({
   className,
   onClick,
   isActive = false,
-  allowUnwatch = false,
 }: {
   traderCombo: interfaces.traderComboModel.Identity | null;
   className?: string;
   isActive?: boolean;
   onClick?: (comboId: number) => void;
-  allowUnwatch?: boolean;
 }) => {
   const dispatch = useDispatch<AppDispatch>()
   const navigate = useNavigate()
 
   const user = useSelector(selectors.selectUser())
 
-  const disabled = traderCombo && (
-    !traderCombo.isSystem && !user.access.accessibleComboIds.includes(traderCombo.id)
-  )
+  const disabled = traderCombo && !user.access.accessibleComboIds.includes(traderCombo.id)
 
   const handleClickCombo = () => {
     if (!traderCombo || !onClick) return
@@ -67,7 +63,7 @@ const TraderComboCard = ({
         >
           {localeTool.t('entity.combo')}: {traderCombo.name}
         </h3>
-        {(allowUnwatch || disabled) && (
+        {disabled && (
           <WatchButton
             isWatched
             onToggle={handleUnfollow}
