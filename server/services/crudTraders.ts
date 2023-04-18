@@ -56,8 +56,9 @@ export const getProfileDetail = async (
 }
 
 export const getUserTraderEnvIds = async (
-  userId: number,
+  userId: number | null,
 ): Promise<number[]> => {
+  if (!userId) return []
   const userEnvs = await traderEnvFollowerModel.getUserFollowed(userId)
   const userEnvIds = userEnvs.map((env) => env.traderEnvId)
   return userEnvIds

@@ -44,6 +44,7 @@ jest.mock('models/traderComboFollower', () => {
 const getUserFollowedEnvMock = async (userId: number) => {
   let placeholders: interfaces.traderEnvFollowerModel.Record[] = []
 
+  if (userId === 1) placeholders = Array(1).fill(null)
   if (userId === 3) placeholders = Array(constants.User.PlanLimit.Pro.Envs - 1).fill(null)
   if (userId === 4) placeholders = Array(constants.User.PlanLimit.Pro.Envs).fill(null)
   if (userId === 5) placeholders = Array(constants.User.PlanLimit.Premium.Envs - 1).fill(null)
@@ -438,18 +439,7 @@ describe('#couldAccessEnv', () => {
     })
     when(reqMock1.params).thenReturn({ env_id: '1' })
     const req1 = instance(reqMock1)
-
-    await access.couldAccessEnv(req1, res, next)
-    expect(next).toBeCalledTimes(1)
-
-    const reqMock2: Request = mock({})
-    when(reqMock2.body).thenReturn({
-      auth: {},
-    })
-    when(reqMock2.params).thenReturn({ env_id: '2' })
-    const req2 = instance(reqMock2)
-
-    await expect(() => access.couldAccessEnv(req2, res, next))
+    await expect(async () => await access.couldAccessEnv(req1, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })
@@ -466,21 +456,7 @@ describe('#couldAccessEnv', () => {
     })
     when(reqMock1.params).thenReturn({ env_id: '1' })
     const req1 = instance(reqMock1)
-
-    await access.couldAccessEnv(req1, res, next)
-    expect(next).toBeCalledTimes(1)
-
-    const reqMock2: Request = mock({})
-    when(reqMock2.body).thenReturn({
-      auth: {
-        id: 1,
-        type: constants.User.Type.Basic,
-      },
-    })
-    when(reqMock2.params).thenReturn({ env_id: '2' })
-    const req2 = instance(reqMock2)
-
-    await expect(() => access.couldAccessEnv(req2, res, next))
+    await expect(() => access.couldAccessEnv(req1, res, next))
       .rejects
       .toStrictEqual(errorEnum.Default.NotFound)
   })

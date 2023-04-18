@@ -61,6 +61,7 @@ describe('#ProfileBuilder', () => {
     jest.spyOn(selectors, 'selectUser')
       .mockImplementation(() => () => ({
         ...instance(userType),
+        userTraderIds: [],
         access: {
           ...instance(accessType),
           accessibleEnvIds: [1, 2],

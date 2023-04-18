@@ -83,7 +83,7 @@ describe('#update', () => {
       const transaction = await database.createTransaction()
       await database.update({
         tableName: adapterEnum.DatabaseTable.TraderEnv,
-        values: { name: 'test' },
+        values: { activeTotal: 10000 },
         conditions: [
           { key: 'id', value: 111 },
         ],
@@ -100,7 +100,7 @@ describe('#update', () => {
       const transaction = await database.createTransaction()
       await database.update({
         tableName: adapterEnum.DatabaseTable.TraderEnv,
-        values: { name: 'test' },
+        values: { activeTotal: 111 },
         conditions: [
           { key: 'id', value: 'abc' },
         ],
