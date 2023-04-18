@@ -11,7 +11,6 @@ const traderEnv = {
   id: 123,
   entityId: 1,
   name: 'test env',
-  isSystem: false,
   startDate: '2001-01-02',
   tickerIds: [1, 2, 3, 4, 5],
   activeTotal: 100,
@@ -65,19 +64,17 @@ describe('#traderComboCard', () => {
     fireEvent.click(container)
   })
 
-  test('could render as system and all tickers', () => {
+  test('could render all tickers', () => {
     render(
       <TraderEnvCard
         traderEnv={{
           ...traderEnv,
-          isSystem: true,
           tickerIds: null,
         }}
       />,
     )
     const container = screen.getByTestId('traderEnvCard')
     expect(container).toBeTruthy()
-    expect(screen.getByText('System')).toBeTruthy()
     expect(screen.getByText(localeTool.t('traderEnv.allTickers') as string)).toBeTruthy()
   })
 

@@ -47,11 +47,8 @@ const storeFromComboBase = (
 const removeUserFollowed = (state: TraderComboState) => {
   Object.keys(state.base).forEach((key: string) => {
     const numKey = Number(key)
-    const value = state.base[numKey]
-    if (!value.isSystem) {
-      delete state.base[numKey]
-      delete state.detail[numKey]
-    }
+    delete state.base[numKey]
+    delete state.detail[numKey]
   })
 }
 

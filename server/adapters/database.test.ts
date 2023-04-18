@@ -49,30 +49,6 @@ describe('#findOne', () => {
 })
 
 describe('#update', () => {
-  test('could update by andWhere', async () => {
-    const envs = await traderEnv.getAll()
-    expect(envs[0].name).toBe('traderEnv.default')
-    expect(envs[1].name).toBe(null)
-    expect(envs[2].name).toBe(null)
-
-    const transaction = await database.createTransaction()
-    await database.update({
-      tableName: adapterEnum.DatabaseTable.TraderEnv,
-      values: { name: 'updated name' },
-      conditions: [
-        { key: 'name', value: 'traderEnv.default' },
-        { key: 'activeTotal', value: 10000 },
-      ],
-      transaction,
-    })
-    await transaction.commit()
-
-    const updatedEnvs = await traderEnv.getAll()
-    expect(updatedEnvs[0].name).toBe('updated name')
-    expect(updatedEnvs[1].name).toBe(null)
-    expect(updatedEnvs[2].name).toBe(null)
-  })
-
   test('could return empty array', async () => {
     const transaction = await database.createTransaction()
     const tickers = await ticker.update(1, { firstPriceDate: '2000-01-01' }, transaction)
@@ -89,8 +65,6 @@ describe('#create', () => {
         tableName: adapterEnum.DatabaseTable.TraderEnv,
         values: {
           id: 1,
-          name: 'test',
-          isSystem: false,
           activeTotal: 0,
           startDate: '2000-01-01',
         },
@@ -109,7 +83,7 @@ describe('#update', () => {
       const transaction = await database.createTransaction()
       await database.update({
         tableName: adapterEnum.DatabaseTable.TraderEnv,
-        values: { name: 'test' },
+        values: { activeTotal: 10000 },
         conditions: [
           { key: 'id', value: 111 },
         ],
@@ -126,7 +100,7 @@ describe('#update', () => {
       const transaction = await database.createTransaction()
       await database.update({
         tableName: adapterEnum.DatabaseTable.TraderEnv,
-        values: { name: 'test' },
+        values: { activeTotal: 111 },
         conditions: [
           { key: 'id', value: 'abc' },
         ],
@@ -144,7 +118,7 @@ describe('#runWithTransaction', () => {
     const records = await database.runWithTransaction(async (transaction) => {
       return database.update({
         tableName: adapterEnum.DatabaseTable.TraderEnv,
-        values: { name: 'test run' },
+        values: { activeTotal: 100 },
         conditions: [
           { key: 'id', value: 1 },
         ],
@@ -153,8 +127,8 @@ describe('#runWithTransaction', () => {
     })
 
     const updatedEnvs = await traderEnv.getAll()
-    expect(updatedEnvs[0].name).toBe('test run')
-    expect(records[0].name).toBe('test run')
+    expect(updatedEnvs[0].activeTotal).toBe(100)
+    expect(records[0].activeTotal).toBe(100)
   })
 
   test('could trigger rollback', async () => {
@@ -162,7 +136,7 @@ describe('#runWithTransaction', () => {
       await database.runWithTransaction(async (transaction) => {
         return database.update({
           tableName: adapterEnum.DatabaseTable.TraderEnv,
-          values: { name: 'test run with long name that causing error' },
+          values: { activeTotal: 'wrong format that causing error' },
           conditions: [
             { key: 'id', value: 1 },
           ],
@@ -174,6 +148,6 @@ describe('#runWithTransaction', () => {
       .toStrictEqual(errorEnum.Custom.UpdationFailed)
 
     const updatedEnvs = await traderEnv.getAll()
-    expect(updatedEnvs[0].name).toBe('traderEnv.default')
+    expect(updatedEnvs[0].activeTotal).toBe(10000)
   })
 })

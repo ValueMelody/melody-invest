@@ -11,7 +11,7 @@ describe('#ProfileValue', () => {
     totalValue: 20000000,
   }
 
-  const traderEnvMock: interfaces.traderEnvModel.Record = mock({})
+  const traderEnvMock: interfaces.traderEnvModel.Identity = mock({})
   const env = { ...traderEnvMock, id: 2 }
 
   test('could render', () => {

@@ -169,13 +169,10 @@ describe('#getProfileDetail', () => {
 describe('#getUserTraderEnvIds', () => {
   test('could get user trader envs', async () => {
     const userEnv1 = await crudTraders.getUserTraderEnvIds(1)
-    expect(userEnv1).toStrictEqual([1, 2, 1])
+    expect(userEnv1).toStrictEqual([1, 2])
 
     const userEnv2 = await crudTraders.getUserTraderEnvIds(2)
-    expect(userEnv2).toStrictEqual([2, 1])
-
-    const userEnv3 = await crudTraders.getUserTraderEnvIds(null)
-    expect(userEnv3).toStrictEqual([1])
+    expect(userEnv2).toStrictEqual([2])
   })
 })
 
@@ -254,7 +251,6 @@ describe('#createTraderCombo', () => {
       id: 4,
       entityId: 1,
       traderIds: [2, 3],
-      isSystem: false,
       name: 'test combo',
     })
     const follower = await traderComboFollowerModel.getByUK(1, 4)
@@ -267,7 +263,6 @@ describe('#createTraderCombo', () => {
       id: 2,
       entityId: 1,
       traderIds: [4, 5, 6],
-      isSystem: false,
       name: 'test2',
     })
     const follower = await traderComboFollowerModel.getByUK(1, 2)
@@ -283,7 +278,6 @@ describe('#createTraderEnv', () => {
       entityId: 1,
       tickerIds: [2, 3],
       startDate: '2020-01-01',
-      isSystem: false,
       name: 'test env',
       activeTotal: 1000,
     })
@@ -298,7 +292,6 @@ describe('#createTraderEnv', () => {
       entityId: 2,
       tickerIds: null,
       startDate: '2012-01-01',
-      isSystem: false,
       name: 'test2',
       activeTotal: 10000,
     })

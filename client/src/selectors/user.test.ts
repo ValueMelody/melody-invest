@@ -13,7 +13,7 @@ const user = {
 }
 when(type.user).thenReturn(user)
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
+const envType = mock<interfaces.traderEnvModel.Identity>({})
 const env1 = {
   ...instance(envType),
   id: 1,

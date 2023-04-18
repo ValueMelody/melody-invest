@@ -76,7 +76,6 @@ const ComboDetail = () => {
         <TraderComboCard
           className='w-80'
           traderCombo={matchedBase}
-          allowUnwatch={!matchedBase.isSystem}
         />
       </header>
       <section className='page-root'>

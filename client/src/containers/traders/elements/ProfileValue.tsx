@@ -11,7 +11,7 @@ const ProfileValue = ({
   className,
 }: {
   trader: interfaces.traderModel.Record | null;
-  env: interfaces.traderEnvModel.Record | null;
+  env: interfaces.traderEnvModel.Identity | null;
   onClick?: (trader: interfaces.traderModel.Record) => void;
   className?: string;
 }) => {

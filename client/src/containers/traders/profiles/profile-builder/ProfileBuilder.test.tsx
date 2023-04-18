@@ -2,6 +2,7 @@ import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
+import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import ProfileBuilder from './ProfileBuilder'
@@ -31,9 +32,9 @@ const navigate = jest.fn()
 jest.spyOn(router, 'useNavigate')
   .mockImplementation(() => navigate)
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
-const env1 = { ...instance(envType), id: 1, isSystem: true }
-const env2 = { ...instance(envType), id: 2, isSystem: true }
+const envType = mock<interfaces.traderEnvModel.Identity>({})
+const env1 = { ...instance(envType), id: 1 }
+const env2 = { ...instance(envType), id: 2 }
 
 const post = jest.fn()
 jest.spyOn(axios, 'post').mockImplementation(async (url, params) => {
@@ -54,6 +55,18 @@ describe('#ProfileBuilder', () => {
       .mockImplementation(() => () => {
         return [env1, env2]
       })
+
+    const userType = mock<UserState>({})
+    const accessType = mock<UserAccess>({})
+    jest.spyOn(selectors, 'selectUser')
+      .mockImplementation(() => () => ({
+        ...instance(userType),
+        userTraderIds: [],
+        access: {
+          ...instance(accessType),
+          accessibleEnvIds: [1, 2],
+        },
+      }))
 
     await act(() => {
       render(<ProfileBuilder />)

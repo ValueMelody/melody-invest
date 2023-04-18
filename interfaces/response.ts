@@ -37,13 +37,12 @@ export interface TopTraderProfiles {
 }
 
 export interface SystemDefaults {
-  traderEnvs: traderEnvModel.Record[];
   tickers: tickerModel.Record[];
 }
 
 export interface UserOverall {
   traderProfiles: TraderProfile[];
-  traderEnvs: traderEnvModel.Record[];
+  traderEnvs: traderEnvModel.Identity[];
   traderCombos: traderComboModel.Identity[];
   email: string;
   type: number;

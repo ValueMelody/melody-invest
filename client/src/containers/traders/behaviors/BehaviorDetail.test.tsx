@@ -2,6 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as parseTool from 'tools/parse'
 import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
+import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import BehaviorDetail from './BehaviorDetail'
@@ -34,9 +35,9 @@ jest.spyOn(router, 'useParams')
 jest.spyOn(router, 'useNavigate')
   .mockImplementation(() => navigate)
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
-const env1 = { ...instance(envType), id: 1, isSystem: true }
-const env2 = { ...instance(envType), id: 2, isSystem: true }
+const envType = mock<interfaces.traderEnvModel.Identity>({})
+const env1 = { ...instance(envType), id: 1 }
+const env2 = { ...instance(envType), id: 2 }
 
 jest.spyOn(selectors, 'selectTraderEnvBases')
   .mockImplementation(() => () => {
@@ -66,6 +67,17 @@ jest.spyOn(axios, 'get')
 
 describe('#BehaviorDetail', () => {
   test('could show behavior info', async () => {
+    const userType = mock<UserState>({})
+    const accessType = mock<UserAccess>({})
+    jest.spyOn(selectors, 'selectUser')
+      .mockImplementation(() => () => ({
+        ...instance(userType),
+        access: {
+          ...instance(accessType),
+          accessibleEnvIds: [1, 2],
+        },
+      }))
+
     await act(() => {
       render(<BehaviorDetail />)
     })

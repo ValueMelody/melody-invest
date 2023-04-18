@@ -56,7 +56,6 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
 }
 
 const isActiveTraderEnv = async (env: interfaces.traderEnvModel.Record) => {
-  if (env.isSystem) return true
   const followers = await traderEnvFollowerModel.getEnvFollowers(env.id)
   const userIds = followers.map((follower) => follower.userId)
   return userPaymentModel.hasActiveUser(userIds)

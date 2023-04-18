@@ -56,7 +56,6 @@ export const getUserOverall = async (
     const matchedComboFollower = comboFollowers.find((comboFollower) => comboFollower.traderComboId === combo.id)
     return {
       ...combo,
-      isSystem: false,
       name: matchedComboFollower?.name || '',
     }
   })

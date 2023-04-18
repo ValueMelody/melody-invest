@@ -3,7 +3,6 @@ import * as cacheTool from 'tools/cache'
 import * as interfaces from '@shared/interfaces'
 import * as policyModel from 'models/policy'
 import * as tickerModel from 'models/ticker'
-import * as traderEnvModel from 'models/traderEnv'
 
 const buildSystemPolicy = async (
   type: number,
@@ -27,13 +26,10 @@ export const getSystemPolicy = async (
 const buildDefaults = async (): Promise<
   interfaces.response.SystemDefaults
 > => {
-  const systemTraderEnvs = await traderEnvModel.getSystemDefined()
-
   const tickers = await tickerModel.getAll()
 
   return {
     tickers,
-    traderEnvs: systemTraderEnvs,
   }
 }
 

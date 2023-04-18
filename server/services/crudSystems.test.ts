@@ -98,7 +98,5 @@ describe('#getDefaults', () => {
   test('could get defaults', async () => {
     const result = await crudSystems.getDefaults()
     expect(result.tickers.length).toBe(3)
-    expect(result.traderEnvs.length).toBe(1)
-    expect(result.traderEnvs[0].id).toBe(1)
   })
 })

@@ -1,6 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as selectors from 'selectors'
+import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import TickerDetail from './TickerDetail'
@@ -29,9 +30,9 @@ jest.mock('react-router-dom', () => {
   }
 })
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
-const env1 = { ...instance(envType), id: 1, isSystem: true }
-const env2 = { ...instance(envType), id: 2, isSystem: true }
+const envType = mock<interfaces.traderEnvModel.Identity>({})
+const env1 = { ...instance(envType), id: 1 }
+const env2 = { ...instance(envType), id: 2 }
 const tickerType = mock<interfaces.tickerModel.Record>({})
 const ticker = { ...instance(tickerType), id: 1, name: 'AAPL' }
 
@@ -62,6 +63,17 @@ jest.spyOn(axios, 'get')
 
 describe('#TickerDetail', () => {
   test('could show ticker info', async () => {
+    const userType = mock<UserState>({})
+    const accessType = mock<UserAccess>({})
+    jest.spyOn(selectors, 'selectUser')
+      .mockImplementation(() => () => ({
+        ...instance(userType),
+        access: {
+          ...instance(accessType),
+          accessibleEnvIds: [1, 2],
+        },
+      }))
+
     jest.spyOn(selectors, 'selectTraderEnvBaseById')
       .mockImplementation((id?: number) => () => {
         if (id === 1) return env1

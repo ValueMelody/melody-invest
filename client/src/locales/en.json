@@ -239,11 +239,9 @@
     "envBuilder.duplicatedName": "You have another environment use the same name.",
     "envBuilder.duplicatedEnv": "You have another environment use the same setup.",
 
-    "traderEnv.system": "System",
     "traderEnv.startAt": "Start from {{date}}",
     "traderEnv.allTickers": "Trade based on all the stocks provided by our platform",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
-    "traderEnv.systemDesc": "System defined trader environment",
     "traderEnv.noResultYet": "There's no result generated for this environment yet, please check later",
     "traderEnv.topProfiles": "Some mock profiles from this environment",
     "traderEnv.2001" : "Default 2001",

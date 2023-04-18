@@ -43,7 +43,7 @@ jest.spyOn(selectors, 'selectUser')
     userTraderIds: [1, 2, 3, 4],
   }))
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
+const envType = mock<interfaces.traderEnvModel.Identity>({})
 jest.spyOn(selectors, 'selectTraderEnvBaseById')
   .mockImplementation(() => () => instance(envType))
 

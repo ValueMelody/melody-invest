@@ -20,16 +20,14 @@ const selectUser = () => (state: AppState): UserState => {
   const limits = getLimit(user.userType)
 
   const envs = Object.values(state.traderEnv.base)
-  const userEnvs = envs.filter((env) => !env.isSystem)
   const combos = Object.values(state.traderCombo.base)
-  const userCombos = combos.filter((combo) => !combo.isSystem)
 
-  const canFollowEnv = limits.Envs > userEnvs.length
-  const canFollowCombo = limits.Combos > userCombos.length
+  const canFollowEnv = limits.Envs > envs.length
+  const canFollowCombo = limits.Combos > combos.length
   const canFollowTrader = limits.Profiles > user.userTraderIds.length
 
-  const accessibleEnvIds = userEnvs.map((env) => env.id).slice(0, limits.Envs)
-  const accessibleComboIds = userCombos.map((combo) => combo.id).slice(0, limits.Combos)
+  const accessibleEnvIds = envs.map((env) => env.id).slice(0, limits.Envs)
+  const accessibleComboIds = combos.map((combo) => combo.id).slice(0, limits.Combos)
   const accessibleTraderIds = user.userTraderIds.slice(0, limits.Profiles)
 
   const access = {

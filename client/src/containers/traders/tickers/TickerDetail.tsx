@@ -1,6 +1,5 @@
 import * as actions from 'actions'
 import * as localeTool from 'tools/locale'
-import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
@@ -93,7 +92,7 @@ const TickerDetail = () => {
       <section className='page-root'>
         <section className='page-main'>
           <PageTitle
-            title={localeTool.t('availableTickers.topProfiles', { name: parseTool.traderEnvName(traderEnv) })}
+            title={localeTool.t('availableTickers.topProfiles', { name: traderEnv.name })}
           />
           <EachTops
             bestOveralls={bestOveralls}

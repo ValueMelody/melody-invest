@@ -78,17 +78,15 @@ export const couldAccessEnv = async (
   const env = await traderEnvModel.getByPK(envId)
   if (!env) throw errorEnum.Default.NotFound
 
-  if (!env.isSystem) {
-    const auth: interfaces.request.Auth = req.body.auth
-    const followed = await traderEnvFollowerModel.getUserFollowed(auth.id)
-    const limits = getLimits(auth.type)
-    const envLimit = limits.Envs
+  const auth: interfaces.request.Auth = req.body.auth
+  const followed = await traderEnvFollowerModel.getUserFollowed(auth.id)
+  const limits = getLimits(auth.type)
+  const envLimit = limits.Envs
 
-    const planAllowed = followed.slice(0, envLimit)
-    const planAllowedIds = planAllowed.map((record) => record.traderEnvId)
+  const planAllowed = followed.slice(0, envLimit)
+  const planAllowedIds = planAllowed.map((record) => record.traderEnvId)
 
-    if (!planAllowedIds.includes(envId)) throw errorEnum.Default.NotFound
-  }
+  if (!planAllowedIds.includes(envId)) throw errorEnum.Default.NotFound
 
   next()
 }

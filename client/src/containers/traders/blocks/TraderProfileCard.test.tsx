@@ -63,7 +63,7 @@ jest.mock('react-router-dom', () => {
   }
 })
 
-const envType = mock<interfaces.traderEnvModel.Record>({})
+const envType = mock<interfaces.traderEnvModel.Identity>({})
 jest.spyOn(selectors, 'selectTraderEnvBaseById')
   .mockImplementation(() => () => instance(envType))
 

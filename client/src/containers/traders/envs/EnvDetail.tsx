@@ -49,7 +49,6 @@ const EnvDetail = () => {
     <section className='detail-root'>
       <header className='detail-header'>
         <TraderEnvCard
-          allowUnwatch={!envRecord.isSystem}
           className='w-80'
           traderEnv={envRecord}
         />

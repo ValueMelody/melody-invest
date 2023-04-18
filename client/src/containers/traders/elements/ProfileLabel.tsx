@@ -11,10 +11,9 @@ const ProfileLabel = ({
 }: {
   color: 'info' | 'gray';
   trader: interfaces.traderModel.Record;
-  traderEnv: interfaces.traderEnvModel.Record;
+  traderEnv: interfaces.traderEnvModel.Identity;
   className?: string;
 }) => {
-  const envName = parseTool.traderEnvName(traderEnv)
   return (
     <Badge
       size='sm'
@@ -23,7 +22,7 @@ const ProfileLabel = ({
       data-testid='profileLabel'
     >
       {
-        parseTool.profileName(trader.traderPatternId)} - {envName} {localeTool.t('entity.env')
+        parseTool.profileName(trader.traderPatternId)} - {traderEnv.name} {localeTool.t('entity.env')
       }
     </Badge>
   )
