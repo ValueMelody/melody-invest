@@ -3,7 +3,6 @@ export interface Record {
   entityId: number;
   symbol: string;
   region: string;
-  name: string;
   isDelisted: boolean;
   firstPriceDate: string | null;
   lastPriceDate: string | null;
@@ -21,7 +20,6 @@ export interface Create {
   entityId: number;
   symbol: string;
   region: string;
-  name: string;
   isDelisted: boolean;
 }
 

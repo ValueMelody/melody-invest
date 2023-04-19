@@ -24,13 +24,11 @@ const initialState: TickerIdentityState = {
   detail: {},
 }
 
-const storeFromSystemDefaults = (
+const storeFromCreate = (
   state: TickerIdentityState,
-  action: PayloadAction<interfaces.response.SystemDefaults>,
+  action: PayloadAction<interfaces.tickerModel.Record>,
 ) => {
-  action.payload.tickers.forEach((ticker) => {
-    state.base[ticker.id] = ticker
-  })
+  state.base[action.payload.id] = action.payload
 }
 
 const storeFromTickerDetail = (
@@ -41,6 +39,14 @@ const storeFromTickerDetail = (
   state.detail[`${action.payload.envId}-${action.payload.tickerId}`] = { topProfiles }
 }
 
+const remove = (state: TickerIdentityState) => {
+  Object.keys(state.base).forEach((key: string) => {
+    const numKey = Number(key)
+    delete state.base[numKey]
+    delete state.detail[numKey]
+  })
+}
+
 export const tickerIdentitySlice = createSlice({
   name: 'tickerIdentity',
   initialState,
@@ -48,8 +54,9 @@ export const tickerIdentitySlice = createSlice({
     _resetForTest: (state) => _resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
-    builder.addCase(actions.fetchSystemDefaults.fulfilled, storeFromSystemDefaults)
+    builder.addCase(actions.createTicker.fulfilled, storeFromCreate)
     builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromTickerDetail)
+    builder.addCase(actions.logout, remove)
   },
 })
 

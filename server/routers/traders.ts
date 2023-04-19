@@ -34,6 +34,10 @@ const validateCreateEnvParams = (name: string, startDate: string, tickerIds: num
   if (hasWrongId) throw errorEnum.Default.Forbidden
 }
 
+const validateCreateTickerParams = (symbol: string) => {
+  if (!symbol || symbol?.length > 10) throw errorEnum.Custom.SymbolTooLong
+}
+
 const validateCreateComboParams = (name: string, traderIds: number[]) => {
   if (!name || !Array.isArray(traderIds) || traderIds.length < 2) throw errorEnum.Custom.MissingParams
   const hasWrongId = traderIds.some((id) => typeof id !== 'number')
@@ -126,6 +130,18 @@ export const createTraderFollower = async (req: Request, res: Response) => {
   return res.status(201).send()
 }
 
+export const createTicker = async (req: Request, res: Response) => {
+  const { symbol }: interfaces.request.TickerCreation = req.body
+  validateCreateTickerParams(symbol)
+  const auth: interfaces.request.Auth = req.body.auth
+
+  const ticker = await crudTraders.createTicker(
+    auth.entityId,
+    symbol,
+  )
+  return res.status(201).send(ticker)
+}
+
 export const createEnv = async (req: Request, res: Response) => {
   const { name, startDate, tickerIds }: interfaces.request.TraderEnvCreation = req.body
   const parsedName = name?.trim()
@@ -182,7 +198,7 @@ export const attachRoutes = (router: Router) => {
   router.get('/profiles/:id/:access_code', getTraderProfile)
   router.get(
     '/profiles/:id/:access_code/detail',
-    authMiddleware.guestOrUser,
+    authMiddleware.normalUser,
     getProfileDetail,
   )
   router.get(
@@ -198,15 +214,20 @@ export const attachRoutes = (router: Router) => {
   )
   router.get(
     '/envs/:env_id/behaviors/:behavior',
-    authMiddleware.guestOrUser,
+    authMiddleware.normalUser,
     accessMiddleware.couldAccessEnv,
     getBehaviorDetail,
   )
   router.get(
     '/envs/:env_id/tickers/:ticker_id',
-    authMiddleware.guestOrUser,
+    authMiddleware.normalUser,
     accessMiddleware.couldAccessEnv,
     getTickerDetail,
+  )
+  router.post(
+    '/tickers',
+    authMiddleware.normalUser,
+    createTicker,
   )
   router.post(
     '/profiles',

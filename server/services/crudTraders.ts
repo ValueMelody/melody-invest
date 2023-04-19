@@ -4,6 +4,7 @@ import * as databaseAdapter from 'adapters/database'
 import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
 import * as interfaces from '@shared/interfaces'
+import * as tickerModel from 'models/ticker'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderComboModel from 'models/traderCombo'
 import * as traderEnvFollowerModel from 'models/traderEnvFollower'
@@ -219,6 +220,32 @@ export const getComboDetail = async (
     pastMonthPercentNumber: stats.pastMonthPercentNumber,
     pastQuarterPercentNumber: stats.pastQuarterPercentNumber,
     pastYearPercentNumber: stats.pastYearPercentNumber,
+  }
+}
+
+export const createTicker = async (
+  entityId: number,
+  symbol: string,
+): Promise<interfaces.tickerModel.Record> => {
+  const transaction = await databaseAdapter.createTransaction()
+  try {
+    const ticker = await tickerModel.createIfEmpty({
+      entityId,
+      symbol,
+      region: 'US',
+      isDelisted: false,
+    }, transaction)
+
+    if (ticker.isNew) {
+      await transaction.commit()
+    } else {
+      await transaction.rollback()
+    }
+
+    return ticker.record
+  } catch (error) {
+    await transaction.rollback()
+    throw error
   }
 }
 

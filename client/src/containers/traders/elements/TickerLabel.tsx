@@ -1,4 +1,5 @@
 import * as interfaces from '@shared/interfaces'
+import * as localeTool from 'tools/locale'
 import { Badge } from 'flowbite-react'
 import classNames from 'classnames'
 
@@ -28,7 +29,7 @@ const TickerLabel = ({
       className={classNames(className, {
         'cursor-pointer': !!onClick,
       })}
-      title={ticker.name}
+      title={localeTool.getTickerName(ticker.symbol)}
       onClick={handleClick}
     >
       {ticker.symbol}

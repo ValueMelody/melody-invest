@@ -33,7 +33,7 @@ describe('#tickerLabel', () => {
     const container = screen.getByTestId('tickerLabel')
     expect(container).toBeTruthy()
     expect(screen.getByText(ticker.symbol)).toBeTruthy()
-    expect(container.getAttribute('title')).toBe(ticker.name)
+    expect(container.getAttribute('title')).toBe(ticker.symbol)
     expect(container.className).not.toContain('cursor-pointer')
 
     fireEvent.click(container)

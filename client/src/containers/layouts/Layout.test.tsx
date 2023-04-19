@@ -51,7 +51,7 @@ describe('#Layout', () => {
     expect(screen.queryByTestId('footer')).toBeInTheDocument()
     expect(screen.queryByText('test children')).toBeInTheDocument()
 
-    expect(get).toBeCalledTimes(2)
+    expect(get).toBeCalledTimes(1)
   })
 
   test('could render messages', async () => {

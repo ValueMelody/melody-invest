@@ -581,7 +581,7 @@ describe('#attachRoutes', () => {
     traders.attachRoutes(router)
     expect(routerGet).toHaveBeenCalledWith('/profiles/:id/:access_code', traders.getTraderProfile)
     expect(routerGet).toHaveBeenCalledWith(
-      '/profiles/:id/:access_code/detail', authMiddleware.guestOrUser, traders.getProfileDetail,
+      '/profiles/:id/:access_code/detail', authMiddleware.normalUser, traders.getProfileDetail,
     )
     expect(routerGet).toHaveBeenCalledWith('/combos/:combo_id', authMiddleware.normalUser, traders.getComboDetail)
     expect(routerGet).toHaveBeenCalledWith(
@@ -589,15 +589,20 @@ describe('#attachRoutes', () => {
     )
     expect(routerGet).toHaveBeenCalledWith(
       '/envs/:env_id/behaviors/:behavior',
-      authMiddleware.guestOrUser,
+      authMiddleware.normalUser,
       accessMiddleware.couldAccessEnv,
       traders.getBehaviorDetail,
     )
     expect(routerGet).toHaveBeenCalledWith(
       '/envs/:env_id/tickers/:ticker_id',
-      authMiddleware.guestOrUser,
+      authMiddleware.normalUser,
       accessMiddleware.couldAccessEnv,
       traders.getTickerDetail,
+    )
+    expect(routerPost).toHaveBeenCalledWith(
+      '/tickers',
+      authMiddleware.normalUser,
+      traders.createTicker,
     )
     expect(routerPost).toHaveBeenCalledWith(
       '/profiles',

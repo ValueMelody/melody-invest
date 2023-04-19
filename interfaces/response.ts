@@ -1,4 +1,3 @@
-import * as tickerModel from './models/ticker'
 import * as traderComboModel from './models/traderCombo'
 import * as traderEnvModel from './models/traderEnv'
 import * as traderHoldingModel from './models/traderHolding'
@@ -34,10 +33,6 @@ export interface TopTraderProfiles {
   pastQuarter: TraderProfile[];
   pastMonth: TraderProfile[];
   pastWeek: TraderProfile[];
-}
-
-export interface SystemDefaults {
-  tickers: tickerModel.Record[];
 }
 
 export interface UserOverall {

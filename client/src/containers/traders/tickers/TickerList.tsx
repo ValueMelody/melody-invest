@@ -1,14 +1,16 @@
+import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
-import { ChangeEvent, useState } from 'react'
-import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
+import { Badge, Button, Card, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
-import { TextInput } from 'flowbite-react'
+import RequiredLabel from 'containers/elements/RequiredLabel'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import { useNavigate } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 import useShowMore from 'hooks/useShowMore'
 
 const isSearchedTicker = (
@@ -18,12 +20,16 @@ const isSearchedTicker = (
   const search = searchText.trim().toLowerCase()
   if (!search) return true
   if (ticker.symbol.toLowerCase().includes(search)) return true
-  if (ticker.name.toLowerCase().includes(search)) return true
+  if (localeTool.getTickerName(ticker.symbol).toLowerCase().includes(search)) return true
   return false
 }
 
+const noteClass = 'text-sm italic'
+
 const TickerList = () => {
+  usePrivateGuard()
   const navigate = useNavigate()
+  const dispatch = useDispatch<AppDispatch>()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore({
     default: 100,
@@ -31,6 +37,7 @@ const TickerList = () => {
   })
 
   const [searchText, setSearchText] = useState('')
+  const [tickerSymbol, setTickerSymbol] = useState('')
 
   const tickers = useSelector(selectors.selectTickerIdentityBases())
 
@@ -48,9 +55,21 @@ const TickerList = () => {
     setSearchText(e.target.value)
   }
 
+  const handleChangeTickerSymbol = (
+    e: ChangeEvent<HTMLInputElement>,
+  ) => {
+    setTickerSymbol(e.target.value.toUpperCase())
+  }
+
+  const handleConfirmAdd = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    dispatch(actions.createTicker({
+      symbol: tickerSymbol.trim(),
+    })).then(() => setTickerSymbol(''))
+  }
+
   return (
     <section className='page-root'>
-      <DisclaimerModal />
       <section className='page-main'>
         <header className='mb-4'>
           <TextInput
@@ -74,6 +93,40 @@ const TickerList = () => {
         </section>
         {displayedTotal < availableTickers.length && renderShowMoreButton()}
       </section>
+      <aside className='page-aside'>
+        <Card>
+          <header className='flex'>
+            <Badge>
+              {localeTool.t('availableTickers.addTitle')}
+            </Badge>
+          </header>
+          <RequiredLabel
+            title={localeTool.t('availableTickers.tickerMarket')}
+          />
+          <p className={noteClass}>
+            * {localeTool.t('availableTickers.tickerMarketNote')}
+          </p>
+          <RequiredLabel
+            title={localeTool.t('availableTickers.tickerSymbol')}
+          />
+          <TextInput
+            placeholder={localeTool.t('availableTickers.tickerSymbol')}
+            value={tickerSymbol}
+            onChange={handleChangeTickerSymbol}
+          />
+          <p className={noteClass}>
+            * {localeTool.t('availableTickers.tickerSymbolNote', { source: localeTool.t('shared.dataSource') })}
+          </p>
+          <form onSubmit={handleConfirmAdd}>
+            <Button
+              type='submit'
+              disabled={!tickerSymbol}
+            >
+              {localeTool.t('availableTickers.confirmAdd')}
+            </Button>
+          </form>
+        </Card>
+      </aside>
     </section>
   )
 }

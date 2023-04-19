@@ -63,26 +63,6 @@ describe('#getPolicy', () => {
   })
 })
 
-describe('#getDefaults', () => {
-  test('could call expected function', async () => {
-    const defaultType = mock<interfaces.response.SystemDefaults>({})
-    const defaultData = instance(defaultType)
-
-    const getDefaults = jest.fn()
-    jest.spyOn(crudSystems, 'getDefaults')
-      .mockImplementation(async () => {
-        getDefaults()
-        return defaultData
-      })
-
-    await system.getDefaults(instance(reqType), response)
-
-    expect(getDefaults).toBeCalledTimes(1)
-    expect(resStatus).toBeCalledWith(200)
-    expect(resSend).toBeCalledWith(defaultData)
-  })
-})
-
 describe('#attachRoutes', () => {
   test('could attach', () => {
     const routerType = mock<Router>({})
@@ -91,6 +71,5 @@ describe('#attachRoutes', () => {
     router.get = routerGet
     system.attachRoutes(router)
     expect(routerGet).toHaveBeenCalledWith('/policy/:type', system.getPolicy)
-    expect(routerGet).toHaveBeenCalledWith('/defaults', system.getDefaults)
   })
 })

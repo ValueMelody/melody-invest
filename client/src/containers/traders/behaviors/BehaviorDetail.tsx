@@ -7,13 +7,14 @@ import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
-import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import { useEffect } from 'react'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 
 const BehaviorDetail = () => {
+  usePrivateGuard()
   const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
@@ -54,7 +55,6 @@ const BehaviorDetail = () => {
       data-testid='detail-root'
       className='detail-root'
     >
-      <DisclaimerModal />
       <header className='detail-header'>
         <section className='flex'>
           <BehaviorLabel

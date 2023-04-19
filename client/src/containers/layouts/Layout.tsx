@@ -17,10 +17,6 @@ const Layout: FunctionComponent = ({
   const global = useSelector(selectors.selectGlobal())
 
   useEffect(() => {
-    dispatch(actions.fetchSystemDefaults())
-  }, [dispatch])
-
-  useEffect(() => {
     if (!global.refreshToken || user.userType) return
     dispatch(actions.fetchUserOverall())
   }, [global.refreshToken, user.userType, dispatch])

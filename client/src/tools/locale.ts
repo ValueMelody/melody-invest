@@ -24,3 +24,10 @@ export const getStateName = (code: string) => {
 export const getProvinceName = (stateCode: string, code: string) => {
   return t(`province.${stateCode}.${code}`)
 }
+
+export const getTickerName = (symbol: string | undefined) => {
+  if (!symbol) return ''
+  const key = `symbol.${symbol}`
+  const translation = t(`symbol.${symbol}`)
+  return key === translation ? symbol : translation
+}

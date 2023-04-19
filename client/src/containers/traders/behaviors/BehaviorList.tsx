@@ -3,13 +3,16 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as routerTool from 'tools/router'
+import * as selectors from 'selectors'
 import { ChangeEvent, useState } from 'react'
 import BehaviorLabel from 'containers/traders/elements/BehaviorLabel'
 import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import { TextInput } from 'flowbite-react'
 import VariationList from 'containers/traders/elements/VariationList'
+import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const isSearchedBehavior = (
   behavior: interfaces.traderPatternModel.Behavior,
@@ -25,6 +28,7 @@ const isSearchedBehavior = (
 
 const BehaviorList = () => {
   const navigate = useNavigate()
+  const global = useSelector(selectors.selectGlobal())
 
   const [searchText, setSearchText] = useState('')
   const [focusedType, setFocusedType] = useState('buyBehaviors')
@@ -61,6 +65,7 @@ const BehaviorList = () => {
   const focusedOption = focusOptions.find((option) => option.value === focusedType)!
 
   const handleClickLabel = (behavior: interfaces.traderPatternModel.Behavior) => {
+    if (!global.refreshToken) return
     const url = routerTool.behaviorDetailRoute(1, behavior)
     navigate(url)
   }
@@ -88,7 +93,9 @@ const BehaviorList = () => {
           {focusedOption.behaviors.map((behavior) => (
             <BehaviorLabel
               key={behavior}
-              className='mx-2 my-1'
+              className={classNames('mx-2 my-1', {
+                'cursor-default': !global.refreshToken,
+              })}
               behavior={behavior}
               color='gray'
               onClick={handleClickLabel}

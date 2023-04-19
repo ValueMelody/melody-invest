@@ -44,7 +44,7 @@ const storeFromComboBase = (
   state.base[action.payload.id] = action.payload
 }
 
-const removeUserFollowed = (state: TraderComboState) => {
+const remove = (state: TraderComboState) => {
   Object.keys(state.base).forEach((key: string) => {
     const numKey = Number(key)
     delete state.base[numKey]
@@ -69,8 +69,7 @@ export const traderComboSlice = createSlice({
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.createTraderCombo.fulfilled, storeFromComboBase)
     builder.addCase(actions.deleteTraderCombo.fulfilled, removeById)
-    builder.addCase(actions.logout, removeUserFollowed)
-    builder.addCase(actions.lockUserAccount.fulfilled, removeUserFollowed)
+    builder.addCase(actions.logout, remove)
   },
 })
 

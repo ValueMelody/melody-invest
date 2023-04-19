@@ -48,7 +48,7 @@ const storeFromEnvDetail = (
   state.detail[action.payload.id] = { topProfiles }
 }
 
-const removeUserFollowed = (state: TraderEnvState) => {
+const remove = (state: TraderEnvState) => {
   Object.keys(state.base).forEach((key: string) => {
     const numKey = Number(key)
     delete state.base[numKey]
@@ -73,8 +73,7 @@ export const traderEnvSlice = createSlice({
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromEnvDetail)
     builder.addCase(actions.createTraderEnv.fulfilled, storeFromEnvBase)
     builder.addCase(actions.deleteTraderEnv.fulfilled, deleteById)
-    builder.addCase(actions.logout, removeUserFollowed)
-    builder.addCase(actions.lockUserAccount.fulfilled, removeUserFollowed)
+    builder.addCase(actions.logout, remove)
   },
 })
 

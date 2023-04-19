@@ -1,5 +1,7 @@
 {
   "translation": {
+    "shared.dataSource": "Tiingo, Alpha Vantage",
+
     "unwatchEnvModal.title": "Unwatch this environment",
     "unwatchEnvModal.desc": "Unwatch this environment will automatically unwatch all the trader profiles you followed from this environment as well. Do you want to continue?",
     "unwatchEnvModal.confirm": "Confirm",
@@ -176,7 +178,7 @@
 
     "holdingShare.new": "New",
 
-    "tradeBehaviors.title": "Provided Behaviors",
+    "tradeBehaviors.title": "Supported Behaviors",
     "tradeBehaviors.type": "Type of Trade Behaviors",
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
@@ -247,7 +249,13 @@
     "traderEnv.2001" : "Default 2001",
     "traderEnv.2011" : "Default 2011",
 
-    "availableTickers.title": "Provided Stocks",
+    "availableTickers.title": "Manage Tickers",
+    "availableTickers.addTitle": "Add new ticker",
+    "availableTickers.confirmAdd": "Confirm",
+    "availableTickers.tickerMarket": "Ticker Market",
+    "availableTickers.tickerMarketNote": "Only US tickers supported currently",
+    "availableTickers.tickerSymbol": "Ticker Symbol",
+    "availableTickers.tickerSymbolNote": "Please find correct symbol from the data source you selected ({{source}})",
     "availableTickers.topProfiles": "Some mock profiles currently holds this stock from {{name}} Environment",
 
     "valueChange.emptyYears": "No enough data for yearly trends",

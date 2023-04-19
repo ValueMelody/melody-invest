@@ -18,6 +18,7 @@ const LeftLinks = ({
 }: {
   onClick?: () => void;
 }) => {
+  const global = useSelector(selectors.selectGlobal())
   const location = useLocation()
 
   return (
@@ -37,14 +38,16 @@ const LeftLinks = ({
         icon={BookmarkIcon}
         onClick={onClick}
       />
-      <HeaderLink
-        isActive={location.pathname === routerTool.tickerListRoute()}
-        className={headerClass}
-        route={routerTool.tickerListRoute()}
-        title={localeTool.t('availableTickers.title')}
-        icon={TicketIcon}
-        onClick={onClick}
-      />
+      {!!global.refreshToken && (
+        <HeaderLink
+          isActive={location.pathname === routerTool.tickerListRoute()}
+          className={headerClass}
+          route={routerTool.tickerListRoute()}
+          title={localeTool.t('availableTickers.title')}
+          icon={TicketIcon}
+          onClick={onClick}
+        />
+      )}
     </>
   )
 }

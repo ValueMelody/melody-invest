@@ -68,6 +68,14 @@ const storeFromProfileDetail = (
   state.detail[action.payload.id] = action.payload.detail
 }
 
+const remove = (state: TraderProfileState) => {
+  Object.keys(state.base).forEach((key: string) => {
+    const numKey = Number(key)
+    delete state.base[numKey]
+    delete state.detail[numKey]
+  })
+}
+
 export const traderProfileSlice = createSlice({
   name: 'traderProfile',
   initialState,
@@ -83,6 +91,7 @@ export const traderProfileSlice = createSlice({
     builder.addCase(actions.fetchTraderProfile.fulfilled, storeFromTraderProfile)
     builder.addCase(actions.createTraderProfile.fulfilled, storeFromTraderProfile)
     builder.addCase(actions.fetchTraderProfileDetail.fulfilled, storeFromProfileDetail)
+    builder.addCase(actions.logout, remove)
   },
 })
 
