@@ -5,6 +5,10 @@ export interface Auth {
   type: number;
 }
 
+export interface TickerCreation {
+  symbol: string;
+}
+
 export interface TraderEnvCreation {
   name: string;
   startDate: string;

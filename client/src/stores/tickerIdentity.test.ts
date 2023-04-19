@@ -1,6 +1,4 @@
 import * as actions from 'actions'
-import * as interfaces from '@shared/interfaces'
-import { instance, mock } from 'ts-mockito'
 import axios from 'axios'
 import { store } from './index'
 import { tickerIdentitySlice } from './tickerIdentity'
@@ -17,8 +15,6 @@ describe('#store', () => {
     })
   })
 
-  const tickerType = mock<interfaces.tickerModel.Record>({})
-
   const detail = {
     topProfiles: {
       yearly: [],
@@ -28,30 +24,6 @@ describe('#store', () => {
       pastWeek: [],
     },
   }
-
-  test('could storeFromSystemDefaults', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: {
-            tickers: [
-              { ...instance(tickerType), id: 1 },
-              { ...instance(tickerType), id: 2 },
-              { ...instance(tickerType), id: 3 },
-            ],
-            traderEnvs: [],
-          },
-        }
-      })
-
-    await store.dispatch(actions.fetchSystemDefaults())
-
-    expect(store.getState().tickerIdentity.base).toStrictEqual({
-      1: { ...instance(tickerType), id: 1 },
-      2: { ...instance(tickerType), id: 2 },
-      3: { ...instance(tickerType), id: 3 },
-    })
-  })
 
   test('could storeFromTickerDetail', async () => {
     jest.spyOn(axios, 'get')

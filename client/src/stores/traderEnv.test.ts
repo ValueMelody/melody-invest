@@ -118,34 +118,6 @@ describe('#store', () => {
     })
   })
 
-  test('could removeUserFollowed on logout', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: {
-            tickers: [],
-            traderEnvs: [
-              { ...instance(envType), id: 1 },
-              { ...instance(envType), id: 2 },
-              { ...instance(envType), id: 3 },
-            ],
-          },
-        }
-      })
-    await store.dispatch(actions.fetchSystemDefaults())
-
-    jest.spyOn(axios, 'delete')
-      .mockImplementation(async () => {
-        return {
-          data: true,
-        }
-      })
-
-    store.dispatch(actions.logout())
-
-    expect(store.getState().traderEnv.base).toStrictEqual({})
-  })
-
   test('could removeUserFollowed on lock account', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {

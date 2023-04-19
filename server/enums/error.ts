@@ -13,6 +13,7 @@ export const Custom = Object.freeze({
   RecordNotFound: { code: 500, message: 'Item not found.' },
   WrongAccessCode: { code: 404, message: 'Wrong access code.' },
   MissingParams: { code: 403, message: 'Missing parameters.' },
+  SymbolTooLong: { code: 403, message: 'Symbol is too long.' },
   PasswordTooShort: { code: 403, message: 'Password is too short.' },
   EmailTooLong: { code: 403, message: 'Email is too long.' },
   EmailWrongFormat: { code: 403, message: 'Email format required.' },

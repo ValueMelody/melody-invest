@@ -30,6 +30,13 @@ const storeFromBehaviorDetail = (
   state.detail[`${action.payload.envId}-${action.payload.behavior}`] = { topProfiles }
 }
 
+const remove = (state: TraderBehaviorState) => {
+  Object.keys(state.detail).forEach((key: string) => {
+    const numKey = Number(key)
+    delete state.detail[numKey]
+  })
+}
+
 export const traderBehaviorSlice = createSlice({
   name: 'traderBehavior',
   initialState,
@@ -38,6 +45,7 @@ export const traderBehaviorSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromBehaviorDetail)
+    builder.addCase(actions.logout, remove)
   },
 })
 

@@ -6,15 +6,16 @@ import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Alert } from 'flowbite-react'
-import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import HoldingCard from 'containers/traders/blocks/HoldingCard'
 import PageTitle from 'containers/elements/PageTitle'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
 import { useEffect } from 'react'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 import useShowMore from 'hooks/useShowMore'
 
 const ProfileDetail = () => {
+  usePrivateGuard()
   const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
@@ -57,7 +58,6 @@ const ProfileDetail = () => {
 
   return (
     <section className='detail-root'>
-      <DisclaimerModal />
       <header className='detail-header'>
         <TraderProfileCard
           className='w-full'

@@ -1,7 +1,10 @@
 import * as constants from '@shared/constants'
 import * as parseTool from 'tools/parse'
+import * as selectors from 'selectors'
 import { fireEvent, render, screen } from 'test.utils'
+import { instance, mock } from 'ts-mockito'
 import BehaviorList from './BehaviorList'
+import { GlobalState } from 'stores/global'
 
 const navigate = jest.fn()
 jest.mock('react-router-dom', () => {
@@ -12,6 +15,20 @@ jest.mock('react-router-dom', () => {
     useNavigate: () => navigate,
   }
 })
+
+jest.mock('selectors', () => {
+  return {
+    __esModule: true,
+    ...jest.requireActual('selectors'),
+  }
+})
+
+const globalState = mock<GlobalState>({})
+jest.spyOn(selectors, 'selectGlobal')
+  .mockImplementation(() => () => ({
+    ...instance(globalState),
+    refreshToken: '123',
+  }))
 
 describe('#BehaviorList', () => {
   test('could render behaviors', () => {

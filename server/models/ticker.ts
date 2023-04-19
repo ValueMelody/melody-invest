@@ -54,6 +54,20 @@ export const create = async (
   return ticker
 }
 
+export const createIfEmpty = async (
+  values: interfaces.tickerModel.Create,
+  transaction: Knex.Transaction,
+): Promise<{
+  record: interfaces.tickerModel.Record;
+  isNew: boolean;
+}> => {
+  const currentRecord = await getByUK(values.entityId, values.region, values.symbol)
+  if (currentRecord) return { record: currentRecord, isNew: false }
+
+  const created = await create(values, transaction)
+  return { record: created, isNew: true }
+}
+
 export const update = async (
   tickerId: number,
   values: interfaces.tickerModel.Update,

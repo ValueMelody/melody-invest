@@ -67,7 +67,7 @@ const EnvBuilder = () => {
 
   const tickerIdentities = useSelector(selectors.selectTickerIdentityBases())
   const selectableTickers = tickerIdentities.map((identity) => ({
-    label: `${identity.name} (${identity.symbol})`,
+    label: localeTool.getTickerName(identity.symbol),
     value: identity.id,
   }))
 

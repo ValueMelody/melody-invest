@@ -3,20 +3,6 @@ import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
-export const fetchSystemDefaults = createAsyncThunk(
-  'system/fetchSystemDefaults',
-  async (params, { rejectWithValue }) => {
-    const endpoint = `${routerEnum.Endpoint.Systems}/defaults`
-
-    try {
-      const res: interfaces.response.SystemDefaults = await requestAdapter.sendGetRequest(endpoint)
-      return res
-    } catch (e) {
-      return rejectWithValue(e)
-    }
-  },
-)
-
 export const fetchSystemPolicy = createAsyncThunk(
   'system/fetchSystemPolicy',
   async (type: number, { rejectWithValue }) => {

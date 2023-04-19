@@ -20,11 +20,6 @@ describe('#Header', () => {
     const behaviorsButton = screen.getByText(behaviorsText)
     fireEvent.click(behaviorsButton)
     expect(history.location.pathname).toBe(routerTool.behaviorListRoute())
-
-    const tickersText = localeTool.t('availableTickers.title')
-    const tickersButton = screen.getByText(tickersText)
-    fireEvent.click(tickersButton)
-    expect(history.location.pathname).toBe(routerTool.tickerListRoute())
   })
 
   test('could render as guest', () => {
@@ -46,6 +41,11 @@ describe('#Header', () => {
     const history = createMemoryHistory({ initialEntries: ['/test'] })
 
     render(<Header />, { history })
+
+    const tickersText = localeTool.t('availableTickers.title')
+    const tickersButton = screen.getByText(tickersText)
+    fireEvent.click(tickersButton)
+    expect(history.location.pathname).toBe(routerTool.tickerListRoute())
 
     const dashboardText = localeTool.t('dashboard.title')
     const dashboardButton = screen.queryByText(dashboardText)

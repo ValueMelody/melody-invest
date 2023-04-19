@@ -2,8 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
+import { logout, refreshAccessToken } from './general'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import { refreshAccessToken } from './general'
 
 export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',
@@ -95,6 +95,7 @@ export const lockUserAccount = createAsyncThunk(
 
     try {
       await requestAdapter.sendPutRequest(endpoint)
+      dispatch(logout())
       return {
         msg: localeTool.t('setting.lockAccessSuccess'),
       }

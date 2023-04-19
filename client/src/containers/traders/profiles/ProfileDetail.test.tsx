@@ -4,6 +4,7 @@ import * as selectors from 'selectors'
 import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
+import { GlobalState } from 'stores/global'
 import ProfileDetail from './ProfileDetail'
 import axios from 'axios'
 
@@ -17,6 +18,13 @@ jest.mock('selectors', () => {
     ...jest.requireActual('selectors'),
   }
 })
+
+const globalState = mock<GlobalState>({})
+jest.spyOn(selectors, 'selectGlobal')
+  .mockImplementation(() => () => ({
+    ...instance(globalState),
+    refreshToken: '123',
+  }))
 
 jest.mock('react-router-dom', () => {
   return {

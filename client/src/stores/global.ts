@@ -223,10 +223,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchSystemPolicy.fulfilled, stopLoading)
     builder.addCase(actions.fetchSystemPolicy.rejected, onRequestRejected)
 
-    builder.addCase(actions.fetchSystemDefaults.pending, startLoading)
-    builder.addCase(actions.fetchSystemDefaults.fulfilled, stopLoading)
-    builder.addCase(actions.fetchSystemDefaults.rejected, onRequestRejected)
-
     builder.addCase(actions.fetchUserOverall.pending, startLoading)
     builder.addCase(actions.fetchUserOverall.fulfilled, stopLoading)
     builder.addCase(actions.fetchUserOverall.rejected, onRequestRejected)
@@ -270,6 +266,10 @@ export const globalSlice = createSlice({
     builder.addCase(actions.createWatchedProfile.pending, startLoading)
     builder.addCase(actions.createWatchedProfile.fulfilled, stopLoading)
     builder.addCase(actions.createWatchedProfile.rejected, onRequestRejected)
+
+    builder.addCase(actions.createTicker.pending, startLoading)
+    builder.addCase(actions.createTicker.fulfilled, stopLoading)
+    builder.addCase(actions.createTicker.rejected, onRequestRejected)
 
     builder.addCase(actions.createTraderEnv.pending, startLoading)
     builder.addCase(actions.createTraderEnv.fulfilled, stopLoading)

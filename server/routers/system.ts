@@ -16,13 +16,6 @@ export const getPolicy = async (req: Request, res: Response) => {
   return res.status(200).send(policy)
 }
 
-export const getDefaults = async (req: Request, res: Response) => {
-  const defaults = await crudSystems.getDefaults()
-
-  return res.status(200).send(defaults)
-}
-
 export const attachRoutes = (router: Router) => {
   router.get('/policy/:type', getPolicy)
-  router.get('/defaults', getDefaults)
 }

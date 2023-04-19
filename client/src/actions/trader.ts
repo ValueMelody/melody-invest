@@ -192,6 +192,31 @@ export const createWatchedProfile = createAsyncThunk(
   },
 )
 
+export const createTicker = createAsyncThunk(
+  'trader/createTicker',
+  async ({
+    symbol,
+  }: {
+    symbol: string;
+  }, { rejectWithValue, dispatch }) => {
+    const endpoint = `${routerEnum.Endpoint.Traders}/tickers`
+    const reqs: interfaces.request.TickerCreation = {
+      symbol,
+    }
+    await dispatch(refreshAccessToken())
+
+    try {
+      const ticker: interfaces.tickerModel.Record = await requestAdapter.sendPostRequest(
+        endpoint,
+        reqs,
+      )
+      return ticker
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
 export const createTraderEnv = createAsyncThunk(
   'trader/createTraderEnv',
   async ({

@@ -23,7 +23,7 @@ const HoldingShare = ({
   return (
     <Card
       data-testid='holdingShare'
-      title={tickerIdentity?.name}
+      title={localeTool.getTickerName(tickerIdentity?.symbol)}
       className='text-xs [&>div]:p-2 mx-2 my-1'
     >
       <div className='flex items-center'>

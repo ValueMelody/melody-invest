@@ -4,14 +4,15 @@ import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import DisclaimerModal from 'containers/traders/elements/DisclaimerModal'
 import EachTops from 'containers/traders/blocks/EachTops'
 import PageTitle from 'containers/elements/PageTitle'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import { useEffect } from 'react'
+import usePrivateGuard from 'hooks/usePrivateGuard'
 
 const TickerDetail = () => {
+  usePrivateGuard()
   const params = useParams()
   const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
@@ -55,7 +56,6 @@ const TickerDetail = () => {
       data-testid='detail-root'
       className='detail-root'
     >
-      <DisclaimerModal />
       <header className='detail-header'>
         <section className='flex'>
           <TickerLabel
@@ -67,7 +67,9 @@ const TickerDetail = () => {
             data-testid='detail-title'
             className='font-bold text-xl'
           >
-            {tickerIdentity.name} {tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''}
+            {localeTool.getTickerName(tickerIdentity.symbol)} {
+              tickerIdentity.isDelisted ? `(${localeTool.t('ticker.delisted')})` : ''
+            }
           </h1>
         </section>
         <p className='mt-2 italic'>
