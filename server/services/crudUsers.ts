@@ -12,6 +12,7 @@ import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as paymentAdapter from 'adapters/payment'
+import * as tickerModel from 'models/ticker'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderComboModel from 'models/traderCombo'
 import * as traderEnvFollowerModel from 'models/traderEnvFollower'
@@ -26,6 +27,7 @@ import moment from 'moment'
 
 export const getUserOverall = async (
   userId: number,
+  entityId: number,
 ): Promise<interfaces.response.UserOverall> => {
   const user = await userModel.getByPK(userId)
 
@@ -37,6 +39,8 @@ export const getUserOverall = async (
   const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
   const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
   const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
+
+  const tickers = await tickerModel.getAllByEntity(entityId)
 
   const envFollowers = await traderEnvFollowerModel.getUserFollowed(userId)
   const envIds = envFollowers.map((envFollower) => envFollower.traderEnvId)
@@ -78,6 +82,7 @@ export const getUserOverall = async (
   return {
     traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
     traderEnvs,
+    tickers,
     traderCombos,
     email: user.email,
     type: userType,

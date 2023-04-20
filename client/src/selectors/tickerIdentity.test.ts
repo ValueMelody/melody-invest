@@ -66,12 +66,3 @@ describe('#selectTickerIdentityBaseById', () => {
     expect(tickerIdentity.selectTickerIdentityBaseById(undefined)(stateInstance)).toBeUndefined()
   })
 })
-
-describe('#selectTickerIdentityDetail', () => {
-  test('could select ticker identity detail', () => {
-    expect(tickerIdentity.selectTickerIdentityDetail(1, 1)(stateInstance)).toStrictEqual(detail1)
-    expect(tickerIdentity.selectTickerIdentityDetail(2, 3)(stateInstance)).toStrictEqual(detail3)
-    expect(tickerIdentity.selectTickerIdentityDetail(1, undefined)(stateInstance)).toBeUndefined()
-    expect(tickerIdentity.selectTickerIdentityDetail(0, 3)(stateInstance)).toBeUndefined()
-  })
-})

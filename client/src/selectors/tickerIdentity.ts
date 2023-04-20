@@ -1,12 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import { TickerIdentityBase } from 'stores/tickerIdentity'
 
-const selectHasTickerIdentity = () => (
-  state: AppState,
-): boolean => {
-  return Object.keys(state.tickerIdentity.base).length > 0
-}
-
 const selectTickerIdentityBaseDict = () => (
   state: AppState,
 ): TickerIdentityBase => {
@@ -28,18 +22,8 @@ const selectTickerIdentityBaseById = (id?: number) => (
   return ticker
 }
 
-const selectTickerIdentityDetail = (envId: number, tickerId?: number) => (
-  state: AppState,
-): { topProfiles: TopTraderProfileIds } | undefined => {
-  if (!envId || !tickerId) return undefined
-  const detail = state.tickerIdentity.detail[`${envId}-${tickerId}`]
-  return detail
-}
-
 export {
-  selectHasTickerIdentity,
   selectTickerIdentityBaseDict,
   selectTickerIdentityBases,
   selectTickerIdentityBaseById,
-  selectTickerIdentityDetail,
 }

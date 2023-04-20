@@ -6,13 +6,6 @@ describe('#tickerListRoute', () => {
   })
 })
 
-describe('#tickerDetailRoute', () => {
-  test('could get correct url for ticker detail route', () => {
-    expect(routerTool.tickerDetailRoute(1, 2)).toBe('/tickers/2/envs/1')
-    expect(routerTool.tickerDetailRoute(2, 3)).toBe('/tickers/3/envs/2')
-  })
-})
-
 describe('#behaviorListRoute', () => {
   test('could get correct url for behavior list route', () => {
     expect(routerTool.behaviorListRoute()).toBe('/behaviors')

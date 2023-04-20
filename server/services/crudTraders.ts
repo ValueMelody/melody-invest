@@ -102,18 +102,6 @@ export const getBehaviorDetail = async (
   }
 }
 
-export const getTickerDetail = async (
-  envId: number,
-  tickerId: number,
-): Promise<interfaces.response.TickerDetail> => {
-  const tops = await traderModel.getTops(3, { envId, tickerId })
-  const topProfiles = await buildTraderTopProfiles(tops)
-
-  return {
-    topProfiles,
-  }
-}
-
 export const createFollowedTrader = async (
   userId: number, traderId: number,
 ) => {

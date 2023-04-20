@@ -70,26 +70,6 @@ describe('#store', () => {
     })
   })
 
-  test('could storeFromDetailTops from fetchTraderTickerDetail', async () => {
-    jest.spyOn(axios, 'get')
-      .mockImplementation(async () => {
-        return {
-          data: {
-            topProfiles,
-          },
-        }
-      })
-    await store.dispatch(actions.fetchTraderTickerDetail({
-      envId: 1, tickerId: 2,
-    }))
-
-    expect(store.getState().traderProfile.base).toStrictEqual({
-      1: profile1,
-      2: profile2,
-      3: profile3,
-    })
-  })
-
   test('could storeFromDetailTops from fetchTraderBehaviorDetail', async () => {
     jest.spyOn(axios, 'get')
       .mockImplementation(async () => {
@@ -136,6 +116,7 @@ describe('#store', () => {
             traderProfiles: [profile1, profile2],
             traderCombos: [],
             traderEnvs: [],
+            tickers: [],
           },
         }
       })

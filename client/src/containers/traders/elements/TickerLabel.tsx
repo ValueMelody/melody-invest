@@ -29,7 +29,7 @@ const TickerLabel = ({
       className={classNames(className, {
         'cursor-pointer': !!onClick,
       })}
-      title={localeTool.getTickerName(ticker.symbol)}
+      title={`${ticker.region}: ${localeTool.getTickerName(ticker.symbol)}`}
       onClick={handleClick}
     >
       {ticker.symbol}

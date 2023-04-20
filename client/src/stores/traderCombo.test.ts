@@ -30,6 +30,7 @@ describe('#store', () => {
           data: {
             traderEnvs: [],
             traderProfiles: [],
+            tickers: [],
             traderCombos: [{ ...instance(comboType), id: 4 }],
           },
         }
@@ -85,6 +86,7 @@ describe('#store', () => {
           data: {
             traderEnvs: [],
             traderProfiles: [],
+            tickers: [],
             traderCombos: [
               { ...instance(comboType), id: 1 },
               { ...instance(comboType), id: 2 },
@@ -117,6 +119,7 @@ describe('#store', () => {
           data: {
             traderEnvs: [],
             traderProfiles: [],
+            tickers: [],
             traderCombos: [
               { ...instance(comboType), id: 1 },
               { ...instance(comboType), id: 2 },
@@ -146,6 +149,7 @@ describe('#store', () => {
           data: {
             traderEnvs: [],
             traderProfiles: [],
+            tickers: [],
             traderCombos: [
               { ...instance(comboType), id: 1 },
               { ...instance(comboType), id: 2 },

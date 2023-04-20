@@ -52,8 +52,5 @@ describe('#TickerList', () => {
     expect(screen.queryByText('AAA')).toBeInTheDocument()
 
     fireEvent.change(screen.getByTestId('search'), { target: { value: '' } })
-    fireEvent.click(screen.getByText('CCC'))
-    expect(navigate).toBeCalledTimes(1)
-    expect(navigate).toBeCalledWith('/tickers/3/envs/1')
   })
 })

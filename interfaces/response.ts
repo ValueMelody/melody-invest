@@ -1,3 +1,4 @@
+import * as tickerModel from './models/ticker'
 import * as traderComboModel from './models/traderCombo'
 import * as traderEnvModel from './models/traderEnv'
 import * as traderHoldingModel from './models/traderHolding'
@@ -36,6 +37,7 @@ export interface TopTraderProfiles {
 }
 
 export interface UserOverall {
+  tickers: tickerModel.Record[];
   traderProfiles: TraderProfile[];
   traderEnvs: traderEnvModel.Identity[];
   traderCombos: traderComboModel.Identity[];

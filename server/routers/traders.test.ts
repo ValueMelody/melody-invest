@@ -223,45 +223,6 @@ describe('#getBehaviorDetail', () => {
   })
 })
 
-describe('#getTickerDetail', () => {
-  test('could call expected function', async () => {
-    const tickerType = mock<interfaces.response.TickerDetail>({})
-    const tickerData = instance(tickerType)
-
-    const getTickerDetail = jest.fn()
-    jest.spyOn(crudTraders, 'getTickerDetail')
-      .mockImplementation(async (id, behavior) => {
-        getTickerDetail(id, behavior)
-        return tickerData
-      })
-
-    const request = instance(reqType)
-    request.params = { env_id: '12', ticker_id: '15' }
-
-    await traders.getTickerDetail(request, response)
-
-    expect(getTickerDetail).toBeCalledWith(12, 15)
-    expect(resStatus).toBeCalledWith(200)
-    expect(resSend).toBeCalledWith(tickerData)
-  })
-
-  test('could throw forbidden for empty env', async () => {
-    const request = instance(reqType)
-    request.params = { env_id: '0', ticker_id: '15' }
-
-    await expect(async () => await traders.getTickerDetail(request, response))
-      .rejects.toBe(errorEnum.Default.Forbidden)
-  })
-
-  test('could throw forbidden for empty ticker', async () => {
-    const request = instance(reqType)
-    request.params = { env_id: '1', ticker_id: '0' }
-
-    await expect(async () => await traders.getTickerDetail(request, response))
-      .rejects.toBe(errorEnum.Default.Forbidden)
-  })
-})
-
 describe('#createTrader', () => {
   const patternType = mock<interfaces.traderPatternModel.Create>({})
   const pattern = instance(patternType)
@@ -592,12 +553,6 @@ describe('#attachRoutes', () => {
       authMiddleware.normalUser,
       accessMiddleware.couldAccessEnv,
       traders.getBehaviorDetail,
-    )
-    expect(routerGet).toHaveBeenCalledWith(
-      '/envs/:env_id/tickers/:ticker_id',
-      authMiddleware.normalUser,
-      accessMiddleware.couldAccessEnv,
-      traders.getTickerDetail,
     )
     expect(routerPost).toHaveBeenCalledWith(
       '/tickers',

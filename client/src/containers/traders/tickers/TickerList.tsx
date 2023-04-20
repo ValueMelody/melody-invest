@@ -1,15 +1,13 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { Badge, Button, Card, TextInput } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import RequiredLabel from 'containers/elements/RequiredLabel'
-import TickerLabel from 'containers/traders/elements/TickerLabel'
-import { useNavigate } from 'react-router-dom'
+import TickerInfo from 'containers/traders/tickers/elements/TickerInfo'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 import useShowMore from 'hooks/useShowMore'
 
@@ -28,7 +26,6 @@ const noteClass = 'text-sm italic'
 
 const TickerList = () => {
   usePrivateGuard()
-  const navigate = useNavigate()
   const dispatch = useDispatch<AppDispatch>()
 
   const { displayedTotal, renderShowMoreButton } = useShowMore({
@@ -44,11 +41,6 @@ const TickerList = () => {
   const availableTickers = tickers.filter((ticker) => isSearchedTicker(ticker, searchText))
   const displayedTickers = availableTickers.slice(0, displayedTotal)
 
-  const handleClickTicker = (tickerId: number) => {
-    const url = routerTool.tickerDetailRoute(1, tickerId)
-    navigate(url)
-  }
-
   const handleChangeSearchText = (
     e: ChangeEvent<HTMLInputElement>,
   ) => {
@@ -63,9 +55,13 @@ const TickerList = () => {
 
   const handleConfirmAdd = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const symbol = tickerSymbol.trim()
     dispatch(actions.createTicker({
-      symbol: tickerSymbol.trim(),
-    })).then(() => setTickerSymbol(''))
+      symbol,
+    })).then(() => {
+      setTickerSymbol('')
+      setSearchText(symbol)
+    })
   }
 
   return (
@@ -80,14 +76,11 @@ const TickerList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section className='flex flex-wrap mb-6'>
+        <section className='flex flex-wrap'>
           {displayedTickers.map((ticker) => (
-            <TickerLabel
+            <TickerInfo
               key={ticker.id}
-              className='mx-2 my-1'
-              color='gray'
               ticker={ticker}
-              onClick={handleClickTicker}
             />
           ))}
         </section>

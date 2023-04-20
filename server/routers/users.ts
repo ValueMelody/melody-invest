@@ -24,7 +24,7 @@ const validateAccessCode = (code: string) => {
 
 export const getOverall = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
-  const overall = await crudUsers.getUserOverall(auth.id)
+  const overall = await crudUsers.getUserOverall(auth.id, auth.entityId)
   return res.status(200).send(overall)
 }
 
