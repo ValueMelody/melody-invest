@@ -2,7 +2,7 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import TickerLabel from 'containers/traders/elements/TickerLabel'
 
-const TickerRow = ({
+const TickerInfo = ({
   ticker,
 }: {
   ticker: interfaces.tickerModel.Record;
@@ -30,7 +30,7 @@ const TickerRow = ({
 
   return (
     <section
-      className='flex flex-col mb-6'
+      className='flex flex-col m-8'
     >
       <header className='flex'>
         <TickerLabel
@@ -57,4 +57,4 @@ const TickerRow = ({
   )
 }
 
-export default TickerRow
+export default TickerInfo

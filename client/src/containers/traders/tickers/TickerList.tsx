@@ -7,7 +7,7 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid'
 import RequiredLabel from 'containers/elements/RequiredLabel'
-import TickerRow from 'containers/traders/tickers/elements/TickerRow'
+import TickerInfo from 'containers/traders/tickers/elements/TickerInfo'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 import useShowMore from 'hooks/useShowMore'
 
@@ -76,9 +76,9 @@ const TickerList = () => {
             onChange={handleChangeSearchText}
           />
         </header>
-        <section className='flex flex-col'>
+        <section className='flex flex-wrap'>
           {displayedTickers.map((ticker) => (
-            <TickerRow
+            <TickerInfo
               key={ticker.id}
               ticker={ticker}
             />
