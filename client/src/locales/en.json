@@ -165,9 +165,12 @@
     "dashboard.newComboDesc": "Build a new combo",
 
     "ticker.delisted": "Delisted",
-    "ticker.dailyPriceRange": "Mock daily price data is available on our platform between {{start}} and {{end}}",
-    "ticker.quarterlyFinancialRange": "Mock quarterly financial data is available on our platform between {{start}} and {{end}}",
-    "ticker.yearlyFinancialRange": "Mock yearly financial data is available on our platform between {{start}} and {{end}}",
+    "ticker.dailyPriceRange": "Daily price data is available between {{start}} and {{end}}",
+    "ticker.emptyDailyPriceRange": "Daily price data is not synced yet",
+    "ticker.quarterlyFinancialRange": "Quarterly financial data is available between {{start}} and {{end}}",
+    "ticker.emptyQuarterlyFinancialRange": "Quarterly financial data is not synced yet",
+    "ticker.yearlyFinancialRange": "Annual financial data is available between {{start}} and {{end}}",
+    "ticker.emptyYearlyFinancialRange": "Annual financial data is not synced yet",
 
     "holdingCard.date": "Date",
     "holdingCard.cash": "Mock Cash",
@@ -256,7 +259,6 @@
     "availableTickers.tickerMarketNote": "Only US tickers supported currently",
     "availableTickers.tickerSymbol": "Ticker Symbol",
     "availableTickers.tickerSymbolNote": "Please find correct symbol from the data source you selected ({{source}})",
-    "availableTickers.topProfiles": "Some mock profiles currently holds this stock from {{name}} Environment",
 
     "valueChange.emptyYears": "No enough data for yearly trends",
     "valueChange.noResultYet": "There's no result generated yet",

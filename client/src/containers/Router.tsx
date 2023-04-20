@@ -24,7 +24,6 @@ import Setting from './accounts/Setting'
 import SignIn from './accounts/SignIn'
 import SignUp from './accounts/SignUp'
 import Terms from './general/Terms'
-import TickerDetail from './traders/tickers/TickerDetail'
 import TickerList from './traders/tickers/TickerList'
 
 const Router = () => {
@@ -86,10 +85,6 @@ const Router = () => {
           <Route
             path={routerEnum.Nav.Tickers}
             element={<TickerList />}
-          />
-          <Route
-            path={`${routerEnum.Nav.Tickers}/:tickerId/envs/:envId`}
-            element={<TickerDetail />}
           />
           <Route
             path={`${routerEnum.Nav.Traders}/combos/:comboId`}

@@ -99,17 +99,6 @@ export const getBehaviorDetail = async (req: Request, res: Response) => {
   return res.status(200).send(detail)
 }
 
-export const getTickerDetail = async (req: Request, res: Response) => {
-  const envId = parseInt(req.params.env_id)
-  if (!verifyTool.isGreaterThanZero(envId)) throw errorEnum.Default.Forbidden
-
-  const tickerId = parseInt(req.params.ticker_id)
-  if (!verifyTool.isGreaterThanZero(tickerId)) throw errorEnum.Default.Forbidden
-
-  const detail = await crudTraders.getTickerDetail(envId, tickerId)
-  return res.status(200).send(detail)
-}
-
 export const createTrader = async (req: Request, res: Response) => {
   const traderEnvId = req.body.traderEnvId
   const traderPattern = req.body.traderPattern
@@ -217,12 +206,6 @@ export const attachRoutes = (router: Router) => {
     authMiddleware.normalUser,
     accessMiddleware.couldAccessEnv,
     getBehaviorDetail,
-  )
-  router.get(
-    '/envs/:env_id/tickers/:ticker_id',
-    authMiddleware.normalUser,
-    accessMiddleware.couldAccessEnv,
-    getTickerDetail,
   )
   router.post(
     '/tickers',

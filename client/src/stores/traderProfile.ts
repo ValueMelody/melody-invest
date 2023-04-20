@@ -84,7 +84,6 @@ export const traderProfileSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromDetailTops)
-    builder.addCase(actions.fetchTraderTickerDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromDetailTops)
     builder.addCase(actions.fetchTraderComboDetail.fulfilled, storeFromComboDetail)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)

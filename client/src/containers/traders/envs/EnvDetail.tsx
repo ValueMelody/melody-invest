@@ -38,11 +38,6 @@ const EnvDetail = () => {
     dispatch(actions.fetchTraderEnvDetail(envId))
   }, [envId, envRecord, topTraderProfiles, dispatch])
 
-  const handleClickTicker = (tickerId: number) => {
-    const url = routerTool.tickerDetailRoute(envId, tickerId)
-    navigate(url)
-  }
-
   if (!envRecord || !topTraderProfiles) return null
 
   return (
@@ -59,7 +54,6 @@ const EnvDetail = () => {
               className='m-2'
               key={tickerId}
               ticker={tickerIdentityBaseDict[tickerId]}
-              onClick={handleClickTicker}
             />
           ))}
         </div>

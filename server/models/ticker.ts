@@ -32,6 +32,18 @@ export const getAll = async (): Promise<interfaces.tickerModel.Record[]> => {
   return tickers
 }
 
+export const getAllByEntity = async (
+  entityId: number,
+): Promise<interfaces.tickerModel.Record[]> => {
+  const tickers = await databaseAdapter.findAll({
+    tableName: TableName,
+    conditions: [
+      { key: 'entityId', value: entityId },
+    ],
+  })
+  return tickers
+}
+
 export const getAllDelisted = async (): Promise<interfaces.tickerModel.Record[]> => {
   const delisted = await databaseAdapter.findAll({
     tableName: TableName,
