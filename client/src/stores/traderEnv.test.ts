@@ -39,6 +39,7 @@ describe('#store', () => {
             ],
             traderProfiles: [],
             traderCombos: [],
+            tickers: [],
           },
         }
       })
@@ -93,6 +94,7 @@ describe('#store', () => {
           data: {
             traderCombos: [],
             traderProfiles: [],
+            tickers: [],
             traderEnvs: [
               { ...instance(envType), id: 1 },
               { ...instance(envType), id: 2 },
@@ -130,6 +132,7 @@ describe('#store', () => {
             ],
             traderCombos: [],
             traderProfiles: [],
+            tickers: [],
           },
         }
       })

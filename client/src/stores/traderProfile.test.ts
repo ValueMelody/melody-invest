@@ -116,6 +116,7 @@ describe('#store', () => {
             traderProfiles: [profile1, profile2],
             traderCombos: [],
             traderEnvs: [],
+            tickers: [],
           },
         }
       })

@@ -58,6 +58,7 @@ describe('#store', () => {
     traderProfiles: [profile1, profile2],
     traderCombos: [],
     traderEnvs: [],
+    tickers: [],
   }
 
   test('could storeFromUserOverall from fetchUserOverall', async () => {

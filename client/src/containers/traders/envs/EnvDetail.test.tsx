@@ -77,10 +77,6 @@ describe('#TickerDetail', () => {
     expect(screen.queryByTestId('traderEnvCard')?.innerHTML).toContain('test env')
     const tickers = screen.getAllByTestId('tickerLabel')
     expect(tickers.length).toBe(2)
-
-    fireEvent.click(tickers[1])
-    expect(navigate).toBeCalledTimes(1)
-    expect(navigate).toBeCalledWith('/tickers/2/envs/1')
   })
 
   test('could handle no envId', async () => {

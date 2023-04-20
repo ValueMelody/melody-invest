@@ -20,6 +20,7 @@ describe('#tickerLabel', () => {
     ...identityMock,
     id: 123,
     name: 'test name',
+    region: 'US',
     symbol: 'test symbol',
   }
 
@@ -33,7 +34,7 @@ describe('#tickerLabel', () => {
     const container = screen.getByTestId('tickerLabel')
     expect(container).toBeTruthy()
     expect(screen.getByText(ticker.symbol)).toBeTruthy()
-    expect(container.getAttribute('title')).toBe(ticker.symbol)
+    expect(container.getAttribute('title')).toBe(`US: ${ticker.symbol}`)
     expect(container.className).not.toContain('cursor-pointer')
 
     fireEvent.click(container)

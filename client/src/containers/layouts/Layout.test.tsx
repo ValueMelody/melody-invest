@@ -15,20 +15,13 @@ const get = jest.fn()
 jest.spyOn(axios, 'get')
   .mockImplementation(async (url) => {
     get()
-    if (url === 'http://127.0.0.1:3100/system/defaults') {
-      return {
-        data: {
-          traderEnvs: [],
-          tickers: [],
-        },
-      }
-    }
     return {
       data: {
         type: 1,
         traderProfiles: [],
         traderCombos: [],
         traderEnvs: [],
+        tickers: [],
       },
     }
   })
