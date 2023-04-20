@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
-import { act, fireEvent, render, screen } from 'test.utils'
+import { act, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import EnvDetail from './EnvDetail'
 import axios from 'axios'
