@@ -2,6 +2,7 @@
 import * as constants from '@shared/constants'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
+import * as tickerModel from 'models/ticker'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderEnvFollowerModel from 'models/traderEnvFollower'
 import * as traderEnvModel from 'models/traderEnv'
@@ -49,6 +50,22 @@ export const couldCreateCombo = async (
   const envLimit = limits.Combos
   const currentCombos = await traderComboFollowerModel.getUserFollowed(userId)
   if (envLimit <= currentCombos.length) throw errorEnum.Default.Unauthorized
+
+  next()
+}
+
+export const couldCreateTicker = async (
+  req: Request, res: Response, next: NextFunction,
+) => {
+  const auth: interfaces.request.Auth = req.body.auth
+
+  const entityId = auth.entityId
+  const userType = auth.type
+
+  const limits = getLimits(userType)
+  const tickerLimit = limits.Tickers
+  const currentTickers = await tickerModel.getAllByEntity(entityId)
+  if (tickerLimit <= currentTickers.length) throw errorEnum.Default.Unauthorized
 
   next()
 }

@@ -104,6 +104,7 @@ const Pricing = () => {
           <Item title='' />
         </section>
       </section>
+      <h3 className='my-6'>* {localeTool.t('pricing.organization')}</h3>
       {!global.refreshToken && (
         <div className='w-full bg-slate-100 flex justify-center p-4'>
           <Link

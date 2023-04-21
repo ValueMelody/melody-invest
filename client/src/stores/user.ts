@@ -5,6 +5,7 @@ import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { _resetForTest, _updateForTest } from 'tools/store'
 
 export interface UserAccess {
+  canCreateTicker: boolean;
   canFollowEnv: boolean;
   canFollowCombo: boolean;
   canFollowTrader: boolean;
@@ -29,6 +30,7 @@ const initialState: UserState = {
   planStartAtUTC: null,
   planEndAtUTC: null,
   access: {
+    canCreateTicker: false,
     canFollowEnv: false,
     canFollowCombo: false,
     canFollowTrader: false,

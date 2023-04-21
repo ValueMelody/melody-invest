@@ -26,16 +26,18 @@ export const Plan = Object.freeze({
     Title: localeTool.t('plan.basic'),
     Price: localeTool.t('pricing.basicPrice'),
     Services: [
+      localeTool.t('pricing.tickersLimit', { num: constants.User.PlanLimit.Basic.Tickers }),
+      localeTool.t('pricing.envsLimit', { num: constants.User.PlanLimit.Basic.Envs }),
       localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Basic.Profiles }),
-      localeTool.t('pricing.basicEnvs'),
     ],
   },
   Pro: {
     Title: localeTool.t('plan.pro'),
     Price: localeTool.t('pricing.planPrice', { num: constants.User.PlanPrice.Pro.OneMonthPrice }),
     Services: [
-      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Pro.Profiles }),
+      localeTool.t('pricing.tickersLimit', { num: constants.User.PlanLimit.Pro.Tickers }),
       localeTool.t('pricing.envsLimit', { num: constants.User.PlanLimit.Pro.Envs }),
+      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Pro.Profiles }),
       localeTool.t('pricing.combosLimit', { num: constants.User.PlanLimit.Pro.Combos }),
     ],
   },
@@ -43,8 +45,9 @@ export const Plan = Object.freeze({
     Title: localeTool.t('plan.premium'),
     Price: localeTool.t('pricing.planPrice', { num: constants.User.PlanPrice.Premium.OneMonthPrice }),
     Services: [
-      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Premium.Profiles }),
+      localeTool.t('pricing.tickersLimit', { num: constants.User.PlanLimit.Premium.Tickers }),
       localeTool.t('pricing.envsLimit', { num: constants.User.PlanLimit.Premium.Envs }),
+      localeTool.t('pricing.profilesLimit', { num: constants.User.PlanLimit.Premium.Profiles }),
       localeTool.t('pricing.combosLimit', { num: constants.User.PlanLimit.Premium.Combos }),
     ],
   },

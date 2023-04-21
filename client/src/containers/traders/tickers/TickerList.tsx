@@ -28,9 +28,11 @@ const TickerList = () => {
   usePrivateGuard()
   const dispatch = useDispatch<AppDispatch>()
 
+  const user = useSelector(selectors.selectUser())
+
   const { displayedTotal, renderShowMoreButton } = useShowMore({
-    default: 100,
-    more: 100,
+    default: 6,
+    more: 6,
   })
 
   const [searchText, setSearchText] = useState('')
@@ -113,10 +115,13 @@ const TickerList = () => {
           <form onSubmit={handleConfirmAdd}>
             <Button
               type='submit'
-              disabled={!tickerSymbol}
+              disabled={!tickerSymbol || !user.access.canCreateTicker}
             >
               {localeTool.t('availableTickers.confirmAdd')}
             </Button>
+            {!user.access.canCreateTicker && !!tickerSymbol && (
+              <p className='text-red-600 mt-2'>{localeTool.t('permission.limited')}</p>
+            )}
           </form>
         </Card>
       </aside>

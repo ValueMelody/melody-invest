@@ -444,23 +444,6 @@ describe('#couldAccessEnv', () => {
       .toStrictEqual(errorEnum.Default.NotFound)
   })
 
-  test('could verify basic user env access', async () => {
-    const next = jest.fn()
-
-    const reqMock1: Request = mock({})
-    when(reqMock1.body).thenReturn({
-      auth: {
-        id: 1,
-        type: constants.User.Type.Basic,
-      },
-    })
-    when(reqMock1.params).thenReturn({ env_id: '1' })
-    const req1 = instance(reqMock1)
-    await expect(() => access.couldAccessEnv(req1, res, next))
-      .rejects
-      .toStrictEqual(errorEnum.Default.NotFound)
-  })
-
   test('could verify pro user env access', async () => {
     const next = jest.fn()
 

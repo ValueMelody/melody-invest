@@ -21,7 +21,9 @@ const selectUser = () => (state: AppState): UserState => {
 
   const envs = Object.values(state.traderEnv.base)
   const combos = Object.values(state.traderCombo.base)
+  const tickers = Object.values(state.tickerIdentity.base)
 
+  const canCreateTicker = limits.Tickers > tickers.length
   const canFollowEnv = limits.Envs > envs.length
   const canFollowCombo = limits.Combos > combos.length
   const canFollowTrader = limits.Profiles > user.userTraderIds.length
@@ -31,6 +33,7 @@ const selectUser = () => (state: AppState): UserState => {
   const accessibleTraderIds = user.userTraderIds.slice(0, limits.Profiles)
 
   const access = {
+    canCreateTicker,
     canFollowEnv,
     canFollowCombo,
     canFollowTrader,

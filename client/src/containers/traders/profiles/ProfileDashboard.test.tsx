@@ -63,6 +63,7 @@ describe('#ProfileDashboard', () => {
           userType: 2,
           userTraderIds: [1, 2, 3],
           access: {
+            canCreateTicker: true,
             canFollowEnv: true,
             canFollowCombo: true,
             canFollowTrader: true,
@@ -132,6 +133,7 @@ describe('#ProfileDashboard', () => {
           userType: 0,
           userTraderIds: [],
           access: {
+            canCreateTicker: false,
             canFollowEnv: false,
             canFollowCombo: false,
             canFollowTrader: false,
@@ -172,6 +174,7 @@ describe('#ProfileDashboard', () => {
           userType: 1,
           userTraderIds: [1],
           access: {
+            canCreateTicker: false,
             canFollowEnv: false,
             canFollowCombo: false,
             canFollowTrader: false,

@@ -17,6 +17,7 @@ const emptyUser = {
   planStartAtUTC: null,
   planEndAtUTC: null,
   access: {
+    canCreateTicker: false,
     canFollowEnv: false,
     canFollowCombo: false,
     canFollowTrader: false,
