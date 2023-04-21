@@ -210,6 +210,7 @@ export const attachRoutes = (router: Router) => {
   router.post(
     '/tickers',
     authMiddleware.normalUser,
+    accessMiddleware.couldCreateTicker,
     createTicker,
   )
   router.post(

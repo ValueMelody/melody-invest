@@ -50,20 +50,24 @@ export const PlanLimit = Object.freeze({
     Profiles: 0,
     Envs: 0,
     Combos: 0,
+    Tickers: 0,
   },
   Basic: {
-    Profiles: 5,
-    Envs: 0,
+    Profiles: 2,
+    Envs: 1,
     Combos: 0,
+    Tickers: 5,
   },
   Pro: {
-    Profiles: 30,
+    Profiles: 20,
     Envs: 3,
     Combos: 3,
+    Tickers: 20,
   },
   Premium: {
     Profiles: 100,
     Envs: 10,
     Combos: 10,
+    Tickers: 50,
   },
 })

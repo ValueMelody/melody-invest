@@ -59,6 +59,28 @@ const combo = {
 }
 when(type.traderCombo).thenReturn(combo)
 
+const tickerType = mock<interfaces.tickerModel.Record>({})
+const ticker1 = {
+  ...instance(tickerType),
+  id: 1,
+}
+const ticker2 = {
+  ...instance(tickerType),
+  id: 1,
+}
+const ticker3 = {
+  ...instance(tickerType),
+  id: 3,
+}
+const ticker = {
+  base: {
+    1: ticker1,
+    2: ticker2,
+    3: ticker3,
+  },
+}
+when(type.tickerIdentity).thenReturn(ticker)
+
 const stateInstance = instance(type)
 
 describe('#selectUser', () => {
@@ -66,6 +88,7 @@ describe('#selectUser', () => {
     expect(userSelector.selectUser()(stateInstance)).toStrictEqual({
       ...user,
       access: {
+        canCreateTicker: false,
         canFollowEnv: false,
         canFollowCombo: false,
         canFollowTrader: false,
@@ -87,10 +110,11 @@ describe('#selectUser', () => {
     expect(userSelector.selectUser()(stateInstance)).toStrictEqual({
       ...user,
       access: {
+        canCreateTicker: true,
         canFollowEnv: false,
         canFollowCombo: false,
-        canFollowTrader: true,
-        accessibleEnvIds: [],
+        canFollowTrader: false,
+        accessibleEnvIds: [1],
         accessibleComboIds: [],
         accessibleTraderIds: [1, 2],
       },
@@ -108,6 +132,7 @@ describe('#selectUser', () => {
     expect(userSelector.selectUser()(stateInstance)).toStrictEqual({
       ...user,
       access: {
+        canCreateTicker: true,
         canFollowEnv: false,
         canFollowCombo: false,
         canFollowTrader: true,
@@ -129,6 +154,7 @@ describe('#selectUser', () => {
     expect(userSelector.selectUser()(stateInstance)).toStrictEqual({
       ...user,
       access: {
+        canCreateTicker: true,
         canFollowEnv: true,
         canFollowCombo: true,
         canFollowTrader: true,

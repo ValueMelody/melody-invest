@@ -8,9 +8,12 @@ import PageTitle from 'containers/elements/PageTitle'
 import TraderComboCard from 'containers/traders/blocks/TraderComboCard'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
+import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 import { useSelector } from 'react-redux'
+
+const asideHeaderClass = 'flex justify-between items-center mb-4'
 
 const ProfileDashboard = () => {
   usePrivateGuard()
@@ -90,11 +93,31 @@ const ProfileDashboard = () => {
         ))}
       </section>
       <aside className='page-aside'>
-        <PageTitle
-          icon='bookmark'
-          title={localeTool.t('dashboard.watchedEnvs')}
-          className='mb-4'
-        />
+        <section className={asideHeaderClass}>
+          <PageTitle
+            icon='bookmark'
+            title={localeTool.t('dashboard.watchedEnvs')}
+          />
+          <AddButton
+            data-testid='addEnvBtn'
+            onClick={handleClickAddEnv}
+            disabled={!user.access.canFollowEnv}
+            title={localeTool.t('dashboard.newBtn')}
+            tooltip={
+              user.access.canFollowEnv
+                ? localeTool.t('dashboard.newEnvDesc')
+                : localeTool.t('permission.limited')
+            }
+          />
+        </section>
+        {!envs.length && (
+          <Alert
+            color='gray'
+            className='w-80 mb-4'
+          >
+            {localeTool.t('dashboard.emptyEnvs')}
+          </Alert>
+        )}
         {envs.map((env) => (
           <TraderEnvCard
             key={env.id}
@@ -103,22 +126,23 @@ const ProfileDashboard = () => {
             onClick={handleClickEnv}
           />
         ))}
-        <AddButton
-          data-testid='addEnvBtn'
-          onClick={handleClickAddEnv}
-          disabled={!user.access.canFollowEnv}
-          title={localeTool.t('dashboard.newBtn')}
-          tooltip={
-            user.access.canFollowEnv
-              ? localeTool.t('dashboard.newEnvDesc')
-              : localeTool.t('permission.limited')
-          }
-        />
-        <PageTitle
-          icon='boxes'
-          title={localeTool.t('dashboard.watchedCombos')}
-          className='my-4'
-        />
+        <section className={classNames(asideHeaderClass, 'mt-8')}>
+          <PageTitle
+            icon='boxes'
+            title={localeTool.t('dashboard.watchedCombos')}
+          />
+          <AddButton
+            data-testid='addComboBtn'
+            onClick={handleClickAddCombo}
+            disabled={!user.access.canFollowCombo}
+            title={localeTool.t('dashboard.newBtn')}
+            tooltip={
+              user.access.canFollowCombo
+                ? localeTool.t('dashboard.newComboDesc')
+                : localeTool.t('permission.limited')
+            }
+          />
+        </section>
         {!combos.length && (
           <Alert
             color='gray'
@@ -135,17 +159,6 @@ const ProfileDashboard = () => {
             onClick={handleClickCombo}
           />
         ))}
-        <AddButton
-          data-testid='addComboBtn'
-          onClick={handleClickAddCombo}
-          disabled={!user.access.canFollowCombo}
-          title={localeTool.t('dashboard.newBtn')}
-          tooltip={
-            user.access.canFollowCombo
-              ? localeTool.t('dashboard.newComboDesc')
-              : localeTool.t('permission.limited')
-          }
-        />
       </aside>
     </section>
   )

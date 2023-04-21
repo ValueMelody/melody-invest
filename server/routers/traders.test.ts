@@ -557,6 +557,7 @@ describe('#attachRoutes', () => {
     expect(routerPost).toHaveBeenCalledWith(
       '/tickers',
       authMiddleware.normalUser,
+      accessMiddleware.couldCreateTicker,
       traders.createTicker,
     )
     expect(routerPost).toHaveBeenCalledWith(

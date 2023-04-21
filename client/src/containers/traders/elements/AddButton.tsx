@@ -6,12 +6,14 @@ const AddButton = ({
   disabled = false,
   title,
   tooltip,
+  className,
   'data-testid': testId,
 }: {
   onClick: () => void;
   disabled?: boolean;
   title: string;
   tooltip?: string;
+  className?: string;
   ['data-testid']?: string;
 }) => {
   const handleClick = () => {
@@ -20,6 +22,8 @@ const AddButton = ({
 
   return (
     <Button
+      className='ml-6'
+      size='xs'
       data-testid={testId}
       onClick={handleClick}
       disabled={disabled}
