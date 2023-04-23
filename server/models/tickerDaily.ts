@@ -11,7 +11,6 @@ const convertToRecord = (
   raw: interfaces.tickerDailyModel.Raw,
 ): interfaces.tickerDailyModel.Record => {
   const record: any = raw
-  record.dividendAmount = parseFloat(raw.dividendAmount)
   record.splitMultiplier = parseFloat(raw.splitMultiplier)
   return record
 }

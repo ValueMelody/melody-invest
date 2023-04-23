@@ -197,6 +197,9 @@ const Setting = () => {
               </Button>
             </section>
           )}
+          {targetSource === user.userEntity?.dataSource && user.userEntity?.isValidKey === false && (
+            <p className='text-red-600'>{localeTool.t('setting.invalidDateKey')}</p>
+          )}
           <Button
             data-testid='signOutBtn'
             color='gray'

@@ -42,7 +42,11 @@ export const updateUserEntity = async (
   dataKey: string,
 ) => {
   await databaseAdapter.runWithTransaction(async (transaction) => {
-    await entityModel.update(entityId, { dataSource, dataKey }, transaction)
+    await entityModel.update(entityId, {
+      dataSource,
+      dataKey: generateTool.encodeDataKey(dataKey),
+      isValidKey: null,
+    }, transaction)
   })
 }
 

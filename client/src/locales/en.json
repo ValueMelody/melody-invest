@@ -121,6 +121,7 @@
     "setting.dataKeyPlaceholder": "Enter your data key here",
     "setting.saveDataKeyBtn": "Save",
     "setting.dataKeyUpdated": "Data key saved!",
+    "setting.invalidDateKey": "Invalid key",
     "setting.subscribeSucceed": "Your plan has been upgraded successfully",
     "setting.paymentFailed": "Can not verify your payment, please contact {{email}} if your card has been charged",
     "setting.unsubscribe": "By unsubscribe, you account will be changed to a basic plan. We will partially refund your subscription fee based on remaining number of days on your current ",

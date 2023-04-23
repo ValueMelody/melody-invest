@@ -21,6 +21,21 @@ export const buildAccessCode = (): string => {
   return helpers.toSHA256(Math.random().toString())
 }
 
+export const encodeDataKey = (
+  key: string,
+): string => {
+  const secret = adapterEnum.HostConfig.DataKeySecret
+  return jwt.sign(key, secret)
+}
+
+export const decodeDataKey = (
+  key: string,
+): string => {
+  const secret = adapterEnum.HostConfig.DataKeySecret
+  const string = jwt.verify(key, secret) as string
+  return string
+}
+
 export const encodeJWT = (
   auth: interfaces.request.Auth,
   expiresIn: '15m' | '12h' | '30d',
