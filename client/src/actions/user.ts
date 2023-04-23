@@ -5,6 +5,48 @@ import * as routerEnum from 'enums/router'
 import { logout, refreshAccessToken } from './general'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 
+export const fetchUserEntity = createAsyncThunk(
+  'user/fetchUserEntity',
+  async (params, { rejectWithValue, dispatch }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/entity`
+    await dispatch(refreshAccessToken())
+
+    try {
+      const res: interfaces.entityModel.Record = await requestAdapter.sendGetRequest(endpoint)
+      return res
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
+export const updateUserEntity = createAsyncThunk(
+  'user/updateUserEntity',
+  async ({
+    dataSource,
+    dataKey,
+  }: {
+    dataSource: string;
+    dataKey: string;
+  }, { rejectWithValue, dispatch }) => {
+    const endpoint = `${routerEnum.Endpoint.Users}/entity`
+    await dispatch(refreshAccessToken())
+
+    try {
+      await requestAdapter.sendPutRequest(endpoint, {
+        dataSource,
+        dataKey: dataKey.trim(),
+      })
+      return {
+        msg: localeTool.t('setting.dataKeyUpdated'),
+        dataSource,
+      }
+    } catch (e) {
+      return rejectWithValue(e)
+    }
+  },
+)
+
 export const fetchUserOverall = createAsyncThunk(
   'user/fetchUserOverall',
   async (params, { rejectWithValue, dispatch }) => {

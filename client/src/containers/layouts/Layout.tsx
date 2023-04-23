@@ -40,11 +40,11 @@ const Layout: FunctionComponent = ({
       {!!messages.length && (
         <section
           data-testid='messages'
-          className='fixed top-16 left-4 right-4 z-40'
+          className='fixed top-16 right-4 z-40'
         >
           {messages.map((message) => (
             <Alert
-              className='mb-4'
+              className='mb-4 w-96'
               key={message.id}
               color={message.type}
               onDismiss={() => handleRemoveMessage(message.id)}

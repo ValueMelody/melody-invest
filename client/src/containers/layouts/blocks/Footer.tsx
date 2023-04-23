@@ -10,7 +10,7 @@ const Footer = () => {
       data-testid='footer'
       className='bg-black w-full text-slate-200 px-4 py-2'
     >
-      <section className='flex'>
+      <section className='flex flex-wrap'>
         <Link
           to={routerTool.pricingRoute()}
           className={linkClass}

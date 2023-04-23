@@ -227,6 +227,10 @@ export const globalSlice = createSlice({
     builder.addCase(actions.fetchUserOverall.fulfilled, stopLoading)
     builder.addCase(actions.fetchUserOverall.rejected, onRequestRejected)
 
+    builder.addCase(actions.fetchUserEntity.pending, startLoading)
+    builder.addCase(actions.fetchUserEntity.fulfilled, stopLoading)
+    builder.addCase(actions.fetchUserEntity.rejected, onRequestRejected)
+
     builder.addCase(actions.fetchTraderEnvDetail.pending, startLoading)
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, stopLoading)
     builder.addCase(actions.fetchTraderEnvDetail.rejected, onRequestRejected)
@@ -286,6 +290,10 @@ export const globalSlice = createSlice({
     builder.addCase(actions.updateUserPassword.pending, startLoading)
     builder.addCase(actions.updateUserPassword.fulfilled, successWithMessage)
     builder.addCase(actions.updateUserPassword.rejected, onRequestRejected)
+
+    builder.addCase(actions.updateUserEntity.pending, startLoading)
+    builder.addCase(actions.updateUserEntity.fulfilled, successWithMessage)
+    builder.addCase(actions.updateUserEntity.rejected, onRequestRejected)
 
     builder.addCase(actions.lockUserAccount.pending, startLoading)
     builder.addCase(actions.lockUserAccount.rejected, onRequestRejected)

@@ -79,6 +79,7 @@ export const HostConfig = Object.freeze({
   ServerType: process.env.SERVER_TYPE!,
   AccessTokenSecret: process.env.ACCESS_TOKEN_SECRET!,
   RefreshTokenSecret: process.env.REFRESH_TOKEN_SECRET!,
+  DataKeySecret: process.env.DATA_KEY_SECRET!,
   AccessExpiresIn: '15m',
 })
 
