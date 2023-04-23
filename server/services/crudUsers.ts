@@ -25,6 +25,27 @@ import * as userModel from 'models/user'
 import * as userPaymentModel from 'models/userPayment'
 import moment from 'moment'
 
+export const getUserEntity = async (
+  entityId: number,
+): Promise<interfaces.entityModel.Record> => {
+  const entity = await entityModel.getByPK(entityId)
+  if (!entity) throw errorEnum.Custom.UserNotFound
+  return {
+    ...entity,
+    dataKey: entity.dataKey ? constants.Entity.DataMarkup : null,
+  }
+}
+
+export const updateUserEntity = async (
+  entityId: number,
+  dataSource: string,
+  dataKey: string,
+) => {
+  await databaseAdapter.runWithTransaction(async (transaction) => {
+    await entityModel.update(entityId, { dataSource, dataKey }, transaction)
+  })
+}
+
 export const getUserOverall = async (
   userId: number,
   entityId: number,

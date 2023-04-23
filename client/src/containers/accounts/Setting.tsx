@@ -3,8 +3,8 @@ import * as commonEnum from 'enums/common'
 import * as constants from '@shared/constants'
 import * as localeTool from 'tools/locale'
 import * as selectors from 'selectors'
-import { Button, Card, TextInput } from 'flowbite-react'
-import { ChangeEvent, FormEvent, useMemo, useState } from 'react'
+import { Button, Card, Label, Radio, TextInput } from 'flowbite-react'
+import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ConfirmModal from 'containers/elements/ConfirmModal'
 import PaymentModal from 'containers/accounts/blocks/PaymentModal'
@@ -14,7 +14,7 @@ import usePasswordValidator from 'hooks/usePasswordValidator'
 import usePrivateGuard from 'hooks/usePrivateGuard'
 
 const cardClass = 'w-96 mb-6 mx-4'
-const titleClass = 'font-bold text-xl mb-4'
+const titleClass = 'font-bold text-xl'
 
 const Setting = () => {
   usePrivateGuard()
@@ -27,6 +27,8 @@ const Setting = () => {
   const [newPassword, setNewPassword] = useState('')
   const [retypePassword, setRetypePassword] = useState('')
   const [showConfirmLock, setShowConfirmLock] = useState(false)
+  const [targetSource, setTargetSource] = useState('')
+  const [targetKey, setTargetKey] = useState('')
 
   const user = useSelector(selectors.selectUser())
 
@@ -41,6 +43,19 @@ const Setting = () => {
         return commonEnum.Plan.Basic
     }
   }, [user.userType])
+
+  useEffect(() => {
+    if (!user.userEntity) {
+      dispatch(actions.fetchUserEntity())
+    }
+  }, [user.userEntity, dispatch])
+
+  useEffect(() => {
+    if (user.userEntity) {
+      setTargetSource(user.userEntity.dataSource || '')
+      setTargetKey(user.userEntity.dataKey || '')
+    }
+  }, [user.userEntity])
 
   const handleChangeCurrentPassword = (
     e: ChangeEvent<HTMLInputElement>,
@@ -99,6 +114,28 @@ const Setting = () => {
     setShowConfirmLock(!showConfirmLock)
   }
 
+  const handleClickSource = (e: ChangeEvent<HTMLInputElement>) => {
+    const source = e.target.value
+    setTargetSource(source)
+    if (source === user.userEntity?.dataSource) {
+      const key = user.userEntity.dataKey || ''
+      setTargetKey(key)
+    } else {
+      setTargetKey('')
+    }
+  }
+
+  const handleUpdateKey = (e: ChangeEvent<HTMLInputElement>) => {
+    setTargetKey(e.target.value)
+  }
+
+  const handleSaveDataKey = () => {
+    dispatch(actions.updateUserEntity({
+      dataSource: targetSource,
+      dataKey: targetKey,
+    }))
+  }
+
   return (
     <div>
       <ConfirmModal
@@ -125,11 +162,46 @@ const Setting = () => {
           <h4 className='mb-4'>
             {localeTool.t('account.email')}: {user.userEmail}
           </h4>
+          <section className='flex'>
+            {(Object.values(constants.Entity.DataSource) as string[]).map((source) => (
+              <div
+                key={source}
+                className='flex items-center mr-6'
+              >
+                <Radio
+                  className='mr-2'
+                  name='dataSource'
+                  id={source}
+                  value={source}
+                  checked={source === targetSource}
+                  onChange={handleClickSource}
+                />
+                <Label htmlFor={source}>
+                  {source}
+                </Label>
+              </div>
+            ))}
+          </section>
+          {targetSource && (
+            <section className='flex justify-between'>
+              <TextInput
+                placeholder={localeTool.t('setting.dataKeyPlaceholder')}
+                value={targetKey}
+                onChange={handleUpdateKey}
+              />
+              <Button
+                disabled={!targetKey.trim().length}
+                onClick={handleSaveDataKey}
+              >
+                {localeTool.t('setting.saveDataKeyBtn')}
+              </Button>
+            </section>
+          )}
           <Button
             data-testid='signOutBtn'
             color='gray'
             onClick={handleSignOut}
-            className='mb-4'
+            className='mb-2 mt-4'
           >
             {localeTool.t('setting.signOut')}
           </Button>

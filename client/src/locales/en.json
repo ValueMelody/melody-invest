@@ -118,6 +118,9 @@
     "setting.accountInfo": "Account Info",
     "setting.accountCredential": "Account Credential",
     "setting.selectPlan": "Upgrade your plan",
+    "setting.dataKeyPlaceholder": "Enter your data key here",
+    "setting.saveDataKeyBtn": "Save",
+    "setting.dataKeyUpdated": "Data key saved!",
     "setting.subscribeSucceed": "Your plan has been upgraded successfully",
     "setting.paymentFailed": "Can not verify your payment, please contact {{email}} if your card has been charged",
     "setting.unsubscribe": "By unsubscribe, you account will be changed to a basic plan. We will partially refund your subscription fee based on remaining number of days on your current ",
@@ -260,7 +263,7 @@
     "availableTickers.tickerMarket": "Ticker Market",
     "availableTickers.tickerMarketNote": "Only US tickers supported currently",
     "availableTickers.tickerSymbol": "Ticker Symbol",
-    "availableTickers.tickerSymbolNote": "Please find correct symbol from the data source you selected ({{source}})",
+    "availableTickers.tickerSymbolNote": "Please find correct symbol from the data source you selected in your settings page ({{source}})",
 
     "valueChange.emptyYears": "No enough data for yearly trends",
     "valueChange.noResultYet": "There's no result generated yet",

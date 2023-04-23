@@ -18,8 +18,19 @@ const validatePassword = (password: string) => {
   if (password.length < 10) throw errorEnum.Custom.PasswordTooShort
 }
 
+const validateEntityDataProvider = (dataSource: string, dataKey: string) => {
+  if (!dataSource || !dataKey) throw errorEnum.Custom.MissingParams
+  if (!(dataSource in constants.Entity.DataSource)) throw errorEnum.Default.Forbidden
+}
+
 const validateAccessCode = (code: string) => {
   if (!code || code.length !== 64) throw errorEnum.Custom.WrongAccessCode
+}
+
+export const getEntity = async (req: Request, res: Response) => {
+  const auth: interfaces.request.Auth = req.body.auth
+  const entity = await crudUsers.getUserEntity(auth.entityId)
+  return res.status(200).send(entity)
 }
 
 export const getOverall = async (req: Request, res: Response) => {
@@ -87,6 +98,16 @@ export const updatePassword = async (req: Request, res: Response) => {
   return res.status(204).send()
 }
 
+export const updateEntity = async (req: Request, res: Response) => {
+  const dataSource = req.body.dataSource?.trim()
+  const dataKey = req.body.dataKey?.trim()
+  validateEntityDataProvider(dataSource, dataKey)
+
+  const auth: interfaces.request.Auth = req.body.auth
+  await crudUsers.updateUserEntity(auth.entityId, dataSource, dataKey)
+  return res.status(204).send()
+}
+
 export const lockUser = async (req: Request, res: Response) => {
   const auth: interfaces.request.Auth = req.body.auth
   await crudUsers.lockAccess(auth.id)
@@ -121,11 +142,13 @@ export const refreshToken = async (req: Request, res: Response) => {
 }
 
 export const attachRoutes = (router: Router) => {
+  router.get('/entity', authMiddleware.normalUser, getEntity)
   router.get('/overall', authMiddleware.normalUser, getOverall)
   router.post('/token', createToken)
   router.post('/', createUser)
   router.post('/payment', authMiddleware.normalUser, createPayment)
   router.post('/reset', createReset)
+  router.put('/entity', authMiddleware.normalUser, updateEntity)
   router.put('/password', authMiddleware.normalUser, updatePassword)
   router.put('/lock', authMiddleware.normalUser, lockUser)
   router.put('/activate', activateUser)

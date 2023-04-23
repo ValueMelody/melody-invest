@@ -92,6 +92,7 @@ describe('#HostConfig', () => {
       ServerHost: '127.0.0.1',
       AccessTokenSecret: '123',
       RefreshTokenSecret: '345',
+      DataKeySecret: '567',
       AccessExpiresIn: '15m',
     })
   })

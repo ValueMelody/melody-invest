@@ -12,6 +12,7 @@ afterEach(() => {
 
 const emptyUser = {
   userEmail: '',
+  userEntity: undefined,
   userTraderIds: [],
   userType: constants.User.Type.Guest,
   planStartAtUTC: null,

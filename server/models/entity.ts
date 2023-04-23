@@ -35,3 +35,19 @@ export const create = async (
   })
   return created
 }
+
+export const update = async (
+  entityId: number,
+  values: interfaces.entityModel.Update,
+  transaction: Knex.Transaction,
+): Promise<interfaces.entityModel.Record> => {
+  const updated = await databaseAdapter.update({
+    tableName: TableName,
+    values,
+    conditions: [
+      { key: 'id', value: entityId },
+    ],
+    transaction,
+  })
+  return updated[0]
+}

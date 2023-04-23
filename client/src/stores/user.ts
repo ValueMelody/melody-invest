@@ -20,6 +20,7 @@ export interface UserState {
   userEmail: string;
   planStartAtUTC: string | null;
   planEndAtUTC: string | null;
+  userEntity: interfaces.entityModel.Record | undefined;
   access: UserAccess;
 }
 
@@ -29,6 +30,7 @@ const initialState: UserState = {
   userType: constants.User.Type.Guest,
   planStartAtUTC: null,
   planEndAtUTC: null,
+  userEntity: undefined,
   access: {
     canCreateTicker: false,
     canFollowEnv: false,
@@ -40,6 +42,13 @@ const initialState: UserState = {
   },
 }
 
+const storeFromUserEntity = (
+  state: UserState,
+  action: PayloadAction<interfaces.entityModel.Record>,
+) => {
+  state.userEntity = action.payload
+}
+
 const storeFromUserOverall = (
   state: UserState,
   action: PayloadAction<interfaces.response.UserOverall>,
@@ -49,6 +58,21 @@ const storeFromUserOverall = (
   state.planStartAtUTC = action.payload.planStartAtUTC
   state.planEndAtUTC = action.payload.planEndAtUTC
   state.userTraderIds = action.payload.traderProfiles.map((profile) => profile.trader.id)
+}
+
+const onUpdateUserEntity = (
+  state: UserState,
+  action: PayloadAction<{
+    dataSource: string;
+  }>,
+) => {
+  if (state.userEntity) {
+    state.userEntity = {
+      ...state.userEntity,
+      dataSource: action.payload.dataSource,
+      dataKey: constants.Entity.DataMarkup,
+    }
+  }
 }
 
 const onCreatePaymentSuccess = (
@@ -79,6 +103,7 @@ const logout = (state: UserState) => {
   state.userEmail = ''
   state.userType = constants.User.Type.Guest
   state.userTraderIds = []
+  state.userEntity = undefined
   state.planStartAtUTC = null
   state.planEndAtUTC = null
 }
@@ -93,6 +118,8 @@ export const userSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(actions.lockUserAccount.fulfilled, logout)
     builder.addCase(actions.logout, logout)
+    builder.addCase(actions.fetchUserEntity.fulfilled, storeFromUserEntity)
+    builder.addCase(actions.updateUserEntity.fulfilled, onUpdateUserEntity)
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)
     builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
     builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
