@@ -10,5 +10,5 @@ export interface Create {}
 export interface Update {
   dataSource?: string;
   dataKey?: string;
-  isValidKey?: boolean;
+  isValidKey?: boolean | null;
 }

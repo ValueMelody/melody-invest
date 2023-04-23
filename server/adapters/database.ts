@@ -144,6 +144,7 @@ export const create = async ({
       .returning('*')
     return record[0]
   } catch (e) {
+    console.log(e)
     await transaction.rollback()
     throw errorEnum.Custom.CreationFailed
   }

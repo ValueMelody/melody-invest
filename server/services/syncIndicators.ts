@@ -113,7 +113,7 @@ export const syncAllMonthlyIndicators = async () => {
     marketEnum.Type.NonfarmPayroll,
   ]
 
-  const cooldown = marketAdapter.getCooldownPerMin()
+  const cooldown = marketAdapter.getCoolDownSeconds()
 
   await runTool.asyncForEach(normalIndicatorTypes, async (
     type: MonthlyIndicatorType,
@@ -268,7 +268,7 @@ export const syncYearly = async (
 }
 
 export const syncAllYearlyIndicators = async () => {
-  const cooldown = marketAdapter.getCooldownPerMin()
+  const cooldown = marketAdapter.getCoolDownSeconds()
 
   await syncYearly(marketEnum.Type.Inflation, { valueLength: 5 })
 

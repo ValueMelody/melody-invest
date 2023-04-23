@@ -21,7 +21,7 @@ export const run = async () => {
       break
     }
     case taskEnum.Name.generateWeeklyData: {
-      const cooldown = marketAdapter.getCooldownPerMin()
+      const cooldown = marketAdapter.getCoolDownSeconds()
 
       const quarter = dateTool.getCurrentQuater()
       const forceRecheck = false

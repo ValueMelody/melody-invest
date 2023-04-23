@@ -9,7 +9,7 @@ interface Common {
   id: number;
   tickerId: number;
   date: string;
-  volume: string;
+  volume: number;
   closePrice: number;
   weeklyAverageFinalPrice: number | null;
   monthlyAverageFinalPrice: number | null;
@@ -29,21 +29,18 @@ interface Common {
 
 export interface Record extends Common {
   splitMultiplier: number;
-  dividendAmount: number;
 }
 
 export interface Raw extends Common {
   splitMultiplier: string;
-  dividendAmount: string;
 }
 
 export interface Create {
   tickerId: number;
   date: string;
-  volume: string;
+  volume: number;
   closePrice: number;
   splitMultiplier: string;
-  dividendAmount: string;
 }
 
 export interface Update {

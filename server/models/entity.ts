@@ -12,6 +12,17 @@ export const getAll = async (): Promise<interfaces.entityModel.Record[]> => {
   return entities
 }
 
+export const getAllWithValidKey = async (): Promise<interfaces.entityModel.Record[]> => {
+  const entities = await databaseAdapter.findAll({
+    tableName: TableName,
+    conditions: [
+      { key: 'dataKey', value: null, type: 'IS NOT' },
+      { key: 'isValidKey', value: false, type: '!=' },
+    ],
+  })
+  return entities
+}
+
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.entityModel.Record | null> => {

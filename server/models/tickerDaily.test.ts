@@ -150,20 +150,18 @@ describe('#create', () => {
     const created = await tickerDaily.create({
       tickerId: 2,
       date: '2022-02-02',
-      volume: '222222',
+      volume: 222222,
       closePrice: 30,
       splitMultiplier: '3.0000',
-      dividendAmount: '1.11',
     }, transaction)
     await transaction.commit()
     const result = {
       id: 9,
       tickerId: 2,
       date: '2022-02-02',
-      volume: '222222',
+      volume: 222222,
       closePrice: 30,
       splitMultiplier: 3,
-      dividendAmount: 1.11,
       weeklyAverageFinalPrice: null,
       monthlyAverageFinalPrice: null,
       quarterlyAverageFinalPrice: null,
@@ -191,10 +189,9 @@ describe('#update', () => {
     await tickerDaily.create({
       tickerId: 2,
       date: '2022-02-02',
-      volume: '222222',
+      volume: 222222,
       closePrice: 30,
       splitMultiplier: '3.0000',
-      dividendAmount: '1.11',
     }, createTransaction)
     await createTransaction.commit()
 
@@ -221,10 +218,9 @@ describe('#update', () => {
       id: 9,
       tickerId: 2,
       date: '2022-02-02',
-      volume: '222222',
+      volume: 222222,
       closePrice: 30,
       splitMultiplier: 3,
-      dividendAmount: 1.11,
       ...props,
     }
     expect(created).toStrictEqual(result)

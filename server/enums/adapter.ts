@@ -59,7 +59,7 @@ export const CacheKey = Object.freeze({
 
 export const MarketConfig = Object.freeze({
   Key: process.env.MARKET_KEY!,
-  CooldownSeconds: parseInt(process.env.MARKET_KEY_COOLDOWN!),
+  CooldownSeconds: parseInt(process.env.MARKET_KEY_COOLDOWN!) || 1,
   BaseUrl: 'https://www.alphavantage.co/query',
 })
 

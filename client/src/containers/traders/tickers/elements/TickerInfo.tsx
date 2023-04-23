@@ -32,7 +32,7 @@ const TickerInfo = ({
     <section
       className='flex flex-col m-8'
     >
-      <header className='flex'>
+      <header className='flex items-center'>
         <TickerLabel
           className='mx-2 my-1'
           color='gray'

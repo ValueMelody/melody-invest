@@ -71,6 +71,7 @@ const onUpdateUserEntity = (
       ...state.userEntity,
       dataSource: action.payload.dataSource,
       dataKey: constants.Entity.DataMarkup,
+      isValidKey: null,
     }
   }
 }

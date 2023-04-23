@@ -1,5 +1,7 @@
+import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
+import * as entityModel from 'models/entity'
 import * as interfaces from '@shared/interfaces'
 import * as marketAdapter from 'adapters/market'
 import * as priceLogic from 'logics/price'
@@ -8,64 +10,53 @@ import * as tickerDailyModel from 'models/tickerDaily'
 import * as tickerModel from 'models/ticker'
 import * as tickerQuarterlyModel from 'models/tickerQuarterly'
 import * as tickerYearlyModel from 'models/tickerYearly'
+import * as tiingoAdapter from 'adapters/tiingo'
 import { Knex } from 'knex'
 
 export const syncPrices = async (
   ticker: interfaces.tickerModel.Record,
+  entity: interfaces.entityModel.Record,
 ): Promise<string | undefined> => {
-  let tickerData
+  let prices
+
+  const startDate = ticker.lastPriceDate ? dateTool.getNextDate(ticker.lastPriceDate) : dateTool.getInitialDate()
 
   try {
-    tickerData = await marketAdapter.getTickerPrices(ticker.symbol)
-  } catch (e) {
+    prices = await tiingoAdapter.getTickerPrices(
+      ticker.symbol,
+      startDate,
+      dateTool.getCurrentDate(),
+      entity.dataKey!,
+    )
+  } catch (e: any) {
+    if (e?.response?.data?.detail === 'Invalid token.') {
+      await databaseAdapter.runWithTransaction(async (transaction) => {
+        await entityModel.update(entity.id, { isValidKey: false }, transaction)
+      })
+    }
     return `${ticker.id} fetch error: ${e} `
   }
 
-  const metaData = tickerData['Meta Data']
-  const endDate = metaData['3. Last Refreshed'].substring(0, 10)
+  if (!prices?.length) return
 
-  if (endDate === ticker.lastPriceDate) {
-    const today = dateTool.getCurrentDate()
-    const checkDate = dateTool.getPreviousDate(today, 7)
-    if (checkDate > endDate) return `${ticker.id} is probably delisted`
-    return
-  }
-
-  const allDaysData = tickerData['Time Series (Daily)']
-
-  const startDate = ticker.lastPriceDate
-    ? dateTool.getNextDate(ticker.lastPriceDate)
-    : dateTool.getInitialDate()
-
-  const allDates = dateTool.getDaysInRange(startDate, endDate)
-  if (!allDates.length) return
-
-  let firstPriceDate: string | null = null
+  let firstPriceDate = ''
   let latestRecord = await tickerDailyModel.getPreviousOne(ticker.id, startDate)
-
   const transaction = await databaseAdapter.createTransaction()
   try {
-    await runTool.asyncForEach(allDates, async (date: string) => {
-      const dailyData = allDaysData[date]
-      if (!dailyData) return
-
-      const closePrice: string = dailyData['4. close']
-      const volume: string = dailyData['6. volume']
-      const dividendAmount: string = dailyData['7. dividend amount']
-      const splitCoefficient: string = dailyData['8. split coefficient']
+    await runTool.asyncForEach(prices, async (price: tiingoAdapter.TiingoPrice) => {
+      const date = price.date.substring(0, 10)
 
       const splitMultiplier = priceLogic.getSplitMultiplier(
-        splitCoefficient,
+        price.splitFactor,
         latestRecord,
       )
 
       const createdDaily = await tickerDailyModel.create({
         tickerId: ticker.id,
         date,
-        volume,
-        closePrice: priceLogic.convertToPaddingPrice(closePrice),
-        splitMultiplier: splitMultiplier.toFixed(5),
-        dividendAmount,
+        volume: price.volume,
+        closePrice: priceLogic.convertToPaddingPrice(price.close),
+        splitMultiplier,
       }, transaction)
 
       latestRecord = createdDaily
@@ -78,6 +69,9 @@ export const syncPrices = async (
       }
       if (!ticker.firstPriceDate) newTickerInfo.firstPriceDate = firstPriceDate
       await tickerModel.update(ticker.id, newTickerInfo, transaction)
+
+      if (!entity.isValidKey) await entityModel.update(entity.id, { isValidKey: true }, transaction)
+
       await transaction.commit()
     } else {
       await transaction.rollback()
@@ -89,21 +83,24 @@ export const syncPrices = async (
 }
 
 export const syncAllPrices = async (date: string): Promise<string[]> => {
-  const allTickers = await tickerModel.getAll()
-  const cooldown = marketAdapter.getCooldownPerMin()
+  const entities = await entityModel.getAll()
+  const cooldown = adapterEnum.MarketConfig.CooldownSeconds
   const notes: string[] = []
 
-  await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
-    console.info(`checking ${ticker.id}`)
-    if (ticker.isDelisted) return
+  await runTool.asyncForEach(entities, async (entity: interfaces.entityModel.Record) => {
+    if (!entity.dataKey || entity.isValidKey === false) return
+    console.info(`checking entity: ${entity.id}`)
 
-    const isDateSynced = ticker.lastPriceDate && ticker?.lastPriceDate >= date
-    if (isDateSynced) return
-
-    const note = await syncPrices(ticker)
-    if (note) notes.push(note)
-
-    await runTool.sleep(cooldown)
+    const tickers = await tickerModel.getAllByEntity(entity.id)
+    await runTool.asyncForEach(tickers, async (ticker: interfaces.tickerModel.Record) => {
+      if (ticker.isDelisted) return
+      const isDateSynced = ticker.lastPriceDate && ticker?.lastPriceDate >= date
+      if (isDateSynced) return
+      console.info(`checking ticker: ${ticker.id}`)
+      const note = await syncPrices(ticker, entity)
+      if (note) notes.push(note)
+      await runTool.sleep(cooldown)
+    })
   })
 
   return notes
@@ -273,7 +270,7 @@ export const syncAllEarnings = async (
 ) => {
   const year = quarter.substring(0, 4)
   const allTickers = await tickerModel.getAll()
-  const cooldown = marketAdapter.getCooldownPerMin()
+  const cooldown = marketAdapter.getCoolDownSeconds()
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     if (startTickerId && ticker.id < startTickerId) return
@@ -452,7 +449,7 @@ export const syncAllIncomes = async (
 ) => {
   const year = quarter.substring(0, 4)
   const allTickers = await tickerModel.getAll()
-  const cooldown = marketAdapter.getCooldownPerMin()
+  const cooldown = marketAdapter.getCoolDownSeconds()
 
   await runTool.asyncForEach(allTickers, async (ticker: interfaces.tickerModel.Record) => {
     if (startTickerId && ticker.id < startTickerId) return

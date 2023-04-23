@@ -1,28 +1,10 @@
-
 import * as adapterEnum from 'enums/adapter'
 import * as marketEnum from 'enums/market'
 import axios from 'axios'
 import qs from 'qs'
 
-export const getCooldownPerMin = (): number => {
-  return adapterEnum.MarketConfig.CooldownSeconds || 15
-}
-
-export const getTickerPrices = async (
-  symbol: string,
-) => {
-  const queryParams = qs.stringify({
-    function: marketEnum.Type.Prices,
-    symbol: symbol.toUpperCase(),
-    outputsize: 'full',
-    apikey: adapterEnum.MarketConfig.Key,
-  })
-  const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
-  const result = await axios.get(url)
-
-  if (result?.data && result.data['Error Message']) throw new Error(result.data['Error Message'])
-
-  return result.data
+export const getCoolDownSeconds = (): number => {
+  return adapterEnum.MarketConfig.CooldownSeconds || 1
 }
 
 export interface AnnualEarning {
