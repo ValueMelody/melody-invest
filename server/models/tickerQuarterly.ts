@@ -12,13 +12,22 @@ const convertToRecord = (
 ): interfaces.tickerQuarterlyModel.Record => {
   const record: any = raw
   record.eps = raw.eps ? parseFloat(raw.eps) : null
-  record.estimatedEPS = raw.estimatedEPS ? parseFloat(raw.estimatedEPS) : null
-  record.epsSurprisePercent = raw.epsSurprisePercent ? parseFloat(raw.epsSurprisePercent) : null
   record.ebitda = raw.ebitda ? parseInt(raw.ebitda) : null
   record.netIncome = raw.netIncome ? parseInt(raw.netIncome) : null
   record.grossProfit = raw.grossProfit ? parseInt(raw.grossProfit) : null
   record.totalRevenue = raw.totalRevenue ? parseInt(raw.totalRevenue) : null
   record.costOfRevenue = raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
+  record.equity = raw.equity ? parseInt(raw.equity) : null
+  record.totalAssets = raw.totalAssets ? parseInt(raw.totalAssets) : null
+  record.totalLiabilities = raw.totalLiabilities ? parseInt(raw.totalLiabilities) : null
+  record.freeCashFlow = raw.freeCashFlow ? parseInt(raw.freeCashFlow) : null
+  record.grossMargin = raw.grossMargin ? parseInt(raw.grossMargin) : null
+  record.debtEquity = raw.debtEquity ? parseInt(raw.debtEquity) : null
+  record.roa = raw.roa ? parseInt(raw.roa) : null
+  record.roe = raw.roe ? parseInt(raw.roe) : null
+  record.outstandingShares = raw.outstandingShares ? parseInt(raw.outstandingShares) : null
+  record.epsQoQ = raw.epsQoQ ? parseFloat(raw.epsQoQ) : null
+  record.revenueQoQ = raw.revenueQoQ ? parseFloat(raw.revenueQoQ) : null
   return record
 }
 
@@ -88,7 +97,7 @@ export const getPublishedByDate = async (
   const records = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
-      { key: 'earningReportDate', value: date, type: '<' },
+      { key: 'earningDate', value: date, type: '<' },
       { key: 'quarter', value: previousQuarter, type: '>=' },
       { key: 'quarter', value: currentQuarter, type: '<=' },
     ],

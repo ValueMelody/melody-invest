@@ -5,14 +5,10 @@ import * as ticker from './ticker'
 const emptyProps = {
   firstPriceDate: null,
   lastPriceDate: null,
-  firstEPSYear: null,
-  lastEPSYear: null,
-  firstEPSQuarter: null,
-  lastEPSQuarter: null,
-  firstIncomeYear: null,
-  lastIncomeYear: null,
-  firstIncomeQuarter: null,
-  lastIncomeQuarter: null,
+  firstFinancialQuarter: null,
+  firstFinancialYear: null,
+  lastFinancialQuarter: null,
+  lastFinancialYear: null,
 }
 
 beforeAll(async () => {
@@ -93,14 +89,10 @@ describe('#update', () => {
     const info = {
       firstPriceDate: '2001-01-01',
       lastPriceDate: '2002-02-02',
-      firstEPSYear: '2003',
-      lastEPSYear: '2004',
-      firstEPSQuarter: '2005-03',
-      lastEPSQuarter: '2005-06',
-      firstIncomeYear: '2006',
-      lastIncomeYear: '2005',
-      firstIncomeQuarter: '2007-07',
-      lastIncomeQuarter: '2008-12',
+      firstFinancialQuarter: '2005-03',
+      lastFinancialQuarter: '2005-06',
+      firstFinancialYear: '2007-07',
+      lastFinancialYear: '2008-12',
     }
     const result = await ticker.update(3, info, transaction)
     await transaction.commit()

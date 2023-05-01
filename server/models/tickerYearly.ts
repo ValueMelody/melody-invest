@@ -16,6 +16,11 @@ const convertToRecord = (
   record.grossProfit = raw.grossProfit ? parseInt(raw.grossProfit) : null
   record.totalRevenue = raw.totalRevenue ? parseInt(raw.totalRevenue) : null
   record.costOfRevenue = raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
+  record.totalLiabilities = raw.totalLiabilities ? parseInt(raw.totalLiabilities) : null
+  record.totalAssets = raw.totalAssets ? parseInt(raw.totalAssets) : null
+  record.equity = raw.equity ? parseInt(raw.equity) : null
+  record.outstandingShares = raw.outstandingShares ? parseInt(raw.outstandingShares) : null
+  record.freeCashFlow = raw.freeCashFlow ? parseInt(raw.freeCashFlow) : null
   return record
 }
 

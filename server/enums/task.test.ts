@@ -3,8 +3,6 @@ import * as task from './task'
 describe('#Name', () => {
   test('correctly defined Name', () => {
     expect(task.Name.syncTickerPrices).toBeDefined()
-    expect(task.Name.syncTickerIncomes).toBeDefined()
-    expect(task.Name.syncTickerEarnings).toBeDefined()
     expect(task.Name.syncEconomyIndicators).toBeDefined()
     expect(task.Name.calcPriceMovements).toBeDefined()
     expect(task.Name.calcFinancialMovements).toBeDefined()

@@ -27,10 +27,6 @@ export interface Public {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
-  epsQuarterlyBeatBuy: number | null;
-  epsQuarterlyMissBuy: number | null;
-  epsQuarterlyBeatSell: number | null;
-  epsQuarterlyMissSell: number | null;
   profitQuarterlyIncreaseBuy: number | null;
   profitQuarterlyDecreaseBuy: number | null;
   incomeQuarterlyIncreaseBuy: number | null;
@@ -148,10 +144,6 @@ export interface Create {
   holdingSellPercent: number;
   tradeFrequency: number;
   rebalanceFrequency: number;
-  epsQuarterlyBeatBuy: number | null;
-  epsQuarterlyMissBuy: number | null;
-  epsQuarterlyBeatSell: number | null;
-  epsQuarterlyMissSell: number | null;
   profitQuarterlyIncreaseBuy: number | null;
   profitQuarterlyDecreaseBuy: number | null;
   incomeQuarterlyIncreaseBuy: number | null;
@@ -246,7 +238,6 @@ export type TickerMovementBuyBehavior =
   'priceMonthlyIncreaseBuy' | 'priceMonthlyDecreaseBuy' |
   'priceQuarterlyIncreaseBuy' | 'priceQuarterlyDecreaseBuy' |
   'priceYearlyIncreaseBuy' | 'priceYearlyDecreaseBuy' |
-  'epsQuarterlyBeatBuy' | 'epsQuarterlyMissBuy' |
   'profitQuarterlyIncreaseBuy' | 'profitQuarterlyDecreaseBuy' |
   'incomeQuarterlyIncreaseBuy' | 'incomeQuarterlyDecreaseBuy' |
   'revenueQuarterlyIncreaseBuy' | 'revenueQuarterlyDecreaseBuy' |
@@ -284,7 +275,6 @@ export type TickerMovementSellBehavior =
   'priceMonthlyIncreaseSell' | 'priceMonthlyDecreaseSell' |
   'priceQuarterlyIncreaseSell' | 'priceQuarterlyDecreaseSell' |
   'priceYearlyIncreaseSell' | 'priceYearlyDecreaseSell' |
-  'epsQuarterlyBeatSell' | 'epsQuarterlyMissSell' |
   'profitQuarterlyIncreaseSell' | 'profitQuarterlyDecreaseSell' |
   'incomeQuarterlyIncreaseSell' | 'incomeQuarterlyDecreaseSell' |
   'revenueQuarterlyIncreaseSell' | 'revenueQuarterlyDecreaseSell' |

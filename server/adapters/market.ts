@@ -7,69 +7,6 @@ export const getCoolDownSeconds = (): number => {
   return adapterEnum.MarketConfig.CooldownSeconds || 1
 }
 
-export interface AnnualEarning {
-  fiscalDateEnding: string;
-  reportedEPS: string;
-}
-
-export interface QuarterlyEarning {
-  fiscalDateEnding: string;
-  reportedDate: string;
-  reportedEPS: string;
-  estimatedEPS: string;
-  surprise: string;
-  surprisePercentage: string;
-}
-
-interface TickerEarnings {
-  annualEarnings: AnnualEarning[];
-  quarterlyEarnings: QuarterlyEarning[];
-}
-
-export const getTickerEarnings = async (
-  symbol: string,
-): Promise<TickerEarnings> => {
-  const queryParams = qs.stringify({
-    function: marketEnum.Type.Earnings,
-    symbol: symbol.toUpperCase(),
-    apikey: adapterEnum.MarketConfig.Key,
-  })
-  const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
-  const result = await axios.get(url)
-
-  if (result.data.Note) throw result.data
-  return result.data
-}
-
-export interface Income {
-  fiscalDateEnding: string;
-  grossProfit: string;
-  totalRevenue: string;
-  costOfRevenue: string;
-  ebitda: string;
-  netIncome: string;
-}
-
-interface TickerIncomes {
-  annualReports: Income[];
-  quarterlyReports: Income[];
-}
-
-export const getTickerIncomes = async (
-  symbol: string,
-): Promise<TickerIncomes> => {
-  const queryParams = qs.stringify({
-    function: marketEnum.Type.Incomes,
-    symbol: symbol.toUpperCase(),
-    apikey: adapterEnum.MarketConfig.Key,
-  })
-  const url = `${adapterEnum.MarketConfig.BaseUrl}?${queryParams}`
-  const result = await axios.get(url)
-
-  if (result.data.Note) throw result.data
-  return result.data
-}
-
 interface IndicatorDateValue {
   date: string;
   value: string;

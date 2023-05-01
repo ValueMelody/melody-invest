@@ -2,7 +2,6 @@ import * as cacheTask from 'tasks/cache'
 import * as calcTask from 'tasks/calc'
 import * as dateTool from 'tools/date'
 import * as emailTask from 'tasks/email'
-import * as marketAdapter from 'adapters/market'
 import * as runTool from 'tools/run'
 import * as syncTask from 'tasks/sync'
 import * as taskEnum from 'enums/task'
@@ -21,16 +20,7 @@ export const run = async () => {
       break
     }
     case taskEnum.Name.generateWeeklyData: {
-      const cooldown = marketAdapter.getCoolDownSeconds()
-
-      const quarter = dateTool.getCurrentQuater()
-      const forceRecheck = false
-      const startTickerId = null
-      await syncTask.syncTickerIncomes(quarter, forceRecheck, startTickerId)
-      await syncTask.syncTickerEarnings(quarter, forceRecheck, startTickerId)
       await calcTask.calcFinancialMovements()
-      await runTool.sleep(cooldown)
-
       await syncTask.syncEconomyIndicators()
       await calcTask.calcIndicatorMovements()
 
@@ -67,22 +57,15 @@ export const run = async () => {
       break
     }
     case taskEnum.Name.syncTickerPrices: {
-      const date = process.argv[3] || dateTool.getCurrentDate()
+      const date = process.argv[3]
+      if (!date) throw Error('Date required')
       await syncTask.syncTickerPrices(date)
       break
     }
-    case taskEnum.Name.syncTickerEarnings: {
-      const quarter = process.argv[3] || dateTool.getCurrentQuater()
-      const forceRecheck = process.argv[4] === 'true' || false
-      const startTickerId = process.argv[5] ? parseInt(process.argv[5]) : null
-      await syncTask.syncTickerEarnings(quarter, forceRecheck, startTickerId)
-      break
-    }
-    case taskEnum.Name.syncTickerIncomes: {
-      const quarter = process.argv[3] || dateTool.getCurrentQuater()
-      const forceRecheck = process.argv[4] === 'true' || false
-      const startTickerId = process.argv[5] ? parseInt(process.argv[5]) : null
-      await syncTask.syncTickerIncomes(quarter, forceRecheck, startTickerId)
+    case taskEnum.Name.syncTickerFinancials: {
+      const quarter = process.argv[3]
+      if (!quarter) throw Error('Quarter required')
+      await syncTask.syncTickerFinancials(quarter)
       break
     }
     case taskEnum.Name.calcPriceMovements: {

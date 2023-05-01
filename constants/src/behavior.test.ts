@@ -4,8 +4,8 @@ describe('#BuyBehaviors', () => {
   test('contain all type of buy behaviors', () => {
     expect(behavior.PriceIncreaseBuyBehaviors.length).toBe(5)
     expect(behavior.PriceDecreaseBuyBehaviors.length).toBe(5)
-    expect(behavior.FinancialImproveBuyBehaviors.length).toBe(7)
-    expect(behavior.FinancialWorsenBuyBehaviors.length).toBe(7)
+    expect(behavior.FinancialImproveBuyBehaviors.length).toBe(6)
+    expect(behavior.FinancialWorsenBuyBehaviors.length).toBe(6)
     expect(behavior.IndicatorIncreaseBuyBehaviors.length).toBe(11)
     expect(behavior.IndicatorDecreaseBuyBehaviors.length).toBe(11)
     expect(behavior.EconomyImproveBuyBehaviors.length).toBe(3)
@@ -48,8 +48,8 @@ describe('#SellBehaviors', () => {
   test('contain all type of sell behaviors', () => {
     expect(behavior.PriceIncreaseSellBehaviors.length).toBe(5)
     expect(behavior.PriceDecreaseSellBehaviors.length).toBe(5)
-    expect(behavior.FinancialImproveSellBehaviors.length).toBe(7)
-    expect(behavior.FinancialWorsenSellBehaviors.length).toBe(7)
+    expect(behavior.FinancialImproveSellBehaviors.length).toBe(6)
+    expect(behavior.FinancialWorsenSellBehaviors.length).toBe(6)
     expect(behavior.IndicatorIncreaseSellBehaviors.length).toBe(11)
     expect(behavior.IndicatorDecreaseSellBehaviors.length).toBe(11)
     expect(behavior.EconomyImproveSellBehaviors.length).toBe(3)
