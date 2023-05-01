@@ -64,14 +64,6 @@ describe('generateDailyData', () => {
 
 describe('generateWeeklyData', () => {
   test('could trigger generateWeeklyData', async () => {
-    const syncTickerIncomes = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerIncomes')
-      .mockImplementation(syncTickerIncomes)
-
-    const syncTickerEarnings = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerEarnings')
-      .mockImplementation(syncTickerEarnings)
-
     const calcFinancialMovements = jest.fn()
     jest.spyOn(calcTask, 'calcFinancialMovements')
       .mockImplementation(calcFinancialMovements)
@@ -94,10 +86,6 @@ describe('generateWeeklyData', () => {
 
     process.argv[2] = taskEnum.Name.generateWeeklyData
     await run()
-    expect(syncTickerIncomes).toBeCalledTimes(1)
-    expect(syncTickerIncomes).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
-    expect(syncTickerEarnings).toBeCalledTimes(1)
-    expect(syncTickerEarnings).toBeCalledWith(dateTool.getCurrentQuater(), false, null)
     expect(calcFinancialMovements).toBeCalledTimes(1)
     expect(syncEconomyIndicators).toBeCalledTimes(1)
     expect(calcIndicatorMovements).toBeCalledTimes(1)
@@ -207,17 +195,6 @@ describe('calcTraderDescendants', () => {
 })
 
 describe('syncTickerPrices', () => {
-  test('could sync syncTickerPrices by true', async () => {
-    const syncTickerPrices = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerPrices')
-      .mockImplementation(syncTickerPrices)
-
-    process.argv[2] = taskEnum.Name.syncTickerPrices
-    await run()
-    expect(syncTickerPrices).toBeCalledTimes(1)
-    expect(syncTickerPrices).toBeCalledWith(dateTool.getCurrentDate())
-  })
-
   test('could trigger syncTickerPrices by date', async () => {
     const syncTickerPrices = jest.fn()
     jest.spyOn(syncTask, 'syncTickerPrices')
@@ -228,68 +205,6 @@ describe('syncTickerPrices', () => {
     await run()
     expect(syncTickerPrices).toBeCalledTimes(1)
     expect(syncTickerPrices).toBeCalledWith('2000-01-01')
-  })
-})
-
-describe('syncTickerEarnings', () => {
-  test('could sync syncTickerEarnings by true', async () => {
-    const syncTickerEarnings = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerEarnings')
-      .mockImplementation(syncTickerEarnings)
-
-    process.argv[2] = taskEnum.Name.syncTickerEarnings
-    await run()
-    expect(syncTickerEarnings).toBeCalledTimes(1)
-    expect(syncTickerEarnings).toBeCalledWith(
-      dateTool.getCurrentQuater(), false, null,
-    )
-  })
-
-  test('could trigger syncTickerEarnings by date', async () => {
-    const syncTickerEarnings = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerEarnings')
-      .mockImplementation(syncTickerEarnings)
-
-    process.argv[2] = taskEnum.Name.syncTickerEarnings
-    process.argv[3] = '2000-01'
-    process.argv[4] = 'true'
-    process.argv[5] = '11'
-    await run()
-    expect(syncTickerEarnings).toBeCalledTimes(1)
-    expect(syncTickerEarnings).toBeCalledWith(
-      '2000-01', true, 11,
-    )
-  })
-})
-
-describe('syncTickerIncomes', () => {
-  test('could sync syncTickerIncomes by true', async () => {
-    const syncTickerIncomes = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerIncomes')
-      .mockImplementation(syncTickerIncomes)
-
-    process.argv[2] = taskEnum.Name.syncTickerIncomes
-    await run()
-    expect(syncTickerIncomes).toBeCalledTimes(1)
-    expect(syncTickerIncomes).toBeCalledWith(
-      dateTool.getCurrentQuater(), false, null,
-    )
-  })
-
-  test('could trigger syncTickerIncomes by date', async () => {
-    const syncTickerIncomes = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerIncomes')
-      .mockImplementation(syncTickerIncomes)
-
-    process.argv[2] = taskEnum.Name.syncTickerIncomes
-    process.argv[3] = '2000-01'
-    process.argv[4] = 'true'
-    process.argv[5] = '11'
-    await run()
-    expect(syncTickerIncomes).toBeCalledTimes(1)
-    expect(syncTickerIncomes).toBeCalledWith(
-      '2000-01', true, 11,
-    )
   })
 })
 

@@ -223,16 +223,6 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
     ) => {
       const lastRecord = checkedQuarterly.length ? checkedQuarterly[checkedQuarterly.length - 1] : null
 
-      let epsQuarterlyBeat = tickerQuarterly.epsQuarterlyBeat
-      let epsQuarterlyMiss = tickerQuarterly.epsQuarterlyMiss
-      if (tickerQuarterly.eps !== null && tickerQuarterly.estimatedEPS !== null) {
-        const isBeat = tickerQuarterly.eps >= tickerQuarterly.estimatedEPS
-        const previousBeat = lastRecord?.epsQuarterlyBeat || 0
-        const previousMiss = lastRecord?.epsQuarterlyBeat || 0
-        epsQuarterlyBeat = isBeat ? previousBeat + 1 : 1
-        epsQuarterlyMiss = !isBeat ? previousMiss + 1 : 1
-      }
-
       let revenueQuarterlyIncrease = tickerQuarterly.revenueQuarterlyIncrease
       let revenueQuarterlyDecrease = tickerQuarterly.revenueQuarterlyDecrease
       if (tickerQuarterly.totalRevenue !== null && lastRecord && lastRecord?.totalRevenue !== null) {
@@ -267,8 +257,6 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
       }
 
       const hasUpdate =
-        tickerQuarterly.epsQuarterlyBeat !== epsQuarterlyBeat ||
-        tickerQuarterly.epsQuarterlyMiss !== epsQuarterlyMiss ||
         tickerQuarterly.revenueQuarterlyIncrease !== revenueQuarterlyIncrease ||
         tickerQuarterly.revenueQuarterlyDecrease !== revenueQuarterlyDecrease ||
         tickerQuarterly.profitQuarterlyIncrease !== profitQuarterlyIncrease ||
@@ -280,8 +268,6 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
 
       const quarterly = hasUpdate
         ? await tickerQuarterlyModel.update(tickerQuarterly.id, {
-          epsQuarterlyBeat,
-          epsQuarterlyMiss,
           revenueQuarterlyIncrease,
           revenueQuarterlyDecrease,
           profitQuarterlyIncrease,
@@ -425,8 +411,6 @@ export const buildTickerInfo = (
     priceQuarterlyDecrease: tickerDaily.priceQuarterlyDecrease,
     priceYearlyIncrease: tickerDaily.priceYearlyIncrease,
     priceYearlyDecrease: tickerDaily.priceYearlyDecrease,
-    epsQuarterlyBeat: tickerQuarterly ? tickerQuarterly.epsQuarterlyBeat : null,
-    epsQuarterlyMiss: tickerQuarterly ? tickerQuarterly.epsQuarterlyMiss : null,
     profitQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyIncrease : null,
     profitQuarterlyDecrease: tickerQuarterly ? tickerQuarterly.profitQuarterlyDecrease : null,
     incomeQuarterlyIncrease: tickerQuarterly ? tickerQuarterly.incomeQuarterlyIncrease : null,

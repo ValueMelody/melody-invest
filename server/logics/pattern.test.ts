@@ -13,8 +13,6 @@ describe('#gatherPatternBehaviorValues', () => {
 
   const second = {
     ...patternMock,
-    epsQuarterlyBeatBuy: 1,
-    epsQuarterlyMissBuy: 2,
     profitQuarterlyDecreaseSell: 3,
   }
 
@@ -25,8 +23,6 @@ describe('#gatherPatternBehaviorValues', () => {
       second,
     )).toStrictEqual([
       { type: 'priceDailyIncreaseBuy', value: 1 },
-      { type: 'epsQuarterlyBeatBuy', value: 1 },
-      { type: 'epsQuarterlyMissBuy', value: 2 },
     ])
   })
 })
@@ -145,7 +141,6 @@ describe('#generatePatternChild', () => {
     ...patternMock,
     priceDailyIncreaseBuy: 4,
     priceWeeklyDecreaseSell: 5,
-    epsQuarterlyBeatSell: 1,
     cashMaxPercent: 20,
     tickerMinPercent: 21,
     tickerMaxPercent: 22,
@@ -165,7 +160,6 @@ describe('#generatePatternChild', () => {
     expect([1, 4, null]).toContain(result1.priceDailyIncreaseBuy)
     expect([2, null]).toContain(result1.priceDailyDecreaseBuy)
     expect([3, 5, null]).toContain(result1.priceWeeklyDecreaseSell)
-    expect([1, null]).toContain(result1.epsQuarterlyBeatSell)
     expect([10, 20]).toContain(result1.cashMaxPercent)
     expect([11, 21]).toContain(result1.tickerMinPercent)
     expect([12, 22]).toContain(result1.tickerMaxPercent)
@@ -180,7 +174,7 @@ describe('#generatePatternChild', () => {
     const nonNullBuyValues = buyValues.filter((value) => value !== null)
     expect(nonNullBuyValues.length).toBe(1)
 
-    const sellValues = [result1.priceWeeklyDecreaseSell, result1.epsQuarterlyBeatSell]
+    const sellValues = [result1.priceWeeklyDecreaseSell]
     const nonNullSellValues = sellValues.filter((value) => value !== null)
     expect(nonNullSellValues.length).toBe(1)
 

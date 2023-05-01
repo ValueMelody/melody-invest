@@ -11,23 +11,6 @@ const TickerInfo = ({
     ? localeTool.t('ticker.dailyPriceRange', { start: ticker.firstPriceDate, end: ticker.lastPriceDate })
     : localeTool.t('ticker.emptyDailyPriceRange')
 
-  const hasQuarterlyData = ticker.firstEPSQuarter || ticker.firstIncomeQuarter ||
-    ticker.lastEPSQuarter || ticker.lastIncomeQuarter
-  const quarterlyFinancialRangeText = hasQuarterlyData
-    ? localeTool.t('ticker.quarterlyFinancialRange', {
-      start: ticker.firstEPSQuarter || ticker.firstIncomeQuarter,
-      end: ticker.lastEPSQuarter || ticker.lastIncomeQuarter,
-    })
-    : localeTool.t('ticker.emptyQuarterlyFinancialRange')
-
-  const hasYearlyData = ticker.firstEPSYear || ticker.firstIncomeYear || ticker.lastEPSYear || ticker.lastIncomeYear
-  const yearlyFinancialRangeText = hasYearlyData
-    ? localeTool.t('ticker.yearlyFinancialRange', {
-      start: ticker.firstEPSYear || ticker.firstIncomeYear,
-      end: ticker.lastEPSYear || ticker.lastIncomeYear,
-    })
-    : localeTool.t('ticker.emptyYearlyFinancialRange')
-
   return (
     <section
       className='flex flex-col m-8'
@@ -46,12 +29,6 @@ const TickerInfo = ({
       </header>
       <p className='mt-2 italic'>
         {priceRangeText}
-      </p>
-      <p className='mt-2 italic'>
-        {quarterlyFinancialRangeText}
-      </p>
-      <p className='mt-2 italic'>
-        {yearlyFinancialRangeText}
       </p>
     </section>
   )

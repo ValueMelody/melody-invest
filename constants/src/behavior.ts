@@ -17,7 +17,6 @@ export const PriceDecreaseBuyBehaviors: interfaces.traderPatternModel.TickerMove
 ]
 
 export const FinancialImproveBuyBehaviors: interfaces.traderPatternModel.TickerMovementBuyBehavior[] = [
-  'epsQuarterlyBeatBuy',
   'profitQuarterlyIncreaseBuy',
   'incomeQuarterlyIncreaseBuy',
   'revenueQuarterlyIncreaseBuy',
@@ -27,7 +26,6 @@ export const FinancialImproveBuyBehaviors: interfaces.traderPatternModel.TickerM
 ]
 
 export const FinancialWorsenBuyBehaviors: interfaces.traderPatternModel.TickerMovementBuyBehavior[] = [
-  'epsQuarterlyMissBuy',
   'profitQuarterlyDecreaseBuy',
   'incomeQuarterlyDecreaseBuy',
   'revenueQuarterlyDecreaseBuy',
@@ -124,7 +122,6 @@ export const PriceDecreaseSellBehaviors: interfaces.traderPatternModel.TickerMov
 ]
 
 export const FinancialImproveSellBehaviors: interfaces.traderPatternModel.TickerMovementSellBehavior[] = [
-  'epsQuarterlyBeatSell',
   'profitQuarterlyIncreaseSell',
   'incomeQuarterlyIncreaseSell',
   'revenueQuarterlyIncreaseSell',
@@ -134,7 +131,6 @@ export const FinancialImproveSellBehaviors: interfaces.traderPatternModel.Ticker
 ]
 
 export const FinancialWorsenSellBehaviors: interfaces.traderPatternModel.TickerMovementSellBehavior[] = [
-  'epsQuarterlyMissSell',
   'profitQuarterlyDecreaseSell',
   'incomeQuarterlyDecreaseSell',
   'revenueQuarterlyDecreaseSell',

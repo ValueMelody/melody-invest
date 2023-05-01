@@ -23,6 +23,11 @@ export interface Record extends Common {
   grossProfit: number | null;
   totalRevenue: number | null;
   costOfRevenue: number | null;
+  totalLiabilities: number | null;
+  totalAssets: number | null;
+  equity: number | null;
+  outstandingShares: number | null;
+  freeCashFlow: number | null;
 }
 
 export interface Raw extends Common {
@@ -32,18 +37,28 @@ export interface Raw extends Common {
   grossProfit: string | null;
   totalRevenue: string | null;
   costOfRevenue: string | null;
+  totalLiabilities: string | null;
+  totalAssets: string | null;
+  equity: string | null;
+  outstandingShares: string | null;
+  freeCashFlow: string | null;
 }
 
 export interface Create {
   tickerId: number;
   year: string;
-  earningDate?: string;
-  eps?: string | null;
-  ebitda?: string | null;
-  netIncome?: string | null;
-  grossProfit?: string | null;
-  totalRevenue?: string | null;
-  costOfRevenue?: string | null;
+  earningDate: string;
+  eps: string | null;
+  ebitda: string | null;
+  netIncome: string | null;
+  grossProfit: string | null;
+  totalRevenue: string | null;
+  costOfRevenue: string | null;
+  totalLiabilities: string | null;
+  totalAssets: string | null;
+  equity: string | null;
+  outstandingShares: string | null;
+  freeCashFlow: string | null;
 }
 
 export interface Update {

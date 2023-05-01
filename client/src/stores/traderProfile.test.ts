@@ -80,7 +80,7 @@ describe('#store', () => {
         }
       })
     await store.dispatch(actions.fetchTraderBehaviorDetail({
-      envId: 1, behavior: 'epsQuarterlyBeatBuy',
+      envId: 1, behavior: 'priceWeeklyDecreaseBuy',
     }))
 
     expect(store.getState().traderProfile.base).toStrictEqual({

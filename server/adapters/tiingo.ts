@@ -29,3 +29,46 @@ export const getTickerPrices = async (
 
   return result.data
 }
+
+type BalanceSheetDataCode = 'equity' | 'sharesBasic' | 'totalAssets' | 'totalLiabilities'
+type CashFlowDataCode = 'freeCashFlow'
+type IncomeStatementDataCode = 'costRev' | 'netinc' | 'eps' | 'grossProfit' | 'ebitda' | 'revenue'
+type OverviewDataCode = 'revenueQoQ' | 'grossMargin' | 'debtEquity' | 'roa' | 'roe' | 'epsQoQ'
+
+export interface TiingoFinancial {
+  date: string;
+  quarter: number;
+  statementData?: {
+    balanceSheet?: {
+      dataCode: BalanceSheetDataCode;
+      value: number;
+    }[];
+    cashFlow?: {
+      dataCode: CashFlowDataCode;
+      value: number;
+    }[];
+    incomeStatement?: {
+      dataCode: IncomeStatementDataCode;
+      value: number;
+    }[];
+    overview?: {
+      dataCode: OverviewDataCode;
+      value: number;
+    }[];
+  };
+}
+
+export const getTickerFinancials = async (
+  symbol: string,
+  dataKey: string,
+): Promise<TiingoFinancial[]> => {
+  const queryParams = qs.stringify({
+    token: generateTool.decodeDataKey(dataKey),
+  })
+  const url = `${TiingoBaseUrl}/fundamentals/${symbol}/statements?${queryParams}`
+  const result = await axios.get(url)
+
+  if (!result?.data) throw new Error('Fundamental data not exists')
+
+  return result.data
+}

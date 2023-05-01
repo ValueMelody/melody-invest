@@ -6,14 +6,10 @@ export interface Record {
   isDelisted: boolean;
   firstPriceDate: string | null;
   lastPriceDate: string | null;
-  firstEPSYear: string | null;
-  lastEPSYear: string | null;
-  firstEPSQuarter: string | null;
-  lastEPSQuarter: string | null;
-  firstIncomeYear: string | null;
-  lastIncomeYear: string | null;
-  firstIncomeQuarter: string | null;
-  lastIncomeQuarter: string | null;
+  firstFinancialYear: string | null;
+  lastFinancialYear: string | null;
+  firstFinancialQuarter: string | null;
+  lastFinancialQuarter: string | null;
 }
 
 export interface Create {
@@ -26,12 +22,8 @@ export interface Create {
 export interface Update {
   firstPriceDate?: string;
   lastPriceDate?: string;
-  firstEPSYear?: string;
-  lastEPSYear?: string;
-  firstEPSQuarter?: string;
-  lastEPSQuarter?: string;
-  firstIncomeYear?: string;
-  lastIncomeYear?: string;
-  firstIncomeQuarter?: string;
-  lastIncomeQuarter?: string;
+  firstFinancialYear?: string | null;
+  lastFinancialYear?: string | null;
+  firstFinancialQuarter?: string | null;
+  lastFinancialQuarter?: string | null;
 }

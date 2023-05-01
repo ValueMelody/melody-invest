@@ -26,32 +26,14 @@ export const syncTickerPrices = async (date: string) => {
   }
 }
 
-export const syncTickerEarnings = async (
+export const syncTickerFinancials = async (
   quarter: string,
-  forceRecheck: boolean,
-  startTickerId: number | null,
 ) => {
   validateQuarterParam(quarter)
   try {
-    console.info('Start sync ticker earnings')
-    await syncTickers.syncAllEarnings(quarter, forceRecheck, startTickerId)
-    console.info('ticker earnings synced')
-  } catch (e) {
-    console.error('Error occured:')
-    console.error(e)
-  }
-}
-
-export const syncTickerIncomes = async (
-  quarter: string,
-  forceRecheck: boolean,
-  startTickerId: number | null,
-) => {
-  validateQuarterParam(quarter)
-  try {
-    console.info('Start sync ticker incomes')
-    await syncTickers.syncAllIncomes(quarter, forceRecheck, startTickerId)
-    console.info('ticker incomes synced')
+    console.info('Start sync ticker financials')
+    await syncTickers.syncAllFinancials(quarter)
+    console.info('ticker financials synced')
   } catch (e) {
     console.error('Error occured:')
     console.error(e)
