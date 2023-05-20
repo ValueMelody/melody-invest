@@ -12,6 +12,27 @@ export const run = async () => {
   const taskName = process.argv[2]
 
   switch (taskName) {
+    case taskEnum.Name.syncTickerPrices: {
+      const date = process.argv[3]
+      if (!date) throw Error('Date required')
+      await syncTask.syncTickerPrices(date)
+      break
+    }
+    case taskEnum.Name.calcPriceMovements: {
+      await calcTask.calcPriceMovements()
+      break
+    }
+    case taskEnum.Name.syncTickerFinancials: {
+      const quarter = process.argv[3]
+      if (!quarter) throw Error('Quarter required')
+      await syncTask.syncTickerFinancials(quarter)
+      break
+    }
+    case taskEnum.Name.calcFinancialMovements: {
+      await calcTask.calcFinancialMovements()
+      break
+    }
+
     case taskEnum.Name.generateDailyData: {
       const date = dateTool.getCurrentDate()
       await syncTask.syncTickerPrices(date)
@@ -54,26 +75,6 @@ export const run = async () => {
     }
     case taskEnum.Name.calcTraderDescendants: {
       await calcTask.calcTraderDescendants()
-      break
-    }
-    case taskEnum.Name.syncTickerPrices: {
-      const date = process.argv[3]
-      if (!date) throw Error('Date required')
-      await syncTask.syncTickerPrices(date)
-      break
-    }
-    case taskEnum.Name.syncTickerFinancials: {
-      const quarter = process.argv[3]
-      if (!quarter) throw Error('Quarter required')
-      await syncTask.syncTickerFinancials(quarter)
-      break
-    }
-    case taskEnum.Name.calcPriceMovements: {
-      await calcTask.calcPriceMovements()
-      break
-    }
-    case taskEnum.Name.calcFinancialMovements: {
-      await calcTask.calcFinancialMovements()
       break
     }
     case taskEnum.Name.syncEconomyIndicators: {

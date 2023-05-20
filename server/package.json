@@ -14,6 +14,11 @@
     "migrate": "knex migrate:latest",
     "migrate:down": "knex migrate:down",
 
+    "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
+    "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
+    "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerFinancials",
+    "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
+
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
 
@@ -22,12 +27,6 @@
     "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderDescendants",
 
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
-
-    "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
-    "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
-
-    "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerFinancials",
-    "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
 
     "syncEconomyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncEconomyIndicators",
     "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",

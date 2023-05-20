@@ -14,6 +14,7 @@ const convertToRecord = (
   record.eps = raw.eps ? parseFloat(raw.eps) : null
   record.ebitda = raw.ebitda ? parseInt(raw.ebitda) : null
   record.netIncome = raw.netIncome ? parseInt(raw.netIncome) : null
+  record.bookValue = raw.bookValue ? parseInt(raw.bookValue) : null
   record.grossProfit = raw.grossProfit ? parseInt(raw.grossProfit) : null
   record.totalRevenue = raw.totalRevenue ? parseInt(raw.totalRevenue) : null
   record.costOfRevenue = raw.costOfRevenue ? parseInt(raw.costOfRevenue) : null
@@ -21,13 +22,15 @@ const convertToRecord = (
   record.totalAssets = raw.totalAssets ? parseInt(raw.totalAssets) : null
   record.totalLiabilities = raw.totalLiabilities ? parseInt(raw.totalLiabilities) : null
   record.freeCashFlow = raw.freeCashFlow ? parseInt(raw.freeCashFlow) : null
-  record.grossMargin = raw.grossMargin ? parseInt(raw.grossMargin) : null
-  record.debtEquity = raw.debtEquity ? parseInt(raw.debtEquity) : null
-  record.roa = raw.roa ? parseInt(raw.roa) : null
-  record.roe = raw.roe ? parseInt(raw.roe) : null
+  record.grossMargin = raw.grossMargin ? parseFloat(raw.grossMargin) : null
+  record.debtEquity = raw.debtEquity ? parseFloat(raw.debtEquity) : null
+  record.roa = raw.roa ? parseFloat(raw.roa) : null
+  record.roe = raw.roe ? parseFloat(raw.roe) : null
   record.outstandingShares = raw.outstandingShares ? parseInt(raw.outstandingShares) : null
   record.epsQoQ = raw.epsQoQ ? parseFloat(raw.epsQoQ) : null
   record.revenueQoQ = raw.revenueQoQ ? parseFloat(raw.revenueQoQ) : null
+  record.debtEquityQoQ = raw.debtEquityQoQ ? parseFloat(raw.debtEquityQoQ) : null
+  record.grossMarginQoQ = raw.grossMarginQoQ ? parseFloat(raw.grossMarginQoQ) : null
   return record
 }
 

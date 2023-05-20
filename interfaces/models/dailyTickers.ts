@@ -21,7 +21,7 @@ export type CompareKey = IndicatorCompareKey
 export type IndicatorKey = IndicatorMovementKey | IndicatorCompareKey
 
 export type TickerInfo = {
-  [key in TickerMovementKey]: number | null;
+  [key in TickerMovementKey]?: number | null;
 }
 
 export interface DailyTicker {
