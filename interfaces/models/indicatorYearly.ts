@@ -1,4 +1,4 @@
-export type IndicatorKey = 'inflation' | 'realGDP'
+export type IndicatorKey = 'inflation' | 'gdp'
 
 export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
 
@@ -12,25 +12,25 @@ interface Common {
 }
 
 export interface Record extends Common {
-  realGDP: number | null;
+  gdp: number | null;
   inflation: number | null;
   gdpYearlyChangePercent: number | null;
 }
 
 export interface Raw extends Common {
-  realGDP: string | null;
+  gdp: string | null;
   inflation: string | null;
   gdpYearlyChangePercent: string | null;
 }
 
 export interface Create {
   year: string;
-  realGDP?: string;
+  gdp?: string;
   inflation?: string;
 }
 
 export interface Update {
-  realGDP?: string;
+  gdp?: string;
   inflation?: string;
   gdpYearlyChangePercent?: string | null;
   inflationYearlyIncrease?: number | null;

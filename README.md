@@ -32,6 +32,7 @@ scripts ->
 
 interfaces -> shared interfaces for the whole project
 constants -> shared constants for the whole project
+helpers -> shared functions for the whole project
 
 client -> frontend site for general users
   index.tsx -> React root
@@ -47,7 +48,6 @@ client -> frontend site for general users
   actions -> Redux actions and async actions
   selectors -> Redux selectors
   stores -> Redux stores
-    shared -> single purpose data parsing functions
 
 server -> backend APIs for the whole project
   index.ts -> Express root
@@ -69,9 +69,23 @@ server -> backend APIs for the whole project
 ```
 
 # Manual Schedules
-Weekly: npm run generateWeeklyData  
-Daily: npm run generateDailyData  
+Weekly:
+```
+npm run generateWeeklyData
+```
+Daily:
+```
+npm run generateDailyData  
+```
 
-# Manual Data Collect
-Monthly Inflation data  
-Monthly Consumer Sentiment data  
+# Indicator Data Collect
+Yearly Inflation: https://www.usinflationcalculator.com/inflation/current-inflation-rates/
+Yearly GDP: https://en.wikipedia.org/wiki/Economy_of_the_United_States
+Quarterly Seasonal GDP: https://fred.stlouisfed.org/series/NA000254Q
+Monthly Funds Rate: https://fred.stlouisfed.org/series/FEDFUNDS
+Monthly 30 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS30
+Monthly 10 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS10
+Monthly CPI: https://www.usinflationcalculator.com/inflation/consumer-price-index-and-annual-percent-changes-from-1913-to-2008/
+Monthly Consumer Sentiment: http://www.sca.isr.umich.edu/
+Monthly Unemployment Rate: https://data.bls.gov/timeseries/LNS14000000
+Monthly Nonfarm Payroll: https://fred.stlouisfed.org/series/PAYNSA

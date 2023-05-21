@@ -3,10 +3,9 @@ exports.up = (knex) => {
     .createTable('indicator_quarterly', (table) => {
       table.increments('id')
       table.specificType('quarter', 'CHAR(7)').notNullable()
-      table.specificType('reportMonth', 'CHAR(7)')
-      table.string('realGDP', 12)
-      table.specificType('gdpQuarterlyChangePercent', 'CHAR(5)')
-      table.specificType('gdpQuarterlyYoYChangePercent', 'CHAR(5)')
+      table.string('seasonalGDP', 12)
+      table.string('seasonalGDPQoQ', 7)
+      table.string('seasonalGDPYoY', 7)
       table.unique('quarter', 'indicator_quarterly_ukey')
     })
 }

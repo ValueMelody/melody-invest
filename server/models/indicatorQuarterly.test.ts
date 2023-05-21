@@ -23,19 +23,17 @@ afterAll(async () => {
 const record1 = {
   id: 1,
   quarter: '2021-12',
-  reportMonth: '2022-03',
-  realGDP: 11111111,
-  gdpQuarterlyChangePercent: 1.11,
-  gdpQuarterlyYoYChangePercent: -2.22,
+  seasonalGDP: 11111111,
+  seasonalGDPQoQ: 1.11,
+  seasonalGDPYoY: -2.22,
 }
 
 const record2 = {
   id: 2,
   quarter: '2022-03',
-  reportMonth: '2022-04',
-  realGDP: 11113333,
-  gdpQuarterlyChangePercent: 2.22,
-  gdpQuarterlyYoYChangePercent: 3.33,
+  seasonalGDP: 11113333,
+  seasonalGDPQoQ: 2.22,
+  seasonalGDPYoY: 3.33,
 }
 
 describe('#getByUK', () => {
@@ -78,17 +76,15 @@ describe('#create', () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await indicatorQuarterly.create({
       quarter: '2022-06',
-      reportMonth: '2022-04',
-      realGDP: '11113333',
+      seasonalGDP: '11113333',
     }, transaction)
     await transaction.commit()
     const result = {
       id: 3,
       quarter: '2022-06',
-      reportMonth: '2022-04',
-      realGDP: 11113333,
-      gdpQuarterlyChangePercent: null,
-      gdpQuarterlyYoYChangePercent: null,
+      seasonalGDP: 11113333,
+      seasonalGDPQoQ: null,
+      seasonalGDPYoY: null,
     }
     expect(created).toStrictEqual(result)
     const record = await indicatorQuarterly.getByUK('2022-06')
@@ -97,16 +93,14 @@ describe('#create', () => {
     const transaction1 = await databaseAdapter.createTransaction()
     const created1 = await indicatorQuarterly.create({
       quarter: '2022-09',
-      reportMonth: '2022-10',
     }, transaction1)
     await transaction1.commit()
     const result1 = {
       id: 4,
       quarter: '2022-09',
-      reportMonth: '2022-10',
-      realGDP: null,
-      gdpQuarterlyChangePercent: null,
-      gdpQuarterlyYoYChangePercent: null,
+      seasonalGDP: null,
+      seasonalGDPQoQ: null,
+      seasonalGDPYoY: null,
     }
     expect(created1).toStrictEqual(result1)
     const record1 = await indicatorQuarterly.getByUK('2022-09')
@@ -118,18 +112,17 @@ describe('update', () => {
   test('could update', async () => {
     const transaction = await databaseAdapter.createTransaction()
     const updated = await indicatorQuarterly.update(2, {
-      realGDP: '33333333',
-      gdpQuarterlyChangePercent: '1.22',
-      gdpQuarterlyYoYChangePercent: '2.33',
+      seasonalGDP: '33333333',
+      seasonalGDPQoQ: '1.22',
+      seasonalGDPYoY: '2.33',
     }, transaction)
     await transaction.commit()
     const result = {
       id: 2,
       quarter: '2022-03',
-      reportMonth: '2022-04',
-      realGDP: 33333333,
-      gdpQuarterlyChangePercent: 1.22,
-      gdpQuarterlyYoYChangePercent: 2.33,
+      seasonalGDP: 33333333,
+      seasonalGDPQoQ: 1.22,
+      seasonalGDPYoY: 2.33,
     }
     expect(updated).toStrictEqual(result)
     const record = await indicatorQuarterly.getByUK('2022-03')

@@ -1,5 +1,3 @@
-import * as marketEnum from 'enums/market'
-import * as syncIndicators from 'services/syncIndicators'
 import * as syncTickers from 'services/syncTickers'
 
 const validateDateParam = (date: string) => {
@@ -34,19 +32,6 @@ export const syncTickerFinancials = async (
     console.info('Start sync ticker financials')
     await syncTickers.syncAllFinancials(quarter)
     console.info('ticker financials synced')
-  } catch (e) {
-    console.error('Error occured:')
-    console.error(e)
-  }
-}
-
-export const syncEconomyIndicators = async () => {
-  try {
-    console.info('Start economy indicators')
-    await syncIndicators.syncAllMonthlyIndicators()
-    await syncIndicators.syncQuarterly(marketEnum.Type.GDP)
-    await syncIndicators.syncAllYearlyIndicators()
-    console.info('economy indicators synced')
   } catch (e) {
     console.error('Error occured:')
     console.error(e)

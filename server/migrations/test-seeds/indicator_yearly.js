@@ -2,7 +2,7 @@ exports.seed = (knex) => {
   return knex('indicator_yearly').insert([
     {
       year: '2020',
-      realGDP: '11111111',
+      gdp: '11111111',
       inflation: '2.22',
       gdpYearlyChangePercent: '1.11',
       inflationYearlyIncrease: 2,
@@ -10,7 +10,7 @@ exports.seed = (knex) => {
     },
     {
       year: '2021',
-      realGDP: '11112222',
+      gdp: '11112222',
       inflation: '1.22',
     },
   ])

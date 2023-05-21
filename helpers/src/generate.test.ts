@@ -45,7 +45,7 @@ describe('#getPatternHashCode', () => {
     expect(generate.toPatternHashCode(pattern1))
       .toEqual(
         // eslint-disable-next-line max-len
-        'ca5cd1e3e43b340d0c7ab8e83d496b5e82aa1ca4563ad18e90ae0a4a18e1206a8e63f2f5ccb03c15a04f28f17903be58a1524d75a436efa2e29c1508e5b47f3a',
+        'd16baed8f3cfabfed16e781b7efb3642cde9f090918591cdb8f6dd034bff5e12b8bef05aa61e3ac2819e8bb91d59f74629aed58dae4a3ffdce5290dd37d842d8',
       )
 
     const pattern2 = {
@@ -66,7 +66,7 @@ describe('#getPatternHashCode', () => {
     expect(generate.toPatternHashCode(pattern2))
       .toEqual(
         // eslint-disable-next-line max-len
-        '26db4feb4e7068f50c84d41cd615bc96d6a3db77cfc5ed77d3ae329f4666b54325f9852b2ab5eae7bf03e93b20acb34afa73b2e35fcbc8898bc9c306bf194b5d',
+        '299249681d3ee074ebcb330b7757f0697de130318f148fbd62226786fb7b5a22becbd36c793575e3f048302b1b40612f40cfb9e1aced26b0e670830cded339af',
       )
   })
 })

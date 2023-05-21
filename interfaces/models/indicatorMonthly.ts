@@ -1,7 +1,7 @@
 export type IndicatorKey =
   'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
-  'inflationExpectation' | 'consumerSentiment' | 'retailSales' |
-  'durableGoods' | 'unemploymentRate' | 'nonfarmPayroll'
+  'inflation' | 'consumerSentiment' |
+  'unemploymentRate' | 'nonfarmPayroll'
 
 export type MovementKey =
   'fundsRateMonthlyIncrease' | 'fundsRateMonthlyDecrease' |
@@ -10,8 +10,6 @@ export type MovementKey =
   'inflationMonthlyIncrease' | 'inflationMonthlyDecrease' |
   'cpiMonthlyIncrease' | 'cpiMonthlyDecrease' |
   'consumerSentimentMonthlyIncrease' | 'consumerSentimentMonthlyDecrease' |
-  'retailSalesMonthlyIncrease' | 'retailSalesMonthlyDecrease' |
-  'durableGoodsMonthlyIncrease' | 'durableGoodsMonthlyDecrease' |
   'unemploymentRateMonthlyIncrease' | 'unemploymentRateMonthlyDecrease' |
   'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
 
@@ -30,10 +28,6 @@ interface Common {
   cpiMonthlyDecrease: number | null;
   consumerSentimentMonthlyIncrease: number | null;
   consumerSentimentMonthlyDecrease: number | null;
-  retailSalesMonthlyIncrease: number | null;
-  retailSalesMonthlyDecrease: number | null;
-  durableGoodsMonthlyIncrease: number | null;
-  durableGoodsMonthlyDecrease: number | null;
   unemploymentRateMonthlyIncrease: number | null;
   unemploymentRateMonthlyDecrease: number | null;
   nonfarmPayrollMonthlyIncrease: number | null;
@@ -45,10 +39,8 @@ export interface Record extends Common {
   cpi: number | null;
   tenYearsTreasury: number | null;
   thirtyYearsTreasury: number | null;
-  inflationExpectation: number | null;
+  inflation: number | null;
   consumerSentiment: number | null;
-  retailSales: number | null;
-  durableGoods: number | null;
   unemploymentRate: number | null;
   nonfarmPayroll: number | null;
 }
@@ -58,10 +50,8 @@ export interface Raw extends Common {
   cpi: string | null;
   tenYearsTreasury: string | null;
   thirtyYearsTreasury: string | null;
-  inflationExpectation: string | null;
+  inflation: string | null;
   consumerSentiment: string | null;
-  retailSales: string | null;
-  durableGoods: string | null;
   unemploymentRate: string | null;
   nonfarmPayroll: string | null;
 }
@@ -72,10 +62,8 @@ export interface Create {
   cpi?: string;
   tenYearsTreasury?: string;
   thirtyYearsTreasury?: string;
-  inflationExpectation?: string;
+  inflation?: string;
   consumerSentiment?: string;
-  retailSales?: string;
-  durableGoods?: string;
   unemploymentRate?: string;
   nonfarmPayroll?: string;
 }
@@ -85,10 +73,8 @@ export interface Update {
   cpi?: string;
   tenYearsTreasury?: string;
   thirtyYearsTreasury?: string;
-  inflationExpectation?: string;
+  inflation?: string;
   consumerSentiment?: string;
-  retailSales?: string;
-  durableGoods?: string;
   unemploymentRate?: string;
   nonfarmPayroll?: string;
   fundsRateMonthlyIncrease?: number | null;
@@ -103,10 +89,6 @@ export interface Update {
   cpiMonthlyDecrease?: number | null;
   consumerSentimentMonthlyIncrease?: number | null;
   consumerSentimentMonthlyDecrease?: number | null;
-  retailSalesMonthlyIncrease?: number | null;
-  retailSalesMonthlyDecrease?: number | null;
-  durableGoodsMonthlyIncrease?: number | null;
-  durableGoodsMonthlyDecrease?: number | null;
   unemploymentRateMonthlyIncrease?: number | null;
   unemploymentRateMonthlyDecrease?: number | null;
   nonfarmPayrollMonthlyIncrease?: number | null;

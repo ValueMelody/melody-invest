@@ -18,7 +18,8 @@
     "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
     "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerFinancials",
     "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
-
+    "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",
+    
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
 
@@ -27,9 +28,6 @@
     "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderDescendants",
 
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
-
-    "syncEconomyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncEconomyIndicators",
-    "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",
 
     "generateDailyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateDailyData",
     "generateWeeklyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateWeeklyData"

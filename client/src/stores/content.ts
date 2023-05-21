@@ -1,8 +1,8 @@
 import * as actions from 'actions'
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest, _updateForTest } from 'tools/store'
 
 export interface ContentState {
   privacyPolicy?: interfaces.policyModel.Record;
@@ -40,8 +40,8 @@ export const contentSlice = createSlice({
   reducers: {
     storePolicy,
     changeActiveTraderChartIndex,
-    _updateForTest,
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _updateForTest: storeTool._updateForTest,
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchSystemPolicy.fulfilled, storePolicy)

@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
 import { instance, mock } from 'ts-mockito'
-import stripTopProfiles from './stripTopProfiles'
+import { stripTopProfiles } from './store'
 
 describe('#stripTopProfiles', () => {
   test('could stripTopProfiles', () => {

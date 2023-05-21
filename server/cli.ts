@@ -42,7 +42,6 @@ export const run = async () => {
     }
     case taskEnum.Name.generateWeeklyData: {
       await calcTask.calcFinancialMovements()
-      await syncTask.syncEconomyIndicators()
       await calcTask.calcIndicatorMovements()
 
       await calcTask.calcDailyTickers(true)
@@ -75,10 +74,6 @@ export const run = async () => {
     }
     case taskEnum.Name.calcTraderDescendants: {
       await calcTask.calcTraderDescendants()
-      break
-    }
-    case taskEnum.Name.syncEconomyIndicators: {
-      await syncTask.syncEconomyIndicators()
       break
     }
     case taskEnum.Name.calcIndicatorMovements: {

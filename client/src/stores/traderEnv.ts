@@ -1,8 +1,7 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest, _updateForTest } from 'tools/store'
-import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderEnvBase {
   [envId: number]: interfaces.traderEnvModel.Identity;
@@ -44,7 +43,7 @@ const storeFromEnvDetail = (
   state: TraderEnvState,
   action: PayloadAction<{ detail: interfaces.response.EnvDetail; id: number }>,
 ) => {
-  const topProfiles = stripTopProfiles(action.payload.detail.topProfiles)
+  const topProfiles = storeTool.stripTopProfiles(action.payload.detail.topProfiles)
   state.detail[action.payload.id] = { topProfiles }
 }
 
@@ -65,8 +64,8 @@ export const traderEnvSlice = createSlice({
   name: 'traderEnv',
   initialState,
   reducers: {
-    _updateForTest,
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _updateForTest: storeTool._updateForTest,
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)

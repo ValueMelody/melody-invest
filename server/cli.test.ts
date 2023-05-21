@@ -68,10 +68,6 @@ describe('generateWeeklyData', () => {
     jest.spyOn(calcTask, 'calcFinancialMovements')
       .mockImplementation(calcFinancialMovements)
 
-    const syncEconomyIndicators = jest.fn()
-    jest.spyOn(syncTask, 'syncEconomyIndicators')
-      .mockImplementation(syncEconomyIndicators)
-
     const calcIndicatorMovements = jest.fn()
     jest.spyOn(calcTask, 'calcIndicatorMovements')
       .mockImplementation(calcIndicatorMovements)
@@ -87,7 +83,6 @@ describe('generateWeeklyData', () => {
     process.argv[2] = taskEnum.Name.generateWeeklyData
     await run()
     expect(calcFinancialMovements).toBeCalledTimes(1)
-    expect(syncEconomyIndicators).toBeCalledTimes(1)
     expect(calcIndicatorMovements).toBeCalledTimes(1)
     expect(calcDailyTickers).toBeCalledTimes(1)
     expect(calcDailyTickers).toBeCalledWith(true)
@@ -229,18 +224,6 @@ describe('calcFinancialMovements', () => {
     process.argv[2] = taskEnum.Name.calcFinancialMovements
     await run()
     expect(calcFinancialMovements).toBeCalledTimes(1)
-  })
-})
-
-describe('syncEconomyIndicators', () => {
-  test('could trigger syncEconomyIndicators', async () => {
-    const syncEconomyIndicators = jest.fn()
-    jest.spyOn(syncTask, 'syncEconomyIndicators')
-      .mockImplementation(syncEconomyIndicators)
-
-    process.argv[2] = taskEnum.Name.syncEconomyIndicators
-    await run()
-    expect(syncEconomyIndicators).toBeCalledTimes(1)
   })
 })
 

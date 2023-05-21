@@ -6,8 +6,8 @@ describe('#BuyBehaviors', () => {
     expect(behavior.PriceDecreaseBuyBehaviors.length).toBe(5)
     expect(behavior.FinancialImproveBuyBehaviors.length).toBe(6)
     expect(behavior.FinancialWorsenBuyBehaviors.length).toBe(6)
-    expect(behavior.IndicatorIncreaseBuyBehaviors.length).toBe(11)
-    expect(behavior.IndicatorDecreaseBuyBehaviors.length).toBe(11)
+    expect(behavior.IndicatorIncreaseBuyBehaviors.length).toBe(9)
+    expect(behavior.IndicatorDecreaseBuyBehaviors.length).toBe(9)
     expect(behavior.EconomyImproveBuyBehaviors.length).toBe(3)
     expect(behavior.EconomyWorsenBuyBehaviors.length).toBe(3)
     expect(behavior.TickerMovementBuyBehaviors).toStrictEqual([
@@ -50,8 +50,8 @@ describe('#SellBehaviors', () => {
     expect(behavior.PriceDecreaseSellBehaviors.length).toBe(5)
     expect(behavior.FinancialImproveSellBehaviors.length).toBe(6)
     expect(behavior.FinancialWorsenSellBehaviors.length).toBe(6)
-    expect(behavior.IndicatorIncreaseSellBehaviors.length).toBe(11)
-    expect(behavior.IndicatorDecreaseSellBehaviors.length).toBe(11)
+    expect(behavior.IndicatorIncreaseSellBehaviors.length).toBe(9)
+    expect(behavior.IndicatorDecreaseSellBehaviors.length).toBe(9)
     expect(behavior.EconomyImproveSellBehaviors.length).toBe(3)
     expect(behavior.EconomyWorsenSellBehaviors.length).toBe(3)
     expect(behavior.TickerMovementSellBehaviors).toStrictEqual([

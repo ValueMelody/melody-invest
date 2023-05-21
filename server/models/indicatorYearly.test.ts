@@ -23,7 +23,7 @@ afterAll(async () => {
 const record1 = {
   id: 1,
   year: '2020',
-  realGDP: 11111111,
+  gdp: 11111111,
   inflation: 2.22,
   gdpYearlyChangePercent: 1.11,
   inflationYearlyIncrease: 2,
@@ -33,7 +33,7 @@ const record1 = {
 const record2 = {
   id: 2,
   year: '2021',
-  realGDP: 11112222,
+  gdp: 11112222,
   inflation: 1.22,
   gdpYearlyChangePercent: null,
   inflationYearlyIncrease: null,
@@ -82,14 +82,14 @@ describe('#create', () => {
     const transaction = await databaseAdapter.createTransaction()
     const created = await indicatorYearly.create({
       year: '2022',
-      realGDP: '1111333',
+      gdp: '1111333',
       inflation: '2.33',
     }, transaction)
     await transaction.commit()
     const result = {
       id: 3,
       year: '2022',
-      realGDP: 1111333,
+      gdp: 1111333,
       inflation: 2.33,
       gdpYearlyChangePercent: null,
       inflationYearlyIncrease: null,
@@ -107,7 +107,7 @@ describe('#create', () => {
     const result1 = {
       id: 4,
       year: '2023',
-      realGDP: null,
+      gdp: null,
       inflation: null,
       gdpYearlyChangePercent: null,
       inflationYearlyIncrease: null,
@@ -130,7 +130,7 @@ describe('#update', () => {
     const result = {
       id: 2,
       year: '2021',
-      realGDP: 11112222,
+      gdp: 11112222,
       inflation: 1.22,
       gdpYearlyChangePercent: 3.33,
       inflationYearlyIncrease: 2,

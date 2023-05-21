@@ -3,7 +3,7 @@ exports.up = (knex) => {
     .createTable('indicator_yearly', (table) => {
       table.increments('id')
       table.specificType('year', 'CHAR(7)').notNullable()
-      table.string('realGDP', 12)
+      table.string('gdp', 12)
       table.string('gdpYearlyChangePercent', 5)
       table.string('inflation', 5)
       table.smallint('inflationYearlyIncrease')

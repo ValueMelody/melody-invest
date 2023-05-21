@@ -15,10 +15,8 @@ const convertToRecord = (
   record.cpi = raw.cpi ? parseFloat(raw.cpi) : null
   record.tenYearsTreasury = raw.tenYearsTreasury ? parseFloat(raw.tenYearsTreasury) : null
   record.thirtyYearsTreasury = raw.thirtyYearsTreasury ? parseFloat(raw.thirtyYearsTreasury) : null
-  record.inflationExpectation = raw.inflationExpectation ? parseFloat(raw.inflationExpectation) : null
+  record.inflation = raw.inflation ? parseFloat(raw.inflation) : null
   record.consumerSentiment = raw.consumerSentiment ? parseFloat(raw.consumerSentiment) : null
-  record.retailSales = raw.retailSales ? parseInt(raw.retailSales) : null
-  record.durableGoods = raw.durableGoods ? parseInt(raw.durableGoods) : null
   record.unemploymentRate = raw.unemploymentRate ? parseFloat(raw.unemploymentRate) : null
   record.nonfarmPayroll = raw.nonfarmPayroll ? parseInt(raw.nonfarmPayroll) : null
   return record
