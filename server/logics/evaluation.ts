@@ -171,7 +171,7 @@ export const getTickerMovementWeight = (
   const patternValue = pattern[behavior]
 
   if (patternValue === null) return 1
-  if (tickerValue === null || tickerValue < patternValue) return 0
+  if (tickerValue === null || tickerValue === undefined || tickerValue < patternValue) return 0
   return tickerValue - patternValue + 2
 }
 
