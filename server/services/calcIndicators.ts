@@ -37,8 +37,8 @@ export const calcYearly = async () => {
       }
 
       let gdpChangePercent = indicator.gdpYearlyChangePercent
-      if (indicator.realGDP !== null && lastIndicator.realGDP !== null) {
-        gdpChangePercent = (indicator.realGDP - lastIndicator.realGDP) * 100 / lastIndicator.realGDP
+      if (indicator.gdp !== null && lastIndicator.gdp !== null) {
+        gdpChangePercent = (indicator.gdp - lastIndicator.gdp) * 100 / lastIndicator.gdp
       }
 
       const hasUpdate = inflationIncrease !== indicator.inflationYearlyIncrease ||
@@ -79,37 +79,37 @@ export const calcQuarterly = async () => {
       indicator: interfaces.indicatorQuarterlyModel.Record, index: number,
     ) => {
       if (
-        indicator.gdpQuarterlyChangePercent !== null &&
-        indicator.gdpQuarterlyYoYChangePercent !== null
+        indicator.seasonalGDPQoQ !== null &&
+        indicator.seasonalGDPYoY !== null
       ) return
 
       if (index === 0) return
 
       const lastIndicator = indicators[index - 1]
 
-      let changePercent = indicator.gdpQuarterlyChangePercent
-      if (indicator.realGDP && lastIndicator.realGDP) {
-        changePercent = (indicator.realGDP - lastIndicator.realGDP) * 100 / lastIndicator.realGDP
+      let changePercent = indicator.seasonalGDPQoQ
+      if (indicator.seasonalGDP && lastIndicator.seasonalGDP) {
+        changePercent = (indicator.seasonalGDP - lastIndicator.seasonalGDP) * 100 / lastIndicator.seasonalGDP
       }
 
-      let yoyChangePercent = indicator.gdpQuarterlyYoYChangePercent
+      let yoyChangePercent = indicator.seasonalGDPYoY
       const currentYear = indicator.quarter.substring(0, 4)
       const currentQuarter = indicator.quarter.substring(5, 7)
       const lastYear = dateTool.getPreviousYear(currentYear)
       const lastYoYQuarter = `${lastYear}-${currentQuarter}`
       const lastYoYIndicator = indicators.find((indicator) => indicator.quarter === lastYoYQuarter)
-      if (indicator.realGDP && lastYoYIndicator?.realGDP) {
-        yoyChangePercent = (indicator.realGDP - lastYoYIndicator.realGDP) * 100 / lastYoYIndicator.realGDP
+      if (indicator.seasonalGDP && lastYoYIndicator?.seasonalGDP) {
+        yoyChangePercent = (indicator.seasonalGDP - lastYoYIndicator.seasonalGDP) * 100 / lastYoYIndicator.seasonalGDP
       }
 
-      const hasUpdate = changePercent !== indicator.gdpQuarterlyChangePercent ||
-        yoyChangePercent !== indicator.gdpQuarterlyYoYChangePercent
+      const hasUpdate = changePercent !== indicator.seasonalGDPQoQ ||
+        yoyChangePercent !== indicator.seasonalGDPYoY
 
       if (hasUpdate) {
         transactionUsed = true
         await indicatorQuarterlyModel.update(indicator.id, {
-          gdpQuarterlyChangePercent: changePercent ? changePercent.toFixed(2) : null,
-          gdpQuarterlyYoYChangePercent: yoyChangePercent ? yoyChangePercent.toFixed(2) : null,
+          seasonalGDPQoQ: changePercent ? changePercent.toFixed(2) : null,
+          seasonalGDPYoY: yoyChangePercent ? yoyChangePercent.toFixed(2) : null,
         }, transaction)
       }
     })
@@ -148,10 +148,6 @@ export const calcMonthly = async (forceRecheck: boolean) => {
         indicator.cpiMonthlyDecrease !== null &&
         indicator.consumerSentimentMonthlyIncrease !== null &&
         indicator.consumerSentimentMonthlyDecrease !== null &&
-        indicator.retailSalesMonthlyIncrease !== null &&
-        indicator.retailSalesMonthlyDecrease !== null &&
-        indicator.durableGoodsMonthlyIncrease !== null &&
-        indicator.durableGoodsMonthlyDecrease !== null &&
         indicator.unemploymentRateMonthlyIncrease !== null &&
         indicator.unemploymentRateMonthlyDecrease !== null &&
         indicator.nonfarmPayrollMonthlyIncrease !== null &&
@@ -200,13 +196,13 @@ export const calcMonthly = async (forceRecheck: boolean) => {
 
       let inflationIncrease = indicator.inflationMonthlyIncrease
       let inflationDecrease = indicator.inflationMonthlyDecrease
-      if (indicator.inflationExpectation && lastIndicator.inflationExpectation) {
+      if (indicator.inflation && lastIndicator.inflation) {
         const lastInflationIncrease = lastIndicator.inflationMonthlyIncrease || 0
-        inflationIncrease = indicator.inflationExpectation > lastIndicator.inflationExpectation
+        inflationIncrease = indicator.inflation > lastIndicator.inflation
           ? lastInflationIncrease + 1
           : 0
         const lastInflationDecrease = lastIndicator.tenYearsTreasuryMonthlyDecrease || 0
-        inflationDecrease = indicator.inflationExpectation < lastIndicator.inflationExpectation
+        inflationDecrease = indicator.inflation < lastIndicator.inflation
           ? lastInflationDecrease + 1
           : 0
       }
@@ -231,24 +227,6 @@ export const calcMonthly = async (forceRecheck: boolean) => {
         consumerSentimentDecrease = indicator.consumerSentiment < lastIndicator.consumerSentiment
           ? lastConsumerSentimentDecrease + 1
           : 0
-      }
-
-      let retailSalesIncrease = indicator.retailSalesMonthlyIncrease
-      let retailSalesDecrease = indicator.retailSalesMonthlyDecrease
-      if (indicator.retailSales && lastIndicator.retailSales) {
-        const lastRetailSalesIncrease = lastIndicator.retailSalesMonthlyIncrease || 0
-        retailSalesIncrease = indicator.retailSales > lastIndicator.retailSales ? lastRetailSalesIncrease + 1 : 0
-        const lastRetailSalesDecrease = lastIndicator.retailSalesMonthlyDecrease || 0
-        retailSalesDecrease = indicator.retailSales < lastIndicator.retailSales ? lastRetailSalesDecrease + 1 : 0
-      }
-
-      let durableGoodsIncrease = indicator.durableGoodsMonthlyIncrease
-      let durableGoodsDecrease = indicator.durableGoodsMonthlyDecrease
-      if (indicator.durableGoods && lastIndicator.durableGoods) {
-        const lastDurableGoodsIncrease = lastIndicator.durableGoodsMonthlyIncrease || 0
-        durableGoodsIncrease = indicator.durableGoods > lastIndicator.durableGoods ? lastDurableGoodsIncrease + 1 : 0
-        const lastDurableGoodsDecrease = lastIndicator.durableGoodsMonthlyDecrease || 0
-        durableGoodsDecrease = indicator.durableGoods < lastIndicator.durableGoods ? lastDurableGoodsDecrease + 1 : 0
       }
 
       let unemploymentRateIncrease = indicator.unemploymentRateMonthlyIncrease
@@ -289,10 +267,6 @@ export const calcMonthly = async (forceRecheck: boolean) => {
         cpiDecrease !== indicator.cpiMonthlyDecrease ||
         consumerSentimentIncrease !== indicator.consumerSentimentMonthlyIncrease ||
         consumerSentimentDecrease !== indicator.consumerSentimentMonthlyDecrease ||
-        retailSalesIncrease !== indicator.retailSalesMonthlyIncrease ||
-        retailSalesDecrease !== indicator.retailSalesMonthlyDecrease ||
-        durableGoodsIncrease !== indicator.durableGoodsMonthlyIncrease ||
-        durableGoodsDecrease !== indicator.durableGoodsMonthlyDecrease ||
         unemploymentRateIncrease !== indicator.unemploymentRateMonthlyIncrease ||
         unemploymentRateDecrease !== indicator.unemploymentRateMonthlyDecrease ||
         nofarmPayrollIncrease !== indicator.nonfarmPayrollMonthlyIncrease ||
@@ -314,10 +288,6 @@ export const calcMonthly = async (forceRecheck: boolean) => {
           cpiMonthlyDecrease: cpiDecrease,
           consumerSentimentMonthlyIncrease: consumerSentimentIncrease,
           consumerSentimentMonthlyDecrease: consumerSentimentDecrease,
-          retailSalesMonthlyIncrease: retailSalesIncrease,
-          retailSalesMonthlyDecrease: retailSalesDecrease,
-          durableGoodsMonthlyIncrease: durableGoodsIncrease,
-          durableGoodsMonthlyDecrease: durableGoodsDecrease,
           unemploymentRateMonthlyIncrease: unemploymentRateIncrease,
           unemploymentRateMonthlyDecrease: unemploymentRateDecrease,
           nonfarmPayrollMonthlyIncrease: nofarmPayrollIncrease,

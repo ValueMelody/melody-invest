@@ -5,8 +5,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as requestAdapter from 'adapters/request'
 import * as storageAdapter from 'adapters/storage'
+import * as storeTool from 'tools/store'
 import { AnyAction, PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit'
-import { _resetForTest, _updateForTest } from 'tools/store'
 
 type MessageType = 'success' | 'info' | 'warning' | 'failure'
 
@@ -203,8 +203,8 @@ export const globalSlice = createSlice({
     onRequestRejected,
     startLoading,
     stopLoading,
-    _updateForTest,
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _updateForTest: storeTool._updateForTest,
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.createUserPayment.fulfilled, onCreatePayment)

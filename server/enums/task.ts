@@ -3,7 +3,6 @@ export const Name = Object.freeze({
   sendPendingEmails: 'sendPendingEmails',
   syncTickerPrices: 'syncTickerPrices',
   syncTickerFinancials: 'syncTickerFinancials',
-  syncEconomyIndicators: 'syncEconomyIndicators',
   calcPriceMovements: 'calcPriceMovements',
   calcFinancialMovements: 'calcFinancialMovements',
   calcIndicatorMovements: 'calcIndicatorMovements',

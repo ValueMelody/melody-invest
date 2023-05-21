@@ -79,14 +79,6 @@ export interface Public {
   consumerSentimentMonthlyDecreaseBuy: number | null;
   consumerSentimentMonthlyIncreaseSell: number | null;
   consumerSentimentMonthlyDecreaseSell: number | null;
-  retailSalesMonthlyIncreaseBuy: number | null;
-  retailSalesMonthlyDecreaseBuy: number | null;
-  retailSalesMonthlyIncreaseSell: number | null;
-  retailSalesMonthlyDecreaseSell: number | null;
-  durableGoodsMonthlyIncreaseBuy: number | null;
-  durableGoodsMonthlyDecreaseBuy: number | null;
-  durableGoodsMonthlyIncreaseSell: number | null;
-  durableGoodsMonthlyDecreaseSell: number | null;
   unemploymentRateMonthlyIncreaseBuy: number | null;
   unemploymentRateMonthlyDecreaseBuy: number | null;
   unemploymentRateMonthlyIncreaseSell: number | null;
@@ -196,14 +188,6 @@ export interface Create {
   consumerSentimentMonthlyDecreaseBuy: number | null;
   consumerSentimentMonthlyIncreaseSell: number | null;
   consumerSentimentMonthlyDecreaseSell: number | null;
-  retailSalesMonthlyIncreaseBuy: number | null;
-  retailSalesMonthlyDecreaseBuy: number | null;
-  retailSalesMonthlyIncreaseSell: number | null;
-  retailSalesMonthlyDecreaseSell: number | null;
-  durableGoodsMonthlyIncreaseBuy: number | null;
-  durableGoodsMonthlyDecreaseBuy: number | null;
-  durableGoodsMonthlyIncreaseSell: number | null;
-  durableGoodsMonthlyDecreaseSell: number | null;
   unemploymentRateMonthlyIncreaseBuy: number | null;
   unemploymentRateMonthlyDecreaseBuy: number | null;
   unemploymentRateMonthlyIncreaseSell: number | null;
@@ -253,8 +237,6 @@ export type IndicatorMovementBuyBehavior =
   'inflationMonthlyIncreaseBuy' | 'inflationMonthlyDecreaseBuy' |
   'cpiMonthlyIncreaseBuy' | 'cpiMonthlyDecreaseBuy' |
   'consumerSentimentMonthlyIncreaseBuy' | 'consumerSentimentMonthlyDecreaseBuy' |
-  'retailSalesMonthlyIncreaseBuy' | 'retailSalesMonthlyDecreaseBuy' |
-  'durableGoodsMonthlyIncreaseBuy' | 'durableGoodsMonthlyDecreaseBuy' |
   'unemploymentRateMonthlyIncreaseBuy' | 'unemploymentRateMonthlyDecreaseBuy' |
   'nonfarmPayrollMonthlyIncreaseBuy' | 'nonfarmPayrollMonthlyDecreaseBuy'
 
@@ -290,8 +272,6 @@ export type IndicatorMovementSellBehavior =
   'inflationMonthlyIncreaseSell' | 'inflationMonthlyDecreaseSell' |
   'cpiMonthlyIncreaseSell' | 'cpiMonthlyDecreaseSell' |
   'consumerSentimentMonthlyIncreaseSell' | 'consumerSentimentMonthlyDecreaseSell' |
-  'retailSalesMonthlyIncreaseSell' | 'retailSalesMonthlyDecreaseSell' |
-  'durableGoodsMonthlyIncreaseSell' | 'durableGoodsMonthlyDecreaseSell' |
   'unemploymentRateMonthlyIncreaseSell' | 'unemploymentRateMonthlyDecreaseSell' |
   'nonfarmPayrollMonthlyIncreaseSell' | 'nonfarmPayrollMonthlyDecreaseSell'
 

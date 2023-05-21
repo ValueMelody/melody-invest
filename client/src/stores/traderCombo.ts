@@ -1,7 +1,7 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest, _updateForTest } from 'tools/store'
 
 export interface TraderComboBase {
   [comboId: number]: interfaces.traderComboModel.Identity;
@@ -61,8 +61,8 @@ export const traderComboSlice = createSlice({
   name: 'traderCombo',
   initialState,
   reducers: {
-    _updateForTest,
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _updateForTest: storeTool._updateForTest,
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)

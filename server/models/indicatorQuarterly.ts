@@ -11,10 +11,10 @@ const convertToRecord = (
   raw: interfaces.indicatorQuarterlyModel.Raw,
 ): interfaces.indicatorQuarterlyModel.Record => {
   const record: any = raw
-  record.realGDP = raw.realGDP ? parseFloat(raw.realGDP) : null
-  record.gdpQuarterlyChangePercent = raw.gdpQuarterlyChangePercent ? parseFloat(raw.gdpQuarterlyChangePercent) : null
-  record.gdpQuarterlyYoYChangePercent = raw.gdpQuarterlyYoYChangePercent
-    ? parseFloat(raw.gdpQuarterlyYoYChangePercent)
+  record.seasonalGDP = raw.seasonalGDP ? parseFloat(raw.seasonalGDP) : null
+  record.seasonalGDPQoQ = raw.seasonalGDPQoQ ? parseFloat(raw.seasonalGDPQoQ) : null
+  record.seasonalGDPYoY = raw.seasonalGDPYoY
+    ? parseFloat(raw.seasonalGDPYoY)
     : null
   return record
 }

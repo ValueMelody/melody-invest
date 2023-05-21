@@ -1,33 +1,31 @@
-export type IndicatorKey = 'realGDP'
+export type IndicatorKey = 'seasonalGDP'
 
-export type CompareKey = 'gdpQuarterlyChangePercent' | 'gdpQuarterlyYoYChangePercent'
+export type CompareKey = 'seasonalGDPQoQ' | 'seasonalGDPYoY'
 
 interface Common {
   id: number;
   quarter: string;
-  reportMonth: string;
 }
 
 export interface Record extends Common {
-  realGDP: number | null;
-  gdpQuarterlyChangePercent: number | null;
-  gdpQuarterlyYoYChangePercent: number | null;
+  seasonalGDP: number | null;
+  seasonalGDPQoQ: number | null;
+  seasonalGDPYoY: number | null;
 }
 
 export interface Raw extends Common {
-  realGDP: string | null;
-  gdpQuarterlyChangePercent: string | null;
-  gdpQuarterlyYoYChangePercent: string | null;
+  seasonalGDP: string | null;
+  seasonalGDPQoQ: string | null;
+  seasonalGDPYoY: string | null;
 }
 
 export interface Create {
   quarter: string;
-  reportMonth: string;
-  realGDP?: string;
+  seasonalGDP?: string;
 }
 
 export interface Update {
-  realGDP?: string;
-  gdpQuarterlyChangePercent?: string | null;
-  gdpQuarterlyYoYChangePercent?: string | null;
+  seasonalGDP?: string;
+  seasonalGDPQoQ?: string | null;
+  seasonalGDPYoY?: string | null;
 }

@@ -1,7 +1,7 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest } from 'tools/store'
 
 export interface TraderProfileBase {
   [traderId: number]: interfaces.response.TraderProfile;
@@ -80,7 +80,7 @@ export const traderProfileSlice = createSlice({
   name: 'traderProfile',
   initialState,
   reducers: {
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchTraderEnvDetail.fulfilled, storeFromDetailTops)

@@ -1,7 +1,7 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest } from 'tools/store'
 
 export interface TickerIdentityBase {
   [tickerId: number]: interfaces.tickerModel.Record;
@@ -42,7 +42,7 @@ export const tickerIdentitySlice = createSlice({
   name: 'tickerIdentity',
   initialState,
   reducers: {
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchUserOverall.fulfilled, storeFromUserOverall)

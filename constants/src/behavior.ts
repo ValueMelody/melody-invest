@@ -42,8 +42,6 @@ export const IndicatorIncreaseBuyBehaviors: interfaces.traderPatternModel.Indica
   'inflationMonthlyIncreaseBuy',
   'cpiMonthlyIncreaseBuy',
   'consumerSentimentMonthlyIncreaseBuy',
-  'retailSalesMonthlyIncreaseBuy',
-  'durableGoodsMonthlyIncreaseBuy',
   'unemploymentRateMonthlyIncreaseBuy',
   'nonfarmPayrollMonthlyIncreaseBuy',
 ]
@@ -56,8 +54,6 @@ export const IndicatorDecreaseBuyBehaviors: interfaces.traderPatternModel.Indica
   'inflationMonthlyDecreaseBuy',
   'cpiMonthlyDecreaseBuy',
   'consumerSentimentMonthlyDecreaseBuy',
-  'retailSalesMonthlyDecreaseBuy',
-  'durableGoodsMonthlyDecreaseBuy',
   'unemploymentRateMonthlyDecreaseBuy',
   'nonfarmPayrollMonthlyDecreaseBuy',
 ]
@@ -147,8 +143,6 @@ export const IndicatorIncreaseSellBehaviors: interfaces.traderPatternModel.Indic
   'inflationMonthlyIncreaseSell',
   'cpiMonthlyIncreaseSell',
   'consumerSentimentMonthlyIncreaseSell',
-  'retailSalesMonthlyIncreaseSell',
-  'durableGoodsMonthlyIncreaseSell',
   'unemploymentRateMonthlyIncreaseSell',
   'nonfarmPayrollMonthlyIncreaseSell',
 ]
@@ -161,8 +155,6 @@ export const IndicatorDecreaseSellBehaviors: interfaces.traderPatternModel.Indic
   'inflationMonthlyDecreaseSell',
   'cpiMonthlyDecreaseSell',
   'consumerSentimentMonthlyDecreaseSell',
-  'retailSalesMonthlyDecreaseSell',
-  'durableGoodsMonthlyDecreaseSell',
   'unemploymentRateMonthlyDecreaseSell',
   'nonfarmPayrollMonthlyDecreaseSell',
 ]

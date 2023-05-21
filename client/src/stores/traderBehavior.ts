@@ -1,8 +1,7 @@
 import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
+import * as storeTool from 'tools/store'
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import { _resetForTest } from 'tools/store'
-import stripTopProfiles from './shared/stripTopProfiles'
 
 export interface TraderBehaviorDetail {
   [key: string]: {
@@ -26,7 +25,7 @@ const storeFromBehaviorDetail = (
     behavior: interfaces.traderPatternModel.Behavior;
   }>,
 ) => {
-  const topProfiles = stripTopProfiles(action.payload.detail.topProfiles)
+  const topProfiles = storeTool.stripTopProfiles(action.payload.detail.topProfiles)
   state.detail[`${action.payload.envId}-${action.payload.behavior}`] = { topProfiles }
 }
 
@@ -41,7 +40,7 @@ export const traderBehaviorSlice = createSlice({
   name: 'traderBehavior',
   initialState,
   reducers: {
-    _resetForTest: (state) => _resetForTest(state, initialState),
+    _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
     builder.addCase(actions.fetchTraderBehaviorDetail.fulfilled, storeFromBehaviorDetail)
