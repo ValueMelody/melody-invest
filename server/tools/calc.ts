@@ -1,5 +1,3 @@
-import * as interfaces from '@shared/interfaces'
-
 export const calcBookValue = (totalAssets: number | null, totalLiabilities: number | null) => {
   return totalAssets !== null && totalLiabilities !== null
     ? totalAssets - totalLiabilities
@@ -44,49 +42,29 @@ export const calcQoQChangePercent = (
     : null
 }
 
-type TickerYearlyIncreaseDecreaseValueKey =
-  'totalRevenue' | 'grossProfit' | 'netIncome' | 'eps' | 'ebitda' |
-  'bookValue' | 'equity' | 'freeCashFlow' | 'pbRatio' | 'peRatio' | 'psRatio'
-
-export const calcTickerYearlyIncreaseDecreaseValues = (
-  currentRecord: interfaces.tickerYearlyModel.Record,
-  lastRecord: interfaces.tickerYearlyModel.Record | null,
-  increaseKey: interfaces.tickerYearlyModel.MovementIncreaseKey,
-  decreaseKey: interfaces.tickerYearlyModel.MovementDecreaseKey,
-  valueKey: TickerYearlyIncreaseDecreaseValueKey,
+export const calcChangePercent = (
+  currentValue: number | null,
+  pastValue: number | null | undefined,
 ) => {
-  let increaseValue = currentRecord[increaseKey]
-  let decreaseValue = currentRecord[decreaseKey]
-  if (currentRecord[valueKey] !== null && lastRecord && lastRecord[valueKey] !== null) {
-    const isIncrease = currentRecord[valueKey]! > lastRecord[valueKey]!
-    const isDecrease = currentRecord[valueKey]! < lastRecord[valueKey]!
-    const lastIncrease = lastRecord[increaseKey] || 0
-    const lastDecrease = lastRecord[decreaseKey] || 0
-    increaseValue = isIncrease ? lastIncrease + 1 : 0
-    decreaseValue = isDecrease ? lastDecrease + 1 : 0
-  }
-  return { increaseValue, decreaseValue }
+  return currentValue !== null && pastValue !== null && pastValue !== undefined
+    ? (currentValue - pastValue) * 100 / pastValue
+    : null
 }
 
-type TickerQuarterltIncreaseDecreaseValueKey =
-  TickerYearlyIncreaseDecreaseValueKey | 'roa' | 'roe' | 'grossMargin' | 'debtEquity'
-
-export const calcTickerQuarterlyIncreaseDecreaseValues = (
-  currentRecord: interfaces.tickerQuarterlyModel.Record,
-  lastRecord: interfaces.tickerQuarterlyModel.Record | null,
-  increaseKey: interfaces.tickerQuarterlyModel.MovementIncreaseKey,
-  decreaseKey: interfaces.tickerQuarterlyModel.MovementDecreaseKey,
-  valueKey: TickerQuarterltIncreaseDecreaseValueKey,
+export const calcIncreaseDecreaseValues = (
+  currentValue: number | null,
+  lastValue: number | null | undefined,
+  lastIncrease: number | null | undefined,
+  lastDecrease: number | null | undefined,
 ) => {
-  let increaseValue = currentRecord[increaseKey]
-  let decreaseValue = currentRecord[decreaseKey]
-  if (currentRecord[valueKey] !== null && lastRecord && lastRecord[valueKey] !== null) {
-    const isIncrease = currentRecord[valueKey]! > lastRecord[valueKey]!
-    const isDecrease = currentRecord[valueKey]! < lastRecord[valueKey]!
-    const lastIncrease = lastRecord[increaseKey] || 0
-    const lastDecrease = lastRecord[decreaseKey] || 0
-    increaseValue = isIncrease ? lastIncrease + 1 : 0
-    decreaseValue = isDecrease ? lastDecrease + 1 : 0
+  let increaseValue = null
+  let decreaseValue = null
+  if (currentValue !== null && lastValue !== null && lastValue !== undefined) {
+    const baseIncrease = lastIncrease || 0
+    increaseValue = currentValue > lastValue ? baseIncrease + 1 : 0
+    const baseDecrease = lastDecrease || 0
+    decreaseValue = currentValue < lastValue ? baseDecrease + 1 : 0
   }
+
   return { increaseValue, decreaseValue }
 }

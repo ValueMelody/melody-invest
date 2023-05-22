@@ -1,6 +1,8 @@
 export type IndicatorKey = 'inflation' | 'gdp'
 
-export type MovementKey = 'inflationYearlyIncrease' | 'inflationYearlyDecrease'
+export type MovementKey =
+  'inflationYearlyIncrease' | 'inflationYearlyDecrease' |
+  'gdpYearlyIncrease' | 'gdpYearlyDecrease'
 
 export type CompareKey = 'gdpYearlyChangePercent'
 
@@ -9,6 +11,8 @@ interface Common {
   year: string;
   inflationYearlyIncrease: number | null;
   inflationYearlyDecrease: number | null;
+  gdpYearlyIncrease: number | null;
+  gdpYearlyDecrease: number | null;
 }
 
 export interface Record extends Common {
@@ -35,4 +39,6 @@ export interface Update {
   gdpYearlyChangePercent?: string | null;
   inflationYearlyIncrease?: number | null;
   inflationYearlyDecrease?: number | null;
+  gdpYearlyIncrease?: number | null;
+  gdpYearlyDecrease?: number | null;
 }

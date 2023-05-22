@@ -26,6 +26,8 @@ const record1 = {
   seasonalGDP: 11111111,
   seasonalGDPQoQ: 1.11,
   seasonalGDPYoY: -2.22,
+  seasonalGDPQuarterlyIncrease: null,
+  seasonalGDPQuarterlyDecrease: null,
 }
 
 const record2 = {
@@ -34,6 +36,8 @@ const record2 = {
   seasonalGDP: 11113333,
   seasonalGDPQoQ: 2.22,
   seasonalGDPYoY: 3.33,
+  seasonalGDPQuarterlyIncrease: null,
+  seasonalGDPQuarterlyDecrease: null,
 }
 
 describe('#getByUK', () => {
@@ -85,6 +89,8 @@ describe('#create', () => {
       seasonalGDP: 11113333,
       seasonalGDPQoQ: null,
       seasonalGDPYoY: null,
+      seasonalGDPQuarterlyIncrease: null,
+      seasonalGDPQuarterlyDecrease: null,
     }
     expect(created).toStrictEqual(result)
     const record = await indicatorQuarterly.getByUK('2022-06')
@@ -101,6 +107,8 @@ describe('#create', () => {
       seasonalGDP: null,
       seasonalGDPQoQ: null,
       seasonalGDPYoY: null,
+      seasonalGDPQuarterlyIncrease: null,
+      seasonalGDPQuarterlyDecrease: null,
     }
     expect(created1).toStrictEqual(result1)
     const record1 = await indicatorQuarterly.getByUK('2022-09')
@@ -123,6 +131,8 @@ describe('update', () => {
       seasonalGDP: 33333333,
       seasonalGDPQoQ: 1.22,
       seasonalGDPYoY: 2.33,
+      seasonalGDPQuarterlyIncrease: null,
+      seasonalGDPQuarterlyDecrease: null,
     }
     expect(updated).toStrictEqual(result)
     const record = await indicatorQuarterly.getByUK('2022-03')

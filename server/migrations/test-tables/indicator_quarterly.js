@@ -6,6 +6,8 @@ exports.up = (knex) => {
       table.string('seasonalGDP', 12)
       table.string('seasonalGDPQoQ', 7)
       table.string('seasonalGDPYoY', 7)
+      table.smallint('seasonalGDPQuarterlyIncrease')
+      table.smallint('seasonalGDPQuarterlyDecrease')
       table.unique('quarter', 'indicator_quarterly_ukey')
     })
 }

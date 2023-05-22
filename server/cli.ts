@@ -32,6 +32,10 @@ export const run = async () => {
       await calcTask.calcFinancialMovements()
       break
     }
+    case taskEnum.Name.calcIndicatorMovements: {
+      await calcTask.calcIndicatorMovements()
+      break
+    }
 
     case taskEnum.Name.generateDailyData: {
       const date = dateTool.getCurrentDate()
@@ -74,10 +78,6 @@ export const run = async () => {
     }
     case taskEnum.Name.calcTraderDescendants: {
       await calcTask.calcTraderDescendants()
-      break
-    }
-    case taskEnum.Name.calcIndicatorMovements: {
-      await calcTask.calcIndicatorMovements()
       break
     }
     default:

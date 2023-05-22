@@ -28,6 +28,8 @@ const record1 = {
   gdpYearlyChangePercent: 1.11,
   inflationYearlyIncrease: 2,
   inflationYearlyDecrease: 0,
+  gdpYearlyIncrease: null,
+  gdpYearlyDecrease: null,
 }
 
 const record2 = {
@@ -38,6 +40,8 @@ const record2 = {
   gdpYearlyChangePercent: null,
   inflationYearlyIncrease: null,
   inflationYearlyDecrease: null,
+  gdpYearlyIncrease: null,
+  gdpYearlyDecrease: null,
 }
 
 describe('#getByUK', () => {
@@ -94,6 +98,8 @@ describe('#create', () => {
       gdpYearlyChangePercent: null,
       inflationYearlyIncrease: null,
       inflationYearlyDecrease: null,
+      gdpYearlyIncrease: null,
+      gdpYearlyDecrease: null,
     }
     expect(created).toStrictEqual(result)
     const record = await indicatorYearly.getByUK('2022')
@@ -112,6 +118,8 @@ describe('#create', () => {
       gdpYearlyChangePercent: null,
       inflationYearlyIncrease: null,
       inflationYearlyDecrease: null,
+      gdpYearlyIncrease: null,
+      gdpYearlyDecrease: null,
     }
     expect(created1).toStrictEqual(result1)
     const record1 = await indicatorYearly.getByUK('2023')
@@ -135,6 +143,8 @@ describe('#update', () => {
       gdpYearlyChangePercent: 3.33,
       inflationYearlyIncrease: 2,
       inflationYearlyDecrease: 0,
+      gdpYearlyIncrease: null,
+      gdpYearlyDecrease: null,
     }
     await transaction.commit()
     expect(updated).toStrictEqual(result)
