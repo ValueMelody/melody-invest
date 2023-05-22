@@ -8,6 +8,8 @@ exports.up = (knex) => {
       table.string('inflation', 5)
       table.smallint('inflationYearlyIncrease')
       table.smallint('inflationYearlyDecrease')
+      table.smallint('gdpYearlyIncrease')
+      table.smallint('gdpYearlyDecrease')
       table.unique('year', 'indicator_yearly_ukey')
     })
 }

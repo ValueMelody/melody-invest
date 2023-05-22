@@ -82,16 +82,13 @@ describe('#calcIndicatorMovements', () => {
     expect(calcYearly).toBeCalledTimes(1)
     expect(calcQuarterly).toBeCalledTimes(1)
     expect(calcMonthly).toBeCalledTimes(1)
-    expect(calcMonthly).toBeCalledWith(false)
   })
 
   test('could trigger indicator movement services and force check month', async () => {
-    process.argv[3] = 'true'
     await calc.calcIndicatorMovements()
     expect(calcYearly).toBeCalledTimes(1)
     expect(calcQuarterly).toBeCalledTimes(1)
     expect(calcMonthly).toBeCalledTimes(1)
-    expect(calcMonthly).toBeCalledWith(true)
   })
 })
 

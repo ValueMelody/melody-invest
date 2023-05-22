@@ -268,166 +268,151 @@ const calcTickerQuarterlyFinancial = async (tickerId: number) => {
       const {
         increaseValue: pbQuarterlyIncrease,
         decreaseValue: pbQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'pbQuarterlyIncrease',
-        'pbQuarterlyDecrease',
-        'pbRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.pbRatio ? parseFloat(tickerQuarterly.pbRatio) : null,
+        lastRecord?.pbRatio ? parseFloat(lastRecord.pbRatio) : null,
+        lastRecord?.pbQuarterlyIncrease,
+        lastRecord?.pbQuarterlyDecrease,
       )
 
       const {
         increaseValue: psQuarterlyIncrease,
         decreaseValue: psQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'psQuarterlyIncrease',
-        'psQuarterlyDecrease',
-        'psRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.psRatio ? parseFloat(tickerQuarterly.psRatio) : null,
+        lastRecord?.psRatio ? parseFloat(lastRecord.psRatio) : null,
+        lastRecord?.psQuarterlyIncrease,
+        lastRecord?.psQuarterlyDecrease,
       )
 
       const {
         increaseValue: peQuarterlyIncrease,
         decreaseValue: peQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'peQuarterlyIncrease',
-        'peQuarterlyDecrease',
-        'peRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.peRatio ? parseFloat(tickerQuarterly.peRatio) : null,
+        lastRecord?.peRatio ? parseFloat(lastRecord.peRatio) : null,
+        lastRecord?.peQuarterlyIncrease,
+        lastRecord?.peQuarterlyDecrease,
       )
 
       const {
         increaseValue: revenueQuarterlyIncrease,
         decreaseValue: revenueQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'revenueQuarterlyIncrease',
-        'revenueQuarterlyDecrease',
-        'totalRevenue',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.totalRevenue,
+        lastRecord?.totalRevenue,
+        lastRecord?.revenueQuarterlyIncrease,
+        lastRecord?.revenueQuarterlyDecrease,
       )
 
       const {
         increaseValue: profitQuarterlyIncrease,
         decreaseValue: profitQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'profitQuarterlyIncrease',
-        'profitQuarterlyDecrease',
-        'grossProfit',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.grossProfit,
+        lastRecord?.grossProfit,
+        lastRecord?.profitQuarterlyIncrease,
+        lastRecord?.profitQuarterlyDecrease,
       )
 
       const {
         increaseValue: incomeQuarterlyIncrease,
         decreaseValue: incomeQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'incomeQuarterlyIncrease',
-        'incomeQuarterlyDecrease',
-        'netIncome',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.netIncome,
+        lastRecord?.netIncome,
+        lastRecord?.incomeQuarterlyIncrease,
+        lastRecord?.incomeQuarterlyDecrease,
       )
 
       const {
         increaseValue: epsQuarterlyIncrease,
         decreaseValue: epsQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'epsQuarterlyIncrease',
-        'epsQuarterlyDecrease',
-        'eps',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.eps,
+        lastRecord?.eps,
+        lastRecord?.epsQuarterlyIncrease,
+        lastRecord?.epsQuarterlyDecrease,
       )
 
       const {
         increaseValue: ebitdaQuarterlyIncrease,
         decreaseValue: ebitdaQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'ebitdaQuarterlyIncrease',
-        'ebitdaQuarterlyDecrease',
-        'ebitda',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.ebitda,
+        lastRecord?.ebitda,
+        lastRecord?.ebitdaQuarterlyIncrease,
+        lastRecord?.ebitdaQuarterlyDecrease,
       )
 
       const {
         increaseValue: equityQuarterlyIncrease,
         decreaseValue: equityQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'equityQuarterlyIncrease',
-        'equityQuarterlyDecrease',
-        'equity',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.equity,
+        lastRecord?.equity,
+        lastRecord?.equityQuarterlyIncrease,
+        lastRecord?.equityQuarterlyDecrease,
       )
 
       const {
         increaseValue: freeCashFlowQuarterlyIncrease,
         decreaseValue: freeCashFlowQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'freeCashFlowQuarterlyIncrease',
-        'freeCashFlowQuarterlyDecrease',
-        'freeCashFlow',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.freeCashFlow,
+        lastRecord?.freeCashFlow,
+        lastRecord?.freeCashFlowQuarterlyIncrease,
+        lastRecord?.freeCashFlowQuarterlyDecrease,
       )
 
       const {
         increaseValue: bookValueQuarterlyIncrease,
         decreaseValue: bookValueQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'bookValueQuarterlyIncrease',
-        'bookValueQuarterlyDecrease',
-        'bookValue',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.bookValue,
+        lastRecord?.bookValue,
+        lastRecord?.bookValueQuarterlyIncrease,
+        lastRecord?.bookValueQuarterlyDecrease,
       )
 
       const {
         increaseValue: roaQuarterlyIncrease,
         decreaseValue: roaQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'roaQuarterlyIncrease',
-        'roaQuarterlyDecrease',
-        'roa',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.roa,
+        lastRecord?.roa,
+        lastRecord?.roaQuarterlyIncrease,
+        lastRecord?.roaQuarterlyDecrease,
       )
 
       const {
         increaseValue: roeQuarterlyIncrease,
         decreaseValue: roeQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'roeQuarterlyIncrease',
-        'roeQuarterlyDecrease',
-        'roe',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.roe,
+        lastRecord?.roe,
+        lastRecord?.roeQuarterlyIncrease,
+        lastRecord?.roeQuarterlyDecrease,
       )
 
       const {
         increaseValue: grossMarginQuarterlyIncrease,
         decreaseValue: grossMarginQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'grossMarginQuarterlyIncrease',
-        'grossMarginQuarterlyDecrease',
-        'grossMargin',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.grossMargin,
+        lastRecord?.grossMargin,
+        lastRecord?.grossMarginQuarterlyIncrease,
+        lastRecord?.grossMarginQuarterlyDecrease,
       )
 
       const {
         increaseValue: debtEquityQuarterlyIncrease,
         decreaseValue: debtEquityQuarterlyDecrease,
-      } = calcTool.calcTickerQuarterlyIncreaseDecreaseValues(
-        tickerQuarterly,
-        lastRecord,
-        'debtEquityQuarterlyIncrease',
-        'debtEquityQuarterlyDecrease',
-        'debtEquity',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerQuarterly.debtEquity,
+        lastRecord?.debtEquity,
+        lastRecord?.debtEquityQuarterlyIncrease,
+        lastRecord?.debtEquityQuarterlyDecrease,
       )
 
       const movementValues = {
@@ -537,122 +522,111 @@ const calcTickerYearlyFinancial = async (tickerId: number) => {
       const {
         increaseValue: pbYearlyIncrease,
         decreaseValue: pbYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'pbYearlyIncrease',
-        'pbYearlyDecrease',
-        'pbRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.pbRatio ? parseFloat(tickerYearly.pbRatio) : null,
+        lastRecord?.pbRatio ? parseFloat(lastRecord.pbRatio) : null,
+        lastRecord?.pbYearlyIncrease,
+        lastRecord?.pbYearlyDecrease,
       )
 
       const {
         increaseValue: psYearlyIncrease,
         decreaseValue: psYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'psYearlyIncrease',
-        'psYearlyDecrease',
-        'psRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.psRatio ? parseFloat(tickerYearly.psRatio) : null,
+        lastRecord?.psRatio ? parseFloat(lastRecord.psRatio) : null,
+        lastRecord?.psYearlyIncrease,
+        lastRecord?.psYearlyDecrease,
       )
 
       const {
         increaseValue: peYearlyIncrease,
         decreaseValue: peYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'peYearlyIncrease',
-        'peYearlyDecrease',
-        'peRatio',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.peRatio ? parseFloat(tickerYearly.peRatio) : null,
+        lastRecord?.peRatio ? parseFloat(lastRecord.peRatio) : null,
+        lastRecord?.peYearlyIncrease,
+        lastRecord?.peYearlyDecrease,
       )
 
       const {
         increaseValue: revenueYearlyIncrease,
         decreaseValue: revenueYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'revenueYearlyIncrease',
-        'revenueYearlyDecrease',
-        'totalRevenue',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.totalRevenue,
+        lastRecord?.totalRevenue,
+        lastRecord?.revenueYearlyIncrease,
+        lastRecord?.revenueYearlyDecrease,
       )
 
       const {
         increaseValue: profitYearlyIncrease,
         decreaseValue: profitYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'profitYearlyIncrease',
-        'profitYearlyDecrease',
-        'grossProfit',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.grossProfit,
+        lastRecord?.grossProfit,
+        lastRecord?.profitYearlyIncrease,
+        lastRecord?.profitYearlyDecrease,
       )
 
       const {
         increaseValue: incomeYearlyIncrease,
         decreaseValue: incomeYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'incomeYearlyIncrease',
-        'incomeYearlyDecrease',
-        'netIncome',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.netIncome,
+        lastRecord?.netIncome,
+        lastRecord?.incomeYearlyIncrease,
+        lastRecord?.incomeYearlyDecrease,
       )
 
       const {
         increaseValue: epsYearlyIncrease,
         decreaseValue: epsYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'epsYearlyIncrease',
-        'epsYearlyDecrease',
-        'eps',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.eps,
+        lastRecord?.eps,
+        lastRecord?.epsYearlyIncrease,
+        lastRecord?.epsYearlyDecrease,
       )
 
       const {
         increaseValue: ebitdaYearlyIncrease,
         decreaseValue: ebitdaYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'ebitdaYearlyIncrease',
-        'ebitdaYearlyDecrease',
-        'ebitda',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.ebitda,
+        lastRecord?.ebitda,
+        lastRecord?.ebitdaYearlyIncrease,
+        lastRecord?.ebitdaYearlyDecrease,
       )
 
       const {
         increaseValue: equityYearlyIncrease,
         decreaseValue: equityYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'equityYearlyIncrease',
-        'equityYearlyDecrease',
-        'equity',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.equity,
+        lastRecord?.equity,
+        lastRecord?.equityYearlyIncrease,
+        lastRecord?.equityYearlyDecrease,
       )
 
       const {
         increaseValue: freeCashFlowYearlyIncrease,
         decreaseValue: freeCashFlowYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'freeCashFlowYearlyIncrease',
-        'freeCashFlowYearlyDecrease',
-        'freeCashFlow',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.freeCashFlow,
+        lastRecord?.freeCashFlow,
+        lastRecord?.freeCashFlowYearlyIncrease,
+        lastRecord?.freeCashFlowYearlyDecrease,
       )
 
       const {
         increaseValue: bookValueYearlyIncrease,
         decreaseValue: bookValueYearlyDecrease,
-      } = calcTool.calcTickerYearlyIncreaseDecreaseValues(
-        tickerYearly,
-        lastRecord,
-        'bookValueYearlyIncrease',
-        'bookValueYearlyDecrease',
-        'bookValue',
+      } = calcTool.calcIncreaseDecreaseValues(
+        tickerYearly.bookValue,
+        lastRecord?.bookValue,
+        lastRecord?.bookValueYearlyIncrease,
+        lastRecord?.bookValueYearlyDecrease,
       )
 
       const movementValues = {
@@ -765,6 +739,8 @@ export const buildIndicatorInfo = (
   return {
     inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
     inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
+    gdpYearlyIncrease: indicatorYearly ? indicatorYearly.gdpYearlyIncrease : null,
+    gdpYearlyDecrease: indicatorYearly ? indicatorYearly.gdpYearlyDecrease : null,
     gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
     seasonalGDPQoQ: indicatorQuarterly ? indicatorQuarterly.seasonalGDPQoQ : null,
     seasonalGDPYoY: indicatorQuarterly ? indicatorQuarterly.seasonalGDPYoY : null,

@@ -29,10 +29,9 @@ export const calcFinancialMovements = async () => {
 export const calcIndicatorMovements = async () => {
   console.info('Start calc indicator movements')
   try {
-    const forceRecheck = process.argv[3] === 'true' || false
     await calcIndicators.calcYearly()
     await calcIndicators.calcQuarterly()
-    await calcIndicators.calcMonthly(forceRecheck)
+    await calcIndicators.calcMonthly()
     console.info('indicator movements calculated')
   } catch (e) {
     console.error('Error occured:')
