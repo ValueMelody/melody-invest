@@ -1,7 +1,7 @@
 import * as calcTool from 'tools/calc'
+import * as dailyIndicatorModel from 'models/dailyIndicators'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
-import * as dailyIndicatorModel from 'models/dailyIndicators'
 import * as indicatorMonthlyModel from 'models/indicatorMonthly'
 import * as indicatorQuarterlyModel from 'models/indicatorQuarterly'
 import * as indicatorYearlyModel from 'models/indicatorYearly'
