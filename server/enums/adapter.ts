@@ -35,6 +35,7 @@ export const DatabaseTable = Object.freeze({
   TraderCombo: 'trader_combo',
   TraderComboFollower: 'trader_combo_follower',
   DailyTickers: 'daily_tickers',
+  DailyIndicators: 'daily_indicators',
   Policy: 'policy',
 })
 

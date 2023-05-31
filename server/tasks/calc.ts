@@ -39,6 +39,17 @@ export const calcIndicatorMovements = async () => {
   }
 }
 
+export const calcDailyIndicators = async (checkAll: boolean) => {
+  console.info('Start calc daily indicators')
+  try {
+    await calcIndicators.calcDailyIndicators(checkAll)
+    console.info('daily indicators calculated')
+  } catch (e) {
+    console.error('Error occured:')
+    console.error(e)
+  }
+}
+
 export const calcDailyTickers = async (
   forceRecheck: boolean,
   startDate?: string,

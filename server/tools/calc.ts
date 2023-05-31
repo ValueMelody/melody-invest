@@ -1,3 +1,6 @@
+import * as constants from '@shared/constants'
+import * as interfaces from '@shared/interfaces'
+
 export const calcBookValue = (totalAssets: number | null, totalLiabilities: number | null) => {
   return totalAssets !== null && totalLiabilities !== null
     ? totalAssets - totalLiabilities
@@ -67,4 +70,40 @@ export const calcIncreaseDecreaseValues = (
   }
 
   return { increaseValue, decreaseValue }
+}
+
+export const calcIndicatorInfo = (
+  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
+  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
+  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
+): interfaces.dailyIndicatorsModel.IndicatorInfo => {
+  const info: interfaces.dailyIndicatorsModel.IndicatorInfo = {}
+  if (indicatorMonthly) {
+    constants.Indicator.IndicatorMonthlyMovementKeys.forEach((key) => {
+      info[key] = indicatorMonthly[key]
+    })
+    constants.Indicator.IndicatorMonthlyCompareKeys.forEach((key) => {
+      info[key] = indicatorMonthly[key]
+    })
+  }
+
+  if (indicatorQuarterly) {
+    constants.Indicator.IndicatorQuarterlyMovementKeys.forEach((key) => {
+      info[key] = indicatorQuarterly[key]
+    })
+    constants.Indicator.IndicatorQuarterlyCompareKeys.forEach((key) => {
+      info[key] = indicatorQuarterly[key]
+    })
+  }
+
+  if (indicatorYearly) {
+    constants.Indicator.IndicatorYearlyMovementKeys.forEach((key) => {
+      info[key] = indicatorYearly[key]
+    })
+    constants.Indicator.IndicatorYearlyCompareKeys.forEach((key) => {
+      info[key] = indicatorYearly[key]
+    })
+  }
+
+  return info
 }

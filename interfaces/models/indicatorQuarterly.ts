@@ -1,4 +1,3 @@
-export type IndicatorKey = 'seasonalGDP'
 export type MovementKey = 'seasonalGDPQuarterlyIncrease' | 'seasonalGDPQuarterlyDecrease'
 export type CompareKey = 'seasonalGDPQoQ' | 'seasonalGDPYoY'
 

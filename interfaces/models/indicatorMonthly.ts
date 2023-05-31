@@ -1,8 +1,3 @@
-export type IndicatorKey =
-  'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' | 'cpi' |
-  'inflation' | 'consumerSentiment' |
-  'unemploymentRate' | 'nonfarmPayroll'
-
 export type MovementKey =
   'fundsRateMonthlyIncrease' | 'fundsRateMonthlyDecrease' |
   'thirtyYearsTreasuryMonthlyIncrease' | 'thirtyYearsTreasuryMonthlyDecrease' |
@@ -12,6 +7,10 @@ export type MovementKey =
   'consumerSentimentMonthlyIncrease' | 'consumerSentimentMonthlyDecrease' |
   'unemploymentRateMonthlyIncrease' | 'unemploymentRateMonthlyDecrease' |
   'nonfarmPayrollMonthlyIncrease' | 'nonfarmPayrollMonthlyDecrease'
+
+export type CompareKey =
+  'fundsRate' | 'tenYearsTreasury' | 'thirtyYearsTreasury' |
+  'inflation' | 'consumerSentiment' | 'nonfarmPayroll'
 
 interface Common {
   id: number;
