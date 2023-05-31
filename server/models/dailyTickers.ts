@@ -1,4 +1,3 @@
-
 import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'

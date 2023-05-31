@@ -5,9 +5,6 @@ import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
-import * as indicatorMonthlyModel from 'models/indicatorMonthly'
-import * as indicatorQuarterlyModel from 'models/indicatorQuarterly'
-import * as indicatorYearlyModel from 'models/indicatorYearly'
 import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
 import * as tickerDailyModel from 'models/tickerDaily'
@@ -731,38 +728,6 @@ export const buildTickerInfo = (
   return tickerInfo
 }
 
-export const buildIndicatorInfo = (
-  indicatorMonthly: interfaces.indicatorMonthlyModel.Record | null,
-  indicatorQuarterly: interfaces.indicatorQuarterlyModel.Record | null,
-  indicatorYearly: interfaces.indicatorYearlyModel.Record | null,
-): interfaces.dailyTickersModel.IndicatorInfo => {
-  return {
-    inflationYearlyIncrease: indicatorYearly ? indicatorYearly.inflationYearlyIncrease : null,
-    inflationYearlyDecrease: indicatorYearly ? indicatorYearly.inflationYearlyDecrease : null,
-    gdpYearlyIncrease: indicatorYearly ? indicatorYearly.gdpYearlyIncrease : null,
-    gdpYearlyDecrease: indicatorYearly ? indicatorYearly.gdpYearlyDecrease : null,
-    gdpYearlyChangePercent: indicatorYearly ? indicatorYearly.gdpYearlyChangePercent : null,
-    seasonalGDPQoQ: indicatorQuarterly ? indicatorQuarterly.seasonalGDPQoQ : null,
-    seasonalGDPYoY: indicatorQuarterly ? indicatorQuarterly.seasonalGDPYoY : null,
-    fundsRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyIncrease : null,
-    fundsRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.fundsRateMonthlyDecrease : null,
-    thirtyYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyIncrease : null,
-    thirtyYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.thirtyYearsTreasuryMonthlyDecrease : null,
-    tenYearsTreasuryMonthlyIncrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyIncrease : null,
-    tenYearsTreasuryMonthlyDecrease: indicatorMonthly ? indicatorMonthly.tenYearsTreasuryMonthlyDecrease : null,
-    inflationMonthlyIncrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyIncrease : null,
-    inflationMonthlyDecrease: indicatorMonthly ? indicatorMonthly.inflationMonthlyDecrease : null,
-    cpiMonthlyIncrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyIncrease : null,
-    cpiMonthlyDecrease: indicatorMonthly ? indicatorMonthly.cpiMonthlyDecrease : null,
-    consumerSentimentMonthlyIncrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyIncrease : null,
-    consumerSentimentMonthlyDecrease: indicatorMonthly ? indicatorMonthly.consumerSentimentMonthlyDecrease : null,
-    unemploymentRateMonthlyIncrease: indicatorMonthly ? indicatorMonthly.unemploymentRateMonthlyIncrease : null,
-    unemploymentRateMonthlyDecrease: indicatorMonthly ? indicatorMonthly.unemploymentRateMonthlyDecrease : null,
-    nonfarmPayrollMonthlyIncrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyIncrease : null,
-    nonfarmPayrollMonthlyDecrease: indicatorMonthly ? indicatorMonthly.nonfarmPayrollMonthlyDecrease : null,
-  }
-}
-
 const buildDailyTickers = async (
   targetDate: string,
 ): Promise<interfaces.dailyTickersModel.DailyTickers | null> => {
@@ -795,18 +760,6 @@ const buildDailyTickers = async (
   }, initialDailyTickers)
 }
 
-const buildDailyIndicators = async (
-  targetDate: string,
-): Promise<interfaces.dailyTickersModel.IndicatorInfo> => {
-  const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
-  const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
-  const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
-
-  return buildIndicatorInfo(
-    monthlyIndicator, quarterlyIndicator, yearlyIndicator,
-  )
-}
-
 export const calcDailyAvailableTickers = async (
   forceRecheck: boolean,
   startDate?: string,
@@ -829,7 +782,7 @@ export const calcDailyAvailableTickers = async (
     const nextDate = dateTool.getNextDate(targetDate)
 
     const dailyTickers = await buildDailyTickers(targetDate)
-    const indicators = dailyTickers ? await buildDailyIndicators(targetDate) : null
+    const indicators = null
     const nearestPrices = await tickerDailyModel.getNearestPricesByDate(targetDate)
 
     const transaction = await databaseAdapter.createTransaction()

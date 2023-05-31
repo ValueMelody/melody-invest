@@ -40,17 +40,13 @@ export const getAll = async (): Promise<
 }
 
 export const getPublishedByDate = async (date: string) => {
-  const currentQuarter = dateTool.getQuarterByDate(date)
-  const [year, quarter] = currentQuarter.split('-')
-
-  const previousYear = dateTool.getPreviousYear(year)
-  const yearBeforePrevious = dateTool.getPreviousYear(previousYear)
-  const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
+  const estimatedDate = dateTool.getPreviousDate(date, 480)
+  const year = estimatedDate.substring(0, 4)
 
   const raw = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
-      { key: 'year', value: targetYear },
+      { key: 'year', value: year },
     ],
   })
   return raw ? convertToRecord(raw) : null

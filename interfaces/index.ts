@@ -1,4 +1,5 @@
 import * as common from './common'
+import * as dailyIndicatorsModel from './models/dailyIndicators'
 import * as dailyTickersModel from './models/dailyTickers'
 import * as emailModel from './models/email'
 import * as entityModel from './models/entity'
@@ -43,6 +44,7 @@ export {
   indicatorMonthlyModel,
   indicatorQuarterlyModel,
   indicatorYearlyModel,
+  dailyIndicatorsModel,
   dailyTickersModel,
   emailModel,
   entityModel,

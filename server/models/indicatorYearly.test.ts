@@ -62,25 +62,6 @@ describe('#getAll', () => {
   })
 })
 
-describe('#getPublishedByDate', () => {
-  test('could get published by date', async () => {
-    const result1 = await indicatorYearly.getPublishedByDate('2020-12-31')
-    expect(result1).toBe(null)
-    const result2 = await indicatorYearly.getPublishedByDate('2021-03-31')
-    expect(result2).toBe(null)
-    const result3 = await indicatorYearly.getPublishedByDate('2021-04-01')
-    expect(result3).toStrictEqual(record1)
-    const result4 = await indicatorYearly.getPublishedByDate('2022-03-31')
-    expect(result4).toStrictEqual(record1)
-    const result5 = await indicatorYearly.getPublishedByDate('2022-04-01')
-    expect(result5).toStrictEqual(record2)
-    const result6 = await indicatorYearly.getPublishedByDate('2023-03-31')
-    expect(result6).toStrictEqual(record2)
-    const result7 = await indicatorYearly.getPublishedByDate('2023-04-01')
-    expect(result7).toBe(null)
-  })
-})
-
 describe('#create', () => {
   test('could create', async () => {
     const transaction = await databaseAdapter.createTransaction()

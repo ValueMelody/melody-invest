@@ -1,10 +1,8 @@
-export type IndicatorKey = 'inflation' | 'gdp'
-
 export type MovementKey =
   'inflationYearlyIncrease' | 'inflationYearlyDecrease' |
   'gdpYearlyIncrease' | 'gdpYearlyDecrease'
 
-export type CompareKey = 'gdpYearlyChangePercent'
+export type CompareKey = 'gdpYearlyChangePercent' | 'inflation'
 
 interface Common {
   id: number;

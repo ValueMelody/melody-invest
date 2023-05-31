@@ -34,14 +34,13 @@ export const getByUK = async (
 export const getPublishedByDate = async (
   date: string,
 ): Promise<interfaces.indicatorQuarterlyModel.Record | null> => {
-  const targetDate = dateTool.getPreviousDate(date, 30)
+  const targetDate = dateTool.getPreviousDate(date, 150)
   const quarter = dateTool.getQuarterByDate(targetDate)
-  const previousQuarter = dateTool.getPreviousQuarter(quarter)
 
   const raw = await databaseAdapter.findOne({
     tableName: TableName,
     conditions: [
-      { key: 'quarter', value: previousQuarter },
+      { key: 'quarter', value: quarter },
     ],
   })
   return raw ? convertToRecord(raw) : null

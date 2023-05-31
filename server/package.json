@@ -19,7 +19,8 @@
     "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerFinancials",
     "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
     "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",
-    
+    "calcDailyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyIndicators",
+
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
 

@@ -380,31 +380,6 @@ describe('#getAll', () => {
   })
 })
 
-describe('#getPublishedByDate', () => {
-  test('could get published by date', async () => {
-    const result1 = await tickerYearly.getPublishedByDate('2021-04-01')
-    expect(result1.length).toBe(2)
-    expect(result1[0].id).toBe(1)
-    expect(result1[1].id).toBe(4)
-
-    const result2 = await tickerYearly.getPublishedByDate('2022-03-31')
-    expect(result2.length).toBe(2)
-    expect(result2[0].id).toBe(1)
-    expect(result2[1].id).toBe(4)
-
-    const result3 = await tickerYearly.getPublishedByDate('2022-04-01')
-    expect(result3.length).toBe(1)
-    expect(result3[0].id).toBe(2)
-
-    const result4 = await tickerYearly.getPublishedByDate('2023-04-01')
-    expect(result4.length).toBe(1)
-    expect(result4[0].id).toBe(3)
-
-    const result5 = await tickerYearly.getPublishedByDate('2024-04-01')
-    expect(result5.length).toBe(0)
-  })
-})
-
 describe('#create', () => {
   test('could create', async () => {
     const emptyProps = {

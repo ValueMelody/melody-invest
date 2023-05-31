@@ -47,7 +47,7 @@ export const getAll = async (): Promise<
 export const getPublishedByDate = async (
   date: string,
 ): Promise<interfaces.indicatorMonthlyModel.Record | null> => {
-  const estimatedDate = dateTool.getPreviousDate(date, 15)
+  const estimatedDate = dateTool.getPreviousDate(date, 50)
   const month = estimatedDate.substring(0, 7)
 
   const raw = await databaseAdapter.findOne({

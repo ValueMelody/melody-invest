@@ -1,4 +1,5 @@
 import * as calcTool from 'tools/calc'
+import * as dailyIndicatorModel from 'models/dailyIndicators'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as indicatorMonthlyModel from 'models/indicatorMonthly'
@@ -279,5 +280,35 @@ export const calcMonthly = async () => {
   } catch (error) {
     await transaction.rollback()
     throw error
+  }
+}
+
+export const calcDailyIndicators = async (checkAll: boolean = false) => {
+  const today = dateTool.getCurrentDate()
+  // Always double check latest 60 days
+  const startDate = checkAll ? dateTool.getInitialDate() : dateTool.getPreviousDate(today, 60)
+  let targetDate = startDate
+  while (targetDate <= today) {
+    console.info(`Checking ${targetDate}`)
+    const nextDate = dateTool.getNextDate(targetDate)
+
+    const monthlyIndicator = await indicatorMonthlyModel.getPublishedByDate(targetDate)
+    const quarterlyIndicator = await indicatorQuarterlyModel.getPublishedByDate(targetDate)
+    const yearlyIndicator = await indicatorYearlyModel.getPublishedByDate(targetDate)
+
+    const indicatorInfo = calcTool.calcIndicatorInfo(monthlyIndicator, quarterlyIndicator, yearlyIndicator)
+
+    const transaction = await databaseAdapter.createTransaction()
+    try {
+      await dailyIndicatorModel.upsert(targetDate, {
+        indicatorInfo,
+      }, transaction)
+      await transaction.commit()
+    } catch (error) {
+      await transaction.rollback()
+      throw error
+    }
+
+    targetDate = nextDate
   }
 }

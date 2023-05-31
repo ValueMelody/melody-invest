@@ -36,6 +36,11 @@ export const run = async () => {
       await calcTask.calcIndicatorMovements()
       break
     }
+    case taskEnum.Name.calcDailyIndicators: {
+      const checkAll = process.argv[3]
+      await calcTask.calcDailyIndicators(checkAll === 'true')
+      break
+    }
 
     case taskEnum.Name.generateDailyData: {
       const date = dateTool.getCurrentDate()
