@@ -79,13 +79,13 @@ npm run generateDailyData
 ```
 
 # Indicator Data Collect
-Yearly Inflation: https://www.usinflationcalculator.com/inflation/current-inflation-rates/
-Yearly GDP: https://en.wikipedia.org/wiki/Economy_of_the_United_States
-Quarterly Seasonal GDP: https://fred.stlouisfed.org/series/NA000254Q
-Monthly Funds Rate: https://fred.stlouisfed.org/series/FEDFUNDS
-Monthly 30 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS30
-Monthly 10 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS10
-Monthly CPI: https://www.usinflationcalculator.com/inflation/consumer-price-index-and-annual-percent-changes-from-1913-to-2008/
-Monthly Consumer Sentiment: http://www.sca.isr.umich.edu/
-Monthly Unemployment Rate: https://data.bls.gov/timeseries/LNS14000000
-Monthly Nonfarm Payroll: https://fred.stlouisfed.org/series/PAYNSA
+Yearly Inflation: https://www.usinflationcalculator.com/inflation/current-inflation-rates/  
+Yearly GDP: https://en.wikipedia.org/wiki/Economy_of_the_United_States  
+Quarterly Seasonal GDP: https://fred.stlouisfed.org/series/NA000254Q  
+Monthly Funds Rate: https://fred.stlouisfed.org/series/FEDFUNDS  
+Monthly 30 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS30  
+Monthly 10 Years Treasury Yield: https://fred.stlouisfed.org/series/DGS10  
+Monthly CPI: https://www.usinflationcalculator.com/inflation/consumer-price-index-and-annual-percent-changes-from-1913-to-2008/  
+Monthly Consumer Sentiment: http://www.sca.isr.umich.edu/  
+Monthly Unemployment Rate: https://data.bls.gov/timeseries/LNS14000000  
+Monthly Nonfarm Payroll: https://fred.stlouisfed.org/series/PAYNSA  

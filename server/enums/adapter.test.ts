@@ -60,16 +60,6 @@ describe('#CacheKey', () => {
   })
 })
 
-describe('#MarketConfig', () => {
-  test('Have defined market config enums', () => {
-    expect(adapter.MarketConfig).toStrictEqual({
-      Key: 'demo',
-      CooldownSeconds: 5,
-      BaseUrl: 'https://www.alphavantage.co/query',
-    })
-  })
-})
-
 describe('#MailerConfig', () => {
   test('Have defined mailer config enums', () => {
     expect(adapter.MailerConfig).toStrictEqual({

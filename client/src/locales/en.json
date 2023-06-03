@@ -172,11 +172,11 @@
 
     "ticker.delisted": "Delisted",
     "ticker.dailyPriceRange": "End of day price data is available between {{start}} and {{end}}",
-    "ticker.emptyDailyPriceRange": "End of day price data is not synced yet",
+    "ticker.emptyDailyPriceRange": "End of day price data is not available yet",
     "ticker.quarterlyFinancialRange": "Quarterly financial data is available between {{start}} and {{end}}",
-    "ticker.emptyQuarterlyFinancialRange": "Quarterly financial data is not synced yet",
+    "ticker.emptyQuarterlyFinancialRange": "Quarterly financial data is not available yet",
     "ticker.yearlyFinancialRange": "Annual financial data is available between {{start}} and {{end}}",
-    "ticker.emptyYearlyFinancialRange": "Annual financial data is not synced yet",
+    "ticker.emptyYearlyFinancialRange": "Annual financial data is not available yet",
 
     "holdingCard.date": "Date",
     "holdingCard.cash": "Mock Cash",
