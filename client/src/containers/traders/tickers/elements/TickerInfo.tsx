@@ -11,6 +11,17 @@ const TickerInfo = ({
     ? localeTool.t('ticker.dailyPriceRange', { start: ticker.firstPriceDate, end: ticker.lastPriceDate })
     : localeTool.t('ticker.emptyDailyPriceRange')
 
+  const yearlyFinancialRangeText = ticker.firstFinancialYear || ticker.lastFinancialYear
+    ? localeTool.t('ticker.yearlyFinancialRange', { start: ticker.firstFinancialYear, end: ticker.lastFinancialYear })
+    : localeTool.t('ticker.emptyYearlyFinancialRange')
+
+  const QuarterlyFinancialRangeText = ticker.firstFinancialQuarter || ticker.lastFinancialQuarter
+    ? localeTool.t('ticker.quarterlyFinancialRange', {
+      start: ticker.firstFinancialQuarter,
+      end: ticker.lastFinancialQuarter,
+    })
+    : localeTool.t('ticker.emptyQuarterlyFinancialRange')
+
   return (
     <section
       className='flex flex-col m-8'
@@ -29,6 +40,12 @@ const TickerInfo = ({
       </header>
       <p className='mt-2 italic'>
         {priceRangeText}
+      </p>
+      <p className='mt-2 italic'>
+        {yearlyFinancialRangeText}
+      </p>
+      <p className='mt-2 italic'>
+        {QuarterlyFinancialRangeText}
       </p>
     </section>
   )

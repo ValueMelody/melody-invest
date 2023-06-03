@@ -1,4 +1,3 @@
-import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as entityModel from 'models/entity'
@@ -83,7 +82,7 @@ export const syncPrices = async (
 
 export const syncAllPrices = async (date: string): Promise<string[]> => {
   const entities = await entityModel.getAll()
-  const cooldown = adapterEnum.MarketConfig.CooldownSeconds
+  const cooldown = 1
   const notes: string[] = []
 
   await runTool.asyncForEach(entities, async (entity: interfaces.entityModel.Record) => {
