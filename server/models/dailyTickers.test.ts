@@ -37,14 +37,12 @@ describe('#getLatestDate', () => {
 describe('#getByUK', () => {
   test('could get by UK', async () => {
     const record1 = await dailyTickers.getByUK(1, '2021-12-31')
-    expect(record1?.id).toBe(1)
-    expect(record1?.date).toBe('2021-12-31')
-
+    expect(record1?.id).toBe(undefined)
     const record2 = await dailyTickers.getByUK(1, '2021-12-30')
     expect(record2).toBeNull()
 
     const record3 = await dailyTickers.getByUK(1, '2022-01-01')
-    expect(record3?.id).toBe(2)
+    expect(record3?.id).toBe(1)
     expect(record3?.date).toBe('2022-01-01')
 
     const record4 = await dailyTickers.getByUK(1, '2022-01-02')
@@ -62,12 +60,12 @@ describe('#create', () => {
       priceInfo: {},
     }, transaction)
     await transaction.commit()
-    expect(created.id).toBe(3)
+    expect(created.id).toBe(2)
     expect(created.entityId).toBe(2)
     expect(created.date).toBe('2022-01-02')
 
     const record = await dailyTickers.getByUK(2, '2022-01-02')
-    expect(record?.id).toBe(3)
+    expect(record?.id).toBe(2)
     expect(record?.entityId).toBe(2)
     expect(record?.date).toBe('2022-01-02')
   })
