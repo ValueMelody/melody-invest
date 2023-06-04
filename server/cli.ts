@@ -1,6 +1,5 @@
 import * as cacheTask from 'tasks/cache'
 import * as calcTask from 'tasks/calc'
-import * as dateTool from 'tools/date'
 import * as emailTask from 'tasks/email'
 import * as runTool from 'tools/run'
 import * as syncTask from 'tasks/sync'
