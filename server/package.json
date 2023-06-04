@@ -21,16 +21,12 @@
     "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcIndicatorMovements",
     "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcDailyTickers",
     "calcDailyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcDailyIndicators",
-
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli sendPendingEmails",
 
     "calcTraderAccessHashs": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderAccessHashs",
     "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderPerformances",
-    "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderDescendants",
-
-    "generateDailyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateDailyData",
-    "generateWeeklyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateWeeklyData"
+    "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderDescendants"
   },
   "dependencies": {
     "@shared/constants": "*",

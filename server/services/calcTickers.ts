@@ -775,7 +775,7 @@ export const calcDailyTickers = async () => {
     console.info(`checking entity: ${entity.id}`)
     const lastRecord = await dailyTickersModel.getLast(entity.id)
     // Always double check latest 60 days
-    let targetDate = lastRecord
+    let targetDate = lastRecord && Object.keys(lastRecord.priceInfo).length === tickerIds.length
       ? dateTool.getPreviousDate(lastRecord.date, 60)
       : dateTool.getInitialDate()
 

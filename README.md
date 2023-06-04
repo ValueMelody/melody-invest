@@ -69,13 +69,19 @@ server -> backend APIs for the whole project
 ```
 
 # Manual Schedules
-Weekly:
-```
-npm run generateWeeklyData
-```
 Daily:
 ```
-npm run generateDailyData  
+npm run syncTickerPrices
+npm run calcPriceMovements
+npm run calcDailyTickers
+```
+Weekly:
+```
+npm run syncTickerFinancials
+npm run calcFinancialMovements
+npm run calcDailyTickers
+npm run calcIndicatorMovements
+npm run calcDailyIndicators
 ```
 
 # Indicator Data Collect

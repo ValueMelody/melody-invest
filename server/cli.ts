@@ -45,22 +45,6 @@ export const run = async () => {
       await calcTask.calcDailyTickers()
       break
     }
-
-    case taskEnum.Name.generateDailyData: {
-      const date = dateTool.getCurrentDate()
-      await syncTask.syncTickerPrices(date)
-      await calcTask.calcPriceMovements()
-      await calcTask.calcDailyTickers()
-      break
-    }
-    case taskEnum.Name.generateWeeklyData: {
-      await calcTask.calcFinancialMovements()
-      await calcTask.calcIndicatorMovements()
-
-      await calcTask.calcDailyTickers()
-      await calcTask.calcTraderPerformances(true)
-      break
-    }
     case taskEnum.Name.generateSystemCaches: {
       await cacheTask.generateSystemCaches()
       break
@@ -69,6 +53,7 @@ export const run = async () => {
       await emailTask.sendPendingEmails()
       break
     }
+
     case taskEnum.Name.calcTraderAccessHashs: {
       await calcTask.calcTraderAccessHashs()
       break
