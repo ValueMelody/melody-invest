@@ -15,6 +15,19 @@ export const getLatestDate = async (): Promise<string> => {
   return record ? record.date : dateTool.getInitialDate()
 }
 
+export const getLast = async (
+  entityId: number,
+): Promise<interfaces.dailyTickersModel.Record> => {
+  const record = await databaseAdapter.findOne({
+    tableName: TableName,
+    orderBy: [{ column: 'date', order: 'desc' }],
+    conditions: [
+      { key: 'entityId', value: entityId },
+    ],
+  })
+  return record
+}
+
 export const getByUK = async (
   entityId: number,
   date: string,

@@ -41,19 +41,23 @@ export const run = async () => {
       await calcTask.calcDailyIndicators(checkAll === 'true')
       break
     }
+    case taskEnum.Name.calcDailyTickers: {
+      await calcTask.calcDailyTickers()
+      break
+    }
 
     case taskEnum.Name.generateDailyData: {
       const date = dateTool.getCurrentDate()
       await syncTask.syncTickerPrices(date)
       await calcTask.calcPriceMovements()
-      await calcTask.calcDailyTickers(false)
+      await calcTask.calcDailyTickers()
       break
     }
     case taskEnum.Name.generateWeeklyData: {
       await calcTask.calcFinancialMovements()
       await calcTask.calcIndicatorMovements()
 
-      await calcTask.calcDailyTickers(true)
+      await calcTask.calcDailyTickers()
       await calcTask.calcTraderPerformances(true)
       break
     }
@@ -63,12 +67,6 @@ export const run = async () => {
     }
     case taskEnum.Name.sendPendingEmails: {
       await emailTask.sendPendingEmails()
-      break
-    }
-    case taskEnum.Name.calcDailyTickers: {
-      const forceRecheck = process.argv[3] === 'true' || false
-      const startDate = process.argv[4] || undefined
-      await calcTask.calcDailyTickers(forceRecheck, startDate)
       break
     }
     case taskEnum.Name.calcTraderAccessHashs: {

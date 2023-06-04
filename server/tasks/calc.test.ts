@@ -94,19 +94,17 @@ describe('#calcIndicatorMovements', () => {
 
 describe('#calcDailyTickers', () => {
   const calcDailyAvailableTickers = jest.fn()
-  jest.spyOn(calcTickers, 'calcDailyAvailableTickers')
+  jest.spyOn(calcTickers, 'calcDailyTickers')
     .mockImplementation(calcDailyAvailableTickers)
 
   test('could calc daily tickers', async () => {
-    await calc.calcDailyTickers(false)
+    await calc.calcDailyTickers()
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
-    expect(calcDailyAvailableTickers).toBeCalledWith(false, undefined)
   })
 
   test('could calc daily tickers by force recheck', async () => {
-    await calc.calcDailyTickers(true)
+    await calc.calcDailyTickers()
     expect(calcDailyAvailableTickers).toBeCalledTimes(1)
-    expect(calcDailyAvailableTickers).toBeCalledWith(true, undefined)
   })
 })
 

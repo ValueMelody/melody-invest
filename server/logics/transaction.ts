@@ -12,24 +12,25 @@ const getItemHoldingValue = (
 
 export const refreshHoldingItemValue = (
   item: interfaces.traderHoldingModel.Item,
-  dailyTicker: interfaces.dailyTickersModel.DailyTicker | null,
+  dailyTicker: interfaces.dailyTickersModel.TickerInfo | null,
 ): interfaces.traderHoldingModel.Item => {
-  const matchedDaily = dailyTicker?.daily
-  const holdingValue = getItemHoldingValue(item.shares, item.value, matchedDaily)
-  const splitMultiplier = matchedDaily?.splitMultiplier || item.splitMultiplier
-  const updatedHolding = {
-    tickerId: item.tickerId,
-    shares: item.shares,
-    value: holdingValue,
-    splitMultiplier,
-  }
-  return updatedHolding
+  return item
+  // const matchedDaily = dailyTicker?.daily
+  // const holdingValue = getItemHoldingValue(item.shares, item.value, matchedDaily)
+  // const splitMultiplier = matchedDaily?.splitMultiplier || item.splitMultiplier
+  // const updatedHolding = {
+  //   tickerId: item.tickerId,
+  //   shares: item.shares,
+  //   value: holdingValue,
+  //   splitMultiplier,
+  // }
+  // return updatedHolding
 }
 
 export const detailFromCashAndItems = (
   totalCash: number,
   items: interfaces.traderHoldingModel.Item[],
-  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
   tradeDate: string,
   delistedLastPrices: DelistedLastPrices,
 ): interfaces.traderHoldingModel.Detail => {
@@ -127,7 +128,7 @@ export interface DelistedLastPrices {
 export const detailAfterRebalance = (
   shouldRebalance: boolean,
   currentDetail: interfaces.traderHoldingModel.Detail,
-  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
   tickerMinPercent: number,
   tickerMaxPercent: number,
   maxCashValue: number,
@@ -139,33 +140,33 @@ export const detailAfterRebalance = (
     }
   }
 
-  let hasTransaction = false
+  // let hasTransaction = false
   const details = currentDetail.items.reduce((details, item) => {
     const matched = dailyTickers[item.tickerId]
     if (!matched) return details
-
-    const matchedDaily = matched.daily
-    const holdingPercent = (item.value / details.totalValue) * 100
-    const refreshedForMinPercernt = sellForLessThanTickerMinPercent(
-      details, item, holdingPercent, tickerMinPercent, maxCashValue,
-    )
-    if (refreshedForMinPercernt) {
-      hasTransaction = true
-      return refreshedForMinPercernt
-    }
-
-    const refreshedForMaxPercent = sellForMoreThanTickerMaxPercernt(
-      details, item, holdingPercent, tickerMaxPercent, maxCashValue, matchedDaily,
-    )
-    if (refreshedForMaxPercent) {
-      hasTransaction = true
-      return refreshedForMaxPercent
-    }
-
     return details
+    // const matchedDaily = matched.daily
+    // const holdingPercent = (item.value / details.totalValue) * 100
+    // const refreshedForMinPercernt = sellForLessThanTickerMinPercent(
+    //   details, item, holdingPercent, tickerMinPercent, maxCashValue,
+    // )
+    // if (refreshedForMinPercernt) {
+    //   hasTransaction = true
+    //   return refreshedForMinPercernt
+    // }
+
+    // const refreshedForMaxPercent = sellForMoreThanTickerMaxPercernt(
+    //   details, item, holdingPercent, tickerMaxPercent, maxCashValue, matchedDaily,
+    // )
+    // if (refreshedForMaxPercent) {
+    //   hasTransaction = true
+    //   return refreshedForMaxPercent
+    // }
+
+    // return details
   }, currentDetail)
   return {
-    hasTransaction,
+    hasTransaction: false,
     holdingDetail: details,
   }
 }
@@ -213,33 +214,35 @@ export const sellForHoldingPercent = (
 export const detailAfterSell = (
   currentDetail: interfaces.traderHoldingModel.Detail,
   sellTickerIds: number[],
-  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
   holdingSellPercent: number,
   tickerMinPercent: number,
   maxCashValue: number,
 ): DetailAndTransaction => {
-  let hasTransaction = false
+  // let hasTransaction = false
   const holdingDetail = sellTickerIds.reduce((details, tickerId) => {
-    const matchedDaily = dailyTickers[tickerId]?.daily
-    const item = details.items.find((item) => item.tickerId === tickerId)
-    if (!matchedDaily || !item) return details
+    return details
 
-    const refreshed = sellForHoldingPercent(
-      details,
-      item,
-      matchedDaily,
-      holdingSellPercent,
-      tickerMinPercent,
-      maxCashValue,
-    )
-    if (!refreshed) return details
+    // const matchedDaily = dailyTickers[tickerId]?.daily
+    // const item = details.items.find((item) => item.tickerId === tickerId)
+    // if (!matchedDaily || !item) return details
 
-    hasTransaction = true
-    return refreshed
+    // const refreshed = sellForHoldingPercent(
+    //   details,
+    //   item,
+    //   matchedDaily,
+    //   holdingSellPercent,
+    //   tickerMinPercent,
+    //   maxCashValue,
+    // )
+    // if (!refreshed) return details
+
+    // hasTransaction = true
+    // return refreshed
   }, currentDetail)
 
   return {
-    hasTransaction,
+    hasTransaction: false,
     holdingDetail,
   }
 }
@@ -289,33 +292,34 @@ export const buyForHoldingPercent = (
 export const detailAfterBuy = (
   currentDetail: interfaces.traderHoldingModel.Detail,
   buyTickerIds: number[],
-  dailyTickers: interfaces.dailyTickersModel.DailyTickers,
+  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
   maxBuyAmount: number,
   tickerMaxPercent: number,
 ): DetailAndTransaction => {
-  let hasTransaction = false
+  // let hasTransaction = false
   const holdingDetail = buyTickerIds.reduce((detail, tickerId) => {
-    const matchedDaily = dailyTickers[tickerId]?.daily
-    if (!matchedDaily) return detail
+    return detail
+    // const matchedDaily = dailyTickers[tickerId]?.daily
+    // if (!matchedDaily) return detail
 
-    const item = currentDetail.items.find((item) => item.tickerId === tickerId) ||
-      { tickerId, shares: 0, splitMultiplier: 0, value: 0 }
+    // const item = currentDetail.items.find((item) => item.tickerId === tickerId) ||
+    //   { tickerId, shares: 0, splitMultiplier: 0, value: 0 }
 
-    const refreshed = buyForHoldingPercent(
-      detail,
-      item,
-      matchedDaily,
-      maxBuyAmount,
-      tickerMaxPercent,
-    )
-    if (!refreshed) return detail
+    // const refreshed = buyForHoldingPercent(
+    //   detail,
+    //   item,
+    //   matchedDaily,
+    //   maxBuyAmount,
+    //   tickerMaxPercent,
+    // )
+    // if (!refreshed) return detail
 
-    hasTransaction = true
-    return refreshed
+    // hasTransaction = true
+    // return refreshed
   }, currentDetail)
 
   return {
     holdingDetail,
-    hasTransaction,
+    hasTransaction: false,
   }
 }

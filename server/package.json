@@ -5,7 +5,7 @@
     "dev": "ts-node-dev -r tsconfig-paths/register ./index.ts",
     "cron": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cron",
     "api": "pm2 start ../scripts/devOps/serverProd.config.js",
-    "build": "tsc --build --clean && tsc --build",
+    "build": "rm -rf ./dist && tsc --build",
 
     "tsc": "tsc",
     "lint": "eslint ./ --ext .ts",
@@ -14,24 +14,23 @@
     "migrate": "knex migrate:latest",
     "migrate:down": "knex migrate:down",
 
-    "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerPrices",
-    "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcPriceMovements",
-    "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli syncTickerFinancials",
-    "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcFinancialMovements",
-    "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcIndicatorMovements",
-    "calcDailyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyIndicators",
+    "syncTickerPrices": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli syncTickerPrices",
+    "calcPriceMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcPriceMovements",
+    "syncTickerFinancials": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli syncTickerFinancials",
+    "calcFinancialMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcFinancialMovements",
+    "calcIndicatorMovements": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcIndicatorMovements",
+    "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcDailyTickers",
+    "calcDailyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcDailyIndicators",
 
-    "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateSystemCaches",
-    "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli sendPendingEmails",
+    "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateSystemCaches",
+    "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli sendPendingEmails",
 
-    "calcTraderAccessHashs": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderAccessHashs",
-    "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderPerformances",
-    "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcTraderDescendants",
+    "calcTraderAccessHashs": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderAccessHashs",
+    "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderPerformances",
+    "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderDescendants",
 
-    "calcDailyTickers": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli calcDailyTickers",
-
-    "generateDailyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateDailyData",
-    "generateWeeklyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/server/cli generateWeeklyData"
+    "generateDailyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateDailyData",
+    "generateWeeklyData": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateWeeklyData"
   },
   "dependencies": {
     "@shared/constants": "*",

@@ -71,7 +71,7 @@ describe('#getPreviousOne', () => {
 
 describe('#getLatest', () => {
   test('could get lastest date', async () => {
-    const result = await tickerDaily.getLatest(1)
+    const result = await tickerDaily.getLatest()
     expect(result?.date).toBe('2022-01-04')
   })
   test('could return undefined', async () => {
@@ -81,7 +81,7 @@ describe('#getLatest', () => {
       transaction,
     })
     await transaction.commit()
-    const result = await tickerDaily.getLatest(1)
+    const result = await tickerDaily.getLatest()
     expect(result).toBeUndefined()
   })
 })
@@ -94,53 +94,6 @@ describe('#getAll', () => {
     expect(result2.length).toBe(2)
     const result3 = await tickerDaily.getAll(3)
     expect(result3.length).toBe(1)
-  })
-})
-
-describe('#getNearestPricesByDate', () => {
-  test('could get nearest prices by date', async () => {
-    const result1 = await tickerDaily.getNearestPricesByDate('2021-12-30')
-    expect(result1).toStrictEqual({})
-
-    const result2 = await tickerDaily.getNearestPricesByDate('2021-12-31')
-    expect(result2).toStrictEqual({ 1: 100, 2: 32 })
-
-    const result3 = await tickerDaily.getNearestPricesByDate('2022-01-01')
-    expect(result3).toStrictEqual({ 1: 105, 2: 32, 3: 1111 })
-
-    const result4 = await tickerDaily.getNearestPricesByDate('2022-01-02')
-    expect(result4).toStrictEqual({ 1: 107, 2: 40, 3: 1111 })
-
-    const result5 = await tickerDaily.getNearestPricesByDate('2022-01-03')
-    expect(result5).toStrictEqual({ 1: 100, 2: 40, 3: 1111 })
-  })
-})
-
-describe('#getByDate', () => {
-  test('could get by date', async () => {
-    const result1 = await tickerDaily.getByDate('2021-12-30')
-    expect(result1.length).toBe(0)
-
-    const result2 = await tickerDaily.getByDate('2021-12-31')
-    expect(result2.length).toBe(2)
-    expect(result2[0].tickerId).toBe(1)
-    expect(result2[0].date).toBe('2021-12-31')
-    expect(result2[1].tickerId).toBe(2)
-    expect(result2[1].date).toBe('2021-12-31')
-
-    const result3 = await tickerDaily.getByDate('2022-01-01')
-    expect(result3.length).toBe(2)
-    expect(result3[0].tickerId).toBe(1)
-    expect(result3[0].date).toBe('2022-01-01')
-    expect(result3[1].tickerId).toBe(3)
-    expect(result3[1].date).toBe('2022-01-01')
-
-    const result4 = await tickerDaily.getByDate('2022-01-02')
-    expect(result4.length).toBe(2)
-    expect(result4[0].tickerId).toBe(1)
-    expect(result4[0].date).toBe('2022-01-02')
-    expect(result4[1].tickerId).toBe(2)
-    expect(result4[0].date).toBe('2022-01-02')
   })
 })
 

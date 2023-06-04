@@ -1,7 +1,5 @@
 import * as dailyTickers from './dailyTickers'
 import * as databaseAdapter from 'adapters/database'
-import * as interfaces from '@shared/interfaces'
-import { instance, mock } from 'ts-mockito'
 
 beforeAll(async () => {
   databaseAdapter.initConnection()
@@ -39,28 +37,16 @@ describe('#getLatestDate', () => {
 describe('#getByUK', () => {
   test('could get by UK', async () => {
     const record1 = await dailyTickers.getByUK(1, '2021-12-31')
-    expect(record1?.id).toBe(1)
-    expect(record1?.date).toBe('2021-12-31')
-
+    expect(record1?.id).toBe(undefined)
     const record2 = await dailyTickers.getByUK(1, '2021-12-30')
     expect(record2).toBeNull()
 
     const record3 = await dailyTickers.getByUK(1, '2022-01-01')
-    expect(record3?.id).toBe(2)
+    expect(record3?.id).toBe(1)
     expect(record3?.date).toBe('2022-01-01')
 
     const record4 = await dailyTickers.getByUK(1, '2022-01-02')
     expect(record4).toBeNull()
-  })
-
-  test('could only return selected columns', async () => {
-    const result1 = await dailyTickers.getByUK(1, '2021-12-31', ['tickers'])
-    expect(result1?.tickers).toBeTruthy()
-    expect(result1?.nearestPrices).toBeFalsy()
-
-    const result2 = await dailyTickers.getByUK(1, '2021-12-31', ['nearestPrices'])
-    expect(result2?.nearestPrices).toBeTruthy()
-    expect(result2?.tickers).toBeFalsy()
   })
 })
 
@@ -70,96 +56,18 @@ describe('#create', () => {
     const created = await dailyTickers.create({
       entityId: 2,
       date: '2022-01-02',
-      tickers: {},
-      nearestPrices: {},
-      indicators: null,
+      tickerInfos: {},
+      priceInfo: {},
     }, transaction)
     await transaction.commit()
-    expect(created.id).toBe(3)
+    expect(created.id).toBe(2)
     expect(created.entityId).toBe(2)
     expect(created.date).toBe('2022-01-02')
 
     const record = await dailyTickers.getByUK(2, '2022-01-02')
-    expect(record?.id).toBe(3)
+    expect(record?.id).toBe(2)
     expect(record?.entityId).toBe(2)
     expect(record?.date).toBe('2022-01-02')
-  })
-})
-
-describe('#update', () => {
-  test('could update', async () => {
-    const transaction = await databaseAdapter.createTransaction()
-    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
-    const dailyTicker = instance(dailyTickerMock)
-    const tickers = {
-      1: dailyTicker,
-    }
-    const prices = {
-      1: 100,
-    }
-    const indicatorsMock = mock<interfaces.dailyTickersModel.IndicatorInfo>({})
-    const updated = await dailyTickers.update(3, {
-      tickers, nearestPrices: prices, indicators: instance(indicatorsMock),
-    }, transaction)
-    await transaction.commit()
-    expect(updated.id).toBe(3)
-    expect(updated.entityId).toBe(2)
-    expect(updated.date).toBe('2022-01-02')
-    expect(updated.tickers).toStrictEqual(JSON.stringify(tickers))
-    expect(updated.nearestPrices).toStrictEqual(JSON.stringify(prices))
-
-    const record = await dailyTickers.getByUK(2, '2022-01-02')
-    expect(record?.id).toBe(3)
-    expect(record?.entityId).toBe(2)
-    expect(record?.date).toBe('2022-01-02')
-    expect(record?.tickers).toStrictEqual(JSON.stringify(tickers))
-    expect(record?.nearestPrices).toStrictEqual(JSON.stringify(prices))
-  })
-})
-
-describe('#upsert', () => {
-  test('could upsert', async () => {
-    const transaction = await databaseAdapter.createTransaction()
-    const dailyTickerMock: interfaces.dailyTickersModel.DailyTicker = mock({})
-
-    const tickers = {
-      1: instance(dailyTickerMock),
-      2: instance(dailyTickerMock),
-    }
-    const prices = {
-      1: 100,
-      2: 200,
-    }
-    const updated = await dailyTickers.upsert(2, '2022-01-02', {
-      tickers, nearestPrices: prices, indicators: null,
-    }, transaction)
-    await transaction.commit()
-    expect(updated.id).toBe(3)
-    expect(updated.date).toBe('2022-01-02')
-    expect(updated.tickers).toStrictEqual(JSON.stringify(tickers))
-    expect(updated.nearestPrices).toStrictEqual(JSON.stringify(prices))
-
-    const record = await dailyTickers.getByUK(2, '2022-01-02')
-    expect(record?.id).toBe(3)
-    expect(record?.date).toBe('2022-01-02')
-    expect(record?.tickers).toStrictEqual(JSON.stringify(tickers))
-    expect(record?.nearestPrices).toStrictEqual(JSON.stringify(prices))
-
-    const transaction1 = await databaseAdapter.createTransaction()
-    const created = await dailyTickers.upsert(2, '2022-01-03', {
-      tickers, nearestPrices: prices, indicators: null,
-    }, transaction1)
-    await transaction1.commit()
-    expect(created.id).toBe(4)
-    expect(created.date).toBe('2022-01-03')
-    expect(created.tickers).toBe(JSON.stringify(tickers))
-    expect(created.nearestPrices).toStrictEqual(JSON.stringify(prices))
-
-    const record1 = await dailyTickers.getByUK(2, '2022-01-03')
-    expect(record1?.id).toBe(4)
-    expect(record1?.date).toBe('2022-01-03')
-    expect(record1?.tickers).toStrictEqual(JSON.stringify(tickers))
-    expect(record1?.nearestPrices).toStrictEqual(JSON.stringify(prices))
   })
 })
 

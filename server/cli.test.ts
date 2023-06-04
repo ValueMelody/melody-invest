@@ -58,7 +58,6 @@ describe('generateDailyData', () => {
     expect(syncTickerPrices).toBeCalledWith(dateTool.getCurrentDate())
     expect(calcPriceMovements).toBeCalledTimes(1)
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(false)
   })
 })
 
@@ -85,7 +84,6 @@ describe('generateWeeklyData', () => {
     expect(calcFinancialMovements).toBeCalledTimes(1)
     expect(calcIndicatorMovements).toBeCalledTimes(1)
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(true)
     expect(calcTraderPerformances).toBeCalledTimes(1)
     expect(calcTraderPerformances).toBeCalledWith(true)
   })
@@ -124,7 +122,6 @@ describe('calcDailyTickers', () => {
     process.argv[2] = taskEnum.Name.calcDailyTickers
     await run()
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(false, undefined)
   })
 
   test('could trigger calcDailyTickers by true', async () => {
@@ -136,7 +133,6 @@ describe('calcDailyTickers', () => {
     process.argv[3] = 'true'
     await run()
     expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledWith(true, undefined)
   })
 })
 

@@ -1,5 +1,17 @@
 import * as interfaces from '@shared/interfaces'
 
+export const DailyMovementKeys: interfaces.tickerDailyModel.MovementKey[] = [
+  'priceDailyIncrease', 'priceDailyDecrease',
+  'priceWeeklyIncrease', 'priceWeeklyDecrease',
+  'priceMonthlyIncrease', 'priceMonthlyDecrease',
+  'priceQuarterlyIncrease', 'priceQuarterlyDecrease',
+  'priceYearlyIncrease', 'priceYearlyDecrease',
+]
+
+export const YearlyCompareKeys: interfaces.tickerYearlyModel.CompareKey[] = [
+  'peRatio', 'pbRatio', 'psRatio',
+]
+
 export const YearlyMovementKeys: interfaces.tickerYearlyModel.MovementKey[] = [
   'revenueYearlyIncrease', 'revenueYearlyDecrease',
   'profitYearlyIncrease', 'profitYearlyDecrease',
@@ -12,6 +24,11 @@ export const YearlyMovementKeys: interfaces.tickerYearlyModel.MovementKey[] = [
   'peYearlyIncrease', 'peYearlyDecrease',
   'pbYearlyIncrease', 'pbYearlyDecrease',
   'psYearlyIncrease', 'psYearlyDecrease',
+]
+
+export const QuarterlyCompareKeys: interfaces.tickerQuarterlyModel.CompareKey[] = [
+  'peRatio', 'pbRatio', 'psRatio',
+  'roa', 'roe', 'grossMargin', 'debtEquity',
 ]
 
 export const QuarterlyMovementKeys: interfaces.tickerQuarterlyModel.MovementKey[] = [

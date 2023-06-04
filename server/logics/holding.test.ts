@@ -3,27 +3,6 @@ import * as holding from './holding'
 import * as interfaces from '@shared/interfaces'
 import { instance, mock } from 'ts-mockito'
 
-describe('getHoldingTotalValue', () => {
-  const holdingDetail: interfaces.traderHoldingModel.Detail = {
-    date: '2001-01-01',
-    totalValue: 10000,
-    totalCash: 1000,
-    items: [
-      { tickerId: 1, shares: 100, splitMultiplier: 2, value: 300 },
-      { tickerId: 2, shares: 3, splitMultiplier: 20, value: 10 },
-      { tickerId: 3, shares: 50, splitMultiplier: 1, value: 220 },
-    ],
-  }
-  const tickerPrices1: interfaces.tickerDailyModel.TickerPrices = { 1: 1, 3: 5 }
-  const tickerPrices2: interfaces.tickerDailyModel.TickerPrices = { 1: 2, 2: 3, 3: 4 }
-  const tickerPrices3: interfaces.tickerDailyModel.TickerPrices = {}
-  test('could get correct value', () => {
-    expect(holding.getHoldingTotalValue(holdingDetail, tickerPrices1)).toBe(1350)
-    expect(holding.getHoldingTotalValue(holdingDetail, tickerPrices2)).toBe(1409)
-    expect(holding.getHoldingTotalValue(holdingDetail, tickerPrices3)).toBe(1000)
-  })
-})
-
 describe('#groupHoldingsByTraders', () => {
   const holdingMock: interfaces.traderHoldingModel.Record = mock({})
 

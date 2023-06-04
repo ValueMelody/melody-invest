@@ -115,15 +115,15 @@ const calcTraderPerformance = async (
         tradeDate,
       )
 
-      if (!dailyTickersRecord?.tickers) {
+      if (!dailyTickersRecord?.tickerInfos) {
         tradeDate = nextDate
         continue
       }
 
-      const dailyTickers = dailyTickersRecord.tickers
-      const indicatorInfo = dailyTickersRecord.indicators
+      const dailyTickers = dailyTickersRecord.tickerInfos || {}
+      const indicatorInfo = {}
 
-      const emptyDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
+      const emptyDailyTickers: interfaces.dailyTickersModel.TickerInfos = {}
       const availableTargets = env.tickerIds
         ? env.tickerIds.reduce((tickers, tickerId) => {
           tickers[tickerId] = dailyTickers[tickerId]
@@ -282,7 +282,7 @@ export const calcAllTraderPerformances = async (
   const delistedTickers = await tickerModel.getAllDelisted()
   const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
   const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
-    return tickerDailyModel.getLatest(tickerId)
+    return tickerDailyModel.getLatest()
   })
   const initLastPrices: transactionLogic.DelistedLastPrices = {}
   const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
