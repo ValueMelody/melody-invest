@@ -44,15 +44,10 @@ export const getPreviousOne = async (
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
-export const getLatest = async (
-  tickerId: number,
-): Promise<interfaces.tickerDailyModel.Record | undefined> => {
+export const getLatest = async (): Promise<interfaces.tickerDailyModel.Record | undefined> => {
   const record = await databaseAdapter.findOne({
     tableName: TableName,
     orderBy: [{ column: 'date', order: 'desc' }],
-    conditions: [
-      { key: 'tickerId', value: tickerId },
-    ],
   })
   return record ? convertToRecord(record) : undefined
 }
@@ -70,38 +65,42 @@ export const getAll = async (
   return tickerDaily.map((daily) => convertToRecord(daily))
 }
 
-export const getNearestPricesByDate = async (
+export const getPriceInfoByDate = async (
   date: string,
-): Promise<interfaces.tickerDailyModel.TickerPrices> => {
+  tickerIds: number[],
+): Promise<interfaces.dailyTickersModel.PriceInfo> => {
   const sevenDaysAgo = dateTool.getPreviousDate(date, 7)
   const latestTickerDailys: interfaces.tickerDailyModel.Raw[] = await databaseAdapter.findAll({
     tableName: TableName,
     select: ['tickerId', 'closePrice', 'splitMultiplier'],
     orderBy: [
-      { column: 'tickerId', order: 'asc' },
       { column: 'date', order: 'desc' },
     ],
     conditions: [
+      { key: 'tickerId', value: tickerIds, type: 'IN' },
       { key: 'date', value: date, type: '<=' },
       { key: 'date', value: sevenDaysAgo, type: '>=' },
     ],
-    distinctOn: 'tickerId',
   })
-  const initialPrices: interfaces.tickerDailyModel.TickerPrices = {}
-  const tickerPrices = latestTickerDailys.reduce((prices, raw) => {
+  const priceInfo = latestTickerDailys.reduce((prices, raw) => {
+    if (prices[raw.tickerId]) return prices
     const price = parseFloat(raw.splitMultiplier) * raw.closePrice
     prices[raw.tickerId] = price
     return prices
-  }, initialPrices)
-  return tickerPrices
+  }, {} as interfaces.dailyTickersModel.PriceInfo)
+  return priceInfo
 }
 
 export const getByDate = async (
   date: string,
+  tickerIds: number[],
 ): Promise<interfaces.tickerDailyModel.Record[]> => {
   const tickerDaily = await databaseAdapter.findAll({
     tableName: TableName,
-    conditions: [{ key: 'date', value: date }],
+    conditions: [
+      { key: 'tickerId', value: tickerIds, type: 'IN' },
+      { key: 'date', value: date },
+    ],
   })
   return tickerDaily.map((daily) => convertToRecord(daily))
 }

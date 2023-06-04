@@ -5,6 +5,7 @@ import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
+import * as entityModel from 'models/entity'
 import * as interfaces from '@shared/interfaces'
 import * as runTool from 'tools/run'
 import * as tickerDailyModel from 'models/tickerDaily'
@@ -687,122 +688,116 @@ export const calcAllTickersYearlyFinancial = async () => {
   })
 }
 
-interface Quarterlys {
-  [tickerId: number]: interfaces.tickerQuarterlyModel.Record;
-}
-
-interface Yearlys {
-  [tickerId: number]: interfaces.tickerYearlyModel.Record;
-}
-
-export const buildTickerInfo = (
+export const groupTickerInfo = (
   tickerDaily: interfaces.tickerDailyModel.Record,
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
 ): interfaces.dailyTickersModel.TickerInfo => {
-  const tickerInfo: interfaces.dailyTickersModel.TickerInfo = {
-    priceDailyIncrease: tickerDaily.priceDailyIncrease,
-    priceDailyDecrease: tickerDaily.priceDailyDecrease,
-    priceWeeklyIncrease: tickerDaily.priceWeeklyIncrease,
-    priceWeeklyDecrease: tickerDaily.priceWeeklyDecrease,
-    priceMonthlyIncrease: tickerDaily.priceMonthlyIncrease,
-    priceMonthlyDecrease: tickerDaily.priceMonthlyDecrease,
-    priceQuarterlyIncrease: tickerDaily.priceQuarterlyIncrease,
-    priceQuarterlyDecrease: tickerDaily.priceQuarterlyDecrease,
-    priceYearlyIncrease: tickerDaily.priceYearlyIncrease,
-    priceYearlyDecrease: tickerDaily.priceYearlyDecrease,
-  }
+  const info: interfaces.dailyTickersModel.TickerInfo = {}
 
-  constants.Ticker.YearlyMovementKeys.forEach((key) => {
-    if (tickerYearly?.[key] !== undefined && tickerYearly?.[key] !== null) {
-      tickerInfo[key] = tickerYearly[key]
+  constants.Ticker.DailyMovementKeys.forEach((key) => {
+    if (tickerDaily[key] !== undefined && tickerDaily[key] !== null) {
+      info[key] = tickerDaily[key]
+    }
+  })
+
+  constants.Ticker.QuarterlyCompareKeys.forEach((key) => {
+    if (tickerQuarterly?.[key] !== undefined && tickerQuarterly?.[key] !== null) {
+      info[key] = tickerQuarterly[key]
     }
   })
 
   constants.Ticker.QuarterlyMovementKeys.forEach((key) => {
     if (tickerQuarterly?.[key] !== undefined && tickerQuarterly?.[key] !== null) {
-      tickerInfo[key] = tickerQuarterly[key]
+      info[key] = tickerQuarterly[key]
     }
   })
 
-  return tickerInfo
+  constants.Ticker.YearlyCompareKeys.forEach((key) => {
+    if (tickerYearly?.[key] !== undefined && tickerYearly?.[key] !== null) {
+      info[key] = tickerYearly[key]
+    }
+  })
+
+  constants.Ticker.YearlyMovementKeys.forEach((key) => {
+    if (tickerYearly?.[key] !== undefined && tickerYearly?.[key] !== null) {
+      info[key] = tickerYearly[key]
+    }
+  })
+
+  return info
 }
 
-const buildDailyTickers = async (
+const buildTickerInfos = async (
   targetDate: string,
-): Promise<interfaces.dailyTickersModel.DailyTickers | null> => {
-  const dailyTargets = await tickerDailyModel.getByDate(targetDate)
+  tickerIds: number[],
+): Promise<interfaces.dailyTickersModel.TickerInfos | null> => {
+  const dailyTargets = await tickerDailyModel.getByDate(targetDate, tickerIds)
   if (!dailyTargets.length) return null
 
-  const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate)
-  const initialQuarterlys: Quarterlys = {}
+  const quarterlyTargets = await tickerQuarterlyModel.getPublishedByDate(targetDate, tickerIds)
   const quarterlys = quarterlyTargets.reduce((quarterlys, quarterly) => {
+    if (quarterlys[quarterly.tickerId]) return quarterlys
     quarterlys[quarterly.tickerId] = quarterly
     return quarterlys
-  }, initialQuarterlys)
+  }, {} as {
+    [tickerId: number]: interfaces.tickerQuarterlyModel.Record;
+  })
 
-  const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate)
-  const initialYearlys: Yearlys = {}
+  const yearlyTargets = await tickerYearlyModel.getPublishedByDate(targetDate, tickerIds)
   const yearlys = yearlyTargets.reduce((yearlys, yearly) => {
+    if (yearlys[yearly.tickerId]) return yearlys
     yearlys[yearly.tickerId] = yearly
     return yearlys
-  }, initialYearlys)
+  }, {} as {
+    [tickerId: number]: interfaces.tickerYearlyModel.Record;
+  })
 
-  const initialDailyTickers: interfaces.dailyTickersModel.DailyTickers = {}
   return dailyTargets.reduce((tickers, daily) => {
     const quarterly = quarterlys[daily.tickerId] || null
     const yearly = yearlys[daily.tickerId] || null
-    const info = buildTickerInfo(
+    const info = groupTickerInfo(
       daily, quarterly, yearly,
     )
-    tickers[daily.tickerId] = { info, daily, quarterly, yearly }
+    tickers[daily.tickerId] = info
     return tickers
-  }, initialDailyTickers)
+  }, {} as interfaces.dailyTickersModel.TickerInfos)
 }
 
-export const calcDailyAvailableTickers = async (
-  forceRecheck: boolean,
-  startDate?: string,
-) => {
-  const entityId = 1
+export const calcDailyTickers = async () => {
+  const lastPrice = await tickerDailyModel.getLatest()
+  const lastPriceDate = lastPrice?.date || dateTool.getInitialDate()
 
-  const lastPrices = await tickerDailyModel.getLatest(1)
-  const lastPriceDate = lastPrices?.date || dateTool.getInitialDate()
-  const lastCalculatedDate = forceRecheck
-    ? dateTool.getInitialDate()
-    : await dailyTickersModel.getLatestDate()
+  const entities = await entityModel.getAll()
+  await runTool.asyncForEach(entities, async (entity: interfaces.entityModel.Record) => {
+    const tickers = await tickerModel.getAllByEntity(entity.id)
+    if (!tickers.length) return
+    const tickerIds = tickers.map((ticker) => ticker.id)
 
-  const checkDate = startDate && startDate > lastCalculatedDate ? startDate : lastCalculatedDate
+    console.info(`checking entity: ${entity.id}`)
+    const lastRecord = await dailyTickersModel.getLast(entity.id)
+    // Always double check latest 60 days
+    let targetDate = lastRecord
+      ? dateTool.getPreviousDate(lastRecord.date, 60)
+      : dateTool.getInitialDate()
 
-  let targetDate = dateTool.getNextDate(checkDate)
-  if (!forceRecheck && lastPriceDate < targetDate) return
+    while (targetDate <= lastPriceDate) {
+      const nextDate = dateTool.getNextDate(targetDate)
+      const priceInfo = await tickerDailyModel.getPriceInfoByDate(targetDate, tickerIds)
+      const tickerInfos = await buildTickerInfos(targetDate, tickerIds)
 
-  while (targetDate <= lastPriceDate) {
-    console.info(`Checking ${targetDate}`)
-    const nextDate = dateTool.getNextDate(targetDate)
-
-    const dailyTickers = await buildDailyTickers(targetDate)
-    const indicators = null
-    const nearestPrices = await tickerDailyModel.getNearestPricesByDate(targetDate)
-
-    const transaction = await databaseAdapter.createTransaction()
-    try {
-      await dailyTickersModel.upsert(entityId, targetDate, {
-        tickers: dailyTickers,
-        indicators,
-        nearestPrices,
-      }, transaction)
-      await transaction.commit()
-    } catch (error) {
-      await transaction.rollback()
-      throw error
+      const transaction = await databaseAdapter.createTransaction()
+      try {
+        await dailyTickersModel.upsert(entity.id, targetDate, {
+          tickerInfos,
+          priceInfo,
+        }, transaction)
+        await transaction.commit()
+      } catch (error) {
+        await transaction.rollback()
+        throw error
+      }
+      targetDate = nextDate
     }
-
-    targetDate = nextDate
-  }
-
-  if (forceRecheck) {
-    await cacheAdapter.empty()
-    await cacheTask.generateSystemCaches()
-  }
+  })
 }

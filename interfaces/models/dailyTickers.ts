@@ -1,6 +1,3 @@
-import * as indicatorMonthly from './indicatorMonthly'
-import * as indicatorQuarterly from './indicatorQuarterly'
-import * as indicatorYearly from './indicatorYearly'
 import * as tickerDaily from './tickerDaily'
 import * as tickerQuarterly from './tickerQuarterly'
 import * as tickerYearly from './tickerYearly'
@@ -10,54 +7,40 @@ export type TickerMovementKey =
   tickerQuarterly.MovementKey |
   tickerYearly.MovementKey
 
-export type IndicatorMovementKey = indicatorMonthly.MovementKey |indicatorYearly.MovementKey
+export type TickerCompareKey =
+  tickerQuarterly.CompareKey |
+  tickerYearly.CompareKey
 
-export type MovementKey = TickerMovementKey | IndicatorMovementKey
-
-export type IndicatorCompareKey = indicatorQuarterly.CompareKey | indicatorYearly.CompareKey
-
-export type CompareKey = IndicatorCompareKey
-
-export type IndicatorKey = IndicatorMovementKey | IndicatorCompareKey
+export type TickerInfoKey = TickerMovementKey | TickerCompareKey
 
 export type TickerInfo = {
-  [key in TickerMovementKey]?: number | null;
+  [key in TickerInfoKey]?: number | string | null;
 }
 
-export interface DailyTicker {
-  daily: tickerDaily.Record;
-  quarterly: tickerQuarterly.Record | null;
-  yearly: tickerYearly.Record | null;
-  info: TickerInfo;
+export type TickerInfos = {
+  [key: number]: TickerInfo;
 }
 
-export interface DailyTickers {
-  [tickerId: number]: DailyTicker;
-}
-
-export type IndicatorInfo = {
-  [key in IndicatorKey]: number | null;
+export interface PriceInfo {
+  [tickerId: number]: number;
 }
 
 export interface Record {
   id: number;
   entityId: number;
   date: string;
-  tickers: DailyTickers | null;
-  indicators: IndicatorInfo | null;
-  nearestPrices: tickerDaily.TickerPrices;
+  tickerInfos: TickerInfos | null;
+  priceInfo: PriceInfo;
 }
 
 export interface Create {
   date: string;
   entityId: number;
-  tickers: DailyTickers | null;
-  indicators: IndicatorInfo | null;
-  nearestPrices: tickerDaily.TickerPrices;
+  tickerInfos: TickerInfos | null;
+  priceInfo: PriceInfo;
 }
 
 export interface Update {
-  tickers: DailyTickers | null;
-  indicators: IndicatorInfo | null;
-  nearestPrices: tickerDaily.TickerPrices;
+  tickerInfos: TickerInfos | null;
+  priceInfo: PriceInfo;
 }

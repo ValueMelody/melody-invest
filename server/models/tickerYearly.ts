@@ -84,20 +84,21 @@ export const getAll = async (
 
 export const getPublishedByDate = async (
   date: string,
+  tickerIds: number[],
 ): Promise<interfaces.tickerYearlyModel.Record[]> => {
-  const currentQuarter = dateTool.getQuarterByDate(date)
-  const [year, quarter] = currentQuarter.split('-')
-
-  const previousYear = dateTool.getPreviousYear(year)
-  const yearBeforePrevious = dateTool.getPreviousYear(previousYear)
-  const targetYear = quarter === '03' ? yearBeforePrevious : previousYear
+  const targetDate = dateTool.getPreviousDate(date, 480)
+  const startDate = dateTool.getPreviousDate(date, 840)
 
   const records = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
-      { key: 'year', value: targetYear },
+      { key: 'earningDate', value: targetDate, type: '<' },
+      { key: 'earningDate', value: startDate, type: '>=' },
+      { key: 'tickerId', value: tickerIds, type: 'IN' },
     ],
-    orderBy: [{ column: 'year', order: 'desc' }],
+    orderBy: [
+      { column: 'earningDate', order: 'desc' },
+    ],
   })
   return records.map((raw) => convertToRecord(raw))
 }

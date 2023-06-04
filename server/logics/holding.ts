@@ -4,7 +4,7 @@ import * as interfaces from '@shared/interfaces'
 
 export const getHoldingTotalValue = (
   holdingDetail: interfaces.traderHoldingModel.Detail,
-  tickerPrices: interfaces.tickerDailyModel.TickerPrices,
+  tickerPrices: interfaces.dailyTickersModel.PriceInfo,
 ): number => {
   const totalValue = holdingDetail.items.reduce((total, item) => {
     const matchedPrice = tickerPrices[item.tickerId]

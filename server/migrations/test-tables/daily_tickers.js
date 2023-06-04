@@ -5,9 +5,8 @@ exports.up = (knex) => {
       table.integer('entityId').notNullable()
       table.foreign('entityId').references('id').inTable('entity')
       table.specificType('date', 'CHAR(10)').notNullable()
-      table.jsonb('tickers')
-      table.jsonb('indicators')
-      table.jsonb('nearestPrices').notNullable()
+      table.jsonb('tickerInfos')
+      table.jsonb('priceInfo').notNullable()
       table.unique(['entityId', 'date'], 'daily_tickers_ukey')
     })
 }
