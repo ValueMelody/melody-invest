@@ -1,5 +1,3 @@
-import * as cacheAdapter from 'adapters/cache'
-import * as cacheTask from 'tasks/cache'
 import * as calcTool from 'tools/calc'
 import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
