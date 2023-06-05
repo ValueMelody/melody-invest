@@ -1,6 +1,5 @@
 import * as cacheTask from 'tasks/cache'
 import * as calcTask from 'tasks/calc'
-import * as dateTool from 'tools/date'
 import * as emailTask from 'tasks/email'
 import * as runTool from 'tools/run'
 import * as syncTask from 'tasks/sync'
@@ -45,22 +44,6 @@ export const run = async () => {
       await calcTask.calcDailyTickers()
       break
     }
-
-    case taskEnum.Name.generateDailyData: {
-      const date = dateTool.getCurrentDate()
-      await syncTask.syncTickerPrices(date)
-      await calcTask.calcPriceMovements()
-      await calcTask.calcDailyTickers()
-      break
-    }
-    case taskEnum.Name.generateWeeklyData: {
-      await calcTask.calcFinancialMovements()
-      await calcTask.calcIndicatorMovements()
-
-      await calcTask.calcDailyTickers()
-      await calcTask.calcTraderPerformances(true)
-      break
-    }
     case taskEnum.Name.generateSystemCaches: {
       await cacheTask.generateSystemCaches()
       break
@@ -69,6 +52,7 @@ export const run = async () => {
       await emailTask.sendPendingEmails()
       break
     }
+
     case taskEnum.Name.calcTraderAccessHashs: {
       await calcTask.calcTraderAccessHashs()
       break

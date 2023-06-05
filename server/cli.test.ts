@@ -1,6 +1,5 @@
 import * as cacheTask from 'tasks/cache'
 import * as calcTask from 'tasks/calc'
-import * as dateTool from 'tools/date'
 import * as emailTask from 'tasks/email'
 import * as syncTask from 'tasks/sync'
 import * as taskEnum from 'enums/task'
@@ -36,57 +35,6 @@ afterEach(() => {
   process.argv[3] = ''
   process.argv[4] = ''
   process.argv[5] = ''
-})
-
-describe('generateDailyData', () => {
-  test('could trigger generateDailyData', async () => {
-    const syncTickerPrices = jest.fn()
-    jest.spyOn(syncTask, 'syncTickerPrices')
-      .mockImplementation(syncTickerPrices)
-
-    const calcPriceMovements = jest.fn()
-    jest.spyOn(calcTask, 'calcPriceMovements')
-      .mockImplementation(calcPriceMovements)
-
-    const calcDailyTickers = jest.fn()
-    jest.spyOn(calcTask, 'calcDailyTickers')
-      .mockImplementation(calcDailyTickers)
-
-    process.argv[2] = taskEnum.Name.generateDailyData
-    await run()
-    expect(syncTickerPrices).toBeCalledTimes(1)
-    expect(syncTickerPrices).toBeCalledWith(dateTool.getCurrentDate())
-    expect(calcPriceMovements).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledTimes(1)
-  })
-})
-
-describe('generateWeeklyData', () => {
-  test('could trigger generateWeeklyData', async () => {
-    const calcFinancialMovements = jest.fn()
-    jest.spyOn(calcTask, 'calcFinancialMovements')
-      .mockImplementation(calcFinancialMovements)
-
-    const calcIndicatorMovements = jest.fn()
-    jest.spyOn(calcTask, 'calcIndicatorMovements')
-      .mockImplementation(calcIndicatorMovements)
-
-    const calcDailyTickers = jest.fn()
-    jest.spyOn(calcTask, 'calcDailyTickers')
-      .mockImplementation(calcDailyTickers)
-
-    const calcTraderPerformances = jest.fn()
-    jest.spyOn(calcTask, 'calcTraderPerformances')
-      .mockImplementation(calcTraderPerformances)
-
-    process.argv[2] = taskEnum.Name.generateWeeklyData
-    await run()
-    expect(calcFinancialMovements).toBeCalledTimes(1)
-    expect(calcIndicatorMovements).toBeCalledTimes(1)
-    expect(calcDailyTickers).toBeCalledTimes(1)
-    expect(calcTraderPerformances).toBeCalledTimes(1)
-    expect(calcTraderPerformances).toBeCalledWith(true)
-  })
 })
 
 describe('generateSystemCaches', () => {
