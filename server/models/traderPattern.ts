@@ -5,13 +5,6 @@ import { Knex } from 'knex'
 
 const TableName = adapterEnum.DatabaseTable.TraderPattern
 
-const convertToPublic = (
-  record: interfaces.traderPatternModel.Record,
-): interfaces.traderPatternModel.Public => {
-  const { hashCode, ...patternPublic } = record
-  return patternPublic
-}
-
 export const getByPK = async (
   id: number,
 ): Promise<interfaces.traderPatternModel.Record | null> => {
@@ -53,8 +46,7 @@ export const getPublicByTraders = async (
 ) => {
   const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
   const patterns = await getInPKs(relatedPatternIds)
-  const publics = patterns.map(convertToPublic)
-  return publics
+  return patterns
 }
 
 export const getAll = async (): Promise<interfaces.traderPatternModel.Record[]> => {

@@ -26,11 +26,9 @@ export const getTraderProfile = async (
   const pattern = await traderPatternModel.getByPK(trader.traderPatternId)
   if (!pattern) throw errorEnum.Custom.RecordNotFound
 
-  const { hashCode, ...patternPublic } = pattern
-
   return {
     trader,
-    pattern: patternPublic,
+    pattern,
   }
 }
 

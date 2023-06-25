@@ -18,7 +18,7 @@ const trader1 = { ...traderMock, totalValue: 200000 }
 const trader2 = { ...traderMock, totalValue: 300000 }
 const trader3 = { ...traderMock, totalValue: 100000 }
 
-const patternMock: interfaces.traderPatternModel.Public = mock({})
+const patternMock: interfaces.traderPatternModel.Record = mock({})
 const traderPattern1 = { ...patternMock, id: 1 }
 const traderPattern2 = { ...patternMock, id: 2 }
 

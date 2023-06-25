@@ -3,7 +3,6 @@ export type MovementIncreaseKey =
   'revenueYearlyIncrease' | 'peYearlyIncrease' |
   'pbYearlyIncrease' | 'psYearlyIncrease' |
   'epsYearlyIncrease' | 'ebitdaYearlyIncrease' |
-  'bookValueYearlyIncrease' | 'equityYearlyIncrease' |
   'freeCashFlowYearlyIncrease'
 
 export type MovementDecreaseKey =
@@ -11,7 +10,6 @@ export type MovementDecreaseKey =
   'revenueYearlyDecrease' | 'peYearlyDecrease' |
   'pbYearlyDecrease' | 'psYearlyDecrease' |
   'epsYearlyDecrease' | 'ebitdaYearlyDecrease' |
-  'bookValueYearlyDecrease' | 'equityYearlyDecrease' |
   'freeCashFlowYearlyDecrease'
 
 export type MovementKey = MovementIncreaseKey | MovementDecreaseKey

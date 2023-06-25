@@ -24,8 +24,8 @@ export const calcYearly = async () => {
         increaseValue: inflationIncrease,
         decreaseValue: inflationDecrease,
       } = calcTool.calcIncreaseDecreaseValues(
-        indicator.inflation,
-        lastIndicator?.inflation,
+        indicator.annualInflation,
+        lastIndicator?.annualInflation,
         lastIndicator?.inflationYearlyIncrease,
         lastIndicator?.inflationYearlyDecrease,
       )

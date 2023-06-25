@@ -3,7 +3,6 @@ export type MovementIncreaseKey =
   'revenueQuarterlyIncrease' | 'peQuarterlyIncrease' |
   'pbQuarterlyIncrease' | 'psQuarterlyIncrease' |
   'epsQuarterlyIncrease' | 'ebitdaQuarterlyIncrease' |
-  'bookValueQuarterlyIncrease' | 'equityQuarterlyIncrease' |
   'freeCashFlowQuarterlyIncrease' | 'roaQuarterlyIncrease' |
   'roeQuarterlyIncrease' | 'grossMarginQuarterlyIncrease' |
   'debtEquityQuarterlyIncrease'
@@ -13,7 +12,6 @@ export type MovementDecreaseKey =
   'revenueQuarterlyDecrease' | 'peQuarterlyDecrease' |
   'pbQuarterlyDecrease' | 'psQuarterlyDecrease' |
   'epsQuarterlyDecrease' | 'ebitdaQuarterlyDecrease' |
-  'bookValueQuarterlyDecrease' | 'equityQuarterlyDecrease' |
   'freeCashFlowQuarterlyDecrease' | 'roaQuarterlyDecrease' |
   'roeQuarterlyDecrease' | 'grossMarginQuarterlyDecrease' |
   'debtEquityQuarterlyDecrease'

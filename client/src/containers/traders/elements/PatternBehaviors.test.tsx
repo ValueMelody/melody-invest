@@ -8,7 +8,7 @@ import { mock } from 'ts-mockito'
 describe('#PatternBehaviors', () => {
   const history = createMemoryHistory({ initialEntries: ['/test'] })
 
-  const patternMock: interfaces.traderPatternModel.Public = mock({})
+  const patternMock: interfaces.traderPatternModel.Record = mock({})
   const pattern = {
     ...patternMock,
     priceDailyIncreaseBuy: 1,

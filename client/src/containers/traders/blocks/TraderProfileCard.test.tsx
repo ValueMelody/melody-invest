@@ -15,7 +15,7 @@ afterEach(() => {
 })
 
 const traderType = mock<interfaces.traderModel.Record>({})
-const patternType = mock<interfaces.traderPatternModel.Public>({})
+const patternType = mock<interfaces.traderPatternModel.Record>({})
 
 jest.mock('selectors', () => {
   const actual = jest.requireActual('selectors')

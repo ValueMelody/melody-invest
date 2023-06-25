@@ -7,7 +7,7 @@ import * as traderPatternModel from './models/traderPattern'
 
 export interface TraderProfile {
   trader: traderModel.Record;
-  pattern: traderPatternModel.Public;
+  pattern: traderPatternModel.Record;
 }
 
 export interface ComboDetail {
