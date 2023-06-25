@@ -25,7 +25,7 @@ export const IndicatorQuarterlyMovementKeys: interfaces.indicatorQuarterlyModel.
 ]
 
 export const IndicatorYearlyCompareKeys: interfaces.indicatorYearlyModel.CompareKey[] = [
-  'gdpYearlyChangePercent', 'inflation',
+  'gdpYearlyChangePercent', 'annualInflation',
 ]
 
 export const IndicatorYearlyMovementKeys: interfaces.indicatorYearlyModel.MovementKey[] = [
