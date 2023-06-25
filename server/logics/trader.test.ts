@@ -4,7 +4,7 @@ import { instance, mock } from 'ts-mockito'
 
 const traderMock: interfaces.traderModel.Record = mock({})
 const traderInstance = instance(traderMock)
-const traderPatternMock: interfaces.traderPatternModel.Public = mock({})
+const traderPatternMock: interfaces.traderPatternModel.Record = mock({})
 
 describe('#presentTraderProfile', () => {
   const trader1: interfaces.traderModel.Record = {
@@ -22,7 +22,7 @@ describe('#presentTraderProfile', () => {
     accessCode: '123',
     isActive: true,
   }
-  const traderPatterns: interfaces.traderPatternModel.Public[] = [
+  const traderPatterns: interfaces.traderPatternModel.Record[] = [
     { ...traderPatternMock, id: 1 }, { ...traderPatternMock, id: 2 }, { ...traderPatternMock, id: 3 },
   ]
   test('could present traderProfile', () => {

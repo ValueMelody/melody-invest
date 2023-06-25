@@ -10,7 +10,7 @@ const PatternBehaviors = ({
   pattern,
   envId,
 }: {
-  pattern: interfaces.traderPatternModel.Public;
+  pattern: interfaces.traderPatternModel.Record;
   envId: number;
 }) => {
   const navigate = useNavigate()

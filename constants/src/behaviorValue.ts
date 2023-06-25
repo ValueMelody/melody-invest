@@ -24,13 +24,14 @@ export const Preference = Object.freeze({
 })
 
 const ContinuousMovement = [1, 2, 3, 5]
-
-const earningPercent = [1, 3, 5, 7, 10, 30, 50, 70]
-const debtEquityPercent = [0.5, 1, 1.5, 2, 2.5, 3]
-const fundsRatePercent = [0.5, 1, 2, 3, 4, 5]
-
+const EarningPercent = [1, 3, 5, 7, 10, 30, 50, 70]
+const DebtEquityPercent = [0.5, 1, 1.5, 2, 2.5, 3]
+const FundsRatePercent = [0.5, 1, 2, 3, 4, 5]
+const InflationPercent = [0, 1, 2, 3, 5, 8]
 const PercentChange = [-5, -3, -2, -1, 1, 2, 3, 5]
 const HoldingPercent = [1, 2, 3, 5, 8, 13, 21, 34]
+const ConsumerSentimentPercent = [50, 60, 70, 80, 90, 100]
+const NonfarmPayrollNumber = [120000, 130000, 140000, 150000, 160000]
 
 export const Options = {
   priceDailyIncreaseBuy: [...ContinuousMovement],
@@ -165,34 +166,34 @@ export const Options = {
   debtEquityQuarterlyIncreaseSell: [...ContinuousMovement],
   debtEquityQuarterlyDecreaseBuy: [...ContinuousMovement],
   debtEquityQuarterlyDecreaseSell: [...ContinuousMovement],
-  peRatioQuarterlyAboveBuy: [...earningPercent],
-  peRatioQuarterlyAboveSell: [...earningPercent],
-  peRatioQuarterlyBelowBuy: [...earningPercent],
-  peRatioQuarterlyBelowSell: [...earningPercent],
-  pbRatioQuarterlyAboveBuy: [...earningPercent],
-  pbRatioQuarterlyAboveSell: [...earningPercent],
-  pbRatioQuarterlyBelowBuy: [...earningPercent],
-  pbRatioQuarterlyBelowSell: [...earningPercent],
-  psRatioQuarterlyAboveBuy: [...earningPercent],
-  psRatioQuarterlyAboveSell: [...earningPercent],
-  psRatioQuarterlyBelowBuy: [...earningPercent],
-  psRatioQuarterlyBelowSell: [...earningPercent],
-  roaQuarterlyAboveBuy: [...earningPercent],
-  roaQuarterlyAboveSell: [...earningPercent],
-  roaQuarterlyBelowBuy: [...earningPercent],
-  roaQuarterlyBelowSell: [...earningPercent],
-  roeQuarterlyAboveBuy: [...earningPercent],
-  roeQuarterlyAboveSell: [...earningPercent],
-  roeQuarterlyBelowBuy: [...earningPercent],
-  roeQuarterlyBelowSell: [...earningPercent],
-  grossMarginQuarterlyAboveBuy: [...earningPercent],
-  grossMarginQuarterlyAboveSell: [...earningPercent],
-  grossMarginQuarterlyBelowBuy: [...earningPercent],
-  grossMarginQuarterlyBelowSell: [...earningPercent],
-  debtEquityQuarterlyAboveBuy: [...debtEquityPercent],
-  debtEquityQuarterlyAboveSell: [...debtEquityPercent],
-  debtEquityQuarterlyBelowBuy: [...debtEquityPercent],
-  debtEquityQuarterlyBelowSell: [...debtEquityPercent],
+  peRatioQuarterlyAboveBuy: [...EarningPercent],
+  peRatioQuarterlyAboveSell: [...EarningPercent],
+  peRatioQuarterlyBelowBuy: [...EarningPercent],
+  peRatioQuarterlyBelowSell: [...EarningPercent],
+  pbRatioQuarterlyAboveBuy: [...EarningPercent],
+  pbRatioQuarterlyAboveSell: [...EarningPercent],
+  pbRatioQuarterlyBelowBuy: [...EarningPercent],
+  pbRatioQuarterlyBelowSell: [...EarningPercent],
+  psRatioQuarterlyAboveBuy: [...EarningPercent],
+  psRatioQuarterlyAboveSell: [...EarningPercent],
+  psRatioQuarterlyBelowBuy: [...EarningPercent],
+  psRatioQuarterlyBelowSell: [...EarningPercent],
+  roaQuarterlyAboveBuy: [...EarningPercent],
+  roaQuarterlyAboveSell: [...EarningPercent],
+  roaQuarterlyBelowBuy: [...EarningPercent],
+  roaQuarterlyBelowSell: [...EarningPercent],
+  roeQuarterlyAboveBuy: [...EarningPercent],
+  roeQuarterlyAboveSell: [...EarningPercent],
+  roeQuarterlyBelowBuy: [...EarningPercent],
+  roeQuarterlyBelowSell: [...EarningPercent],
+  grossMarginQuarterlyAboveBuy: [...EarningPercent],
+  grossMarginQuarterlyAboveSell: [...EarningPercent],
+  grossMarginQuarterlyBelowBuy: [...EarningPercent],
+  grossMarginQuarterlyBelowSell: [...EarningPercent],
+  debtEquityQuarterlyAboveBuy: [...DebtEquityPercent],
+  debtEquityQuarterlyAboveSell: [...DebtEquityPercent],
+  debtEquityQuarterlyBelowBuy: [...DebtEquityPercent],
+  debtEquityQuarterlyBelowSell: [...DebtEquityPercent],
   peYearlyIncreaseBuy: [...ContinuousMovement],
   peYearlyIncreaseSell: [...ContinuousMovement],
   peYearlyDecreaseBuy: [...ContinuousMovement],
@@ -217,42 +218,42 @@ export const Options = {
   freeCashFlowYearlyIncreaseSell: [...ContinuousMovement],
   freeCashFlowYearlyDecreaseBuy: [...ContinuousMovement],
   freeCashFlowYearlyDecreaseSell: [...ContinuousMovement],
-  peRatioYearlyAboveBuy: [...earningPercent],
-  peRatioYearlyAboveSell: [...earningPercent],
-  peRatioYearlyBelowBuy: [...earningPercent],
-  peRatioYearlyBelowSell: [...earningPercent],
-  pbRatioYearlyAboveBuy: [...earningPercent],
-  pbRatioYearlyAboveSell: [...earningPercent],
-  pbRatioYearlyBelowBuy: [...earningPercent],
-  pbRatioYearlyBelowSell: [...earningPercent],
-  psRatioYearlyAboveBuy: [...earningPercent],
-  psRatioYearlyAboveSell: [...earningPercent],
-  psRatioYearlyBelowBuy: [...earningPercent],
-  psRatioYearlyBelowSell: [...earningPercent],
-  fundsRateMonthlyAboveBuy: [...fundsRatePercent],
-  fundsRateMonthlyAboveSell: [...fundsRatePercent],
-  fundsRateMonthlyBelowBuy: [...fundsRatePercent],
-  fundsRateMonthlyBelowSell: [...fundsRatePercent],
-  tenYearsTreasuryMonthlyAboveBuy: number | null;
-  tenYearsTreasuryMonthlyAboveSell: number | null;
-  tenYearsTreasuryMonthlyBelowBuy: number | null;
-  tenYearsTreasuryMonthlyBelowSell: number | null;
-  thirtyYearsTreasuryMonthlyAboveBuy: number | null;
-  thirtyYearsTreasuryMonthlyAboveSell: number | null;
-  thirtyYearsTreasuryMonthlyBelowBuy: number | null;
-  thirtyYearsTreasuryMonthlyBelowSell: number | null;
-  inflationMonthlyAboveBuy: number | null;
-  inflationMonthlyAboveSell: number | null;
-  inflationMonthlyBelowBuy: number | null;
-  inflationMonthlyBelowSell: number | null;
-  consumerSentimentMonthlyAboveBuy: number | null;
-  consumerSentimentMonthlyAboveSell: number | null;
-  consumerSentimentMonthlyBelowBuy: number | null;
-  consumerSentimentMonthlyBelowSell: number | null;
-  nonfarmPayrollMonthlyAboveBuy: number | null;
-  nonfarmPayrollMonthlyAboveSell: number | null;
-  nonfarmPayrollMonthlyBelowBuy: number | null;
-  nonfarmPayrollMonthlyBelowSell: number | null;
+  peRatioYearlyAboveBuy: [...EarningPercent],
+  peRatioYearlyAboveSell: [...EarningPercent],
+  peRatioYearlyBelowBuy: [...EarningPercent],
+  peRatioYearlyBelowSell: [...EarningPercent],
+  pbRatioYearlyAboveBuy: [...EarningPercent],
+  pbRatioYearlyAboveSell: [...EarningPercent],
+  pbRatioYearlyBelowBuy: [...EarningPercent],
+  pbRatioYearlyBelowSell: [...EarningPercent],
+  psRatioYearlyAboveBuy: [...EarningPercent],
+  psRatioYearlyAboveSell: [...EarningPercent],
+  psRatioYearlyBelowBuy: [...EarningPercent],
+  psRatioYearlyBelowSell: [...EarningPercent],
+  fundsRateMonthlyAboveBuy: [...FundsRatePercent],
+  fundsRateMonthlyAboveSell: [...FundsRatePercent],
+  fundsRateMonthlyBelowBuy: [...FundsRatePercent],
+  fundsRateMonthlyBelowSell: [...FundsRatePercent],
+  tenYearsTreasuryMonthlyAboveBuy: [...FundsRatePercent],
+  tenYearsTreasuryMonthlyAboveSell: [...FundsRatePercent],
+  tenYearsTreasuryMonthlyBelowBuy: [...FundsRatePercent],
+  tenYearsTreasuryMonthlyBelowSell: [...FundsRatePercent],
+  thirtyYearsTreasuryMonthlyAboveBuy: [...FundsRatePercent],
+  thirtyYearsTreasuryMonthlyAboveSell: [...FundsRatePercent],
+  thirtyYearsTreasuryMonthlyBelowBuy: [...FundsRatePercent],
+  thirtyYearsTreasuryMonthlyBelowSell: [...FundsRatePercent],
+  inflationMonthlyAboveBuy: [...InflationPercent],
+  inflationMonthlyAboveSell: [...InflationPercent],
+  inflationMonthlyBelowBuy: [...InflationPercent],
+  inflationMonthlyBelowSell: [...InflationPercent],
+  consumerSentimentMonthlyAboveBuy: [...ConsumerSentimentPercent],
+  consumerSentimentMonthlyAboveSell: [...ConsumerSentimentPercent],
+  consumerSentimentMonthlyBelowBuy: [...ConsumerSentimentPercent],
+  consumerSentimentMonthlyBelowSell: [...ConsumerSentimentPercent],
+  nonfarmPayrollMonthlyAboveBuy: [...NonfarmPayrollNumber],
+  nonfarmPayrollMonthlyAboveSell: [...NonfarmPayrollNumber],
+  nonfarmPayrollMonthlyBelowBuy: [...NonfarmPayrollNumber],
+  nonfarmPayrollMonthlyBelowSell: [...NonfarmPayrollNumber],
   seasonalGDPQuarterlyIncreaseBuy: [...ContinuousMovement],
   seasonalGDPQuarterlyIncreaseSell: [...ContinuousMovement],
   seasonalGDPQuarterlyDecreaseBuy: [...ContinuousMovement],
@@ -261,10 +262,10 @@ export const Options = {
   gdpYearlyIncreaseSell: [...ContinuousMovement],
   gdpYearlyDecreaseBuy: [...ContinuousMovement],
   gdpYearlyDecreaseSell: [...ContinuousMovement],
-  inflationYearlyAboveBuy: number | null;
-  inflationYearlyAboveSell: number | null;
-  inflationYearlyBelowBuy: number | null;
-  inflationYearlyBelowSell: number | null;
+  inflationYearlyAboveBuy: [...InflationPercent],
+  inflationYearlyAboveSell: [...InflationPercent],
+  inflationYearlyBelowBuy: [...InflationPercent],
+  inflationYearlyBelowSell: [...InflationPercent],
   cashMaxPercent: [0, 10, 20, 30, 50, 80, 100],
   tickerMinPercent: [...HoldingPercent],
   tickerMaxPercent: [...HoldingPercent],

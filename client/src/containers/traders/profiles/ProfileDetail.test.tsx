@@ -49,7 +49,7 @@ const env1 = { ...instance(envType), id: 1, name: 'test env' }
 const env2 = { ...instance(envType), id: 2, name: 'test env2' }
 
 const traderType = mock<interfaces.traderModel.Record>({})
-const patternType = mock<interfaces.traderPatternModel.Public>({})
+const patternType = mock<interfaces.traderPatternModel.Record>({})
 
 const profile = {
   trader: {

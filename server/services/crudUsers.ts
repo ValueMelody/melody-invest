@@ -63,7 +63,6 @@ export const getUserOverall = async (
   const traders = await traderModel.getInPKs(traderIds)
   const relatedPatternIds = traders.map((trader) => trader.traderPatternId)
   const patterns = await traderPatternModel.getInPKs(relatedPatternIds)
-  const relatedPatterns = patterns.map(({ hashCode, ...publicPattern }) => publicPattern)
 
   const tickers = await tickerModel.getAllByEntity(entityId)
 
@@ -105,7 +104,7 @@ export const getUserOverall = async (
   }
 
   return {
-    traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, relatedPatterns)),
+    traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, patterns)),
     traderEnvs,
     tickers,
     traderCombos,

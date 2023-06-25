@@ -48,7 +48,7 @@ jest.spyOn(selectors, 'selectTraderEnvBaseById')
   .mockImplementation(() => () => instance(envType))
 
 const traderType = mock<interfaces.traderModel.Record>({})
-const patternType = mock<interfaces.traderPatternModel.Public>({})
+const patternType = mock<interfaces.traderPatternModel.Record>({})
 
 jest.spyOn(selectors, 'selectTraderProfileBaseDict')
   .mockImplementation(() => () => ({

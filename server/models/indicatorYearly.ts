@@ -12,7 +12,7 @@ const convertToRecord = (
 ): interfaces.indicatorYearlyModel.Record => {
   const record: any = raw
   record.gdp = raw.gdp ? parseFloat(raw.gdp) : null
-  record.inflation = raw.inflation ? parseFloat(raw.inflation) : null
+  record.annualInflation = raw.annualInflation ? parseFloat(raw.annualInflation) : null
   record.gdpYearlyChangePercent = raw.gdpYearlyChangePercent ? parseFloat(raw.gdpYearlyChangePercent) : null
   return record
 }

@@ -39,7 +39,7 @@ const userType = mock<UserState>({})
 describe('#ProfileDashboard', () => {
   test('render buttons', async () => {
     const traderType = mock<interfaces.traderModel.Record>({})
-    const patternType = mock<interfaces.traderPatternModel.Public>({})
+    const patternType = mock<interfaces.traderPatternModel.Record>({})
     jest.spyOn(selectors, 'selectTraderProfileBaseDict')
       .mockImplementation(() => () => ({
         1: {
@@ -150,7 +150,7 @@ describe('#ProfileDashboard', () => {
 
   test('render disabled', async () => {
     const traderType = mock<interfaces.traderModel.Record>({})
-    const patternType = mock<interfaces.traderPatternModel.Public>({})
+    const patternType = mock<interfaces.traderPatternModel.Record>({})
     jest.spyOn(selectors, 'selectTraderProfileBaseDict')
       .mockImplementation(() => () => ({
         1: {

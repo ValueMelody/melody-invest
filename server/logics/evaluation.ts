@@ -71,6 +71,38 @@ export const TickerMovementTriggers: {
   incomeYearlyDecreaseBuy: 'incomeYearlyDecrease',
   revenueYearlyIncreaseBuy: 'revenueYearlyIncrease',
   revenueYearlyDecreaseBuy: 'revenueYearlyDecrease',
+  peQuarterlyIncreaseBuy: 'peQuarterlyIncrease',
+  peQuarterlyDecreaseBuy: 'peQuarterlyDecrease',
+  pbQuarterlyIncreaseBuy: 'pbQuarterlyIncrease',
+  pbQuarterlyDecreaseBuy: 'pbQuarterlyDecrease',
+  psQuarterlyIncreaseBuy: 'psQuarterlyIncrease',
+  psQuarterlyDecreaseBuy: 'psQuarterlyDecrease',
+  epsQuarterlyIncreaseBuy: 'epsQuarterlyIncrease',
+  epsQuarterlyDecreaseBuy: 'epsQuarterlyDecrease',
+  ebitdaQuarterlyIncreaseBuy: 'ebitdaQuarterlyIncrease',
+  ebitdaQuarterlyDecreaseBuy: 'ebitdaQuarterlyDecrease',
+  freeCashFlowQuarterlyIncreaseBuy: 'freeCashFlowQuarterlyIncrease',
+  freeCashFlowQuarterlyDecreaseBuy: 'freeCashFlowQuarterlyDecrease',
+  roaQuarterlyIncreaseBuy: 'roaQuarterlyIncrease',
+  roaQuarterlyDecreaseBuy: 'roaQuarterlyDecrease',
+  roeQuarterlyIncreaseBuy: 'roeQuarterlyIncrease',
+  roeQuarterlyDecreaseBuy: 'roeQuarterlyDecrease',
+  grossMarginQuarterlyIncreaseBuy: 'grossMarginQuarterlyIncrease',
+  grossMarginQuarterlyDecreaseBuy: 'grossMarginQuarterlyDecrease',
+  debtEquityQuarterlyIncreaseBuy: 'debtEquityQuarterlyIncrease',
+  debtEquityQuarterlyDecreaseBuy: 'debtEquityQuarterlyDecrease',
+  peYearlyIncreaseBuy: 'peYearlyIncrease',
+  peYearlyDecreaseBuy: 'peYearlyDecrease',
+  pbYearlyIncreaseBuy: 'pbYearlyIncrease',
+  pbYearlyDecreaseBuy: 'pbYearlyDecrease',
+  psYearlyIncreaseBuy: 'psYearlyIncrease',
+  psYearlyDecreaseBuy: 'psYearlyDecrease',
+  epsYearlyIncreaseBuy: 'epsYearlyIncrease',
+  epsYearlyDecreaseBuy: 'epsYearlyDecrease',
+  ebitdaYearlyIncreaseBuy: 'ebitdaYearlyIncrease',
+  ebitdaYearlyDecreaseBuy: 'ebitdaYearlyDecrease',
+  freeCashFlowYearlyIncreaseBuy: 'freeCashFlowYearlyIncrease',
+  freeCashFlowYearlyDecreaseBuy: 'freeCashFlowYearlyDecrease',
   priceDailyIncreaseSell: 'priceDailyIncrease',
   priceDailyDecreaseSell: 'priceDailyDecrease',
   priceWeeklyIncreaseSell: 'priceWeeklyIncrease',
@@ -93,7 +125,80 @@ export const TickerMovementTriggers: {
   incomeYearlyDecreaseSell: 'incomeYearlyDecrease',
   revenueYearlyIncreaseSell: 'revenueYearlyIncrease',
   revenueYearlyDecreaseSell: 'revenueYearlyDecrease',
+  peQuarterlyIncreaseSell: 'peQuarterlyIncrease',
+  peQuarterlyDecreaseSell: 'peQuarterlyDecrease',
+  pbQuarterlyIncreaseSell: 'pbQuarterlyIncrease',
+  pbQuarterlyDecreaseSell: 'pbQuarterlyDecrease',
+  psQuarterlyIncreaseSell: 'psQuarterlyIncrease',
+  psQuarterlyDecreaseSell: 'psQuarterlyDecrease',
+  epsQuarterlyIncreaseSell: 'epsQuarterlyIncrease',
+  epsQuarterlyDecreaseSell: 'epsQuarterlyDecrease',
+  ebitdaQuarterlyIncreaseSell: 'ebitdaQuarterlyIncrease',
+  ebitdaQuarterlyDecreaseSell: 'ebitdaQuarterlyDecrease',
+  freeCashFlowQuarterlyIncreaseSell: 'freeCashFlowQuarterlyIncrease',
+  freeCashFlowQuarterlyDecreaseSell: 'freeCashFlowQuarterlyDecrease',
+  roaQuarterlyIncreaseSell: 'roaQuarterlyIncrease',
+  roaQuarterlyDecreaseSell: 'roaQuarterlyDecrease',
+  roeQuarterlyIncreaseSell: 'roeQuarterlyIncrease',
+  roeQuarterlyDecreaseSell: 'roeQuarterlyDecrease',
+  grossMarginQuarterlyIncreaseSell: 'grossMarginQuarterlyIncrease',
+  grossMarginQuarterlyDecreaseSell: 'grossMarginQuarterlyDecrease',
+  debtEquityQuarterlyIncreaseSell: 'debtEquityQuarterlyIncrease',
+  debtEquityQuarterlyDecreaseSell: 'debtEquityQuarterlyDecrease',
+  peYearlyIncreaseSell: 'peYearlyIncrease',
+  peYearlyDecreaseSell: 'peYearlyDecrease',
+  pbYearlyIncreaseSell: 'pbYearlyIncrease',
+  pbYearlyDecreaseSell: 'pbYearlyDecrease',
+  psYearlyIncreaseSell: 'psYearlyIncrease',
+  psYearlyDecreaseSell: 'psYearlyDecrease',
+  epsYearlyIncreaseSell: 'epsYearlyIncrease',
+  epsYearlyDecreaseSell: 'epsYearlyDecrease',
+  ebitdaYearlyIncreaseSell: 'ebitdaYearlyIncrease',
+  ebitdaYearlyDecreaseSell: 'ebitdaYearlyDecrease',
+  freeCashFlowYearlyIncreaseSell: 'freeCashFlowYearlyIncrease',
+  freeCashFlowYearlyDecreaseSell: 'freeCashFlowYearlyDecrease',
 }
+
+// table.smallint('peRatioQuarterlyAboveBuy')
+//       table.smallint('peRatioQuarterlyAboveSell')
+//       table.smallint('peRatioQuarterlyBelowBuy')
+//       table.smallint('peRatioQuarterlyBelowSell')
+//       table.smallint('pbRatioQuarterlyAboveBuy')
+//       table.smallint('pbRatioQuarterlyAboveSell')
+//       table.smallint('pbRatioQuarterlyBelowBuy')
+//       table.smallint('pbRatioQuarterlyBelowSell')
+//       table.smallint('psRatioQuarterlyAboveBuy')
+//       table.smallint('psRatioQuarterlyAboveSell')
+//       table.smallint('psRatioQuarterlyBelowBuy')
+//       table.smallint('psRatioQuarterlyBelowSell')
+//       table.smallint('roaQuarterlyAboveBuy')
+//       table.smallint('roaQuarterlyAboveSell')
+//       table.smallint('roaQuarterlyBelowBuy')
+//       table.smallint('roaQuarterlyBelowSell')
+//       table.smallint('roeQuarterlyAboveBuy')
+//       table.smallint('roeQuarterlyAboveSell')
+//       table.smallint('roeQuarterlyBelowBuy')
+//       table.smallint('roeQuarterlyBelowSell')
+//       table.smallint('grossMarginQuarterlyAboveBuy')
+//       table.smallint('grossMarginQuarterlyAboveSell')
+//       table.smallint('grossMarginQuarterlyBelowBuy')
+//       table.smallint('grossMarginQuarterlyBelowSell')
+//       table.smallint('debtEquityQuarterlyAboveBuy')
+//       table.smallint('debtEquityQuarterlyAboveSell')
+//       table.smallint('debtEquityQuarterlyBelowBuy')
+//       table.smallint('debtEquityQuarterlyBelowSell')
+// table.smallint('peRatioYearlyAboveBuy')
+//       table.smallint('peRatioYearlyAboveSell')
+//       table.smallint('peRatioYearlyBelowBuy')
+//       table.smallint('peRatioYearlyBelowSell')
+//       table.smallint('pbRatioYearlyAboveBuy')
+//       table.smallint('pbRatioYearlyAboveSell')
+//       table.smallint('pbRatioYearlyBelowBuy')
+//       table.smallint('pbRatioYearlyBelowSell')
+//       table.smallint('psRatioYearlyAboveBuy')
+//       table.smallint('psRatioYearlyAboveSell')
+//       table.smallint('psRatioYearlyBelowBuy')
+//       table.smallint('psRatioYearlyBelowSell')
 
 export const IndicatorMovementTriggers: {
   [key in interfaces.traderPatternModel.IndicatorMovementBehavior]: interfaces.dailyIndicatorsModel.IndicatorMovementKey
@@ -116,6 +221,10 @@ export const IndicatorMovementTriggers: {
   unemploymentRateMonthlyDecreaseBuy: 'unemploymentRateMonthlyDecrease',
   nonfarmPayrollMonthlyIncreaseBuy: 'nonfarmPayrollMonthlyIncrease',
   nonfarmPayrollMonthlyDecreaseBuy: 'nonfarmPayrollMonthlyDecrease',
+  seasonalGDPQuarterlyIncreaseBuy: 'seasonalGDPQuarterlyIncrease',
+  seasonalGDPQuarterlyDecreaseBuy: 'seasonalGDPQuarterlyDecrease',
+  gdpYearlyIncreaseBuy: 'gdpYearlyIncrease',
+  gdpYearlyDecreaseBuy: 'gdpYearlyDecrease',
   inflationYearlyIncreaseSell: 'inflationYearlyIncrease',
   inflationYearlyDecreaseSell: 'inflationYearlyDecrease',
   fundsRateMonthlyIncreaseSell: 'fundsRateMonthlyIncrease',
@@ -134,6 +243,10 @@ export const IndicatorMovementTriggers: {
   unemploymentRateMonthlyDecreaseSell: 'unemploymentRateMonthlyDecrease',
   nonfarmPayrollMonthlyIncreaseSell: 'nonfarmPayrollMonthlyIncrease',
   nonfarmPayrollMonthlyDecreaseSell: 'nonfarmPayrollMonthlyDecrease',
+  seasonalGDPQuarterlyIncreaseSell: 'seasonalGDPQuarterlyIncrease',
+  seasonalGDPQuarterlyDecreaseSell: 'seasonalGDPQuarterlyDecrease',
+  gdpYearlyIncreaseSell: 'gdpYearlyIncrease',
+  gdpYearlyDecreaseSell: 'gdpYearlyDecrease',
 }
 
 export const IndicatorCompareTriggers: {
@@ -141,16 +254,44 @@ export const IndicatorCompareTriggers: {
 } = {
   gdpYearlyChangeAboveBuy: 'gdpYearlyChangePercent',
   gdpYearlyChangeBelowBuy: 'gdpYearlyChangePercent',
-  gdpQuarterlyChangeAboveBuy: 'seasonalGDPQoQ',
-  gdpQuarterlyChangeBelowBuy: 'seasonalGDPQoQ',
-  gdpQuarterlyYoYChangeAboveBuy: 'seasonalGDPYoY',
-  gdpQuarterlyYoYChangeBelowBuy: 'seasonalGDPYoY',
+  seasonalGDPQoQAboveBuy: 'seasonalGDPQoQ',
+  seasonalGDPQoQBelowBuy: 'seasonalGDPQoQ',
+  seasonalGDPYoYAboveBuy: 'seasonalGDPYoY',
+  seasonalGDPYoYBelowBuy: 'seasonalGDPYoY',
+  fundsRateMonthlyAboveBuy: 'fundsRate',
+  fundsRateMonthlyBelowBuy: 'fundsRate',
+  tenYearsTreasuryMonthlyAboveBuy: 'tenYearsTreasury',
+  tenYearsTreasuryMonthlyBelowBuy: 'tenYearsTreasury',
+  thirtyYearsTreasuryMonthlyAboveBuy: 'thirtyYearsTreasury',
+  thirtyYearsTreasuryMonthlyBelowBuy: 'thirtyYearsTreasury',
+  inflationMonthlyAboveBuy: 'inflation',
+  inflationMonthlyBelowBuy: 'inflation',
+  consumerSentimentMonthlyAboveBuy: 'consumerSentiment',
+  consumerSentimentMonthlyBelowBuy: 'consumerSentiment',
+  nonfarmPayrollMonthlyAboveBuy: 'nonfarmPayroll',
+  nonfarmPayrollMonthlyBelowBuy: 'nonfarmPayroll',
+  inflationYearlyAboveBuy: 'annualInflation',
+  inflationYearlyBelowBuy: 'annualInflation',
   gdpYearlyChangeAboveSell: 'gdpYearlyChangePercent',
   gdpYearlyChangeBelowSell: 'gdpYearlyChangePercent',
-  gdpQuarterlyChangeAboveSell: 'seasonalGDPQoQ',
-  gdpQuarterlyChangeBelowSell: 'seasonalGDPQoQ',
-  gdpQuarterlyYoYChangeAboveSell: 'seasonalGDPYoY',
-  gdpQuarterlyYoYChangeBelowSell: 'seasonalGDPYoY',
+  seasonalGDPQoQAboveSell: 'seasonalGDPQoQ',
+  seasonalGDPQoQBelowSell: 'seasonalGDPQoQ',
+  seasonalGDPYoYAboveSell: 'seasonalGDPYoY',
+  seasonalGDPYoYBelowSell: 'seasonalGDPYoY',
+  fundsRateMonthlyAboveSell: 'fundsRate',
+  fundsRateMonthlyBelowSell: 'fundsRate',
+  tenYearsTreasuryMonthlyAboveSell: 'tenYearsTreasury',
+  tenYearsTreasuryMonthlyBelowSell: 'tenYearsTreasury',
+  thirtyYearsTreasuryMonthlyAboveSell: 'thirtyYearsTreasury',
+  thirtyYearsTreasuryMonthlyBelowSell: 'thirtyYearsTreasury',
+  inflationMonthlyAboveSell: 'inflation',
+  inflationMonthlyBelowSell: 'inflation',
+  consumerSentimentMonthlyAboveSell: 'consumerSentiment',
+  consumerSentimentMonthlyBelowSell: 'consumerSentiment',
+  nonfarmPayrollMonthlyAboveSell: 'nonfarmPayroll',
+  nonfarmPayrollMonthlyBelowSell: 'nonfarmPayroll',
+  inflationYearlyAboveSell: 'annualInflation',
+  inflationYearlyBelowSell: 'annualInflation',
 }
 
 export const getTickerMovementWeight = (
@@ -162,7 +303,7 @@ export const getTickerMovementWeight = (
   const tickerValue = Number(tickerInfo[tickerKey])
   const patternValue = pattern[behavior]
 
-  if (patternValue === null) return 1
+  if (patternValue === null || patternValue === undefined) return 1
   if (tickerValue === null || tickerValue === undefined || tickerValue < patternValue) return 0
   return tickerValue - patternValue + 2
 }
@@ -176,7 +317,7 @@ export const getIndicatorMovementMatch = (
   const indicatorValue = Number(indicatorInfo[indicatorKey])
   const patternValue = pattern[behavior]
 
-  if (patternValue === null) return true
+  if (patternValue === null || patternValue === undefined) return true
   return indicatorValue !== null && indicatorValue >= patternValue
 }
 
@@ -189,7 +330,7 @@ export const getIndicatorCompareMatch = (
   const indicatorValue = Number(indicatorInfo[compareKey])
   const patternValue = pattern[behavior]
 
-  if (patternValue === null) return true
+  if (patternValue === null || patternValue === undefined) return true
   if (indicatorValue === null) return false
 
   if (behavior.includes('Above') && indicatorValue > patternValue) {

@@ -5,7 +5,7 @@ exports.up = (knex) => {
       table.specificType('year', 'CHAR(7)').notNullable()
       table.string('gdp', 12)
       table.string('gdpYearlyChangePercent', 5)
-      table.string('inflation', 5)
+      table.string('annualInflation', 5)
       table.smallint('inflationYearlyIncrease')
       table.smallint('inflationYearlyDecrease')
       table.smallint('gdpYearlyIncrease')

@@ -42,11 +42,17 @@ const BUY_GROUPS = [
   },
   {
     title: `* ${localeTool.t('behaviorGroup.financialImproveBuyBehaviors')}`,
-    behaviors: constants.Behavior.FinancialImproveBuyBehaviors,
+    behaviors: [
+      ...constants.Behavior.FinancialIncreaseBuyBehaviors,
+      ...constants.Behavior.FinancialImproveBuyBehaviors,
+    ],
   },
   {
     title: `* ${localeTool.t('behaviorGroup.financialWorsenBuyBehaviors')}`,
-    behaviors: constants.Behavior.FinancialWorsenBuyBehaviors,
+    behaviors: [
+      ...constants.Behavior.FinancialDecreaseBuyBehaviors,
+      ...constants.Behavior.FinancialWorsenBuyBehaviors,
+    ],
   },
   {
     title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseBuyBehaviors')}`,
@@ -58,11 +64,11 @@ const BUY_GROUPS = [
   },
   {
     title: `* ${localeTool.t('behaviorGroup.economyImproveBuyBehaviors')}`,
-    behaviors: constants.Behavior.EconomyImproveBuyBehaviors,
+    behaviors: constants.Behavior.IndicatorImproveBuyBehaviors,
   },
   {
     title: `* ${localeTool.t('behaviorGroup.economyWorsenBuyBehaviors')}`,
-    behaviors: constants.Behavior.EconomyWorsenBuyBehaviors,
+    behaviors: constants.Behavior.IndicatorWorsenBuyBehaviors,
   },
 ]
 
@@ -77,11 +83,17 @@ const SELL_GROUPS = [
   },
   {
     title: `* ${localeTool.t('behaviorGroup.financialImproveSellBehaviors')}`,
-    behaviors: constants.Behavior.FinancialImproveSellBehaviors,
+    behaviors: [
+      ...constants.Behavior.FinancialIncreaseSellBehaviors,
+      ...constants.Behavior.FinancialImproveSellBehaviors,
+    ],
   },
   {
     title: `* ${localeTool.t('behaviorGroup.financialWorsenSellBehaviors')}`,
-    behaviors: constants.Behavior.FinancialWorsenSellBehaviors,
+    behaviors: [
+      ...constants.Behavior.FinancialDecreaseSellBehaviors,
+      ...constants.Behavior.FinancialWorsenSellBehaviors,
+    ],
   },
   {
     title: `* ${localeTool.t('behaviorGroup.indicatorIncreaseSellBehaviors')}`,
@@ -93,11 +105,11 @@ const SELL_GROUPS = [
   },
   {
     title: `* ${localeTool.t('behaviorGroup.economyImproveSellBehaviors')}`,
-    behaviors: constants.Behavior.EconomyImproveSellBehaviors,
+    behaviors: constants.Behavior.IndicatorImproveSellBehaviors,
   },
   {
     title: `* ${localeTool.t('behaviorGroup.economyWorsenSellBehaviors')}`,
-    behaviors: constants.Behavior.EconomyWorsenSellBehaviors,
+    behaviors: constants.Behavior.IndicatorWorsenSellBehaviors,
   },
 ]
 
@@ -106,7 +118,7 @@ const subTitleClass = 'text-center font-semibold text-lg mb-4'
 const ProfileBuilder = () => {
   usePrivateGuard()
   const location = useLocation()
-  const pattern = location.state as interfaces.traderPatternModel.Public | undefined
+  const pattern = location.state as interfaces.traderPatternModel.Record | undefined
   const ref = useRef(null)
 
   const dispatch = useDispatch<AppDispatch>()
