@@ -1,6 +1,4 @@
 import * as generate from './generate'
-import * as interfaces from '@shared/interfaces'
-import { mock } from 'ts-mockito'
 
 describe('#toSHA256', () => {
   test('could generate sha256', () => {
