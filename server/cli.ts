@@ -52,15 +52,15 @@ export const run = async () => {
       await emailTask.sendPendingEmails()
       break
     }
-
-    case taskEnum.Name.calcTraderAccessHashs: {
-      await calcTask.calcTraderAccessHashs()
-      break
-    }
     case taskEnum.Name.calcTraderPerformances: {
       const forceRecheck = process.argv[3] === 'true' || false
       const checkAll = process.argv[4] === 'true' || false
       await calcTask.calcTraderPerformances(forceRecheck, checkAll)
+      break
+    }
+
+    case taskEnum.Name.calcTraderAccessHashs: {
+      await calcTask.calcTraderAccessHashs()
       break
     }
     case taskEnum.Name.calcTraderDescendants: {

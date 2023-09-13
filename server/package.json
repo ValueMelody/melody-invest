@@ -23,9 +23,9 @@
     "calcDailyIndicators": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcDailyIndicators",
     "generateSystemCaches": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli generateSystemCaches",
     "sendPendingEmails": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli sendPendingEmails",
+    "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderPerformances",
 
     "calcTraderAccessHashs": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderAccessHashs",
-    "calcTraderPerformances": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderPerformances",
     "calcTraderDescendants": "node -r ../scripts/devOps/pathBootstrap -r dotenv/config ./dist/cli calcTraderDescendants"
   },
   "dependencies": {

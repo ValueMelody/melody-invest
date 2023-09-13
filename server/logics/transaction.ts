@@ -2,35 +2,37 @@ import * as interfaces from '@shared/interfaces'
 
 const getItemHoldingValue = (
   shares: number,
-  defaultValue: number,
-  tickerDaily: interfaces.tickerDailyModel.Record | undefined,
+  closePrice: number,
+  splitMultiplier: number,
 ) => {
-  return tickerDaily
-    ? shares * tickerDaily.closePrice * tickerDaily.splitMultiplier
-    : defaultValue
+  return shares * closePrice * splitMultiplier
 }
 
 export const refreshHoldingItemValue = (
   item: interfaces.traderHoldingModel.Item,
-  dailyTicker: interfaces.dailyTickersModel.TickerInfo | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo | undefined,
 ): interfaces.traderHoldingModel.Item => {
-  return item
-  // const matchedDaily = dailyTicker?.daily
-  // const holdingValue = getItemHoldingValue(item.shares, item.value, matchedDaily)
-  // const splitMultiplier = matchedDaily?.splitMultiplier || item.splitMultiplier
-  // const updatedHolding = {
-  //   tickerId: item.tickerId,
-  //   shares: item.shares,
-  //   value: holdingValue,
-  //   splitMultiplier,
-  // }
-  // return updatedHolding
+  const holdingValue = tickerInfo
+    ? getItemHoldingValue(
+      item.shares,
+      tickerInfo.closePrice,
+      tickerInfo.splitMultiplier,
+    )
+    : item.value
+  const splitMultiplier = tickerInfo?.splitMultiplier ?? item.splitMultiplier
+  const updatedHolding = {
+    tickerId: item.tickerId,
+    shares: item.shares,
+    value: holdingValue,
+    splitMultiplier,
+  }
+  return updatedHolding
 }
 
 export const detailFromCashAndItems = (
   totalCash: number,
   items: interfaces.traderHoldingModel.Item[],
-  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
+  tickerInfos: interfaces.dailyTickersModel.TickerInfos,
   tradeDate: string,
   delistedLastPrices: DelistedLastPrices,
 ): interfaces.traderHoldingModel.Detail => {
@@ -38,16 +40,23 @@ export const detailFromCashAndItems = (
     totalValue: totalCash, totalCash, items: [], date: '',
   }
   return items.reduce((details, item) => {
-    const isDelisted = delistedLastPrices[item.tickerId] && delistedLastPrices[item.tickerId].date <= tradeDate
+    const matchedRecord = delistedLastPrices[item.tickerId]
+    const isDelisted = matchedRecord && matchedRecord.date <= tradeDate
     if (isDelisted) {
-      const holdingValue = getItemHoldingValue(item.shares, item.value, delistedLastPrices[item.tickerId])
+      const holdingValue = matchedRecord
+        ? getItemHoldingValue(
+          item.shares,
+          matchedRecord.closePrice,
+          matchedRecord.splitMultiplier,
+        )
+        : item.value
       details.totalValue += holdingValue
       details.totalCash += holdingValue
       return details
     }
 
-    const matched = dailyTickers[item.tickerId] || null
-    const refreshedHolding = refreshHoldingItemValue(item, matched)
+    const matchedInfo = tickerInfos[item.tickerId]
+    const refreshedHolding = refreshHoldingItemValue(item, matchedInfo)
     details.totalValue += refreshedHolding.value
     details.items.push(refreshedHolding)
     return details

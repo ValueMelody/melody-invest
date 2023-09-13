@@ -9,13 +9,18 @@ const convertToRecord = (
   raw: interfaces.traderEnvModel.Raw,
 ): interfaces.traderEnvModel.Record => {
   const record: any = raw
-  record.tickerIds = raw.tickerIds ? raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId)) : null
+  record.tickerIds = raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId))
   return record
 }
 
-export const getAll = async (): Promise<interfaces.traderEnvModel.Record[]> => {
+export const getAll = async (
+  entityId?: number,
+): Promise<interfaces.traderEnvModel.Record[]> => {
   const envs = await databaseAdapter.findAll({
     tableName: TableName,
+    conditions: entityId
+      ? [{ key: 'entityId', value: entityId }]
+      : undefined,
   })
   return envs.map((env) => convertToRecord(env))
 }

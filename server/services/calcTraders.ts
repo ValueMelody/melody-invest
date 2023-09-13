@@ -5,6 +5,7 @@ import * as dailyTickersModel from 'models/dailyTickers'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as errorEnums from 'enums/error'
+import * as entityModel from 'models/entity'
 import * as evaluationLogic from 'logics/evaluation'
 import * as generateTool from 'tools/generate'
 import * as helpers from '@shared/helpers'
@@ -66,7 +67,7 @@ const getCachedDailyTickers = async (entityId: number, date: string) => {
     cacheAge: '1d',
     cacheKey: cacheTool.generateDailyTickersKey(entityId, date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(entityId, date, ['tickers', 'indicators'])
+      const dailyTickers = await dailyTickersModel.getByUK(entityId, date)
       return dailyTickers
     },
     preferLocal: true,
@@ -120,22 +121,19 @@ const calcTraderPerformance = async (
         continue
       }
 
-      const dailyTickers = dailyTickersRecord.tickerInfos || {}
+      const tickerInfos = dailyTickersRecord.tickerInfos || {}
       const indicatorInfo = {}
 
-      const emptyDailyTickers: interfaces.dailyTickersModel.TickerInfos = {}
-      const availableTargets = env.tickerIds
-        ? env.tickerIds.reduce((tickers, tickerId) => {
-          tickers[tickerId] = dailyTickers[tickerId]
-          return tickers
-        }, emptyDailyTickers)
-        : dailyTickers
+      const availableTickerInfos = env.tickerIds.reduce((tickers, tickerId) => {
+        tickers[tickerId] = tickerInfos[tickerId]
+        return tickers
+      }, {} as interfaces.dailyTickersModel.TickerInfos)
 
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
       const items = holding ? holding.items : []
 
       const detailsAfterUpdate = transactionLogic.detailFromCashAndItems(
-        totalCash, items, availableTargets, tradeDate, delistedLastPrices,
+        totalCash, items, availableTickerInfos, tradeDate, delistedLastPrices,
       )
 
       const shouldRebalance =
@@ -277,45 +275,48 @@ export const calcAllTraderPerformances = async (
   forceRecheck: boolean,
   checkAll: boolean,
 ) => {
-  const envs = await traderEnvModel.getAll()
+  const entities = await entityModel.getAll()
 
-  const delistedTickers = await tickerModel.getAllDelisted()
-  const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
-  const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
-    return tickerDailyModel.getLatest()
-  })
-  const initLastPrices: transactionLogic.DelistedLastPrices = {}
-  const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
-    lastPrices[tickerDaily.tickerId] = tickerDaily
-    return lastPrices
-  }, initLastPrices)
-  const latestDate = await dailyTickersModel.getLatestDate()
-
-  await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    console.info(`Checking Env:${env.id}`)
-    const traders = checkAll
-      ? await traderModel.getAllByEnvId(env.id)
-      : await traderModel.getActives(env.id)
-
-    await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-      await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
+  await runTool.asyncForEach(entities, async (entity: interfaces.entityModel.Record) => {
+    const latestDate = await dailyTickersModel.getLatestDate(entity.id)
+    const delistedTickers = await tickerModel.getAllDelisted(entity.id)
+    const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
+    const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
+      return tickerDailyModel.getLatest(tickerId)
     })
-    const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
-    const inactiveRankingNumber = deactivateTarget?.rankingNumber
-    if (inactiveRankingNumber) {
-      await databaseAdapter.runWithTransaction(async (transaction) => {
-        await traderModel.activateAllByRankingNumber(
-          env.id,
-          inactiveRankingNumber,
-          transaction,
-        )
-        await traderModel.deactivateAllByRankingNumber(
-          env.id,
-          inactiveRankingNumber,
-          transaction,
-        )
+    const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
+      lastPrices[tickerDaily.tickerId] = tickerDaily
+      return lastPrices
+    }, {} as transactionLogic.DelistedLastPrices)
+
+    const envs = await traderEnvModel.getAll(entity.id)
+
+    await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+      console.info(`Checking Env:${env.id}`)
+      const traders = checkAll
+        ? await traderModel.getAllByEnvId(env.id)
+        : await traderModel.getActives(env.id)
+
+      await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
+        await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
       })
-    }
+      // const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
+      // const inactiveRankingNumber = deactivateTarget?.rankingNumber
+      // if (inactiveRankingNumber) {
+      //   await databaseAdapter.runWithTransaction(async (transaction) => {
+      //     await traderModel.activateAllByRankingNumber(
+      //       env.id,
+      //       inactiveRankingNumber,
+      //       transaction,
+      //     )
+      //     await traderModel.deactivateAllByRankingNumber(
+      //       env.id,
+      //       inactiveRankingNumber,
+      //       transaction,
+      //     )
+      //   })
+      // }
+    })
   })
 }
 
