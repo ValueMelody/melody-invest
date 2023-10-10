@@ -1,26 +1,6 @@
 export const Preference = Object.freeze({
   HigherPrice: 1,
   LowerPrice: 2,
-  HigherQuarterEPS: 3,
-  LowerQuarterEPS: 4,
-  HigherQuarterEBITDA: 5,
-  LowerQuarterEBITDA: 6,
-  HigherQuarterIncome: 7,
-  LowerQuarterIncome: 8,
-  HigherQuarterProfit: 9,
-  LowerQuarterProfit: 10,
-  HigherQuarterRevenue: 11,
-  LowerQuarterRevenue: 12,
-  HigherYearEPS: 13,
-  LowerYearEPS: 14,
-  HigherYearEBITDA: 15,
-  LowerYearEBITDA: 16,
-  HigherYearIncome: 17,
-  LowerYearIncome: 18,
-  HigherYearProfit: 19,
-  LowerYearProfit: 20,
-  HigherYearRevenue: 21,
-  LowerYearRevenue: 22,
 })
 
 const ContinuousMovement = [1, 2, 3, 5]

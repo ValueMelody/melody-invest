@@ -19,7 +19,7 @@ export const refreshHoldingItemValue = (
       tickerInfo.splitMultiplier,
     )
     : item.value
-  const splitMultiplier = tickerInfo?.splitMultiplier ?? item.splitMultiplier
+  const splitMultiplier = tickerInfo ? tickerInfo.splitMultiplier : item.splitMultiplier
   const updatedHolding = {
     tickerId: item.tickerId,
     shares: item.shares,
@@ -29,7 +29,7 @@ export const refreshHoldingItemValue = (
   return updatedHolding
 }
 
-export const detailFromCashAndItems = (
+export const generateHoldingDetail = (
   totalCash: number,
   items: interfaces.traderHoldingModel.Item[],
   tickerInfos: interfaces.dailyTickersModel.TickerInfos,
@@ -40,14 +40,16 @@ export const detailFromCashAndItems = (
     totalValue: totalCash, totalCash, items: [], date: '',
   }
   return items.reduce((details, item) => {
-    const matchedRecord = delistedLastPrices[item.tickerId]
-    const isDelisted = matchedRecord && matchedRecord.date <= tradeDate
+    const delistedRecord = delistedLastPrices[item.tickerId]
+    const isDelisted = delistedRecord && delistedRecord.date <= tradeDate
+
+    // If one holding item is delisted, then treat as cash out based on price from last record
     if (isDelisted) {
-      const holdingValue = matchedRecord
+      const holdingValue = delistedRecord
         ? getItemHoldingValue(
           item.shares,
-          matchedRecord.closePrice,
-          matchedRecord.splitMultiplier,
+          delistedRecord.closePrice,
+          delistedRecord.splitMultiplier,
         )
         : item.value
       details.totalValue += holdingValue
@@ -56,6 +58,7 @@ export const detailFromCashAndItems = (
     }
 
     const matchedInfo = tickerInfos[item.tickerId]
+    // Recalculate one holding item by provided market data
     const refreshedHolding = refreshHoldingItemValue(item, matchedInfo)
     details.totalValue += refreshedHolding.value
     details.items.push(refreshedHolding)
@@ -63,7 +66,7 @@ export const detailFromCashAndItems = (
   }, emptyDetail)
 }
 
-export const sellForLessThanTickerMinPercent = (
+export const sellItemIfLessThanTickerMinPercent = (
   holdingDetail: interfaces.traderHoldingModel.Detail,
   itemForSell: interfaces.traderHoldingModel.Item,
   holdingPercent: number,
@@ -74,8 +77,11 @@ export const sellForLessThanTickerMinPercent = (
   if (!isLessThanMinPercent) return null
 
   const cashAfterSell = holdingDetail.totalCash + itemForSell.value
+
+  // Only sell if cash after sell is less than allowed max cash
   const couldSell = cashAfterSell <= maxCashValue
   if (!couldSell) return null
+
   return {
     date: '',
     totalValue: holdingDetail.totalValue,
@@ -84,35 +90,34 @@ export const sellForLessThanTickerMinPercent = (
   }
 }
 
-export const sellForMoreThanTickerMaxPercernt = (
+export const sellItemIfMoreThanTickerMaxPercernt = (
   holdingDetail: interfaces.traderHoldingModel.Detail,
   itemForSell: interfaces.traderHoldingModel.Item,
   holdingPercent: number,
   tickerMaxPercent: number,
   maxCashValue: number,
-  tickerDaily: interfaces.tickerDailyModel.Record | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
 ): interfaces.traderHoldingModel.Detail | null => {
-  if (!tickerDaily) return null
-
   const isMoreThanMaxPercent = holdingPercent > tickerMaxPercent
   if (!isMoreThanMaxPercent) return null
 
   const sellTargetPercent = holdingPercent - tickerMaxPercent
-  const sellTargetValue = Math.ceil(holdingDetail.totalValue * sellTargetPercent / 100)
-  const sellTargetShares = Math.ceil(sellTargetValue / tickerDaily.closePrice)
-  const sharesSold = sellTargetShares / tickerDaily.splitMultiplier
+  const sellTargetValue = Math.ceil(holdingDetail.totalValue * sellTargetPercent)
+  const sellTargetShares = Math.ceil(sellTargetValue / tickerInfo.closePrice)
+  const sharesSold = sellTargetShares / tickerInfo.splitMultiplier
   const sharesLeft = itemForSell.shares - sharesSold
-  const dailyFinalPrice = tickerDaily.closePrice * tickerDaily.splitMultiplier
-  const cashAfterSell = holdingDetail.totalCash + sharesSold * dailyFinalPrice
-  const couldSell = sharesLeft && cashAfterSell < maxCashValue
+  const sellValue = sellTargetShares * tickerInfo.closePrice
+  const cashAfterSell = holdingDetail.totalCash + sellValue
 
+  // Only sell if cash after sell is less than allowed max cash and there are still shares left
+  const couldSell = sharesLeft && (cashAfterSell <= maxCashValue)
   if (!couldSell) return null
 
   const holdingAfterSell = {
     tickerId: itemForSell.tickerId,
     shares: sharesLeft,
-    value: sharesLeft * dailyFinalPrice,
-    splitMultiplier: tickerDaily.splitMultiplier,
+    value: itemForSell.value - sellValue,
+    splitMultiplier: tickerInfo.splitMultiplier,
   }
   return {
     totalValue: holdingDetail.totalValue,
@@ -134,13 +139,13 @@ export interface DelistedLastPrices {
   [tickerId: number]: interfaces.tickerDailyModel.Record;
 }
 
-export const detailAfterRebalance = (
+export const rebalanceHoldingDetail = (
   shouldRebalance: boolean,
   currentDetail: interfaces.traderHoldingModel.Detail,
-  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
+  tickerInfos: interfaces.dailyTickersModel.TickerInfos,
   tickerMinPercent: number,
   tickerMaxPercent: number,
-  maxCashValue: number,
+  cashMaxPercent: number,
 ): DetailAndTransaction => {
   if (!shouldRebalance) {
     return {
@@ -149,33 +154,39 @@ export const detailAfterRebalance = (
     }
   }
 
-  // let hasTransaction = false
+  let hasTransaction = false
+  const maxCashValue = currentDetail.totalValue * cashMaxPercent
+
   const details = currentDetail.items.reduce((details, item) => {
-    const matched = dailyTickers[item.tickerId]
-    if (!matched) return details
+    // If holding item has no market data, skip rebalance
+    const matchedInfo = tickerInfos[item.tickerId]
+    if (!matchedInfo) return details
+
+    const holdingPercent = item.value / details.totalValue
+
+    // If hold less than required min percent, then sell all shares
+    const refreshedForMinPercernt = sellItemIfLessThanTickerMinPercent(
+      details, item, holdingPercent, tickerMinPercent, maxCashValue,
+    )
+    if (refreshedForMinPercernt) {
+      hasTransaction = true
+      return refreshedForMinPercernt
+    }
+
+    // If hold more than allowed max percent, then sell exceed shares
+    const refreshedForMaxPercent = sellItemIfMoreThanTickerMaxPercernt(
+      details, item, holdingPercent, tickerMaxPercent, maxCashValue, matchedInfo,
+    )
+    if (refreshedForMaxPercent) {
+      hasTransaction = true
+      return refreshedForMaxPercent
+    }
+
     return details
-    // const matchedDaily = matched.daily
-    // const holdingPercent = (item.value / details.totalValue) * 100
-    // const refreshedForMinPercernt = sellForLessThanTickerMinPercent(
-    //   details, item, holdingPercent, tickerMinPercent, maxCashValue,
-    // )
-    // if (refreshedForMinPercernt) {
-    //   hasTransaction = true
-    //   return refreshedForMinPercernt
-    // }
-
-    // const refreshedForMaxPercent = sellForMoreThanTickerMaxPercernt(
-    //   details, item, holdingPercent, tickerMaxPercent, maxCashValue, matchedDaily,
-    // )
-    // if (refreshedForMaxPercent) {
-    //   hasTransaction = true
-    //   return refreshedForMaxPercent
-    // }
-
-    // return details
   }, currentDetail)
+
   return {
-    hasTransaction: false,
+    hasTransaction,
     holdingDetail: details,
   }
 }
