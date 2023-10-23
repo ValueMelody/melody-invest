@@ -5,10 +5,10 @@ import * as selectors from 'selectors'
 import { UserState, userSlice } from 'stores/user'
 import { fireEvent, render, screen, waitFor } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import TraderComboCard from './TraderComboCard'
 import axios from 'axios'
 import { store } from 'stores'
 import { traderComboSlice } from 'stores/traderCombo'
+import TraderComboCard from './TraderComboCard'
 
 jest.mock('selectors', () => {
   const actual = jest.requireActual('selectors')

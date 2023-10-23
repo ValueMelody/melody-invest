@@ -4,13 +4,13 @@ import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
 import { act, fireEvent, render, screen } from 'test.utils'
-import SignUp from './SignUp'
 import axios from 'axios'
 import { contentSlice } from 'stores/content'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
+import SignUp from './SignUp'
 
 jest.mock('hooks/usePublicGuard', () => {
   const actual = jest.requireActual('hooks/usePublicGuard')

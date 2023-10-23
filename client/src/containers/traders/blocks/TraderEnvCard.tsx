@@ -3,9 +3,9 @@ import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import * as selectors from 'selectors'
 import { Card } from 'flowbite-react'
-import UnwatchEnvButton from './UnwatchEnvButton'
 import classNames from 'classnames'
 import { useSelector } from 'react-redux'
+import UnwatchEnvButton from './UnwatchEnvButton'
 
 const TraderEnvCard = ({
   traderEnv,

@@ -1,7 +1,7 @@
-import * as auth from './auth'
 import * as generateTool from 'tools/generate'
 import { Request, Response } from 'express'
 import { instance, mock, when } from 'ts-mockito'
+import * as auth from './auth'
 
 const resMock: Response = mock({})
 const res = instance(resMock)

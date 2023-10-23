@@ -1,6 +1,6 @@
 import * as cacheTask from 'tasks/cache'
-import * as cron from './cron'
 import * as emailTask from 'tasks/email'
+import * as cron from './cron'
 
 jest.mock('node-cron', () => ({
   schedule: jest.fn(),

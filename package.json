@@ -1,5 +1,5 @@
 {
-  "name": "melody-app",
+  "name": "melody-invest",
   "private": true,
   "workspaces": [
     "server",
@@ -11,7 +11,6 @@
   "version": "0.0.2",
   "description": "",
   "author": "Baozier",
-  "license": "UNLICENSED",
   "engines": {
     "node": "^18.12.1",
     "npm": "^9.1.2",
@@ -20,13 +19,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ValueMelody/melody-app"
+    "url": "git+https://github.com/ValueMelody/melody-invest"
   },
   "scripts": {
-    "basic": "npm run build --workspace=constants && npm run build --workspace=helpers",
+    "shared": "npm run build --workspace=constants && npm run build --workspace=helpers",
     "dev": "concurrently \"npm run dev --workspace=client\" \"npm run dev --workspace=server\"",
-    "build:client": "npm run basic && npm run build --workspace=client",
-    "build:server": "npm run basic && npm run build --workspace=server",
+    "build:client": "npm run shared && npm run build --workspace=client",
+    "build:server": "npm run shared && npm run build --workspace=server",
 
     "lint": "npm run lint --workspace=interfaces && npm run lint --workspace=constants && npm run lint --workspace=helpers && npm run lint --workspace=client && npm run lint --workspace=server",
     "lint:fix": "npm run lint:fix --workspace=interfaces && npm run lint:fix --workspace=constants && npm run lint:fix --workspace=helpers && npm run lint:fix --workspace=client && npm run lint:fix --workspace=server",

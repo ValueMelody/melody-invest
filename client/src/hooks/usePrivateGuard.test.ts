@@ -3,8 +3,8 @@ import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
 import { renderHook } from 'test.utils'
 import { store } from 'stores'
-import usePrivateGuard from './usePrivateGuard'
 import { userSlice } from 'stores/user'
+import usePrivateGuard from './usePrivateGuard'
 
 afterEach(() => {
   jest.clearAllMocks()

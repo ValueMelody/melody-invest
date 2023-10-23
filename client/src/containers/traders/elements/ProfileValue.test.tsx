@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import { fireEvent, render, screen } from 'test.utils'
-import ProfileValue from './ProfileValue'
 import { mock } from 'ts-mockito'
+import ProfileValue from './ProfileValue'
 
 describe('#ProfileValue', () => {
   const traderMock: interfaces.traderModel.Record = mock({})

@@ -6,9 +6,9 @@ import * as routerTool from 'tools/router'
 import * as selectors from 'selectors'
 import { useDispatch, useSelector } from 'react-redux'
 import { Card } from 'flowbite-react'
-import WatchButton from '../elements/WatchButton'
 import classNames from 'classnames'
 import { useNavigate } from 'react-router-dom'
+import WatchButton from '../elements/WatchButton'
 
 const TraderComboCard = ({
   traderCombo,

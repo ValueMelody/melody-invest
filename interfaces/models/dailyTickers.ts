@@ -15,9 +15,12 @@ export type TickerInfoKey = TickerMovementKey | TickerCompareKey
 
 export type TickerInfo = {
   [key in TickerInfoKey]?: number | string | null;
+} & {
+  splitMultiplier: number;
+  closePrice: number;
 }
 
-export type TickerInfos = {
+export interface TickerInfos {
   [key: number]: TickerInfo;
 }
 

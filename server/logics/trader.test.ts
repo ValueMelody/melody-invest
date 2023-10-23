@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import * as trader from './trader'
 import { instance, mock } from 'ts-mockito'
+import * as trader from './trader'
 
 const traderMock: interfaces.traderModel.Record = mock({})
 const traderInstance = instance(traderMock)

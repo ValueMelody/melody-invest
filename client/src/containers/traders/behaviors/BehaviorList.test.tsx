@@ -3,8 +3,8 @@ import * as parseTool from 'tools/parse'
 import * as selectors from 'selectors'
 import { fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import BehaviorList from './BehaviorList'
 import { GlobalState } from 'stores/global'
+import BehaviorList from './BehaviorList'
 
 const navigate = jest.fn()
 jest.mock('react-router-dom', () => {

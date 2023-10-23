@@ -1,9 +1,9 @@
 import * as interfaces from '@shared/interfaces'
 import * as routerTool from 'tools/router'
 import { fireEvent, render, screen } from 'test.utils'
-import PatternBehaviors from './PatternBehaviors'
 import { createMemoryHistory } from 'history'
 import { mock } from 'ts-mockito'
+import PatternBehaviors from './PatternBehaviors'
 
 describe('#PatternBehaviors', () => {
   const history = createMemoryHistory({ initialEntries: ['/test'] })

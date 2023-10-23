@@ -3,9 +3,9 @@ import * as authMiddleware from 'middlewares/auth'
 import * as crudTraders from 'services/crudTraders'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
-import * as traders from './traders'
 import { Request, Response, Router } from 'express'
 import { instance, mock } from 'ts-mockito'
+import * as traders from './traders'
 
 jest.mock('services/crudTraders', () => ({
   ...jest.requireActual('services/crudTraders'),

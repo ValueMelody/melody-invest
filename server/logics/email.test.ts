@@ -1,8 +1,8 @@
 
-import * as email from './email'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { mock } from 'ts-mockito'
+import * as email from './email'
 
 const userMock: interfaces.userModel.Record = mock({})
 const user = {

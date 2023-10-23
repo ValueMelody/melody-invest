@@ -1,5 +1,5 @@
-import * as traderBehavior from './traderBehavior'
 import { instance, mock, when } from 'ts-mockito'
+import * as traderBehavior from './traderBehavior'
 
 const type = mock<AppState>({})
 

@@ -3,8 +3,8 @@ import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import { GlobalState } from 'stores/global'
-import ProfileDashboard from './ProfileDashboard'
 import { UserState } from 'stores/user'
+import ProfileDashboard from './ProfileDashboard'
 
 afterEach(() => {
   jest.clearAllMocks()

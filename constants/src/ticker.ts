@@ -9,7 +9,7 @@ export const DailyMovementKeys: interfaces.tickerDailyModel.MovementKey[] = [
 ]
 
 export const YearlyCompareKeys: interfaces.tickerYearlyModel.CompareKey[] = [
-  'peRatio', 'pbRatio', 'psRatio',
+  'annualPeRatio', 'annualPbRatio', 'annualPsRatio',
 ]
 
 export const YearlyMovementKeys: interfaces.tickerYearlyModel.MovementKey[] = [

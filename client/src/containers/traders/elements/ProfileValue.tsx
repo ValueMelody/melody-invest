@@ -1,8 +1,8 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
+import classNames from 'classnames'
 import ProfileLabel from './ProfileLabel'
 import ValueDiffer from './ValueDiffer'
-import classNames from 'classnames'
 
 const ProfileValue = ({
   trader,

@@ -3,7 +3,7 @@ export interface Record {
   entityId: number;
   activeTotal: number;
   startDate: string;
-  tickerIds: number[] | null;
+  tickerIds: number[];
 }
 
 export interface Identity extends Record {
@@ -15,12 +15,12 @@ export interface Raw {
   entityId: number;
   activeTotal: number;
   startDate: string;
-  tickerIds: string | null;
+  tickerIds: string;
 }
 
 export interface Create {
   entityId: number;
   activeTotal: number;
   startDate: string;
-  tickerIds: string | null;
+  tickerIds: string;
 }

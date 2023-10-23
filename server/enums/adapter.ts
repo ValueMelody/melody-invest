@@ -54,6 +54,7 @@ export const CacheConfig = Object.freeze({
 
 export const CacheKey = Object.freeze({
   DailyTickers: 'dailyTickers',
+  DailyIndicators: 'dailyIndicators',
   TickerPrices: 'tickerPrices',
   SysemEndpoint: 'systemEndpoint',
 })

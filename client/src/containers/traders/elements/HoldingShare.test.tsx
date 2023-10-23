@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import { render, screen } from 'test.utils'
-import HoldingShare from './HoldingShare'
 import { mock } from 'ts-mockito'
+import HoldingShare from './HoldingShare'
 
 describe('#HoldingShare', () => {
   const tickerIdentity = {

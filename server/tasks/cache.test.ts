@@ -1,6 +1,6 @@
-import * as cache from './cache'
 import * as constants from '@shared/constants'
 import * as crudSystems from 'services/crudSystems'
+import * as cache from './cache'
 
 jest.mock('services/crudSystems', () => {
   const actual = jest.requireActual('services/crudSystems')

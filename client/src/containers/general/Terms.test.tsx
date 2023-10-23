@@ -1,9 +1,9 @@
 import * as constants from '@shared/constants'
 import * as requestAdapter from 'adapters/request'
 import { render, screen, waitFor } from 'test.utils'
-import Terms from './Terms'
 import { contentSlice } from 'stores/content'
 import { store } from 'stores'
+import Terms from './Terms'
 
 jest.mock('adapters/request', () => {
   const actual = jest.requireActual('adapters/request')

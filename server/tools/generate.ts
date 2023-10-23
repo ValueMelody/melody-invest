@@ -1,12 +1,12 @@
+import fs from 'fs'
+import path from 'path'
 import * as adapterEnum from 'enums/adapter'
 import * as constants from '@shared/constants'
 import * as emailEnum from 'enums/email'
 import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
-import fs from 'fs'
 import jwt from 'jsonwebtoken'
-import path from 'path'
 
 export const buildAccessHash = (digits: number): string => {
   const code = helpers.toMD5(Math.random().toString())

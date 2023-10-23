@@ -1,9 +1,9 @@
 import * as routerEnum from 'enums/router'
 import { act, render, screen } from 'test.utils'
-import Client from './Client'
 import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
+import Client from './Client'
 
 jest.mock('react-select', () => '')
 

@@ -44,9 +44,14 @@ export const getPreviousOne = async (
   return tickerDaily ? convertToRecord(tickerDaily) : null
 }
 
-export const getLatest = async (): Promise<interfaces.tickerDailyModel.Record | undefined> => {
+export const getLatest = async (
+  tickerId?: number,
+): Promise<interfaces.tickerDailyModel.Record | undefined> => {
   const record = await databaseAdapter.findOne({
     tableName: TableName,
+    conditions: tickerId
+      ? [{ key: 'tickerId', value: tickerId }]
+      : undefined,
     orderBy: [{ column: 'date', order: 'desc' }],
   })
   return record ? convertToRecord(record) : undefined

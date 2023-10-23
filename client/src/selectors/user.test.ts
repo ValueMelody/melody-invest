@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
-import * as userSelector from './user'
 import { instance, mock, when } from 'ts-mockito'
 import { UserState } from 'stores/user'
+import * as userSelector from './user'
 
 const type = mock<AppState>({})
 const userType = mock<UserState>({})

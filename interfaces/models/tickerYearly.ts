@@ -14,7 +14,7 @@ export type MovementDecreaseKey =
 
 export type MovementKey = MovementIncreaseKey | MovementDecreaseKey
 
-export type CompareKey = 'peRatio' | 'pbRatio' | 'psRatio'
+export type CompareKey = 'annualPeRatio' | 'annualPbRatio' | 'annualPsRatio'
 
 interface Common {
   id: number;

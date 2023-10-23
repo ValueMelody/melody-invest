@@ -44,11 +44,14 @@ export const getAllByEntity = async (
   return tickers
 }
 
-export const getAllDelisted = async (): Promise<interfaces.tickerModel.Record[]> => {
+export const getAllDelisted = async (
+  entityId: number,
+): Promise<interfaces.tickerModel.Record[]> => {
   const delisted = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
       { key: 'isDelisted', value: true },
+      { key: 'entityId', value: entityId },
     ],
   })
   return delisted

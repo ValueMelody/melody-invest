@@ -1,46 +1,14 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 
-export const getTickerPreferValue = (
+export const getTickerEqualWeightPreferValue = (
   Preference: number,
-  tickerDaily: interfaces.tickerDailyModel.Record,
-  tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
-  tickerYearly: interfaces.tickerYearlyModel.Record | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
 ): number | null => {
   switch (Preference) {
     case constants.BehaviorValue.Preference.HigherPrice:
     case constants.BehaviorValue.Preference.LowerPrice:
-      return tickerDaily.closePrice
-    case constants.BehaviorValue.Preference.HigherQuarterEPS:
-    case constants.BehaviorValue.Preference.LowerQuarterEPS:
-      return tickerQuarterly ? tickerQuarterly.eps : null
-    case constants.BehaviorValue.Preference.HigherQuarterEBITDA:
-    case constants.BehaviorValue.Preference.LowerQuarterEBITDA:
-      return tickerQuarterly ? tickerQuarterly.ebitda : null
-    case constants.BehaviorValue.Preference.HigherQuarterIncome:
-    case constants.BehaviorValue.Preference.LowerQuarterIncome:
-      return tickerQuarterly ? tickerQuarterly.netIncome : null
-    case constants.BehaviorValue.Preference.HigherQuarterProfit:
-    case constants.BehaviorValue.Preference.LowerQuarterProfit:
-      return tickerQuarterly ? tickerQuarterly.grossProfit : null
-    case constants.BehaviorValue.Preference.HigherQuarterRevenue:
-    case constants.BehaviorValue.Preference.LowerQuarterRevenue:
-      return tickerQuarterly ? tickerQuarterly.totalRevenue : null
-    case constants.BehaviorValue.Preference.HigherYearEPS:
-    case constants.BehaviorValue.Preference.LowerYearEPS:
-      return tickerYearly ? tickerYearly.eps : null
-    case constants.BehaviorValue.Preference.HigherYearEBITDA:
-    case constants.BehaviorValue.Preference.LowerYearEBITDA:
-      return tickerYearly ? tickerYearly.ebitda : null
-    case constants.BehaviorValue.Preference.HigherYearIncome:
-    case constants.BehaviorValue.Preference.LowerYearIncome:
-      return tickerYearly ? tickerYearly.netIncome : null
-    case constants.BehaviorValue.Preference.HigherYearProfit:
-    case constants.BehaviorValue.Preference.LowerYearProfit:
-      return tickerYearly ? tickerYearly.grossProfit : null
-    case constants.BehaviorValue.Preference.HigherYearRevenue:
-    case constants.BehaviorValue.Preference.LowerYearRevenue:
-      return tickerYearly ? tickerYearly.totalRevenue : null
+      return tickerInfo.closePrice
     default:
       return null
   }
@@ -159,46 +127,50 @@ export const TickerMovementTriggers: {
   freeCashFlowYearlyDecreaseSell: 'freeCashFlowYearlyDecrease',
 }
 
-// table.smallint('peRatioQuarterlyAboveBuy')
-//       table.smallint('peRatioQuarterlyAboveSell')
-//       table.smallint('peRatioQuarterlyBelowBuy')
-//       table.smallint('peRatioQuarterlyBelowSell')
-//       table.smallint('pbRatioQuarterlyAboveBuy')
-//       table.smallint('pbRatioQuarterlyAboveSell')
-//       table.smallint('pbRatioQuarterlyBelowBuy')
-//       table.smallint('pbRatioQuarterlyBelowSell')
-//       table.smallint('psRatioQuarterlyAboveBuy')
-//       table.smallint('psRatioQuarterlyAboveSell')
-//       table.smallint('psRatioQuarterlyBelowBuy')
-//       table.smallint('psRatioQuarterlyBelowSell')
-//       table.smallint('roaQuarterlyAboveBuy')
-//       table.smallint('roaQuarterlyAboveSell')
-//       table.smallint('roaQuarterlyBelowBuy')
-//       table.smallint('roaQuarterlyBelowSell')
-//       table.smallint('roeQuarterlyAboveBuy')
-//       table.smallint('roeQuarterlyAboveSell')
-//       table.smallint('roeQuarterlyBelowBuy')
-//       table.smallint('roeQuarterlyBelowSell')
-//       table.smallint('grossMarginQuarterlyAboveBuy')
-//       table.smallint('grossMarginQuarterlyAboveSell')
-//       table.smallint('grossMarginQuarterlyBelowBuy')
-//       table.smallint('grossMarginQuarterlyBelowSell')
-//       table.smallint('debtEquityQuarterlyAboveBuy')
-//       table.smallint('debtEquityQuarterlyAboveSell')
-//       table.smallint('debtEquityQuarterlyBelowBuy')
-//       table.smallint('debtEquityQuarterlyBelowSell')
-// table.smallint('peRatioYearlyAboveBuy')
-//       table.smallint('peRatioYearlyAboveSell')
-//       table.smallint('peRatioYearlyBelowBuy')
-//       table.smallint('peRatioYearlyBelowSell')
-//       table.smallint('pbRatioYearlyAboveBuy')
-//       table.smallint('pbRatioYearlyAboveSell')
-//       table.smallint('pbRatioYearlyBelowBuy')
-//       table.smallint('pbRatioYearlyBelowSell')
-//       table.smallint('psRatioYearlyAboveBuy')
-//       table.smallint('psRatioYearlyAboveSell')
-//       table.smallint('psRatioYearlyBelowBuy')
-//       table.smallint('psRatioYearlyBelowSell')
+export const TickerCompareTriggers: {
+  [key in interfaces.traderPatternModel.TickerCompareBehavior]: interfaces.dailyTickersModel.TickerCompareKey
+} = {
+  peRatioQuarterlyAboveBuy: 'peRatio',
+  peRatioQuarterlyBelowBuy: 'peRatio',
+  pbRatioQuarterlyAboveBuy: 'pbRatio',
+  pbRatioQuarterlyBelowBuy: 'pbRatio',
+  psRatioQuarterlyAboveBuy: 'psRatio',
+  psRatioQuarterlyBelowBuy: 'psRatio',
+  roaQuarterlyAboveBuy: 'roa',
+  roaQuarterlyBelowBuy: 'roa',
+  roeQuarterlyAboveBuy: 'roe',
+  roeQuarterlyBelowBuy: 'roe',
+  grossMarginQuarterlyAboveBuy: 'grossMargin',
+  grossMarginQuarterlyBelowBuy: 'grossMargin',
+  debtEquityQuarterlyAboveBuy: 'debtEquity',
+  debtEquityQuarterlyBelowBuy: 'debtEquity',
+  peRatioYearlyAboveBuy: 'annualPeRatio',
+  peRatioYearlyBelowBuy: 'annualPeRatio',
+  pbRatioYearlyAboveBuy: 'annualPbRatio',
+  pbRatioYearlyBelowBuy: 'annualPbRatio',
+  psRatioYearlyAboveBuy: 'annualPsRatio',
+  psRatioYearlyBelowBuy: 'annualPsRatio',
+  peRatioQuarterlyAboveSell: 'peRatio',
+  peRatioQuarterlyBelowSell: 'peRatio',
+  pbRatioQuarterlyAboveSell: 'pbRatio',
+  pbRatioQuarterlyBelowSell: 'pbRatio',
+  psRatioQuarterlyAboveSell: 'psRatio',
+  psRatioQuarterlyBelowSell: 'psRatio',
+  roaQuarterlyAboveSell: 'roa',
+  roaQuarterlyBelowSell: 'roa',
+  roeQuarterlyAboveSell: 'roe',
+  roeQuarterlyBelowSell: 'roe',
+  grossMarginQuarterlyAboveSell: 'grossMargin',
+  grossMarginQuarterlyBelowSell: 'grossMargin',
+  debtEquityQuarterlyAboveSell: 'debtEquity',
+  debtEquityQuarterlyBelowSell: 'debtEquity',
+  peRatioYearlyAboveSell: 'annualPeRatio',
+  peRatioYearlyBelowSell: 'annualPeRatio',
+  pbRatioYearlyAboveSell: 'annualPbRatio',
+  pbRatioYearlyBelowSell: 'annualPbRatio',
+  psRatioYearlyAboveSell: 'annualPsRatio',
+  psRatioYearlyBelowSell: 'annualPsRatio',
+}
 
 export const IndicatorMovementTriggers: {
   [key in interfaces.traderPatternModel.IndicatorMovementBehavior]: interfaces.dailyIndicatorsModel.IndicatorMovementKey
@@ -294,100 +266,146 @@ export const IndicatorCompareTriggers: {
   inflationYearlyBelowSell: 'annualInflation',
 }
 
+export const isIndicatorMovementBehaviorFitPattern = (
+  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
+  indicatorKey: interfaces.dailyIndicatorsModel.IndicatorMovementKey,
+  pattern: interfaces.traderPatternModel.Record,
+  behavior: interfaces.traderPatternModel.MovementBehavior,
+): boolean => {
+  const indicatorValue = indicatorInfo[indicatorKey]
+  const patternValue = pattern[behavior]
+
+  // If pattern do not care about this indicator, then treat as fit
+  if (patternValue === null || patternValue === undefined) return true
+  // If indicator do not contain a value for this behavior, then treat as no fit
+  if (indicatorValue === null || indicatorValue === undefined) return false
+  return indicatorValue >= patternValue
+}
+
+export const isIndicatorCompareBehaviorFitPattern = (
+  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
+  compareKey: interfaces.dailyIndicatorsModel.IndicatorCompareKey,
+  pattern: interfaces.traderPatternModel.Record,
+  behavior: interfaces.traderPatternModel.CompareBehavior,
+): boolean => {
+  const indicatorValue = indicatorInfo[compareKey]
+  const patternValue = pattern[behavior]
+
+  // If pattern do not care about this indicator, then treat as fit
+  if (patternValue === null || patternValue === undefined) return true
+  // If indicator do not contain a value for this behavior, then treat as no fit
+  if (indicatorValue === null || indicatorValue === undefined) return false
+
+  if (behavior.includes('Above') && indicatorValue > patternValue) return true
+  if (behavior.includes('Below') && indicatorValue < patternValue) return true
+  return false
+}
+
+export const isIndicatorFitPatternBehaviors = (
+  pattern: interfaces.traderPatternModel.Record,
+  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
+  movementBehaviors: interfaces.traderPatternModel.IndicatorMovementBehavior[],
+  compareBehaviors: interfaces.traderPatternModel.indicatorCompareBehavior[],
+): boolean => {
+  if (!indicatorInfo) return false
+
+  // Make sure every movement behaviors in one trader pattern fit current indicator
+  const movementFit = movementBehaviors.every((behavior) => {
+    const indicatorKey = IndicatorMovementTriggers[behavior]
+    return isIndicatorMovementBehaviorFitPattern(
+      indicatorInfo, indicatorKey, pattern, behavior,
+    )
+  })
+  if (!movementFit) return false
+
+  // make sure every compare behaviors in one trader pattern fit current indicator
+  const compareFit = compareBehaviors.every((trigger) => {
+    const indicatorKey = IndicatorCompareTriggers[trigger]
+    return isIndicatorCompareBehaviorFitPattern(
+      indicatorInfo, indicatorKey, pattern, trigger,
+    )
+  })
+  return compareFit
+}
+
 export const getTickerMovementWeight = (
   tickerInfo: interfaces.dailyTickersModel.TickerInfo,
   tickerKey: interfaces.dailyTickersModel.TickerMovementKey,
   pattern: interfaces.traderPatternModel.Record,
   behavior: interfaces.traderPatternModel.MovementBehavior,
 ): number => {
-  const tickerValue = Number(tickerInfo[tickerKey])
+  const tickerValue = tickerInfo[tickerKey]
   const patternValue = pattern[behavior]
 
+  // If pattern has no value one on one behavior, weight 1
   if (patternValue === null || patternValue === undefined) return 1
-  if (tickerValue === null || tickerValue === undefined || tickerValue < patternValue) return 0
-  return tickerValue - patternValue + 2
+
+  const tickerNumValue = Number(tickerValue)
+  // If ticker has no value on one behavior or less than expected pattern value, treat as no weight
+  if (tickerValue === null || tickerValue === undefined || tickerNumValue < patternValue) return 0
+
+  // weight start from 2 if ticker value is larger than or equal to pattern value
+  return tickerNumValue - patternValue + 2
 }
 
-export const getIndicatorMovementMatch = (
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-  indicatorKey: interfaces.dailyIndicatorsModel.IndicatorMovementKey,
-  pattern: interfaces.traderPatternModel.Record,
-  behavior: interfaces.traderPatternModel.MovementBehavior,
-): boolean => {
-  const indicatorValue = Number(indicatorInfo[indicatorKey])
-  const patternValue = pattern[behavior]
-
-  if (patternValue === null || patternValue === undefined) return true
-  return indicatorValue !== null && indicatorValue >= patternValue
-}
-
-export const getIndicatorCompareMatch = (
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-  compareKey: interfaces.dailyIndicatorsModel.IndicatorCompareKey,
+export const getTickerCompareWeight = (
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo,
+  tickerKey: interfaces.dailyTickersModel.TickerCompareKey,
   pattern: interfaces.traderPatternModel.Record,
   behavior: interfaces.traderPatternModel.CompareBehavior,
-): boolean => {
-  const indicatorValue = Number(indicatorInfo[compareKey])
+): number => {
+  const tickerValue = tickerInfo[tickerKey]
   const patternValue = pattern[behavior]
 
-  if (patternValue === null || patternValue === undefined) return true
-  if (indicatorValue === null) return false
+  // If pattern has no value one on one behavior, weight 1
+  if (patternValue === null || patternValue === undefined) return 1
 
-  if (behavior.includes('Above') && indicatorValue > patternValue) {
-    return true
-  }
+  const tickerNumValue = Number(tickerValue)
+  // If ticker has no value on one behavior or equal to expected pattern value, treat as no weight
+  if (tickerValue === null || tickerValue === undefined || patternValue === tickerNumValue) return 0
 
-  if (behavior.includes('Below') && indicatorValue < patternValue) {
-    return true
-  }
-
-  return false
+  if (behavior.includes('Above') && tickerNumValue > patternValue) return 2
+  if (behavior.includes('Below') && tickerNumValue < patternValue) return 2
+  return 0
 }
 
-export const getTickerMovementWeights = (
+export const getTickerWeights = (
   pattern: interfaces.traderPatternModel.Record,
   tickerInfo: interfaces.dailyTickersModel.TickerInfo,
   movementBehaviors: interfaces.traderPatternModel.TickerMovementBehavior[],
+  compareBehaviors: interfaces.traderPatternModel.TickerCompareBehavior[],
 ) => {
-  const movementWeights = movementBehaviors.reduce((
-    weights: number, behavior,
-  ): number => {
-    if (!weights) return 0
+  let weights = 1
+
+  // Aggregate ticker movement weights
+  movementBehaviors.some((behavior) => {
     const tickerKey = TickerMovementTriggers[behavior]
-    const currentWeight = getTickerMovementWeight(
+    const movementWeight = getTickerMovementWeight(
       tickerInfo, tickerKey, pattern, behavior,
     )
-    return weights * currentWeight
-  }, 1)
+    // Multple weight for each behaviors as the final weight
+    weights = weights * movementWeight
 
-  return movementWeights
-}
-
-export const getIndicatorMovementAndCompareMatches = (
-  pattern: interfaces.traderPatternModel.Record,
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-  movementBehaviors: interfaces.traderPatternModel.IndicatorMovementBehavior[],
-  compareTriggers: interfaces.traderPatternModel.indicatorCompareBehavior[],
-): boolean => {
-  const movementMatches = movementBehaviors.every((behavior) => {
-    const indicatorKey = IndicatorMovementTriggers[behavior]
-    const isMatch = getIndicatorMovementMatch(
-      indicatorInfo, indicatorKey, pattern, behavior,
-    )
-    return isMatch
+    // If weigth equals to 0, exist loop
+    return !movementWeight
   })
 
-  if (!movementMatches) return false
+  if (!weights) return weights
 
-  const compareMatches = compareTriggers.every((trigger) => {
-    const indicatorKey = IndicatorCompareTriggers[trigger]
-    const isMatch = getIndicatorCompareMatch(
-      indicatorInfo, indicatorKey, pattern, trigger,
+  // Aggregate ticker compare weights
+  compareBehaviors.some((behavior) => {
+    const tickerKey = TickerCompareTriggers[behavior]
+    const compareWeight = getTickerCompareWeight(
+      tickerInfo, tickerKey, pattern, behavior,
     )
-    return isMatch
+    // Multple weight for each behaviors as the final weight
+    weights = weights * compareWeight
+
+    // If weigth equals to 0, exist loop
+    return !compareWeight
   })
 
-  return compareMatches
+  return weights
 }
 
 interface TickerWithEvaluation {
@@ -399,52 +417,63 @@ interface TickerWithEvaluation {
 export const getTickerWithSellEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
-  dailyTicker: interfaces.dailyTickersModel.TickerInfo | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo | null,
 ): TickerWithEvaluation | null => {
-  if (!dailyTicker) return null
+  // When no available info for this tickerId, then do not sell
+  if (!tickerInfo) return null
 
-  return null
-  // const preferValue = getTickerPreferValue(
-  //   pattern.sellPreference, dailyTicker.daily, dailyTicker.quarterly, dailyTicker.yearly,
-  // )
-  // if (!preferValue && preferValue !== 0) return null
+  // Check current patterns sell preference if tickers are equal weight
+  const preferValue = getTickerEqualWeightPreferValue(
+    pattern.sellPreference, tickerInfo,
+  )
+  if (preferValue === null) return null
 
-  // const weight = getTickerMovementWeights(
-  //   pattern,
-  //   dailyTicker.info,
-  //   constants.Behavior.TickerMovementSellBehaviors,
-  // )
-  // if (!weight) return null
+  // Get current tickers sell weight
+  const weight = getTickerWeights(
+    pattern,
+    tickerInfo,
+    constants.Behavior.TickerMovementSellBehaviors,
+    constants.Behavior.TickerCompareSellBehaviors,
+  )
 
-  // return {
-  //   tickerId, preferValue, weight,
-  // }
+  if (!weight) return null
+
+  return {
+    tickerId,
+    preferValue,
+    weight,
+  }
 }
 
 export const getTickerWithBuyEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
-  dailyTicker: interfaces.dailyTickersModel.TickerInfo | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo | null,
 ): TickerWithEvaluation | null => {
-  if (!dailyTicker) return null
-  return null
+  // When no available info for this tickerId, then do not buy
+  if (!tickerInfo) return null
 
-  // const preferValue = getTickerPreferValue(
-  //   pattern.buyPreference, dailyTicker.daily, dailyTicker.quarterly, dailyTicker.yearly,
-  // )
-  // if (!preferValue && preferValue !== 0) return null
+  // Check current patterns buy preference if tickers are equal weight
+  const preferValue = getTickerEqualWeightPreferValue(
+    pattern.buyPreference, tickerInfo,
+  )
+  if (preferValue === null) return null
 
-  // const weight = getTickerMovementWeights(
-  //   pattern,
-  //   dailyTicker.info,
-  //   constants.Behavior.TickerMovementBuyBehaviors,
-  // )
+  // Get current tickers buy weight
+  const weight = getTickerWeights(
+    pattern,
+    tickerInfo,
+    constants.Behavior.TickerMovementBuyBehaviors,
+    constants.Behavior.TickerCompareBuyBehaviors,
+  )
 
-  // if (!weight) return null
+  if (!weight) return null
 
-  // return {
-  //   tickerId, preferValue, weight,
-  // }
+  return {
+    tickerId,
+    preferValue,
+    weight,
+  }
 }
 
 export const getOrderedTickerEvaluations = (
@@ -453,6 +482,7 @@ export const getOrderedTickerEvaluations = (
 ) => {
   const preferenceEntry = Object.entries(constants.BehaviorValue.Preference).find((entry) => entry[1] === preference)
   if (!preferenceEntry) throw new Error('Wrong preference provided')
+
   const key = preferenceEntry[0]
   return evaluations.sort((first, second) => {
     if (first.weight > second.weight) return -1
@@ -462,62 +492,37 @@ export const getOrderedTickerEvaluations = (
   })
 }
 
-export const getTickerBuyEaluations = (
+export const getTickerBuyEvaluations = (
   tickerIds: number[],
   pattern: interfaces.traderPatternModel.Record,
-  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
+  tickerInfos: interfaces.dailyTickersModel.TickerInfos,
 ) => {
-  const emptyEvaluations: TickerWithEvaluation[] = []
   const tickerEvaluations = tickerIds.reduce((evaluations, tickerId) => {
     const evaluation = getTickerWithBuyEvaluation(
-      tickerId, pattern, dailyTickers[tickerId],
+      tickerId, pattern, tickerInfos[tickerId],
     )
     if (evaluation) evaluations.push(evaluation)
     return evaluations
-  }, emptyEvaluations)
+  }, [] as TickerWithEvaluation[])
+  // Order tickerEvaluations by weight and prefer value
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.buyPreference)
   return orderedEvaluations
 }
 
-export const getIndicatorBuyMatches = (
-  pattern: interfaces.traderPatternModel.Record,
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-): boolean => {
-  const shouldBuy = getIndicatorMovementAndCompareMatches(
-    pattern,
-    indicatorInfo,
-    constants.Behavior.IndicatorMovementBuyBehaviors,
-    constants.Behavior.IndicatorCompareBuyBehaviors,
-  )
-  return shouldBuy
-}
-
-export const getIndicatorSellMatches = (
-  pattern: interfaces.traderPatternModel.Record,
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-): boolean => {
-  const shouldSell = getIndicatorMovementAndCompareMatches(
-    pattern,
-    indicatorInfo,
-    constants.Behavior.IndicatorMovementSellBehaviors,
-    constants.Behavior.IndicatorCompareSellBehaviors,
-  )
-  return shouldSell
-}
-
-export const getTickerSellEaluations = (
+export const getTickerSellEvaluations = (
   tickerIds: number[],
   pattern: interfaces.traderPatternModel.Record,
-  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
+  tickerInfos: interfaces.dailyTickersModel.TickerInfos,
 ): TickerWithEvaluation[] => {
-  const emptyEvaluations: TickerWithEvaluation[] = []
+  // Get sell evaluation of each ticker that should be sold
   const tickerEvaluations = tickerIds.reduce((evaluations, tickerId) => {
     const evaluation = getTickerWithSellEvaluation(
-      tickerId, pattern, dailyTickers[tickerId],
+      tickerId, pattern, tickerInfos[tickerId],
     )
     if (evaluation) evaluations.push(evaluation)
     return evaluations
-  }, emptyEvaluations)
+  }, [] as TickerWithEvaluation[])
+  // Order tickerEvaluations by weight and prefer value
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.sellPreference)
   return orderedEvaluations
 }

@@ -1,5 +1,5 @@
-import * as email from './email'
 import * as processEmails from 'services/processEmails'
+import * as email from './email'
 
 jest.mock('services/processEmails', () => {
   const actual = jest.requireActual('services/processEmails')

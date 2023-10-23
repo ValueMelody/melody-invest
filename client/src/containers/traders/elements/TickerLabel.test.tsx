@@ -1,7 +1,7 @@
 import * as interfaces from '@shared/interfaces'
 import { fireEvent, render, screen } from 'test.utils'
-import TickerLabel from './TickerLabel'
 import { mock } from 'ts-mockito'
+import TickerLabel from './TickerLabel'
 
 describe('#tickerLabel', () => {
   test('do not render if there is no ticker', () => {

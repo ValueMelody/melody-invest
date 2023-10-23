@@ -1,7 +1,7 @@
 import * as actions from 'actions'
 import axios from 'axios'
-import { store } from './index'
 import { traderBehaviorSlice } from './traderBehavior'
+import { store } from './index'
 
 afterEach(() => {
   store.dispatch(traderBehaviorSlice.actions._resetForTest())

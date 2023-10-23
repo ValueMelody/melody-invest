@@ -2,10 +2,10 @@ import * as constants from '@shared/constants'
 import * as databaseAdapter from 'adapters/database'
 import * as emailAdapter from 'adapters/email'
 import * as emailModel from 'models/email'
-import * as processEmail from './processEmails'
 import * as runTool from 'tools/run'
 import { SendMailOptions, Transporter } from 'nodemailer'
 import { instance, mock, when } from 'ts-mockito'
+import * as processEmail from './processEmails'
 
 jest.mock('adapters/email', () => {
   const actual = jest.requireActual('adapters/email')

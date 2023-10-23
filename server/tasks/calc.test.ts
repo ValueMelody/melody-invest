@@ -1,7 +1,7 @@
-import * as calc from './calc'
 import * as calcIndicators from 'services/calcIndicators'
 import * as calcTickers from 'services/calcTickers'
 import * as calcTraders from 'services/calcTraders'
+import * as calc from './calc'
 
 jest.mock('services/calcIndicators', () => {
   const actual = jest.requireActual('services/calcIndicators')

@@ -2,9 +2,11 @@ import * as cacheAdapter from 'adapters/cache'
 import * as cacheTool from 'tools/cache'
 import * as constants from '@shared/constants'
 import * as dailyTickersModel from 'models/dailyTickers'
+import * as dailyIndicatorsModel from 'models/dailyIndicators'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as errorEnums from 'enums/error'
+import * as entityModel from 'models/entity'
 import * as evaluationLogic from 'logics/evaluation'
 import * as generateTool from 'tools/generate'
 import * as helpers from '@shared/helpers'
@@ -61,13 +63,29 @@ const isActiveTraderEnv = async (env: interfaces.traderEnvModel.Record) => {
   return userPaymentModel.hasActiveUser(userIds)
 }
 
-const getCachedDailyTickers = async (entityId: number, date: string) => {
+const getCachedDailyTickers = async (
+  entityId: number, date: string,
+): Promise<interfaces.dailyTickersModel.Record | null> => {
   return cacheAdapter.returnBuild({
     cacheAge: '1d',
     cacheKey: cacheTool.generateDailyTickersKey(entityId, date),
     buildFunction: async () => {
-      const dailyTickers = await dailyTickersModel.getByUK(entityId, date, ['tickers', 'indicators'])
+      const dailyTickers = await dailyTickersModel.getByUK(entityId, date)
       return dailyTickers
+    },
+    preferLocal: true,
+  })
+}
+
+const getCachedDailyIndicators = async (
+  date: string,
+): Promise<interfaces.dailyIndicatorsModel.Record | null> => {
+  return cacheAdapter.returnBuild({
+    cacheAge: '1d',
+    cacheKey: cacheTool.generateDailyIndicatorsKey(date),
+    buildFunction: async () => {
+      const dailyIndicators = await dailyIndicatorsModel.getByUK(date)
+      return dailyIndicators
     },
     preferLocal: true,
   })
@@ -80,133 +98,159 @@ const calcTraderPerformance = async (
   latestDate: string,
   delistedLastPrices: transactionLogic.DelistedLastPrices,
 ) => {
+  // Delete all trader records in related tables and reset trader record if forceRecheck = true
   const trader = forceRecheck
     ? await cleanupTrader(targetTrader.id)
     : targetTrader
 
-  console.info(`Checking Trader:${trader.id}`)
+  // If trader has been estimated already, then skip
   if (trader.estimatedAt && trader.estimatedAt >= latestDate) return
 
   const pattern = await traderPatternModel.getByPK(targetTrader.traderPatternId)
   if (!pattern) throw errorEnums.Custom.RecordNotFound
 
-  const tickerMinPercent = pattern.tickerMinPercent
-  const tickerMaxPercent = pattern.tickerMaxPercent
-  const holdingBuyPercent = pattern.holdingBuyPercent
-  const holdingSellPercent = pattern.holdingSellPercent
-  const cashMaxPercent = pattern.cashMaxPercent
-
   let holding = await traderHoldingModel.getLatest(trader.id)
+
+  // Get next trade date, or use env start date for empty trader record
   let tradeDate = holding
     ? dateTool.getNextDate(holding.date, pattern.tradeFrequency)
     : env.startDate
+
+  // If target trade date is larger than latest date with market data, then skip
+  if (tradeDate > latestDate) return
+
   let rebalancedAt = trader.rebalancedAt || tradeDate
   let startedAt = trader.startedAt
   let hasRebalanced = false
-  let hasCreatedAnyRecord = false
+  let shouldCommitTransaction = false
 
+  const cashMaxPercent = pattern.cashMaxPercent / 100
+  const tickerMinPercent = pattern.tickerMinPercent / 100
+  const tickerMaxPercent = pattern.tickerMaxPercent / 100
+  const holdingBuyPercent = pattern.holdingBuyPercent / 100
+  const holdingSellPercent = pattern.holdingSellPercent / 100
+
+  console.info(`Checking Trader:${trader.id}`)
   const transaction = await databaseAdapter.createTransaction()
   try {
+    // Keep calculate until target trade date is larger than lastes date with market data
     while (tradeDate <= latestDate) {
       const nextDate = dateTool.getNextDate(tradeDate, pattern.tradeFrequency)
 
-      const dailyTickersRecord: interfaces.dailyTickersModel.Record | null = await getCachedDailyTickers(
+      const dailyTickersRecord = await getCachedDailyTickers(
         env.entityId,
         tradeDate,
       )
 
+      // If target trade date has no market date, then try next date
       if (!dailyTickersRecord?.tickerInfos) {
         tradeDate = nextDate
         continue
       }
 
-      const dailyTickers = dailyTickersRecord.tickerInfos || {}
-      const indicatorInfo = {}
+      const tickerInfos = dailyTickersRecord.tickerInfos
+      const dailyIndicators = await getCachedDailyIndicators(tradeDate)
+      const indicatorInfo = dailyIndicators?.indicatorInfo || {}
 
-      const emptyDailyTickers: interfaces.dailyTickersModel.TickerInfos = {}
-      const availableTargets = env.tickerIds
-        ? env.tickerIds.reduce((tickers, tickerId) => {
-          tickers[tickerId] = dailyTickers[tickerId]
-          return tickers
-        }, emptyDailyTickers)
-        : dailyTickers
+      // Only keep market data related to env defined tickers
+      const availableTickerInfos = env.tickerIds.reduce((tickers, tickerId) => {
+        tickers[tickerId] = tickerInfos[tickerId]
+        return tickers
+      }, {} as interfaces.dailyTickersModel.TickerInfos)
 
       const totalCash = holding ? holding.totalCash : constants.Trader.Initial.Cash
       const items = holding ? holding.items : []
 
-      const detailsAfterUpdate = transactionLogic.detailFromCashAndItems(
-        totalCash, items, availableTargets, tradeDate, delistedLastPrices,
+      // Regenerate holding detail by cash, holding items, and target market info
+      const regeneratedDetail = transactionLogic.generateHoldingDetail(
+        totalCash, items, availableTickerInfos, tradeDate, delistedLastPrices,
       )
 
+      // If next expected rebalance date is earlier than target trade date, then rebalance
       const shouldRebalance =
         !!pattern.rebalanceFrequency &&
         dateTool.getNextDate(rebalancedAt, pattern.rebalanceFrequency) <= tradeDate
 
-      const maxCashValue = detailsAfterUpdate.totalValue * cashMaxPercent / 100
+      // Rebalance holding based on tickerMinPercent, tickerMaxPercent and cashMaxPercent
       const {
-        holdingDetail: detailAfterRebalance,
+        holdingDetail: rebalancedDetail,
         hasTransaction: hasRebalanceTransaction,
-      } = transactionLogic.detailAfterRebalance(
+      } = transactionLogic.rebalanceHoldingDetail(
         shouldRebalance,
-        detailsAfterUpdate,
-        availableTargets,
+        regeneratedDetail,
+        availableTickerInfos,
         tickerMinPercent,
         tickerMaxPercent,
-        maxCashValue,
+        cashMaxPercent,
       )
 
-      const holdingTickerIds = detailAfterRebalance.items.map((item) => item.tickerId)
+      // Check if indicatorInfo matches sell criterion
+      const shouldSellBasedOnIndicator = evaluationLogic.isIndicatorFitPatternBehaviors(
+        pattern,
+        indicatorInfo,
+        constants.Behavior.IndicatorMovementSellBehaviors,
+        constants.Behavior.IndicatorCompareSellBehaviors,
+      )
 
-      const isSellIndicatorMatches = !!indicatorInfo && evaluationLogic.getIndicatorSellMatches(pattern, indicatorInfo)
-      const sellTickerEvaluations = isSellIndicatorMatches
-        ? evaluationLogic.getTickerSellEaluations(
-          holdingTickerIds, pattern, availableTargets,
+      // Get a list of ordered tickerIds that should be sold
+      const holdingTickerIds = rebalancedDetail.items.map((item) => item.tickerId)
+
+      // Get evaluations of each ticker, order by which one should be sold first
+      const tickerSellEvaluations = shouldSellBasedOnIndicator
+        ? evaluationLogic.getTickerSellEvaluations(
+          holdingTickerIds, pattern, tickerInfos,
         )
         : []
-      const sellTickerIds = sellTickerEvaluations.map((sellTickerEvaluation) => sellTickerEvaluation.tickerId)
+      const sellTickerIds = tickerSellEvaluations.map((tickerSellEvaluation) => tickerSellEvaluation.tickerId)
 
+      // Update holding after sell target tickers
       const {
         holdingDetail: detailAfterSell,
         hasTransaction: hasSellTransaction,
-      } = transactionLogic.detailAfterSell(
-        detailAfterRebalance,
+      } = transactionLogic.getHoldingDetailAfterSell(
+        rebalancedDetail,
         sellTickerIds,
-        availableTargets,
+        availableTickerInfos,
         holdingSellPercent,
         tickerMinPercent,
-        maxCashValue,
+        cashMaxPercent,
       )
 
-      const isBuyIndicatorMatches = !!indicatorInfo && evaluationLogic.getIndicatorBuyMatches(pattern, indicatorInfo)
-      const buyTickerEvaluations = isBuyIndicatorMatches
-        ? evaluationLogic.getTickerBuyEaluations(
-          Object.keys(availableTargets).map((id) => parseInt(id)),
-          pattern,
-          availableTargets,
+      // Check if indicatorInfo matches buy criterion
+      const shouldBuyBasedOnIndicator = evaluationLogic.isIndicatorFitPatternBehaviors(
+        pattern,
+        indicatorInfo,
+        constants.Behavior.IndicatorMovementBuyBehaviors,
+        constants.Behavior.IndicatorCompareBuyBehaviors,
+      )
+
+      // Get a list of tickerIds that could be trade
+      const availableTickerIds = Object.keys(availableTickerInfos).map((id) => parseInt(id))
+
+      // Get evaluations of each ticker, order by which one should be bought first
+      const tickerBuyEvaluations = shouldBuyBasedOnIndicator
+        ? evaluationLogic.getTickerBuyEvaluations(
+          availableTickerIds, pattern, tickerInfos,
         )
         : []
-      const buyTickerIds = buyTickerEvaluations.map((evaluation) => evaluation.tickerId)
+      const buyTickerIds = tickerBuyEvaluations.map((evaluation) => evaluation.tickerId)
 
-      const maxBuyAmount = detailAfterSell.totalValue * holdingBuyPercent / 100
+      // Update holding after buy target tickers
       const {
         holdingDetail: detailAfterBuy,
         hasTransaction: hasBuyTransaction,
-      } = transactionLogic.detailAfterBuy(
+      } = transactionLogic.getHoldingDetailAfterBuy(
         detailAfterSell,
         buyTickerIds,
-        availableTargets,
-        maxBuyAmount,
+        tickerInfos,
+        holdingBuyPercent,
         tickerMaxPercent,
       )
 
-      if (shouldRebalance && hasRebalanceTransaction) {
-        rebalancedAt = tradeDate
-        hasRebalanced = true
-      }
-
       const hasTransaction = hasRebalanceTransaction || hasSellTransaction || hasBuyTransaction
+
       if (hasTransaction) {
-        hasCreatedAnyRecord = true
+        shouldCommitTransaction = true
         if (!startedAt) startedAt = tradeDate
         holding = await traderHoldingModel.create({
           traderId: trader.id,
@@ -217,10 +261,15 @@ const calcTraderPerformance = async (
         }, transaction)
       }
 
+      if (shouldRebalance && hasRebalanceTransaction) {
+        rebalancedAt = tradeDate
+        hasRebalanced = true
+      }
+
       tradeDate = nextDate
     }
 
-    if (hasCreatedAnyRecord) {
+    if (shouldCommitTransaction) {
       await transaction.commit()
     } else {
       await transaction.rollback()
@@ -232,12 +281,14 @@ const calcTraderPerformance = async (
 
   const traderTransaction = await databaseAdapter.createTransaction()
   try {
+    // If not holding created or there is no start date, then save estimate date only
     if (!holding || !startedAt) {
       await traderModel.update(trader.id, { estimatedAt: latestDate }, traderTransaction)
       await traderTransaction.commit()
       return
     }
 
+    // Regenerate tickerHolder records for current trader
     await tickerHolderModel.destroyTraderTickers(trader.id, traderTransaction)
     await runTool.asyncForEach(holding.items, async (
       item: interfaces.traderHoldingModel.Item,
@@ -277,45 +328,48 @@ export const calcAllTraderPerformances = async (
   forceRecheck: boolean,
   checkAll: boolean,
 ) => {
-  const envs = await traderEnvModel.getAll()
+  const entities = await entityModel.getAll()
 
-  const delistedTickers = await tickerModel.getAllDelisted()
-  const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
-  const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
-    return tickerDailyModel.getLatest()
-  })
-  const initLastPrices: transactionLogic.DelistedLastPrices = {}
-  const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
-    lastPrices[tickerDaily.tickerId] = tickerDaily
-    return lastPrices
-  }, initLastPrices)
-  const latestDate = await dailyTickersModel.getLatestDate()
-
-  await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
-    console.info(`Checking Env:${env.id}`)
-    const traders = checkAll
-      ? await traderModel.getAllByEnvId(env.id)
-      : await traderModel.getActives(env.id)
-
-    await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
-      await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
+  await runTool.asyncForEach(entities, async (entity: interfaces.entityModel.Record) => {
+    const latestDate = await dailyTickersModel.getLatestDate(entity.id)
+    const delistedTickers = await tickerModel.getAllDelisted(entity.id)
+    const delistedTickerIds = delistedTickers.map((ticker) => ticker.id)
+    const latestPrices = await runTool.asyncMap(delistedTickerIds, async (tickerId: number) => {
+      return tickerDailyModel.getLatest(tickerId)
     })
-    const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
-    const inactiveRankingNumber = deactivateTarget?.rankingNumber
-    if (inactiveRankingNumber) {
-      await databaseAdapter.runWithTransaction(async (transaction) => {
-        await traderModel.activateAllByRankingNumber(
-          env.id,
-          inactiveRankingNumber,
-          transaction,
-        )
-        await traderModel.deactivateAllByRankingNumber(
-          env.id,
-          inactiveRankingNumber,
-          transaction,
-        )
+    const delistedLastPrices = latestPrices.reduce((lastPrices, tickerDaily) => {
+      lastPrices[tickerDaily.tickerId] = tickerDaily
+      return lastPrices
+    }, {} as transactionLogic.DelistedLastPrices)
+
+    const envs = await traderEnvModel.getAll(entity.id)
+
+    await runTool.asyncForEach(envs, async (env: interfaces.traderEnvModel.Record) => {
+      console.info(`Checking Env:${env.id}`)
+      const traders = checkAll
+        ? await traderModel.getAllByEnvId(env.id)
+        : await traderModel.getActives(env.id)
+
+      await runTool.asyncForEach(traders, async (trader: interfaces.traderModel.Record) => {
+        await calcTraderPerformance(trader, env, forceRecheck, latestDate, delistedLastPrices)
       })
-    }
+      // const deactivateTarget = await traderModel.getByRank(env.id, env.activeTotal)
+      // const inactiveRankingNumber = deactivateTarget?.rankingNumber
+      // if (inactiveRankingNumber) {
+      //   await databaseAdapter.runWithTransaction(async (transaction) => {
+      //     await traderModel.activateAllByRankingNumber(
+      //       env.id,
+      //       inactiveRankingNumber,
+      //       transaction,
+      //     )
+      //     await traderModel.deactivateAllByRankingNumber(
+      //       env.id,
+      //       inactiveRankingNumber,
+      //       transaction,
+      //     )
+      //   })
+      // }
+    })
   })
 }
 

@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import * as traderProfile from './traderProfile'
 import { instance, mock, when } from 'ts-mockito'
+import * as traderProfile from './traderProfile'
 
 const type = mock<AppState>({})
 

@@ -1,7 +1,7 @@
 
-import * as holding from './holding'
 import * as interfaces from '@shared/interfaces'
 import { instance, mock } from 'ts-mockito'
+import * as holding from './holding'
 
 describe('#groupHoldingsByTraders', () => {
   const holdingMock: interfaces.traderHoldingModel.Record = mock({})

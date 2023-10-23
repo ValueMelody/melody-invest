@@ -2,8 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import TraderProfileCard from 'containers/traders/blocks/TraderProfileCard'
-import WeightChart from '../elements/WeightChart'
 import { useState } from 'react'
+import WeightChart from '../elements/WeightChart'
 
 interface ProfileWithEnv {
   profile?: interfaces.response.TraderProfile;

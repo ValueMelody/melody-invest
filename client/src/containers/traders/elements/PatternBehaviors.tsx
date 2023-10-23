@@ -1,8 +1,8 @@
 import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import * as routerTool from 'tools/router'
-import BehaviorLabel from './BehaviorLabel'
 import { useNavigate } from 'react-router-dom'
+import BehaviorLabel from './BehaviorLabel'
 
 const labelClass = 'mx-2 my-1 w-auto'
 

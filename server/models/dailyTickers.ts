@@ -6,10 +6,15 @@ import { Knex } from 'knex'
 
 const TableName = adapterEnum.DatabaseTable.DailyTickers
 
-export const getLatestDate = async (): Promise<string> => {
+export const getLatestDate = async (
+  entityId: number,
+): Promise<string> => {
   const record = await databaseAdapter.findOne({
     tableName: TableName,
     orderBy: [{ column: 'date', order: 'desc' }],
+    conditions: [
+      { key: 'entityId', value: entityId },
+    ],
     select: ['date'],
   })
   return record ? record.date : dateTool.getInitialDate()
@@ -31,10 +36,8 @@ export const getLast = async (
 export const getByUK = async (
   entityId: number,
   date: string,
-  select?: ('tickers' | 'indicators' | 'nearestPrices')[],
 ): Promise<interfaces.dailyTickersModel.Record | null> => {
   const record = await databaseAdapter.findOne({
-    select,
     tableName: TableName,
     conditions: [
       { key: 'entityId', value: entityId },

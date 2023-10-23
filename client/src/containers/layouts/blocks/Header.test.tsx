@@ -1,10 +1,10 @@
 import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import { fireEvent, render, screen } from 'test.utils'
-import Header from './Header'
 import { createMemoryHistory } from 'history'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
+import Header from './Header'
 
 afterEach(() => {
   jest.clearAllMocks()

@@ -10,10 +10,10 @@ import { FormEvent, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BehaviorEditor from 'containers/traders/elements/BehaviorEditor'
-import ProfileBuilderGroup from './ProfileBuilderGroup'
-import ProfileBuilderHeader from './ProfileBuilderHeader'
 import TraderEnvCard from 'containers/traders/blocks/TraderEnvCard'
 import usePrivateGuard from 'hooks/usePrivateGuard'
+import ProfileBuilderGroup from './ProfileBuilderGroup'
+import ProfileBuilderHeader from './ProfileBuilderHeader'
 
 type ActiveBehavior = interfaces.traderPatternModel.Behavior | null
 
