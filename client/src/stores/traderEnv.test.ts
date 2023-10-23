@@ -2,8 +2,8 @@ import * as actions from 'actions'
 import * as interfaces from '@shared/interfaces'
 import { instance, mock } from 'ts-mockito'
 import axios from 'axios'
-import { store } from './index'
 import { traderEnvSlice } from './traderEnv'
+import { store } from './index'
 
 afterEach(() => {
   store.dispatch(traderEnvSlice.actions._resetForTest())

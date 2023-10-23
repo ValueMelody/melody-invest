@@ -5,8 +5,8 @@ import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
 import { GlobalState } from 'stores/global'
-import ProfileDetail from './ProfileDetail'
 import axios from 'axios'
+import ProfileDetail from './ProfileDetail'
 
 afterEach(() => {
   jest.clearAllMocks()

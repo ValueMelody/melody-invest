@@ -2,10 +2,10 @@ import * as interfaces from '@shared/interfaces'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen, waitFor } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import ComboBuilder from './ComboBuilder'
 import { GlobalState } from 'stores/global'
 import { UserState } from 'stores/user'
 import axios from 'axios'
+import ComboBuilder from './ComboBuilder'
 
 jest.mock('selectors', () => {
   const actual = jest.requireActual('selectors')

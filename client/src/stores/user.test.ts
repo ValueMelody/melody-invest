@@ -3,8 +3,8 @@ import * as constants from '@shared/constants'
 import * as interfaces from '@shared/interfaces'
 import { instance, mock } from 'ts-mockito'
 import axios from 'axios'
-import { store } from './index'
 import { userSlice } from './user'
+import { store } from './index'
 
 afterEach(() => {
   store.dispatch(userSlice.actions._resetForTest())

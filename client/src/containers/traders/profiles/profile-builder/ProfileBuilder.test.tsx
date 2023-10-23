@@ -5,10 +5,10 @@ import * as selectors from 'selectors'
 import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import ProfileBuilder from './ProfileBuilder'
 import axios from 'axios'
 import { globalSlice } from 'stores/global'
 import { store } from 'stores'
+import ProfileBuilder from './ProfileBuilder'
 
 store.dispatch(globalSlice.actions._updateForTest({
   refreshToken: 'aaa',

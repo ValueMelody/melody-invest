@@ -1,6 +1,6 @@
+import classNames from 'classnames'
 import ValueChangeCharts from './ValueChangeCharts'
 import ValueChangePercents from './ValueChangePercents'
-import classNames from 'classnames'
 
 const ValueChangePanel = ({
   yearlyPercentNumber,

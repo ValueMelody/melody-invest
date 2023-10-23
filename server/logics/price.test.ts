@@ -1,6 +1,6 @@
 import * as interfaces from '@shared/interfaces'
-import * as price from './price'
 import { mock } from 'ts-mockito'
+import * as price from './price'
 
 describe('#getSplitMultiplier', () => {
   test('could get correct value', () => {

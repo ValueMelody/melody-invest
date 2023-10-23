@@ -185,7 +185,7 @@ export const getComboDetail = async (
 
   const traders = await traderModel.getInPKs(combo.traderIds)
   const { traderProfiles, holdings } = await buildComboEntities(traders)
-  const latestDate = await dailyTickersModel.getLatestDate()
+  const latestDate = await dailyTickersModel.getLatestDate(1)
   const startDate = holdings.length ? holdings[holdings.length - 1].date : latestDate
   const stats = await buildHoldingValueStats(
     combo.entityId,
@@ -244,7 +244,7 @@ export const createTraderEnv = async (
 ): Promise<interfaces.traderEnvModel.Identity> => {
   const tickerIdsAsString = tickerIds
     ? generateTool.sortNumsToString(tickerIds)
-    : null
+    : ''
   const transaction = await databaseAdapter.createTransaction()
   try {
     const envResult = await traderEnvModel.createIfEmpty({

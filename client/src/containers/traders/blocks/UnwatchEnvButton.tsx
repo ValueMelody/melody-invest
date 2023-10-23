@@ -4,10 +4,10 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import { Button } from 'flowbite-react'
 import ConfirmModal from 'containers/elements/ConfirmModal'
-import WatchButton from '../elements/WatchButton'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import WatchButton from '../elements/WatchButton'
 
 const UnwatchEnvButton = ({
   traderEnv,

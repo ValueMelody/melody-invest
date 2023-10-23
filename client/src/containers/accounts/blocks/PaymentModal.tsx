@@ -4,8 +4,8 @@ import * as helpers from '@shared/helpers'
 import * as localeTool from 'tools/locale'
 import { Button, Card, Label, Modal, Radio, Select } from 'flowbite-react'
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
-import SubscribeButton from './SubscribeButton'
 import classNames from 'classnames'
+import SubscribeButton from './SubscribeButton'
 
 const PaymentModal = ({
   userType,

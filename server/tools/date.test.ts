@@ -1,6 +1,6 @@
 import 'moment-timezone'
-import * as date from './date'
 import moment from 'moment'
+import * as date from './date'
 
 describe('#getInitialDate', () => {
   test('could get initial date', () => {

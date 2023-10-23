@@ -1,5 +1,5 @@
-import { store } from './index'
 import { tickerIdentitySlice } from './tickerIdentity'
+import { store } from './index'
 
 afterEach(() => {
   store.dispatch(tickerIdentitySlice.actions._resetForTest())

@@ -2,9 +2,9 @@ import * as authMiddleware from 'middlewares/auth'
 import * as crudUsers from 'services/crudUsers'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
-import * as users from './users'
 import { Request, Response, Router } from 'express'
 import { instance, mock } from 'ts-mockito'
+import * as users from './users'
 
 jest.mock('services/crudUsers', () => ({
   ...jest.requireActual('services/crudUsers'),

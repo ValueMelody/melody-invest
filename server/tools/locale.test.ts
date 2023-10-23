@@ -1,5 +1,5 @@
-import * as locale from './locale'
 import enLocale from 'locales/en.json'
+import * as locale from './locale'
 
 describe('#getTranslation', () => {
   test('could get translation', () => {

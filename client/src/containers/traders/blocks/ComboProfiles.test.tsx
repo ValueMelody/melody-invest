@@ -2,8 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as selectors from 'selectors'
 import { fireEvent, render, screen } from 'test.utils'
-import ComboProfiles from './ComboProfiles'
 import { mock } from 'ts-mockito'
+import ComboProfiles from './ComboProfiles'
 
 jest.mock('selectors', () => {
   const actual = jest.requireActual('selectors')

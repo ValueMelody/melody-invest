@@ -3,9 +3,9 @@ import * as router from 'react-router-dom'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import ComboDetail from './ComboDetail'
 import { GlobalState } from 'stores/global'
 import axios from 'axios'
+import ComboDetail from './ComboDetail'
 
 afterEach(() => {
   jest.clearAllMocks()

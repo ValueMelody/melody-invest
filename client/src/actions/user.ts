@@ -2,8 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as requestAdapter from 'adapters/request'
 import * as routerEnum from 'enums/router'
-import { logout, refreshAccessToken } from './general'
 import { createAsyncThunk } from '@reduxjs/toolkit'
+import { logout, refreshAccessToken } from './general'
 
 export const fetchUserEntity = createAsyncThunk(
   'user/fetchUserEntity',

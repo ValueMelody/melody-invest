@@ -1,5 +1,4 @@
 import * as constants from '@shared/constants'
-import * as crudUsers from './crudUsers'
 import * as databaseAdapter from 'adapters/database'
 import * as dateTool from 'tools/date'
 import * as emailAdapter from 'adapters/email'
@@ -11,6 +10,7 @@ import * as localeTool from 'tools/locale'
 import * as userModel from 'models/user'
 import { SendMailOptions, Transporter } from 'nodemailer'
 import { instance, mock, when } from 'ts-mockito'
+import * as crudUsers from './crudUsers'
 
 jest.mock('adapters/email', () => {
   const actual = jest.requireActual('adapters/email')

@@ -2,8 +2,8 @@ import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
 import * as parseTool from 'tools/parse'
 import { render, screen } from 'test.utils'
-import ProfileLabel from './ProfileLabel'
 import { mock } from 'ts-mockito'
+import ProfileLabel from './ProfileLabel'
 
 describe('#ProfileLabel', () => {
   const traderMock: interfaces.traderModel.Record = mock({})

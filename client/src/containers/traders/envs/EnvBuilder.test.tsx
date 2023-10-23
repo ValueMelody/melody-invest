@@ -1,8 +1,8 @@
 import * as interfaces from '@shared/interfaces'
 import { act, fireEvent, render, screen, waitFor } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import EnvBuilder from './EnvBuilder'
 import axios from 'axios'
+import EnvBuilder from './EnvBuilder'
 
 jest.mock('react-select', () => '')
 

@@ -3,10 +3,10 @@ import * as routerTool from 'tools/router'
 import * as usePublicGuard from 'hooks/usePublicGuard'
 import * as userAction from 'actions/user'
 import { fireEvent, render, screen } from 'test.utils'
-import SignIn from './SignIn'
 import { createAsyncThunk } from '@reduxjs/toolkit'
 import { createMemoryHistory } from 'history'
 import { store } from 'stores'
+import SignIn from './SignIn'
 
 jest.mock('hooks/usePublicGuard', () => {
   const actual = jest.requireActual('hooks/usePublicGuard')

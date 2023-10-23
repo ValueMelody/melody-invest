@@ -3,11 +3,11 @@ import * as localeTool from 'tools/locale'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import TraderProfileCard from './TraderProfileCard'
 import { UserState } from 'stores/user'
 import axios from 'axios'
 import { contentSlice } from 'stores/content'
 import { store } from 'stores'
+import TraderProfileCard from './TraderProfileCard'
 
 afterEach(() => {
   jest.clearAllMocks()

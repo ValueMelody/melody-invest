@@ -1,6 +1,6 @@
 import * as localeTool from 'tools/locale'
-import * as request from './request'
 import axios from 'axios'
+import * as request from './request'
 
 describe('#setAuthToken', () => {
   test('could set auth', () => {

@@ -6,12 +6,12 @@ import * as selectors from 'selectors'
 import { Button, Checkbox, Label, TextInput, Textarea } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import GoToButton from './elements/GoToButton'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import { globalSlice } from 'stores/global'
 import { useNavigate } from 'react-router-dom'
 import usePasswordValidator from 'hooks/usePasswordValidator'
 import usePublicGuard from 'hooks/usePublicGuard'
+import GoToButton from './elements/GoToButton'
 
 const SignUp = () => {
   usePublicGuard()

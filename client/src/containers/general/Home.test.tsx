@@ -2,8 +2,8 @@ import * as routerEnum from 'enums/router'
 import * as routerTool from 'tools/router'
 import { Route, Routes } from 'react-router-dom'
 import { fireEvent, render, screen } from 'test.utils'
-import Home from './Home'
 import { createMemoryHistory } from 'history'
+import Home from './Home'
 
 describe('#Home', () => {
   test('could redirect correctly', () => {

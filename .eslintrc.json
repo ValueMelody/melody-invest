@@ -25,7 +25,7 @@
         "message": "Don't declare enums"
       }
     ],
-    "sort-imports": "error",
+    "import/order": "error",
     "react/jsx-closing-bracket-location": "error",
     "react/jsx-max-props-per-line": "error",
     "react/jsx-indent-props": ["error", 2],

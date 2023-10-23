@@ -1,7 +1,7 @@
 import * as constants from '@shared/constants'
-import * as generate from './generate'
 import { instance, mock } from 'ts-mockito'
 import SMTPTransport from 'nodemailer/lib/smtp-transport'
+import * as generate from './generate'
 
 describe('buildAccessHash', () => {
   test('could generate accessHash', () => {

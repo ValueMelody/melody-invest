@@ -3,13 +3,13 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import GoToButton from './elements/GoToButton'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import { globalSlice } from 'stores/global'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import usePasswordValidator from 'hooks/usePasswordValidator'
 import usePublicGuard from 'hooks/usePublicGuard'
+import GoToButton from './elements/GoToButton'
 
 const SignIn = () => {
   usePublicGuard()

@@ -1,7 +1,7 @@
 import * as selectors from 'selectors'
-import Router from './Router'
 import { Spinner } from 'flowbite-react'
 import { useSelector } from 'react-redux'
+import Router from './Router'
 
 const Client = () => {
   const { isLoading } = useSelector(selectors.selectGlobal())

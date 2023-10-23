@@ -3,11 +3,11 @@ import * as localeTool from 'tools/locale'
 import * as routerTool from 'tools/router'
 import { Button, TextInput } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useState } from 'react'
-import GoToButton from './elements/GoToButton'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import usePublicGuard from 'hooks/usePublicGuard'
+import GoToButton from './elements/GoToButton'
 
 const Forgot = () => {
   usePublicGuard()

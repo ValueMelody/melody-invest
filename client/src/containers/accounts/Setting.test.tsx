@@ -3,9 +3,9 @@ import * as generalAction from 'actions/general'
 import * as selectors from 'selectors'
 import { act, fireEvent, render, screen, waitFor } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import Setting from './Setting'
 import { UserState } from 'stores/user'
 import axios from 'axios'
+import Setting from './Setting'
 
 jest.mock('actions/general', () => {
   const actual = jest.requireActual('actions/general')

@@ -1,6 +1,6 @@
 import * as dateTool from 'tools/date'
-import * as sync from './sync'
 import * as syncTickers from 'services/syncTickers'
+import * as sync from './sync'
 
 jest.mock('services/syncTickers', () => {
   const actual = jest.requireActual('services/syncTickers')

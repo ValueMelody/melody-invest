@@ -691,7 +691,7 @@ export const groupTickerInfo = (
   tickerQuarterly: interfaces.tickerQuarterlyModel.Record | null,
   tickerYearly: interfaces.tickerYearlyModel.Record | null,
 ): interfaces.dailyTickersModel.TickerInfo => {
-  const info: interfaces.dailyTickersModel.TickerInfo = {}
+  const info = {} as interfaces.dailyTickersModel.TickerInfo
 
   constants.Ticker.DailyMovementKeys.forEach((key) => {
     if (tickerDaily[key] !== undefined && tickerDaily[key] !== null) {
@@ -712,7 +712,12 @@ export const groupTickerInfo = (
   })
 
   constants.Ticker.YearlyCompareKeys.forEach((key) => {
+    if (key === 'annualPeRatio') info[key] = tickerYearly?.peRatio
+    if (key === 'annualPbRatio') info[key] = tickerYearly?.pbRatio
+    if (key === 'annualPsRatio') info[key] = tickerYearly?.psRatio
+    // @ts-ignore
     if (tickerYearly?.[key] !== undefined && tickerYearly?.[key] !== null) {
+      // @ts-ignore
       info[key] = tickerYearly[key]
     }
   })

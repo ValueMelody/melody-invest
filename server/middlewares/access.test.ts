@@ -1,4 +1,3 @@
-import * as access from './access'
 import * as constants from '@shared/constants'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
@@ -8,6 +7,7 @@ import * as traderEnvModel from 'models/traderEnv'
 import * as traderFollowerModel from 'models/traderFollower'
 import { Request, Response } from 'express'
 import { instance, mock, when } from 'ts-mockito'
+import * as access from './access'
 
 jest.mock('models/traderEnv', () => {
   const actual = jest.requireActual('models/traderEnv')

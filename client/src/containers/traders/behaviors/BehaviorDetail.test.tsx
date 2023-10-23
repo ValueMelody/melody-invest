@@ -5,9 +5,9 @@ import * as selectors from 'selectors'
 import { UserAccess, UserState } from 'stores/user'
 import { act, fireEvent, render, screen } from 'test.utils'
 import { instance, mock } from 'ts-mockito'
-import BehaviorDetail from './BehaviorDetail'
 import { GlobalState } from 'stores/global'
 import axios from 'axios'
+import BehaviorDetail from './BehaviorDetail'
 
 afterEach(() => {
   jest.clearAllMocks()

@@ -2,9 +2,9 @@ import * as constants from '@shared/constants'
 import * as crudSystems from 'services/crudSystems'
 import * as errorEnum from 'enums/error'
 import * as interfaces from '@shared/interfaces'
-import * as system from './system'
 import { Request, Response, Router } from 'express'
 import { instance, mock } from 'ts-mockito'
+import * as system from './system'
 
 jest.mock('services/crudSystems', () => ({
   ...jest.requireActual('services/crudSystems'),

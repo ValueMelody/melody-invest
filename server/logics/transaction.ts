@@ -338,7 +338,7 @@ export const getHoldingDetailAfterBuy = (
 
     // Find existing holding item or initial an empty one
     const item = details.items.find((item) => item.tickerId === tickerId) || {
-      tickerId, shares: 0, splitMultiplier: 0, value: 0
+      tickerId, shares: 0, splitMultiplier: 0, value: 0,
     }
 
     const refreshedDetails = buyItemToHolding(
