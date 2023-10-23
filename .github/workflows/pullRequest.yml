@@ -19,6 +19,6 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run lint
-    - run: npm run basic
+    - run: npm run shared
     - run: npm run tsc
     - run: npm run test
