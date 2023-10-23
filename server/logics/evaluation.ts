@@ -307,6 +307,8 @@ export const isIndicatorFitPatternBehaviors = (
   movementBehaviors: interfaces.traderPatternModel.IndicatorMovementBehavior[],
   compareBehaviors: interfaces.traderPatternModel.indicatorCompareBehavior[],
 ): boolean => {
+  if (!indicatorInfo) return false
+
   // Make sure every movement behaviors in one trader pattern fit current indicator
   const movementFit = movementBehaviors.every((behavior) => {
     const indicatorKey = IndicatorMovementTriggers[behavior]
@@ -446,27 +448,32 @@ export const getTickerWithSellEvaluation = (
 export const getTickerWithBuyEvaluation = (
   tickerId: number,
   pattern: interfaces.traderPatternModel.Record,
-  dailyTicker: interfaces.dailyTickersModel.TickerInfo | null,
+  tickerInfo: interfaces.dailyTickersModel.TickerInfo | null,
 ): TickerWithEvaluation | null => {
-  if (!dailyTicker) return null
-  return null
+  // When no available info for this tickerId, then do not buy
+  if (!tickerInfo) return null
 
-  // const preferValue = getTickerPreferValue(
-  //   pattern.buyPreference, dailyTicker.daily, dailyTicker.quarterly, dailyTicker.yearly,
-  // )
-  // if (!preferValue && preferValue !== 0) return null
+  // Check current patterns buy preference if tickers are equal weight
+  const preferValue = getTickerEqualWeightPreferValue(
+    pattern.buyPreference, tickerInfo,
+  )
+  if (preferValue === null) return null
 
-  // const weight = getTickerMovementWeights(
-  //   pattern,
-  //   dailyTicker.info,
-  //   constants.Behavior.TickerMovementBuyBehaviors,
-  // )
+  // Get current tickers buy weight
+  const weight = getTickerWeights(
+    pattern,
+    tickerInfo,
+    constants.Behavior.TickerMovementBuyBehaviors,
+    constants.Behavior.TickerCompareBuyBehaviors,
+  )
 
-  // if (!weight) return null
+  if (!weight) return null
 
-  // return {
-  //   tickerId, preferValue, weight,
-  // }
+  return {
+    tickerId,
+    preferValue,
+    weight,
+  }
 }
 
 export const getOrderedTickerEvaluations = (
@@ -485,51 +492,24 @@ export const getOrderedTickerEvaluations = (
   })
 }
 
-export const getTickerBuyEaluations = (
+export const getTickerBuyEvaluations = (
   tickerIds: number[],
   pattern: interfaces.traderPatternModel.Record,
-  dailyTickers: interfaces.dailyTickersModel.TickerInfos,
+  tickerInfos: interfaces.dailyTickersModel.TickerInfos,
 ) => {
-  const emptyEvaluations: TickerWithEvaluation[] = []
   const tickerEvaluations = tickerIds.reduce((evaluations, tickerId) => {
     const evaluation = getTickerWithBuyEvaluation(
-      tickerId, pattern, dailyTickers[tickerId],
+      tickerId, pattern, tickerInfos[tickerId],
     )
     if (evaluation) evaluations.push(evaluation)
     return evaluations
-  }, emptyEvaluations)
+  }, [] as TickerWithEvaluation[])
+  // Order tickerEvaluations by weight and prefer value
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.buyPreference)
   return orderedEvaluations
 }
 
-export const getIndicatorBuyMatches = (
-  pattern: interfaces.traderPatternModel.Record,
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-): boolean => {
-  const shouldBuy = getIndicatorMovementAndCompareMatches(
-    pattern,
-    indicatorInfo,
-    constants.Behavior.IndicatorMovementBuyBehaviors,
-    constants.Behavior.IndicatorCompareBuyBehaviors,
-  )
-  return shouldBuy
-}
-
-export const shouldSellBasedOnIndicator = (
-  pattern: interfaces.traderPatternModel.Record,
-  indicatorInfo: interfaces.dailyIndicatorsModel.IndicatorInfo,
-): boolean => {
-  // Should sell if indicator matches all pattern behaviors
-  const shouldSell = isIndicatorFitPatternBehaviors(
-    pattern,
-    indicatorInfo,
-    constants.Behavior.IndicatorMovementSellBehaviors,
-    constants.Behavior.IndicatorCompareSellBehaviors,
-  )
-  return shouldSell
-}
-
-export const getTickerSellEvalutions = (
+export const getTickerSellEvaluations = (
   tickerIds: number[],
   pattern: interfaces.traderPatternModel.Record,
   tickerInfos: interfaces.dailyTickersModel.TickerInfos,
@@ -542,7 +522,7 @@ export const getTickerSellEvalutions = (
     if (evaluation) evaluations.push(evaluation)
     return evaluations
   }, [] as TickerWithEvaluation[])
-  // Order tickerEvalutions by weight and prefer value
+  // Order tickerEvaluations by weight and prefer value
   const orderedEvaluations = getOrderedTickerEvaluations(tickerEvaluations, pattern.sellPreference)
   return orderedEvaluations
 }

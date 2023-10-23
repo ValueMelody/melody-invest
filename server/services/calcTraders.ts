@@ -127,8 +127,8 @@ const calcTraderPerformance = async (
   const cashMaxPercent = pattern.cashMaxPercent / 100
   const tickerMinPercent = pattern.tickerMinPercent / 100
   const tickerMaxPercent = pattern.tickerMaxPercent / 100
-  const holdingBuyPercent = pattern.holdingBuyPercent
-  const holdingSellPercent = pattern.holdingSellPercent
+  const holdingBuyPercent = pattern.holdingBuyPercent / 100
+  const holdingSellPercent = pattern.holdingSellPercent / 100
 
   console.info(`Checking Trader:${trader.id}`)
   const transaction = await databaseAdapter.createTransaction()
@@ -185,60 +185,72 @@ const calcTraderPerformance = async (
       )
 
       // Check if indicatorInfo matches sell criterion
-      const shouldSellBasedOnIndicator = !!indicatorInfo &&
-        evaluationLogic.shouldSellBasedOnIndicator(pattern, indicatorInfo)
+      const shouldSellBasedOnIndicator = evaluationLogic.isIndicatorFitPatternBehaviors(
+        pattern,
+        indicatorInfo,
+        constants.Behavior.IndicatorMovementSellBehaviors,
+        constants.Behavior.IndicatorCompareSellBehaviors,
+      )
 
       // Get a list of ordered tickerIds that should be sold
       const holdingTickerIds = rebalancedDetail.items.map((item) => item.tickerId)
+
+      // Get evaluations of each ticker, order by which one should be sold first
       const tickerSellEvaluations = shouldSellBasedOnIndicator
-        ? evaluationLogic.getTickerSellEvalutions(
+        ? evaluationLogic.getTickerSellEvaluations(
           holdingTickerIds, pattern, tickerInfos,
         )
         : []
       const sellTickerIds = tickerSellEvaluations.map((tickerSellEvaluation) => tickerSellEvaluation.tickerId)
 
+      // Update holding after sell target tickers
       const {
         holdingDetail: detailAfterSell,
         hasTransaction: hasSellTransaction,
-      } = transactionLogic.detailAfterSell(
-        detailAfterRebalance,
+      } = transactionLogic.getHoldingDetailAfterSell(
+        rebalancedDetail,
         sellTickerIds,
-        availableTargets,
+        availableTickerInfos,
         holdingSellPercent,
         tickerMinPercent,
-        maxCashValue,
+        cashMaxPercent,
       )
 
-      const isBuyIndicatorMatches = !!indicatorInfo && evaluationLogic.getIndicatorBuyMatches(pattern, indicatorInfo)
-      const buyTickerEvaluations = isBuyIndicatorMatches
-        ? evaluationLogic.getTickerBuyEaluations(
-          Object.keys(availableTargets).map((id) => parseInt(id)),
-          pattern,
-          availableTargets,
+      // Check if indicatorInfo matches buy criterion
+      const shouldBuyBasedOnIndicator = evaluationLogic.isIndicatorFitPatternBehaviors(
+        pattern,
+        indicatorInfo,
+        constants.Behavior.IndicatorMovementBuyBehaviors,
+        constants.Behavior.IndicatorCompareBuyBehaviors,
+      )
+
+      // Get a list of tickerIds that could be trade
+      const availableTickerIds = Object.keys(availableTickerInfos).map((id) => parseInt(id))
+
+      // Get evaluations of each ticker, order by which one should be bought first
+      const tickerBuyEvaluations = shouldBuyBasedOnIndicator
+        ? evaluationLogic.getTickerBuyEvaluations(
+          availableTickerIds, pattern, tickerInfos,
         )
         : []
-      const buyTickerIds = buyTickerEvaluations.map((evaluation) => evaluation.tickerId)
+      const buyTickerIds = tickerBuyEvaluations.map((evaluation) => evaluation.tickerId)
 
-      const maxBuyAmount = detailAfterSell.totalValue * holdingBuyPercent / 100
+      // Update holding after buy target tickers
       const {
         holdingDetail: detailAfterBuy,
         hasTransaction: hasBuyTransaction,
-      } = transactionLogic.detailAfterBuy(
+      } = transactionLogic.getHoldingDetailAfterBuy(
         detailAfterSell,
         buyTickerIds,
-        availableTargets,
-        maxBuyAmount,
+        tickerInfos,
+        holdingBuyPercent,
         tickerMaxPercent,
       )
 
-      if (shouldRebalance && hasRebalanceTransaction) {
-        rebalancedAt = tradeDate
-        hasRebalanced = true
-      }
-
       const hasTransaction = hasRebalanceTransaction || hasSellTransaction || hasBuyTransaction
+
       if (hasTransaction) {
-        hasCreatedAnyRecord = true
+        shouldCommitTransaction = true
         if (!startedAt) startedAt = tradeDate
         holding = await traderHoldingModel.create({
           traderId: trader.id,
@@ -249,10 +261,15 @@ const calcTraderPerformance = async (
         }, transaction)
       }
 
+      if (shouldRebalance && hasRebalanceTransaction) {
+        rebalancedAt = tradeDate
+        hasRebalanced = true
+      }
+
       tradeDate = nextDate
     }
 
-    if (hasCreatedAnyRecord) {
+    if (shouldCommitTransaction) {
       await transaction.commit()
     } else {
       await transaction.rollback()
@@ -264,12 +281,14 @@ const calcTraderPerformance = async (
 
   const traderTransaction = await databaseAdapter.createTransaction()
   try {
+    // If not holding created or there is no start date, then save estimate date only
     if (!holding || !startedAt) {
       await traderModel.update(trader.id, { estimatedAt: latestDate }, traderTransaction)
       await traderTransaction.commit()
       return
     }
 
+    // Regenerate tickerHolder records for current trader
     await tickerHolderModel.destroyTraderTickers(trader.id, traderTransaction)
     await runTool.asyncForEach(holding.items, async (
       item: interfaces.traderHoldingModel.Item,
