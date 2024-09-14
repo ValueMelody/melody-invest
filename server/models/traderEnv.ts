@@ -9,7 +9,7 @@ const convertToRecord = (
   raw: interfaces.traderEnvModel.Raw,
 ): interfaces.traderEnvModel.Record => {
   const record: any = raw
-  record.tickerIds = raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId))
+  record.tickerIds = raw.tickerIds ? raw.tickerIds.split(',').map((tickerId) => parseInt(tickerId)) : null
   return record
 }
 

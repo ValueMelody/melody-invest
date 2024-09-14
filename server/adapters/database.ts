@@ -145,7 +145,6 @@ export const create = async ({
     return record[0]
   } catch (e) {
     await transaction.rollback()
-    console.log(222)
     console.error(e)
     throw errorEnum.Custom.CreationFailed
   }

@@ -150,9 +150,9 @@ export const syncFinancials = async (
           ?.find((info) => info.dataCode === 'freeCashFlow')?.value?.toString() || null,
       }
 
-      const quarter = dateTool.getQuarterByDate(financial.date)
       const isYearlyReport = financial.quarter === 0
       if (isYearlyReport) {
+        const quarter = dateTool.getQuarterByDate(financial.date)
         if (
           !!ticker.lastFinancialYear && !!ticker.firstFinancialYear &&
           ticker.lastFinancialYear >= quarter && ticker.firstFinancialYear <= quarter
@@ -165,6 +165,7 @@ export const syncFinancials = async (
         }, transaction)
         yearlyRecords.push(yearlyRecord)
       } else {
+        const quarter = dateTool.getQuarterByNumber(financial.date, financial.quarter)
         if (
           !!ticker.lastFinancialQuarter && !!ticker.firstFinancialQuarter &&
           ticker.lastFinancialQuarter >= quarter && ticker.firstFinancialQuarter <= quarter

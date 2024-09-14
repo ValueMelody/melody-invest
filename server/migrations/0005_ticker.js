@@ -4,7 +4,6 @@ exports.up = (knex) => {
       table.increments('id')
       table.integer('entityId').notNullable()
       table.foreign('entityId').references('id').inTable('entity')
-      table.string('name', 50).notNullable()
       table.string('symbol', 10).notNullable()
       table.boolean('isDelisted').defaultTo(false).notNullable()
       table.specificType('region', 'CHAR(2)').notNullable()
