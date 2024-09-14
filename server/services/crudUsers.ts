@@ -152,22 +152,24 @@ export const createUser = async (
 
     const subject = localeTool.getTranslation('email.activateUser')
     const content = emailLogic.buildActivateUserEmail(targetUser)
-    const transporter = emailAdapter.initTransporter()
-    const response = await transporter.sendMail({
-      from: 'ValueMelody app@valuemelody.com',
-      to: targetUser.email,
-      subject,
-      html: content,
-    })
+    try {
+      const transporter = emailAdapter.initTransporter()
+      const response = await transporter.sendMail({
+        from: 'ValueMelody app@valuemelody.com',
+        to: targetUser.email,
+        subject,
+        html: content,
+      })
 
-    const status = generateTool.getEmailStatus(response, targetUser.email)
+      const status = generateTool.getEmailStatus(response, targetUser.email)
 
-    await emailModel.create({
-      sendTo: targetUser.email,
-      title: subject,
-      content,
-      status,
-    }, transaction)
+      await emailModel.create({
+        sendTo: targetUser.email,
+        title: subject,
+        content,
+        status,
+      }, transaction)
+    } catch (e) { console.error(e) }
 
     return targetUser
   })

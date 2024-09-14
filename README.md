@@ -1,4 +1,4 @@
-# Prerequisite
+# Environment
 ```
 # setup redis
 sudo apt install redis-server
@@ -15,76 +15,60 @@ sudo apt-get install -y nodejs
 sudo npm install -g pm2
 ```
 
+# Prerequisite
+- Create a postgres database "melody-invest"
+- Get a Tiingo API KEY
+
 # Quick Start
 ```
-cp ./client/.env.example ./client/.env
-cp ./server/.env.example ./server/.env
+cp ./client/.env.example ./client/.env # Replace env vars if needed
+cp ./server/.env.example ./server/.env # Replace env vars if needed, including redis, database, mailer configs
 npm install
-npm run basic
-npm run dev
+npm run shared
+cd server
+npm run migrate
+cd ../
+npm run dev # open http://127.0.0.1:3099 in browser
 ```
 
-# Project Structure:
+# Data Preparation
+## Initial Preparation
+Save your Tiingo key on "Profile" page
+Create tickers on "Manage Tickers" Page
 ```
-scripts ->
-  mocks -> files used by unit test
-  devOps -> files used by devOps
-
-interfaces -> shared interfaces for the whole project
-constants -> shared constants for the whole project
-helpers -> shared functions for the whole project
-
-client -> frontend site for general users
-  index.tsx -> React root
-  index.css -> basic global styles
-  locales -> translation files used by client only
-  containers -> React components
-    blocks -> larger reusable components depend on state
-    elements -> smaller reusable components do not depend on state
-  enums -> constants used by client only
-  tools -> pure functions used by client only
-  adapters -> wrappers for outer resources
-  hooks -> general hooks to handle specific tasks
-  actions -> Redux actions and async actions
-  selectors -> Redux selectors
-  stores -> Redux stores
-
-server -> backend APIs for the whole project
-  index.ts -> Express root
-  cli.ts -> NPM command root
-  cron.ts -> Node Cron root
-  adapters -> wrappers for outer resources
-  tools -> pure functions used by server only
-  enums -> constants used by server only
-  locales -> translation files by server only
-  middlewares -> Express middlewares
-  models -> database representative functions
-  routers -> Express routers
-  logics -> specific business logic functions
-  services ->  api or cli request handlers
-    shared -> single purpose data parsing functions
-  tasks -> cli command handlers
-  templates -> email templates
-  migrations -> Knex migrations
+cd server
+npm run build
 ```
 
-# Manual Schedules
-Daily:
+## Daily Preparation
 ```
-npm run syncTickerPrices
+# Sync prices of your tickers
+npm run syncTickerPrices yyyy-MM-DD
+
+# Calculate price movements based on ticker prices
 npm run calcPriceMovements
+
+# Prepare daily ticker data for final calculation
 npm run calcDailyTickers
 ```
-Weekly:
+
+## Weekly Preparation
 ```
-npm run syncTickerFinancials
+# Sync financial statements of your tickers
+npm run syncTickerFinancials yyyy-MM
+
+# Calculate financial movements based on financial data
 npm run calcFinancialMovements
-npm run calcDailyTickers
+
+# Update indicator tables with most up to date data
+# Calculate economy indicator movemeents based on economy data
 npm run calcIndicatorMovements
+
+# Prepare daily indicator data for final calculation
 npm run calcDailyIndicators
 ```
 
-# Indicator Data Collect
+## Indicator Data References
 Yearly Inflation: https://www.usinflationcalculator.com/inflation/current-inflation-rates/  
 Yearly GDP: https://en.wikipedia.org/wiki/Economy_of_the_United_States  
 Quarterly Seasonal GDP: https://fred.stlouisfed.org/series/NA000254Q  

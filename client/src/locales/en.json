@@ -1,6 +1,6 @@
 {
   "translation": {
-    "shared.dataSource": "Tiingo, Alpha Vantage",
+    "shared.dataSource": "Tiingo",
 
     "unwatchEnvModal.title": "Unwatch this environment",
     "unwatchEnvModal.desc": "Unwatch this environment will automatically unwatch all the trader profiles you followed from this environment as well. Do you want to continue?",

@@ -67,7 +67,7 @@ const ProfileDashboard = () => {
           <AddButton
             data-testid='addProfileBtn'
             onClick={handleClickAddProfile}
-            disabled={!user.access.canFollowTrader}
+            disabled={!user.access.canFollowTrader || !envs.length}
             title={localeTool.t('dashboard.newBtn')}
             tooltip={
               user.access.canFollowTrader

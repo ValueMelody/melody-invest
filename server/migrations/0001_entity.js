@@ -2,7 +2,8 @@ exports.up = (knex) => {
   return knex.schema
     .createTable('entity', (table) => {
       table.increments('id')
-      table.string('dataKey', 20)
+      table.text('dataKey')
+      table.string('dataSource', 20)
       table.boolean('isValidKey')
     })
 }

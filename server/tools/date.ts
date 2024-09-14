@@ -33,6 +33,23 @@ export const getYearByDate = (date: string): string => {
   return date.substring(0, 4)
 }
 
+export const getQuarterByNumber = (date: string, number: number): string => {
+  const currentDate = date.substring(0, 7)
+  const [currentYear] = currentDate.split('-')
+  const year = parseInt(currentYear)
+  let quarter = ''
+  if (number === 1) {
+    quarter = '03'
+  } else if (number === 2) {
+    quarter = '06'
+  } else if (number === 3) {
+    quarter = '09'
+  } else if (number === 4) {
+    quarter = '12'
+  }
+  return `${year}-${quarter}`
+}
+
 export const getQuarterByDate = (date: string): string => {
   const currentDate = date.substring(0, 7)
   const [currentYear, currentMonth] = currentDate.split('-')

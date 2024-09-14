@@ -16,6 +16,7 @@ import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import buildComboEntities from './shared/buildComboEntities'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
+import * as helpers from '@shared/helpers'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
@@ -140,7 +141,10 @@ export const createTraderProfile = async (
 ): Promise<interfaces.response.TraderProfile> => {
   const transaction = await databaseAdapter.createTransaction()
   try {
-    const patternResult = await traderPatternModel.createIfEmpty(traderPattern, transaction)
+    const patternResult = await traderPatternModel.createIfEmpty({
+      ...traderPattern,
+      hashCode: helpers.toPatternHashCode(traderPattern),
+    }, transaction)
     const pattern = patternResult.record
     const parent = null
     const hasMutation = false
