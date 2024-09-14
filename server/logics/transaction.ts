@@ -283,7 +283,7 @@ export const buyItemToHolding = (
   holdingBuyPercent: number,
   tickerMaxPercent: number,
 ): interfaces.traderHoldingModel.Detail | null => {
-  const maxBuyAmount = holdingDetail.totalValue & holdingBuyPercent
+  const maxBuyAmount = holdingDetail.totalValue * holdingBuyPercent
 
   // Use maximum allowed cash or use total cash left if less than maximun allowed
   const maxCashToUse = holdingDetail.totalCash < maxBuyAmount
@@ -291,6 +291,7 @@ export const buyItemToHolding = (
     : maxBuyAmount
 
   const sharesBought = Math.floor(maxCashToUse / tickerInfo.closePrice)
+
   if (!sharesBought) return null
 
   const baseSharesBought = sharesBought / tickerInfo.splitMultiplier

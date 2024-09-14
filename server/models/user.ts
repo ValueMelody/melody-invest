@@ -23,7 +23,7 @@ export const getByActivationCode = async (
       { key: 'activationCode', value: code },
     ],
   })
-  return convertToRecord(user)
+  return user ? convertToRecord(user) : null
 }
 
 export const getByPK = async (
@@ -35,7 +35,7 @@ export const getByPK = async (
       { key: 'id', value: id },
     ],
   })
-  return convertToRecord(user)
+  return user ? convertToRecord(user) : null
 }
 
 export const getByUK = async (
@@ -47,7 +47,7 @@ export const getByUK = async (
       { key: 'email', value: email },
     ],
   })
-  return convertToRecord(user)
+  return user ? convertToRecord(user) : null
 }
 
 export const create = async (

@@ -728,6 +728,9 @@ export const groupTickerInfo = (
     }
   })
 
+  info.closePrice = tickerDaily.closePrice
+  info.splitMultiplier = tickerDaily.splitMultiplier
+
   return info
 }
 
@@ -778,11 +781,12 @@ export const calcDailyTickers = async () => {
     const tickerIds = tickers.map((ticker) => ticker.id)
 
     console.info(`checking entity: ${entity.id}`)
-    const lastRecord = await dailyTickersModel.getLast(entity.id)
+    // const lastRecord = await dailyTickersModel.getLast(entity.id)
+    let targetDate = dateTool.getInitialDate()
     // Always double check latest 60 days
-    let targetDate = lastRecord && Object.keys(lastRecord.priceInfo).length === tickerIds.length
-      ? dateTool.getPreviousDate(lastRecord.date, 60)
-      : dateTool.getInitialDate()
+    // let targetDate = lastRecord && Object.keys(lastRecord.priceInfo).length === tickerIds.length
+    //   ? dateTool.getPreviousDate(lastRecord.date, 60)
+    //   : dateTool.getInitialDate()
 
     while (targetDate <= lastPriceDate) {
       const nextDate = dateTool.getNextDate(targetDate)
