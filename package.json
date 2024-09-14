@@ -29,11 +29,7 @@
 
     "lint": "npm run lint --workspace=interfaces && npm run lint --workspace=constants && npm run lint --workspace=helpers && npm run lint --workspace=client && npm run lint --workspace=server",
     "lint:fix": "npm run lint:fix --workspace=interfaces && npm run lint:fix --workspace=constants && npm run lint:fix --workspace=helpers && npm run lint:fix --workspace=client && npm run lint:fix --workspace=server",
-    "tsc": "npm run tsc --workspace=client && npm run tsc --workspace=server",
-    "database:create": "createdb -h 127.0.0.1 -U admin melody",
-    "database:drop": "sudo -u postgres psql -c 'DROP DATABASE melody'",
-    "database:dump": "pg_dump -h 127.0.0.1 -Fc melody -U admin > ~/Backup/melody.bak",
-    "database:restore": "pg_restore -d melody -U admin ~/Backup/melody.bak"
+    "tsc": "npm run tsc --workspace=client && npm run tsc --workspace=server"
   },
   "devDependencies": {
     "@swc/core": "^1.3.24",

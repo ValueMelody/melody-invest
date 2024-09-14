@@ -151,8 +151,8 @@ const calcTraderPerformance = async (
       const dailyIndicators = await getCachedDailyIndicators(tradeDate)
       const indicatorInfo = dailyIndicators?.indicatorInfo || {}
 
-      // Only keep market data related to env defined tickers
-      const availableTickerInfos = env.tickerIds.reduce((tickers, tickerId) => {
+      const tickerIds = env.tickerIds ?? (await tickerModel.getAll()).map((ticker) => ticker.id)
+      const availableTickerInfos = tickerIds.reduce((tickers, tickerId) => {
         tickers[tickerId] = tickerInfos[tickerId]
         return tickers
       }, {} as interfaces.dailyTickersModel.TickerInfos)

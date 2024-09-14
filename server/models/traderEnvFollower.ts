@@ -39,8 +39,9 @@ export const getEnvFollowers = async (
   const records = await databaseAdapter.findAll({
     tableName: TableName,
     conditions: [
-      { key: 'envId', value: envId },
+      { key: 'traderEnvId', value: envId },
     ],
+    orderBy: [{ column: 'traderEnvId', order: 'asc' }],
   })
   return records
 }

@@ -134,7 +134,7 @@ const ProfileDashboard = () => {
           <AddButton
             data-testid='addComboBtn'
             onClick={handleClickAddCombo}
-            disabled={!user.access.canFollowCombo}
+            disabled={!user.access.canFollowCombo || !user.userTraderIds.length}
             title={localeTool.t('dashboard.newBtn')}
             tooltip={
               user.access.canFollowCombo
