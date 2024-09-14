@@ -14,9 +14,9 @@ import * as traderHoldingModel from 'models/traderHolding'
 import * as traderLogic from 'logics/trader'
 import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
+import * as helpers from '@shared/helpers'
 import buildComboEntities from './shared/buildComboEntities'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
-import * as helpers from '@shared/helpers'
 
 export const getTraderProfile = async (
   id: number, accessCode: string,
