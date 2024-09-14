@@ -3,7 +3,6 @@
   "private": true,
   "dependencies": {
     "@heroicons/react": "^2.0.12",
-    "@paypal/react-paypal-js": "^7.8.1",
     "@reduxjs/toolkit": "^1.8.6",
     "@shared/constants": "*",
     "@shared/helpers": "*",
@@ -25,8 +24,6 @@
   },
   "devDependencies": {
     "@shared/interfaces": "*",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^13.4.0",
     "@types/node": "^16.11.26",
     "@types/react": "^17.0.39",
     "@types/react-datepicker": "^4.3.4",

@@ -233,37 +233,3 @@ export const activateUser = createAsyncThunk(
     }
   },
 )
-
-export const createUserPayment = createAsyncThunk(
-  'user/createUserPayment',
-  async ({
-    orderId,
-    planType,
-    stateCode,
-    provinceCode,
-  }: {
-    orderId: string;
-    planType: number;
-    stateCode: string;
-    provinceCode: string;
-  }, { rejectWithValue, dispatch }) => {
-    const endpoint = `${routerEnum.Endpoint.Users}/payment`
-    await dispatch(refreshAccessToken())
-
-    try {
-      const userToken: interfaces.response.UserToken = await requestAdapter.sendPostRequest(endpoint, {
-        orderId,
-        planType,
-        stateCode,
-        provinceCode,
-      })
-      return {
-        userToken,
-        planType,
-        msg: localeTool.t('setting.subscribeSucceed'),
-      }
-    } catch (e) {
-      return rejectWithValue(e)
-    }
-  },
-)

@@ -64,20 +64,6 @@ export const createUser = async (req: Request, res: Response) => {
   return res.status(201).send(user)
 }
 
-export const createPayment = async (req: Request, res: Response) => {
-  const orderId = req.body.orderId?.trim()
-  const planType = Number(req.body.planType)
-  const stateCode = req.body.stateCode || null
-  const provinceCode = req.body.provinceCode || null
-
-  const isCorrectPlanType = planType === constants.User.Type.Pro || planType === constants.User.Type.Premium
-  if (!orderId || !isCorrectPlanType) throw errorEnum.Default.Forbidden
-
-  const auth: interfaces.request.Auth = req.body.auth
-  const userToken = await crudUsers.createPayment(auth.id, auth.entityId, orderId, planType, stateCode, provinceCode)
-  return res.status(201).send(userToken)
-}
-
 export const createReset = async (req: Request, res: Response) => {
   const email = req.body.email?.trim().toLowerCase()
   validateEmail(email)
@@ -146,7 +132,6 @@ export const attachRoutes = (router: Router) => {
   router.get('/overall', authMiddleware.normalUser, getOverall)
   router.post('/token', createToken)
   router.post('/', createUser)
-  router.post('/payment', authMiddleware.normalUser, createPayment)
   router.post('/reset', createReset)
   router.put('/entity', authMiddleware.normalUser, updateEntity)
   router.put('/password', authMiddleware.normalUser, updatePassword)

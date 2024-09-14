@@ -6,7 +6,6 @@ export const Default = Object.freeze({
 })
 
 export const Custom = Object.freeze({
-  PayPalServerError: { code: 500, message: 'Can not connect to PayPal' },
   OrderNotFound: { code: 404, message: 'Can not find active order' },
   CreationFailed: { code: 500, message: 'Can not create record.' },
   UpdationFailed: { code: 500, message: 'Can not update record.' },

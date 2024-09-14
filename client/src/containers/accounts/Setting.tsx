@@ -7,7 +7,6 @@ import { Button, Card, Label, Radio, TextInput } from 'flowbite-react'
 import { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import ConfirmModal from 'containers/elements/ConfirmModal'
-import PaymentModal from 'containers/accounts/blocks/PaymentModal'
 import RequiredLabel from 'containers/elements/RequiredLabel'
 import { globalSlice } from 'stores/global'
 import usePasswordValidator from 'hooks/usePasswordValidator'
@@ -221,7 +220,7 @@ const Setting = () => {
             {localeTool.t('setting.accountType')}
           </h2>
           <h4 data-testid='userPlan'>
-            {`${userTypeText.Title} ${localeTool.t('plan.title')} - ${userTypeText.Price}`}
+            {`${userTypeText.Title} ${localeTool.t('plan.title')}`}
           </h4>
           {userTypeText.Services.map((service) => (
             <h5 key={service}>- {service}</h5>
@@ -231,11 +230,6 @@ const Setting = () => {
               {localeTool.t('setting.planEndAt', { date: user.planEndAtUTC })}
             </h5>
           )}
-          <div className='mt-4'>
-            <PaymentModal
-              userType={user.userType}
-            />
-          </div>
         </Card>
         <Card className={cardClass}>
           <h2 className={titleClass}>

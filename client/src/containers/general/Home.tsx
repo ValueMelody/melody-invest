@@ -39,10 +39,6 @@ const Home = () => {
     navigate(routerTool.behaviorListRoute())
   }
 
-  const handleClickStocks = () => {
-    navigate(routerTool.tickerListRoute())
-  }
-
   return (
     <section
       className='flex flex-wrap justify-around p-8 rounded bg-gradient-to-br from-purple-600 to-blue-600'
@@ -108,14 +104,6 @@ const Home = () => {
           onClick={handleClickBehaviors}
         >
           {localeTool.t('home.checkBehaviorsBtn')}
-          <ArrowRightIcon className='icon-size ml-2' />
-        </Button>
-        <Button
-          data-testid='stocksBtn'
-          color='gray'
-          onClick={handleClickStocks}
-        >
-          {localeTool.t('home.checkTickersBtn')}
           <ArrowRightIcon className='icon-size ml-2' />
         </Button>
       </section>

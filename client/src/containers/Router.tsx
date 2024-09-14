@@ -14,7 +14,6 @@ import Home from './general/Home'
 import Layout from './layouts/Layout'
 import Limitations from './general/Limitations'
 import Maintain from './general/Maintain'
-import Pricing from './general/Pricing'
 import Privacy from './general/Privacy'
 import ProfileBuilder from './traders/profiles/profile-builder/ProfileBuilder'
 import ProfileDashboard from './traders/profiles/ProfileDashboard'
@@ -53,10 +52,6 @@ const Router = () => {
           <Route
             path={routerEnum.Nav.Limitations}
             element={<Limitations />}
-          />
-          <Route
-            path={routerEnum.Nav.Pricing}
-            element={<Pricing />}
           />
           <Route
             path={`${routerEnum.Nav.Traders}/profiles/:traderId/:accessCode`}

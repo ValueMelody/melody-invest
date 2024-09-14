@@ -8,10 +8,8 @@ import * as emailModel from 'models/email'
 import * as entityModel from 'models/entity'
 import * as errorEnum from 'enums/error'
 import * as generateTool from 'tools/generate'
-import * as helpers from '@shared/helpers'
 import * as interfaces from '@shared/interfaces'
 import * as localeTool from 'tools/locale'
-import * as paymentAdapter from 'adapters/payment'
 import * as tickerModel from 'models/ticker'
 import * as traderComboFollowerModel from 'models/traderComboFollower'
 import * as traderComboModel from 'models/traderCombo'
@@ -22,8 +20,6 @@ import * as traderLogic from 'logics/trader'
 import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import * as userModel from 'models/user'
-import * as userPaymentModel from 'models/userPayment'
-import moment from 'moment'
 
 export const getUserEntity = async (
   entityId: number,
@@ -88,30 +84,15 @@ export const getUserOverall = async (
     }
   })
 
-  let planStartAtUTC = null
-  let planEndAtUTC = null
-  let userType = user.type
-  if (user.type === constants.User.Type.Pro || user.type === constants.User.Type.Premium) {
-    const payment = await userPaymentModel.getLatest(user.id)
-    planStartAtUTC = payment?.startAtUTC || null
-    planEndAtUTC = payment?.endAtUTC || null
-
-    if (!payment || dateTool.toUTCFormat(moment()) >= payment.endAtUTC) {
-      userType = constants.User.Type.Basic
-      planStartAtUTC = null
-      planEndAtUTC = null
-    }
-  }
-
   return {
     traderProfiles: traders.map((trader) => traderLogic.presentTraderProfile(trader, patterns)),
     traderEnvs,
     tickers,
     traderCombos,
     email: user.email,
-    type: userType,
-    planStartAtUTC,
-    planEndAtUTC,
+    type: user.type,
+    planStartAtUTC: null,
+    planEndAtUTC: null,
   }
 }
 
@@ -224,94 +205,6 @@ export const refreshAccessToken = async (
     accessExpiresIn: accessExpiresInUTC,
     accessToken,
   }
-}
-
-export const createPayment = async (
-  userId: number,
-  entityId: number,
-  orderId: string,
-  planType: number,
-  stateCode: string,
-  provinceCode: string,
-): Promise<interfaces.response.UserToken> => {
-  const detail = await paymentAdapter.getOrderDetail(orderId)
-
-  const isApproved = detail?.status === 'APPROVED' && detail?.intent === 'CAPTURE'
-  if (!isApproved) throw errorEnum.Custom.OrderFailed
-
-  const purchaseDetail = detail?.purchase_units[0]
-  const paymentAmount = purchaseDetail?.amount?.breakdown?.item_total?.value
-  const paymentCurrency = purchaseDetail?.amount?.breakdown?.item_total?.currency_code
-  const taxAmount = purchaseDetail?.amount?.breakdown?.tax_total?.value
-  const taxCurrency = purchaseDetail?.amount?.breakdown?.tax_total?.currency_code
-
-  const planPrice = planType === constants.User.Type.Pro
-    ? constants.User.PlanPrice.Pro
-    : constants.User.PlanPrice.Premium
-
-  let days = 0
-  switch (paymentAmount) {
-    case planPrice.OneMonthPrice:
-      days = 30
-      break
-    case planPrice.ThreeMonthsPrice:
-      days = 90
-      break
-    case planPrice.SixMonthsPrice:
-      days = 180
-      break
-    case planPrice.OneYearPrice:
-      days = 360
-      break
-    default:
-      days = 0
-      break
-  }
-
-  if (!days || paymentCurrency !== 'CAD') throw errorEnum.Custom.OrderFailed
-
-  const expectedTax = helpers.getTaxAmount(paymentAmount, stateCode, provinceCode)
-  const hasValidTax = (!parseFloat(expectedTax) && !taxAmount) || expectedTax === taxAmount
-  const hasValidTaxCurrency = !taxCurrency || taxCurrency === 'CAD'
-  if (!hasValidTax || !hasValidTaxCurrency) throw errorEnum.Custom.OrderFailed
-
-  const captured = await paymentAdapter.captureOrderPayment(orderId)
-  if (captured?.status !== 'COMPLETED') throw errorEnum.Custom.OrderFailed
-
-  const lastPayment = await userPaymentModel.getLatest(userId)
-  const currentUTC = dateTool.toUTCFormat(moment())
-  const activePayment = lastPayment && currentUTC < lastPayment?.endAtUTC ? lastPayment : null
-  if (activePayment && activePayment.type !== planType) throw errorEnum.Custom.OrderFailed
-
-  const startAtUTC = activePayment?.endAtUTC || currentUTC
-  const endDate = moment(startAtUTC).add(days, 'days')
-  const endAtUTC = dateTool.toUTCFormat(endDate)
-
-  const updatedUser = await databaseAdapter.runWithTransaction(async (transaction) => {
-    const updatedUser = await userModel.update(userId, {
-      type: planType,
-    }, transaction)
-
-    await userPaymentModel.create({
-      userId,
-      orderId,
-      type: planType,
-      price: paymentAmount,
-      tax: taxAmount,
-      stateCode,
-      provinceCode,
-      startAtUTC,
-      endAtUTC,
-    }, transaction)
-
-    return updatedUser
-  })
-
-  const refreshExpiresIn = '12h'
-  return buildUserToken(
-    { id: userId, entityId, email: updatedUser.email, type: updatedUser.type },
-    refreshExpiresIn,
-  )
 }
 
 export const generateResetCode = async (

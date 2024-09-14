@@ -50,15 +50,12 @@
     "qs": "^6.10.1"
   },
   "devDependencies": {
-    "pg-mem": "^2.6.4",
-    "ioredis-mock": "^7.4.0",
     "@shared/interfaces": "*",
     "@types/async": "^3.2.16",
     "@types/compression": "^1.7.2",
     "@types/cors": "^2.8.12",
     "@types/express": "^4.17.15",
     "@types/ioredis": "^4.28.3",
-    "@types/ioredis-mock": "^5.6.0",
     "@types/jsonwebtoken": "^8.5.8",
     "@types/ms": "^0.7.31",
     "@types/node": "^16.11.6",

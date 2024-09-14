@@ -27,7 +27,6 @@
     "weightChart.weight": "Weight",
 
     "footer.contactUs": "Contact",
-    "footer.pricing": "Pricing",
 
     "account.email": "Email",
     "account.password": "Password",
@@ -93,18 +92,11 @@
     "home.centralOutputs": "Central Outputs",
     "home.signUpBtn": "Sign up now",
     "home.checkBehaviorsBtn": "Behaviors we support",
-    "home.checkTickersBtn": "Stocks we support",
 
-    "pricing.basicPrice": "Free",
     "pricing.profilesLimit": "{{num}} Trader Profiles",
     "pricing.envsLimit": "{{num}} Trader Envs",
     "pricing.combosLimit": "{{num}} Trader Combos",
     "pricing.tickersLimit": "{{num}} Tickers",
-    "pricing.planPrice": "${{num}} CAD / Month",
-    "pricing.title": "Our Plans and Prices",
-    "pricing.unit": "{{num}} Days",
-    "pricing.signUp": "Sign up a free account now",
-    "pricing.organization": "Contact us for organization options",
 
     "permission.limited": "Disabled due to plan limit, check your account page for details",
 
@@ -123,7 +115,6 @@
     "setting.dataKeyUpdated": "Data key saved!",
     "setting.invalidDateKey": "Invalid key",
     "setting.subscribeSucceed": "Your plan has been upgraded successfully",
-    "setting.paymentFailed": "Can not verify your payment, please contact {{email}} if your card has been charged",
     "setting.unsubscribe": "By unsubscribe, you account will be changed to a basic plan. We will partially refund your subscription fee based on remaining number of days on your current ",
     "setting.planEndAt": "Subscription ends at {{date}}",
     "setting.unsubscribeDesc": "Your current active plan will still be valid until the end of current cycle after unsubscribe. If you want to unsubscribe, click the Confirm button",
@@ -132,9 +123,6 @@
     "setting.lockAccessDesc": "You can no longer log into your account after access lock, you'll need to reset password in order to re-active your account",
     "setting.lockAccessSuccess": "Your account access has been locked",
     "setting.stateSelectPlaceholder": "Select your country",
-    "setting.provinceSelectPlaceholder": "Select your province",
-    "setting.billingVerificationNote": "Country/Province must matches your payment method, otherwise payment will be failed",
-    "setting.extendMoreTime": "Extend plan",
 
     "reset.title": "Reset Password",
     "reset.button": "Confirm Reset",
@@ -179,11 +167,11 @@
     "ticker.emptyYearlyFinancialRange": "Annual financial data is not available yet",
 
     "holdingCard.date": "Date",
-    "holdingCard.cash": "Mock Cash",
-    "holdingCard.shares": "mock shares",
+    "holdingCard.cash": "Cash",
+    "holdingCard.shares": "shares",
     "holdingCard.sinceLast": "Since last",
     "holdingCard.sinceStart": "Since start",
-    "holdingCard.totalValue": "Total Mock Value",
+    "holdingCard.totalValue": "Total Value",
 
     "holdingShare.new": "New",
 
@@ -192,19 +180,19 @@
     "tradeBehaviors.buyBehaviors": "Buy Behaviors",
     "tradeBehaviors.sellBehaviors": "Sell Behaviors",
     "tradeBehaviors.otherBehaviors": "Other Behaviors",
-    "tradeBehaviors.topProfiles": "Some mock profiles use this behavior from {{name}} Environment",
+    "tradeBehaviors.topProfiles": "Some profiles use this behavior from {{name}} Environment",
 
     "bestReturn.type": "Type of Default Profiles",
-    "bestReturn.yearlyTitle": "Higher Mock Return Annually",
-    "bestReturn.pastYearTitle": "Higher Mock Return in 360 days",
-    "bestReturn.pastQuarterTitle": "Higher Mock Return in 90 days",
-    "bestReturn.pastMonthTitle": "Higher Mock Return in 30 days",
-    "bestReturn.pastWeekTitle": "Higher Mock Return in 7 days",
+    "bestReturn.yearlyTitle": "Higher Return Annually",
+    "bestReturn.pastYearTitle": "Higher Return in 360 days",
+    "bestReturn.pastQuarterTitle": "Higher Return in 90 days",
+    "bestReturn.pastMonthTitle": "Higher Return in 30 days",
+    "bestReturn.pastWeekTitle": "Higher Return in 7 days",
 
     "profile.fork": "Fork",
     "profile.environments": "Environments",
-    "profile.estimatedAt": "Mock data refreshed on {{date}}",
-    "profile.history": "Mock Holding History by Backtesting",
+    "profile.estimatedAt": "Data refreshed on {{date}}",
+    "profile.history": "Holding History",
     "profile.showAllHoldings": "Show All Holdings",
     "profile.noResultYet": "There's no result generated for this profile yet",
     "profile.valueIncreased": "Total value increased compare to previous",
@@ -235,7 +223,7 @@
 
     "traderCombo.pastPerformance": "Past Performance",
     "traderCombo.selectedTraders": "Combined results from selected {{num}} profiles",
-    "traderCombo.history": "Mock Holding History by Backtesting",
+    "traderCombo.history": "Holding History",
     "traderCombo.noResultYet": "There's no result generated for this combo yet",
     "traderCombo.profilePortion": "Profile Portion",
     "traderCombo.includedProfiles": "Included Profiles",
@@ -254,7 +242,7 @@
     "traderEnv.allTickers": "Trade based on all the stocks provided by our platform",
     "traderEnv.selectedTickers": "Trade based on selected {{num}} stocks",
     "traderEnv.noResultYet": "There's no result generated for this environment yet, please check later",
-    "traderEnv.topProfiles": "Some mock profiles from this environment",
+    "traderEnv.topProfiles": "Some profiles from this environment",
     "traderEnv.2001" : "Default 2001",
     "traderEnv.2011" : "Default 2011",
 
@@ -270,8 +258,8 @@
     "valueChange.noResultYet": "There's no result generated yet",
     "valueChange.daysTrends": "{{num}} Days",
     "valueChange.yearsTrends": "{{num}} Years",
-    "valueChange.trends": "Mock trends by backtesting",
-    "valueChange.return": "Mock returns by backtesting",
+    "valueChange.trends": "Trends",
+    "valueChange.return": "Returns",
 
     "gain.yearly": "Annual",
     "gain.pastYear": "360 days",

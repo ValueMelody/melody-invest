@@ -15,7 +15,6 @@ export const DatabaseConfig = Object.freeze({
 
 export const DatabaseTable = Object.freeze({
   User: 'user',
-  UserPayment: 'user_payment',
   Email: 'email',
   Entity: 'entity',
   Ticker: 'ticker',
@@ -77,10 +76,4 @@ export const HostConfig = Object.freeze({
   RefreshTokenSecret: process.env.REFRESH_TOKEN_SECRET!,
   DataKeySecret: process.env.DATA_KEY_SECRET!,
   AccessExpiresIn: '15m',
-})
-
-export const PaymentConfig = Object.freeze({
-  BaseUrl: process.env.PAYPAL_BASE_URL!,
-  ClientId: process.env.PAYPAL_CLIENT_ID!,
-  ClientSecret: process.env.PAYPAL_CLIENT_SECRET!,
 })
