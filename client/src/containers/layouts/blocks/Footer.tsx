@@ -12,18 +12,6 @@ const Footer = () => {
     >
       <section className='flex flex-wrap'>
         <Link
-          to={routerTool.pricingRoute()}
-          className={linkClass}
-        >
-          {localeTool.t('footer.pricing')}
-        </Link>
-        <a
-          href='mailto: app@valuemelody.com'
-          className={linkClass}
-        >
-          {localeTool.t('footer.contactUs')}
-        </a>
-        <Link
           to={routerTool.privacyRoute()}
           className={linkClass}
         >

@@ -23,7 +23,6 @@ import * as traderLogic from 'logics/trader'
 import * as traderModel from 'models/trader'
 import * as traderPatternModel from 'models/traderPattern'
 import * as transactionLogic from 'logics/transaction'
-import * as userPaymentModel from 'models/userPayment'
 import buildHoldingValueStats from './shared/buildHoldingValueStats'
 
 const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.Record> => {
@@ -60,7 +59,7 @@ const cleanupTrader = async (traderId: number): Promise<interfaces.traderModel.R
 const isActiveTraderEnv = async (env: interfaces.traderEnvModel.Record) => {
   const followers = await traderEnvFollowerModel.getEnvFollowers(env.id)
   const userIds = followers.map((follower) => follower.userId)
-  return userPaymentModel.hasActiveUser(userIds)
+  return userIds.length
 }
 
 const getCachedDailyTickers = async (

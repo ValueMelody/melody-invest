@@ -151,20 +151,6 @@ const onRequestRejected = (state: GlobalState, action: AnyAction) => {
   ]
 }
 
-const onCreatePaymentFailed = (state: GlobalState) => {
-  state.isLoading = false
-  state.messages = [
-    ...state.messages,
-    {
-      id: nanoid(),
-      title: localeTool.t('setting.paymentFailed', {
-        email: commonEnum.Env.ContactEmail,
-      }),
-      type: 'failure',
-    },
-  ]
-}
-
 const onCreateUserToken = (
   state: GlobalState,
   action: PayloadAction<interfaces.response.UserToken>,
@@ -181,24 +167,12 @@ const onRefreshAccessToken = (
   if (action.payload !== null) storeAccessToken(state, action.payload)
 }
 
-const onCreatePayment = (
-  state: GlobalState,
-  action: PayloadAction<{
-    userToken: interfaces.response.UserToken;
-    msg: string;
-  }>,
-) => {
-  storeAuthToken(state, action.payload.userToken)
-  successWithMessage(state, action)
-}
-
 export const globalSlice = createSlice({
   name: 'global',
   initialState,
   reducers: {
     removeMessage,
     addMessage,
-    onCreatePaymentFailed,
     onCreateUserToken,
     onRequestRejected,
     startLoading,
@@ -207,7 +181,6 @@ export const globalSlice = createSlice({
     _resetForTest: (state) => storeTool._resetForTest(state, initialState),
   },
   extraReducers: (builder) => {
-    builder.addCase(actions.createUserPayment.fulfilled, onCreatePayment)
     builder.addCase(actions.lockUserAccount.fulfilled, lockUserAccount)
     builder.addCase(actions.logout, logout)
     builder.addCase(actions.acceptDisclaimer, acceptDisclaimer)
@@ -313,9 +286,6 @@ export const globalSlice = createSlice({
     builder.addCase(actions.activateUser.pending, startLoading)
     builder.addCase(actions.activateUser.fulfilled, successWithMessage)
     builder.addCase(actions.activateUser.rejected, onRequestRejected)
-
-    builder.addCase(actions.createUserPayment.pending, startLoading)
-    builder.addCase(actions.createUserPayment.rejected, onCreatePaymentFailed)
   },
 })
 

@@ -2,8 +2,17 @@ import * as adapterEnum from 'enums/adapter'
 import * as databaseAdapter from 'adapters/database'
 import * as interfaces from '@shared/interfaces'
 import { Knex } from 'knex'
+import * as constants from '@shared/constants'
 
 const TableName = adapterEnum.DatabaseTable.User
+
+const convertToRecord = (
+  raw: interfaces.userModel.Record,
+): interfaces.userModel.Record => {
+  const record: any = raw
+  record.type = constants.User.Type.Premium
+  return record
+}
 
 export const getByActivationCode = async (
   code: string,
@@ -14,7 +23,7 @@ export const getByActivationCode = async (
       { key: 'activationCode', value: code },
     ],
   })
-  return user
+  return convertToRecord(user)
 }
 
 export const getByPK = async (
@@ -26,7 +35,7 @@ export const getByPK = async (
       { key: 'id', value: id },
     ],
   })
-  return user
+  return convertToRecord(user)
 }
 
 export const getByUK = async (
@@ -38,7 +47,7 @@ export const getByUK = async (
       { key: 'email', value: email },
     ],
   })
-  return user
+  return convertToRecord(user)
 }
 
 export const create = async (
@@ -50,7 +59,7 @@ export const create = async (
     values,
     transaction,
   })
-  return createdUser
+  return convertToRecord(createdUser)
 }
 
 export const update = async (
@@ -66,5 +75,5 @@ export const update = async (
     ],
     transaction,
   })
-  return updatedUser[0]
+  return convertToRecord(updatedUser[0])
 }

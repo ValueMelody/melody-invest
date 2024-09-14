@@ -76,16 +76,6 @@ const onUpdateUserEntity = (
   }
 }
 
-const onCreatePaymentSuccess = (
-  state: UserState,
-  action: PayloadAction<{
-    userToken: interfaces.response.UserToken;
-    planType: number;
-  }>,
-) => {
-  state.userType = action.payload.planType
-}
-
 const addTraderById = (state: UserState, action: PayloadAction<number>) => {
   if (state.userTraderIds.includes(action.payload)) return
   state.userTraderIds = [...state.userTraderIds, action.payload]
@@ -125,7 +115,6 @@ export const userSlice = createSlice({
     builder.addCase(actions.createWatchedProfile.fulfilled, addTraderById)
     builder.addCase(actions.createTraderProfile.fulfilled, addTraderFromProfile)
     builder.addCase(actions.deleteWatchedProfile.fulfilled, removeTraderById)
-    builder.addCase(actions.createUserPayment.fulfilled, onCreatePaymentSuccess)
   },
 })
 

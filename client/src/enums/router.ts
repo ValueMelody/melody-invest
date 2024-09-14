@@ -13,7 +13,6 @@ export const Nav = Object.freeze({
   Tickers: '/tickers',
   Dashboard: '/dashboard',
   NotFound: '/404',
-  Pricing: '/pricing',
   Privacy: '/privacy',
   Terms: '/terms',
   Disclaimer: '/disclaimer',
